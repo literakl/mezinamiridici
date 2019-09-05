@@ -38,7 +38,7 @@ body {
     }
   }
 }
-#body {
+  #body {
     width: 1024px;
     margin: 0 auto;
   }

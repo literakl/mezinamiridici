@@ -184,17 +184,20 @@
         </p>
 
         <p>
-            <input
-                type="submit"
-                value="Finish"
-            >
+            <Submit value="Submit" />
         </p>
     </form>
 </template>
 
 <script>
+
+import Submit from '@/components/atoms/Submit.vue';
+
 export default {
   name: 'SignUpForm',
+  components: {
+    Submit,
+  },
   data: () => ({
     errors: [],
     email: null,
@@ -217,11 +220,6 @@ export default {
   }),
   methods: {
     checkForm(e) {
-      console.log(this);
-      if (this.name && this.age) {
-        return true;
-      }
-
       this.errors = [];
 
       if (!this.email) {
@@ -236,10 +234,10 @@ export default {
       if (!this.drivingSince) {
         this.errors.push('Driving since required.');
       }
-      if (!this.bike || !this.car || !this.bus || !this.van || !this.truck || !this.tramway) {
+      if (!this.bike && !this.car && !this.bus && !this.van && !this.truck && !this.tramway) {
         this.errors.push('Vehicle required.');
       }
-      if (!this.male || !this.female) {
+      if (!this.male && !this.female) {
         this.errors.push('Gender required.');
       }
       if (!this.bornInYear) {
@@ -251,14 +249,19 @@ export default {
       if (!this.education) {
         this.errors.push('Education required.');
       }
-      if (!this.onlyNickname || !this.everything) {
+      if (!this.onlyNickname && !this.everything) {
         this.errors.push('Share profile required.');
       }
 
       e.preventDefault();
 
-      return false;
+      return this.errors.length !== 0;
     },
   },
 };
 </script>
+
+
+<style lang="scss">
+
+</style>
