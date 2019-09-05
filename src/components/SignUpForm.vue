@@ -1,0 +1,264 @@
+<template>
+<form
+        id="app"
+        @submit="checkForm"
+    >
+        <p v-if="errors.length">
+            <b>Please correct the following error(s):</b>
+            <ul>
+                <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+            </ul>
+        </p>
+
+        <p>
+            <label for="email">Email</label>
+            <input
+                id="email"
+                v-model="email"
+                type="email"
+                name="email"
+            >
+        </p>
+
+        <p>
+            <label for="password">Password</label>
+            <input
+                id="password"
+                v-model="password"
+                type="password"
+                name="password"
+                min="0"
+            >
+        </p>
+
+        <p>
+            <label for="nickname">Nickname</label>
+            <input
+                id="nickname"
+                v-model="nickname"
+                type="nickname"
+                name="nickname"
+                min="0"
+            >
+        </p>
+
+        <p>
+            <label for="driving-since">Driving since</label>
+            <input
+                id="driving-since"
+                v-model="drivingSince"
+                type="number"
+                name="driving-since"
+                min="1910"
+            >
+        </p>
+
+        <p>
+            <label for="vehicle">Vehicle</label>
+            <input
+                id="bike"
+                v-model="bike"
+                type="radio"
+                name="vehicle"
+                value="bike"
+            >
+            <label for="bike">bike</label>
+
+            <input
+                id="car"
+                v-model="car"
+                type="radio"
+                name="vehicle"
+                value="car"
+            >
+            <label for="car">car</label>
+
+            <input
+                id="bus"
+                v-model="bus"
+                type="radio"
+                name="vehicle"
+                value="bus"
+            >
+            <label for="bus">bus</label>
+
+            <input
+                id="van"
+                v-model="van"
+                type="radio"
+                name="vehicle"
+                value="van"
+            >
+            <label for="van">van</label>
+
+            <input
+                id="truck"
+                v-model="truck"
+                type="radio"
+                name="vehicle"
+                value="truck"
+            >
+            <label for="truck">truck</label>
+
+            <input
+                id="tramway"
+                v-model="tramway"
+                type="radio"
+                name="vehicle"
+                value="tramway"
+            >
+            <label for="tramway">tramway</label>
+        </p>
+
+        <p>
+            <label for="sex">Sex</label>
+            <input
+                id="male"
+                v-model="male"
+                type="radio"
+                name="sex"
+                value="male"
+            >
+            <label for="male">Male</label>
+
+            <input
+                id="female"
+                v-model="female"
+                type="radio"
+                name="sex"
+                value="female"
+            >
+            <label for="female">Female</label>
+        </p>
+
+        <p>
+            <label for="born-in-year">Born</label>
+            <input
+                id="born-in-year"
+                v-model="bornInYear"
+                type="number"
+                name="born-in-year"
+                min="1910"
+            >
+        </p>
+
+        <p>
+            <label for="region">Region</label>
+            <select
+                id="region"
+                v-model="region"
+            >
+                <option></option>
+            </select>
+        </p>
+
+        <p>
+            <label for="education">Education</label>
+            <select
+                id="education"
+                v-model="education"
+            >
+                <option></option>
+            </select>
+        </p>
+
+        <p>
+            <label for="share-profile">Share Profile</label>
+            <input
+                id="onlynickname"
+                v-model="onlyNickname"
+                type="radio"
+                name="share-profile"
+                value="onlyNickname"
+            >
+            <label for="onlynickname">Only Nickname</label>
+
+            <input
+                id="everything"
+                v-model="everything"
+                type="radio"
+                name="share-profile"
+                value="everything"
+            >
+            <label for="everything">Everything</label>
+        </p>
+
+        <p>
+            <input
+                type="submit"
+                value="Finish"
+            >
+        </p>
+    </form>
+</template>
+
+<script>
+export default {
+  name: 'SignUpForm',
+  data: () => ({
+    errors: [],
+    email: null,
+    password: null,
+    nickname: null,
+    drivingSince: null,
+    bike: null,
+    car: null,
+    bus: null,
+    van: null,
+    truck: null,
+    tramway: null,
+    male: null,
+    female: null,
+    bornInYear: null,
+    region: null,
+    education: null,
+    onlyNickname: null,
+    everything: null,
+  }),
+  methods: {
+    checkForm(e) {
+      console.log(this);
+      if (this.name && this.age) {
+        return true;
+      }
+
+      this.errors = [];
+
+      if (!this.email) {
+        this.errors.push('Email required.');
+      }
+      if (!this.password) {
+        this.errors.push('Password required.');
+      }
+      if (!this.nickname) {
+        this.errors.push('Nickname required.');
+      }
+      if (!this.drivingSince) {
+        this.errors.push('Driving since required.');
+      }
+      if (!this.bike || !this.car || !this.bus || !this.van || !this.truck || !this.tramway) {
+        this.errors.push('Vehicle required.');
+      }
+      if (!this.male || !this.female) {
+        this.errors.push('Gender required.');
+      }
+      if (!this.bornInYear) {
+        this.errors.push('Born in year required.');
+      }
+      if (!this.region) {
+        this.errors.push('Region required.');
+      }
+      if (!this.education) {
+        this.errors.push('Education required.');
+      }
+      if (!this.onlyNickname || !this.everything) {
+        this.errors.push('Share profile required.');
+      }
+
+      e.preventDefault();
+
+      return false;
+    },
+  },
+};
+</script>
