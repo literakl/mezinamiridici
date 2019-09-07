@@ -3,7 +3,9 @@
     <div id="header-wrapper">
       <div id="header">
         <div id="logo-image">
-          <img src="./assets/logo.png" >
+          <router-link to="/">
+            <img src="./assets/logo.png" >
+          </router-link>
         </div>
         <div id="logo">
           <h1>Between us Drivers</h1>
@@ -32,11 +34,13 @@
   #header-wrapper {
     background: #000;
     color: #FFF;
+    border-bottom: 5px solid #ffd302;
+    height: 220px;
   }
 
   #header {
     display: grid;
-    grid-template-columns: 0.2fr auto auto 1fr;
+    grid-template-columns: 0.1fr 1fr 1fr;
     grid-gap: 1em;
     margin: 0 auto;
     max-width: 80%;
@@ -44,14 +48,14 @@
   }
 
   #logo {
-    grid-column: 2/3;
-    padding-top: 10%;
-    line-height: 20px;
+    grid-column: 2/ span 2;
+    padding-top: 30px;
+    line-height: 23px;
     font-size: 12px;
   }
 
   #sign-in {
-    grid-column: auto / span 4;
+    grid-column: auto / span 3;
     font-size: 16px;
 
     a {
@@ -68,17 +72,21 @@
   }
 
   @media all and (min-width: 850px) {
+    #header-wrapper {
+      height: 200px;
+    }
+
     #sign-in {
-      grid-column: 4 / 4;
-      padding-top: 10%;
+      grid-column: 3 / 3;
+      padding-top: 80px;
       text-align: right;
       font-size: 16px;
     }
 
     #logo {
-      grid-column: 2 / 4;
-      padding-top: 10%;
-      line-height: 10px;
+      grid-column: 2 / 3;
+      padding-top: 50px;
+      line-height: 20px;
     }
 
     #logo-image {

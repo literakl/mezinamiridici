@@ -1,190 +1,212 @@
 <template>
-<form
+    <form
         id="app"
         @submit="checkForm"
     >
-        <p v-if="errors.length">
-            <b>Please correct the following error(s):</b>
-            <ul>
-                <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
-            </ul>
-        </p>
+        <div>
+            <p v-if="errors.length">
+                <strong class="sign-up-form__errors-heading">Please correct the following error(s):</strong>
+                <ul>
+                    <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+                </ul>
+            </p>
+        </div>
+
+        <div id="sign-up-form-wrapper">
+            <div class="sign-up-form__label">
+                <label for="email">Email</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="email"
+                    v-model="email"
+                    type="email"
+                    name="email"
+                >
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="password">Password</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="password"
+                    v-model="password"
+                    type="password"
+                    name="password"
+                >
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="nickname">Nickname</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="nickname"
+                    v-model="nickname"
+                    type="nickname"
+                    name="nickname"
+                >
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="driving-since">Driving since</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="driving-since"
+                    v-model="drivingSince"
+                    type="number"
+                    name="driving-since"
+                    min="1910"
+                >
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="vehicle">Vehicle</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="bike"
+                    v-model="bike"
+                    type="radio"
+                    name="vehicle"
+                    value="bike"
+                >
+                <label for="bike">bike</label>
+
+                <input
+                    id="car"
+                    v-model="car"
+                    type="radio"
+                    name="vehicle"
+                    value="car"
+                >
+                <label for="car">car</label>
+
+                <input
+                    id="bus"
+                    v-model="bus"
+                    type="radio"
+                    name="vehicle"
+                    value="bus"
+                >
+                <label for="bus">bus</label>
+
+                <input
+                    id="van"
+                    v-model="van"
+                    type="radio"
+                    name="vehicle"
+                    value="van"
+                >
+                <label for="van">van</label>
+
+                <input
+                    id="truck"
+                    v-model="truck"
+                    type="radio"
+                    name="vehicle"
+                    value="truck"
+                >
+                <label for="truck">truck</label>
+
+                <input
+                    id="tramway"
+                    v-model="tramway"
+                    type="radio"
+                    name="vehicle"
+                    value="tramway"
+                >
+                <label for="tramway">tramway</label>
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="sex">Sex</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="male"
+                    v-model="male"
+                    type="radio"
+                    name="sex"
+                    value="male"
+                >
+                <label for="male">Male</label>
+
+                <input
+                    id="female"
+                    v-model="female"
+                    type="radio"
+                    name="sex"
+                    value="female"
+                >
+                <label for="female">Female</label>
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="born-in-year">Born</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="born-in-year"
+                    v-model="bornInYear"
+                    type="number"
+                    name="born-in-year"
+                    min="1910"
+                >
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="region">Region</label>
+            </div>
+            <div class="sign-up-form__input">
+                <select
+                    id="region"
+                    v-model="region"
+                >
+                    <option></option>
+                </select>
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="education">Education</label>
+            </div>
+            <div class="sign-up-form__input">
+                <select
+                    id="education"
+                    v-model="education"
+                >
+                    <option></option>
+                </select>
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="share-profile">Share Profile</label>
+            </div>
+            <div class="sign-up-form__input">
+                <input
+                    id="onlynickname"
+                    v-model="onlyNickname"
+                    type="radio"
+                    name="share-profile"
+                    value="onlyNickname"
+                >
+                <label for="onlynickname">Only Nickname</label>
+
+                <input
+                    id="everything"
+                    v-model="everything"
+                    type="radio"
+                    name="share-profile"
+                    value="everything"
+                >
+                <label for="everything">Everything</label>
+            </div>
+        </div>
 
         <p>
-            <label for="email">Email</label>
-            <input
-                id="email"
-                v-model="email"
-                type="email"
-                name="email"
-            >
-        </p>
-
-        <p>
-            <label for="password">Password</label>
-            <input
-                id="password"
-                v-model="password"
-                type="password"
-                name="password"
-                min="0"
-            >
-        </p>
-
-        <p>
-            <label for="nickname">Nickname</label>
-            <input
-                id="nickname"
-                v-model="nickname"
-                type="nickname"
-                name="nickname"
-                min="0"
-            >
-        </p>
-
-        <p>
-            <label for="driving-since">Driving since</label>
-            <input
-                id="driving-since"
-                v-model="drivingSince"
-                type="number"
-                name="driving-since"
-                min="1910"
-            >
-        </p>
-
-        <p>
-            <label for="vehicle">Vehicle</label>
-            <input
-                id="bike"
-                v-model="bike"
-                type="radio"
-                name="vehicle"
-                value="bike"
-            >
-            <label for="bike">bike</label>
-
-            <input
-                id="car"
-                v-model="car"
-                type="radio"
-                name="vehicle"
-                value="car"
-            >
-            <label for="car">car</label>
-
-            <input
-                id="bus"
-                v-model="bus"
-                type="radio"
-                name="vehicle"
-                value="bus"
-            >
-            <label for="bus">bus</label>
-
-            <input
-                id="van"
-                v-model="van"
-                type="radio"
-                name="vehicle"
-                value="van"
-            >
-            <label for="van">van</label>
-
-            <input
-                id="truck"
-                v-model="truck"
-                type="radio"
-                name="vehicle"
-                value="truck"
-            >
-            <label for="truck">truck</label>
-
-            <input
-                id="tramway"
-                v-model="tramway"
-                type="radio"
-                name="vehicle"
-                value="tramway"
-            >
-            <label for="tramway">tramway</label>
-        </p>
-
-        <p>
-            <label for="sex">Sex</label>
-            <input
-                id="male"
-                v-model="male"
-                type="radio"
-                name="sex"
-                value="male"
-            >
-            <label for="male">Male</label>
-
-            <input
-                id="female"
-                v-model="female"
-                type="radio"
-                name="sex"
-                value="female"
-            >
-            <label for="female">Female</label>
-        </p>
-
-        <p>
-            <label for="born-in-year">Born</label>
-            <input
-                id="born-in-year"
-                v-model="bornInYear"
-                type="number"
-                name="born-in-year"
-                min="1910"
-            >
-        </p>
-
-        <p>
-            <label for="region">Region</label>
-            <select
-                id="region"
-                v-model="region"
-            >
-                <option></option>
-            </select>
-        </p>
-
-        <p>
-            <label for="education">Education</label>
-            <select
-                id="education"
-                v-model="education"
-            >
-                <option></option>
-            </select>
-        </p>
-
-        <p>
-            <label for="share-profile">Share Profile</label>
-            <input
-                id="onlynickname"
-                v-model="onlyNickname"
-                type="radio"
-                name="share-profile"
-                value="onlyNickname"
-            >
-            <label for="onlynickname">Only Nickname</label>
-
-            <input
-                id="everything"
-                v-model="everything"
-                type="radio"
-                name="share-profile"
-                value="everything"
-            >
-            <label for="everything">Everything</label>
-        </p>
-
-        <p>
-            <Submit value="Submit" />
+            <Submit value="Finished" />
         </p>
     </form>
 </template>
@@ -263,5 +285,28 @@ export default {
 
 
 <style lang="scss">
+#sign-up-form-wrapper {
+    display: grid;
+    grid-template-columns: 0.3fr 1fr;
+    margin-top: 40px;
+}
 
+.sign-up-form__label {
+    margin-bottom: 20px; 
+    font-weight: 900;
+}
+
+.sign-up-form__input {
+    margin-bottom: 20px; 
+}
+.sign-up-form__input > input {
+    width: 40%; 
+    height:  20px;
+    border-radius: 3px;
+    border: 1px solid #cccccc
+}
+
+.sign-up-form__errors-heading {
+    color: rgb(209, 49, 49);
+}
 </style>

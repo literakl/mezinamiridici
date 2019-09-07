@@ -1,13 +1,15 @@
 <template>
-  <div class="sign-up">
-    <div class="sign-up__heading">
-        <h1>Sign up</h1>
-        <p>You are the single step away from registration.
-        Enter statistical information you want to share.
-        Your votes are anonymouse in each poll.</p>
-    </div>
-    <div class="sign-up__form">
-        <SignUpForm />
+  <div id="sign-up-wrapper">
+    <div id="sign-up">
+      <div class="sign-up__heading">
+          <h1>Sign up</h1>
+          <p>You are the single step away from registration.
+          Enter statistical information you want to share.
+          Your votes are anonymouse in each poll.</p>
+      </div>
+      <div class="sign-up__form">
+          <SignUpForm />
+      </div>
     </div>
   </div>
 </template>
@@ -22,3 +24,20 @@ export default {
   },
 };
 </script>
+
+<style>
+  #sign-up {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+    max-width: 80%;
+    padding: 1em 0;
+  }
+
+  @media all and (min-width: 850px) {
+    #sign-up {
+      grid-template-columns: 0.5fr;
+      max-width: 90%;
+    }
+  }
+</style>
