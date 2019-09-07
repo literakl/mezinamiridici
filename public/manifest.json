@@ -1,6 +1,6 @@
 {
-  "name": "between-us-drivers",
-  "short_name": "between-us-drivers",
+  "name": "Between us drivers",
+  "short_name": "Between us drivers",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -16,5 +16,5 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#4DBA87"
+  "theme_color": "#ffd302"
 }
