@@ -4,7 +4,7 @@ module.exports = {
       registry: undefined,
       awsProfile: 'default',
       region: 'eu-west-1',
-      bucket: 'between-us-drivers-website',
+      bucket: 'betweenusdrivers.jacobclark.dev',
       createBucket: true,
       staticHosting: true,
       staticIndexPage: 'index.html',
@@ -17,7 +17,7 @@ module.exports = {
       pwaFiles: 'service-worker.js',
       enableCloudfront: false,
       uploadConcurrency: 5,
-      pluginVersion: '3.0.0'
-    }
-  }
-}
+      pluginVersion: '3.0.0',
+    },
+  },
+};

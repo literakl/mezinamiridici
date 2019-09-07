@@ -5,7 +5,7 @@
           <h1>Sign up</h1>
           <p>You are the single step away from registration.
           Enter statistical information you want to share.
-          Your votes are anonymouse in each poll.</p>
+          Your votes are anonymous in each poll.</p>
       </div>
       <div class="sign-up__form">
           <SignUpForm />
@@ -37,7 +37,7 @@ export default {
   @media all and (min-width: 850px) {
     #sign-up {
       grid-template-columns: 0.5fr;
-      max-width: 90%;
+      max-width: 80%;
     }
   }
 </style>

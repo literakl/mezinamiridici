@@ -9,7 +9,7 @@
         </div>
         <div id="logo">
           <h1>Between us Drivers</h1>
-          <h2>The only web you can discuss traffic problems</h2>
+          <h2>The only way to discuss traffic problems</h2>
         </div>
         <div id="sign-in">
           <router-link to="/sign-up">Sign up</router-link> /
@@ -35,7 +35,6 @@
     background: #000;
     color: #FFF;
     border-bottom: 5px solid #ffd302;
-    height: 220px;
   }
 
   #header {
@@ -48,7 +47,7 @@
   }
 
   #logo {
-    grid-column: 2/ span 2;
+    grid-column: 2 / span 2;
     padding-top: 30px;
     line-height: 23px;
     font-size: 12px;

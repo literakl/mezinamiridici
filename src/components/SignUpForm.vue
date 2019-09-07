@@ -5,7 +5,9 @@
     >
         <div>
             <p v-if="errors.length">
-                <strong class="sign-up-form__errors-heading">Please correct the following error(s):</strong>
+                <strong class="sign-up-form__errors-heading">
+                    Please correct the following error(s):
+                </strong>
                 <ul>
                     <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
                 </ul>
@@ -292,15 +294,15 @@ export default {
 }
 
 .sign-up-form__label {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     font-weight: 900;
 }
 
 .sign-up-form__input {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 .sign-up-form__input > input {
-    width: 40%; 
+    width: 40%;
     height:  20px;
     border-radius: 3px;
     border: 1px solid #cccccc
