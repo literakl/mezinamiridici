@@ -4,7 +4,7 @@
       <div id="header">
         <div id="logo-image">
           <router-link to="/">
-            <img src="./assets/logo.png" >
+            <img alt="Man holding steering wheel" src="./assets/logo.png" >
           </router-link>
         </div>
         <div id="logo">
@@ -17,7 +17,18 @@
         </div>
       </div>
     </div>
-    <router-view/>
+    <main>
+      <router-view/>
+    </main>
+    <footer>
+      <ul>
+        <li>Help</li>
+        <li>Our mission</li>
+        <li>Contact</li>
+        <li>Advertisement</li>
+        <li>Archive</li>
+      </ul>
+    </footer>
   </div>
 </template>
 
@@ -29,6 +40,32 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  footer {
+    background: #000;
+    color: #ffd302;
+    padding: 5px 0 15px 0;
+  }
+
+  footer ul {
+    margin: 0 auto;
+    max-width: 80%;
+    padding: 15px 15px 0 0;
+    list-style: none;
+  }
+
+  footer li {
+    display: inline-block;
+  }
+
+  footer li:after {
+    content: '\b7\a0';
+    padding: 0 10px 0 10px;
+  }
+
+  footer li:last-child:after {
+    content: '';
   }
 
   #header-wrapper {

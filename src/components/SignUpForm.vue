@@ -3,15 +3,15 @@
         id="app"
         @submit="checkForm"
     >
-        <div>
-            <p v-if="errors.length">
-                <strong class="sign-up-form__errors-heading">
-                    Please correct the following error(s):
-                </strong>
-                <ul>
-                    <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
-                </ul>
-            </p>
+        <div v-if="errors.length">
+            <strong class="sign-up-form__errors-heading">
+                Please correct the following error(s):
+            </strong>
+            <ul>
+                <li v-for="error in errors" v-bind:key="error">
+                    {{ error }}
+                </li>
+            </ul>
         </div>
 
         <div id="sign-up-form-wrapper">
@@ -71,54 +71,60 @@
                 <input
                     id="bike"
                     v-model="bike"
-                    type="radio"
+                    type="checkbox"
                     name="vehicle"
                     value="bike"
+                    class="sign-up-form__input-checkbox"
                 >
                 <label for="bike">bike</label>
 
                 <input
                     id="car"
                     v-model="car"
-                    type="radio"
+                    type="checkbox"
                     name="vehicle"
                     value="car"
+                    class="sign-up-form__input-checkbox"
                 >
                 <label for="car">car</label>
 
                 <input
                     id="bus"
                     v-model="bus"
-                    type="radio"
+                    type="checkbox"
                     name="vehicle"
                     value="bus"
+                    class="sign-up-form__input-checkbox"
                 >
                 <label for="bus">bus</label>
 
                 <input
                     id="van"
                     v-model="van"
-                    type="radio"
+                    type="checkbox"
                     name="vehicle"
                     value="van"
+                    class="sign-up-form__input-checkbox"
                 >
                 <label for="van">van</label>
 
                 <input
                     id="truck"
                     v-model="truck"
-                    type="radio"
+                    type="checkbox"
                     name="vehicle"
                     value="truck"
+                    class="sign-up-form__input-checkbox"
                 >
                 <label for="truck">truck</label>
 
                 <input
                     id="tramway"
                     v-model="tramway"
-                    type="radio"
+                    type="checkbox"
                     name="vehicle"
                     value="tramway"
+                    class="sign-up-form__input-checkbox"
                 >
                 <label for="tramway">tramway</label>
             </div>
@@ -167,7 +173,7 @@
                     id="region"
                     v-model="region"
                 >
-                    <option></option>
+                    <option>A value</option>
                 </select>
             </div>
 
@@ -179,7 +185,7 @@
                     id="education"
                     v-model="education"
                 >
-                    <option></option>
+                    <option>A value</option>
                 </select>
             </div>
 
@@ -279,6 +285,10 @@ export default {
 
       e.preventDefault();
 
+      if(this.errors.length === 0){
+        this.$router.push('/') 
+      }
+
       return this.errors.length !== 0;
     },
   },
@@ -301,6 +311,7 @@ export default {
 .sign-up-form__input {
     margin-bottom: 20px;
 }
+
 .sign-up-form__input > input {
     width: 40%;
     height:  20px;

@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <div id="ads">
-      Ads 
+      Ads
     </div>
     <div id="content">
       <div id="heading">
@@ -24,22 +24,38 @@
 
       <div id="opinion-poll">
         <h3>What is your opinion?</h3>
-        <button class="opinion-poll-button opinion-poll-button__no-problem">😀 No problem</button>
-        <button class="opinion-poll-button opinion-poll-button__trivial">😐 Trivial trouble</button>
-        <button class="opinion-poll-button opinion-poll-button__dont-like">😕 I don't like it</button>
-        <button class="opinion-poll-button opinion-poll-button__hate">😠 I hate it</button>
+        <button v-on:click="vote('no-problem')" class="opinion-poll-button opinion-poll-button__no-problem"><img src="../assets/happy.png" align="middle">No problem</button>
+        <button v-on:click="vote('trivial')" class="opinion-poll-button opinion-poll-button__trivial"><img src="../assets/ok.png">Trivial trouble</button>
+        <button v-on:click="vote('dont-like')" class="opinion-poll-button opinion-poll-button__dont-like"><img src="../assets/slanty.png">I don't like it</button>
+        <button v-on:click="vote('hate-it')" class="opinion-poll-button opinion-poll-button__hate"><img src="../assets/angry.png">I hate it</button>
       </div>
 
       <div>
         <h3>Top polls</h3>
         <hr />
-        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. &middot; 138 Votes &middot; 9 comments</h4>
+        <h4>
+          <router-link to="/poll/1">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate.
+          </router-link> &middot; 138 Votes &middot; 9 comments
+        </h4>
         <hr />
-        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. &middot; 138 Votes &middot; 9 comments</h4>
+        <h4>
+          <router-link to="/poll/2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate.
+          </router-link> &middot; 138 Votes &middot; 9 comments
+        </h4>        
         <hr />
-        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. &middot; 138 Votes &middot; 9 comments</h4>
+        <h4>
+          <router-link to="/poll/3">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate.
+          </router-link> &middot; 138 Votes &middot; 9 comments
+        </h4>
         <hr />
-        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. &middot; 138 Votes &middot; 9 comments</h4>
+        <h4>
+          <router-link to="/poll/4">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate.
+          </router-link> &middot; 138 Votes &middot; 9 comments
+        </h4>      
       </div>
     </div>
   </div>
@@ -51,6 +67,11 @@ export default {
   name: 'home',
   components: {
   },
+  methods: {
+    vote: function (category){
+      this.$router.push('/poll/1')
+    }
+  }
 };
 </script>
 
@@ -99,12 +120,12 @@ export default {
   display: inline-block;
 }
 
-#heading-metadata li:after { 
+#heading-metadata li:after {
   content: '\b7\a0';
   padding: 0 10px 0 10px;
 }
 
-#heading-metadata li:last-child:after { 
+#heading-metadata li:last-child:after {
   content: '';
 }
 
@@ -119,7 +140,18 @@ export default {
   border-radius: 20px;
   font-size: 20px;
   margin: 0 10px 0 10px;
-  grid-column: 1 / span 4
+  grid-column: 1 / span 4;
+  cursor: pointer;
+}
+
+.opinion-poll-button:hover {
+  text-decoration: underline;
+}
+
+.opinion-poll-button img {
+  width: 25px;
+  vertical-align: middle;
+  padding-right: 20px;
 }
 
 .opinion-poll-button__no-problem {
