@@ -24,6 +24,7 @@
                     v-model="email"
                     type="email"
                     name="email"
+                    class="sign-up-form__input-text"
                 >
             </div>
 
@@ -36,6 +37,7 @@
                     v-model="password"
                     type="password"
                     name="password"
+                    class="sign-up-form__input-text"
                 >
             </div>
 
@@ -48,6 +50,7 @@
                     v-model="nickname"
                     type="nickname"
                     name="nickname"
+                    class="sign-up-form__input-text"
                 >
             </div>
 
@@ -61,6 +64,7 @@
                     type="number"
                     name="driving-since"
                     min="1910"
+                    class="sign-up-form__input-text"
                 >
             </div>
 
@@ -68,65 +72,77 @@
                 <label for="vehicle">Vehicle</label>
             </div>
             <div class="sign-up-form__input">
-                <input
-                    id="bike"
-                    v-model="bike"
-                    type="checkbox"
-                    name="vehicle"
-                    value="bike"
-                    class="sign-up-form__input-checkbox"
-                >
-                <label for="bike">bike</label>
+                <div class="checkbox">
+                    <input
+                        id="bike"
+                        v-model="bike"
+                        type="checkbox"
+                        name="vehicle"
+                        value="bike"
+                        class="sign-up-form__input-checkbox"
+                    >
+                    <label for="bike"><span>bike</span></label>
+                </div>
+                
+                <div class="checkbox">
+                    <input
+                        id="car"
+                        v-model="car"
+                        type="checkbox"
+                        name="vehicle"
+                        value="car"
+                        class="sign-up-form__input-checkbox"
+                    >
+                    <label for="car"><span>car</span></label>
+                </div>
 
-                <input
-                    id="car"
-                    v-model="car"
-                    type="checkbox"
-                    name="vehicle"
-                    value="car"
-                    class="sign-up-form__input-checkbox"
-                >
-                <label for="car">car</label>
+                <div class="checkbox">
+                    <input
+                        id="bus"
+                        v-model="bus"
+                        type="checkbox"
+                        name="vehicle"
+                        value="bus"
+                        class="sign-up-form__input-checkbox"
+                    >
+                    <label for="bus"><span>bus</span></label>
+                </div>
 
-                <input
-                    id="bus"
-                    v-model="bus"
-                    type="checkbox"
-                    name="vehicle"
-                    value="bus"
-                    class="sign-up-form__input-checkbox"
-                >
-                <label for="bus">bus</label>
+                <div class="checkbox">
+                    <input
+                        id="van"
+                        v-model="van"
+                        type="checkbox"
+                        name="vehicle"
+                        value="van"
+                        class="sign-up-form__input-checkbox"
+                    >
+                    <label for="van"><span>van</span></label>
+                </div>
 
-                <input
-                    id="van"
-                    v-model="van"
-                    type="checkbox"
-                    name="vehicle"
-                    value="van"
-                    class="sign-up-form__input-checkbox"
-                >
-                <label for="van">van</label>
+                <div class="checkbox">
+                    <input
+                        id="truck"
+                        v-model="truck"
+                        type="checkbox"
+                        name="vehicle"
+                        value="truck"
+                        class="sign-up-form__input-checkbox"
+                    >
+                    <label for="truck"><span>truck</span></label>
+                </div>
 
-                <input
-                    id="truck"
-                    v-model="truck"
-                    type="checkbox"
-                    name="vehicle"
-                    value="truck"
-                    class="sign-up-form__input-checkbox"
-                >
-                <label for="truck">truck</label>
-
-                <input
-                    id="tramway"
-                    v-model="tramway"
-                    type="checkbox"
-                    name="vehicle"
-                    value="tramway"
-                    class="sign-up-form__input-checkbox"
-                >
-                <label for="tramway">tramway</label>
+                <div class="checkbox">
+                    <input
+                        id="tramway"
+                        v-model="tramway"
+                        type="checkbox"
+                        name="vehicle"
+                        value="tramway"
+                        class="sign-up-form__input-checkbox"
+                    >
+                    <label for="tramway"><span>tramway</span></label>
+                </div>
             </div>
 
             <div class="sign-up-form__label">
@@ -162,6 +178,7 @@
                     type="number"
                     name="born-in-year"
                     min="1910"
+                    class="sign-up-form__input-text"
                 >
             </div>
 
@@ -312,7 +329,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.sign-up-form__input > input {
+.sign-up-form__input-text {
     width: 40%;
     height:  20px;
     border-radius: 3px;
@@ -321,5 +338,81 @@ export default {
 
 .sign-up-form__errors-heading {
     color: rgb(209, 49, 49);
+}
+
+
+
+.checkbox {
+    width: 80px;
+    position: relative;
+    display: block;
+    float: left;
+}
+
+.checkbox input[type="checkbox"] {
+    opacity: 0.00000001;
+    position: absolute;
+}
+
+.checkbox label {
+    position: relative;
+}
+
+.checkbox label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 4px;
+    width: 16px;
+    height: 15px;
+    transition: transform 0.28s ease;
+    border-left: 2px solid #000;
+    border-top: 2px solid #000;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+.checkbox label:after {
+  content: '';
+    display: block;
+    width: 20px;
+    height: 5px;
+    border-bottom: 2px solid #ffd302;
+    border-left: 2px solid #ffd302;
+    -webkit-transform: rotate(-45deg) scale(0);
+    -moz-transform: rotate(-45deg) scale(0);
+    -ms-transform: rotate(-45deg) scale(0);
+    transform: rotate(-45deg) scale(0);
+    position: absolute;
+    top: 7px;
+    left: 8px;
+}
+
+.checkbox input[type="checkbox"]:checked ~ label::before {
+    color: #ffd302;
+}
+
+.checkbox input[type="checkbox"]:checked ~ label::after {
+    -webkit-transform: rotate(-45deg) scale(1);
+    -moz-transform: rotate(-45deg) scale(1);
+    -ms-transform: rotate(-45deg) scale(1);
+    transform: rotate(-45deg) scale(1);
+}
+
+.checkbox label {
+    min-height: 34px;
+    display: block;
+    padding-left: 40px;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.checkbox label span {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 </style>
