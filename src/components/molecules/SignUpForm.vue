@@ -188,30 +188,6 @@ export default {
       if (!this.password) {
         this.errors.push('Password required.');
       }
-      if (!this.nickname) {
-        this.errors.push('Nickname required.');
-      }
-      if (!this.drivingSince) {
-        this.errors.push('Driving since required.');
-      }
-      if (!this.bike && !this.car && !this.bus && !this.van && !this.truck && !this.tramway) {
-        this.errors.push('Vehicle required.');
-      }
-      if (!this.male && !this.female) {
-        this.errors.push('Gender required.');
-      }
-      if (!this.bornInYear) {
-        this.errors.push('Born in year required.');
-      }
-      if (!this.region) {
-        this.errors.push('Region required.');
-      }
-      if (!this.education) {
-        this.errors.push('Education required.');
-      }
-      if (!this.onlyNickname && !this.everything) {
-        this.errors.push('Share profile required.');
-      }
 
       e.preventDefault();
 
