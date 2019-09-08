@@ -19,7 +19,6 @@ export default {
 #atom__submit-button {
     background-color: #ffd200;
     height: 53px;
-    width: 182px;
     border-radius: 5px;
     font-size: 20px;
     font-weight: 700;

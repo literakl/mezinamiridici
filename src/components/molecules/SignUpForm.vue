@@ -26,6 +26,22 @@
             <TextInput v-model="password" identifier="password" type="password" />
 
             <div class="sign-up-form__label">
+                <label for="processing-data">Privacy</label>
+            </div>
+            <div class="sign-up-form__input">
+                <Checkbox v-model="dataProcessing" name="processing-data" identifier="processing-data-yes" text="Yes" />
+                <Checkbox v-model="dataProcessing" name="processing-data" identifier="processing-data-no" text="No" />
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="marketing">Marketing</label>
+            </div>
+            <div class="sign-up-form__input">
+                <Checkbox v-model="marketing" name="marketing" identifier="marketing-yes" text="Yes" />
+                <Checkbox v-model="marketing" name="marketing" identifier="marketing-no" text="No" />
+            </div>
+
+            <!-- <div class="sign-up-form__label">
                 <label for="nickname">Nickname</label>
             </div>
             <TextInput v-model="nickname" identifier="nickname" type="text" />
@@ -138,7 +154,7 @@
                     value="everything"
                 >
                 <label for="everything">Everything</label>
-            </div>
+            </div> -->
         </div>
 
         <Submit value="Finished" />
@@ -162,21 +178,23 @@ export default {
     errors: [],
     email: null,
     password: null,
-    nickname: null,
-    drivingSince: null,
-    bike: null,
-    car: null,
-    bus: null,
-    van: null,
-    truck: null,
-    tramway: null,
-    male: null,
-    female: null,
-    bornInYear: null,
-    region: "",
-    education: "",
-    onlyNickname: null,
-    everything: null,
+    dataProcessing: false,
+    marketing: false,
+    // nickname: null,
+    // drivingSince: null,
+    // bike: null,
+    // car: null,
+    // bus: null,
+    // van: null,
+    // truck: null,
+    // tramway: null,
+    // male: null,
+    // female: null,
+    // bornInYear: null,
+    // region: "",
+    // education: "",
+    // onlyNickname: null,
+    // everything: null,
   }),
   methods: {
     checkForm(e) {

@@ -2,29 +2,29 @@
     <div>  
         <table id="barchart__table">
             <tbody>
-                <tr class="qtr" id="q1">
-                    <th scope="row">No Problem</th>
-                    <td class="sent bar" style="height: 111px;">  
+                <tr id="no-problem">
+                    <td class="sent bar" v-bind:style="(voted === 'No problem') ? 'height: 101px; background-color: #ffd302' : 'height: 101px;'">  
                         <p>13%</p>
                     </td>
+                    <th scope="row">No Problem</th>
                 </tr>
-                <tr class="qtr" id="q2">
-                    <th scope="row">Trivial Trouble</th>
-                    <td class="sent bar" style="height: 206px;">
+                <tr id="trivial-trouble">
+                    <td class="sent bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: 206px; background-color: #ffd302' : 'height: 206px;'">
                         <p>40%</p>
                     </td>
+                    <th scope="row">Trivial Trouble</th>
                 </tr>
-                <tr class="qtr" id="q3">
-                    <th scope="row">I don't like it</th>
-                    <td class="sent bar" style="height: 300px; background-color: #ffd302">
+                <tr id="i-dont-like-it">
+                    <td class="sent bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: 300px; background-color: #ffd302' : 'height: 300px;'">
                         <p>90%</p>
                     </td>
+                    <th scope="row">I don't like it</th>
                 </tr>
-                <tr class="qtr" id="q4">
-                    <th scope="row">I hate it</th>
-                    <td class="sent bar" style="height: 110px;">
+                <tr id="i-hate-it">
+                    <td class="sent bar" v-bind:style="(voted === 'I hate it') ? 'height: 110px; background-color: #ffd302' : 'height: 110px;'">
                         <p>30%</p>
                     </td>
+                    <th scope="row">I hate it</th>
                 </tr>
             </tbody>
         </table>
@@ -34,11 +34,8 @@
 <script>
 export default {
   name: 'BarChart',
-  components: {
-  },
-  data: () => ({
-  }),
-  methods: {
+  props: {
+    voted: String
   },
 };
 </script>
@@ -58,37 +55,21 @@ export default {
 }
 
 #barchart__table tr, 
-#barchart__table td { 
+#barchart__table td,
+#barchart__table th { 
   position: absolute;
-  bottom: 0; 
-  width: 60px; 
-  z-index: 2;
-  margin: 0; 
-  padding: 0;
+  bottom: 0;
   text-align: center;
 }
 
+#no-problem {left: 0;}
+#trivial-trouble {left: 200px;}
+#i-dont-like-it {left: 400px;}
+#i-hate-it {left: 600px; border-right: none;}
+
 #barchart__table th {
-    position: absolute;
-  bottom: 0; 
-  width: 60px; 
-  z-index: 2;
-  margin: 20px 0 0 0; 
-  padding: 0;
-  text-align: center; 
-}
-
-#q1 {left: 0;}
-#q2 {left: 200px;}
-#q3 {left: 400px;}
-#q4 {left: 600px; border-right: none;}
-
-#barchart__table tbody th {
   bottom: -1.75em;
   width: 150px; 
-  vertical-align: top;
-  font-weight: normal; 
-  color: #333;
 }
 
 #barchart__table .bar {
