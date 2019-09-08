@@ -285,8 +285,8 @@ export default {
 
       e.preventDefault();
 
-      if(this.errors.length === 0){
-        this.$router.push('/') 
+      if (this.errors.length === 0) {
+        this.$router.push('/');
       }
 
       return this.errors.length !== 0;

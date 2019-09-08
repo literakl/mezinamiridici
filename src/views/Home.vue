@@ -6,7 +6,9 @@
     <div id="content">
       <div id="heading">
         <hr />
-        <h2 id="heading-title">"Slow car blocks the lane and its driver refuses to switch lanes"</h2>
+        <h2 id="heading-title">
+          "Slow car blocks the lane and its driver refuses to switch lanes"
+        </h2>
         <div id="heading-metadata">
           <ul id="heading-metadata__details">
             <li>30.07.2018</li>
@@ -24,10 +26,34 @@
 
       <div id="opinion-poll">
         <h3>What is your opinion?</h3>
-        <button v-on:click="vote('no-problem')" class="opinion-poll-button opinion-poll-button__no-problem"><img src="../assets/happy.png" align="middle">No problem</button>
-        <button v-on:click="vote('trivial')" class="opinion-poll-button opinion-poll-button__trivial"><img src="../assets/ok.png">Trivial trouble</button>
-        <button v-on:click="vote('dont-like')" class="opinion-poll-button opinion-poll-button__dont-like"><img src="../assets/slanty.png">I don't like it</button>
-        <button v-on:click="vote('hate-it')" class="opinion-poll-button opinion-poll-button__hate"><img src="../assets/angry.png">I hate it</button>
+        <button
+          v-on:click="vote('no-problem')"
+          class="opinion-poll-button opinion-poll-button__no-problem"
+        >
+          <img src="../assets/happy.png" align="middle">
+          No problem
+        </button>
+        <button
+          v-on:click="vote('trivial')"
+          class="opinion-poll-button opinion-poll-button__trivial"
+        >
+          <img src="../assets/ok.png">
+          Trivial trouble
+        </button>
+        <button
+          v-on:click="vote('dont-like')"
+          class="opinion-poll-button opinion-poll-button__dont-like"
+        >
+          <img src="../assets/slanty.png">
+          I don't like it
+        </button>
+        <button
+          v-on:click="vote('hate-it')"
+          class="opinion-poll-button opinion-poll-button__hate"
+        >
+          <img src="../assets/angry.png">
+          I hate it
+        </button>
       </div>
 
       <div>
@@ -43,7 +69,7 @@
           <router-link to="/poll/2">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate.
           </router-link> &middot; 138 Votes &middot; 9 comments
-        </h4>        
+        </h4>
         <hr />
         <h4>
           <router-link to="/poll/3">
@@ -55,7 +81,7 @@
           <router-link to="/poll/4">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate.
           </router-link> &middot; 138 Votes &middot; 9 comments
-        </h4>      
+        </h4>
       </div>
     </div>
   </div>
@@ -68,10 +94,11 @@ export default {
   components: {
   },
   methods: {
-    vote: function (category){
-      this.$router.push('/poll/1')
-    }
-  }
+    vote(category) {
+      console.log(`User voted ${category}`);
+      this.$router.push('/poll/1');
+    },
+  },
 };
 </script>
 
