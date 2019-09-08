@@ -30,29 +30,25 @@
           v-on:click="vote('no-problem')"
           class="opinion-poll-button opinion-poll-button__no-problem"
         >
-          <img src="../assets/happy.png" align="middle">
-          No problem
+          <img src="../assets/happy.png" align="middle">No problem
         </button>
         <button
           v-on:click="vote('trivial')"
           class="opinion-poll-button opinion-poll-button__trivial"
         >
-          <img src="../assets/ok.png">
-          Trivial trouble
+          <img src="../assets/ok.png">Trivial trouble
         </button>
         <button
           v-on:click="vote('dont-like')"
           class="opinion-poll-button opinion-poll-button__dont-like"
         >
-          <img src="../assets/slanty.png">
-          I don't like it
+          <img src="../assets/slanty.png">I don't like it
         </button>
         <button
           v-on:click="vote('hate-it')"
           class="opinion-poll-button opinion-poll-button__hate"
         >
-          <img src="../assets/angry.png">
-          I hate it
+          <img src="../assets/angry.png">I hate it
         </button>
       </div>
 
