@@ -367,10 +367,10 @@ export default {
     width: 16px;
     height: 15px;
     transition: transform 0.28s ease;
-    border-left: 2px solid #000;
-    border-top: 2px solid #000;
-    border-right: 2px solid #000;
-    border-bottom: 2px solid #000;
+    border-left: 2px solid #9e9e9e;
+    border-top: 2px solid #9e9e9e;
+    border-right: 2px solid #9e9e9e;
+    border-bottom: 2px solid #9e9e9e;
 }
 
 .checkbox label:after {
@@ -391,6 +391,10 @@ export default {
 
 .checkbox input[type="checkbox"]:checked ~ label::before {
     color: #ffd302;
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
 .checkbox input[type="checkbox"]:checked ~ label::after {
