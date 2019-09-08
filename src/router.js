@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Poll from './views/Poll.vue';
+import Polls from './views/Polls.vue';
 
 Vue.use(Router);
 
@@ -17,6 +19,16 @@ export default new Router({
       path: '/sign-up',
       name: 'sign-up',
       component: () => import('./views/SignUp.vue'),
+    },
+    {
+      path: '/poll/:id',
+      name: 'poll',
+      component: Poll,
+    },
+    {
+      path: '/polls',
+      name: 'polls',
+      component: Polls,
     },
   ],
 });

@@ -18,55 +18,22 @@
             <div class="sign-up-form__label">
                 <label for="email">Email</label>
             </div>
-            <div class="sign-up-form__input">
-                <input
-                    id="email"
-                    v-model="email"
-                    type="email"
-                    name="email"
-                    class="sign-up-form__input-text"
-                >
-            </div>
+            <TextInput v-model="email" identifier="email" type="email" />
 
             <div class="sign-up-form__label">
                 <label for="password">Password</label>
             </div>
-            <div class="sign-up-form__input">
-                <input
-                    id="password"
-                    v-model="password"
-                    type="password"
-                    name="password"
-                    class="sign-up-form__input-text"
-                >
-            </div>
+            <TextInput v-model="password" identifier="password" type="password" />
 
             <div class="sign-up-form__label">
                 <label for="nickname">Nickname</label>
             </div>
-            <div class="sign-up-form__input">
-                <input
-                    id="nickname"
-                    v-model="nickname"
-                    type="nickname"
-                    name="nickname"
-                    class="sign-up-form__input-text"
-                >
-            </div>
+            <TextInput v-model="nickname" identifier="nickname" type="text" />
 
             <div class="sign-up-form__label">
                 <label for="driving-since">Driving since</label>
             </div>
-            <div class="sign-up-form__input">
-                <input
-                    id="driving-since"
-                    v-model="drivingSince"
-                    type="number"
-                    name="driving-since"
-                    min="1910"
-                    class="sign-up-form__input-text"
-                >
-            </div>
+            <TextInput v-model="drivingSince" identifier="driving-since" type="number" />
 
             <div class="sign-up-form__label">
                 <label for="vehicle">Vehicle</label>
@@ -106,16 +73,7 @@
             <div class="sign-up-form__label">
                 <label for="born-in-year">Born</label>
             </div>
-            <div class="sign-up-form__input">
-                <input
-                    id="born-in-year"
-                    v-model="bornInYear"
-                    type="number"
-                    name="born-in-year"
-                    min="1910"
-                    class="sign-up-form__input-text"
-                >
-            </div>
+            <TextInput v-model="bornInYear" identifier="born-in-year" type="number" />
 
             <div class="sign-up-form__label">
                 <label for="region">Region</label>
@@ -125,7 +83,22 @@
                     id="region"
                     v-model="region"
                 >
-                    <option>A value</option>
+                    <option value="">Please select</option>
+                    <option value="praha">Praha</option>
+                    <option value="stredocesky">Stredocesky</option>
+                    <option value="jihocesky">Jihocesky</option>
+                    <option value="plzensky">Plzensky</option>
+                    <option value="karlovarsky">Karlovarsky</option>
+                    <option value="ustecky">Ustecky</option>
+                    <option value="liberecky">Liberecky</option>
+                    <option value="liberecky">Liberecky</option>
+                    <option value="kralovohradecky">Kralovohradecky</option>
+                    <option value="pardubicky">Pardubicky</option>
+                    <option value="vysocina">Vysocina</option>
+                    <option value="jihomoravsky">Jihomoravsky</option>
+                    <option value="olomoucky">Olomoucky</option>
+                    <option value="zlinsky">Zlinsky</option>
+                    <option value="moravskoslezsky">Moravskoslezsky</option>
                 </select>
             </div>
 
@@ -137,7 +110,10 @@
                     id="education"
                     v-model="education"
                 >
-                    <option>A value</option>
+                    <option value="">Please select</option>
+                    <option value="primary">Primary</option>
+                    <option value="secondary">Secondary</option>
+                    <option value="university">University</option>
                 </select>
             </div>
 
@@ -165,9 +141,7 @@
             </div>
         </div>
 
-        <p>
-            <Submit value="Finished" />
-        </p>
+        <Submit value="Finished" />
     </form>
 </template>
 
@@ -175,11 +149,13 @@
 
 import Submit from '@/components/atoms/Submit.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
+import TextInput from '@/components/atoms/TextInput.vue';
 
 export default {
   name: 'SignUpForm',
   components: {
     Checkbox,
+    TextInput,
     Submit,
   },
   data: () => ({
@@ -197,8 +173,8 @@ export default {
     male: null,
     female: null,
     bornInYear: null,
-    region: null,
-    education: null,
+    region: "",
+    education: "",
     onlyNickname: null,
     everything: null,
   }),
@@ -240,6 +216,7 @@ export default {
       e.preventDefault();
 
       if (this.errors.length === 0) {
+        // This will eventually call the API to create the user as validation has passed.
         this.$router.push('/');
       }
 
@@ -260,17 +237,6 @@ export default {
 .sign-up-form__label {
     margin-bottom: 20px;
     font-weight: 900;
-}
-
-.sign-up-form__input {
-    margin-bottom: 20px;
-}
-
-.sign-up-form__input-text {
-    width: 40%;
-    height:  20px;
-    border-radius: 3px;
-    border: 1px solid #cccccc
 }
 
 .sign-up-form__errors-heading {

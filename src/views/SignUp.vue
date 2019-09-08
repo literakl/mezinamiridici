@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import SignUpForm from '@/components/SignUpForm.vue';
+import SignUpForm from '@/components/molecules/SignUpForm.vue';
 
 export default {
   name: 'sign-up',
