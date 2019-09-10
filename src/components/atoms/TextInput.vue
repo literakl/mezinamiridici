@@ -4,6 +4,7 @@
             :id="identifier"
             :type="type"
             :name="identifier"
+            :placeholder="placeholder"
             ref="input"
             class="sign-up-form__input-text"
             @input="updateInput()"
@@ -13,7 +14,7 @@
 
 <script>
 export default {
-  props: ['value', 'identifier', 'type'],
+  props: ['value', 'identifier', 'type', 'placeholder'],
 
   methods: {
     updateInput() {
