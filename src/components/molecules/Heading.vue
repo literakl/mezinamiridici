@@ -22,13 +22,7 @@
 
 <script>
 export default {
-  name: 'Heading',
-  components: {
-  },
-  data: () => ({
-  }),
-  methods: {
-  },
+  name: 'Heading'
 };
 </script>
 

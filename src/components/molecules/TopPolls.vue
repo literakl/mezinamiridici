@@ -30,13 +30,7 @@
 
 <script>
 export default {
-  name: 'TopPolls',
-  components: {
-  },
-  data: () => ({
-  }),
-  methods: {
-  },
+  name: 'TopPolls'
 };
 </script>
 

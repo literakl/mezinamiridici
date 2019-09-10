@@ -90,9 +90,15 @@
           </div>
         </div>
 
-        <hr />
-
-        <h2><router-link to="/polls">Other polls</router-link></h2>
+        <div id="poll__other-polls">
+          <h2>
+            <router-link to="/polls">
+              <Button value="Other polls" />
+            </router-link>
+            <hr class="poll__double-line" />
+            <hr class="poll__double-line" />
+          </h2>
+        </div>
       </div>
       </div>
   </div>
@@ -205,6 +211,17 @@ textarea {
 
 #vote-text {
   color: red;
+}
+
+#poll__other-polls {
+    grid-template-columns: 1fr;
+    display: grid;
+    width: 50%;
+    text-align:center;
+}
+
+.poll__double-line {
+  margin-top: -20px;
 }
 
 @media all and (min-width: 850px) {

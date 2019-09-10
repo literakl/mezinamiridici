@@ -45,15 +45,16 @@ export default {
 #barchart__table {
   display: block; /* fixes layout wonkiness in FF1.5 */
   position: relative; 
-  width: 580px; 
+  width: 500px; 
   height: 320px;
   margin: 0 0 30px 0;
   padding: 0;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 #barchart__table th {
   border-top: 1px solid black;
+  width: 20px;
 }
 
 #barchart__table tr, 
@@ -64,10 +65,22 @@ export default {
   text-align: center;
 }
 
-#no-problem {left: 0;}
-#trivial-trouble {left: 140px;}
-#i-dont-like-it {left: 280px;}
-#i-hate-it {left: 429px; border-right: none;}
+#no-problem {
+  left: 0;
+}
+
+#trivial-trouble {
+  left: 100px;
+}
+
+#i-dont-like-it {
+  left: 200px;
+}
+
+#i-hate-it {
+  left: 300px;
+  border-right: none;
+}
 
 #barchart__table th {
   bottom: -1.75em;
@@ -75,7 +88,7 @@ export default {
 }
 
 #barchart__table .bar {
-  width: 60px; 
+  width: 30px; 
   margin-left:45px;
 }
 
@@ -89,7 +102,65 @@ export default {
   border-radius: 5px;
 }
 
-@media all and (max-width: 970px) {
+/* Small Mobiles */
+@media all and (max-width: 700px) {
+  #barchart__table {
+    width: 400px;
+    margin-left: -30px;
+  }
 
+  #barchart__table th {
+    width: 100px; 
+  }
+
+  #barchart__table .bar {
+    width: 30px; 
+      margin-left:25px;
+  }
+
+  #no-problem {
+    left: 0;
+  }
+
+  #trivial-trouble {
+    left: 100px;
+  }
+
+  #i-dont-like-it {
+    left: 200px;
+  }
+
+  #i-hate-it {
+    left: 300px; 
+    border-right: none;
+  }
+}
+
+/* Desktop */
+@media all and (min-width: 970px) {
+  #barchart__table {
+    width: 600px
+  }
+
+  #barchart__table .bar {
+    width: 50px; 
+  }
+
+  #no-problem {
+    left: 0;
+  }
+
+  #trivial-trouble {
+    left: 150px;
+  }
+
+  #i-dont-like-it {
+    left: 300px;
+  }
+
+  #i-hate-it {
+    left: 450px; 
+    border-right: none;
+  }
 }
 </style>

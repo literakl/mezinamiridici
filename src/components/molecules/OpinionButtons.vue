@@ -31,10 +31,6 @@
 <script>
 export default {
   name: 'OpinionButtons',
-  components: {
-  },
-  data: () => ({
-  }),
   methods: {
       voted(vote){
         this.$emit('voted', vote);

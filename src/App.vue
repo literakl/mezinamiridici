@@ -13,7 +13,8 @@
         </div>
         <div id="app__header-sign-in">
           <router-link to="/sign-up">Sign up</router-link> /
-          <router-link to="/sign-in">Sign in</router-link>
+          <router-link to="/sign-in">Sign in</router-link> /
+          <router-link to="/profile">Taxikar007</router-link>
         </div>
       </div>
     </header>
@@ -26,7 +27,7 @@
         <li class="app__footer-link-list-item">Our mission</li>
         <li class="app__footer-link-list-item">Contact</li>
         <li class="app__footer-link-list-item">Advertisement</li>
-        <li class="app__footer-link-list-item">Archive</li>
+        <li class="app__footer-link-list-item"c>Archive</li>
       </ul>
     </footer>
   </div>

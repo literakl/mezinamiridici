@@ -28,6 +28,11 @@ export default new Router({
       name: 'polls',
       component: () => import('./views/Polls.vue'),
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('./views/Profile.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
