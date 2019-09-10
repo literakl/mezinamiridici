@@ -45,13 +45,15 @@ export default {
 #barchart__table {
   display: block; /* fixes layout wonkiness in FF1.5 */
   position: relative; 
-  width: 750px; 
+  width: 580px; 
   height: 320px;
   margin: 0 0 30px 0;
   padding: 0;
   font-size: 20px;
-  border-bottom: 1px solid black;
+}
 
+#barchart__table th {
+  border-top: 1px solid black;
 }
 
 #barchart__table tr, 
@@ -63,9 +65,9 @@ export default {
 }
 
 #no-problem {left: 0;}
-#trivial-trouble {left: 200px;}
-#i-dont-like-it {left: 400px;}
-#i-hate-it {left: 600px; border-right: none;}
+#trivial-trouble {left: 140px;}
+#i-dont-like-it {left: 280px;}
+#i-hate-it {left: 429px; border-right: none;}
 
 #barchart__table th {
   bottom: -1.75em;
@@ -85,5 +87,9 @@ export default {
   background-color: black;
   border-color: transparent;
   border-radius: 5px;
+}
+
+@media all and (max-width: 970px) {
+
 }
 </style>

@@ -185,6 +185,7 @@ textarea {
 #poll__chart-wrapper-bar-chart {
   grid-column: 1 / span 4;
   margin: 0 auto;
+  max-width: 80%;
 }
 
 .poll__chart-wrapper-analyze-votes-button {

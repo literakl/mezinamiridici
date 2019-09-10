@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import Poll from './views/Poll.vue';
-import Polls from './views/Polls.vue';
 
 Vue.use(Router);
 
@@ -23,13 +21,12 @@ export default new Router({
     {
       path: '/poll/:id',
       name: 'poll',
-      component: Poll,
-      props: true
+      component: () => import('./views/Poll.vue')
     },
     {
       path: '/polls',
       name: 'polls',
-      component: Polls,
+      component: () => import('./views/Polls.vue'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
