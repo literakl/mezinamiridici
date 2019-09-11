@@ -49,7 +49,7 @@ export default {
   height: 320px;
   margin: 0 0 30px 0;
   padding: 0;
-  font-size: 14px;
+  font-size: 10px;
 }
 
 #barchart__table th {
@@ -63,6 +63,10 @@ export default {
   position: absolute;
   bottom: 0;
   text-align: center;
+}
+
+#barchart__table th {
+  width: 10px;
 }
 
 #no-problem {
@@ -105,17 +109,17 @@ export default {
 /* Small Mobiles */
 @media all and (max-width: 700px) {
   #barchart__table {
-    width: 400px;
+    width: 320px;
     margin-left: -30px;
   }
 
   #barchart__table th {
-    width: 100px; 
+    width: 78px; 
   }
 
   #barchart__table .bar {
-    width: 30px; 
-      margin-left:25px;
+    width: 20px; 
+    margin-left:25px;
   }
 
   #no-problem {
@@ -123,15 +127,15 @@ export default {
   }
 
   #trivial-trouble {
-    left: 100px;
+    left: 80px;
   }
 
   #i-dont-like-it {
-    left: 200px;
+    left: 160px;
   }
 
   #i-hate-it {
-    left: 300px; 
+    left: 240px; 
     border-right: none;
   }
 }

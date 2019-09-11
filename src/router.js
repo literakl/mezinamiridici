@@ -26,7 +26,8 @@ export default new Router({
     {
       path: '/poll/:id',
       name: 'poll',
-      component: () => import('./views/Poll.vue')
+      component: () => import('./views/Poll.vue'),
+      props: true
     },
     {
       path: '/polls',
@@ -38,12 +39,17 @@ export default new Router({
       name: 'profile',
       component: () => import('./views/Profile.vue'),
     },
+    {
+      path: '/analyze-votes/:id',
+      name: 'analyze-votes',
+      component: () => import('./views/AnalyzeVotes.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
-    } else {
-      return { x: 0, y: 0 }
     }
+  
+    return { x: 0, y: 0 }
   }
 });

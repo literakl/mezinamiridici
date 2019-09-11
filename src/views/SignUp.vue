@@ -1,6 +1,6 @@
 <template>
-  <div id="sign-up-wrapper">
-    <div id="sign-up">
+  <div class="sign-up-wrapper">
+    <div class="sign-up">
       <div class="sign-up__heading">
           <h1>Sign up</h1>
           <p>You are the single step away from registration.
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import SignUpForm from '@/components/molecules/SignUpForm.vue';
+import SignUpForm from '@/components/molecules/forms/SignUpForm.vue';
 
 export default {
   name: 'sign-up',
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style>
-  #sign-up {
+.sign-up {
     display: grid;
     grid-template-columns: 1fr;
     margin: 0 auto;
@@ -35,7 +35,7 @@ export default {
   }
 
   @media all and (min-width: 850px) {
-    #sign-up {
+  .sign-up {
       grid-template-columns: 0.5fr;
       max-width: 80%;
     }

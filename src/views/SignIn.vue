@@ -1,20 +1,24 @@
 <template>
     <form>
-        <div id="signin">  
-            <div id="signin__wrapper">
+        <div class="signin">  
+            <div class="signin__wrapper">
                 <div>
                     <h1>Sign in</h1>
-                    <TextInput type="email" identifier="email" placeholder="Email" />
-                    <TextInput type="password" identifier="password" placeholder="Password" />
-                    <div>Forgot password?</div>
-                    <Submit value="Sign in" />
                 </div>
                 <div>
                     <h2>If you don't already have an account, click the button below to create one</h2>
-                    <Button value="Sign up now" />
-                    <div>OR</div>
-                    <Button value="Continue with Facebook" />
-                    <Button value="Sign in with Google" />
+                </div>
+                <div>
+                    <TextInput type="email" identifier="email" placeholder="Email"  class="signin__text-input" />
+                    <TextInput type="password" identifier="password" placeholder="Password"  class="signin__text-input"/>
+                    <div class="signin__forgot-password">Forgot password?</div>
+                    <Submit value="Sign in" />
+                </div>
+                <div>
+                    <router-link to="/sign-up"><Button value="Sign up now" class="signin__sign-up-button" /></router-link>
+                    <div class="signin__or">OR</div>
+                    <p>Facebook login button will go here</p>
+                    <p>Google login button will go here</p>
                 </div>
             </div>
         </div>
@@ -46,10 +50,15 @@ export default {
 </script>
 
 <style scoped>
-#signin {
+.signin {
     background: #f6f6f6;
-    margin-top: 50px;
-    padding-top: 30px;
+    padding: 30px 0 30px 0;
+}
+
+.signin__or {
+    text-align: center;
+    padding-top: 20px;
+    font-weight: 900;
 }
 
 input { 
@@ -66,14 +75,39 @@ h2 {
     margin: 0px;
     font-size: 14px;
     font-weight: normal;
+    text-align: center;
 }
 
-#signin__wrapper {
-    grid-template-columns: 0.2fr 0.2fr 0.6fr;
+.signin__text-input {
+    width: 100%;
+}
+
+.signin__wrapper {
+    grid-template-columns: 0.2fr 0.2fr;
     display: grid;
     margin: 0 auto;
     max-width: 80%;
     padding: 1em 0;
-    grid-gap: 20px;
+    grid-column-gap: 20px;
+}
+
+.signin__sign-up-button {
+    background: #9b9b9b;
+    box-shadow: 0px 4px #868686;
+    color: #FFF;
+    font-size: 14px;
+    width: 100%;
+}
+
+.signin__facebook-button {
+    background: #9b9b9b;
+    box-shadow: 0px 4px #868686;
+    color: #FFF;
+    font-size: 14px;
+    width: 100%;
+}
+
+.signin__forgot-password {
+    margin-bottom: 10px;
 }
 </style>

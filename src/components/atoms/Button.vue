@@ -1,7 +1,7 @@
 <template>
     <button
         type="submit"
-        id="atom__button"
+        class="atom__button"
         v-on:click="clicked()"
     >
         {{value}}
@@ -23,10 +23,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#atom__button {
+.atom__button {
     background-color: #ffd200;
     height: 53px;
-    width: 182px;
     border-radius: 5px;
     font-size: 20px;
     font-weight: 700;
@@ -34,7 +33,7 @@ export default {
     box-shadow: 0px 4px #f5a522;
 }
 
-#atom__button:hover {
+.atom__button:hover {
     box-shadow: none;
     cursor: pointer;
 }

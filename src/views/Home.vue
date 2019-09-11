@@ -5,9 +5,7 @@
     </div>
     <div id="home__content">
       <Heading />
-
       <OpinionButtons @voted="voted" />
-
       <TopPolls />
     </div>
   </div>

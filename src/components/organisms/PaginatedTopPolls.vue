@@ -1,7 +1,7 @@
 <template>
     <div id="polls">
         <TopPolls />
-        <Button value="Load next" @clicked="clicked" />
+        <Button value="Load next" @clicked="clicked" class="polls__load-next-button" />
         Page: {{page}}
     </div>
 </template>
@@ -36,5 +36,9 @@ export default {
     max-width: 80%;
     padding: 1em 0;
     grid-gap: 20px;
+}
+
+.polls__load-next-button {
+    width:20%;
 }
 </style>

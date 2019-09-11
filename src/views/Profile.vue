@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div id="profile">  
-            <div id="profile__wrapper">
+        <div class="profile">  
+            <div class="profile__wrapper">
                 <dl>
                     <dt>Nickname</dt>
                     <dl>Taxikar007</dl>
@@ -50,13 +50,13 @@ export default {
 </script>
 
 <style>
-#profile {
+.profile {
     background: #f6f6f6;
     margin-top: -16px;
     padding-top: 30px;
 }
 
-#profile__wrapper {
+.profile__wrapper {
     grid-template-columns: 1fr;
     display: grid;
     margin: 0 auto;
@@ -65,7 +65,7 @@ export default {
     grid-gap: 20px;
 }
 
-#polls {
+.polls {
     grid-template-columns: 1fr;
     display: grid;
     margin: 0 auto;
