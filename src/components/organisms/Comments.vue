@@ -6,6 +6,7 @@
                     :name="comment.name"
                     :title="comment.title"
                     :votes="comment.votes"
+                    :date="comment.date"
                     :depth="parseInt(depth)"
                 />
                 <Comments v-if="comment.comments !== undefined" :comments="comment.comments" :depth="parseInt(depth) + 1"/>

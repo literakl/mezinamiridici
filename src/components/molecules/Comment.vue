@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4>{{name}}</h4>
+        <h4>{{name}}, {{date}}</h4>
         <p>{{title}}</p>
         <div>
             {{mutableVotes}} <button v-on:click="upvote">+</button> <button v-on:click="downvote">-</button> 
@@ -10,11 +10,13 @@
 </template>
 
 <script>
+
 export default {
   name: 'Comment',
   props: {
       name: String,
       title: String,
+      date: String,
       votes: Number,
       depth: Number
   },

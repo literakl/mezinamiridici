@@ -2,7 +2,7 @@
     <input
         type="submit"
         v-bind:value="value"
-        id="atom__submit-button"
+        class="atom__submit-button"
     >
 </template>
 
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#atom__submit-button {
+.atom__submit-button {
     background-color: #ffd200;
     height: 53px;
     border-radius: 5px;
@@ -26,7 +26,7 @@ export default {
     box-shadow: 0px 4px #f5a522;
 }
 
-#atom__submit-button:hover {
+.atom__submit-button:hover {
     box-shadow: none;
     cursor: pointer;
 }

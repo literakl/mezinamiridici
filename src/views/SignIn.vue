@@ -2,6 +2,13 @@
     <form>
         <div class="signin">  
             <div class="signin__wrapper">
+                <Modal :show="forottenPassword">
+                    <h1>Forgot password</h1>
+                    <p>Enter your email and we will send you a reset link</p>
+                    <TextInput type="resetEmail" identifier="resetEmail" placeholder="Email" class="signin__reset-text-input" />
+                    <Submit value="Reset password" class="signin__forgotten-password-submit-button"/>
+                    <Button value="Close" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
+                </Modal>
                 <div>
                     <h1>Sign in</h1>
                 </div>
@@ -9,13 +16,13 @@
                     <h2>If you don't already have an account, click the button below to create one</h2>
                 </div>
                 <div>
-                    <TextInput type="email" identifier="email" placeholder="Email"  class="signin__text-input" />
-                    <TextInput type="password" identifier="password" placeholder="Password"  class="signin__text-input"/>
-                    <div class="signin__forgot-password">Forgot password?</div>
+                    <TextInput type="email" identifier="email" placeholder="Email" class="signin__text-input" />
+                    <TextInput type="password" identifier="password" placeholder="Password" class="signin__text-input"/>
+                    <div class="signin__forgot-password" v-on:click="openForgottenPassword">Forgot password?</div>
                     <Submit value="Sign in" />
                 </div>
                 <div>
-                    <router-link to="/sign-up"><Button value="Sign up now" class="signin__sign-up-button" /></router-link>
+                    <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
                     <div class="signin__or">OR</div>
                     <p>Facebook login button will go here</p>
                     <p>Google login button will go here</p>
@@ -29,21 +36,29 @@
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import Submit from '@/components/atoms/Submit.vue';
+import Modal from '@/components/molecules/Modal.vue';
 
 export default {
   name: 'signin',
   components: {
       Button,
       TextInput,
-      Submit
+      Submit,
+      Modal
   },
   data: () => ({
-    page: 0
+    page: 0,
+    forottenPassword: false
   }),
   methods: {
-      clicked: function () {
-          console.log("Loading more...")
-          this.page++;
+      openForgottenPassword: function() {
+          this.forottenPassword = true;
+      },
+      closeForgottenPassword: function() {
+          this.forottenPassword = false;
+      },
+      redirectToSignIn: function(){
+          this.$router.push({ name: 'sign-up' })
       }
   }
 };
@@ -109,5 +124,19 @@ h2 {
 
 .signin__forgot-password {
     margin-bottom: 10px;
+}
+
+.signin__forgot-password:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.signin__forgotten-password-close-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.signin__reset-text-input {
+    display: block;
 }
 </style>

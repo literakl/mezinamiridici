@@ -2,7 +2,7 @@
     <button
         type="submit"
         class="atom__button"
-        v-on:click="clicked()"
+        v-on:click="clicked"
     >
         {{value}}
     </button>
@@ -15,8 +15,9 @@ export default {
     value: String,
   },
   methods: {
-    clicked() {
+    clicked(e) {
       this.$emit('clicked');
+      e.preventDefault()
     },
   },
 };
