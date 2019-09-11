@@ -17,7 +17,7 @@ export default {
   methods: {
     clicked(e) {
       this.$emit('clicked');
-      e.preventDefault()
+      e.preventDefault();
     },
   },
 };

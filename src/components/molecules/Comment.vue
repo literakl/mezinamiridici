@@ -1,10 +1,18 @@
 <template>
     <div>
-        <h4>{{name}}, {{date}}</h4>
-        <p>{{title}}</p>
+        <h4>
+            {{name}}, {{date}}
+        </h4>
+        <p>
+            {{title}}
+        </p>
         <div>
-            {{mutableVotes}} <button v-on:click="upvote">+</button> <button v-on:click="downvote">-</button> 
-            <span class="comment__reply-link">Reply</span>
+            {{mutableVotes}}
+            <button v-on:click="upvote">+</button>
+            <button v-on:click="downvote">-</button>
+            <span class="comment__reply-link">
+                Reply
+            </span>
         </div>
     </div>
 </template>
@@ -14,38 +22,36 @@
 export default {
   name: 'Comment',
   props: {
-      name: String,
-      title: String,
-      date: String,
-      votes: Number,
-      depth: Number
+    name: String,
+    title: String,
+    date: String,
+    votes: Number,
+    depth: Number,
   },
-  data: function(){
-      return {
-          mutableVotes: this.votes,
-          upvoted: false,
-          downvoted: false
-      }
-  },
+  data: () => ({
+    mutableVotes: this.votes,
+    upvoted: false,
+    downvoted: false,
+  }),
   methods: {
-    toggleUpvoted(){
-        this.upvoted = true;
-        this.downvoted = false;
+    toggleUpvoted() {
+      this.upvoted = true;
+      this.downvoted = false;
     },
-    toggleDownvoted(){
-        this.upvoted = false;
-        this.downvoted = true;
+    toggleDownvoted() {
+      this.upvoted = false;
+      this.downvoted = true;
     },
-    upvote: function(){
-      if(this.upvoted) return
-      this.mutableVotes++;
+    upvote() {
+      if (this.upvoted) return;
+      this.mutableVotes = this.mutableVotes + 1;
       this.toggleUpvoted();
     },
-    downvote: function(){
-      if(this.downvoted) return
-      this.mutableVotes--;
+    downvote() {
+      if (this.downvoted) return;
+      this.mutableVotes = this.mutableVotes - 1;
       this.toggleDownvoted();
-    }
+    },
   },
 };
 </script>
