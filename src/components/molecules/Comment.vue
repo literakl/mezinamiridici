@@ -28,11 +28,13 @@ export default {
     votes: Number,
     depth: Number,
   },
-  data: () => ({
-    mutableVotes: this.votes,
-    upvoted: false,
-    downvoted: false,
-  }),
+  data() {
+    return {
+      mutableVotes: this.votes,
+      upvoted: false,
+      downvoted: false,
+    };
+  },
   methods: {
     toggleUpvoted() {
       this.upvoted = true;
