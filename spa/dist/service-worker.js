@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.e2aea985edae1217dba04ca0986b54ff.js"
+  "/precache-manifest.2372f73a8f2843acc90866d22ea60910.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "between-us-drivers"});
