@@ -225,7 +225,6 @@ export default {
 .poll__other-polls {
   grid-template-columns: 1fr;
   display: grid;
-  width: 50%;
   text-align:center;
 }
 
@@ -248,6 +247,10 @@ export default {
 
   .poll__ads {
     order: 2;
+  }
+
+  .poll__other-polls {
+    width: 50%;
   }
 }
 </style>
