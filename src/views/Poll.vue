@@ -18,9 +18,9 @@
               <BarChart v-bind:voted="mutableVote" />
             </div>
 
-            <router-link :to="{ name: 'analyze-votes', params: { id: this.id }} " class="poll__chart-wrapper-analyze-votes-button" >
-              <Button value="Analyze votes" />
-            </router-link>
+            <div class="poll__chart-wrapper-analyze-votes-button">
+              <Button value="Analyze votes" @clicked="redirectToAnalyzeVotes" />
+            </div>
           </div>
         </div>
 
@@ -35,18 +35,13 @@
         <h2>Discussion ({{comments.length}})</h2>
         <h3>What do you want to say about it?</h3>
 
-        <form class="poll_discussion_form">
-          <textarea />
-          <Submit class="poll__discussion-send-button" value="Send" />
-        </form>
-
+        <Textarea />
+        
         <Comments :comments="comments" :depth="parseInt(0)" />
 
         <div class="poll__other-polls">
           <h2>
-            <router-link to="/polls">
-              <Button value="Other polls" class="poll__other-polls-button" />
-            </router-link>
+            <Button value="Other polls" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
             <hr class="poll__double-line" />
             <hr class="poll__double-line" />
           </h2>
@@ -61,7 +56,7 @@ import Heading from '@/components/molecules/Heading.vue'
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue'
 import BarChart from '@/components/molecules/charts/BarChart.vue'
 import Button from '@/components/atoms/Button.vue'
-import Submit from '@/components/atoms/Submit.vue'
+import Textarea from '@/components/atoms/Textarea.vue'
 import Comments from '@/components/organisms/Comments.vue'
 
 export default {
@@ -136,7 +131,7 @@ export default {
             ]
           },
           {
-            id: 1,
+            id: 10,
             name: "Hello World",
             date: "yesterday  12:26",
             title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
@@ -149,16 +144,22 @@ export default {
   methods: {
     voted: function(vote){
       this.mutableVote = vote;
+    },
+    redirectToOtherPolls: function(){
+      this.$router.push({ name: 'polls' })
+    },
+    redirectToAnalyzeVotes: function(){
+      this.$router.push({ name: 'analyze-votes', params: { id: this.id }});
     }
   },
   components: {
     Heading,
     Button,
-    Submit,
     BarChart,
     OpinionButtons,
     Comment,
-    Comments
+    Comments,
+    Textarea
   },
 };
 </script>
@@ -191,30 +192,6 @@ export default {
     max-width: 80%;
     padding: 1em 0;
 }
-
-.poll_discussion_form{
-  grid-template-columns: 1fr 0.4fr;
-  display: grid;
-  width: 50%;
-}
-
-textarea {
-  height: 100px;
-  border: 1px solid black;
-  resize: none;
-  grid-column: 1 / span 2
-}
-
-.poll__discussion-send-button {
-  grid-column: 2 / span 2;
-  margin-top: 20px;
-}
-
-.poll__discussion-submit-button {
-  grid-column: 2 / span 2;
-  width: 100%
-}
-
 
 .poll__chart-wrapper-vote {
   grid-column: 1 / span 4

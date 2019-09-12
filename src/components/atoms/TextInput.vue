@@ -23,16 +23,12 @@ export default {
 </script>
 
 <style>
-.sign-up-form__input {
-}
-
 .sign-up-form__input-text {
     width: 40%;
     height:  25px;
     border-radius: 3px;
     border: 1px solid #cccccc;
     margin-bottom: 20px;
-
 }
 
 </style>
