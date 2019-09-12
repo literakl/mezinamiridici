@@ -1,5 +1,11 @@
 # Between us Drivers
 
+This is a monorepo for Between us Drivers
+
+### Repository contents
+
+* `/spa` is the single page Vue.js application that delivers the website experience.
+
 ### Deploying
 
 This will commit to GitHub and deploy the latest change of the website to S3.
