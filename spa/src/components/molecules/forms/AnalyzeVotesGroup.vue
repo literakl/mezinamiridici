@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <div class="analyze-votes-group__wrapper">
             <div>
                 <label for="sex">Sex</label>
             </div>
@@ -8,9 +8,7 @@
                 <Radio v-model="sex" name="sex" identifier="male" text="Male" />
                 <Radio v-model="sex" name="sex" identifier="female" text="Female" />
             </div>
-        </div>
 
-        <div>
             <div>
                 <label for="age">Age</label>
             </div>
@@ -21,9 +19,7 @@
                 <Checkbox v-model="age51To60" name="age" identifier="51-60" text="51-60" />
                 <Checkbox v-model="age61Plus" name="age" identifier="61+" text="61+" />
             </div>
-        </div>
 
-        <div>
             <div>
                 <label for="driving-for-years">Driving for years</label>
             </div>
@@ -33,9 +29,7 @@
                 <Checkbox v-model="drivingFor6To10" name="driving-for-years" identifier="6-10" text="6-10" />
                 <Checkbox v-model="drivingFor11Plus" name="driving-for-years" identifier="11+" text="11+" />
             </div>
-        </div>
 
-        <div>
             <div>
                 <label for="region">Region</label>
             </div>
@@ -62,9 +56,7 @@
                     <option value="moravskoslezsky">Moravskoslezsky</option>
                 </select>
             </div>
-        </div>
 
-        <div>
             <div>
                 <label for="education">Education</label>
             </div>
@@ -79,9 +71,7 @@
                     <option value="university">University</option>
                 </select>
             </div>
-        </div>
 
-        <div>
             <div>
                 <label for="vehicle">Vehicle</label>
             </div>
@@ -100,14 +90,25 @@
 <script>
 import Radio from '@/components/atoms/Radio.vue'
 import Checkbox from '@/components/atoms/Checkbox.vue'
+import Button from '@/components/atoms/Button.vue'
 
 export default {
   name: 'analyze-votes-group',
   components: {
       Radio,
       Checkbox,
+      Button
   },
   methods: {
   },
 };
 </script>
+
+<style>
+.analyze-votes-group__wrapper {
+    display: grid;
+    grid-template-columns: 0.3fr 1fr;
+    margin-bottom: 20px;
+    grid-gap:  20px;
+}
+</style>

@@ -8,10 +8,14 @@
         <AnalyzeVotesGroup />
         <AnalyzeVotesGroup />
     </div>
+    <div class="analyze-votes__button-wrapper">
+      <Button value="Analyze Votes" />
+    </div>
   </div>
 </template>
 
 <script>
+import Button from '@/components/atoms/Button.vue'
 import Radio from '@/components/atoms/Radio.vue'
 import Checkbox from '@/components/atoms/Checkbox.vue'
 import AnalyzeVotesGroup from '@/components/molecules/forms/AnalyzeVotesGroup.vue'
@@ -21,7 +25,8 @@ export default {
   components: {
       Radio,
       Checkbox,
-      AnalyzeVotesGroup
+      AnalyzeVotesGroup,
+      Button
   },
   methods: {
   },
@@ -36,5 +41,10 @@ export default {
     max-width: 80%;
     padding: 1em 0;
     grid-gap: 20px;
+}
+
+.analyze-votes__button-wrapper {
+  text-align:center;
+  margin-bottom: 20px;
 }
 </style>
