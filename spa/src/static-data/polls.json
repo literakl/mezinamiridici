@@ -10,7 +10,7 @@
             "id": 1,
             "text": "Poll 1",
             "created": "",
-            "author": 1
+            "author": 2
         },
         {
             "id": 2,
@@ -22,7 +22,7 @@
             "id": 3,
             "text": "Poll 3",
             "created": "",
-            "author": 1
+            "author": 2
         },
         {
             "id": 4,

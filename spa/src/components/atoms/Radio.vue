@@ -31,7 +31,7 @@ export default {
 
 <style>
 .atoms__radio {
-    width: 80px;
+    width: 200px;
     float: left;
 }
 

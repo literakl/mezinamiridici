@@ -18,27 +18,32 @@
             <div class="sign-up-form__label">
                 <label for="email">Email</label>
             </div>
-            <TextInput v-model="email" identifier="email" type="email" />
+            <TextInput class="sign-up-form__input" v-model="email" identifier="email" type="email" />
 
             <div class="sign-up-form__label">
                 <label for="password">Password</label>
             </div>
-            <TextInput v-model="password" identifier="password" type="password" />
+            <TextInput class="sign-up-form__input" v-model="password" identifier="password" type="password" />
 
             <div class="sign-up-form__label">
-                <label for="processing-data">Privacy</label>
+                <label for="terms-and-conditions">I agree with terms and conditions</label>
             </div>
             <div class="sign-up-form__input">
-                <Radio v-model="dataProcessing" name="processing-data" identifier="processing-data-yes" text="Yes" />
-                <Radio v-model="dataProcessing" name="processing-data" identifier="processing-data-no" text="No" />
+                <Checkbox v-model="termsAndConditions" name="terms-and-conditions" identifier="terms-and-conditions"/>
             </div>
 
             <div class="sign-up-form__label">
-                <label for="marketing">Marketing</label>
+                <label for="personal-data-processing">I agree <a>processing of my personal data</a></label>
             </div>
             <div class="sign-up-form__input">
-                <Radio v-model="marketing" name="marketing" identifier="marketing-yes" text="Yes" />
-                <Radio v-model="marketing" name="marketing" identifier="marketing-no" text="No" />
+                <Checkbox v-model="personalDataProcessing" name="personal-data-processing" identifier="personal-data-processing"/>
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="email-notifications">I want to recieve email notifications</a></label>
+            </div>
+            <div class="sign-up-form__input">
+                <Checkbox v-model="emailNotifications" name="email-notifications" identifier="email-notifications"/>
             </div>
         </div>
 
@@ -49,13 +54,13 @@
 <script>
 
 import Submit from '@/components/atoms/Submit.vue';
-import Radio from '@/components/atoms/Radio.vue';
+import Checkbox from '@/components/atoms/Checkbox.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 
 export default {
   name: 'SignUpForm',
   components: {
-    Radio,
+    Checkbox,
     TextInput,
     Submit,
   },
@@ -63,8 +68,9 @@ export default {
     errors: [],
     email: null,
     password: null,
-    dataProcessing: false,
-    marketing: false,
+    termsAndConditions: false,
+    personalDataProcessing: false,
+    emailNotifications: false,
   }),
   methods: {
     checkForm(e) {
@@ -76,12 +82,18 @@ export default {
       if (!this.password) {
         this.errors.push('Password required.');
       }
+      if (!this.termsAndConditions) {
+        this.errors.push('You must agree to our terms and conditions');
+      }
+      if (!this.personalDataProcessing) {
+        this.errors.push('You must agree to us processing your personal data');
+      }
 
       e.preventDefault();
 
       if (this.errors.length === 0) {
         // This will eventually call the API to create the user as validation has passed.
-        this.$router.push('/');
+        this.$router.push('/complete-profile');
       }
 
       return this.errors.length !== 0;
@@ -94,7 +106,6 @@ export default {
 <style lang="scss">
 #sign-up-form-wrapper {
     display: grid;
-    grid-template-columns: 0.3fr 1fr;
     margin-top: 40px;
 }
 
@@ -107,7 +118,26 @@ export default {
     color: rgb(209, 49, 49);
 }
 
+.sign-up-form__input {
+    width: 100%;
+}
+
 .sign-up-form__button {
-    width: 30%;
+    width: 100%;
+}
+
+@media all and (min-width: 850px) {
+
+    .sign-up-form__button {
+        width: 30%;
+    }
+
+    #sign-up-form-wrapper {
+        grid-template-columns: 0.3fr 1fr;
+    }
+
+    .sign-up-form__input {
+        width: 70%;
+    }
 }
 </style>

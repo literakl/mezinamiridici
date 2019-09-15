@@ -30,23 +30,17 @@
                 <label for="sex">Sex</label>
             </div>
             <div class="complete-profile-form__input">
-                <input
-                    id="male"
-                    v-model="male"
-                    type="radio"
+                <Radio
                     name="sex"
-                    value="male"
-                >
-                <label for="male">Male</label>
+                    identifier="male"
+                    text="Male"
+                />
 
-                <input
-                    id="female"
-                    v-model="female"
-                    type="radio"
+                <Radio
                     name="sex"
-                    value="female"
-                >
-                <label for="female">Female</label>
+                    identifier="false"
+                    text="Female"
+                />
             </div>
 
             <div class="complete-profile-form__label">
@@ -100,23 +94,17 @@
                 <label for="share-profile">Share Profile</label>
             </div>
             <div class="complete-profile-form__input">
-                <input
-                    id="onlynickname"
-                    v-model="onlyNickname"
-                    type="radio"
+                <Radio
                     name="share-profile"
-                    value="onlyNickname"
-                >
-                <label for="onlynickname">Only Nickname</label>
+                    identifier="onlyNickname"
+                    text="Only Nickname"
+                />
 
-                <input
-                    id="everything"
-                    v-model="everything"
-                    type="radio"
+                <Radio
                     name="share-profile"
-                    value="everything"
-                >
-                <label for="everything">Everything</label>
+                    identifier="everything"
+                    text="Everything"
+                />
             </div>
         </div>
 
@@ -128,6 +116,7 @@
 
 import Submit from '@/components/atoms/Submit.vue';
 import Radio from '@/components/atoms/Radio.vue';
+import Checkbox from '@/components/atoms/Checkbox.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 
 export default {
@@ -135,6 +124,7 @@ export default {
   components: {
     Radio,
     TextInput,
+    Checkbox,
     Submit,
   },
   data: () => ({

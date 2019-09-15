@@ -44,6 +44,11 @@ export default new Router({
       name: 'analyze-votes',
       component: () => import('./views/AnalyzeVotes.vue'),
     },
+    {
+      path: '/complete-profile',
+      name: 'complete-profile',
+      component: () => import('./views/CompleteProfile.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

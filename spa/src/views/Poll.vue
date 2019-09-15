@@ -61,6 +61,7 @@ import Comments from '@/components/organisms/Comments.vue'
 
 import comments from '@/static-data/comments.json';
 import polls from '@/static-data/polls.json';
+import users from '@/static-data/users.json';
 
 export default {
   name: 'poll',
