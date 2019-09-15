@@ -7,7 +7,7 @@
             {{title}}
         </p>
         <div>
-            {{mutableVotes}}
+            +{{mutableVotes}} / -{{mutableVotes}}
             <button v-on:click="upvote" class="comment__reply-vote-button">+</button>
             <button v-on:click="downvote"  class="comment__reply-vote-button">-</button>
             <span class="comment__reply-link" v-on:click="reply" v-if="!replying">Reply</span>

@@ -98,7 +98,6 @@ h2 {
 }
 
 .signin__wrapper {
-    grid-template-columns: 0.2fr 0.2fr;
     display: grid;
     margin: 0 auto;
     max-width: 80%;
@@ -112,6 +111,7 @@ h2 {
     color: #FFF;
     font-size: 14px;
     width: 100%;
+    margin-top: 20px;
 }
 
 .signin__facebook-button {
@@ -138,5 +138,12 @@ h2 {
 
 .signin__reset-text-input {
     display: block;
+}
+
+
+@media all and (min-width: 850px) {
+    .signin__wrapper {
+        grid-template-columns: 0.2fr 0.2fr;
+    }
 }
 </style>
