@@ -8,25 +8,25 @@
         },
         {
             "id": 1,
-            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. ",
+            "text": "Poll 1",
             "created": "",
             "author": 1
         },
         {
             "id": 2,
-            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. ",
+            "text": "Poll 2",
             "created": "",
             "author": 1
         },
         {
             "id": 3,
-            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. ",
+            "text": "Poll 3",
             "created": "",
             "author": 1
         },
         {
             "id": 4,
-            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, cupiditate. ",
+            "text": "Poll 4",
             "created": "",
             "author": 1
         }

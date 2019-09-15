@@ -2,7 +2,7 @@
     <div>
         <hr />
         <h2 id="home__heading-title">
-            "Slow car blocks the lane and its driver refuses to switch lanes"
+            {{title}}
         </h2>
         <div id="home__heading-metadata">
             <ul id="home__heading-metadata-details">
@@ -22,7 +22,10 @@
 
 <script>
 export default {
-  name: 'Heading'
+  name: 'Heading',
+  props: {
+    title: String
+  }
 };
 </script>
 

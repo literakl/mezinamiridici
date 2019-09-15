@@ -1,0 +1,72 @@
+{
+    "comments": [
+        {
+        "id": 1,
+        "name": "Franta Jelen",
+        "date": "today  12:26",
+        "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+        "votes": 1,
+        "comments": [
+            {
+            "id": 2,
+            "name": "Parent Child",
+            "date": "yesterday  12:26",
+            "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+            "votes": 100,
+            "comments": [
+                {
+                "id": 3,
+                "name": "Parent Child Child",
+                "date": "yesterday  12:26",
+                "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+                "votes": 2,
+                "comments": [
+                    {
+                    "id": 4,
+                    "name": "Parent Child Child Child",
+                    "date": "yesterday  12:26",
+                    "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+                    "votes": 2,
+                    "comments": [
+                        {
+                        "id": 5,
+                        "name": "Parent Child Child",
+                        "date": "yesterday  12:26",
+                        "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+                        "votes": 2,
+                        "comments": [
+                            {
+                            "id": 5,
+                            "name": "Parent Child Child",
+                            "date": "yesterday  12:26",
+                            "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+                            "votes": 2,
+                            "comments": [
+                                {
+                                    "id": 5,
+                                    "name": "Parent Child Child",
+                                    "date": "yesterday  12:26",
+                                    "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+                                    "votes": 2
+                                }
+                            ] 
+                            }
+                        ]
+                        }
+                    ]
+                    }
+                ]
+                }
+            ]
+            }
+        ]
+        },
+        {
+            "id": 10,
+            "name": "Hello World",
+            "date": "yesterday  12:26",
+            "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
+            "votes": 7
+        }
+    ]
+}

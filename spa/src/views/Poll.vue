@@ -6,7 +6,7 @@
       </div>
 
       <div class="poll_content">
-        <Heading />
+        <Heading :title="poll.text"/>
         <div v-if="mutableVote">
           <div class="poll__chart-wrapper">
             <h2 class="poll__chart-wrapper-vote">
@@ -59,6 +59,9 @@ import Button from '@/components/atoms/Button.vue'
 import Textarea from '@/components/atoms/Textarea.vue'
 import Comments from '@/components/organisms/Comments.vue'
 
+import comments from '@/static-data/comments.json';
+import polls from '@/static-data/polls.json';
+
 export default {
   name: 'poll',
   props: {
@@ -68,77 +71,8 @@ export default {
   data: function() {
     return {
         mutableVote: this.vote,
-        comments: [
-          {
-            id: 1,
-            name: "Franta Jelen",
-            date: "today  12:26",
-            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-            votes: 1,
-            comments: [
-              {
-                id: 2,
-                name: "Parent Child",
-                date: "yesterday  12:26",
-                title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                votes: 100,
-                comments: [
-                  {
-                    id: 3,
-                    name: "Parent Child Child",
-                    date: "yesterday  12:26",
-                    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                    votes: 2,
-                    comments: [
-                      {
-                        id: 4,
-                        name: "Parent Child Child Child",
-                        date: "yesterday  12:26",
-                        title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                        votes: 2,
-                        comments: [
-                          {
-                            id: 5,
-                            name: "Parent Child Child",
-                            date: "yesterday  12:26",
-                            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                            votes: 2,
-                            comments: [
-                              {
-                                id: 5,
-                                name: "Parent Child Child",
-                                date: "yesterday  12:26",
-                                title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                                votes: 2,
-                                comments: [
-                                  {
-                                    id: 5,
-                                    name: "Parent Child Child",
-                                    date: "yesterday  12:26",
-                                    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                                    votes: 2,
-                                  }
-                                ] 
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 10,
-            name: "Hello World",
-            date: "yesterday  12:26",
-            title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-            votes: 7,
-            downvotes: 3,
-          }
-        ]
+        comments: comments.comments,
+        poll: polls.polls.find(poll => poll.id === parseInt(this.id))
     };
   },
   methods: {

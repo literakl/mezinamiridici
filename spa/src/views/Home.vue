@@ -4,7 +4,7 @@
       Ads
     </div>
     <div id="home__content">
-      <Heading />
+      <Heading :title="polls[0].text"/>
       <OpinionButtons @voted="voted" />
       <TopPolls />
     </div>
@@ -16,6 +16,8 @@ import TopPolls from '@/components/molecules/TopPolls.vue';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 
+import polls from '@/static-data/polls.json';
+
 export default {
   name: 'home',
   components: {
@@ -23,6 +25,9 @@ export default {
     Heading,
     OpinionButtons,
   },
+  data: () => ({
+    polls: polls.polls
+  }),
   methods: {
     voted(category) {
       this.$router.push({ 
