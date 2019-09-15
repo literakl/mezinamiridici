@@ -5,49 +5,55 @@
         "name": "Franta Jelen",
         "date": "today  12:26",
         "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-        "votes": 1,
+        "upvotes": 1,
         "comments": [
             {
             "id": 2,
             "name": "Parent Child",
             "date": "yesterday  12:26",
             "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-            "votes": 100,
+            "upvotes": 100,
+            "downvotes": 1,
             "comments": [
                 {
                 "id": 3,
                 "name": "Parent Child Child",
                 "date": "yesterday  12:26",
                 "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                "votes": 2,
+                "upvotes": 2,
+                "downvotes": 2,
                 "comments": [
                     {
                     "id": 4,
                     "name": "Parent Child Child Child",
                     "date": "yesterday  12:26",
                     "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                    "votes": 2,
+                    "upvotes": 2,
+                    "downvotes": 6,
                     "comments": [
                         {
                         "id": 5,
                         "name": "Parent Child Child",
                         "date": "yesterday  12:26",
                         "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                        "votes": 2,
+                        "upvotes": 2,
+                        "downvotes": 3,
                         "comments": [
                             {
                             "id": 5,
                             "name": "Parent Child Child",
                             "date": "yesterday  12:26",
                             "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                            "votes": 2,
+                            "upvotes": 2,
+                            "downvotes": 10,
                             "comments": [
                                 {
                                     "id": 5,
                                     "name": "Parent Child Child",
                                     "date": "yesterday  12:26",
                                     "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-                                    "votes": 2
+                                    "upvotes": 2,
+                                    "downvotes": 1
                                 }
                             ] 
                             }
@@ -66,7 +72,8 @@
             "name": "Hello World",
             "date": "yesterday  12:26",
             "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
-            "votes": 7
+            "upvotes": 7,
+            "downvotes": 30
         }
     ]
 }

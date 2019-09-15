@@ -7,7 +7,7 @@
             {{title}}
         </p>
         <div>
-            +{{mutableVotes}} / -{{mutableVotes}}
+            +{{mutableUpvotes}} / -{{mutableDownvotes}}
             <button v-on:click="upvote" class="comment__reply-vote-button">+</button>
             <button v-on:click="downvote"  class="comment__reply-vote-button">-</button>
             <span class="comment__reply-link" v-on:click="reply" v-if="!replying">Reply</span>
@@ -28,7 +28,8 @@ export default {
     name: String,
     title: String,
     date: String,
-    votes: Number,
+    upvotes: Number,
+    downvotes: Number,
     depth: Number,
   },
   components: {
@@ -36,7 +37,8 @@ export default {
   },
   data() {
     return {
-      mutableVotes: this.votes,
+      mutableUpvotes: this.upvotes,
+      mutableDownvotes: this.downvotes,
       upvoted: false,
       downvoted: false,
       replying: false,
@@ -53,12 +55,12 @@ export default {
     },
     upvote() {
       if (this.upvoted) return;
-      this.mutableVotes = this.mutableVotes + 1;
+      this.mutableUpvotes = this.mutableUpvotes + 1;
       this.toggleUpvoted();
     },
     downvote() {
       if (this.downvoted) return;
-      this.mutableVotes = this.mutableVotes - 1;
+      this.mutableDownvotes = this.mutableDownvotes - 1;
       this.toggleDownvoted();
     },
     reply() {

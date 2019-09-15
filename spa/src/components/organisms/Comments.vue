@@ -10,7 +10,8 @@
                 <Comment
                     :name="comment.name"
                     :title="comment.title"
-                    :votes="comment.votes"
+                    :upvotes="comment.upvotes"
+                    :downvotes="comment.downvotes"
                     :date="comment.date"
                     :depth="parseInt(depth)"
                 />
