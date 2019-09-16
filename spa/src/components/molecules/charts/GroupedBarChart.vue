@@ -6,7 +6,6 @@
                     <td class="first-group bar" v-bind:style="(voted === 'No problem') ? 'height: 101px; background-color: #ffd302' : 'height: 101px;'">  
                         <p>13%</p>
                     </td>
-                    <th scope="row">No Problem</th>
                     <td class="second-group bar" v-bind:style="(voted === 'No problem') ? 'height: 200px; background-color: #ffd302' : 'height: 200px;'">  
                         <p>50%</p>
                     </td>
@@ -16,7 +15,6 @@
                     <td class="first-group bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: 206px; background-color: #ffd302' : 'height: 206px;'">
                         <p>40%</p>
                     </td>
-                    <th scope="row">Trivial Trouble</th>
                     <td class="second-group bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: 10px; background-color: #ffd302' : 'height: 10px;'">
                         <p>10%</p>
                     </td>
@@ -26,7 +24,6 @@
                     <td class="first-group bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: 300px; background-color: #ffd302' : 'height: 300px;'">
                         <p>90%</p>
                     </td>
-                    <th scope="row">I don't like it</th>
                     <td class="second-group bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: 200px; background-color: #ffd302' : 'height: 200px;'">
                         <p>50%</p>
                     </td>
@@ -36,7 +33,6 @@
                     <td class="first-group bar" v-bind:style="(voted === 'I hate it') ? 'height: 110px; background-color: #ffd302' : 'height: 110px;'">
                         <p>30%</p>
                     </td>
-                    <th scope="row">I hate it</th>
                     <td class="second-group bar" v-bind:style="(voted === 'I hate it') ? 'height: 170px; background-color: #ffd302' : 'height: 170px;'">
                         <p>50%</p>
                     </td>
@@ -167,7 +163,9 @@ export default {
 /* Desktop */
 @media all and (min-width: 970px) {
   #barchart__table {
-    width: 600px
+    width: 100%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
 
   #barchart__table .bar {
@@ -175,20 +173,29 @@ export default {
   }
 
   #no-problem {
-    left: 0;
+    left: 0%;
+    width: 100%;
   }
 
   #trivial-trouble {
-    left: 150px;
+    left: 50%;
+    width: 100%;
   }
 
   #i-dont-like-it {
-    left: 300px;
+    left: 100%;
+    width: 100%;
   }
 
   #i-hate-it {
-    left: 450px; 
+    left: 150%; 
     border-right: none;
+    width: 100%;
+  }
+
+  #barchart__table th  {
+    width: 350px;
+    margin-left: -70px;
   }
 }
 </style>

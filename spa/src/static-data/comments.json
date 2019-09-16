@@ -6,6 +6,7 @@
         "date": "today  12:26",
         "title": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut.",
         "upvotes": 1,
+        "downvotes": 22,
         "comments": [
             {
             "id": 2,

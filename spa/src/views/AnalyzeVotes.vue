@@ -6,8 +6,8 @@
     <div class="analyze-votes__wrapper">
         <h2 class="first-group__heading">First Group</h2>
         <h2 class="second-group__heading">Second Group</h2>
-        <AnalyzeVotesGroup />
-        <AnalyzeVotesGroup />
+        <AnalyzeVotesGroup group="1" />
+        <AnalyzeVotesGroup group="2" />
     </div>
     <div class="analyze-votes__button-wrapper">
       <Button value="Analyze Votes" />
@@ -43,6 +43,7 @@ export default {
       max-width: 80%;
       padding: 1em 0;
       grid-gap: 20px;
+      overflow: hidden;
   }
 
   .analyze-votes__button-wrapper {
