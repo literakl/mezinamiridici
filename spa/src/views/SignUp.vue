@@ -2,10 +2,8 @@
   <div class="sign-up-wrapper">
     <div class="sign-up">
       <div class="sign-up__heading">
-          <h1>Sign up</h1>
-          <p>You are the single step away from registration.
-          Enter statistical information you want to share.
-          Your votes are anonymous in each poll.</p>
+          <h1>{{ $t('sign-up.heading') }}</h1>
+          <p>{{ $t('sign-up.body') }}</p>
       </div>
       <div class="sign-up__form">
           <SignUpForm />

@@ -1,0 +1,34 @@
+{
+  "app": {
+    "name": "Between us Drivers",
+    "logo-alt": "Man holding steering wheel",
+    "slogan": "The only way to discuss traffic problems",
+    "sign-in": "Sign in",
+    "sign-up": "Sign up",
+    "help": "Help",
+    "our-mission": "Our mission",
+    "contact": "Contact",
+    "advertisement": "Advertisement",
+    "archive": "Archive"
+  },
+  "sign-up": {
+    "heading": "Sign up",
+    "body": "You are the single step away from registration. Enter statistical information you want to share. Your votes are anonymous in each poll.",
+    "email-label": "Email",
+    "password-label": "Password",
+    "terms-label": "I agree with terms and conditions",
+    "processing-label": "I agree with processing of my personal data",
+    "notifications-label": "I want to recieve email notifications",
+    "finished-button-label": "Finished",
+    "errors-heading": "Please correct the following error(s):",
+    "email-required": "Email required",
+    "password-required": "Password required",
+    "terms-conditions-required": "You must agree to our terms and conditions",
+    "data-processing-required": "You must agree to us processing your personal data"
+
+  },
+  "complete-profile": {
+    "heading": "Welcome to Between us Drivers",
+    "subheading": "Complete your profile below"
+  }
+}

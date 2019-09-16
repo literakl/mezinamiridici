@@ -5,7 +5,7 @@
     >
         <div v-if="errors.length">
             <strong class="sign-up-form__errors-heading">
-                Please correct the following error(s):
+                {{ $t('sign-up.errors-heading') }}
             </strong>
             <ul>
                 <li v-for="error in errors" v-bind:key="error">
@@ -16,38 +16,38 @@
 
         <div id="sign-up-form-wrapper">
             <div class="sign-up-form__label">
-                <label for="email">Email</label>
+                <label for="email">{{ $t('sign-up.email-label') }}</label>
             </div>
             <TextInput class="sign-up-form__input" v-model="email" identifier="email" type="email" />
 
             <div class="sign-up-form__label">
-                <label for="password">Password</label>
+                <label for="password">{{ $t('sign-up.password-label') }}</label>
             </div>
             <TextInput class="sign-up-form__input" v-model="password" identifier="password" type="password" />
 
             <div class="sign-up-form__label">
-                <label for="terms-and-conditions">I agree with terms and conditions</label>
+                <label for="terms-and-conditions">{{ $t('sign-up.terms-label') }}</label>
             </div>
             <div class="sign-up-form__input">
                 <Checkbox v-model="termsAndConditions" name="terms-and-conditions" identifier="terms-and-conditions"/>
             </div>
 
             <div class="sign-up-form__label">
-                <label for="personal-data-processing">I agree <a>processing of my personal data</a></label>
+                <label for="personal-data-processing">{{ $t('sign-up.processing-label') }}</label>
             </div>
             <div class="sign-up-form__input">
                 <Checkbox v-model="personalDataProcessing" name="personal-data-processing" identifier="personal-data-processing"/>
             </div>
 
             <div class="sign-up-form__label">
-                <label for="email-notifications">I want to recieve email notifications</a></label>
+                <label for="email-notifications">{{ $t('sign-up.notifications-label') }}</label>
             </div>
             <div class="sign-up-form__input">
                 <Checkbox v-model="emailNotifications" name="email-notifications" identifier="email-notifications"/>
             </div>
         </div>
 
-        <Submit value="Finished" class="sign-up-form__button"/>
+        <Submit :value="$t('sign-up.finished-button-label') " class="sign-up-form__button"/>
     </form>
 </template>
 
@@ -77,16 +77,16 @@ export default {
       this.errors = [];
 
       if (!this.email) {
-        this.errors.push('Email required.');
+        this.errors.push(this.$t('sign-up.email-required'));
       }
       if (!this.password) {
-        this.errors.push('Password required.');
+        this.errors.push(this.$t('sign-up.password-required'));
       }
       if (!this.termsAndConditions) {
-        this.errors.push('You must agree to our terms and conditions');
+        this.errors.push(this.$t('sign-up.terms-conditions-required'));
       }
       if (!this.personalDataProcessing) {
-        this.errors.push('You must agree to us processing your personal data');
+        this.errors.push(this.$t('sign-up.data-processing-required'));
       }
 
       e.preventDefault();

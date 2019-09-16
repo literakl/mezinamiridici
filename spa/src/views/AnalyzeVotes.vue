@@ -1,7 +1,8 @@
 <template>
   <div>
-  <h1>Page in development  still</h1>
-
+    <div class="analyze-votes__wrapper">
+      <GroupedBarChart />
+    </div>
     <div class="analyze-votes__wrapper">
         <h2 class="first-group__heading">First Group</h2>
         <h2 class="second-group__heading">Second Group</h2>
@@ -19,6 +20,7 @@ import Button from '@/components/atoms/Button.vue'
 import Radio from '@/components/atoms/Radio.vue'
 import Checkbox from '@/components/atoms/Checkbox.vue'
 import AnalyzeVotesGroup from '@/components/molecules/forms/AnalyzeVotesGroup.vue'
+import GroupedBarChart from '@/components/molecules/charts/GroupedBarChart.vue'
 
 export default {
   name: 'analyze-votes',
@@ -26,7 +28,8 @@ export default {
       Radio,
       Checkbox,
       AnalyzeVotesGroup,
-      Button
+      Button,
+      GroupedBarChart
   },
   methods: {
   },

@@ -4,16 +4,16 @@
       <div class="app__header">
         <div class="app__header-logo-image">
           <router-link to="/">
-            <img alt="Man holding steering wheel" src="./assets/logo.png" >
+            <img :alt="$t('app.logo-alt')" src="./assets/logo.png" >
           </router-link>
         </div>
         <div class="app__header-logo-text">
-          <h1>Between us Drivers</h1>
-          <h2>The only way to discuss traffic problems</h2>
+          <h1>{{ $t('app.name') }}</h1>
+          <h2>{{ $t('app.slogan') }}</h2>
         </div>
         <div class="app__header-sign-in">
-          <router-link to="/sign-up">Sign up</router-link> /
-          <router-link to="/sign-in">Sign in</router-link> /
+          <router-link to="/sign-up">{{ $t('app.sign-up') }}</router-link> /
+          <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link> /
           <router-link to="/profile">Taxikar007</router-link>
         </div>
       </div>
@@ -23,11 +23,11 @@
     </main>
     <footer class="app__footer">
       <ul class="app__footer-link-list">
-        <li class="app__footer-link-list-item">Help</li>
-        <li class="app__footer-link-list-item">Our mission</li>
-        <li class="app__footer-link-list-item">Contact</li>
-        <li class="app__footer-link-list-item">Advertisement</li>
-        <li class="app__footer-link-list-item"c>Archive</li>
+        <li class="app__footer-link-list-item">{{ $t('app.help') }}</li>
+        <li class="app__footer-link-list-item">{{ $t('app.our-mission') }}</li>
+        <li class="app__footer-link-list-item">{{ $t('app.contact') }}</li>
+        <li class="app__footer-link-list-item">{{ $t('app.advertisement') }}</li>
+        <li class="app__footer-link-list-item"c>{{ $t('app.archive') }}</li>
       </ul>
     </footer>
   </div>
