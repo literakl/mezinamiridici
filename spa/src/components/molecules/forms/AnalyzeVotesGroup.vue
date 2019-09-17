@@ -2,40 +2,40 @@
     <div>
         <div class="analyze-votes-group__wrapper">
             <div>
-                <label for="sex">Sex</label>
+                <label :for="'sex' + group">Sex</label>
             </div>
             <div>
-                <Radio v-model="sex" name="sex" identifier="male" text="Male" />
-                <Radio v-model="sex" name="sex" identifier="female" text="Female" />
-            </div>
-
-            <div>
-                <label for="age">Age</label>
-            </div>
-            <div>
-                <Checkbox v-model="ageLessThan25" name="age" identifier="<25" text="<25" />
-                <Checkbox v-model="age26To35" name="age" identifier="26-35" text="26-35" />
-                <Checkbox v-model="age36To50" name="age" identifier="36-50" text="36-50" />
-                <Checkbox v-model="age51To60" name="age" identifier="51-60" text="51-60" />
-                <Checkbox v-model="age61Plus" name="age" identifier="61+" text="61+" />
+                <Radio v-model="sex" :name="'sex' + group" :identifier="'male' + group" text="Male" />
+                <Radio v-model="sex" :name="'sex' + group" :identifier="'female' + group" text="Female" />
             </div>
 
             <div>
-                <label for="driving-for-years">Driving for years</label>
+                <label :for="'age' + group">Age</label>
             </div>
             <div>
-                <Checkbox v-model="drivingFor0To2" name="driving-for-years" identifier="0-2" text="0-2" />
-                <Checkbox v-model="drivingFor2To5" name="driving-for-years" identifier="2-5" text="2-5" />
-                <Checkbox v-model="drivingFor6To10" name="driving-for-years" identifier="6-10" text="6-10" />
-                <Checkbox v-model="drivingFor11Plus" name="driving-for-years" identifier="11+" text="11+" />
+                <Checkbox v-model="ageLessThan25" :name="'age' + group" :identifier="'<25' + group" text="<25" />
+                <Checkbox v-model="age26To35" :name="'age' + group" :identifier="'26-35' + group" text="26-35" />
+                <Checkbox v-model="age36To50" :name="'age' + group" :identifier="'36-50' + group" text="36-50" />
+                <Checkbox v-model="age51To60" :name="'age' + group" :identifier="'51-60' + group" text="51-60" />
+                <Checkbox v-model="age61Plus" :name="'age' + group" :identifier="'61+' + group" text="61+" />
             </div>
 
             <div>
-                <label for="region">Region</label>
+                <label :for="'driving-for-years' + group">Driving for years</label>
+            </div>
+            <div>
+                <Checkbox v-model="drivingFor0To2" :name="'driving-for-years' + group" :identifier="'0-2' + group" text="0-2" />
+                <Checkbox v-model="drivingFor2To5" :name="'driving-for-years' + group" :identifier="'2-5' + group" text="2-5" />
+                <Checkbox v-model="drivingFor6To10" :name="'driving-for-years' + group" :identifier="'6-10' + group" text="6-10" />
+                <Checkbox v-model="drivingFor11Plus" :name="'driving-for-years' + group" :identifier="'11+' + group" text="11+" />
+            </div>
+
+            <div>
+                <label :for="'region' + group">Region</label>
             </div>
             <div>
                 <select
-                    id="region"
+                    :id="'region' + group"
                     v-model="region"
                 >
                     <option value="">Please select</option>
@@ -58,11 +58,11 @@
             </div>
 
             <div>
-                <label for="education">Education</label>
+                <label :for="'education' + group">Education</label>
             </div>
             <div>
                 <select
-                    id="education"
+                    :id="'education' + group"
                     v-model="education"
                 >
                     <option value="">Please select</option>
@@ -73,15 +73,15 @@
             </div>
 
             <div>
-                <label for="vehicle">Vehicle</label>
+                <label :for="'vehicle' + group">Vehicle</label>
             </div>
             <div>
-                <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" />
-                <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" />
-                <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" />
-                <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" />
-                <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" />
-                <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" />
+                <Checkbox v-model="bike" :name="'vehicle' + group" :identifier="'bike' + group" text="Bike" />
+                <Checkbox v-model="car" :name="'vehicle' + group" :identifier="'car' + group" text="Car" />
+                <Checkbox v-model="bus" :name="'vehicle' + group" :identifier="'bus' + group" text="Bus" />
+                <Checkbox v-model="van" :name="'vehicle' + group" :identifier="'van' + group" text="Van" />
+                <Checkbox v-model="truck" :name="'vehicle' + group" :identifier="'truck' + group" text="Truck" />
+                <Checkbox v-model="tramway" :name="'vehicle' + group" :identifier="'tramway' + group" text="Tramway" />
             </div>
         </div>
     </div>
@@ -94,6 +94,9 @@ import Button from '@/components/atoms/Button.vue'
 
 export default {
   name: 'analyze-votes-group',
+  props: {
+      group: String,
+  },
   components: {
       Radio,
       Checkbox,

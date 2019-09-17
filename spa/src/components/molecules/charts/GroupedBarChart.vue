@@ -57,7 +57,7 @@ export default {
 #barchart__table {
   display: block; /* fixes layout wonkiness in FF1.5 */
   position: relative; 
-  width: 500px; 
+  width: 100%; 
   height: 320px;
   margin: 0 0 30px 0;
   padding: 0;
@@ -86,15 +86,15 @@ export default {
 }
 
 #trivial-trouble {
-  left: 100px;
+  left: 25%;
 }
 
 #i-dont-like-it {
-  left: 200px;
+  left: 45%;
 }
 
 #i-hate-it {
-  left: 300px;
+  left: 70%;
   border-right: none;
 }
 
@@ -129,12 +129,13 @@ export default {
 /* Small Mobiles */
 @media all and (max-width: 700px) {
   #barchart__table {
-    width: 320px;
+    width: 100%;
     margin-left: -30px;
   }
 
   #barchart__table th {
-    width: 78px; 
+    width: 180px; 
+    margin-left: -40px;
   }
 
   #barchart__table .bar {
@@ -142,20 +143,24 @@ export default {
     margin-left:25px;
   }
 
+  #barchart__table .second-group {
+    margin-left: 50px;
+  }
+
   #no-problem {
-    left: 0;
+    left: 2%;
   }
 
   #trivial-trouble {
-    left: 80px;
+    left: 30%;
   }
 
   #i-dont-like-it {
-    left: 160px;
+    left: 60%;
   }
 
   #i-hate-it {
-    left: 240px; 
+    left: 90%; 
     border-right: none;
   }
 }
