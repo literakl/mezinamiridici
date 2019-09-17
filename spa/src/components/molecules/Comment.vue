@@ -10,8 +10,8 @@
             +{{mutableUpvotes}} / -{{mutableDownvotes}}
             <button v-on:click="upvote" class="comment__reply-vote-button">+</button>
             <button v-on:click="downvote"  class="comment__reply-vote-button">-</button>
-            <span class="comment__reply-link" v-on:click="reply" v-if="!replying">Reply</span>
-            <span class="comment__reply-link" v-on:click="reply" v-if="replying">Close Reply</span>
+            <span class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
+            <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span>
             <div v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
               <Textarea />
             </div>

@@ -5,17 +5,17 @@
     >
         <div id="complete-profile-form-wrapper">
             <div class="complete-profile-form__label">
-                <label for="nickname">Nickname</label>
+                <label for="nickname">{{ $t('profile.nickname') }}</label>
             </div>
             <TextInput v-model="nickname" identifier="nickname" type="text" />
 
             <div class="complete-profile-form__label">
-                <label for="driving-since">Driving since</label>
+                <label for="driving-since">{{ $t('profile.drivig-since') }}</label>
             </div>
             <TextInput v-model="drivingSince" identifier="driving-since" type="number" />
 
             <div class="complete-profile-form__label">
-                <label for="vehicle">Vehicle</label>
+                <label for="vehicle">{{ $t('profile.vehicle') }}</label>
             </div>
             <div class="complete-profile-form__input">
                 <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" />
@@ -27,7 +27,7 @@
             </div>
 
             <div class="complete-profile-form__label">
-                <label for="sex">Sex</label>
+                <label for="sex">{{ $t('profile.sex') }}</label>
             </div>
             <div class="complete-profile-form__input">
                 <Radio
@@ -44,12 +44,12 @@
             </div>
 
             <div class="complete-profile-form__label">
-                <label for="born-in-year">Born</label>
+                <label for="born-in-year">{{ $t('profile.born') }}</label>
             </div>
             <TextInput v-model="bornInYear" identifier="born-in-year" type="number" />
 
             <div class="complete-profile-form__label">
-                <label for="region">Region</label>
+                <label for="region">{{ $t('profile.region') }}</label>
             </div>
             <div class="complete-profile-form__input">
                 <select
@@ -76,7 +76,7 @@
             </div>
 
             <div class="complete-profile-form__label">
-                <label for="education">Education</label>
+                <label for="education">{{ $t('profile.education') }}</label>
             </div>
             <div class="complete-profile-form__input">
                 <select
@@ -91,7 +91,7 @@
             </div>
 
             <div class="complete-profile-form__label">
-                <label for="share-profile">Share Profile</label>
+                <label for="share-profile">{{ $t('profile.share-profile') }}</label>
             </div>
             <div class="complete-profile-form__input">
                 <Radio
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <Submit value="Finished" />
+        <Submit :value="$t('profile.finish-button')" />
     </form>
 </template>
 

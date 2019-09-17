@@ -4,13 +4,13 @@
       <GroupedBarChart />
     </div>
     <div class="analyze-votes__wrapper">
-        <h2 class="first-group__heading">First Group</h2>
-        <h2 class="second-group__heading">Second Group</h2>
+        <h2 class="first-group__heading">{{ $t('analyze-votes.first-group') }}</h2>
+        <h2 class="second-group__heading">{{ $t('analyze-votes.second-group') }}</h2>
         <AnalyzeVotesGroup group="1" />
         <AnalyzeVotesGroup group="2" />
     </div>
     <div class="analyze-votes__button-wrapper">
-      <Button value="Analyze Votes" />
+      <Button :value="$t('analyze-votes.button')" />
     </div>
   </div>
 </template>

@@ -3,22 +3,22 @@
         <div class="profile">  
             <div class="profile__wrapper">
                 <dl>
-                    <dt>Nickname</dt>
+                    <dt>{{ $t('profile.nickname') }}</dt>
                     <dl>Taxikar007</dl>
 
-                    <dt>Driving for</dt>
+                    <dt>{{ $t('profile.driving-for') }}</dt>
                     <dl>23 years</dl>
 
-                    <dt>Vehicle</dt>
+                    <dt>{{ $t('profile.vehicle') }}</dt>
                     <dl>bike, car</dl>
                     
-                    <dt>Region</dt>
+                    <dt>{{ $t('profile.region') }}</dt>
                     <dl>Praha</dl>
 
-                    <dt>Education</dt>
+                    <dt>{{ $t('profile.education') }}</dt>
                     <dl>High School</dl>
 
-                    <dt>Sex</dt>
+                    <dt>{{ $t('profile.sex') }}</dt>
                     <dl>man</dl>
                 </dl>
             </div>

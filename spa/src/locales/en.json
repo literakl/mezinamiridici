@@ -11,6 +11,21 @@
     "advertisement": "Advertisement",
     "archive": "Archive"
   },
+  "sign-in": {
+    "forgot-password-heading": "Forgot password",
+    "email-reset-description": "Enter your email and we will send you a reset link",
+    "email-placeholder": "Email",
+    "password-placeholder": "password",
+    "reset-password-button": "Reset password",
+    "modal-close-button": "Close",
+    "terms-conditions-required": "You must agree to our terms and conditions",
+    "data-processing-required": "You must agree to us processing your personal data",
+    "sign-up-heading": "Sign up",
+    "sign-up-create-account-heading": "If you don't already have an account, click the button below to create one",
+    "forgot-password-link": "Forgot password?",
+    "sign-in-button": "Sign in",
+    "or": "OR"
+  },
   "sign-up": {
     "heading": "Sign up",
     "body": "You are the single step away from registration. Enter statistical information you want to share. Your votes are anonymous in each poll.",
@@ -22,13 +37,43 @@
     "finished-button-label": "Register",
     "errors-heading": "Please correct the following error(s):",
     "email-required": "Email required",
-    "password-required": "Password required",
-    "terms-conditions-required": "You must agree to our terms and conditions",
-    "data-processing-required": "You must agree to us processing your personal data"
+    "password-required": "Password required"
 
   },
   "complete-profile": {
     "heading": "Welcome to Between us Drivers",
     "subheading": "Complete your profile below"
+  },
+  "analyze-votes": {
+    "first-group": "First group",
+    "second-group": "Second group",
+    "button": "Analyze Votes"
+  },
+  "poll": {
+    "your-vote": "Your vote",
+    "analyze-votes": "Analyze votes",
+    "discussion": "Discussion",
+    "your-say": "What do you want to say about it",
+    "other-polls-button": "Other polls"
+  },
+  "profile": {
+    "nickname": "Nickname",
+    "driving-for": "Driving for",
+    "vehicle": "Vehicle",
+    "region": "Region",
+    "education": "Education",
+    "sec": "Sex",
+    "share-profile": "Share profile",
+    "finish-button": "Finish"
+  },
+  "bar-chart": {
+    "no-problem": "No problem",
+    "trivial-trouble": "Trivial trouble",
+    "i-dont-like-it": "I don't like it",
+    "i-hate-it": "I hate it"
+  },
+  "comment": {
+    "reply": "Reply",
+    "close": "Close"
   }
 }

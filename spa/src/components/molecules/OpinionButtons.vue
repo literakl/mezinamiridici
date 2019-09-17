@@ -5,25 +5,25 @@
             v-on:click="voted('No problem')"
             class="opinion-poll__button opinion-poll__button__no-problem"
         >
-            <img src="@/assets/happy.png" align="middle">No problem
+            <img src="@/assets/happy.png" align="middle">{{ $t('bar-chart.no-problem') }}
         </button>
         <button
             v-on:click="voted('Trivial trouble')"
             class="opinion-poll__button opinion-poll__button-trivial"
         >
-            <img src="@/assets/ok.png">Trivial trouble
+            <img src="@/assets/ok.png">{{ $t('bar-chart.trivial-trouble') }}
         </button>
         <button
             v-on:click="voted('I don\'t like it')"
             class="opinion-poll__button opinion-poll__button-dont-like"
         >
-            <img src="@/assets/slanty.png">I don't like it
+            <img src="@/assets/slanty.png">{{ $t('bar-chart.i-dont-like-it') }}
         </button>
         <button
             v-on:click="voted('I hate it')"
             class="opinion-poll__button opinion-poll__button-hate"
         >
-            <img src="@/assets/angry.png">I hate it
+            <img src="@/assets/angry.png">{{ $t('bar-chart.i-hate-it') }}
         </button>
     </div>
 </template>

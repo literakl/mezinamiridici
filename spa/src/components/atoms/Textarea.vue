@@ -1,7 +1,7 @@
 <template>
-    <div class="poll__discussion-reply-wrapper">
-        <textarea class="poll__discussion-reply-form-textarea"/>
-        <Button class="poll__discussion-reply-send-button" value="Send"/>
+    <div class="atom__textarea-wrapper">
+        <textarea class="atom__textarea-textarea"/>
+        <Button class="atom__textarea-send-button" value="Send"/>
     </div>
 </template>
 
@@ -17,31 +17,31 @@ export default {
 </script>
 
 <style scoped>
-.poll__discussion-reply-wrapper {
+.atom__textarea-wrapper {
   grid-template-columns: 1fr;
   display: grid;
 }
 
-.poll__discussion-reply-form-textarea {
+.atom__textarea-textarea {
   height: 100px;
   border: 1px solid black;
   resize: none;
 }
 
-.poll__discussion-reply-send-button {
+.atom__textarea-send-button {
   margin-top: 20px;
 }
 
 @media all and (min-width: 850px) {
-  .poll__discussion-reply-wrapper {
+  .atom__textarea-wrapper {
     grid-template-columns: 1fr 0.4fr;
     width: 50%;
   }
-  .poll__discussion-reply-form-textarea {
+  .atom__textarea-textarea {
     grid-column: 1 / span 2
   }
 
-  .poll__discussion-reply-send-button {
+  .atom__textarea-send-button {
     grid-column: 2 / span 2;
   }
 }

@@ -9,7 +9,7 @@
                     <td class="second-group bar" v-bind:style="(voted === 'No problem') ? 'height: 200px; background-color: #ffd302' : 'height: 200px;'">  
                         <p>50%</p>
                     </td>
-                    <th scope="row">No Problem</th>
+                    <th scope="row">{{ $t('bar-chart.no-problem') }}</th>
                 </tr>
                 <tr id="trivial-trouble">
                     <td class="first-group bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: 206px; background-color: #ffd302' : 'height: 206px;'">
@@ -18,7 +18,7 @@
                     <td class="second-group bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: 10px; background-color: #ffd302' : 'height: 10px;'">
                         <p>10%</p>
                     </td>
-                    <th scope="row">Trivial Trouble</th>
+                    <th scope="row">{{ $t('bar-chart.trivial-trouble') }}</th>
                 </tr>
                 <tr id="i-dont-like-it">
                     <td class="first-group bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: 300px; background-color: #ffd302' : 'height: 300px;'">
@@ -27,7 +27,7 @@
                     <td class="second-group bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: 200px; background-color: #ffd302' : 'height: 200px;'">
                         <p>50%</p>
                     </td>
-                    <th scope="row">I don't like it</th>
+                    <th scope="row">{{ $t('bar-chart.i-dont-like-it') }}</th>
                 </tr>
                 <tr id="i-hate-it">
                     <td class="first-group bar" v-bind:style="(voted === 'I hate it') ? 'height: 110px; background-color: #ffd302' : 'height: 110px;'">
@@ -36,7 +36,7 @@
                     <td class="second-group bar" v-bind:style="(voted === 'I hate it') ? 'height: 170px; background-color: #ffd302' : 'height: 170px;'">
                         <p>50%</p>
                     </td>
-                    <th scope="row">I hate it</th>
+                    <th scope="row">{{ $t('bar-chart.i-hate-it') }}</th>
                 </tr>
             </tbody>
         </table>
@@ -129,8 +129,8 @@ export default {
 /* Small Mobiles */
 @media all and (max-width: 700px) {
   #barchart__table {
-    width: 100%;
-    margin-left: -30px;
+    width: 90%;
+    margin-left: -20px;
   }
 
   #barchart__table th {
@@ -166,7 +166,7 @@ export default {
 }
 
 /* Desktop */
-@media all and (min-width: 970px) {
+@media all and (min-width: 850px) {
   #barchart__table {
     width: 100%;
     margin-left: 10%;

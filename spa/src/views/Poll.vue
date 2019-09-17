@@ -10,7 +10,7 @@
         <div v-if="mutableVote">
           <div class="poll__chart-wrapper">
             <h2 class="poll__chart-wrapper-vote">
-              Your vote: 
+              {{ $t('poll.your-vote') }}
               <span class="vote-text">{{mutableVote}}</span>
             </h2>
 
@@ -19,7 +19,7 @@
             </div>
 
             <div class="poll__chart-wrapper-analyze-votes-button">
-              <Button value="Analyze votes" @clicked="redirectToAnalyzeVotes" />
+              <Button :value="$t('poll.analyze-votes')" @clicked="redirectToAnalyzeVotes" />
             </div>
           </div>
         </div>
@@ -32,8 +32,8 @@
 
     <div class="poll__discussion-break-out">
       <div class="poll__discussion-wrapper">
-        <h2>Discussion ({{comments.length}})</h2>
-        <h3>What do you want to say about it?</h3>
+        <h2>{{ $t('poll.discussion') }} ({{comments.length}})</h2>
+        <h3>{{ $t('poll.your-say') }}</h3>
 
         <Textarea />
         
@@ -41,7 +41,7 @@
 
         <div class="poll__other-polls">
           <h2>
-            <Button value="Other polls" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
+            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
             <hr class="poll__double-line" />
             <hr class="poll__double-line" />
           </h2>

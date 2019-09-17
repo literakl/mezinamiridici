@@ -6,25 +6,25 @@
                     <td class="sent bar" v-bind:style="(voted === 'No problem') ? 'height: 101px; background-color: #ffd302' : 'height: 101px;'">  
                         <p>13%</p>
                     </td>
-                    <th scope="row">No Problem</th>
+                    <th scope="row">{{ $t('bar-chart.no-problem') }}</th>
                 </tr>
                 <tr id="trivial-trouble">
                     <td class="sent bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: 206px; background-color: #ffd302' : 'height: 206px;'">
                         <p>40%</p>
                     </td>
-                    <th scope="row">Trivial Trouble</th>
+                    <th scope="row">{{ $t('bar-chart.trivial-trouble') }}</th>
                 </tr>
                 <tr id="i-dont-like-it">
                     <td class="sent bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: 300px; background-color: #ffd302' : 'height: 300px;'">
                         <p>90%</p>
                     </td>
-                    <th scope="row">I don't like it</th>
+                    <th scope="row">{{ $t('bar-chart.i-dont-like-it') }}</th>
                 </tr>
                 <tr id="i-hate-it">
                     <td class="sent bar" v-bind:style="(voted === 'I hate it') ? 'height: 110px; background-color: #ffd302' : 'height: 110px;'">
                         <p>30%</p>
                     </td>
-                    <th scope="row">I hate it</th>
+                    <th scope="row">{{ $t('bar-chart.i-hate-it') }}</th>
                 </tr>
             </tbody>
         </table>
