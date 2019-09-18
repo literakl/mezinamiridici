@@ -25,25 +25,25 @@
             </div>
             <TextInput class="sign-up-form__input" v-model="password" identifier="password" type="password" />
 
-            <div class="sign-up-form__label">
-                <label for="terms-and-conditions">{{ $t('sign-up.terms-label') }}</label>
-            </div>
             <div class="sign-up-form__input">
                 <Checkbox v-model="termsAndConditions" name="terms-and-conditions" identifier="terms-and-conditions"/>
             </div>
-
             <div class="sign-up-form__label">
-                <label for="personal-data-processing">{{ $t('sign-up.processing-label') }}</label>
+                <label for="terms-and-conditions">{{ $t('sign-up.terms-label') }}</label>
             </div>
+
             <div class="sign-up-form__input">
                 <Checkbox v-model="personalDataProcessing" name="personal-data-processing" identifier="personal-data-processing"/>
             </div>
-
             <div class="sign-up-form__label">
-                <label for="email-notifications">{{ $t('sign-up.notifications-label') }}</label>
+                <label for="personal-data-processing">{{ $t('sign-up.processing-label') }}</label>
             </div>
+
             <div class="sign-up-form__input">
                 <Checkbox v-model="emailNotifications" name="email-notifications" identifier="email-notifications"/>
+            </div>
+            <div class="sign-up-form__label">
+                <label for="email-notifications">{{ $t('sign-up.notifications-label') }}</label>
             </div>
         </div>
 
