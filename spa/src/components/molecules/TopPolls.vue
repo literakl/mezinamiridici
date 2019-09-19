@@ -4,7 +4,7 @@
         <div v-for="poll in polls" v-bind:key="poll.id">
             <hr />
             <h4>
-                <router-link :to="{ name: 'poll', params: { id: poll.id }}">
+                <router-link :to="{ name: 'poll', params: { id: poll.pollId }}">
                 {{poll.text}}
                 </router-link> &middot; 138 Votes &middot; 9 comments
             </h4>
@@ -13,12 +13,20 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import polls from '@/static-data/polls.json';
+
 export default {
   name: 'TopPolls',
   data: () => ({
-    polls: polls.polls
+    polls: []
   }),
+  mounted () {
+    axios
+      .get(this.apiEndpoint + '/polls')
+      .then(polls => (this.polls = polls.data))
+  }
 };
 </script>
 

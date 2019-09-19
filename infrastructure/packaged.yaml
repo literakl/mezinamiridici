@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  BUDAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: production
+  BUDGetPollHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetPollHandler
+      Handler: src/handlers/polls/getPoll.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable
+      CodeUri: s3://between-us-drivers-infrastructure/398ba437235f20ed64abe5e650b0b867
+  BUDGetPollsHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetPollsHandler
+      Handler: src/handlers/polls/getPolls.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable
+      CodeUri: s3://between-us-drivers-infrastructure/398ba437235f20ed64abe5e650b0b867
+  BUDPollsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: BUDPollsTable
+      AttributeDefinitions:
+      - AttributeName: pollId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: pollId
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

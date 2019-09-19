@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import Heading from '@/components/molecules/Heading.vue'
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue'
 import BarChart from '@/components/molecules/charts/BarChart.vue'
@@ -73,8 +75,13 @@ export default {
     return {
         mutableVote: this.vote,
         comments: comments.comments,
-        poll: polls.polls.find(poll => poll.id === parseInt(this.id))
+        poll: {}
     };
+  },
+  mounted () {
+    axios
+      .get(this.apiEndpoint + '/polls/' + this.id)
+      .then(poll => (this.poll = poll.data))
   },
   methods: {
     voted: function(vote){
