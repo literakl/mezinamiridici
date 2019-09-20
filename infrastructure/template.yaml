@@ -5,6 +5,11 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: production
+      MethodSettings:
+        - ResourcePath: /
+          CachingEnabled: true
+          CacheTtlInSeconds: 600
+          HttpMethod: "GET"
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -18,11 +23,6 @@ Resources:
             Path: /v1/polls/{pollId}
             Method: Get
             RestApiId: !Ref BUDAPI
-            MethodSettings:
-              - ResourcePath: /
-                CachingEnabled: true
-                CacheTtlInSeconds: 600
-                HttpMethod: "GET"
       Policies:
         - Version: '2012-10-17'
           Statement:
