@@ -8,7 +8,7 @@ Resources:
       CacheClusterEnabled: true
       CacheClusterSize: '0.5'
       MethodSettings:
-        - ResourcePath: /v1/polls/{pollId}
+        - ResourcePath: /v1/polls
           CachingEnabled: true
           CacheTtlInSeconds: 600
           HttpMethod: "GET"
