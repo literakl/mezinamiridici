@@ -12,6 +12,10 @@ Resources:
           CachingEnabled: true
           CacheTtlInSeconds: 600
           HttpMethod: "GET"
+        - ResourcePath: /v1/polls/{pollId}
+          CachingEnabled: true
+          CacheTtlInSeconds: 600
+          HttpMethod: "GET"
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
