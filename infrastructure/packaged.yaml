@@ -12,6 +12,10 @@ Resources:
         CachingEnabled: true
         CacheTtlInSeconds: 600
         HttpMethod: GET
+      - ResourcePath: /v1/polls/{pollId}
+        CachingEnabled: true
+        CacheTtlInSeconds: 600
+        HttpMethod: GET
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -34,7 +38,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable
-      CodeUri: s3://between-us-drivers-infrastructure/18553323465a8788676c9bd79dfd4e28
+      CodeUri: s3://between-us-drivers-infrastructure/9d8aa217179d2cf5bc9b1d2473a57c2b
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -57,7 +61,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable
-      CodeUri: s3://between-us-drivers-infrastructure/18553323465a8788676c9bd79dfd4e28
+      CodeUri: s3://between-us-drivers-infrastructure/9d8aa217179d2cf5bc9b1d2473a57c2b
   BUDPollsTable:
     Type: AWS::DynamoDB::Table
     Properties:

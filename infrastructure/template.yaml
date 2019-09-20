@@ -36,7 +36,7 @@ Resources:
               Action:
                 - 'dynamodb:GetItem'
               Resource:
-                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable"
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable"
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -57,16 +57,81 @@ Resources:
               Action:
                 - 'dynamodb:Scan'
               Resource:
-                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable"
-  BUDPollsTable:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable"
+  BUDPollTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: BUDPollsTable
+      TableName: BUDPollTable
       AttributeDefinitions:
         - AttributeName: pollId
           AttributeType: S
       KeySchema:
         - AttributeName: pollId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  BUDUserTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: BUDUserTable
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  BUDUserVoteTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: BUDVoteTable
+      AttributeDefinitions:
+        - AttributeName: voteId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: voteId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1 
+  BUDUserVoteTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: BUDUserVoteTable
+      AttributeDefinitions:
+        - AttributeName: userVoteId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userVoteId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1 
+  BUDCommentTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: BUDCommentTable
+      AttributeDefinitions:
+        - AttributeName: commentId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: commentId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1 
+  BUDCommentVoteTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: BUDCommentVoteTable
+      AttributeDefinitions:
+        - AttributeName: commentVoteId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: commentVoteId
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1

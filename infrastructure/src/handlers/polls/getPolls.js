@@ -20,7 +20,7 @@ const responses = {
 
 exports.handler = (payload, context, callback) => {
     dynamodb.scan({
-        "TableName": "BUDPollsTable",
+        "TableName": "BUDPollTable",
     }, (err, data) => {
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
     });
