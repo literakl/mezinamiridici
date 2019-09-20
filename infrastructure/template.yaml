@@ -7,10 +7,10 @@ Resources:
       StageName: production
       CacheClusterEnabled: true
       CacheClusterSize: '0.5'
+      CacheTtlInSeconds: 600
       MethodSettings:
         - ResourcePath: /
           CachingEnabled: true
-          CacheTtlInSeconds: 600
           HttpMethod: "GET"
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
