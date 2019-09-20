@@ -4,7 +4,7 @@
       Ads
     </div>
     <div id="home__content">
-      <Heading :title="polls[0].text"/>
+      <Heading :title="poll.text"/>
       <OpinionButtons @voted="voted" />
       <TopPolls />
     </div>
@@ -12,11 +12,11 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import TopPolls from '@/components/molecules/TopPolls.vue';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
-
-import polls from '@/static-data/polls.json';
 
 export default {
   name: 'home',
@@ -26,14 +26,22 @@ export default {
     OpinionButtons,
   },
   data: () => ({
-    polls: polls.polls
+    poll: {}
   }),
+  created () {
+    axios
+      .get(this.apiEndpoint + '/polls')
+      .then(polls => {
+          this.poll = polls.data[0];
+          this.loading = false;
+      })
+  },
   methods: {
     voted(category) {
       this.$router.push({ 
         name: 'poll', 
         params: { 
-          id: "1", 
+          id: this.poll.pollId, 
           vote: category
         } 
       });

@@ -1,6 +1,7 @@
 <template>
     <div>
         <h3>Top polls</h3>
+        <p v-if="loading">Loading...</p>
         <div v-for="poll in polls" v-bind:key="poll.id">
             <hr />
             <h4>
@@ -20,12 +21,16 @@ import polls from '@/static-data/polls.json';
 export default {
   name: 'TopPolls',
   data: () => ({
-    polls: []
+    polls: [],
+    loading: true
   }),
-  mounted () {
+  created () {
     axios
       .get(this.apiEndpoint + '/polls')
-      .then(polls => (this.polls = polls.data))
+      .then(polls => {
+          this.polls = polls.data;
+          this.loading = false;
+      })
   }
 };
 </script>

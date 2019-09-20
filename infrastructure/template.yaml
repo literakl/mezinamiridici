@@ -18,6 +18,11 @@ Resources:
             Path: /v1/polls/{pollId}
             Method: Get
             RestApiId: !Ref BUDAPI
+            MethodSettings:
+              - ResourcePath: /
+                CachingEnabled: true
+                CacheTtlInSeconds: 600
+                HttpMethod: "GET"
       Policies:
         - Version: '2012-10-17'
           Statement:
