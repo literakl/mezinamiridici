@@ -5,6 +5,11 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: production
+      MethodSettings:
+      - ResourcePath: /
+        CachingEnabled: true
+        CacheTtlInSeconds: 600
+        HttpMethod: GET
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -19,11 +24,6 @@ Resources:
             Method: Get
             RestApiId:
               Ref: BUDAPI
-            MethodSettings:
-            - ResourcePath: /
-              CachingEnabled: true
-              CacheTtlInSeconds: 600
-              HttpMethod: GET
       Policies:
       - Version: '2012-10-17'
         Statement:
@@ -32,7 +32,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable
-      CodeUri: s3://between-us-drivers-infrastructure/2e0bcf28b51136b62ba10e2d6659a4c2
+      CodeUri: s3://between-us-drivers-infrastructure/26e33cc14a73609ea6214a3aaeb5fc28
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -55,7 +55,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollsTable
-      CodeUri: s3://between-us-drivers-infrastructure/2e0bcf28b51136b62ba10e2d6659a4c2
+      CodeUri: s3://between-us-drivers-infrastructure/26e33cc14a73609ea6214a3aaeb5fc28
   BUDPollsTable:
     Type: AWS::DynamoDB::Table
     Properties:

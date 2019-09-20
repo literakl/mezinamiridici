@@ -5,6 +5,8 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: production
+      CacheClusterEnabled: true
+      CacheClusterSize: '0.5'
       MethodSettings:
         - ResourcePath: /
           CachingEnabled: true
