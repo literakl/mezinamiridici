@@ -11,7 +11,7 @@ Vue.mixin({
   data: function () {
     return {
       get apiEndpoint() {
-        return 'https://4b3uw59rt9.execute-api.eu-west-1.amazonaws.com/production/v1';
+        return 'https://5z18g75lu4.execute-api.eu-west-1.amazonaws.com/production/v1';
       }
     }
   }

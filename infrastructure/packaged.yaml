@@ -20,7 +20,7 @@ Resources:
         swagger: '2.0'
         info:
           version: '1'
-          title: kodo
+          title: between-us-drivers
         basePath: /v1
         schemes:
         - https
@@ -73,7 +73,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/f55871f479b126befcbf26769d784efc
+      CodeUri: s3://between-us-drivers-infrastructure/86c395e969a02113c58b4b070984d699
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -96,7 +96,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/f55871f479b126befcbf26769d784efc
+      CodeUri: s3://between-us-drivers-infrastructure/86c395e969a02113c58b4b070984d699
   BUDPollTable:
     Type: AWS::DynamoDB::Table
     Properties:
