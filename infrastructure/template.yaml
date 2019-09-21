@@ -24,7 +24,7 @@ Resources:
           basePath: "/v1"
           schemes:
             - "https"
-          paths:
+          paths:  
             /v1/polls:
               get:
                 responses: {}
