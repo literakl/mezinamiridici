@@ -36,6 +36,13 @@ Resources:
           /v1/polls/{pollId}:
             get:
               responses: {}
+              produces:
+              - application/json
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
               x-amazon-apigateway-integration:
                 uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollHandler/invocations
                 passthroughBehavior: when_no_match
@@ -66,7 +73,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/7a31daa53eec49edcae6bdb2c9fc869b
+      CodeUri: s3://between-us-drivers-infrastructure/ae9718aedc8a3c60b2ffbb6fc45635b8
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -89,7 +96,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/7a31daa53eec49edcae6bdb2c9fc869b
+      CodeUri: s3://between-us-drivers-infrastructure/ae9718aedc8a3c60b2ffbb6fc45635b8
   BUDPollTable:
     Type: AWS::DynamoDB::Table
     Properties:
