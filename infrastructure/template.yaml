@@ -20,7 +20,7 @@ Resources:
           swagger: "2.0"
           info:
             version: "1"
-            title: "kodo"
+            title: "between-us-drivers"
           basePath: "/v1"
           schemes:
             - "https"
