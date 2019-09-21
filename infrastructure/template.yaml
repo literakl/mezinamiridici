@@ -24,7 +24,7 @@ Resources:
           basePath: "/v1"
           schemes:
             - "https"
-          paths:  
+          paths: 
             /v1/polls:
               get:
                 responses: {}
@@ -36,6 +36,13 @@ Resources:
             /v1/polls/{pollId}:
               get:
                 responses: {}
+                produces:
+                - "application/json"
+                parameters:
+                - name: "pollId"
+                  in: "path"
+                  required: true
+                  type: "string"
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollHandler/invocations"
                   passthroughBehavior: "when_no_match"
