@@ -50,6 +50,13 @@ Resources:
       FunctionName: "BUDGetPollHandler"
       Handler: src/handlers/polls/getPoll.handler
       Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/polls/{pollId}
+            Method: Get
+            RestApiId: !Ref BUDAPI
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -64,6 +71,13 @@ Resources:
       FunctionName: "BUDGetPollsHandler"
       Handler: src/handlers/polls/getPolls.handler
       Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/polls
+            Method: Get
+            RestApiId: !Ref BUDAPI
       Policies:
         - Version: '2012-10-17'
           Statement:
