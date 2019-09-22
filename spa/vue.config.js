@@ -24,6 +24,11 @@ module.exports = {
       fallbackLocale: 'en',
       localeDir: 'locales',
       enableInSFC: true
+    },
+    pwa: {
+      manifestOptions: {
+        "start_url":" /"
+      }
     }
   },
 };

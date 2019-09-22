@@ -16,6 +16,9 @@ Resources:
         CachingEnabled: true
         CacheTtlInSeconds: 600
         HttpMethod: GET
+      - ResourcePath: /v1/users
+        CachingEnabled: false
+        HttpMethod: POST
       DefinitionBody:
         swagger: '2.0'
         info:
@@ -51,6 +54,14 @@ Resources:
                 cacheNamespace: cs0i4n
                 cacheKeyParameters:
                 - method.request.path.pollId
+          /v1/users:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreateUserHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -73,7 +84,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/3cbe6939f89583a4a700e8517af5389c
+      CodeUri: s3://between-us-drivers-infrastructure/6090d8aadc5f5198b8da0dae5adeff28
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -96,7 +107,30 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/3cbe6939f89583a4a700e8517af5389c
+      CodeUri: s3://between-us-drivers-infrastructure/6090d8aadc5f5198b8da0dae5adeff28
+  BUDCreateUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDCreateUserHandler
+      Handler: src/handlers/users/createUser.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+      CodeUri: s3://between-us-drivers-infrastructure/6090d8aadc5f5198b8da0dae5adeff28
   BUDPollTable:
     Type: AWS::DynamoDB::Table
     Properties:
