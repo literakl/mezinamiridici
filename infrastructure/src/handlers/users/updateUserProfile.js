@@ -21,11 +21,13 @@ const responses = {
 };
 
 exports.handler = (payload, context, callback) => {
-    const { userId, nickname, drivingSince, vehicle, sex, born, region, education, shareProfile } = JSON.parse(payload.body);
+    const { nickname, drivingSince, vehicle, sex, born, region, education, shareProfile } = JSON.parse(payload.body);
 
     dynamodb.update({
         TableName: 'BUDUserTable',
-        Key: { userId },
+        Key: { 
+            userId: payload.pathParameters.userId
+        },
         UpdateExpression: "set nickanme = :nickname, drivingSince = :drivingSince, vehicle = :vehicle, sex = :sex, born = :born, region = :region, education = :education, shareProfile = :shareProfile",
         ExpressionAttributeValues: {
             ":nickname": nickname,
