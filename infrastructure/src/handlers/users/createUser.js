@@ -17,7 +17,10 @@ const response = (status, body) => {
 
 const responses = {
     'OK_200': (data, callback) => callback(null, response(200, data)),
-    'INTERNAL_SERVER_ERROR_500': (err, callback) => callback(null, response(500, err))
+    'INTERNAL_SERVER_ERROR_500': (err, callback) => {
+        console.log(err);
+        return callback(null, response(500, err))
+    }
 };
 
 exports.handler = (payload, context, callback) => {
