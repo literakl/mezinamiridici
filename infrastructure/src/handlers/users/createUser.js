@@ -24,6 +24,7 @@ const responses = {
 };
 
 exports.handler = (payload, context, callback) => {
+    console.log(payload);
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
 
     const salt = bcrypt.genSaltSync(10);
@@ -41,6 +42,7 @@ exports.handler = (payload, context, callback) => {
         },
         TableName: "BUDUserTable"
     }, (err, data) => {
+        console.log(err);
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
     });
 };

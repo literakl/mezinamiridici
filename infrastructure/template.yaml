@@ -136,7 +136,12 @@ Resources:
                 - 'dynamodb:PutItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
-    BUDAuthorizeUserHandler:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
+  BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: "BUDAuthorizeUserHandler"
@@ -157,6 +162,11 @@ Resources:
                 - 'dynamodb:Query'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:Query'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
   BUDPollTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
@@ -177,23 +187,30 @@ Resources:
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
+        - AttributeName: email
+          AttributeType: S
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
+        - AttributeName: email
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      LocalSecondaryIndexes: 
-        - 
-          IndexName: "passwordByEmail"
+      GlobalSecondaryIndexes: 
+        - IndexName: "PasswordFromEmailIndex"
           KeySchema: 
-            - 
-              AttributeName: "email"
+            - AttributeName: "email"
               KeyType: "HASH"
+            - AttributeName: "userId"
+              KeyType: "RANGE"
           Projection: 
             NonKeyAttributes: 
               - "password"
             ProjectionType: "INCLUDE"
+          ProvisionedThroughput: 
+            ReadCapacityUnits: "1"
+            WriteCapacityUnits: "1"
   BUDUserVoteTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:

@@ -1,6 +1,9 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const SECRET = 'betweenusdrivers2019';
 
 const response = (status, body) => {
     return {
@@ -25,6 +28,7 @@ exports.handler = (payload, context, callback) => {
 
     dynamodb.query({
         "TableName": "BUDUserTable",
+        "IndexName": "PasswordFromEmailIndex",
         "KeyConditionExpression": "#email = :email",
         "ExpressionAttributeNames": {
             "#email": "email"
@@ -38,10 +42,17 @@ exports.handler = (payload, context, callback) => {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback);
         }
 
-        if(bcrypt.compareSync(password, data.Item.password)){
+        const storedPassword = data.Items.find(item => item.email === email).password;
+
+        if(bcrypt.compareSync(password, storedPassword)){
+            const token = jwt.sign({
+                email
+            }, SECRET);
+
             return responses.OK_200({
-                "authorized": true
+                token
             }, callback)
+
         };
 
         return responses.FORBIDDEN_403(callback);
