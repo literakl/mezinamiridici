@@ -61,7 +61,7 @@ Resources:
                   cacheKeyParameters:
                   - "method.request.path.pollId"
             /v1/users:
-              patch:
+              post:
                 responses: {}
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDUpdateUserHandler/invocations"
@@ -69,7 +69,7 @@ Resources:
                   httpMethod: "POST"
                   type: "aws_proxy"
             /v1/users/{userId}:
-              post:
+              patch:
                 responses: {}
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreateUserHandler/invocations"
