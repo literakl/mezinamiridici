@@ -95,7 +95,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/73da983dc94545c79680c9407c75e9d1
+      CodeUri: s3://between-us-drivers-infrastructure/987bfeea4ee607154446bd9a79c88a75
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -118,7 +118,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/73da983dc94545c79680c9407c75e9d1
+      CodeUri: s3://between-us-drivers-infrastructure/987bfeea4ee607154446bd9a79c88a75
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -141,7 +141,7 @@ Resources:
           - dynamodb:Query
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/73da983dc94545c79680c9407c75e9d1
+      CodeUri: s3://between-us-drivers-infrastructure/987bfeea4ee607154446bd9a79c88a75
     BUDAuthorizeUserHandler: null
   BUDPollTable:
     Type: AWS::DynamoDB::Table
@@ -165,6 +165,8 @@ Resources:
         AttributeType: S
       KeySchema:
       - AttributeName: userId
+        KeyType: HASH
+      - AttributeName: email
         KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1

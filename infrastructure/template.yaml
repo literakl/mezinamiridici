@@ -180,11 +180,20 @@ Resources:
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
-        - AttributeName: email
-          KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+      LocalSecondaryIndexes: 
+        - 
+          IndexName: "passwordByEmail"
+          KeySchema: 
+            - 
+              AttributeName: "email"
+              KeyType: "HASH"
+          Projection: 
+            NonKeyAttributes: 
+              - "password"
+            ProjectionType: "INCLUDE"
   BUDUserVoteTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
