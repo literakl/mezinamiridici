@@ -20,7 +20,7 @@ const responses = {
 
 exports.handler = (payload, context, callback) => {
     dynamodb.get({
-        "TableName": "BUDPollsTable",
+        "TableName": "BUDPollTable",
         "Key": {
             "pollId": payload.pathParameters.pollId
         },
