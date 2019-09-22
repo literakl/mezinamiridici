@@ -33,6 +33,7 @@ exports.handler = (payload, context, callback) => {
         Item: {
             "userId": uuidv4(),
             "password": passwordHash,
+            verified: false,
             email,
             tandcs,
             dataProcessing,
