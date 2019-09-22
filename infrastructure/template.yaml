@@ -180,6 +180,8 @@ Resources:
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
+        - AttributeName: email
+          KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
