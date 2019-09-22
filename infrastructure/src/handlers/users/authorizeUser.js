@@ -23,10 +23,14 @@ const responses = {
 exports.handler = (payload, context, callback) => {
     const { email, password } = JSON.parse(payload.body);
 
-    dynamodb.get({
+    dynamodb.query({
         "TableName": "BUDUserTable",
-        "Key": {
-            "email": email
+        "KeyConditionExpression": "#email = :email",
+        "ExpressionAttributeNames": {
+            "#email": "email"
+        },
+        "ExpressionAttributeValues": {
+            ":email": email
         },
         "ConsistentRead": false,
     }, (err, data) => {
