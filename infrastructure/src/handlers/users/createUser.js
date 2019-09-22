@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+const uuidv4 = require('uuid/v4');
 
 const response = (status, body) => {
     return {
@@ -19,12 +20,19 @@ const responses = {
 };
 
 exports.handler = (payload, context, callback) => {
-    dynamodb.get({
-        "TableName": "BUDPollsTable",
-        "Key": {
-            "pollId": payload.pathParameters.pollId
+    console.log(payload);
+    const { email, password, tandcs, dataProcessing, marketing } = payload;
+
+    dynamodb.put({
+        Item: {
+            "userId": uuidv4(),
+            email,
+            password,
+            tandcs,
+            dataProcessing,
+            marketing
         },
-        "ConsistentRead": false,
+        TableName: "BUDUserTable"
     }, (err, data) => {
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
     });
