@@ -21,7 +21,7 @@ const responses = {
 
 exports.handler = (payload, context, callback) => {
     console.log(payload);
-    const { email, password, tandcs, dataProcessing, marketing } = payload;
+    const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
 
     dynamodb.put({
         Item: {
