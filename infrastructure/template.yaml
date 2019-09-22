@@ -154,7 +154,7 @@ Resources:
           Statement:
             - Effect: Allow
               Action:
-                - 'dynamodb:GetItem'
+                - 'dynamodb:Query'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
   BUDPollTable:
