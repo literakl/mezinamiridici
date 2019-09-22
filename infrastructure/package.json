@@ -2,7 +2,7 @@
   "name": "between-us-drivers-infrastructure",
   "version": "1.0.0",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "uuid": "^3.3.3"
   }
 }

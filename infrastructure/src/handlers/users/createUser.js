@@ -1,8 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
-const bcrypt = require('bcrypt');
-
+var bcrypt = require('bcryptjs');
 const response = (status, body) => {
     return {
         "statusCode": status,
@@ -27,24 +26,20 @@ exports.handler = (payload, context, callback) => {
     console.log(payload);
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
 
-    const saltRounds = 10;
-    bcrypt.hash(password, saltRounds, (err, passwordHash) => {
-        if(err){
-            return responses.INTERNAL_SERVER_ERROR_500(err, callback);
-        }
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(password, salt);
 
-        dynamodb.put({
-            Item: {
-                "userId": uuidv4(),
-                "password": passwordHash,
-                email,
-                tandcs,
-                dataProcessing,
-                marketing
-            },
-            TableName: "BUDUserTable"
-        }, (err, data) => {
-            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
-        });
+    dynamodb.put({
+        Item: {
+            "userId": uuidv4(),
+            "password": passwordHash,
+            email,
+            tandcs,
+            dataProcessing,
+            marketing
+        },
+        TableName: "BUDUserTable"
+    }, (err, data) => {
+        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
     });
 };
