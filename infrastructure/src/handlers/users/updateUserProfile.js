@@ -21,22 +21,23 @@ const responses = {
 };
 
 exports.handler = (payload, context, callback) => {
-    const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
+    const { userId, nickname, drivingSince, vehicle, sex, born, region, education, shareProfile } = JSON.parse(payload.body);
 
-    const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync(password, salt);
-
-    dynamodb.put({
-        Item: {
-            "userId": uuidv4(),
-            "password": passwordHash,
-            verified: false,
-            email,
-            tandcs,
-            dataProcessing,
-            marketing
+    dynamodb.update({
+        TableName: 'BUDUserTable',
+        Key: { userId },
+        UpdateExpression: "set nickanme = :nickname, drivingSince = :drivingSince, vehicle = :vehicle, sex = :sex, born = :born, region = :region, education = :education, shareProfile = :shareProfile",
+        ExpressionAttributeValues: {
+            ":nickname": nickname,
+            ":drivingSince": drivingSince,
+            ":vehicle": vehicle,
+            ":sex": sex,
+            ":born": born,
+            ":region": region,
+            ":education": education,
+            ":shareProfile": shareProfile,
         },
-        TableName: "BUDUserTable"
+        ReturnValues: "UPDATED_NEW"
     }, (err, data) => {
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
     });
