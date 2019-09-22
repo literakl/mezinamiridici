@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 var bcrypt = require('bcryptjs');
+
 const response = (status, body) => {
     return {
         "statusCode": status,
@@ -23,7 +24,6 @@ const responses = {
 };
 
 exports.handler = (payload, context, callback) => {
-    console.log(payload);
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
 
     const salt = bcrypt.genSaltSync(10);

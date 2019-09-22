@@ -19,6 +19,9 @@ Resources:
         - ResourcePath: /v1/users
           CachingEnabled: false
           HttpMethod: "POST"
+        - ResourcePath: /v1/authorizeUser
+          CachingEnabled: false
+          HttpMethod: "POST"
       DefinitionBody:
           swagger: "2.0"
           info:
@@ -59,6 +62,14 @@ Resources:
                 responses: {}
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreateUserHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "POST"
+                  type: "aws_proxy"
+            /v1/authorizeUser:
+              post:
+                responses: {}
+                x-amazon-apigateway-integration:
+                  uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDAuthorizeUserHandler/invocations"
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
@@ -123,6 +134,27 @@ Resources:
             - Effect: Allow
               Action:
                 - 'dynamodb:PutItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
+    BUDAuthorizeUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDAuthorizeUserHandler"
+      Handler: src/handlers/users/authorizeUser.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/authorizeUser
+            Method: Post
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:GetItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
   BUDPollTable:
