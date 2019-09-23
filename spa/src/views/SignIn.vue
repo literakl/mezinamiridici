@@ -81,7 +81,7 @@ export default {
               localStorage.setItem('userId', response.data.userId);
               this.$router.push('/');
           }else{
-              loginError = true;
+              this.loginError = true;
           }
       }
   }
