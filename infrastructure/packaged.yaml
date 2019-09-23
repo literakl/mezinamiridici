@@ -111,7 +111,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/26363998c25136a31b86fe10e2377a5e
+      CodeUri: s3://between-us-drivers-infrastructure/73422629d92b9d70eec25be550c088dc
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -134,7 +134,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/26363998c25136a31b86fe10e2377a5e
+      CodeUri: s3://between-us-drivers-infrastructure/73422629d92b9d70eec25be550c088dc
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -162,7 +162,7 @@ Resources:
           - dynamodb:PutItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/26363998c25136a31b86fe10e2377a5e
+      CodeUri: s3://between-us-drivers-infrastructure/73422629d92b9d70eec25be550c088dc
   BUDUpdateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -190,7 +190,7 @@ Resources:
           - dynamodb:UpdateItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/26363998c25136a31b86fe10e2377a5e
+      CodeUri: s3://between-us-drivers-infrastructure/73422629d92b9d70eec25be550c088dc
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -218,7 +218,7 @@ Resources:
           - dynamodb:Query
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/26363998c25136a31b86fe10e2377a5e
+      CodeUri: s3://between-us-drivers-infrastructure/73422629d92b9d70eec25be550c088dc
   BUDPollTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -244,8 +244,6 @@ Resources:
       KeySchema:
       - AttributeName: userId
         KeyType: HASH
-      - AttributeName: email
-        KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
@@ -254,12 +252,8 @@ Resources:
         KeySchema:
         - AttributeName: email
           KeyType: HASH
-        - AttributeName: userId
-          KeyType: RANGE
         Projection:
-          NonKeyAttributes:
-          - password
-          ProjectionType: INCLUDE
+          ProjectionType: ALL
         ProvisionedThroughput:
           ReadCapacityUnits: '1'
           WriteCapacityUnits: '1'

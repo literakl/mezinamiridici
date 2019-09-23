@@ -28,8 +28,7 @@ exports.handler = (payload, context, callback) => {
     dynamodb.update({
         TableName: 'BUDUserTable',
         Key: { 
-            "userId": payload.pathParameters.userId,
-            "email": "jacob.jh.clark@googlemail.com"
+            "userId": payload.pathParameters.userId
         },
         UpdateExpression: "set nickanme = :nickname, drivingSince = :drivingSince, vehicle = :vehicle, sex = :sex, born = :born, locationalRegion = :locationalRegion, education = :education, shareProfile = :shareProfile",
         ExpressionAttributeValues: {
