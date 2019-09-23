@@ -29,10 +29,12 @@ export default new Vuex.Store({
   },
   actions: {
     GET_POLLS: async (context, payload) => {
+      context.commit('SET_POLLS', null);
       let { data } = await axios.get(API_ENDPOINT + '/polls');
       context.commit('SET_POLLS', data);
     },
     GET_POLL: async (context, payload) => {
+      context.commit('SET_POLL', null);
       let { data } = await axios.get(API_ENDPOINT + '/polls/' + payload.id);
       context.commit('SET_POLL', data);
     }
