@@ -45,7 +45,6 @@ Resources:
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
-            /v1/polls:
               post:
                 responses: {}
                 x-amazon-apigateway-integration:
