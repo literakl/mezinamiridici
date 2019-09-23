@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div v-if="!poll">
-      Loading...
-    </div>
     <div class="poll__wrapper" v-if="poll">
       <div class="poll__ads">
         Ads

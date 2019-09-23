@@ -33,6 +33,7 @@ export default new Vuex.Store({
       context.commit('SET_POLLS', data);
     },
     GET_POLL: async (context, payload) => {
+      context.commit('SET_POLL', data);
       let { data } = await axios.get(API_ENDPOINT + '/polls/' + payload.id);
       context.commit('SET_POLL', data);
     }
