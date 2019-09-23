@@ -53,6 +53,6 @@ exports.handler = (payload, context, callback) => {
 
         };
 
-        return responses.FORBIDDEN_403(callback);
+        return responses.FORBIDDEN_403(callback, response);
     });
 };
