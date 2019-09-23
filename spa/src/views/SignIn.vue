@@ -77,7 +77,8 @@ export default {
           });
 
           if(response.status === 200){
-              localStorage.setItem('user', response.data);
+              localStorage.setItem('jwt', response.data.token);
+              localStorage.setItem('userId', response.data.userId);
               this.$router.push('/');
           }else{
               loginError = true;
