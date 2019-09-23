@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
 
 const response = (status, body) => {
     return {
@@ -8,7 +7,7 @@ const response = (status, body) => {
         "headers": {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-            "Cache-Control": "private"
+            "Cache-Control": "public, max-age=600"
         },
         "body": JSON.stringify(body.Item),
         "isBase64Encoded": false
@@ -21,17 +20,14 @@ const responses = {
 };
 
 exports.handler = (payload, context, callback) => {
-    const { text, userId } = JSON.parse(payload.body);
-
-    dynamodb.put({
-        Item: {
-            "pollId": uuidv4(),
-            text,
-            userId,
-            "created": Date.now()
+    dynamodb.get({
+        "TableName": "BUDUserTable",
+        "Key": {
+            "userId": payload.pathParameters.userId
         },
-        TableName: "BUDPollTable"
+        "ConsistentRead": false,
     }, (err, data) => {
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200(data, callback)
+        const { userId, nickname } = data;
+        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback) : responses.OK_200({userId, nickname}, callback)
     });
 };

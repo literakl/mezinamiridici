@@ -7,8 +7,8 @@
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
-              <li>30.07.2018</li>
-              <li>Leoś</li>
+              <li>{{created}}</li>
+              <li>{{poll.userId}}</li>
               <li>53 votes</li>
               <li>290 comments</li>
               </ul>
@@ -41,6 +41,13 @@ export default {
   name: 'Heading',
   props: {
     poll: Object
+  },
+  computed: {
+    created() {
+      const date = new Date(this.poll.created);
+
+      return date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
+    }
   },
   components: {
     ContentLoader
