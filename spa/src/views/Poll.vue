@@ -81,7 +81,6 @@ export default {
   },
   computed: {
       poll(){
-          console.log(this.$store.getters.POLL);
           return this.$store.getters.POLL
       }
   },
