@@ -71,16 +71,20 @@ export default {
           this.email = data;
       },
       signIn: async function(){
-          const response = await this.$store.dispatch('GET_USER_TOKEN', {
-              email: this.email,
-              password: this.password
-          });
+          try {
+            const response = await this.$store.dispatch('GET_USER_TOKEN', {
+                email: this.email,
+                password: this.password
+            });
 
-          if(response.status === 200){
-              localStorage.setItem('jwt', response.data.token);
-              localStorage.setItem('userId', response.data.userId);
-              this.$router.push('/');
-          }else{
+            if(response.status === 200){
+                localStorage.setItem('jwt', response.data.token);
+                localStorage.setItem('userId', response.data.userId);
+                this.$router.push('/');
+            }else{
+                this.loginError = true;
+            }
+          }catch(e){
               this.loginError = true;
           }
       }
