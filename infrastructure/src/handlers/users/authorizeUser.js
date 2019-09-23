@@ -48,7 +48,7 @@ exports.handler = (payload, context, callback) => {
 
             return responses.OK_200({
                 token
-            }, callback)
+            }, callback, response)
 
         };
 
