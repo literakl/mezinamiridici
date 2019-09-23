@@ -22,9 +22,6 @@ const responses = {
 exports.handler = (payload, context, callback) => {
     const { text, userId } = JSON.parse(payload.body);
 
-    const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync(password, salt);
-
     dynamodb.put({
         Item: {
             "pollId": uuidv4(),
