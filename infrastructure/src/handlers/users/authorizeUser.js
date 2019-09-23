@@ -39,7 +39,11 @@ exports.handler = (payload, context, callback) => {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback);
         }
 
-        const user = data.Items.find(item => item.email === email)
+        const user = data.Items.find(item => item.email === email);
+
+        if(!user.verified){
+            return responses.FORBIDDEN_403(callback, response);
+        }
 
         if(bcrypt.compareSync(password, user.password)){
             const token = jwt.sign({
@@ -48,7 +52,8 @@ exports.handler = (payload, context, callback) => {
 
             return responses.OK_200({
                 token,
-                userId: user.userId
+                userId: user.userId,
+                nickname: user.nickname
             }, callback, response)
 
         };

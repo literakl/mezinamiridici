@@ -71,8 +71,15 @@ export default {
       emailInput: function(data){
           this.email = data;
       },
+      signInFailed: function(){
+          this.email = "";
+          this.password = "";
+          this.loginError = true;
+          this.signingIn = false;
+      },
       signIn: async function(){
           this.signingIn = true;
+
           try {
             const response = await this.$store.dispatch('GET_USER_TOKEN', {
                 email: this.email,
@@ -82,18 +89,13 @@ export default {
             if(response.status === 200){
                 localStorage.setItem('jwt', response.data.token);
                 localStorage.setItem('userId', response.data.userId);
+                localStorage.setItem('nickname', response.data.nickname);
                 this.$router.push('/');
             }else{
-                this.email = "";
-                this.password = "";
-                this.loginError = true;
-                this.signingIn = false;
+                this.signInFailed();
             }
           }catch(e){
-              this.email = "";
-              this.password = "";
-              this.loginError = true;
-              this.signingIn = false;
+              this.signInFailed();
           }
       }
   }
