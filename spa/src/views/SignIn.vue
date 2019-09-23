@@ -70,8 +70,8 @@ export default {
       },
       signIn: async function(){
           console.log({
-              email,
-              password
+              email: this.email,
+              password: this.password
           });
 
           const response = await this.$store.dispatch('GET_USER_TOKEN', {
