@@ -63,10 +63,10 @@ export default {
           this.$router.push({ name: 'sign-up' })
       },
       passwordInput: function(data){
-          this.password = password;
+          this.password = data;
       },
       emailInput: function(data){
-          this.email = email;
+          this.email = data;
       },
       signIn: async function(){
           console.log({
