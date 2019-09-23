@@ -46,6 +46,10 @@ export default new Vuex.Store({
     },
     GET_USER_TOKEN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
+      console.log({
+        email: payload.email,
+        password: payload.password
+      })
       const request = await axios.get(API_ENDPOINT + '/authorizeUser', {
         email: payload.email,
         password: payload.password
