@@ -229,13 +229,9 @@ Resources:
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
-        - AttributeName: email
-          AttributeType: S
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
-        - AttributeName: email
-          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
@@ -244,12 +240,8 @@ Resources:
           KeySchema: 
             - AttributeName: "email"
               KeyType: "HASH"
-            - AttributeName: "userId"
-              KeyType: "RANGE"
           Projection: 
-            NonKeyAttributes: 
-              - "password"
-            ProjectionType: "INCLUDE"
+            ProjectionType: "ALL"
           ProvisionedThroughput: 
             ReadCapacityUnits: "1"
             WriteCapacityUnits: "1"
