@@ -16,10 +16,10 @@
                     <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
                 </div>
                 <div>
-                    <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" />
-                    <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input"/>
+                    <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
+                    <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                    <Submit :value="$t('sign-in.sign-in-button')" />
+                    <Button :value="$t('sign-in.sign-in-button')" @clicked="signIn" />
                 </div>
                 <div>
                     <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
@@ -48,7 +48,9 @@ export default {
   },
   data: () => ({
     page: 0,
-    forottenPassword: false
+    forottenPassword: false,
+    email: null,
+    password: null
   }),
   methods: {
       openForgottenPassword: function() {
@@ -59,6 +61,24 @@ export default {
       },
       redirectToSignIn: function(){
           this.$router.push({ name: 'sign-up' })
+      },
+      passwordInput: function(data){
+          this.password = password;
+      },
+      emailInput: function(data){
+          this.email = email;
+      },
+      signIn: async function(){
+          const response = await this.$store.dispatch('GET_USER_TOKEN', {
+              email,
+              password
+          });
+
+          if(request.status === 200){
+              localStorage.setItem('user', response.data);
+              console.log(response);
+              this.$router.push('/');
+          }
       }
   }
 };
