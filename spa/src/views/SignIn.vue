@@ -16,6 +16,7 @@
                     <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
                 </div>
                 <div>
+                    <p v-if="loginError">Incorrect username/password, please try again</p>
                     <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
                     <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
@@ -49,6 +50,7 @@ export default {
   data: () => ({
     page: 0,
     forottenPassword: false,
+    loginError: false,
     email: null,
     password: null
   }),
@@ -77,6 +79,8 @@ export default {
           if(request.status === 200){
               localStorage.setItem('user', response.data);
               this.$router.push('/');
+          }else{
+              loginError = true;
           }
       }
   }
