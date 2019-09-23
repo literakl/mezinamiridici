@@ -1,7 +1,7 @@
 <template>
     <button
         type="submit"
-        :class="disabled ? 'atom__button' : 'atom__button--disabled'"
+        :class="disabled ? 'atom__button--disabled' : 'atom__button'"
         v-on:click="clicked"
         :disabled="disabled"
     >

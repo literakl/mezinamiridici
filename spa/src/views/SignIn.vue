@@ -84,10 +84,16 @@ export default {
                 localStorage.setItem('userId', response.data.userId);
                 this.$router.push('/');
             }else{
+                this.email = "";
+                this.password = "";
                 this.loginError = true;
+                this.signingIn = false;
             }
           }catch(e){
+              this.email = "";
+              this.password = "";
               this.loginError = true;
+              this.signingIn = false;
           }
       }
   }
