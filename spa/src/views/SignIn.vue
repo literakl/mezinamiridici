@@ -75,8 +75,8 @@ export default {
           });
 
           const response = await this.$store.dispatch('GET_USER_TOKEN', {
-              email,
-              password
+              email: this.email,
+              password: this.password
           });
 
           if(request.status === 200){
