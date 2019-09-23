@@ -76,7 +76,7 @@ export default {
               password: this.password
           });
 
-          if(request.status === 200){
+          if(response.status === 200){
               localStorage.setItem('user', response.data);
               this.$router.push('/');
           }else{
