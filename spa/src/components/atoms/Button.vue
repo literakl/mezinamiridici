@@ -1,8 +1,9 @@
 <template>
     <button
         type="submit"
-        class="atom__button"
+        :class="disabled ? 'atom__button' : 'atom__button--disabled'"
         v-on:click="clicked"
+        :disabled="disabled"
     >
         {{value}}
     </button>
@@ -13,6 +14,7 @@ export default {
   name: 'Button',
   props: {
     value: String,
+    disabled: String
   },
   methods: {
     clicked(e) {
@@ -37,5 +39,19 @@ export default {
 .atom__button:hover {
     box-shadow: none;
     cursor: pointer;
+}
+
+.atom__button--disabled {
+    background-color: #ffd200;
+    height: 53px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 700;
+    border: 0px;
+}
+
+.atom__button--disabled:hover {
+    box-shadow: none;
+    cursor: not-allowed;
 }
 </style>

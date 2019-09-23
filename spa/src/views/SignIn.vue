@@ -20,7 +20,7 @@
                     <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
                     <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                    <Button class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn" />
+                    <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn" />
                 </div>
                 <div>
                     <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
@@ -52,7 +52,8 @@ export default {
     forottenPassword: false,
     loginError: false,
     email: null,
-    password: null
+    password: null,
+    signingIn: false
   }),
   methods: {
       openForgottenPassword: function() {
@@ -71,6 +72,7 @@ export default {
           this.email = data;
       },
       signIn: async function(){
+          this.signingIn = true;
           try {
             const response = await this.$store.dispatch('GET_USER_TOKEN', {
                 email: this.email,
