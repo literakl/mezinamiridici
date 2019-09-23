@@ -16,11 +16,11 @@
                     <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
                 </div>
                 <div>
-                    <p v-if="loginError">Incorrect username/password, please try again</p>
+                    <p v-if="loginError" class="signin__login-error">Incorrect username/password, please try again</p>
                     <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
                     <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                    <Button :value="$t('sign-in.sign-in-button')" @clicked="signIn" />
+                    <Button class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn" />
                 </div>
                 <div>
                     <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
@@ -121,6 +121,11 @@ h2 {
     text-align: center;
 }
 
+.signin__login-error {
+    text-align: center;
+    color: #d13131;
+}
+
 .signin__text-input {
     width: 100%;
 }
@@ -131,6 +136,10 @@ h2 {
     max-width: 80%;
     padding: 1em 0;
     grid-column-gap: 20px;
+}
+
+.signin__sign-in-button {
+    width: 100%;
 }
 
 .signin__sign-up-button {
