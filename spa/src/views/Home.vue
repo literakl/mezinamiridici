@@ -1,5 +1,5 @@
 <template>
-  <div id="home__wrapper">
+  <div id="home__wrapper" v-if="poll">
     <div id="home__ads">
       Ads
     </div>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
       poll(){
-          return this.$store.getters.POLLS[0]
+          return this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null;
       }
   },
   created() {
