@@ -1,7 +1,6 @@
 <template>
     <div>
         <h3>Top polls</h3>
-        <p v-if="loading">Loading...</p>
         <div v-for="poll in polls" v-bind:key="poll.id">
             <hr />
             <h4>
@@ -16,21 +15,15 @@
 <script>
 import axios from 'axios';
 
-import polls from '@/static-data/polls.json';
-
 export default {
   name: 'TopPolls',
-  data: () => ({
-    polls: [],
-    loading: true
-  }),
-  created () {
-    axios
-      .get(this.apiEndpoint + '/polls')
-      .then(polls => {
-          this.polls = polls.data;
-          this.loading = false;
-      })
+  computed: {
+      polls(){
+          return this.$store.getters.POLLS
+      }
+  },
+  created() {
+    this.$store.dispatch('GET_POLLS')
   }
 };
 </script>

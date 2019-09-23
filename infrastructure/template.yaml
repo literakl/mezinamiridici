@@ -12,6 +12,9 @@ Resources:
           CachingEnabled: true
           CacheTtlInSeconds: 600
           HttpMethod: "GET"
+        - ResourcePath: /v1/polls
+          CachingEnabled: false
+          HttpMethod: "POST"
         - ResourcePath: /v1/polls/{pollId}
           CachingEnabled: true
           CacheTtlInSeconds: 600
@@ -39,6 +42,14 @@ Resources:
                 responses: {}
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollsHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "POST"
+                  type: "aws_proxy"
+            /v1/polls:
+              post:
+                responses: {}
+                x-amazon-apigateway-integration:
+                  uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreatePollHandler/invocations"
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
@@ -108,6 +119,27 @@ Resources:
             - Effect: Allow
               Action:
                 - 'dynamodb:GetItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable"
+  BUDCreatePollHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDCreatePollHandler"
+      Handler: src/handlers/polls/createPoll.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/polls
+            Method: Post
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable"
   BUDGetPollsHandler:
@@ -229,6 +261,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
+        - AttributeName: email
+          AttributeType: S
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
@@ -236,15 +270,15 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       GlobalSecondaryIndexes: 
-        - IndexName: "PasswordFromEmailIndex"
+        - IndexName: PasswordFromEmailIndex
           KeySchema: 
-            - AttributeName: "email"
-              KeyType: "HASH"
+            - AttributeName: email
+              KeyType: HASH
           Projection: 
-            ProjectionType: "ALL"
+            ProjectionType: ALL
           ProvisionedThroughput: 
-            ReadCapacityUnits: "1"
-            WriteCapacityUnits: "1"
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
   BUDUserVoteTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:

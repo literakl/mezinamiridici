@@ -33,7 +33,6 @@ export default {
       .get(this.apiEndpoint + '/polls')
       .then(polls => {
           this.poll = polls.data[0];
-          this.loading = false;
       })
   },
   methods: {
