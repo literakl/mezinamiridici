@@ -182,7 +182,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: "BUDGetUserHandler"
-      Handler: src/handlers/polls/getUser.handler
+      Handler: src/handlers/users/getUser.handler
       Runtime: nodejs8.10
       Events:
         Api:
