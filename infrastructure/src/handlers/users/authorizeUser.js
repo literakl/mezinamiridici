@@ -3,6 +3,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const responses = require('../../utils/responses.js');
+
 const SECRET = 'betweenusdrivers2019';
 
 const response = (status, body) => {
@@ -17,12 +19,6 @@ const response = (status, body) => {
         "isBase64Encoded": false
     }
 }
-
-const responses = {
-    'OK_200': (data, callback) => callback(null, response(200, data)),
-    'FORBIDDEN_403': callback => callback(null, response(403, "Forbbiden")),
-    'INTERNAL_SERVER_ERROR_500': (err, callback) => callback(null, response(500, err))
-};
 
 exports.handler = (payload, context, callback) => {
     const { email, password } = JSON.parse(payload.body);

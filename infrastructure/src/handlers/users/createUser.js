@@ -3,6 +3,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 var bcrypt = require('bcryptjs');
 
+const responses = require('../../utils/responses.js');
+
 const response = (status, body) => {
     return {
         "statusCode": status,
@@ -15,11 +17,6 @@ const response = (status, body) => {
         "isBase64Encoded": false
     }
 }
-
-const responses = {
-    'OK_200': (data, callback) => callback(null, response(200, data)),
-    'INTERNAL_SERVER_ERROR_500': (err, callback) => callback(null, response(500, err))
-};
 
 exports.handler = (payload, context, callback) => {
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
