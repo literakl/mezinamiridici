@@ -7,7 +7,8 @@ const response = (status, body) => {
         "statusCode": status,
         "headers": {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "private"
         },
         "body": JSON.stringify(body.Item),
         "isBase64Encoded": false

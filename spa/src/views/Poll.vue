@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="poll__wrapper">
+    <div v-if="!poll">
+      Loading...
+    </div>
+    <div class="poll__wrapper" v-if="poll">
       <div class="poll__ads">
         Ads
       </div>
@@ -62,7 +65,6 @@ import Textarea from '@/components/atoms/Textarea.vue'
 import Comments from '@/components/organisms/Comments.vue'
 
 import comments from '@/static-data/comments.json';
-import polls from '@/static-data/polls.json';
 import users from '@/static-data/users.json';
 
 export default {
@@ -74,14 +76,17 @@ export default {
   data: function() {
     return {
         mutableVote: this.vote,
-        comments: comments.comments,
-        poll: {}
+        comments: comments.comments
     };
   },
-  mounted () {
-    axios
-      .get(this.apiEndpoint + '/polls/' + this.id)
-      .then(poll => (this.poll = poll.data))
+  computed: {
+      poll(){
+          console.log(this.$store.getters.POLL);
+          return this.$store.getters.POLL
+      }
+  },
+  created() {
+    this.$store.dispatch('GET_POLL', { id: this.id })
   },
   methods: {
     voted: function(vote){

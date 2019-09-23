@@ -25,15 +25,13 @@ export default {
     Heading,
     OpinionButtons,
   },
-  data: () => ({
-    poll: {}
-  }),
-  created () {
-    axios
-      .get(this.apiEndpoint + '/polls')
-      .then(polls => {
-          this.poll = polls.data[0];
-      })
+  computed: {
+      poll(){
+          return this.$store.getters.POLLS[0]
+      }
+  },
+  created() {
+    this.$store.dispatch('GET_POLLS')
   },
   methods: {
     voted(category) {

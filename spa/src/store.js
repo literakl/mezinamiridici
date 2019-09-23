@@ -14,18 +14,28 @@ export default new Vuex.Store({
   getters: {
     POLLS : state => {
       return state.polls;
+    },
+    POLL : state => {
+      return state.poll;
     }
   },
   mutations: {
     SET_POLLS: (state, payload) => {
       state.polls = payload;
     },
+    SET_POLL: (state, payload) => {
+      state.poll = payload;
+    }
   },
   actions: {
     GET_POLLS: async (context, payload) => {
-      let { data } = await axios.get(API_ENDPOINT + '/polls')
-      console.log(data);
-      context.commit('SET_POLLS', data)
+      let { data } = await axios.get(API_ENDPOINT + '/polls');
+      context.commit('SET_POLLS', data);
+    },
+    GET_POLL: async (context, payload) => {
+      console.log("here")
+      let { data } = await axios.get(API_ENDPOINT + '/polls/' + payload.id);
+      context.commit('SET_POLL', data);
     }
-  },
+  }
 });
