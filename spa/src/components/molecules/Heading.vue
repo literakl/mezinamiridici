@@ -1,30 +1,49 @@
 <template>
     <div>
         <hr />
-        <h2 id="home__heading-title">
-            {{title}}
-        </h2>
-        <div id="home__heading-metadata">
-            <ul id="home__heading-metadata-details">
-            <li>30.07.2018</li>
-            <li>Leoś</li>
-            <li>53 votes</li>
-            <li>290 comments</li>
-            </ul>
-            <ul id="home__heading-metadata-social">
-            <li>(Facebook) Like | Share</li>
-            <li>Twitter Share</li>
-            </ul>
+        <div v-if="poll">
+          <h2 id="home__heading-title">
+              {{poll.text}}
+          </h2>
+          <div id="home__heading-metadata">
+              <ul id="home__heading-metadata-details">
+              <li>30.07.2018</li>
+              <li>Leoś</li>
+              <li>53 votes</li>
+              <li>290 comments</li>
+              </ul>
+              <ul id="home__heading-metadata-social">
+              <li>(Facebook) Like | Share</li>
+              <li>Twitter Share</li>
+              </ul>
+          </div>
         </div>
+        <content-loader
+            :height="60"
+            :width="400"
+            :speed="2"
+            primaryColor="#f3f3f3"
+            secondaryColor="#ecebeb"
+            v-if="!poll"
+          >
+            <rect x="0" y="8" rx="3" ry="3" width="350" height="6.4" /> 
+            <rect x="0" y="28" rx="3" ry="3" width="380" height="6.4" /> 
+            <rect x="0" y="48" rx="3" ry="3" width="201" height="6.4" />
+          </content-loader>
         <hr />
     </div>
 </template>
 
 <script>
+import { ContentLoader } from "vue-content-loader"
+
 export default {
   name: 'Heading',
   props: {
-    title: String
+    poll: Object
+  },
+  components: {
+    ContentLoader
   }
 };
 </script>

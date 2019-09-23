@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="poll__wrapper" v-if="poll">
+    <div class="poll__wrapper">
       <div class="poll__ads">
         Ads
       </div>
 
-      <div class="poll_content">
-        <Heading :title="poll.text"/>
+      <div class="poll_content">          
+        <Heading :poll="poll"/>
         <div v-if="mutableVote">
           <div class="poll__chart-wrapper">
             <h2 class="poll__chart-wrapper-vote">

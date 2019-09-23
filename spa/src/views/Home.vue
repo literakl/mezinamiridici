@@ -4,7 +4,7 @@
       Ads
     </div>
     <div id="home__content">
-      <Heading :title="poll.text"/>
+      <Heading :poll="poll"/>
       <OpinionButtons @voted="voted" />
       <TopPolls />
     </div>
