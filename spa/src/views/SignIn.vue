@@ -86,15 +86,13 @@ export default {
                 password: this.password
             });
 
-            if(response.status === 200){
+            if(response.status === 200) {
                 localStorage.setItem('jwt', response.data.token);
-                localStorage.setItem('userId', response.data.userId);
-                localStorage.setItem('nickname', response.data.nickname);
                 this.$router.push('/');
-            }else{
+            } else {
                 this.signInFailed();
             }
-          }catch(e){
+          } catch(e) {
               this.signInFailed();
           }
       }

@@ -51,9 +51,7 @@ exports.handler = (payload, context, callback) => {
             }, SECRET);
 
             return responses.OK_200({
-                token,
-                userId: user.userId,
-                nickname: user.nickname
+                token
             }, callback, response)
 
         };
