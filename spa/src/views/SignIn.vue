@@ -69,11 +69,6 @@ export default {
           this.email = data;
       },
       signIn: async function(){
-          console.log({
-              email: this.email,
-              password: this.password
-          });
-
           const response = await this.$store.dispatch('GET_USER_TOKEN', {
               email: this.email,
               password: this.password
@@ -81,7 +76,6 @@ export default {
 
           if(request.status === 200){
               localStorage.setItem('user', response.data);
-              console.log(response);
               this.$router.push('/');
           }
       }
