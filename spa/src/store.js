@@ -55,7 +55,9 @@ export default new Vuex.Store({
       return request;
     },
     GET_USER_NICKNAME: async (context, payload) => {
-      console.log(jwtDecode(localStorage.setItem('jwt', response.data.token)));
+      const jwt = localStorage.getItem('jwt');
+      
+      console.log(jwtDecode(jwt));
     }
   },
 });
