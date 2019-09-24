@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 Vue.use(Vuex);
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
     polls: null,
     poll: null,
     userToken: null,
+    userNickname: null
   },
   getters: {
     POLLS: state => state.polls,
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     SET_USER_TOKEN: (state, payload) => {
       state.userToken = payload;
     },
+    SET_USER_NICKNAME: (state, payload) => {
+      state.userNickname = payload;
+    }
   },
   actions: {
     GET_POLLS: async (context, payload) => {
@@ -49,5 +54,8 @@ export default new Vuex.Store({
       context.commit('SET_USER_TOKEN', request.data);
       return request;
     },
+    GET_USER_NICKNAME: async (context, payload) => {
+      console.log(jwtDecode(localStorage.setItem('jwt', response.data.token)));
+    }
   },
 });

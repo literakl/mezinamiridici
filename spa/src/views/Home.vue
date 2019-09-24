@@ -28,10 +28,11 @@ export default {
   computed: {
     poll() {
       return this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null;
-    },
+    }
   },
   created() {
     this.$store.dispatch('GET_POLLS');
+    this.$store.dispatch('GET_USER_NICKNAME');
   },
   methods: {
     voted(category) {
