@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form @submit.prevent="signIn">
         <div class="signin">  
             <div class="signin__wrapper">
                 <Modal :show="forottenPassword">
@@ -10,7 +10,7 @@
                     <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
                 </Modal>
                 <div>
-                    <h1>{{ $t('sign-in.sign-up-heading') }}</h1>
+                    <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
                 </div>
                 <div>
                     <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
@@ -20,7 +20,7 @@
                     <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
                     <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                    <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn" />
+                    <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" />
                 </div>
                 <div>
                     <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
@@ -114,6 +114,7 @@ export default {
 
 input { 
     width: 100%;
+    padding: 0px;
 }
 
 h1 {

@@ -36,7 +36,7 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if(err){
-            return responses.INTERNAL_SERVER_ERROR_500(err, callback);
+            return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
         }
 
         const user = data.Items.find(item => item.email === email);
