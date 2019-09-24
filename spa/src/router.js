@@ -27,7 +27,7 @@ export default new Router({
       path: '/poll/:id',
       name: 'poll',
       component: () => import('./views/Poll.vue'),
-      props: true
+      props: true,
     },
     {
       path: '/polls',
@@ -52,9 +52,9 @@ export default new Router({
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     }
-  
-    return { x: 0, y: 0 }
-  }
+
+    return { x: 0, y: 0 };
+  },
 });

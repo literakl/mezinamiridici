@@ -17,13 +17,13 @@ module.exports = {
       pwaFiles: 'service-worker.js',
       enableCloudfront: false,
       uploadConcurrency: 5,
-      pluginVersion: '3.0.0'
+      pluginVersion: '3.0.0',
     },
     i18n: {
       locale: 'en',
       fallbackLocale: 'en',
       localeDir: 'locales',
-      enableInSFC: true
-    }
+      enableInSFC: true,
+    },
   },
 };

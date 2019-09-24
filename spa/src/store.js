@@ -10,18 +10,12 @@ export default new Vuex.Store({
   state: {
     polls: null,
     poll: null,
-    userToken: null
+    userToken: null,
   },
   getters: {
-    POLLS : state => {
-      return state.polls;
-    },
-    POLL : state => {
-      return state.poll;
-    },
-    USER_TOKEN : state => {
-      return state.userToken;
-    }
+    POLLS: state => state.polls,
+    POLL: state => state.poll,
+    USER_TOKEN: state => state.userToken,
   },
   mutations: {
     SET_POLLS: (state, payload) => {
@@ -36,24 +30,24 @@ export default new Vuex.Store({
   },
   actions: {
     GET_POLLS: async (context, payload) => {
-      let { data } = await axios.get(API_ENDPOINT + '/polls');
+      const { data } = await axios.get(`${API_ENDPOINT}/polls`);
       context.commit('SET_POLLS', data);
     },
     GET_POLL: async (context, payload) => {
       context.commit('SET_POLL', null);
-      let { data } = await axios.get(API_ENDPOINT + '/polls/' + payload.id);
+      const { data } = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
       context.commit('SET_POLL', data);
     },
     GET_USER_TOKEN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
 
-      const request = await axios.post(API_ENDPOINT + '/authorizeUser', JSON.stringify({
+      const request = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
         email: payload.email,
-        password: payload.password
+        password: payload.password,
       }));
 
       context.commit('SET_USER_TOKEN', request.data);
       return request;
-    }
-  }
+    },
+  },
 });

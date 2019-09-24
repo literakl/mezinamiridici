@@ -18,13 +18,13 @@ import axios from 'axios';
 export default {
   name: 'TopPolls',
   computed: {
-      polls(){
-          return this.$store.getters.POLLS
-      }
+    polls() {
+      return this.$store.getters.POLLS;
+    },
   },
   created() {
-    this.$store.dispatch('GET_POLLS')
-  }
+    this.$store.dispatch('GET_POLLS');
+  },
 };
 </script>
 

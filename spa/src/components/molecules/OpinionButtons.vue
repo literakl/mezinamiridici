@@ -32,9 +32,9 @@
 export default {
   name: 'OpinionButtons',
   methods: {
-      voted(vote){
-        this.$emit('voted', vote);
-      }
+    voted(vote) {
+      this.$emit('voted', vote);
+    },
   },
 };
 </script>

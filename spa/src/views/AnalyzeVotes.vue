@@ -16,20 +16,20 @@
 </template>
 
 <script>
-import Button from '@/components/atoms/Button.vue'
-import Radio from '@/components/atoms/Radio.vue'
-import Checkbox from '@/components/atoms/Checkbox.vue'
-import AnalyzeVotesGroup from '@/components/molecules/forms/AnalyzeVotesGroup.vue'
-import GroupedBarChart from '@/components/molecules/charts/GroupedBarChart.vue'
+import Button from '@/components/atoms/Button.vue';
+import Radio from '@/components/atoms/Radio.vue';
+import Checkbox from '@/components/atoms/Checkbox.vue';
+import AnalyzeVotesGroup from '@/components/molecules/forms/AnalyzeVotesGroup.vue';
+import GroupedBarChart from '@/components/molecules/charts/GroupedBarChart.vue';
 
 export default {
   name: 'analyze-votes',
   components: {
-      Radio,
-      Checkbox,
-      AnalyzeVotesGroup,
-      Button,
-      GroupedBarChart
+    Radio,
+    Checkbox,
+    AnalyzeVotesGroup,
+    Button,
+    GroupedBarChart,
   },
   methods: {
   },

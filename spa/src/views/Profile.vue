@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="profile">  
+        <div class="profile">
             <div class="profile__wrapper">
                 <dl>
                     <dt>{{ $t('profile.nickname') }}</dt>
@@ -11,7 +11,7 @@
 
                     <dt>{{ $t('profile.vehicle') }}</dt>
                     <dl>bike, car</dl>
-                    
+
                     <dt>{{ $t('profile.region') }}</dt>
                     <dl>Praha</dl>
 
@@ -34,18 +34,18 @@ import PaginatedTopPolls from '@/components/organisms/PaginatedTopPolls.vue';
 export default {
   name: 'profile',
   components: {
-      PaginatedTopPolls,
-      Button
+    PaginatedTopPolls,
+    Button,
   },
   data: () => ({
-    page: 0
+    page: 0,
   }),
   methods: {
-      clicked: function () {
-          console.log("Loading more...")
-          this.page++;
-      }
-  }
+    clicked() {
+      console.log('Loading more...');
+      this.page++;
+    },
+  },
 };
 </script>
 

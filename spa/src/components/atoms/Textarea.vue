@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import Button from '@/components/atoms/Button.vue'
+import Button from '@/components/atoms/Button.vue';
 
 export default {
   name: 'Textarea',
   components: {
-    Button
-  }
+    Button,
+  },
 };
 </script>
 

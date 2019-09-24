@@ -26,8 +26,8 @@
             secondaryColor="#ecebeb"
             v-if="!poll"
           >
-            <rect x="0" y="8" rx="3" ry="3" width="350" height="6.4" /> 
-            <rect x="0" y="28" rx="3" ry="3" width="380" height="6.4" /> 
+            <rect x="0" y="8" rx="3" ry="3" width="350" height="6.4" />
+            <rect x="0" y="28" rx="3" ry="3" width="380" height="6.4" />
             <rect x="0" y="48" rx="3" ry="3" width="201" height="6.4" />
           </content-loader>
         <hr />
@@ -35,23 +35,23 @@
 </template>
 
 <script>
-import { ContentLoader } from "vue-content-loader"
+import { ContentLoader } from 'vue-content-loader';
 
 export default {
   name: 'Heading',
   props: {
-    poll: Object
+    poll: Object,
   },
   computed: {
     created() {
       const date = new Date(this.poll.created);
 
-      return date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
-    }
+      return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+    },
   },
   components: {
-    ContentLoader
-  }
+    ContentLoader,
+  },
 };
 </script>
 

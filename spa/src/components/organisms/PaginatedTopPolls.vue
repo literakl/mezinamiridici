@@ -13,18 +13,18 @@ import TopPolls from '@/components/molecules/TopPolls.vue';
 export default {
   name: 'PaginatedTopPolls',
   components: {
-      TopPolls,
-      Button
+    TopPolls,
+    Button,
   },
   data: () => ({
-    page: 0
+    page: 0,
   }),
   methods: {
-      clicked: function () {
-          console.log("Loading more...")
-          this.page++;
-      }
-  }
+    clicked() {
+      console.log('Loading more...');
+      this.page++;
+    },
+  },
 };
 </script>
 

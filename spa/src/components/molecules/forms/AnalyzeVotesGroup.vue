@@ -88,19 +88,19 @@
 </template>
 
 <script>
-import Radio from '@/components/atoms/Radio.vue'
-import Checkbox from '@/components/atoms/Checkbox.vue'
-import Button from '@/components/atoms/Button.vue'
+import Radio from '@/components/atoms/Radio.vue';
+import Checkbox from '@/components/atoms/Checkbox.vue';
+import Button from '@/components/atoms/Button.vue';
 
 export default {
   name: 'analyze-votes-group',
   props: {
-      group: String,
+    group: String,
   },
   components: {
-      Radio,
-      Checkbox,
-      Button
+    Radio,
+    Checkbox,
+    Button,
   },
   methods: {
   },

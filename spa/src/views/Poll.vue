@@ -5,7 +5,7 @@
         Ads
       </div>
 
-      <div class="poll_content">          
+      <div class="poll_content">
         <Heading :poll="poll"/>
         <div v-if="mutableVote">
           <div class="poll__chart-wrapper">
@@ -36,7 +36,7 @@
         <h3>{{ $t('poll.your-say') }}</h3>
 
         <Textarea />
-        
+
         <Comments :comments="comments" :depth="parseInt(0)" />
 
         <div class="poll__other-polls">
@@ -54,12 +54,12 @@
 <script>
 import axios from 'axios';
 
-import Heading from '@/components/molecules/Heading.vue'
-import OpinionButtons from '@/components/molecules/OpinionButtons.vue'
-import BarChart from '@/components/molecules/charts/BarChart.vue'
-import Button from '@/components/atoms/Button.vue'
-import Textarea from '@/components/atoms/Textarea.vue'
-import Comments from '@/components/organisms/Comments.vue'
+import Heading from '@/components/molecules/Heading.vue';
+import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
+import BarChart from '@/components/molecules/charts/BarChart.vue';
+import Button from '@/components/atoms/Button.vue';
+import Textarea from '@/components/atoms/Textarea.vue';
+import Comments from '@/components/organisms/Comments.vue';
 
 import comments from '@/static-data/comments.json';
 import users from '@/static-data/users.json';
@@ -68,32 +68,32 @@ export default {
   name: 'poll',
   props: {
     id: String,
-    vote: String
+    vote: String,
   },
-  data: function() {
+  data() {
     return {
-        mutableVote: this.vote,
-        comments: comments.comments
+      mutableVote: this.vote,
+      comments: comments.comments,
     };
   },
   computed: {
-      poll(){
-          return this.$store.getters.POLL
-      }
+    poll() {
+      return this.$store.getters.POLL;
+    },
   },
   created() {
-    this.$store.dispatch('GET_POLL', { id: this.id })
+    this.$store.dispatch('GET_POLL', { id: this.id });
   },
   methods: {
-    voted: function(vote){
+    voted(vote) {
       this.mutableVote = vote;
     },
-    redirectToOtherPolls: function(){
-      this.$router.push({ name: 'polls' })
+    redirectToOtherPolls() {
+      this.$router.push({ name: 'polls' });
     },
-    redirectToAnalyzeVotes: function(){
-      this.$router.push({ name: 'analyze-votes', params: { id: this.id }});
-    }
+    redirectToAnalyzeVotes() {
+      this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
+    },
   },
   components: {
     Heading,
@@ -102,7 +102,7 @@ export default {
     OpinionButtons,
     Comment,
     Comments,
-    Textarea
+    Textarea,
   },
 };
 </script>

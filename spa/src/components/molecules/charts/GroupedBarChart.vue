@@ -1,12 +1,12 @@
 <template>
-    <div>  
+    <div>
         <table id="barchart__table">
             <tbody>
                 <tr id="no-problem">
-                    <td class="first-group bar" v-bind:style="(voted === 'No problem') ? 'height: 101px; background-color: #ffd302' : 'height: 101px;'">  
+                    <td class="first-group bar" v-bind:style="(voted === 'No problem') ? 'height: 101px; background-color: #ffd302' : 'height: 101px;'">
                         <p>13%</p>
                     </td>
-                    <td class="second-group bar" v-bind:style="(voted === 'No problem') ? 'height: 200px; background-color: #ffd302' : 'height: 200px;'">  
+                    <td class="second-group bar" v-bind:style="(voted === 'No problem') ? 'height: 200px; background-color: #ffd302' : 'height: 200px;'">
                         <p>50%</p>
                     </td>
                     <th scope="row">{{ $t('bar-chart.no-problem') }}</th>
@@ -47,7 +47,7 @@
 export default {
   name: 'GroupedBarChart',
   props: {
-    voted: String
+    voted: String,
   },
 };
 </script>
@@ -56,8 +56,8 @@ export default {
 <style lang="scss">
 #barchart__table {
   display: block; /* fixes layout wonkiness in FF1.5 */
-  position: relative; 
-  width: 100%; 
+  position: relative;
+  width: 100%;
   height: 320px;
   margin: 0 0 30px 0;
   padding: 0;
@@ -69,9 +69,9 @@ export default {
   width: 20px;
 }
 
-#barchart__table tr, 
+#barchart__table tr,
 #barchart__table td,
-#barchart__table th { 
+#barchart__table th {
   position: absolute;
   bottom: 0;
   text-align: center;
@@ -100,16 +100,16 @@ export default {
 
 #barchart__table th {
   bottom: -1.75em;
-  width: 185px; 
+  width: 185px;
 }
 
 #barchart__table .bar {
-  width: 30px; 
+  width: 30px;
   margin-left:45px;
 }
 
 #barchart__table .bar p {
-  margin: -25px 0 0; 
+  margin: -25px 0 0;
 }
 
 #barchart__table .first-group {
@@ -134,12 +134,12 @@ export default {
   }
 
   #barchart__table th {
-    width: 180px; 
+    width: 180px;
     margin-left: -40px;
   }
 
   #barchart__table .bar {
-    width: 20px; 
+    width: 20px;
     margin-left:25px;
   }
 
@@ -160,7 +160,7 @@ export default {
   }
 
   #i-hate-it {
-    left: 90%; 
+    left: 90%;
     border-right: none;
   }
 }
@@ -174,7 +174,7 @@ export default {
   }
 
   #barchart__table .bar {
-    width: 50px; 
+    width: 50px;
   }
 
   #no-problem {
@@ -193,7 +193,7 @@ export default {
   }
 
   #i-hate-it {
-    left: 150%; 
+    left: 150%;
     border-right: none;
     width: 100%;
   }

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Textarea from '@/components/atoms/Textarea.vue'
+import Textarea from '@/components/atoms/Textarea.vue';
 
 export default {
   name: 'Comment',
@@ -33,7 +33,7 @@ export default {
     depth: Number,
   },
   components: {
-    Textarea
+    Textarea,
   },
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
     },
     reply() {
       this.replying = !this.replying;
-    }
+    },
   },
 };
 </script>

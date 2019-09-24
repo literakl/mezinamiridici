@@ -26,21 +26,21 @@ export default {
     OpinionButtons,
   },
   computed: {
-      poll(){
-          return this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null;
-      }
+    poll() {
+      return this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null;
+    },
   },
   created() {
-    this.$store.dispatch('GET_POLLS')
+    this.$store.dispatch('GET_POLLS');
   },
   methods: {
     voted(category) {
-      this.$router.push({ 
-        name: 'poll', 
-        params: { 
-          id: this.poll.pollId, 
-          vote: category
-        } 
+      this.$router.push({
+        name: 'poll',
+        params: {
+          id: this.poll.pollId,
+          vote: category,
+        },
       });
     },
   },

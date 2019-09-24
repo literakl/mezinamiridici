@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="signIn">
-        <div class="signin">  
+        <div class="signin">
             <div class="signin__wrapper">
                 <Modal :show="forottenPassword">
                     <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
@@ -42,10 +42,10 @@ import Modal from '@/components/molecules/Modal.vue';
 export default {
   name: 'signin',
   components: {
-      Button,
-      TextInput,
-      Submit,
-      Modal
+    Button,
+    TextInput,
+    Submit,
+    Modal,
   },
   data: () => ({
     page: 0,
@@ -53,50 +53,50 @@ export default {
     loginError: false,
     email: null,
     password: null,
-    signingIn: false
+    signingIn: false,
   }),
   methods: {
-      openForgottenPassword: function() {
-          this.forottenPassword = true;
-      },
-      closeForgottenPassword: function() {
-          this.forottenPassword = false;
-      },
-      redirectToSignIn: function(){
-          this.$router.push({ name: 'sign-up' })
-      },
-      passwordInput: function(data){
-          this.password = data;
-      },
-      emailInput: function(data){
-          this.email = data;
-      },
-      signInFailed: function(){
-          this.email = "";
-          this.password = "";
-          this.loginError = true;
-          this.signingIn = false;
-      },
-      signIn: async function(){
-          this.signingIn = true;
+    openForgottenPassword() {
+      this.forottenPassword = true;
+    },
+    closeForgottenPassword() {
+      this.forottenPassword = false;
+    },
+    redirectToSignIn() {
+      this.$router.push({ name: 'sign-up' });
+    },
+    passwordInput(data) {
+      this.password = data;
+    },
+    emailInput(data) {
+      this.email = data;
+    },
+    signInFailed() {
+      this.email = '';
+      this.password = '';
+      this.loginError = true;
+      this.signingIn = false;
+    },
+    async signIn() {
+      this.signingIn = true;
 
-          try {
-            const response = await this.$store.dispatch('GET_USER_TOKEN', {
-                email: this.email,
-                password: this.password
-            });
+      try {
+        const response = await this.$store.dispatch('GET_USER_TOKEN', {
+          email: this.email,
+          password: this.password,
+        });
 
-            if(response.status === 200) {
-                localStorage.setItem('jwt', response.data.token);
-                this.$router.push('/');
-            } else {
-                this.signInFailed();
-            }
-          } catch(e) {
-              this.signInFailed();
-          }
+        if (response.status === 200) {
+          localStorage.setItem('jwt', response.data.token);
+          this.$router.push('/');
+        } else {
+          this.signInFailed();
+        }
+      } catch (e) {
+        this.signInFailed();
       }
-  }
+    },
+  },
 };
 </script>
 
@@ -112,7 +112,7 @@ export default {
     font-weight: 900;
 }
 
-input { 
+input {
     width: 100%;
     padding: 0px;
 }
