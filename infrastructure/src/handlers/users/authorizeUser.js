@@ -47,8 +47,8 @@ exports.handler = (payload, context, callback) => {
 
         if(bcrypt.compareSync(password, user.password)){
             const token = jwt.sign({
-                user.userId,
-                user.nickname
+                "userId": user.userId,
+                "nickname": user.nickname
             }, SECRET);
 
             return responses.OK_200({
