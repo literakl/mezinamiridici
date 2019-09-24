@@ -12,12 +12,15 @@ export default new Vuex.Store({
     polls: null,
     poll: null,
     userToken: null,
-    userNickname: null
+    userNickname: null,
+    signedIn: false
   },
   getters: {
     POLLS: state => state.polls,
     POLL: state => state.poll,
     USER_TOKEN: state => state.userToken,
+    USER_NICKNAME: state => state.userNickname,
+    SIGNED_IN: state => state.signedIn
   },
   mutations: {
     SET_POLLS: (state, payload) => {
@@ -30,7 +33,11 @@ export default new Vuex.Store({
       state.userToken = payload;
     },
     SET_USER_NICKNAME: (state, payload) => {
+      console.log(payload)
       state.userNickname = payload;
+    },
+    SET_SIGNED_IN: (state, payload) => {
+      state.signedIn = payload
     }
   },
   actions: {
@@ -57,7 +64,19 @@ export default new Vuex.Store({
     GET_USER_NICKNAME: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
       
-      console.log(jwtDecode(jwt));
+      if(!jwt) return;
+
+      const jwtData = jwtDecode(jwt);
+      context.commit('SET_USER_NICKNAME', jwtData.nickname);
+    },
+    GET_SIGNED_IN: async (context, payload) => {
+      const jwt = localStorage.getItem('jwt');
+      
+      if(jwt) {
+        context.commit('SET_SIGNED_IN', true);
+      } else {
+        context.commit('SET_SIGNED_IN', false);
+      }
     }
   },
 });

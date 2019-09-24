@@ -14,7 +14,7 @@ export default {
   name: 'Button',
   props: {
     value: String,
-    disabled: String,
+    disabled: Boolean,
   },
   methods: {
     clicked(e) {

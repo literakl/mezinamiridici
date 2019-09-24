@@ -11,10 +11,13 @@
           <h1>{{ $t('app.name') }}</h1>
           <h2>{{ $t('app.slogan') }}</h2>
         </div>
-        <div class="app__header-sign-in">
+        <div class="app__header-sign-in" v-if="!signedIn">
           <router-link to="/sign-up">{{ $t('app.sign-up') }}</router-link> /
           <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link> /
           <router-link to="/profile">Taxikar007</router-link>
+        </div>
+        <div class="app__header-sign-in" v-if="signedIn">
+          <router-link to="/profile">{{nickname}}</router-link>
         </div>
       </div>
     </header>
@@ -32,6 +35,24 @@
     </footer>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'App',
+  computed: {
+    signedIn() {
+      return this.$store.getters.SIGNED_IN;
+    },
+    nickname() {
+      return this.$store.getters.USER_NICKNAME;
+    }
+  },
+  created() {
+    this.$store.dispatch('GET_SIGNED_IN');
+    this.$store.dispatch('GET_USER_NICKNAME');
+  },
+};
+</script>
 
 <style lang="scss">
   body {
