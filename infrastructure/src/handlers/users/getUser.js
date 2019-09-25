@@ -24,7 +24,7 @@ exports.handler = (payload, context, callback) => {
         },
         "ConsistentRead": false,
     }, (err, data) => {
-        const { userId, nickname } = data;
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({userId, nickname}, callback, response)
+        console.log(data);
+        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
     });
 };

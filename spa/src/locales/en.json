@@ -62,7 +62,7 @@
     "vehicle": "Vehicle",
     "region": "Region",
     "education": "Education",
-    "sec": "Sex",
+    "sex": "Sex",
     "share-profile": "Share profile",
     "finish-button": "Finish"
   },

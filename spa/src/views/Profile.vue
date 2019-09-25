@@ -1,25 +1,25 @@
 <template>
     <div>
         <div class="profile">
-            <div class="profile__wrapper">
+            <div class="profile__wrapper" v-if="profile">
                 <dl>
                     <dt>{{ $t('profile.nickname') }}</dt>
-                    <dl>Taxikar007</dl>
+                    <dl>{{profile.nickname}}</dl>
 
                     <dt>{{ $t('profile.driving-for') }}</dt>
-                    <dl>23 years</dl>
+                    <dl>{{profile.drivingSince}}</dl>
 
                     <dt>{{ $t('profile.vehicle') }}</dt>
-                    <dl>bike, car</dl>
+                    <dl>{{profile.vehicle}}</dl>
 
                     <dt>{{ $t('profile.region') }}</dt>
-                    <dl>Praha</dl>
+                    <dl>{{profile.region}}</dl>
 
                     <dt>{{ $t('profile.education') }}</dt>
-                    <dl>High School</dl>
+                    <dl>{{profile.education}}</dl>
 
                     <dt>{{ $t('profile.sex') }}</dt>
-                    <dl>man</dl>
+                    <dl>{{profile.sex}}</dl>
                 </dl>
             </div>
         </div>
@@ -36,6 +36,14 @@ export default {
   components: {
     PaginatedTopPolls,
     Button,
+  },
+  computed: {
+    profile() {
+      return this.$store.getters.SIGNED_IN_USER_PROFILE;
+    },
+  },
+  created(){
+    this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
   },
   data: () => ({
     page: 0,
