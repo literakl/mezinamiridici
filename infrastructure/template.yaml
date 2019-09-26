@@ -1,6 +1,39 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
+  BUDDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      CertificateArn: arn:aws:acm:us-east-1:...:certificate/...
+      DomainName: 'api.betweenusdrivers.jacobclark.xyz.'
+
+  BUDHostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Ref DomainName
+
+  APIBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref BUDDomainName
+      RestApiId: !Ref BUDAPI
+      Stage: production
+
+  APIDomain:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: !Ref BUDHostedZone
+      HostedZoneId: !Ref MyHostedZone
+      RecordSets:
+      - Name: 'api.betweenusdrivers.jacobclark.xyz'
+        Type: A
+        AliasTarget:
+          DNSName: !GetAtt BUDDomainName.DistributionDomainName
+          HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
+      - Name: '_9492ef477a77eb88288d14ff52b92377.api.betweenusdrivers.jacobclark.dev'
+        Type: CNAME
+        ResourceRecords:
+        - _08364b503ac9876f834dcccc940494b1.olprtlswtu.acm-validations.aws.
   BUDAPI:
     Type: AWS::Serverless::Api
     Properties:
