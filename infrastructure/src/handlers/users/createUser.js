@@ -40,7 +40,6 @@ exports.handler = (payload, context, callback) => {
         },
         TableName: "BUDUserTable"
     }, (err, data) => {
-        console.log(userId)
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ userId }, callback, response)
+        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ Item: { userId } }, callback, response)
     });
 };
