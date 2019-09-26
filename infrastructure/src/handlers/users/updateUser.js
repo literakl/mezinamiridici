@@ -33,7 +33,7 @@ exports.handler = (payload, context, callback) => {
             ":vehicle": vehicle,
             ":sex": sex,
             ":born": born,
-            ":locationalRegion": locationalRegion,
+            ":locationalRegion": locationalRegion, 
             ":education": education,
             ":shareProfile": shareProfile,
         },

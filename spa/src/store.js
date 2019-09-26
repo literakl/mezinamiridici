@@ -99,13 +99,15 @@ export default new Vuex.Store({
       context.commit('SET_SIGNED_IN_USER_PROFILE', data);
     },
     CREATE_USER_PROFILE: async (context, payload) => {
-      const request = await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
+      return await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
         email: payload.email,
         password: payload.password,
         tandcs: payload.tandcs, 
         dataProcessing : payload.dataProcessing, 
         marketing: payload.marketing 
       }));
-    }
+    },
+    UPDATE_USER_PROFILE: async (context, payload) => {
+      const request = await axios.post(`${API_ENDPOINT}/users/${payload.userId}`, JSON.stringify(payload));
   },
 });

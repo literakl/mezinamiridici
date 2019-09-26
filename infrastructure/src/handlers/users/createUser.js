@@ -24,18 +24,22 @@ exports.handler = (payload, context, callback) => {
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
+    const userId = uuidv4();
+
     dynamodb.put({
         Item: {
-            "userId": uuidv4(),
+            "userId": userId,
             "password": passwordHash,
             verified: false,
             email,
             tandcs,
             dataProcessing,
-            marketing
+            marketing,
+            verificationToken: uuidv4(),
+            registrationDate: new Date()
         },
         TableName: "BUDUserTable"
     }, (err, data) => {
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ userId }, callback, response)
     });
 };

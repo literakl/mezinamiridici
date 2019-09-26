@@ -229,12 +229,33 @@ export default {
 
       if (this.errors.length === 0) {
         try {
-            await this.$store.dispatch('CREATE_USER_PROFILE', {
-            email: this.email,
-            password: this.password,
-            tandcs: this.termsAndConditions,
-            dataProcessing: this.personalDataProcessing,
-            marketing: this.emailNotifications
+            const vehicles = [];
+
+            const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
+                email: this.email,
+                password: this.password,
+                tandcs: this.termsAndConditions,
+                dataProcessing: this.personalDataProcessing,
+                marketing: this.emailNotifications
+            });
+
+            if(bike) vehicles.push(bike);
+            if(car) vehicles.push(car);
+            if(bus) vehicles.push(bus);
+            if(van) vehicles.push(van);
+            if(truck) vehicles.push(truck);
+            if(tramway) vehicles.push(tramway);
+
+            await this.$store.dispatch('UPDATE_USER_PROFILE', {
+                userId: data.userId,
+                nickname: this.nickname,
+                drivingSince: this.drivingSince,
+                vehicle: vehicles,
+                sex: this.sex,
+                born: this.bornInYear,
+                locationalRegion: this.region,
+                education: this.education,
+                shareProfile: this.share
             });
 
             this.success = true;
