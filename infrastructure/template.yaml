@@ -6,19 +6,16 @@ Resources:
     Properties:
       CertificateArn: arn:aws:acm:us-east-1:...:certificate/...
       DomainName: 'api.betweenusdrivers.jacobclark.xyz.'
-
   BUDHostedZone:
     Type: AWS::Route53::HostedZone
     Properties:
-      Name: !Ref DomainName
-
+      Name: 'api.betweenusdrivers.jacobclark.xyz.'
   APIBasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties:
       DomainName: !Ref BUDDomainName
       RestApiId: !Ref BUDAPI
       Stage: production
-
   APIDomain:
     Type: AWS::Route53::RecordSetGroup
     Properties:
