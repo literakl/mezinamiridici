@@ -1,19 +1,19 @@
 <template>
     <div>
         <div class="profile">
-            <div class="profile__wrapper" v-if="profile">
-                <dl>
+            <div class="profile__wrapper">
+                <dl v-if="profile">
                     <dt>{{ $t('profile.nickname') }}</dt>
                     <dl>{{profile.nickname}}</dl>
 
                     <dt>{{ $t('profile.driving-for') }}</dt>
-                    <dl>{{profile.drivingSince}}</dl>
+                    <dl>{{drivingSince}}</dl>
 
                     <dt>{{ $t('profile.vehicle') }}</dt>
                     <dl>{{profile.vehicle}}</dl>
 
                     <dt>{{ $t('profile.region') }}</dt>
-                    <dl>{{profile.region}}</dl>
+                    <dl>{{profile.locationalRegion}}</dl>
 
                     <dt>{{ $t('profile.education') }}</dt>
                     <dl>{{profile.education}}</dl>
@@ -21,6 +21,30 @@
                     <dt>{{ $t('profile.sex') }}</dt>
                     <dl>{{profile.sex}}</dl>
                 </dl>
+
+                 <content-loader
+                  :height="100"
+                  :width="400"
+                  :speed="2"
+                  primaryColor="#949494"
+                  secondaryColor="#606060"
+                  v-if="!profile"
+                >
+                  <rect x="9" y="12" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="70" y="12" rx="3" ry="3" width="100" height="5" /> 
+
+                  <rect x="9" y="31" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="70" y="31" rx="3" ry="3" width="100" height="5" />
+
+                  <rect x="9" y="51" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="70" y="51" rx="3" ry="3" width="100" height="5" />
+
+                  <rect x="9" y="71" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="70" y="71" rx="3" ry="3" width="100" height="5" />
+
+                  <rect x="9" y="91" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="70" y="91" rx="3" ry="3" width="100" height="5" />
+                </content-loader>
             </div>
         </div>
         <PaginatedTopPolls />
@@ -30,17 +54,32 @@
 <script>
 import Button from '@/components/atoms/Button.vue';
 import PaginatedTopPolls from '@/components/organisms/PaginatedTopPolls.vue';
+import { ContentLoader } from "vue-content-loader"
 
 export default {
   name: 'profile',
   components: {
     PaginatedTopPolls,
     Button,
+    ContentLoader
   },
   computed: {
     profile() {
       return this.$store.getters.SIGNED_IN_USER_PROFILE;
     },
+    drivingSince() {
+      const length = new Date().getFullYear() - parseInt(this.profile.drivingSince);
+
+      if(length === 1) {
+        return '1 year';
+      }
+
+      if(length > 1) {
+        return length + ' years';
+      }
+
+      return '0 years';
+    }
   },
   created(){
     this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
@@ -62,6 +101,7 @@ export default {
     background: #f6f6f6;
     margin-top: -16px;
     padding-top: 30px;
+    height: 100%;
 }
 
 .profile__wrapper {
@@ -71,6 +111,7 @@ export default {
     max-width: 80%;
     padding: 1em 0;
     grid-gap: 20px;
+        height: 100%;
 }
 
 .polls {
