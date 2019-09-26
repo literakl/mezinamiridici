@@ -71,6 +71,21 @@ export default {
     termsAndConditions: false,
     personalDataProcessing: false,
     emailNotifications: false,
+    nickname: null,
+    drivingSince: null,
+    bike: null,
+    car: null,
+    bus: null,
+    van: null,
+    truck: null,
+    tramway: null,
+    male: null,
+    female: null,
+    bornInYear: null,
+    region: '',
+    education: '',
+    onlyNickname: null,
+    everything: null
   }),
   methods: {
     checkForm(e) {

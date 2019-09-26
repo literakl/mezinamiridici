@@ -13,8 +13,7 @@
         </div>
         <div class="app__header-sign-in" v-if="!signedIn">
           <router-link to="/sign-up">{{ $t('app.sign-up') }}</router-link> /
-          <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link> /
-          <router-link to="/profile">Taxikar007</router-link>
+          <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link>
         </div>
         <div class="app__header-sign-in" v-if="signedIn">
           <router-link to="/profile">{{nickname}}</router-link>
