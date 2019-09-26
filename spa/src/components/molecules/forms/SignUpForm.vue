@@ -1,6 +1,5 @@
 <template>
     <div>
-    {{success}}
         <form
             id="app"
             @submit="checkForm"
