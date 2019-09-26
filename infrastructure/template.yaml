@@ -1,31 +1,31 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  # BUDDomainName:
-  #   Type: AWS::ApiGateway::DomainName
-  #   Properties:
-  #     CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/d39c3467-02f0-4235-8ac0-9a72e6882e73
-  #     DomainName: 'api.betweenusdrivers.jacobclark.dev'
+  BUDDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/d39c3467-02f0-4235-8ac0-9a72e6882e73
+      DomainName: 'api.betweenusdrivers.jacobclark.dev'
   BUDHostedZone:
     Type: AWS::Route53::HostedZone
     Properties:
       Name: 'api.betweenusdrivers.jacobclark.dev'
-  # APIBasePathMapping:
-  #   Type: AWS::ApiGateway::BasePathMapping
-  #   Properties:
-  #     DomainName: !Ref BUDDomainName
-  #     RestApiId: !Ref BUDAPI
-  #     Stage: production
+  APIBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref BUDDomainName
+      RestApiId: !Ref BUDAPI
+      Stage: production
   APIDomain:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Ref BUDHostedZone
       RecordSets:
-      # - Name: 'api.betweenusdrivers.jacobclark.dev'
-      #   Type: A
-      #   AliasTarget:
-      #     DNSName: !GetAtt BUDDomainName.DistributionDomainName
-      #     HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
+      - Name: 'api.betweenusdrivers.jacobclark.dev'
+        Type: A
+        AliasTarget:
+          DNSName: !GetAtt BUDDomainName.DistributionDomainName
+          HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
       - Name: '_9492ef477a77eb88288d14ff52b92377.api.betweenusdrivers.jacobclark.dev.'
         Type: CNAME
         TTL: '900'
