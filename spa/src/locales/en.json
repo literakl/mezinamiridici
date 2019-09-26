@@ -36,9 +36,12 @@
     "notifications-label": "I want to recieve email notifications",
     "finished-button-label": "Register",
     "errors-heading": "Please correct the following error(s):",
+    "something-went-wrong-heading": "Something wen't wrong creating your account, please try again.",
     "email-required": "Email required",
-    "password-required": "Password required"
-
+    "password-required": "Password required",
+    "success-message": "All set, please check your email and verify your account!",
+    "terms-conditions-required": "Terms and conditions required",
+    "data-processing-required": "Data processing required"
   },
   "complete-profile": {
     "heading": "Welcome to Between us Drivers",
@@ -58,13 +61,14 @@
   },
   "profile": {
     "nickname": "Nickname",
-    "driving-for": "Driving for",
+    "driving-since": "Driving since",
     "vehicle": "Vehicle",
     "region": "Region",
     "education": "Education",
     "sex": "Sex",
     "share-profile": "Share profile",
-    "finish-button": "Finish"
+    "finish-button": "Finish",
+    "born": "Born"
   },
   "bar-chart": {
     "no-problem": "No problem",
