@@ -19,7 +19,6 @@ Resources:
   APIDomain:
     Type: AWS::Route53::RecordSetGroup
     Properties:
-      HostedZoneName: !Ref BUDHostedZone
       HostedZoneId: !Ref BUDHostedZone
       RecordSets:
       # - Name: 'api.betweenusdrivers.jacobclark.xyz'
