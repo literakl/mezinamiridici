@@ -4,7 +4,7 @@ Resources:
   BUDDomainName:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      CertificateArn: arn:aws:acm:us-east-1:...:certificate/...
+      CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/d39c3467-02f0-4235-8ac0-9a72e6882e73
       DomainName: 'api.betweenusdrivers.jacobclark.xyz'
   BUDHostedZone:
     Type: AWS::Route53::HostedZone
