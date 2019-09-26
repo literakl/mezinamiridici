@@ -5,11 +5,11 @@ Resources:
   #   Type: AWS::ApiGateway::DomainName
   #   Properties:
   #     CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/d39c3467-02f0-4235-8ac0-9a72e6882e73
-  #     DomainName: 'api.betweenusdrivers.jacobclark.xyz'
+  #     DomainName: 'api.betweenusdrivers.jacobclark.dev'
   BUDHostedZone:
     Type: AWS::Route53::HostedZone
     Properties:
-      Name: 'api.betweenusdrivers.jacobclark.xyz'
+      Name: 'api.betweenusdrivers.jacobclark.dev'
   # APIBasePathMapping:
   #   Type: AWS::ApiGateway::BasePathMapping
   #   Properties:
@@ -21,7 +21,7 @@ Resources:
     Properties:
       HostedZoneId: !Ref BUDHostedZone
       RecordSets:
-      # - Name: 'api.betweenusdrivers.jacobclark.xyz'
+      # - Name: 'api.betweenusdrivers.jacobclark.dev'
       #   Type: A
       #   AliasTarget:
       #     DNSName: !GetAtt BUDDomainName.DistributionDomainName
