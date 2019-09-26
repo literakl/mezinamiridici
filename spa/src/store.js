@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 
 Vue.use(Vuex);
 
-const API_ENDPOINT = 'https://ri5m1kvdnb.execute-api.eu-west-1.amazonaws.com/production/v1';
+const API_ENDPOINT = 'https://api.betweenusdrivers.jacobclark.dev/v1';
 
 export default new Vuex.Store({
   state: {
