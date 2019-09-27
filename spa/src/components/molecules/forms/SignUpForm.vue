@@ -182,7 +182,7 @@ export default {
   components: {
     Checkbox,
     TextInput,
-    Submit,
+    Button,
     Radio
   },
   data: () => ({
