@@ -2,7 +2,7 @@
     <div>
         <form
             id="app"
-            @submit="checkForm"
+            @submit.prevent="checkForm"
             v-if="success === false || success === null"
         >
             <div v-if="errors.length">
@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            <Button :disabled="signingIn" :value="$t('sign-up.finished-button-label') " class="sign-up-form__button"/>
+            <Button :disabled="signingIn" :value="$t('sign-up.finished-button-label')" @clicked="checkForm" class="sign-up-form__button"/>
         </form>
         <div id="sign-up-form-success" v-if="success === true">
             <p>{{ $t('sign-up.success-message') }}</p>
