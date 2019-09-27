@@ -209,7 +209,7 @@ export default {
     signingIn: false
   }),
   methods: {
-    async checkForm(e) {
+    async checkForm() {
       this.signingIn = true;
       this.errors = [];
 
@@ -225,8 +225,6 @@ export default {
       if (!this.personalDataProcessing) {
         this.errors.push(this.$t('sign-up.data-processing-required'));
       }
-
-      e.preventDefault();
 
       if (this.errors.length === 0) {
         try {
@@ -264,6 +262,8 @@ export default {
             this.success = false;
             this.signingIn = false;
         }
+      } else {
+        this.signingIn = false;
       }
 
       return this.errors.length !== 0;
