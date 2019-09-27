@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            <Submit :value="$t('sign-up.finished-button-label') " class="sign-up-form__button"/>
+            <Button :disabled="signingIn" :value="$t('sign-up.finished-button-label') " class="sign-up-form__button"/>
         </form>
         <div id="sign-up-form-success" v-if="success === true">
             <p>{{ $t('sign-up.success-message') }}</p>
@@ -172,7 +172,7 @@
 
 <script>
 
-import Submit from '@/components/atoms/Submit.vue';
+import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
@@ -205,10 +205,12 @@ export default {
     region: '',
     education: '',
     share: null,
-    success: null
+    success: null,
+    signingIn: false
   }),
   methods: {
     async checkForm(e) {
+      this.signingIn = true;
       this.errors = [];
 
       if (!this.email) {
@@ -238,12 +240,12 @@ export default {
                 marketing: this.emailNotifications
             });
 
-            if(bike) vehicles.push(bike);
-            if(car) vehicles.push(car);
-            if(bus) vehicles.push(bus);
-            if(van) vehicles.push(van);
-            if(truck) vehicles.push(truck);
-            if(tramway) vehicles.push(tramway);
+            if(bike) vehicles.push("bike");
+            if(car) vehicles.push("car");
+            if(bus) vehicles.push("bus");
+            if(van) vehicles.push("van");
+            if(truck) vehicles.push("truck");
+            if(tramway) vehicles.push("tramway");
 
             await this.$store.dispatch('UPDATE_USER_PROFILE', {
                 userId: data.userId,
@@ -260,6 +262,7 @@ export default {
             this.success = true;
         } catch {
             this.success = false;
+            this.signingIn = false;
         }
       }
 

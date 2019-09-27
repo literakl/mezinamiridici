@@ -60,7 +60,7 @@ Resources:
           HttpMethod: "GET"
         - ResourcePath: /v1/users/{userId}
           CachingEnabled: false
-          HttpMethod: "PATCH"
+          HttpMethod: "POST"
         - ResourcePath: /v1/authorizeUser
           CachingEnabled: false
           HttpMethod: "POST"
@@ -115,7 +115,7 @@ Resources:
                   httpMethod: "POST"
                   type: "aws_proxy"
             /v1/users/{userId}:
-              patch:
+              post:
                 responses: {}
                 parameters:
                 - name: "userId"
@@ -268,7 +268,7 @@ Resources:
           Type: Api
           Properties: 
             Path: /v1/users/{userId}
-            Method: Patch
+            Method: Post
             RestApiId: !Ref BUDAPI
       Policies:
         - Version: '2012-10-17'
