@@ -56,6 +56,8 @@ const response = (status, body) => {
 exports.handler = (payload, context, callback) => {
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
 
+    // TODO - Error if user account already exists
+
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 

@@ -89,14 +89,16 @@ Resources:
             get:
               responses: {}
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollsHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollsHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
             post:
               responses: {}
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreatePollHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDCreatePollHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
@@ -111,7 +113,8 @@ Resources:
                 required: true
                 type: string
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
@@ -122,7 +125,8 @@ Resources:
             post:
               responses: {}
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreateUserHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDCreateUserHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
@@ -137,7 +141,8 @@ Resources:
                 required: true
                 type: string
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDUpdateUserHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDUpdateUserHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
@@ -149,7 +154,8 @@ Resources:
                 required: true
                 type: string
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetUserHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetUserHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
@@ -157,7 +163,8 @@ Resources:
             post:
               responses: {}
               x-amazon-apigateway-integration:
-                uri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDAuthorizeUserHandler/invocations
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDAuthorizeUserHandler/invocations
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
@@ -168,7 +175,8 @@ Resources:
             in: header
             x-amazon-apigateway-authtype: custom
             x-amazon-apigateway-authorizer:
-              authorizerUri: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDAuthorizerHandler/invocations
+              authorizerUri:
+                Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDAuthorizerHandler/invocations
               authorizerResultTtlInSeconds: 0
               identityValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
               type: token
@@ -194,7 +202,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDCreatePollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -217,7 +225,7 @@ Resources:
           - dynamodb:PutItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -240,7 +248,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -263,7 +271,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -294,7 +302,7 @@ Resources:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
       - SESCrudPolicy:
           IdentityName: jacob.jh.clark@googlemail.com
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDUpdateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -322,7 +330,7 @@ Resources:
           - dynamodb:UpdateItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -350,14 +358,14 @@ Resources:
           - dynamodb:Query
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   BUDAuthorizerHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDAuthorizerHandler
       Handler: src/handlers/authorizer/authorize.handler
       Runtime: nodejs8.10
-      CodeUri: s3://between-us-drivers-infrastructure/d236df5b234b1bac205f7f5016fee146
+      CodeUri: s3://between-us-drivers-infrastructure/17056a2563523cc0f67a7882299aac9b
   ConfigLambdaPermission:
     Type: AWS::Lambda::Permission
     DependsOn:

@@ -19,7 +19,6 @@ const requireAuth = (to, from, next) => {
   store.dispatch('GET_SIGNED_IN');
   console.log(store.getters.SIGNED_IN);
   if(store.getters.SIGNED_IN){
-    console.log('sign in', to, from)
     next();
     return
   }
@@ -80,6 +79,7 @@ export default new Router({
       path: '/complete-profile',
       name: 'complete-profile',
       component: () => import('./views/CompleteProfile.vue'),
+      beforeEnter: requireAuth
     },
   ],
   scrollBehavior(to, from, savedPosition) {
