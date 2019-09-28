@@ -44,8 +44,7 @@ exports.handler = (payload, context, callback) => {
         TableName: "BUDUserTable"
     }, (err, data) => {
         const token = jwt.sign({
-            "userId": user.userId,
-            "nickname": user.nickname
+            "userId": userId
         }, SECRET, { expiresIn: '1m' });
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ Item: { token } }, callback, response)
     });
