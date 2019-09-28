@@ -1,9 +1,12 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const responses = require('../../utils/responses.js');
+
+const SECRET = 'betweenusdrivers2019';
 
 const response = (status, body) => {
     return {
@@ -20,8 +23,6 @@ const response = (status, body) => {
 
 exports.handler = (payload, context, callback) => {
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
-
-    console.log(payload.body);
 
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
@@ -42,6 +43,10 @@ exports.handler = (payload, context, callback) => {
         },
         TableName: "BUDUserTable"
     }, (err, data) => {
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ Item: { userId } }, callback, response)
+        const token = jwt.sign({
+            "userId": user.userId,
+            "nickname": user.nickname
+        }, SECRET, { expiresIn: '1m' });
+        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ Item: { token } }, callback, response)
     });
 };

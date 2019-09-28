@@ -115,7 +115,22 @@ export default new Vuex.Store({
       }));
     },
     UPDATE_USER_PROFILE: async (context, payload) => {
-      const request = await axios.post(`${API_ENDPOINT}/users/${payload.userId}`, JSON.stringify(payload));
+      const request = await axios.post(
+        `${API_ENDPOINT}/users/${payload.userId}`, 
+        JSON.stringify({
+          nickname: payload.nickname,
+          drivingSince: payload.drivingSince,
+          vehicle: payload.vehicle,
+          sex: payload.sex,
+          born: payload.bornInYear,
+          locationalRegion: payload.region,
+          education: payload.education,
+          shareProfile: payload.share
+        }),
+        {
+          headers: {'Authorization': "bearer " + payload.jwt}
+        }
+      );
     },
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);

@@ -176,6 +176,7 @@ import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
+import jwtDecode from 'jwt-decode';
 
 export default {
   name: 'SignUpForm',
@@ -238,6 +239,8 @@ export default {
                 marketing: this.emailNotifications
             });
 
+            const jwtData = jwtDecode(data);
+
             if(bike) vehicles.push("bike");
             if(car) vehicles.push("car");
             if(bus) vehicles.push("bus");
@@ -246,7 +249,8 @@ export default {
             if(tramway) vehicles.push("tramway");
 
             await this.$store.dispatch('UPDATE_USER_PROFILE', {
-                userId: data.userId,
+                jwt: data,
+                userId: jwtData.userId,
                 nickname: this.nickname,
                 drivingSince: this.drivingSince,
                 vehicle: vehicles,
