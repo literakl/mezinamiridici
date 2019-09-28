@@ -39,6 +39,16 @@ Resources:
       StageName: production
       CacheClusterEnabled: true
       CacheClusterSize: '0.5'
+      Auth:
+        Authorizers:
+          BasicAuthorizer:
+            FunctionPayloadType: TOKEN
+            FunctionArn: "arn:aws:lambda:eu-west-1:349390452115:function:BUDAuthorizerHandler"
+            Identity:
+              Header: Authorization
+              ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
+              ReauthorizeEvery: 0
+        DefaultAuthorizer: BasicAuthorizer
       MethodSettings:
         - ResourcePath: /v1/polls
           CachingEnabled: true
@@ -309,6 +319,12 @@ Resources:
                 - 'dynamodb:Query'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
+  BUDAuthorizerHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDAuthorizerHandler"
+      Handler: src/handlers/authorizer/authorize.handler
+      Runtime: nodejs8.10
   BUDPollTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:

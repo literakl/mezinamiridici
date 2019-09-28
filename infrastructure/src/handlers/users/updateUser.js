@@ -26,7 +26,7 @@ exports.handler = (payload, context, callback) => {
         Key: { 
             "userId": payload.pathParameters.userId
         },
-        UpdateExpression: "set nickanme = :nickname, drivingSince = :drivingSince, vehicle = :vehicle, sex = :sex, born = :born, locationalRegion = :locationalRegion, education = :education, shareProfile = :shareProfile",
+        UpdateExpression: "set nickname = :nickname, drivingSince = :drivingSince, vehicle = :vehicle, sex = :sex, born = :born, locationalRegion = :locationalRegion, education = :education, shareProfile = :shareProfile",
         ExpressionAttributeValues: {
             ":nickname": nickname,
             ":drivingSince": drivingSince,
