@@ -1,8 +1,31 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import store from './store.js';
 
 Vue.use(Router);
+
+const requireUnauth = (to, from, next) => {
+  store.dispatch('GET_SIGNED_IN');
+  if(store.getters.SIGNED_IN){
+    next({ name: "home" });
+    return;
+  }
+
+  next();
+}
+
+const requireAuth = (to, from, next) => {
+  store.dispatch('GET_SIGNED_IN');
+  console.log(store.getters.SIGNED_IN);
+  if(store.getters.SIGNED_IN){
+    console.log('sign in', to, from)
+    next();
+    return
+  }
+
+  next({ name: "sign-in" });
+}
 
 export default new Router({
   mode: 'history',
@@ -17,11 +40,13 @@ export default new Router({
       path: '/sign-in',
       name: 'sign-in',
       component: () => import('./views/SignIn.vue'),
+      beforeEnter: requireUnauth
     },
     {
       path: '/sign-up',
       name: 'sign-up',
       component: () => import('./views/SignUp.vue'),
+      beforeEnter: requireUnauth
     },
     {
       path: '/poll/:id',
@@ -38,6 +63,7 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: () => import('./views/Profile.vue'),
+      beforeEnter: requireAuth
     },
     {
       path: '/profile/:id',

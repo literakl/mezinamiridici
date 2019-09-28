@@ -6,20 +6,20 @@
                     <dt>{{ $t('profile.nickname') }}</dt>
                     <dl>{{profile.nickname}}</dl>
 
-                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.driving-for') }}</dt>
-                    <dl v-if="profile.shareProfile === 'everything'">{{drivingSince}}</dl>
+                    <dt v-if="!nicknameOnly">{{ $t('profile.driving-for') }}</dt>
+                    <dl v-if="!nicknameOnly">{{drivingSince}}</dl>
 
-                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.vehicle') }}</dt>
-                    <dl v-if="profile.shareProfile === 'everything'">{{vehicles}}</dl>
+                    <dt v-if="!nicknameOnly">{{ $t('profile.vehicle') }}</dt>
+                    <dl v-if="!nicknameOnly">{{vehicles}}</dl>
 
-                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.region') }}</dt>
-                    <dl v-if="profile.shareProfile === 'everything'">{{profile.locationalRegion}}</dl>
+                    <dt v-if="!nicknameOnly">{{ $t('profile.region') }}</dt>
+                    <dl v-if="!nicknameOnly">{{profile.locationalRegion}}</dl>
 
-                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.education') }}</dt>
-                    <dl v-if="profile.shareProfile === 'everything'">{{profile.education}}</dl>
+                    <dt v-if="!nicknameOnly">{{ $t('profile.education') }}</dt>
+                    <dl v-if="!nicknameOnly">{{profile.education}}</dl>
 
-                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.sex') }}</dt>
-                    <dl v-if="profile.shareProfile === 'everything'">{{profile.sex}}</dl>
+                    <dt v-if="!nicknameOnly">{{ $t('profile.sex') }}</dt>
+                    <dl v-if="!nicknameOnly">{{profile.sex}}</dl>
                 </dl>
 
                  <content-loader
@@ -74,6 +74,9 @@ export default {
         return this.$store.getters.SIGNED_IN_USER_PROFILE;  
       }
     },
+    nicknameOnly(){
+      return this.profile.shareProfile === 'share-nickname' && this.id !== undefined  && this.id !== null;
+    },
     drivingSince() {
       const length = new Date().getFullYear() - parseInt(this.profile.drivingSince);
 
@@ -92,8 +95,7 @@ export default {
     }
   },
   created(){
-    console.log(this.id)
-    if(this.id !== null){
+    if(this.id !== undefined && this.id !== null){
       this.$store.dispatch('GET_USER_PROFILE_BY_ID', {
         id: this.id
       });

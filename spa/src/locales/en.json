@@ -61,7 +61,7 @@
   },
   "profile": {
     "nickname": "Nickname",
-    "driving-since": "Driving since",
+    "driving-for": "Driving since",
     "vehicle": "Vehicle",
     "region": "Region",
     "education": "Education",
