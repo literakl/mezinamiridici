@@ -39,16 +39,6 @@ Resources:
       StageName: production
       CacheClusterEnabled: true
       CacheClusterSize: '0.5'
-      Auth:
-        Authorizers:
-          BasicAuthorizer:
-            FunctionPayloadType: TOKEN
-            FunctionArn: !GetAtt BUDAuthorizerHandler.Arn
-            Identity:
-              Header: Authorization
-              ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
-              ReauthorizeEvery: 0
-        DefaultAuthorizer: BasicAuthorizer
       MethodSettings:
         - ResourcePath: /v1/polls
           CachingEnabled: true
@@ -157,6 +147,17 @@ Resources:
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
+          securityDefinitions:
+            BasicAuthorizer:
+              type: "apiKey"
+              name: "Authorization"
+              in: "header"
+              x-amazon-apigateway-authtype: "custom"
+              x-amazon-apigateway-authorizer:
+                authorizerUri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDAuthorizerHandler/invocations"
+                authorizerResultTtlInSeconds: 0
+                identityValidationExpression: "^[Bb]earer [-0-9a-zA-z\\.]*$"
+                type: "token"
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
