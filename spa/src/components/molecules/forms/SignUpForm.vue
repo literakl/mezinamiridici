@@ -239,7 +239,7 @@ export default {
                 marketing: this.emailNotifications
             });
 
-            const jwtData = jwtDecode(data);
+            const jwtData = jwtDecode(data.token);
 
             if(bike) vehicles.push("bike");
             if(car) vehicles.push("car");
@@ -247,6 +247,8 @@ export default {
             if(van) vehicles.push("van");
             if(truck) vehicles.push("truck");
             if(tramway) vehicles.push("tramway");
+
+            console.log(jwtData);
 
             await this.$store.dispatch('UPDATE_USER_PROFILE', {
                 jwt: data,
