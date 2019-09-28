@@ -14,7 +14,8 @@ export default new Vuex.Store({
     userToken: null,
     userNickname: null,
     signedIn: false,
-    signedInUserProfile: null
+    signedInUserProfile: null,
+    userProfile: null
   },
   getters: {
     POLLS: state => state.polls,
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     USER_TOKEN: state => state.userToken,
     USER_NICKNAME: state => state.userNickname,
     SIGNED_IN: state => state.signedIn,
-    SIGNED_IN_USER_PROFILE: state => state.signedInUserProfile
+    SIGNED_IN_USER_PROFILE: state => state.signedInUserProfile,
+    USER_PROFILE: state => state.userProfile
   },
   mutations: {
     SET_POLLS: (state, payload) => {
@@ -42,6 +44,9 @@ export default new Vuex.Store({
     },
     SET_SIGNED_IN_USER_PROFILE: (state, payload) => {
       state.signedInUserProfile = payload;
+    },
+    SET_USER_PROFILE: (state, payload) => {
+      state.userProfile = payload;
     }
   },
   actions: {
@@ -51,8 +56,10 @@ export default new Vuex.Store({
     },
     GET_POLL: async (context, payload) => {
       context.commit('SET_POLL', null);
-      const { data } = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
-      context.commit('SET_POLL', data);
+      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
+      const userData = await axios.get(`${API_ENDPOINT}/users/${pollData.data.userId}`);
+      pollData.data['userData'] = userData.data;
+      context.commit('SET_POLL', pollData.data);
     },
     GET_USER_TOKEN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
@@ -109,6 +116,10 @@ export default new Vuex.Store({
     },
     UPDATE_USER_PROFILE: async (context, payload) => {
       const request = await axios.post(`${API_ENDPOINT}/users/${payload.userId}`, JSON.stringify(payload));
+    },
+    GET_USER_PROFILE_BY_ID: async (context, payload) => {
+      const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);
+      context.commit('SET_USER_PROFILE', data);
     },
   }
 });

@@ -8,7 +8,7 @@
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
               <li>{{created}}</li>
-              <li>{{poll.userId}}</li>
+              <li><router-link :to="{ name: 'user-profile', params: { id: poll.userId }}">{{poll.userData.nickname}}</router-link></li>
               <li>53 votes</li>
               <li>290 comments</li>
               </ul>

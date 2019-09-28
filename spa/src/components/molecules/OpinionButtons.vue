@@ -40,9 +40,9 @@ export default {
     voted(vote) {
       if(!this.signedIn){
         this.$router.push({ name: 'sign-in' });
+      }else{
+        this.$emit('voted', vote);
       }
-
-      this.$emit('voted', vote);
     },
   },
 };

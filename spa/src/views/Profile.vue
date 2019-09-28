@@ -63,9 +63,16 @@ export default {
     Button,
     ContentLoader
   },
+  props: {
+    id: String
+  },
   computed: {
     profile() {
-      return this.$store.getters.SIGNED_IN_USER_PROFILE;
+      if(this.id){
+        return this.$store.getters.USER_PROFILE;  
+      }else{
+        return this.$store.getters.SIGNED_IN_USER_PROFILE;  
+      }
     },
     drivingSince() {
       const length = new Date().getFullYear() - parseInt(this.profile.drivingSince);
@@ -82,10 +89,17 @@ export default {
     }
   },
   created(){
-    this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
+    console.log(this.id)
+    if(this.id !== null){
+      this.$store.dispatch('GET_USER_PROFILE_BY_ID', {
+        id: this.id
+      });
+    }else{
+      this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
+    }
   },
   data: () => ({
-    page: 0,
+    page: 0
   }),
   methods: {
     clicked() {

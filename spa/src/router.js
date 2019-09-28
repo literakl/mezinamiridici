@@ -40,6 +40,12 @@ export default new Router({
       component: () => import('./views/Profile.vue'),
     },
     {
+      path: '/profile/:id',
+      name: 'user-profile',
+      component: () => import('./views/Profile.vue'),
+      props: true
+    },
+    {
       path: '/analyze-votes/:id',
       name: 'analyze-votes',
       component: () => import('./views/AnalyzeVotes.vue'),
