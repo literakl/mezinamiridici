@@ -212,6 +212,8 @@ Resources:
             Path: /v1/polls
             Method: Get
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizer: 'NONE'
       Policies:
         - Version: '2012-10-17'
           Statement:
