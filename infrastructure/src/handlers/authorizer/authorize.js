@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const SECRET = 'betweenusdrivers2019';
 
 const generatePolicy = function(principalId, effect, resource) {
