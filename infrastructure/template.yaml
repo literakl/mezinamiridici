@@ -39,16 +39,6 @@ Resources:
       StageName: production
       CacheClusterEnabled: true
       CacheClusterSize: '0.5'
-      Auth:
-        Authorizers:
-          BasicAuthorizer:
-            FunctionPayloadType: TOKEN
-            FunctionArn: !GetAtt BUDAuthorizerHandler.Arn
-            Identity:
-              Header: Authorization
-              ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
-              ReauthorizeEvery: 0
-        DefaultAuthorizer: BasicAuthorizer
       MethodSettings:
         - ResourcePath: /v1/polls
           CachingEnabled: true
@@ -86,8 +76,6 @@ Resources:
             /v1/polls:
               get:
                 responses: {}
-                security:
-                - None: []
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollsHandler/invocations"
                   passthroughBehavior: "when_no_match"
@@ -172,6 +160,16 @@ Resources:
             Path: /v1/polls/{pollId}
             Method: Get
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizers:
+                BasicAuthorizer:
+                  FunctionPayloadType: TOKEN
+                  FunctionArn: !GetAtt BUDAuthorizerHandler.Arn
+                  Identity:
+                    Header: Authorization
+                    ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
+                    ReauthorizeEvery: 0
+        DefaultAuthorizer: BasicAuthorizer
       Policies:
         - Version: '2012-10-17'
           Statement:
