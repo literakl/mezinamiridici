@@ -25,8 +25,10 @@ exports.handler =  function(event, context, callback) {
 
     try {
         const decoded = jwt.verify(token, SECRET);
+        console.log("Decoded ok");
         callback(null, generatePolicy(decoded.userId, 'Allow', event.methodArn));
     } catch(err) {
+        console.log("Unauth")
         callback("Unauthorized");
     }
 };

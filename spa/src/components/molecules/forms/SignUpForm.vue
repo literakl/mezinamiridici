@@ -248,8 +248,6 @@ export default {
             if(truck) vehicles.push("truck");
             if(tramway) vehicles.push("tramway");
 
-            console.log(jwtData);
-
             await this.$store.dispatch('UPDATE_USER_PROFILE', {
                 jwt: data,
                 userId: jwtData.userId,
