@@ -31,8 +31,17 @@
 <script>
 export default {
   name: 'OpinionButtons',
+  computed: {
+    signedIn() {
+      return this.$store.getters.SIGNED_IN;
+    }
+  },
   methods: {
     voted(vote) {
+      if(!this.signedIn){
+        this.$router.push({ name: 'sign-in' });
+      }
+
       this.$emit('voted', vote);
     },
   },
