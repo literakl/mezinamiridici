@@ -24,6 +24,8 @@ const generatePolicy = function(principalId, effect, resource) {
 
 exports.handler =  function(event, context, callback) {
     const token = event.authorizationToken;
+    console.log(event);
+    console.log(token);
 
     try {
         const decoded = jwt.verify(token, SECRET);
