@@ -43,7 +43,7 @@ Resources:
         Authorizers:
           BasicAuthorizer:
             FunctionPayloadType: TOKEN
-            FunctionArn: "arn:aws:lambda:eu-west-1:349390452115:function:BUDAuthorizerHandler"
+            FunctionArn: !GetAtt BUDAuthorizerHandler.Arn
             Identity:
               Header: Authorization
               ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
