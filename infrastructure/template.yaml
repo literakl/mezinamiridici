@@ -86,6 +86,8 @@ Resources:
             /v1/polls:
               get:
                 responses: {}
+                security:
+                - None: []
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDGetPollsHandler/invocations"
                   passthroughBehavior: "when_no_match"
@@ -93,8 +95,6 @@ Resources:
                   type: "aws_proxy"
               post:
                 responses: {}
-                security:
-                - None: []
                 x-amazon-apigateway-integration:
                   uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:349390452115:function:BUDCreatePollHandler/invocations"
                   passthroughBehavior: "when_no_match"
