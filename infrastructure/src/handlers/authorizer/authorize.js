@@ -23,7 +23,7 @@ const generatePolicy = function(principalId, effect, resource) {
 }
 
 exports.handler =  function(event, context, callback) {
-    const token = event.authorizationToken;
+    const token = JSON.parse(event).authorizationToken;
     console.log(event);
     console.log(token);
 
