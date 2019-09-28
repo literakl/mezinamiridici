@@ -1,36 +1,38 @@
 <template>
-    <form @submit.prevent="signIn">
-        <div class="signin">
-            <div class="signin__wrapper">
-                <Modal :show="forottenPassword">
-                    <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
-                    <p>{{ $t('sign-in.email-reset-description') }}</p>
-                    <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" />
-                    <Submit :value="$t('sign-in.reset-password-button')" class="signin__forgotten-password-submit-button"/>
-                    <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
-                </Modal>
-                <div>
-                    <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
-                </div>
-                <div>
-                    <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
-                </div>
-                <div>
-                    <p v-if="loginError" class="signin__login-error">Incorrect username/password, please try again</p>
-                    <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
-                    <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
-                    <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                    <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn"/>
-                </div>
-                <div>
-                    <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
-                    <div class="signin__or">{{ $t('sign-in.or') }}</div>
-                    <p>Facebook login button will go here</p>
-                    <p>Google login button will go here</p>
-                </div>
-            </div>
-        </div>
-    </form>
+    <div>
+      <Modal :show="forottenPassword">
+          <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
+          <p>{{ $t('sign-in.email-reset-description') }}</p>
+          <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" />
+          <Button :value="$t('sign-in.reset-password-button')" class="signin__forgotten-password-submit-button" @clicked="forgotPassword" />
+          <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
+      </Modal>
+      <form @submit.prevent="signIn">
+          <div class="signin">
+              <div class="signin__wrapper">
+                  <div>
+                      <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+                  </div>
+                  <div>
+                      <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
+                  </div>
+                  <div>
+                      <p v-if="loginError" class="signin__login-error">Incorrect username/password, please try again</p>
+                      <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
+                      <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
+                      <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
+                      <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn"/>
+                  </div>
+                  <div>
+                      <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
+                      <div class="signin__or">{{ $t('sign-in.or') }}</div>
+                      <p>Facebook login button will go here</p>
+                      <p>Google login button will go here</p>
+                  </div>
+              </div>
+          </div>
+      </form>
+    </div>
 </template>
 
 <script>
@@ -76,6 +78,9 @@ export default {
       this.password = '';
       this.loginError = true;
       this.signingIn = false;
+    },
+    forgotPassword() {
+      alert("Forgot password will be sent eventually...")
     },
     async signIn() {
       this.signingIn = true;
