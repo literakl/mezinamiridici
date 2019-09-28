@@ -4,7 +4,7 @@ Globals:
   Api:
     Cors:
       AllowMethods: "'OPTIONS,POST,GET'"
-      AllowHeaders: "'Content-Type'"
+      AllowHeaders: "'Content-Type,Authorization'"
       AllowOrigin: "'*'"
 Resources:
   BUDDomainName:
