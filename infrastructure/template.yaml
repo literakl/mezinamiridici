@@ -256,6 +256,7 @@ Resources:
       FunctionName: "BUDCreateUserHandler"
       Handler: src/handlers/users/createUser.handler
       Runtime: nodejs8.10
+      Timeout: 10
       Events:
         Api:
           Type: Api
@@ -276,6 +277,8 @@ Resources:
                 - 'dynamodb:PutItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
+        - SESCrudPolicy:
+            IdentityName: jacob.jh.clark@googlemail.com
   BUDUpdateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -334,6 +337,15 @@ Resources:
       FunctionName: "BUDAuthorizerHandler"
       Handler: src/handlers/authorizer/authorize.handler
       Runtime: nodejs8.10
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - BUDAPI
+    - BUDAuthorizerHandler
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref BUDAuthorizerHandler
+      Principal: apigateway.amazonaws.com
   BUDPollTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:

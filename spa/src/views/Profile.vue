@@ -6,20 +6,20 @@
                     <dt>{{ $t('profile.nickname') }}</dt>
                     <dl>{{profile.nickname}}</dl>
 
-                    <dt>{{ $t('profile.driving-for') }}</dt>
-                    <dl>{{drivingSince}}</dl>
+                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.driving-for') }}</dt>
+                    <dl v-if="profile.shareProfile === 'everything'">{{drivingSince}}</dl>
 
-                    <dt>{{ $t('profile.vehicle') }}</dt>
-                    <dl>{{profile.vehicle}}</dl>
+                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.vehicle') }}</dt>
+                    <dl v-if="profile.shareProfile === 'everything'">{{vehicles}}</dl>
 
-                    <dt>{{ $t('profile.region') }}</dt>
-                    <dl>{{profile.locationalRegion}}</dl>
+                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.region') }}</dt>
+                    <dl v-if="profile.shareProfile === 'everything'">{{profile.locationalRegion}}</dl>
 
-                    <dt>{{ $t('profile.education') }}</dt>
-                    <dl>{{profile.education}}</dl>
+                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.education') }}</dt>
+                    <dl v-if="profile.shareProfile === 'everything'">{{profile.education}}</dl>
 
-                    <dt>{{ $t('profile.sex') }}</dt>
-                    <dl>{{profile.sex}}</dl>
+                    <dt v-if="profile.shareProfile === 'everything'">{{ $t('profile.sex') }}</dt>
+                    <dl v-if="profile.shareProfile === 'everything'">{{profile.sex}}</dl>
                 </dl>
 
                  <content-loader
@@ -86,6 +86,9 @@ export default {
       }
 
       return '0 years';
+    },
+    vehicles(){
+      return this.profile.vehicle.join(" ");
     }
   },
   created(){

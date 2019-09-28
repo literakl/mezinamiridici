@@ -241,12 +241,13 @@ export default {
 
             const jwtData = jwtDecode(data.token);
 
-            if(bike) vehicles.push("bike");
-            if(car) vehicles.push("car");
-            if(bus) vehicles.push("bus");
-            if(van) vehicles.push("van");
-            if(truck) vehicles.push("truck");
-            if(tramway) vehicles.push("tramway");
+
+            if(this.bike) vehicles.push("bike");
+            if(this.car) vehicles.push("car");
+            if(this.bus) vehicles.push("bus");
+            if(this.van) vehicles.push("van");
+            if(this.truck) vehicles.push("truck");
+            if(this.tramway) vehicles.push("tramway");
 
             await this.$store.dispatch('UPDATE_USER_PROFILE', {
                 jwt: data,
@@ -255,7 +256,7 @@ export default {
                 drivingSince: this.drivingSince,
                 vehicle: vehicles,
                 sex: this.sex,
-                born: this.bornInYear,
+                bornInYear: this.bornInYear,
                 locationalRegion: this.region,
                 education: this.education,
                 shareProfile: this.share

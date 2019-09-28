@@ -23,16 +23,12 @@ const generatePolicy = function(principalId, effect, resource) {
 }
 
 exports.handler =  function(event, context, callback) {
-    const token = JSON.parse(event).authorizationToken;
-    console.log(event);
-    console.log(token);
-
+    console.log(event, context, callback)
     try {
+        const token = event.authorizationToken.split(" ")[1];
         const decoded = jwt.verify(token, SECRET);
-        console.log("Decoded ok");
         callback(null, generatePolicy(decoded.userId, 'Allow', event.methodArn));
     } catch(err) {
-        console.log("Unauth");
         console.log(err);
         callback("Unauthorized");
     }

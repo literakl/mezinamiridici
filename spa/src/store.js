@@ -51,8 +51,16 @@ export default new Vuex.Store({
   },
   actions: {
     GET_POLLS: async (context, payload) => {
-      const { data } = await axios.get(`${API_ENDPOINT}/polls`);
-      context.commit('SET_POLLS', data);
+      const pollData = await axios.get(`${API_ENDPOINT}/polls`);
+      const polls = [];
+    
+      pollData.data.forEach(async poll => {
+        const userData = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
+        poll['userData'] = userData.data;
+        polls.push(poll);
+      });
+
+      context.commit('SET_POLLS', polls);
     },
     GET_POLL: async (context, payload) => {
       context.commit('SET_POLL', null);
@@ -96,7 +104,6 @@ export default new Vuex.Store({
       }
     },
     GET_SIGNED_IN_USER_PROFILE: async (context, payload) => {
-
       const jwt = localStorage.getItem('jwt');
       if(!jwt) return 
 
@@ -123,9 +130,9 @@ export default new Vuex.Store({
           vehicle: payload.vehicle,
           sex: payload.sex,
           born: payload.bornInYear,
-          locationalRegion: payload.region,
+          locationalRegion: payload.locationalRegion,
           education: payload.education,
-          shareProfile: payload.share
+          shareProfile: payload.shareProfile
         }),
         {
           headers: {'Authorization': "bearer " + payload.jwt.token}
