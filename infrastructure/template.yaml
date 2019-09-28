@@ -170,6 +170,8 @@ Resources:
             Path: /v1/polls/{pollId}
             Method: Get
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizer: NONE
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -191,6 +193,8 @@ Resources:
             Path: /v1/polls
             Method: Post
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizer: NONE
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -213,7 +217,7 @@ Resources:
             Method: Get
             RestApiId: !Ref BUDAPI
             Auth:
-              Authorizer: 'NONE'
+              Authorizer: NONE
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -235,6 +239,8 @@ Resources:
             Path: /v1/users/{userId}
             Method: Get
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizer: NONE
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -256,6 +262,8 @@ Resources:
             Path: /v1/users
             Method: Post
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizer: NONE
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -308,6 +316,8 @@ Resources:
             Path: /v1/authorizeUser
             Method: Post
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizer: NONE
       Policies:
         - Version: '2012-10-17'
           Statement:
