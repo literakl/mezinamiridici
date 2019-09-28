@@ -21,6 +21,8 @@ const response = (status, body) => {
 exports.handler = (payload, context, callback) => {
     const { email, password, tandcs, dataProcessing, marketing } = JSON.parse(payload.body);
 
+    console.log(payload.body);
+
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
