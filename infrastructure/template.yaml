@@ -160,6 +160,15 @@ Resources:
             Path: /v1/polls/{pollId}
             Method: Get
             RestApiId: !Ref BUDAPI
+            Auth:
+              Authorizers:
+                BasicAuthorizer:
+                  FunctionPayloadType: TOKEN
+                  FunctionArn: !GetAtt BUDAuthorizerHandler.Arn
+                  Identity:
+                    Header: Authorization
+                    ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
+                    ReauthorizeEvery: 0
       Policies:
         - Version: '2012-10-17'
           Statement:
