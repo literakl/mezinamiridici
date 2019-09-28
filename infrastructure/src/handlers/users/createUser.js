@@ -38,7 +38,7 @@ exports.handler = (payload, context, callback) => {
             dataProcessing,
             marketing,
             verificationToken: uuidv4(),
-            registrationDate: new Date()
+            registrationDate: Date.now()
         },
         TableName: "BUDUserTable"
     }, (err, data) => {

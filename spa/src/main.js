@@ -11,7 +11,7 @@ Vue.mixin({
   data() {
     return {
       get apiEndpoint() {
-        return 'https://ri5m1kvdnb.execute-api.eu-west-1.amazonaws.com/production/v1';
+        return 'https://api.betweenusdrivers.jacobclark.dev/v1';
       },
     };
   },
