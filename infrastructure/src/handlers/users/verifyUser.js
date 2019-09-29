@@ -17,7 +17,7 @@ const response = (status, body) => {
 }
 
 exports.handler = (payload, context, callback) => {
-    const { token } = JSON.parse(payload.body);
+    const { token } = JSON.parse(payload.pathParameters);
 
     dynamodb.query({
         "TableName": "BUDUserTable",
