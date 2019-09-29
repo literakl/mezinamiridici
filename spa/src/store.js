@@ -135,7 +135,10 @@ export default new Vuex.Store({
           shareProfile: payload.shareProfile
         }),
         {
-          headers: {'Authorization': "bearer " + payload.jwt.token}
+          headers: {
+            'Authorization': "bearer " + payload.jwt.token,
+            "Content-Type": "application/json"
+          }
         }
       );
     },
