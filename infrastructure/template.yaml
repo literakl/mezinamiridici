@@ -387,7 +387,7 @@ Resources:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromVerificationTokenIndex"
             - Effect: Allow
               Action:
-                - 'dynamodb:Update'
+                - 'dynamodb:UpdateItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
   BUDAuthorizerHandler:
