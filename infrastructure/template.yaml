@@ -122,7 +122,7 @@ Resources:
                   cacheKeyParameters:
                   - "method.request.path.pollId"
             /v1/polls/{pollId}/vote:
-              get:
+              post:
                 responses: {}
                 security:
                 - TokenAuthorizer: []
@@ -289,7 +289,7 @@ Resources:
           Type: Api
           Properties: 
             Path: /v1/polls/{pollId}/vote
-            Method: Get
+            Method: Post
             RestApiId: !Ref BUDAPI
       Policies:
         - Version: '2012-10-17'
