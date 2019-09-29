@@ -25,7 +25,7 @@ exports.handler = (payload, context, callback) => {
 
     dynamodb.query({
         "TableName": "BUDUserTable",
-        "IndexName": "UserFromEmailIndex",
+        "IndexName": "PasswordFromEmailIndex",
         "KeyConditionExpression": "#email = :email",
         "ExpressionAttributeNames": {
             "#email": "email"

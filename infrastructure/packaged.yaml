@@ -202,7 +202,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDCreatePollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -225,7 +225,7 @@ Resources:
           - dynamodb:PutItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -248,7 +248,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -271,7 +271,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -299,10 +299,10 @@ Resources:
           Action:
           - dynamodb:PutItem
           Resource:
-            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromEmailIndex
       - SESCrudPolicy:
           IdentityName: jacob.jh.clark@googlemail.com
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDUpdateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -329,8 +329,8 @@ Resources:
           Action:
           - dynamodb:UpdateItem
           Resource:
-            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromEmailIndex
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -357,15 +357,15 @@ Resources:
           Action:
           - dynamodb:Query
           Resource:
-            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromEmailIndex
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   BUDAuthorizerHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDAuthorizerHandler
       Handler: src/handlers/authorizer/authorize.handler
       Runtime: nodejs8.10
-      CodeUri: s3://between-us-drivers-infrastructure/0d12b9815fcdf7f0a3845cb7fa33b1f4
+      CodeUri: s3://between-us-drivers-infrastructure/a050165fb8ae638fa1e5ba6e6f37608c
   ConfigLambdaPermission:
     Type: AWS::Lambda::Permission
     DependsOn:
@@ -398,6 +398,8 @@ Resources:
         AttributeType: S
       - AttributeName: email
         AttributeType: S
+      - AttributeName: verificationToken
+        AttributeType: S
       KeySchema:
       - AttributeName: userId
         KeyType: HASH
@@ -405,9 +407,18 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       GlobalSecondaryIndexes:
-      - IndexName: PasswordFromEmailIndex
+      - IndexName: UserFromEmailIndex
         KeySchema:
         - AttributeName: email
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+      - IndexName: UserFromVerificationTokenIndex
+        KeySchema:
+        - AttributeName: verificationToken
           KeyType: HASH
         Projection:
           ProjectionType: ALL

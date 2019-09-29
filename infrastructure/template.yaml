@@ -284,7 +284,7 @@ Resources:
               Action:
                 - 'dynamodb:PutItem'
               Resource:
-                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromEmailIndex"
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
         - SESCrudPolicy:
             IdentityName: jacob.jh.clark@googlemail.com
   BUDUpdateUserHandler:
@@ -312,7 +312,7 @@ Resources:
               Action:
                 - 'dynamodb:UpdateItem'
               Resource:
-                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromEmailIndex"
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -338,7 +338,7 @@ Resources:
               Action:
                 - 'dynamodb:Query'
               Resource:
-                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromEmailIndex"
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
   BUDAuthorizerHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -385,7 +385,7 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       GlobalSecondaryIndexes: 
-        - IndexName: UserFromEmailIndex
+        - IndexName: PasswordFromEmailIndex
           KeySchema: 
             - AttributeName: email
               KeyType: HASH
