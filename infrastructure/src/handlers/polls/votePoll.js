@@ -22,7 +22,7 @@ exports.handler = (payload, context, callback) => {
     const { score } = JSON.parse(payload.body);
     const { pollId } = payload.pathParameters;
 
-    console.log(context.authorizer.principalId);
+    console.log(context);
 
     const voteId = uuidv4();
 
