@@ -160,7 +160,7 @@ Resources:
                   cacheKeyParameters:
                   - "method.request.path.userId"
             /v1/verify/{token}:
-              patch:
+              get:
                 responses: {}
                 parameters:
                 - name: "token"
