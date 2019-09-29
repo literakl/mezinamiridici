@@ -13,8 +13,8 @@
               <li>290 comments</li>
               </ul>
               <ul id="home__heading-metadata-social">
-              <li>(Facebook) Like | Share</li>
-              <li>Twitter Share</li>
+              <li><iframe :src="'https://www.facebook.com/plugins/like.php?href=' + urlToShare + '&width=79&layout=button_count&action=like&size=small&show_faces=true&share=false&height=21&appId=547554546015306'" width="79" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></li>
+              <li><span id="twitter-share"></span></li>
               </ul>
           </div>
         </div>
@@ -42,12 +42,28 @@ export default {
   props: {
     poll: Object,
   },
+  updated: function(){
+    if(this.poll){
+      const text = this.poll.text;
+      twttr.widgets.createShareButton(
+        'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.pollId,
+        document.getElementById('twitter-share'),
+        {
+          text: 'Between us Drivers - ' + text
+        }
+      );
+    }
+  },
   computed: {
     created() {
-      const date = new Date(this.poll.created);
+      const date = new Date(0);
+      date.setUTCSeconds(this.poll.created);
 
       return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
     },
+    urlToShare() {
+      return 'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.pollId
+    }
   },
   components: {
     ContentLoader,
@@ -87,5 +103,9 @@ export default {
 
 #home__heading-metadata li:last-child:after {
   content: '';
+}
+
+.fb-like > span {
+  vertical-align: baseline !important;
 }
 </style>
