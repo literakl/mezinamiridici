@@ -39,7 +39,7 @@
                 <TextInput v-model="nickname" identifier="nickname" type="text" />
 
                 <div class="sign-up-form__label">
-                    <label for="driving-since">{{ $t('profile.driving-since') }}</label>
+                    <label for="driving-since">{{ $t('profile.driving-for') }}</label>
                 </div>
                 <TextInput v-model="drivingSince" identifier="driving-since" type="number" />
 

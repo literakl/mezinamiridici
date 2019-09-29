@@ -187,6 +187,10 @@ h2 {
     margin-top: 20px;
 }
 
+.signin__forgotten-password-submit-button {
+  width: 100%;
+}
+
 .signin__reset-text-input {
     display: block;
 }

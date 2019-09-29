@@ -4,8 +4,8 @@ Globals:
   Api:
     Cors:
       AllowMethods: "'OPTIONS,POST,GET,PATCH'"
-      AllowHeaders: "'*'"
-      AllowOrigin: "'*'"
+      AllowHeaders: "'Accept,Content-Type,Authorization,Origin,Referer,User-Agent'"
+      AllowOrigin: "'localhost:8080,api.betweenusdrivers.jacobclark.dev,betweenusdrivers.jacobclark.dev'"
 Resources:
   BUDDomainName:
     Type: AWS::ApiGateway::DomainName
