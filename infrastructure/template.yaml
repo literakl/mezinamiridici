@@ -523,19 +523,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1 
-    BUDVoteTable:
-    Type: 'AWS::DynamoDB::Table'
-    Properties:
-      TableName: BUDVoteTable
-      AttributeDefinitions:
-        - AttributeName: voteId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: voteId
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1 
   BUDCommentTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
