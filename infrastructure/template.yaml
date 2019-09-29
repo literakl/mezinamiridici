@@ -124,6 +124,8 @@ Resources:
             /v1/polls/{pollId}/vote:
               get:
                 responses: {}
+                security:
+                - TokenAuthorizer: []
                 produces:
                 - "application/json"
                 parameters:
