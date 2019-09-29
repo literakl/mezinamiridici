@@ -39,6 +39,7 @@ exports.handler = (payload, context, callback) => {
         },
         ReturnValues: "UPDATED_NEW"
     }, (err, data) => {
+        console.log(err);
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
     });
 };

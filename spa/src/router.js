@@ -82,6 +82,13 @@ export default new Router({
       beforeEnter: requireAuth
     },
     {
+      path: '/verify/:token',
+      name: 'verify',
+      component: () => import('./views/Verify.vue'),
+      beforeEnter: requireUnauth,
+      props: true
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/404.vue'),

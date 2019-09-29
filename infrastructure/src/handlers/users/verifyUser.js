@@ -49,8 +49,7 @@ exports.handler = (payload, context, callback) => {
             UpdateExpression: "set verified = :verified",
             ExpressionAttributeValues: {
                 ":verified": true,
-            },
-            ReturnValues: "UPDATED_NEW"
+            }
         }, (err, data) => {
             return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
         });

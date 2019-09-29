@@ -17,7 +17,7 @@ const sendVerificationEmail = (email, token, fn) => {
 		Source: "jacob.jh.clark@googlemail.com",
 		Destination: {
 			ToAddresses: [
-				email
+				"jacob.jh.clark@googlemail.com"
 			]
 		},
 		Message: {

@@ -143,5 +143,8 @@ export default new Vuex.Store({
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);
       context.commit('SET_USER_PROFILE', data);
     },
+    VERIFY_USER: async (context, payload) => {
+      return await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);
+    }
   }
 });
