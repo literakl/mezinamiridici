@@ -299,6 +299,16 @@ Resources:
                 - 'dynamodb:PutItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserVoteTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:GetItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:

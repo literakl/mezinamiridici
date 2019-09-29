@@ -35,18 +35,18 @@ export default {
     this.$store.dispatch('GET_USER_NICKNAME');
   },
   methods: {
-    voted(category) {
+    async voted(category) {
       const params = {
         id: this.poll.pollId,
         vote: category,
       };
 
+      const voted = await this.$store.dispatch('VOTE', params);
+
       this.$router.push({
         name: 'poll',
         params
       });
-
-      this.$store.dispatch('VOTE', params);
     },
   },
 };

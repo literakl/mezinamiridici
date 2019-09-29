@@ -20,21 +20,55 @@ const response = (status, body) => {
 
 exports.handler = (payload, context, callback) => {
     const { score } = JSON.parse(payload.body);
-    const { authorizer: { principleId } } = payload;
+    const { requestContext: { authorizer: { principalId }} } = payload;
     const { pollId } = payload.pathParameters;
 
-    console.log(principleId);
+    if(score === undefined || score === null) return responses.INTERNAL_SERVER_ERROR_500("score is required", callback, response)
 
     const voteId = uuidv4();
+    const userVoteId = uuidv4();
 
-    dynamodb.put({
-        Item: {
-            "voteId": voteId,
-            "pollId": pollId,
-            "vote": score
+    dynamodb.get({
+        "TableName": "BUDUserTable",
+        "Key": {
+            "userId": principalId
         },
-        TableName: "BUDVoteTable"
-    }, (err, data) => {
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+        "ConsistentRead": false,
+    }, (err, userData) => {
+        if(err) {
+            return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+        }
+
+        dynamodb.put({
+            Item: {
+                "voteId": voteId,
+                "pollId": pollId,
+                "vote": score,
+                "age": userData.Item.born ? new Date().getFullYear() - parseInt(userData.Item.born) : null,
+                "drivingFor": userData.Item.drivingSince ? new Date().getFullYear() - parseInt(userData.Item.drivingSince) : null,
+                "education": userData.Item.education ? userData.Item.education : null,
+                "sex": userData.Item.sex ? userData.Item.sex : null,
+                "region": userData.Item.locationalRegion ? userData.Item.locationalRegion : null,
+                "vehicle": userData.Item.vehicle ? userData.Item.vehicle : null,
+                "created": Date.now()
+            },
+            TableName: "BUDVoteTable"
+        }, (err, voteData) => {
+            if(err) {
+                return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+            }
+
+            dynamodb.put({
+                Item: {
+                    "userVoteId": userVoteId,
+                    "voteId": voteId,
+                    "pollId": pollId,
+                    "userId": principalId
+                },
+                TableName: "BUDUserVoteTable"
+            }, (err, userVoteData) => {
+                return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(userVoteData, callback, response)
+            })
+        });
     });
 };
