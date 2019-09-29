@@ -130,7 +130,7 @@ export default {
     max-width: 80%;
     padding: 1em 0;
     grid-gap: 20px;
-        height: 100%;
+    height: 100%;
 }
 
 .polls {

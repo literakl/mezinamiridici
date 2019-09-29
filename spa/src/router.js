@@ -81,6 +81,11 @@ export default new Router({
       component: () => import('./views/CompleteProfile.vue'),
       beforeEnter: requireAuth
     },
+    {
+      path: '*',
+      name: 'not-found',
+      component: () => import('./views/404.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

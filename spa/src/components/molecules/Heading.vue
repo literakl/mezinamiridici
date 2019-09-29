@@ -7,14 +7,14 @@
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
-              <li>{{created}}</li>
-              <li><router-link :to="{ name: 'user-profile', params: { id: poll.userId }}">{{poll.userData.nickname}}</router-link></li>
-              <li>53 votes</li>
-              <li>290 comments</li>
+                <li>{{created}}</li>
+                <li><router-link :to="{ name: 'user-profile', params: { id: poll.userId }}">{{poll.userData.nickname}}</router-link></li>
+                <li>53 votes</li>
+                <li>290 comments</li>
               </ul>
               <ul id="home__heading-metadata-social">
-              <li><iframe :src="'https://www.facebook.com/plugins/like.php?href=' + urlToShare + '&width=79&layout=button_count&action=like&size=small&show_faces=true&share=false&height=21&appId=547554546015306'" width="79" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></li>
-              <li><span id="twitter-share"></span></li>
+                <li><iframe :src="'https://www.facebook.com/plugins/like.php?href=' + urlToShare + '&width=79&layout=button_count&action=like&size=small&show_faces=true&share=false&height=21&appId=547554546015306'" width="61" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></li>
+                <li><span id="twitter-share"></span></li>
               </ul>
           </div>
         </div>
