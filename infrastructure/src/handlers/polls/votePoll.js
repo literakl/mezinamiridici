@@ -22,6 +22,8 @@ exports.handler = (payload, context, callback) => {
     const { score } = JSON.parse(payload.body);
     const { pollId } = payload.pathParameters;
 
+    console.log(payload, context);
+
     const voteId = uuidv4();
 
     dynamodb.put({
