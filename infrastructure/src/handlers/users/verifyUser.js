@@ -35,7 +35,7 @@ exports.handler = (payload, context, callback) => {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
         }
 
-        const user = data.Items.find(item => item.verificationToken === verificationToken);
+        const user = data.Items.find(item => item.verificationToken === token);
 
         if(user.verified){
             return responses.FORBIDDEN_403(callback, response);
