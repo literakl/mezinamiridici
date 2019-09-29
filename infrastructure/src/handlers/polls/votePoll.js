@@ -20,9 +20,10 @@ const response = (status, body) => {
 
 exports.handler = (payload, context, callback) => {
     const { score } = JSON.parse(payload.body);
+    const { authorizer: { principleId } } = payload;
     const { pollId } = payload.pathParameters;
 
-    console.log(context);
+    console.log(principleId);
 
     const voteId = uuidv4();
 

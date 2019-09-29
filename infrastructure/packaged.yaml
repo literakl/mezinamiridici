@@ -243,7 +243,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDCreatePollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -266,7 +266,7 @@ Resources:
           - dynamodb:PutItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -289,7 +289,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDPollVoteHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -312,7 +312,7 @@ Resources:
           - dynamodb:PutItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -335,7 +335,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -369,7 +369,7 @@ Resources:
           - ses:SendEmail
           - ses:SendRawEmail
           Resource: '*'
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDUpdateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -397,7 +397,7 @@ Resources:
           - dynamodb:UpdateItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -425,7 +425,7 @@ Resources:
           - dynamodb:Query
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDVerifyUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -458,14 +458,14 @@ Resources:
           - dynamodb:UpdateItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   BUDAuthorizerHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDAuthorizerHandler
       Handler: src/handlers/authorizer/authorize.handler
       Runtime: nodejs8.10
-      CodeUri: s3://between-us-drivers-infrastructure/566f94830598cdb7dd20f8bd08fdc479
+      CodeUri: s3://between-us-drivers-infrastructure/8b323a88fc27df352b17d62726ccc01a
   ConfigLambdaPermission:
     Type: AWS::Lambda::Permission
     DependsOn:
