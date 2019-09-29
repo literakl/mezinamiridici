@@ -4,7 +4,7 @@ Globals:
   Api:
     Cors:
       AllowMethods: "'OPTIONS,POST,GET,PATCH'"
-      AllowHeaders: "'Authorization'"
+      AllowHeaders: "'Authorization,Content-Type'"
       AllowOrigin: "'*'"
 Resources:
   BUDDomainName:
@@ -522,7 +522,7 @@ Resources:
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
-        WriteCapacityUnits: 1 
+        WriteCapacityUnits: 1
   BUDCommentTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
