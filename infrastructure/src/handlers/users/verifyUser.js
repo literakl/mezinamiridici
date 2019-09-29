@@ -17,7 +17,7 @@ const response = (status, body) => {
 }
 
 exports.handler = (payload, context, callback) => {
-    const { verificationToken } = JSON.parse(payload.body);
+    const { token } = JSON.parse(payload.body);
 
     dynamodb.query({
         "TableName": "BUDUserTable",
@@ -27,7 +27,7 @@ exports.handler = (payload, context, callback) => {
             "#verificationToken": "verificationToken"
         },
         "ExpressionAttributeValues": {
-            ":verificationToken": verificationToken
+            ":verificationToken": token
         },
         "ConsistentRead": false,
     }, (err, data) => {
