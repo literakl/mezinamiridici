@@ -48,7 +48,7 @@ const response = (status, body) => {
             "Access-Control-Allow-Origin": "*",
             "Cache-Control": "private"
         },
-        "body": JSON.stringify(body.Item),
+        "body": JSON.stringify(body),
         "isBase64Encoded": false
     }
 }
@@ -83,7 +83,7 @@ exports.handler = (payload, context, callback) => {
                 "userId": userId
             }, SECRET, { expiresIn: '1m' });
 
-            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ Item: { token } }, callback, response)
+            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ token }, callback, response)
         });
 
     });

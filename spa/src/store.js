@@ -122,7 +122,7 @@ export default new Vuex.Store({
       }));
     },
     UPDATE_USER_PROFILE: async (context, payload) => {
-      const request = await axios.post(
+      const request = await axios.patch(
         `${API_ENDPOINT}/users/${payload.userId}`, 
         JSON.stringify({
           nickname: payload.nickname,

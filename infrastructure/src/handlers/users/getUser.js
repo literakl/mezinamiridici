@@ -24,7 +24,13 @@ exports.handler = (payload, context, callback) => {
         },
         "ConsistentRead": false,
     }, (err, data) => {
-        console.log(data);
+        delete data.password;
+        delete data.marketing;
+        delete data.verificationToken;
+        delete data.verified;
+        delete data.dataProcessing;
+        delete data.email;
+
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
     });
 };
