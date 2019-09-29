@@ -136,8 +136,7 @@ export default new Vuex.Store({
         }),
         {
           headers: {
-            'Authorization': "bearer " + payload.jwt.token,
-            "Content-Type": "application/json"
+            'Authorization': "bearer " + payload.jwt.token
           }
         }
       );
