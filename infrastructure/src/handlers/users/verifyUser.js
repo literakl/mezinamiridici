@@ -48,7 +48,7 @@ exports.handler = (payload, context, callback) => {
             },
             UpdateExpression: "set verified = :verified",
             ExpressionAttributeValues: {
-                ":verified": verified,
+                ":verified": true,
             },
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
