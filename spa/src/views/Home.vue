@@ -36,13 +36,17 @@ export default {
   },
   methods: {
     voted(category) {
+      const params = {
+        id: this.poll.pollId,
+        vote: category,
+      };
+
       this.$router.push({
         name: 'poll',
-        params: {
-          id: this.poll.pollId,
-          vote: category,
-        },
+        params
       });
+
+      this.$store.dispatch('VOTE', params);
     },
   },
 };

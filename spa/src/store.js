@@ -147,6 +147,29 @@ export default new Vuex.Store({
     },
     VERIFY_USER: async (context, payload) => {
       return await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);
-    }
+    },
+    VOTE: async (context, payload) => {
+      const jwt = localStorage.getItem('jwt');
+      if(!jwt) return 
+
+      const voteToScore = {
+        "No problem": 1,
+        "Trivial trouble": 0,
+        "I don\'t like it": -1,
+        "I hate it": -2
+      }
+
+      const { data } = await axios.post(
+        `${API_ENDPOINT}/polls/${payload.id}/vote`,
+        {
+          score: voteToScore[payload.vote]
+        },
+        {
+          headers: {
+            'Authorization': "bearer " + jwt
+          }
+        }
+      );
+    },
   }
 });
