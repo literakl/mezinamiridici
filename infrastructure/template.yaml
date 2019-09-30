@@ -330,7 +330,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: "BUDGetPollVotesHandler"
-      Handler: src/handlers/votes/getPollVotes.handler
+      Handler: src/handlers/polls/getPollVotes.handler
       Runtime: nodejs8.10
       Events:
         Api:
