@@ -41,8 +41,6 @@ export default {
         vote: category,
       };
 
-      const voted = await this.$store.dispatch('VOTE', params);
-
       this.$router.push({
         name: 'poll',
         params

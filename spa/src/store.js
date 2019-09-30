@@ -160,7 +160,7 @@ export default new Vuex.Store({
       }
 
       return await axios.post(
-        `${API_ENDPOINT}/polls/${payload.id}/vote`,
+        `${API_ENDPOINT}/polls/${payload.id}/votes`,
         {
           score: voteToScore[payload.vote]
         },

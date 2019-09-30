@@ -14,9 +14,24 @@
               <span class="vote-text">{{mutableVote}}</span>
             </h2>
 
-            <div class="poll__chart-wrapper-bar-chart">
+            <div class="poll__chart-wrapper-bar-chart" v-if="!voting">
               <BarChart v-bind:voted="mutableVote" />
             </div>
+
+            <content-loader
+              :height="200"
+              :width="400"
+              :speed="22"
+              primaryColor="#f3f3f3"
+              secondaryColor="#ecebeb"
+              class="poll__chart-wrapper-bar-chart"
+              v-if="voting"
+            >
+              <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" /> 
+              <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" /> 
+              <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" /> 
+              <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
+            </content-loader>
 
             <div class="poll__chart-wrapper-analyze-votes-button">
               <Button :value="$t('poll.analyze-votes')" @clicked="redirectToAnalyzeVotes" />
@@ -60,6 +75,7 @@ import BarChart from '@/components/molecules/charts/BarChart.vue';
 import Button from '@/components/atoms/Button.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import Comments from '@/components/organisms/Comments.vue';
+import { ContentLoader } from "vue-content-loader"
 
 import comments from '@/static-data/comments.json';
 import users from '@/static-data/users.json';
@@ -74,6 +90,7 @@ export default {
     return {
       mutableVote: this.vote,
       comments: comments.comments,
+      voting: true
     };
   },
   computed: {
@@ -81,7 +98,15 @@ export default {
       return this.$store.getters.POLL;
     },
   },
-  created() {
+  async created() {
+    if(this.mutableVote){
+      const voted = await this.$store.dispatch('VOTE', {
+        id: this.id,
+        vote: this.vote
+      });
+    }
+
+    this.voting = false;
     this.$store.dispatch('GET_POLL', { id: this.id });
   },
   methods: {
@@ -103,6 +128,7 @@ export default {
     Comment,
     Comments,
     Textarea,
+    ContentLoader,
   },
 };
 </script>

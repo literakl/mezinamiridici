@@ -57,9 +57,13 @@ Resources:
           CachingEnabled: true
           CacheTtlInSeconds: 600
           HttpMethod: "GET"
-        - ResourcePath: /v1/polls/{pollId}/vote
+        - ResourcePath: /v1/polls/{pollId}/votes
           CachingEnabled: false
           HttpMethod: "POST"
+        - ResourcePath: /v1/polls/{pollId}/votess
+          CachingEnabled: true
+          CacheTtlInSeconds: 600
+          HttpMethod: "GET"
         - ResourcePath: /v1/users
           CachingEnabled: false
           HttpMethod: "POST"
@@ -121,7 +125,7 @@ Resources:
                   cacheNamespace: "cs0i4n"
                   cacheKeyParameters:
                   - "method.request.path.pollId"
-            /v1/polls/{pollId}/vote:
+            /v1/polls/{pollId}/votes:
               post:
                 responses: {}
                 security:
@@ -138,6 +142,19 @@ Resources:
                     Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDPollVoteHandler/invocations"
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
+                  type: "aws_proxy"
+              get:
+                responses: {}
+                parameters:
+                - name: "pollId"
+                  in: "path"
+                  required: true
+                  type: "string"
+                x-amazon-apigateway-integration:
+                  uri: 
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollVotesHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "GET"
                   type: "aws_proxy"
             /v1/users:
               post:
@@ -288,7 +305,7 @@ Resources:
         Api:
           Type: Api
           Properties: 
-            Path: /v1/polls/{pollId}/vote
+            Path: /v1/polls/{pollId}/votes
             Method: Post
             RestApiId: !Ref BUDAPI
       Policies:
@@ -309,6 +326,27 @@ Resources:
                 - 'dynamodb:GetItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
+  BUDGetPollVotesHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDGetPollVotesHandler"
+      Handler: src/handlers/votes/getPollVotes.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/polls/{pollId}/votes
+            Method: Get
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:GetItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable"
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -516,12 +554,24 @@ Resources:
       AttributeDefinitions:
         - AttributeName: voteId
           AttributeType: S
+        - AttributeName: pollId
+          AttributeType: S
       KeySchema:
         - AttributeName: voteId
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1 
+      GlobalSecondaryIndexes: 
+        - IndexName: VoteFromPollIdIndex
+          KeySchema: 
+            - AttributeName: pollId
+              KeyType: HASH
+          Projection: 
+            ProjectionType: ALL
+          ProvisionedThroughput: 
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
   BUDUserVoteTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
