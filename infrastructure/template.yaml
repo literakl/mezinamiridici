@@ -154,7 +154,7 @@ Resources:
                   uri: 
                     Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollVotesHandler/invocations"
                   passthroughBehavior: "when_no_match"
-                  httpMethod: "GET"
+                  httpMethod: "POST"
                   type: "aws_proxy"
             /v1/users:
               post:
