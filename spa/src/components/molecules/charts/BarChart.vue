@@ -9,7 +9,7 @@
                     <th scope="row">{{ $t('bar-chart.no-problem') }}</th>
                 </tr>
                 <tr id="trivial-trouble">
-                    <td class="sent bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: ' + (parseInt(percentages.trivialTrouble)/100)*300 + 'px; background-color: #ffd302' : 'height: ' +  (parseInt(percentages.noProblem)/100)*300 + 'px;'">
+                    <td class="sent bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: ' + (parseInt(percentages.trivialTrouble)/100)*300 + 'px; background-color: #ffd302' : 'height: ' +  (parseInt(percentages.trivialTrouble)/100)*300 + 'px;'">
                       <p>{{percentages.trivialTrouble}}%</p>
                     </td>
                     <th scope="row">{{ $t('bar-chart.trivial-trouble') }}</th>
@@ -47,7 +47,7 @@ export default {
   display: block; /* fixes layout wonkiness in FF1.5 */
   position: relative;
   width: 500px;
-  height: 150px;
+  height: 300px;
   margin: 0 0 30px 0;
   padding: 0;
   font-size: 10px;

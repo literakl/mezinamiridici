@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import TopPolls from '@/components/molecules/TopPolls.vue';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
@@ -25,11 +27,9 @@ export default {
   },
   computed: {
     poll() {
-      const votes = this.$store.getters.POLL_VOTES; 
-      
       return {
         poll: this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null,
-        pollVotes: votes ? votes.length : 0
+        pollVotes: 0
       }
     }
   },
@@ -40,7 +40,7 @@ export default {
   methods: {
     async voted(category) {
       const params = {
-        id: this.poll.pollId,
+        id: this.poll.poll.pollId,
         vote: category,
       };
 

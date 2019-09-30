@@ -137,7 +137,6 @@ export default {
     }
 
     this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
-
     this.voting = false;
   },
   methods: {
