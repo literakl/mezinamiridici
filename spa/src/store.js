@@ -11,7 +11,9 @@ export default new Vuex.Store({
   state: {
     polls: null,
     poll: null,
+    pollVotes: null,
     userToken: null,
+    userId: null,
     userNickname: null,
     signedIn: false,
     signedInUserProfile: null,
@@ -20,7 +22,9 @@ export default new Vuex.Store({
   getters: {
     POLLS: state => state.polls,
     POLL: state => state.poll,
+    POLL_VOTES: state => state.pollVotes,
     USER_TOKEN: state => state.userToken,
+    USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
     SIGNED_IN: state => state.signedIn,
     SIGNED_IN_USER_PROFILE: state => state.signedInUserProfile,
@@ -33,8 +37,14 @@ export default new Vuex.Store({
     SET_POLL: (state, payload) => {
       state.poll = payload;
     },
+    SET_POLL_VOTES: (state, payload) => {
+      state.pollVotes = payload;
+    },
     SET_USER_TOKEN: (state, payload) => {
       state.userToken = payload;
+    },
+    SET_USER_ID: (state, payload) => {
+      state.userId = payload;
     },
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
@@ -69,7 +79,12 @@ export default new Vuex.Store({
       pollData.data['userData'] = userData.data;
       context.commit('SET_POLL', pollData.data);
     },
-    GET_USER_TOKEN: async (context, payload) => {
+    GET_POLL_VOTES: async (context, payload) => {
+      context.commit('SET_POLL_VOTES', null);
+      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/votes`);
+      context.commit('SET_POLL_VOTES', pollData.data);
+    },
+    SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
 
       try {
@@ -78,8 +93,13 @@ export default new Vuex.Store({
           password: payload.password,
         }));
 
+        const jwtData = jwtDecode(request.data.token);
+        
+        console.log(jwtData)
+
         context.commit('SET_SIGNED_IN', true);
         context.commit('SET_USER_TOKEN', request.data);
+        context.commit('SET_USER_ID', jwtData.userId);
         return request;
       } catch (err) {
         context.commit('SET_SIGNED_IN', false);

@@ -15,7 +15,7 @@
             </h2>
 
             <div class="poll__chart-wrapper-bar-chart" v-if="!voting">
-              <BarChart v-bind:voted="mutableVote" />
+              <BarChart v-bind:voted="mutableVote" :percentages="pollVotesPercentages" />
             </div>
 
             <content-loader
@@ -95,10 +95,40 @@ export default {
   },
   computed: {
     poll() {
-      return this.$store.getters.POLL;
+      const votes = this.$store.getters.POLL_VOTES;
+
+      return {
+        poll: this.$store.getters.POLL,
+        pollVotes: votes ? votes.length : 0
+      }
+    },
+    pollVotesPercentages() {
+      const votes = this.$store.getters.POLL_VOTES;
+
+      if(!votes) return {
+        noProblem: 0,
+        trivialTrouble: 0,
+        iDontLikeIt: 0,
+        iHateIt: 0
+      };;
+
+      const noProblem = votes.filter(vote => vote.vote === 1);
+      const trivialTrouble = votes.filter(vote => vote.vote === 0);
+      const iDontLikeIt = votes.filter(vote => vote.vote === -1);
+      const iHateIt = votes.filter(vote => vote.vote === -2);
+
+      return {
+        noProblem: Math.round(((noProblem.length / votes.length)*100)),
+        trivialTrouble: Math.round(((trivialTrouble.length / votes.length)*100)),
+        iDontLikeIt: Math.round(((iDontLikeIt.length / votes.length)*100)),
+        iHateIt:  Math.round(((iHateIt.length / votes.length)*100)),
+        totalVotes: votes.length
+      };
     },
   },
   async created() {
+    this.$store.dispatch('GET_POLL', { id: this.id });
+
     if(this.mutableVote){
       const voted = await this.$store.dispatch('VOTE', {
         id: this.id,
@@ -106,8 +136,9 @@ export default {
       });
     }
 
+    this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
+
     this.voting = false;
-    this.$store.dispatch('GET_POLL', { id: this.id });
   },
   methods: {
     voted(vote) {

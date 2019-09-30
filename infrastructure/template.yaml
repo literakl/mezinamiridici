@@ -156,6 +156,9 @@ Resources:
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
+                  cacheNamespace: "getVotesByPollId"
+                  cacheKeyParameters:
+                  - "method.request.path.pollId"
             /v1/users:
               post:
                 responses: {}

@@ -1,15 +1,15 @@
 <template>
     <div>
         <hr />
-        <div v-if="poll">
+        <div v-if="poll.poll">
           <h2 id="home__heading-title">
-              {{poll.text}}
+              {{poll.poll.text}}
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
                 <li>{{created}}</li>
-                <li><router-link :to="{ name: 'user-profile', params: { id: poll.userId }}">{{poll.userData.nickname}}</router-link></li>
-                <li>53 votes</li>
+                <li><router-link :to="{ name: 'user-profile', params: { id: poll.poll.userId }}">{{poll.poll.userData.nickname}}</router-link></li>
+                <li>{{poll.pollVotes}} votes</li>
                 <li>290 comments</li>
               </ul>
               <ul id="home__heading-metadata-social">
@@ -24,7 +24,7 @@
             :speed="2"
             primaryColor="#f3f3f3"
             secondaryColor="#ecebeb"
-            v-if="!poll"
+            v-if="!poll.poll"
           >
             <rect x="0" y="8" rx="3" ry="3" width="350" height="6.4" />
             <rect x="0" y="28" rx="3" ry="3" width="380" height="6.4" />
@@ -39,30 +39,36 @@ import { ContentLoader } from 'vue-content-loader';
 
 export default {
   name: 'Heading',
+  data() {
+    return {
+      twitterLoaded: false
+    }
+  },
   props: {
-    poll: Object,
+    poll: Object
   },
   updated: function(){
-    if(this.poll){
-      const text = this.poll.text;
+    if(this.poll.poll && !this.twitterLoaded && twttr){
+      const text = this.poll.poll.text;
       twttr.widgets.createShareButton(
-        'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.pollId,
+        'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.poll.pollId,
         document.getElementById('twitter-share'),
         {
           text: 'Between us Drivers - ' + text
         }
       );
+      this.twitterLoaded = true;
     }
   },
   computed: {
     created() {
       const date = new Date(0);
-      date.setUTCSeconds(this.poll.created);
+      date.setUTCSeconds(this.poll.poll.created);
 
       return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return 'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.pollId
+      return 'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.poll.pollId
     }
   },
   components: {

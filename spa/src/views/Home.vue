@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 import TopPolls from '@/components/molecules/TopPolls.vue';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
@@ -27,7 +25,12 @@ export default {
   },
   computed: {
     poll() {
-      return this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null;
+      const votes = this.$store.getters.POLL_VOTES; 
+      
+      return {
+        poll: this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null,
+        pollVotes: votes ? votes.length : 0
+      }
     }
   },
   created() {

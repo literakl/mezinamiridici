@@ -86,7 +86,7 @@ export default {
       this.signingIn = true;
 
       try {
-        const response = await this.$store.dispatch('GET_USER_TOKEN', {
+        const response = await this.$store.dispatch('SIGN_USER_IN', {
           email: this.email,
           password: this.password,
         });
