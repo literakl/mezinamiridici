@@ -61,8 +61,7 @@ Resources:
           CachingEnabled: false
           HttpMethod: "POST"
         - ResourcePath: /v1/polls/{pollId}/votes
-          CachingEnabled: true
-          CacheTtlInSeconds: 600
+          CachingEnabled: false
           HttpMethod: "GET"
         - ResourcePath: /v1/users
           CachingEnabled: false
@@ -156,9 +155,6 @@ Resources:
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
-                  cacheNamespace: "getVotesByPollId"
-                  cacheKeyParameters:
-                  - "method.request.path.pollId"
             /v1/users:
               post:
                 responses: {}

@@ -28,7 +28,7 @@ export default {
   computed: {
     poll() {
       return {
-        poll: this.$store.getters.POLLS ? this.$store.getters.POLLS[0] : null,
+        poll: this.$store.getters.POLLS ? this.$store.getters.POLLS.find(poll => poll.text === "Poll 2 created via Lambda") : null,
         pollVotes: 0
       }
     }
