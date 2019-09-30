@@ -11,7 +11,7 @@ const response = (status, body) => {
             "Access-Control-Allow-Origin": "*",
             "Cache-Control": "public, max-age=600"
         },
-        "body": JSON.stringify(body),
+        "body": JSON.stringify(body.Items),
         "isBase64Encoded": false
     }
 }
@@ -31,7 +31,6 @@ exports.handler = (payload, context, callback) => {
         },
         "ConsistentRead": false,
     }, (err, data) => {
-        console.log(err);
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
     });
 };
