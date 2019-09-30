@@ -60,7 +60,7 @@ Resources:
         - ResourcePath: /v1/polls/{pollId}/votes
           CachingEnabled: false
           HttpMethod: "POST"
-        - ResourcePath: /v1/polls/{pollId}/votess
+        - ResourcePath: /v1/polls/{pollId}/votes
           CachingEnabled: true
           CacheTtlInSeconds: 600
           HttpMethod: "GET"
