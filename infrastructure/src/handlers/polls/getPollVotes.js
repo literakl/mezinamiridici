@@ -17,7 +17,7 @@ const response = (status, body) => {
 }
 
 exports.handler = (payload, context, callback) => {
-    const { pollId } = JSON.parse(payload.body);
+    const { pollId } = payload.pathParameters;
 
     dynamodb.query({
         "TableName": "BUDVoteTable",
