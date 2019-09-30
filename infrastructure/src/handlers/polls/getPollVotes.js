@@ -11,7 +11,7 @@ const response = (status, body) => {
             "Access-Control-Allow-Origin": "*",
             "Cache-Control": "public, max-age=600"
         },
-        "body": JSON.stringify(body.Item),
+        "body": JSON.stringify(body),
         "isBase64Encoded": false
     }
 }
