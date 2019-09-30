@@ -347,6 +347,11 @@ Resources:
                 - 'dynamodb:GetItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:Query'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable/index/VoteFromPollIdIndex"
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
