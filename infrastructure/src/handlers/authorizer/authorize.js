@@ -4,7 +4,7 @@ const SECRET = 'betweenusdrivers2019';
 
 const generatePolicy = function(principalId, effect, resource) {
     const authResponse = {};
-    
+    console.log(principalId);
     authResponse.principalId = principalId;
     if (effect && resource) {
         const policyDocument = {
