@@ -17,7 +17,6 @@ const requireUnauth = (to, from, next) => {
 
 const requireAuth = (to, from, next) => {
   store.dispatch('GET_SIGNED_IN');
-  console.log(store.getters.SIGNED_IN);
   if(store.getters.SIGNED_IN){
     next();
     return

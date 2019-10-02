@@ -23,8 +23,6 @@ exports.handler = (payload, context, callback) => {
     const { requestContext: { authorizer: { principalId }} } = payload;
     const { pollId } = payload.pathParameters;
 
-    console.log(principalId);
-
     if(score === undefined || score === null) return responses.INTERNAL_SERVER_ERROR_500("score is required", callback, response)
 
     const voteId = uuidv4();

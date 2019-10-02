@@ -117,7 +117,7 @@ export default {
         trivialTrouble: 0,
         iDontLikeIt: 0,
         iHateIt: 0
-      };;
+      };
 
       const noProblem = votes.filter(vote => vote.vote === 1);
       const trivialTrouble = votes.filter(vote => vote.vote === 0);
@@ -158,8 +158,15 @@ export default {
     this.voting = false;
   },
   methods: {
-    voted(vote) {
-      this.mutableVote = vote;
+    async voted(vote) {
+      const voted = await this.$store.dispatch('VOTE', {
+        id: this.id,
+        vote: vote
+      });
+
+      await this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
+
+      this.votedAlready = true;
     },
     redirectToOtherPolls() {
       this.$router.push({ name: 'polls' });

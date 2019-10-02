@@ -4,7 +4,6 @@ const SECRET = 'betweenusdrivers2019';
 
 const generatePolicy = function(principalId, effect, resource) {
     const authResponse = {};
-    console.log(principalId);
     authResponse.principalId = principalId;
     if (effect && resource) {
         const policyDocument = {
@@ -23,13 +22,11 @@ const generatePolicy = function(principalId, effect, resource) {
 }
 
 exports.handler =  function(event, context, callback) {
-    console.log(event, context, callback)
     try {
         const token = event.authorizationToken.split(" ")[1];
         const decoded = jwt.verify(token, SECRET);
         callback(null, generatePolicy(decoded.userId, 'Allow', event.methodArn));
     } catch(err) {
-        console.log(err);
         callback("Unauthorized");
     }
 };

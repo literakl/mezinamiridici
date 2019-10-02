@@ -169,8 +169,7 @@ export default new Vuex.Store({
     },
     GET_USERS_VOTES: async (context, payload) => {
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.userId}/votes`);
-      
-      return false;
+      return data.find(vote => vote.pollId === payload.pollId);
     },
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);

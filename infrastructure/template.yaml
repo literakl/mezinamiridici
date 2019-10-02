@@ -71,8 +71,7 @@ Resources:
           CacheTtlInSeconds: 600
           HttpMethod: "GET"
         - ResourcePath: /v1/users/{userId}/votes
-          CachingEnabled: true
-          CacheTtlInSeconds: 600
+          CachingEnabled: false
           HttpMethod: "GET"
         - ResourcePath: /v1/users/{userId}
           CachingEnabled: false
@@ -214,9 +213,6 @@ Resources:
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
-                  cacheNamespace: "votesByUserId"
-                  cacheKeyParameters:
-                  - "method.request.path.userId"
             /v1/verify/{token}:
               get:
                 responses: {}

@@ -5,7 +5,8 @@
     </div>
     <div id="home__content">
       <Heading :poll="poll"/>
-      <OpinionButtons @voted="voted" />
+      <OpinionButtons @voted="voted" v-if="!votedAlready" />
+      <p v-if="votedAlready">Placeholder - you've already voted on this poll, the barchart will display here soon...</p>
       <TopPolls />
     </div>
   </div>
@@ -18,6 +19,8 @@ import TopPolls from '@/components/molecules/TopPolls.vue';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 
+const pollId = "769a6250-a781-46c1-80e2-8ffd78f48869"
+
 export default {
   name: 'home',
   components: {
@@ -25,17 +28,35 @@ export default {
     Heading,
     OpinionButtons,
   },
+  data() {
+    return {
+      votedAlready: false
+    }
+  },
   computed: {
     poll() {
       return {
-        poll: this.$store.getters.POLLS ? this.$store.getters.POLLS.find(poll => poll.text === "Poll 2 created via Lambda") : null,
-        pollVotes: 0
+        poll: this.$store.getters.POLLS ? this.$store.getters.POLLS.find(poll => poll.pollId === pollId) : null,
+        pollVotes: this.$store.getters.POLL_VOTES ? this.$store.getters.POLL_VOTES.length : 0
       }
     }
   },
-  created() {
+ async created() {
     this.$store.dispatch('GET_POLLS');
     this.$store.dispatch('GET_USER_NICKNAME');
+    this.$store.dispatch('GET_USER_ID');
+    this.$store.dispatch('GET_POLL_VOTES', {
+      id: pollId
+    });
+
+    const hasVoted = await this.$store.dispatch('GET_USERS_VOTES', { 
+      userId: this.$store.getters.USER_ID,
+      pollId
+    });
+
+    if(hasVoted) {
+      this.votedAlready = true;
+    }
   },
   methods: {
     async voted(category) {
