@@ -214,7 +214,7 @@ Resources:
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
-                  cacheNamespace: "cs0i4n"
+                  cacheNamespace: "votesByUserId"
                   cacheKeyParameters:
                   - "method.request.path.userId"
             /v1/verify/{token}:
