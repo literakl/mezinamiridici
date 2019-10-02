@@ -66,6 +66,8 @@ export default new Vuex.Store({
     
       pollData.data.forEach(async poll => {
         const userData = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
+        const pollVotesData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/votes`);
+        poll['votes'] = pollVotesData.data.length
         poll['userData'] = userData.data;
         polls.push(poll);
       });
