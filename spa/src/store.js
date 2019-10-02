@@ -95,8 +95,6 @@ export default new Vuex.Store({
 
         const jwtData = jwtDecode(request.data.token);
         
-        console.log(jwtData)
-
         context.commit('SET_SIGNED_IN', true);
         context.commit('SET_USER_TOKEN', request.data);
         context.commit('SET_USER_ID', jwtData.userId);
@@ -113,6 +111,14 @@ export default new Vuex.Store({
 
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
+    },
+    GET_USER_ID: async (context, payload) => {
+      const jwt = localStorage.getItem('jwt');
+      
+      if(!jwt) return;
+
+      const jwtData = jwtDecode(jwt);
+      context.commit('SET_USER_ID', jwtData.userId);
     },
     GET_SIGNED_IN: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
@@ -160,6 +166,11 @@ export default new Vuex.Store({
           }
         }
       );
+    },
+    GET_USERS_VOTES: async (context, payload) => {
+      const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.userId}/votes`);
+      
+      return false;
     },
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);

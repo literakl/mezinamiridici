@@ -67,8 +67,7 @@ Resources:
         CachingEnabled: false
         HttpMethod: POST
       - ResourcePath: /v1/polls/{pollId}/votes
-        CachingEnabled: true
-        CacheTtlInSeconds: 600
+        CachingEnabled: false
         HttpMethod: GET
       - ResourcePath: /v1/users
         CachingEnabled: false
@@ -162,9 +161,6 @@ Resources:
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
-                cacheNamespace: getVotesByPollId
-                cacheKeyParameters:
-                - method.request.path.pollId
           /v1/users:
             post:
               responses: {}
@@ -263,7 +259,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDCreatePollHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -286,7 +282,7 @@ Resources:
           - dynamodb:PutItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDGetPollsHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -309,7 +305,7 @@ Resources:
           - dynamodb:Scan
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDPollVoteHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -342,7 +338,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDGetPollVotesHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -370,7 +366,7 @@ Resources:
           - dynamodb:Query
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable/index/VoteFromPollIdIndex
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -393,7 +389,7 @@ Resources:
           - dynamodb:GetItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -427,7 +423,7 @@ Resources:
           - ses:SendEmail
           - ses:SendRawEmail
           Resource: '*'
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDUpdateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -455,7 +451,7 @@ Resources:
           - dynamodb:UpdateItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -483,7 +479,7 @@ Resources:
           - dynamodb:Query
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDVerifyUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -516,14 +512,14 @@ Resources:
           - dynamodb:UpdateItem
           Resource:
             Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   BUDAuthorizerHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDAuthorizerHandler
       Handler: src/handlers/authorizer/authorize.handler
       Runtime: nodejs8.10
-      CodeUri: s3://between-us-drivers-infrastructure/a129c48578b155a414ea505ab27beb8e
+      CodeUri: s3://between-us-drivers-infrastructure/e25e9be8c6175fa4056e1fe9357b6322
   ConfigLambdaPermission:
     Type: AWS::Lambda::Permission
     DependsOn:

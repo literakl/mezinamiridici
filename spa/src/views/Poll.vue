@@ -7,14 +7,13 @@
 
       <div class="poll_content">
         <Heading :poll="poll"/>
-        <div v-if="mutableVote">
+        <div v-if="mutableVote || votedAlready === true">
           <div class="poll__chart-wrapper">
             <h2 class="poll__chart-wrapper-vote">
               {{ $t('poll.your-vote') }}
               <span class="vote-text">{{mutableVote}}</span>
             </h2>
-
-            <div class="poll__chart-wrapper-bar-chart" v-if="!voting">
+            <div class="poll__chart-wrapper-bar-chart" v-if="voting === false || votedAlready === true">
               <BarChart v-bind:voted="mutableVote" :percentages="pollVotesPercentages" />
             </div>
 
@@ -39,7 +38,7 @@
           </div>
         </div>
 
-        <div v-if="!mutableVote">
+        <div v-if="mutableVote === false || votedAlready === false">
           <OpinionButtons @voted="voted" />
         </div>
       </div>
@@ -90,16 +89,24 @@ export default {
     return {
       mutableVote: this.vote,
       comments: comments.comments,
-      voting: true
+      voting: true,
+      votedAlready: false
     };
   },
   computed: {
     poll() {
       const votes = this.$store.getters.POLL_VOTES;
+      let numberOfVotes = 0;
+
+      if(this.mutableVote) {
+        numberOfVotes = votes ? votes.length + 1 : 1
+      } else {
+        numberOfVotes = votes ? votes.length : 0
+      }
 
       return {
         poll: this.$store.getters.POLL,
-        pollVotes: votes ? votes.length : 0
+        pollVotes: numberOfVotes
       }
     },
     pollVotesPercentages() {
@@ -127,6 +134,18 @@ export default {
     },
   },
   async created() {
+    this.$store.dispatch('GET_USER_ID');
+
+    const hasVoted = await this.$store.dispatch('GET_USERS_VOTES', { 
+      userId: this.$store.getters.USER_ID,
+      pollId: this.id 
+    });
+
+    if(hasVoted) {
+      this.votedAlready = true;
+    }
+
+    this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
     this.$store.dispatch('GET_POLL', { id: this.id });
 
     if(this.mutableVote){
@@ -136,7 +155,6 @@ export default {
       });
     }
 
-    this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
     this.voting = false;
   },
   methods: {
