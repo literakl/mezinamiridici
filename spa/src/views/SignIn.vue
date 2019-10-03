@@ -3,35 +3,42 @@
       <Modal :show="forottenPassword">
           <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
           <p>{{ $t('sign-in.email-reset-description') }}</p>
-          <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" />
+          <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" @input="forgotPasswordEmailInput"/>
           <Button :value="$t('sign-in.reset-password-button')" class="signin__forgotten-password-submit-button" @clicked="forgotPassword" />
           <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
       </Modal>
-      <form @submit.prevent="signIn">
+      <form @submit.prevent="signIn" v-if="passwordReset === null">
           <div class="signin">
               <div class="signin__wrapper">
-                  <div>
-                      <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
-                  </div>
-                  <div>
-                      <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
-                  </div>
-                  <div>
-                      <p v-if="loginError" class="signin__login-error">Incorrect username/password, please try again</p>
-                      <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
-                      <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
-                      <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                      <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn"/>
-                  </div>
-                  <div>
-                      <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
-                      <div class="signin__or">{{ $t('sign-in.or') }}</div>
-                      <p>Facebook login button will go here</p>
-                      <p>Google login button will go here</p>
-                  </div>
+                <div>
+                    <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+                </div>
+                <div>
+                    <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
+                </div>
+                <div>
+                    <p v-if="loginError" class="signin__login-error">Incorrect username/password, please try again</p>
+                    <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
+                    <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
+                    <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
+                    <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn"/>
+                </div>
+                <div>
+                    <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
+                    <div class="signin__or">{{ $t('sign-in.or') }}</div>
+                    <p>Facebook login button will go here</p>
+                    <p>Google login button will go here</p>
+                </div>
               </div>
           </div>
       </form>
+      <div class="signin" v-if="passwordReset === true">
+        <div class="signin__wrapper">
+            <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+            <div></div>
+            <p>Password reset successfully</p>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -56,6 +63,8 @@ export default {
     email: null,
     password: null,
     signingIn: false,
+    forgotPasswordEmail: null,
+    passwordReset: null
   }),
   methods: {
     openForgottenPassword() {
@@ -66,6 +75,9 @@ export default {
     },
     redirectToSignIn() {
       this.$router.push({ name: 'sign-up' });
+    },
+    forgotPasswordEmailInput(data) {
+      this.forgotPasswordEmail = data;
     },
     passwordInput(data) {
       this.password = data;
@@ -79,8 +91,23 @@ export default {
       this.loginError = true;
       this.signingIn = false;
     },
-    forgotPassword() {
-      alert("Forgot password will be sent eventually...")
+    async forgotPassword() {
+      try {
+        const response = await this.$store.dispatch('RESET_PASSWORD', {
+          email: this.forgotPasswordEmail,
+        });
+
+        if (response.status === 200) {
+          this.forottenPassword = false;
+          this.passwordReset = true;
+        } else {
+          this.forottenPassword = false;
+          this.signInFailed();
+        }
+      } catch (e) {
+        this.forottenPassword = false;
+        this.signInFailed();
+      }
     },
     async signIn() {
       this.signingIn = true;

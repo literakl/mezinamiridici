@@ -86,6 +86,17 @@ export default new Vuex.Store({
       const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/votes`);
       context.commit('SET_POLL_VOTES', pollData.data);
     },
+    RESET_PASSWORD: async (context, payload) => {
+      try {
+        const request = await axios.post(`${API_ENDPOINT}/forgotPassword`, JSON.stringify({
+          email: payload.email
+        }));
+
+        return request;
+      } catch (err) {
+        throw err;
+      }
+    },
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
 
