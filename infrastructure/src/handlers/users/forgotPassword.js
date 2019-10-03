@@ -10,7 +10,7 @@ const responses = require('../../utils/responses.js');
 const SECRET = 'betweenusdrivers2019';
 
 const sendVerificationEmail = (email, token, fn) => {
-	const subject = "Reset your Between us Drivers account";
+	const subject = "Reset your Between us Drivers password";
 	const resetLink = "https://betweenusdrivers.jacobclark.dev/reset/" + token;
 
 	ses.sendEmail({
@@ -76,6 +76,5 @@ exports.handler = (payload, context, callback) => {
         sendVerificationEmail(email, resetToken, (err, data) => {
             return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({}, callback, response)
         });
-
     });
 };
