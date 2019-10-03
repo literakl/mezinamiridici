@@ -4,9 +4,7 @@
       Ads
     </div>
     <div id="home__content">
-      <Heading :poll="poll"/>
-      <OpinionButtons @voted="voted" v-if="!votedAlready" />
-      <p v-if="votedAlready">Placeholder - you've already voted on this poll, the barchart will display here soon...</p>
+      <PollVoting :id="pollId" />
       <TopPolls />
     </div>
   </div>
@@ -18,6 +16,7 @@ import axios from 'axios';
 import TopPolls from '@/components/molecules/TopPolls.vue';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
+import PollVoting from '@/components/organisms/PollVoting.vue';
 
 const pollId = "769a6250-a781-46c1-80e2-8ffd78f48869"
 
@@ -27,10 +26,12 @@ export default {
     TopPolls,
     Heading,
     OpinionButtons,
+    PollVoting
   },
   data() {
     return {
-      votedAlready: false
+      votedAlready: false,
+      pollId
     }
   },
   computed: {

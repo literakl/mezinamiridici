@@ -3,7 +3,7 @@
         <hr />
         <div v-if="poll.poll">
           <h2 id="home__heading-title">
-              {{poll.poll.text}}
+              <router-link :to="{ name: 'poll', params: { id: poll.poll.pollId }}" class="home__heading-link">{{poll.poll.text}}</router-link>
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
@@ -36,20 +36,17 @@
 
 <script>
 import { ContentLoader } from 'vue-content-loader';
+let twitterLoaded = false;
 
 export default {
   name: 'Heading',
-  data() {
-    return {
-      twitterLoaded: false
-    }
-  },
   props: {
     poll: Object
   },
-  updated: function(){
-    if(this.poll.poll && !this.twitterLoaded && twttr){
+  updated: async function(){
+    if(this.poll.poll && twttr && !twitterLoaded){
       const text = this.poll.poll.text;
+
       twttr.widgets.createShareButton(
         'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.poll.pollId,
         document.getElementById('twitter-share'),
@@ -57,7 +54,8 @@ export default {
           text: 'Between us Drivers - ' + text
         }
       );
-      this.twitterLoaded = true;
+
+      twitterLoaded = true;
     }
   },
   computed: {
@@ -112,5 +110,14 @@ export default {
 
 .fb-like > span {
   vertical-align: baseline !important;
+}
+
+.home__heading-link{
+  color: #000;
+  text-decoration: none;
+}
+
+.home__heading-link:hover {
+  text-decoration: underline;
 }
 </style>

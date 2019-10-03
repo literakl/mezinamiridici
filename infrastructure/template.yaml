@@ -79,6 +79,9 @@ Resources:
         - ResourcePath: /v1/authorizeUser
           CachingEnabled: false
           HttpMethod: "POST"
+        - ResourcePath: /v1/forgotPassword
+          CachingEnabled: false
+          HttpMethod: "POST"
         - ResourcePath: /v1/verify/{token}
           CachingEnabled: false
           HttpMethod: "GET"
@@ -233,6 +236,15 @@ Resources:
                 x-amazon-apigateway-integration:
                   uri: 
                     Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDAuthorizeUserHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "POST"
+                  type: "aws_proxy"
+            /v1/forgotPassword:
+              post:
+                responses: {}
+                x-amazon-apigateway-integration:
+                  uri: 
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDForgotPasswordHandler/invocations"
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
@@ -497,6 +509,32 @@ Resources:
             - Effect: Allow
               Action:
                 - 'dynamodb:Query'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
+  BUDForgotPasswordHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDForgotPasswordHandler"
+      Handler: src/handlers/users/forgotPassword.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/forgotPassword
+            Method: Post
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
   BUDVerifyUserHandler:

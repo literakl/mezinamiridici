@@ -52,8 +52,7 @@ export default {
 };
 </script>
 
-
-<style lang="scss">
+<style scoped lang="scss">
 #barchart__table {
   display: block; /* fixes layout wonkiness in FF1.5 */
   position: relative;
