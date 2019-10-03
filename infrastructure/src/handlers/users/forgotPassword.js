@@ -73,8 +73,8 @@ exports.handler = (payload, context, callback) => {
             passwordResetToken: resetToken
         }
     }, (err, data) => {
-        sendVerificationEmail(email, resetToken, (err, data) => {
-            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({}, callback, response)
+        sendVerificationEmail(email, resetToken, (err, emailData) => {
+            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
         });
     });
 };
