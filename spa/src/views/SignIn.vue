@@ -2,12 +2,20 @@
     <div>
       <Modal :show="forottenPassword">
           <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
-          <p>{{ $t('sign-in.email-reset-description') }}</p>
-          <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" @input="forgotPasswordEmailInput"/>
-          <Button :value="$t('sign-in.reset-password-button')" class="signin__forgotten-password-submit-button" @clicked="forgotPassword" />
+          <div v-if="!passwordReset">
+            <p>{{ $t('sign-in.email-reset-description') }}</p>
+            <div v-if="passwordReset === false">
+              <p class="signin__forgot-password-error">There was a problem sending a reset link to the email provided, please try again.</p>
+            </div>
+            <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" @input="forgotPasswordEmailInput"/>
+            <Button :value="$t('sign-in.reset-password-button')" class="signin__forgotten-password-submit-button" @clicked="forgotPassword" />
+          </div>
+          <div v-if="passwordReset === true">
+            <p class="signin__forgot-password-success">Please check your email for instructions on how to reset your password!</p>
+          </div>
           <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
       </Modal>
-      <form @submit.prevent="signIn" v-if="passwordReset === null">
+      <form @submit.prevent="signIn">
           <div class="signin">
               <div class="signin__wrapper">
                 <div>
@@ -32,13 +40,6 @@
               </div>
           </div>
       </form>
-      <div class="signin" v-if="passwordReset === true">
-        <div class="signin__wrapper">
-            <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
-            <div></div>
-            <p>Password reset successfully</p>
-        </div>
-      </div>
     </div>
 </template>
 
@@ -72,6 +73,7 @@ export default {
     },
     closeForgottenPassword() {
       this.forottenPassword = false;
+      this.passwordReset = null
     },
     redirectToSignIn() {
       this.$router.push({ name: 'sign-up' });
@@ -98,15 +100,14 @@ export default {
         });
 
         if (response.status === 200) {
-          this.forottenPassword = false;
           this.passwordReset = true;
         } else {
-          this.forottenPassword = false;
-          this.signInFailed();
+          this.passwordReset = false;
+          this.forgotPasswordEmail = '';
         }
       } catch (e) {
-        this.forottenPassword = false;
-        this.signInFailed();
+        this.passwordReset = false;
+        this.forgotPasswordEmail = '';
       }
     },
     async signIn() {
@@ -222,6 +223,13 @@ h2 {
     display: block;
 }
 
+.signin__forgot-password-success {
+  color: green;
+}
+
+.signin__forgot-password-error {
+  color: red
+}
 
 @media all and (min-width: 850px) {
     .signin__wrapper {
