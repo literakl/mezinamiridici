@@ -157,12 +157,12 @@ export default new Vuex.Store({
         password: payload.password,
         tandcs: payload.tandcs, 
         dataProcessing : payload.dataProcessing, 
-        marketing: payload.marketing 
+        marketing: payload.marketing,
       }));
     },
     UPDATE_USER_PROFILE: async (context, payload) => {
-      const request = await axios.patch(
-        `${API_ENDPOINT}/users/${payload.userId}`, 
+      await axios.patch(
+        `${API_ENDPOINT}/users/${payload.userId}`,
         JSON.stringify({
           nickname: payload.nickname,
           drivingSince: payload.drivingSince,
@@ -171,13 +171,13 @@ export default new Vuex.Store({
           born: payload.bornInYear,
           locationalRegion: payload.locationalRegion,
           education: payload.education,
-          shareProfile: payload.shareProfile
+          shareProfile: payload.shareProfile,
         }),
         {
           headers: {
-            'Authorization': "bearer " + payload.jwt.token
-          }
-        }
+            Authorization: `bearer ${payload.jwt.token}`,
+          },
+        },
       );
     },
     GET_USERS_VOTES: async (context, payload) => {
@@ -188,31 +188,29 @@ export default new Vuex.Store({
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);
       context.commit('SET_USER_PROFILE', data);
     },
-    VERIFY_USER: async (context, payload) => {
-      return await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);
-    },
+    VERIFY_USER: async (context, payload) => await axios.get(`${API_ENDPOINT}/verify/${payload.token}`),
     VOTE: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
-      if(!jwt) return 
+      if (!jwt) return;
 
       const voteToScore = {
-        "No problem": 1,
-        "Trivial trouble": 0,
-        "I don\'t like it": -1,
-        "I hate it": -2
-      }
+        'No problem': 1,
+        'Trivial trouble': 0,
+        'I don\'t like it': -1,
+        'I hate it': -2,
+      };
 
       return await axios.post(
         `${API_ENDPOINT}/polls/${payload.id}/votes`,
         {
-          score: voteToScore[payload.vote]
+          score: voteToScore[payload.vote],
         },
         {
           headers: {
-            'Authorization': "bearer " + jwt
-          }
-        }
+            Authorization: `bearer ${jwt}`,
+          },
+        },
       );
     },
-  }
+  },
 });

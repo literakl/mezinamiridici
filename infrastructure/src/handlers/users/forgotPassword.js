@@ -73,6 +73,7 @@ exports.handler = (payload, context, callback) => {
             passwordResetToken: resetToken
         }
     }, (err, data) => {
+        console.log(err, data);
         sendVerificationEmail(email, resetToken, (err, emailData) => {
             return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
         });
