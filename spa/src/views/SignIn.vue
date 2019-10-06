@@ -1,5 +1,6 @@
 <template>
     <div>
+
       <Modal :show="forottenPassword">
           <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
           <div v-if="!passwordReset">
@@ -15,6 +16,7 @@
           </div>
           <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
       </Modal>
+
       <form @submit.prevent="signIn">
           <div class="signin">
               <div class="signin__wrapper">
@@ -32,7 +34,7 @@
                     <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn"/>
                 </div>
                 <div>
-                    <Button value="Sign up now" class="signin__sign-up-button" @clicked="redirectToSignIn" />
+                    <Button value="Sign up now" id="signin__sign-up-button" @clicked="redirectToSignIn" />
                     <div class="signin__or">{{ $t('sign-in.or') }}</div>
                     <p>Facebook login button will go here</p>
                     <p>Google login button will go here</p>
@@ -184,7 +186,7 @@ h2 {
     width: 100%;
 }
 
-.signin__sign-up-button {
+#signin__sign-up-button {
     background: #9b9b9b;
     box-shadow: 0px 4px #868686;
     color: #FFF;

@@ -535,6 +535,7 @@ Resources:
             - Effect: Allow
               Action:
                 - 'dynamodb:UpdateItem'
+                - 'dynamodb:Query'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
             - Effect: Allow

@@ -76,6 +76,8 @@ exports.handler = (payload, context, callback) => {
 
         const user = data.Items.find(item => item.email === email);
 
+        if (!user) responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
+
         dynamodb.update({
             TableName: 'BUDUserTable',
             Key: {
@@ -87,8 +89,10 @@ exports.handler = (payload, context, callback) => {
             },
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
-            console.log("err", err);
-            console.log("data", data);
+            if (err) {
+                return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+            }
+
             sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
                 return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
             });
