@@ -653,6 +653,7 @@ Resources:
         - AttributeName: verificationToken
           AttributeType: S
         - AttributeName: resetPasswordToken
+          AttributeType: S
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
