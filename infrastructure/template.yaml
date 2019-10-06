@@ -561,6 +561,7 @@ Resources:
       FunctionName: "BUDResetPasswordHandler"
       Handler: src/handlers/users/resetPassword.handler
       Runtime: nodejs8.10
+      Timeout: 10
       Events:
         Api:
           Type: Api
