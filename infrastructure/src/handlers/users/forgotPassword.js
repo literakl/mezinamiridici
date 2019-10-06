@@ -76,7 +76,7 @@ exports.handler = (payload, context, callback) => {
 
         const user = data.Items.find(item => item.email === email);
 
-        if (!user) responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
+        if (!user) return responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
 
         dynamodb.update({
             TableName: 'BUDUserTable',
