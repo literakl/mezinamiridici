@@ -8,7 +8,7 @@
       <PollVoting class="poll__voting" :id="id" :vote="vote" />
     </div>
 
-    <div class="poll__discussion-break-out">
+    <div class="poll__discussion-break-out" v-if="comments">
       <div class="poll__discussion-wrapper">
         <h2>{{ $t('poll.discussion') }} ({{comments.length}})</h2>
 
@@ -43,7 +43,6 @@ import Textarea from '@/components/atoms/Textarea.vue';
 import Comments from '@/components/organisms/Comments.vue';
 import { ContentLoader } from "vue-content-loader"
 
-import comments from '@/static-data/comments.json';
 import users from '@/static-data/users.json';
 
 export default {
@@ -52,13 +51,11 @@ export default {
     id: String,
     vote: String,
   },
-  data() {
-    return {
-      comments: comments.comments,
-    };
-  },
   async created() {
     this.$store.dispatch('GET_USER_ID');
+    await this.$store.dispatch('GET_POLL_COMMENTS', {
+      id: this.id
+    });
   },
   methods: {
     redirectToOtherPolls() {
@@ -71,7 +68,10 @@ export default {
   computed: {
     signedIn() {
       return this.$store.getters.SIGNED_IN;
-    }
+    },
+    comments() {
+      return this.$store.getters.POLL_COMMENTS
+    },
   },
   components: {
     Heading,

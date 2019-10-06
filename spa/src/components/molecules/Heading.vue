@@ -10,7 +10,7 @@
                 <li>{{created}}</li>
                 <li><router-link :to="{ name: 'user-profile', params: { id: poll.poll.userId }}">{{poll.poll.userData.nickname}}</router-link></li>
                 <li>{{poll.pollVotes}} votes</li>
-                <li>290 comments</li>
+                <li>{{poll.pollComments}} comments</li>
               </ul>
               <ul id="home__heading-metadata-social">
                 <li><iframe :src="'https://www.facebook.com/plugins/like.php?href=' + urlToShare + '&width=79&layout=button_count&action=like&size=small&show_faces=true&share=false&height=21&appId=2402472069835800'" width="61" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></li>

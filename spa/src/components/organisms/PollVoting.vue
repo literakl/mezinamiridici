@@ -72,10 +72,10 @@ export default {
   computed: {
     poll() {
       const votes = this.$store.getters.POLL_VOTES;
+      const numberOfComments = this.$store.getters.POLL_COMMENTS ? this.$store.getters.POLL_COMMENTS.length : 0;
       let numberOfVotes = 0;
 
       if(this.mutableVote) {
-        console.log("here")
         numberOfVotes = votes ? votes.length + 1 : 1;
       } else {
         numberOfVotes = votes ? votes.length : 0;
@@ -83,7 +83,8 @@ export default {
 
       return {
         poll: this.$store.getters.POLL,
-        pollVotes: numberOfVotes
+        pollVotes: numberOfVotes,
+        pollComments: numberOfComments
       }
     },
     pollVotesPercentages() {
@@ -126,6 +127,7 @@ export default {
     });
 
     await this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
+    await this.$store.dispatch('GET_POLL_COMMENTS', { id: this.id });
     await this.$store.dispatch('GET_POLL', { id: this.id });
 
     if(hasVoted) {

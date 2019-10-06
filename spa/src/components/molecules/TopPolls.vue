@@ -6,7 +6,7 @@
             <h4>
                 <router-link :to="{ name: 'poll', params: { id: poll.pollId }}">
                 {{poll.text}}
-                </router-link> &middot; {{poll.votes}} Votes &middot; 9 comments
+                </router-link> &middot; {{poll.votes}} Votes &middot; {{poll.comments}} comments
             </h4>
         </div>
         <div v-if="!polls">

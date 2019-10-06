@@ -35,12 +35,7 @@ export default {
     }
   },
   computed: {
-    poll() {
-      return {
-        poll: this.$store.getters.POLLS ? this.$store.getters.POLLS.find(poll => poll.pollId === pollId) : null,
-        pollVotes: this.$store.getters.POLL_VOTES ? this.$store.getters.POLL_VOTES.length : 0
-      }
-    }
+
   },
  async created() {
     this.$store.dispatch('GET_POLLS');
@@ -49,7 +44,10 @@ export default {
     this.$store.dispatch('GET_POLL_VOTES', {
       id: pollId
     });
-
+    this.$store.dispatch('GET_POLL_COMMENTS', {
+      id: pollId
+    });
+  
     const hasVoted = await this.$store.dispatch('GET_USERS_VOTES', { 
       userId: this.$store.getters.USER_ID,
       pollId

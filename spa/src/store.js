@@ -12,6 +12,7 @@ export default new Vuex.Store({
     polls: null,
     poll: null,
     pollVotes: null,
+    pollComments: null,
     userToken: null,
     userId: null,
     userNickname: null,
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     POLLS: state => state.polls,
     POLL: state => state.poll,
     POLL_VOTES: state => state.pollVotes,
+    POLL_COMMENTS: state => state.pollComments,
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
@@ -39,6 +41,9 @@ export default new Vuex.Store({
     },
     SET_POLL_VOTES: (state, payload) => {
       state.pollVotes = payload;
+    },
+    SET_POLL_COMMENTS: (state, payload) => {
+      state.pollComments = payload;
     },
     SET_USER_TOKEN: (state, payload) => {
       state.userToken = payload;
@@ -67,7 +72,10 @@ export default new Vuex.Store({
       pollData.data.forEach(async poll => {
         const userData = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
         const pollVotesData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/votes`);
+        const pollCommentsData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/comments`);
+
         poll['votes'] = pollVotesData.data.length
+        poll['comments'] = pollCommentsData.data.length
         poll['userData'] = userData.data;
         polls.push(poll);
       });
@@ -85,6 +93,11 @@ export default new Vuex.Store({
       context.commit('SET_POLL_VOTES', null);
       const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/votes`);
       context.commit('SET_POLL_VOTES', pollData.data);
+    },
+    GET_POLL_COMMENTS: async (context, payload) => {
+      context.commit('SET_POLL_COMMENTS', null);
+      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comments`);
+      context.commit('SET_POLL_COMMENTS', pollData.data);
     },
     FORGOT_PASSWORD: async (context, payload) => {
       try {

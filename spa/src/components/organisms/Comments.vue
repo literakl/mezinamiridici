@@ -8,11 +8,11 @@
                     'comment__child'"
             >
                 <Comment
-                    :name="comment.name"
-                    :title="comment.title"
+                    :name="comment.userId"
+                    :title="comment.text"
                     :upvotes="comment.upvotes"
                     :downvotes="comment.downvotes"
-                    :date="comment.date"
+                    :date="comment.created.toString()"
                     :depth="parseInt(depth)"
                 />
                 <Comments
