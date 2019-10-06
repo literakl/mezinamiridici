@@ -97,6 +97,12 @@ export default new Vuex.Store({
     GET_POLL_COMMENTS: async (context, payload) => {
       context.commit('SET_POLL_COMMENTS', null);
       const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comments`);
+      
+      pollData.data.map(async comment => {
+        const userData = await axios.get(`${API_ENDPOINT}/users/${comment.userId}`);
+        comment.nickname = userData.data.nickname
+      });
+
       context.commit('SET_POLL_COMMENTS', pollData.data);
     },
     FORGOT_PASSWORD: async (context, payload) => {
@@ -229,6 +235,23 @@ export default new Vuex.Store({
         `${API_ENDPOINT}/polls/${payload.id}/votes`,
         {
           score: voteToScore[payload.vote],
+        },
+        {
+          headers: {
+            Authorization: `bearer ${jwt}`,
+          },
+        },
+      );
+    },
+    COMMENT: async (context, payload) => {
+      const jwt = localStorage.getItem('jwt');
+      if (!jwt) return;
+
+      return await axios.post(
+        `${API_ENDPOINT}/polls/${payload.id}/comments`,
+        {
+          text: payload.text,
+          parent: payload.parent,
         },
         {
           headers: {

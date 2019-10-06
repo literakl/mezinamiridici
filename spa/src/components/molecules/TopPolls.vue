@@ -1,13 +1,15 @@
 <template>
     <div>
         <h3>Top polls</h3>
-        <div v-for="poll in polls" v-bind:key="poll.id" v-if="polls">
-            <hr />
-            <h4>
-                <router-link :to="{ name: 'poll', params: { id: poll.pollId }}">
-                {{poll.text}}
-                </router-link> &middot; {{poll.votes}} Votes &middot; {{poll.comments}} comments
-            </h4>
+        <div v-if="polls">
+          <div v-for="poll in polls" v-bind:key="poll.id">
+              <hr />
+              <h4>
+                  <router-link :to="{ name: 'poll', params: { id: poll.pollId }}">
+                  {{poll.text}}
+                  </router-link> &middot; {{poll.votes}} Votes &middot; {{poll.comments}} comments
+              </h4>
+          </div>
         </div>
         <div v-if="!polls">
           <hr />

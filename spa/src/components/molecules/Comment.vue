@@ -1,7 +1,7 @@
 <template>
     <div>
         <h4>
-            {{name}}, {{date}}
+            <router-link :to="{ name: 'user-profile', params: { id: userId }}">{{name}}</router-link>, {{epochToTime(date)}}
         </h4>
         <p>
             {{title}}
@@ -31,6 +31,7 @@ export default {
     upvotes: Number,
     downvotes: Number,
     depth: Number,
+    userId: String
   },
   components: {
     Textarea,
@@ -45,6 +46,10 @@ export default {
     };
   },
   methods: {
+    epochToTime(epoch){
+      const date = new Date(parseInt(epoch));
+      return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+    },
     toggleUpvoted() {
       this.upvoted = true;
       this.downvoted = false;

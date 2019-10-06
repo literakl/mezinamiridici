@@ -8,16 +8,16 @@
       <PollVoting class="poll__voting" :id="id" :vote="vote" />
     </div>
 
-    <div class="poll__discussion-break-out" v-if="comments">
+    <div class="poll__discussion-break-out">
       <div class="poll__discussion-wrapper">
-        <h2>{{ $t('poll.discussion') }} ({{comments.length}})</h2>
+        <h2>{{ $t('poll.discussion') }} ({{comments ? comments.length : 0}})</h2>
 
         <div v-if="signedIn">
           <h3>{{ $t('poll.your-say') }}</h3>
-          <Textarea />
+          <Textarea :id="id" />
         </div>
 
-        <Comments :comments="comments" :depth="parseInt(0)" />
+        <Comments :comments="comments" :depth="parseInt(0)"  v-if="comments" />
 
         <div class="poll__other-polls">
           <h2>
@@ -70,7 +70,11 @@ export default {
       return this.$store.getters.SIGNED_IN;
     },
     comments() {
-      return this.$store.getters.POLL_COMMENTS
+      const comments = this.$store.getters.POLL_COMMENTS;
+
+      if(!comments) return [];
+
+      return comments.sort((a, b) => (a.created < b.created) ? 1 : -1)    
     },
   },
   components: {

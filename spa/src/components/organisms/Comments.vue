@@ -6,9 +6,10 @@
                     parseInt(depth) === 0  || parseInt(depth) > 5) ?
                     'comment__parent' :
                     'comment__child'"
-            >
+            >   
                 <Comment
-                    :name="comment.userId"
+                    :userId="comment.userId"
+                    :name="comment.nickname"
                     :title="comment.text"
                     :upvotes="comment.upvotes"
                     :downvotes="comment.downvotes"

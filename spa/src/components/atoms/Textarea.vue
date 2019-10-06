@@ -1,7 +1,7 @@
 <template>
     <div class="atom__textarea-wrapper">
-        <textarea class="atom__textarea-textarea"/>
-        <Button class="atom__textarea-send-button" value="Send"/>
+        <textarea class="atom__textarea-textarea" v-model="text" />
+        <Button :disabled="sending" class="atom__textarea-send-button" value="Send" @clicked="send"/>
     </div>
 </template>
 
@@ -10,9 +10,35 @@ import Button from '@/components/atoms/Button.vue';
 
 export default {
   name: 'Textarea',
+  props: {
+    id: String,
+  },
   components: {
     Button,
   },
+  data: () => {
+    return {
+      text: null,
+      sending: null
+    }
+  },
+  methods: {
+    async send(){
+      this.sending = true;
+
+      await this.$store.dispatch("COMMENT", {
+        id: this.id,
+        text: this.text
+      });
+
+      this.$store.dispatch("GET_POLL_COMMENTS", {
+        id: this.id
+      });
+
+      this.sending = false;
+      this.text = "";
+    }
+  }
 };
 </script>
 
