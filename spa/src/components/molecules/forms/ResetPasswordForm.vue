@@ -79,7 +79,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style scoped lang="scss">
 #reset-password-form-wrapper {
     display: grid;
     margin-top: 40px;

@@ -95,6 +95,31 @@ export default new Router({
       props: true
     },
     {
+      path: '/help',
+      name: 'help',
+      component: () => import('./views/Help.vue')
+    },
+    {
+      path: '/mission',
+      name: 'mission',
+      component: () => import('./views/Mission.vue')
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('./views/Contact.vue')
+    },
+    {
+      path: '/advertisement',
+      name: 'advertisement',
+      component: () => import('./views/Advertisement.vue')
+    },
+    {
+      path: '/archive',
+      name: 'archive',
+      component: () => import('./views/Archive.vue')
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/404.vue'),

@@ -12,7 +12,7 @@ import Submit from '@/components/atoms/Submit.vue';
 import ResetPasswordForm from '@/components/molecules/forms/ResetPasswordForm.vue';
 
 export default {
-  name: 'verify',
+  name: 'Reset',
   components: {
     Button,
     TextInput, 
@@ -28,7 +28,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .reset {
     display: grid;
     grid-template-columns: 1fr;

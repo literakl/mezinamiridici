@@ -25,11 +25,11 @@
     </main>
     <footer class="app__footer">
       <ul class="app__footer-link-list">
-        <li class="app__footer-link-list-item">{{ $t('app.help') }}</li>
-        <li class="app__footer-link-list-item">{{ $t('app.our-mission') }}</li>
-        <li class="app__footer-link-list-item">{{ $t('app.contact') }}</li>
-        <li class="app__footer-link-list-item">{{ $t('app.advertisement') }}</li>
-        <li class="app__footer-link-list-item"c>{{ $t('app.archive') }}</li>
+        <li class="app__footer-link-list-item"><router-link to="/help">{{ $t('app.help') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link to="/mission">{{ $t('app.our-mission') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link to="/contact">{{ $t('app.contact') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link to="/advertisement">{{ $t('app.advertisement') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link to="/archive">{{ $t('app.archive') }}</router-link></li>
       </ul>
     </footer>
   </div>
@@ -117,6 +117,21 @@ export default {
 
   .app__footer-link-list-item {
     display: inline-block;
+  }
+
+  .app__footer-link-list-item a {
+    color: #ffe45b;
+    text-decoration: none;
+  }
+
+  .app__footer-link-list-item a:visited {
+    color: #ffd302;
+    text-decoration: none;
+  }
+
+  .app__footer-link-list-item a:hover {
+    color: #ffd302;
+    text-decoration: underline;
   }
 
   .app__footer-link-list-item:after {
