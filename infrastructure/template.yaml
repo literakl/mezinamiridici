@@ -581,7 +581,7 @@ Resources:
               Action:
                 - 'dynamodb:Query'
               Resource:
-                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromResetPasswordTokenIndex"
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromPasswordResetTokenIndex"
   BUDVerifyUserHandler:
     Type: AWS::Serverless::Function
     Properties:
