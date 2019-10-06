@@ -1,13 +1,9 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 var ses = new AWS.SES();
 
 const responses = require('../../utils/responses.js');
-
-const SECRET = 'betweenusdrivers2019';
 
 const sendVerificationEmail = (email, token, fn) => {
 	const subject = "Reset your Between us Drivers password";

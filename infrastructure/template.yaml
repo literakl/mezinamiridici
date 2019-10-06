@@ -82,6 +82,9 @@ Resources:
         - ResourcePath: /v1/forgotPassword
           CachingEnabled: false
           HttpMethod: "POST"
+        - ResourcePath: /v1/resetPassword
+          CachingEnabled: false
+          HttpMethod: "POST"
         - ResourcePath: /v1/verify/{token}
           CachingEnabled: false
           HttpMethod: "GET"
@@ -245,6 +248,15 @@ Resources:
                 x-amazon-apigateway-integration:
                   uri: 
                     Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDForgotPasswordHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "POST"
+                  type: "aws_proxy"
+            /v1/resetPassword:
+              post:
+                responses: {}
+                x-amazon-apigateway-integration:
+                  uri: 
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDResetPasswordHandler/invocations"
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
@@ -543,6 +555,33 @@ Resources:
                 - 'ses:SendEmail'
                 - 'ses:SendRawEmail'
               Resource: "*"
+  BUDResetPasswordHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDResetPasswordHandler"
+      Handler: src/handlers/users/resetPassword.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/resetPassword
+            Method: Post
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:UpdateItem'
+                - 'dynamodb:Query'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:Query'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromResetPasswordTokenIndex"
   BUDVerifyUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -613,6 +652,7 @@ Resources:
           AttributeType: S
         - AttributeName: verificationToken
           AttributeType: S
+        - AttributeName: resetPasswordToken
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
@@ -632,6 +672,15 @@ Resources:
         - IndexName: UserFromVerificationTokenIndex
           KeySchema: 
             - AttributeName: verificationToken
+              KeyType: HASH
+          Projection: 
+            ProjectionType: ALL
+          ProvisionedThroughput: 
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: UserFromResetPasswordTokenIndex
+          KeySchema: 
+            - AttributeName: resetPasswordToken
               KeyType: HASH
           Projection: 
             ProjectionType: ALL
