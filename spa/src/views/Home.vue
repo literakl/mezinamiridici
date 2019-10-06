@@ -30,9 +30,9 @@ export default {
     }
   },
  async created() {
-    this.$store.dispatch('GET_POLLS');
-    this.$store.dispatch('GET_USER_NICKNAME');
-    this.$store.dispatch('GET_USER_ID');
+    await this.$store.dispatch('GET_USER_ID');
+    await this.$store.dispatch('GET_USER_NICKNAME');
+    await this.$store.dispatch('GET_POLLS');
   }
 };
 </script>
