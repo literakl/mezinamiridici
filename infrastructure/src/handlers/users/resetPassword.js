@@ -37,6 +37,8 @@ exports.handler = (payload, context, callback) => {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
         }
 
+        console.log(data);
+
         const user = data.Items.find(item => item.email === email);
 
         if (!user) return responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
