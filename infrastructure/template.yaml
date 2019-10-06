@@ -652,7 +652,7 @@ Resources:
           AttributeType: S
         - AttributeName: verificationToken
           AttributeType: S
-        - AttributeName: resetPasswordToken
+        - AttributeName: passwordResetToken
           AttributeType: S
       KeySchema:
         - AttributeName: userId
@@ -679,9 +679,9 @@ Resources:
           ProvisionedThroughput: 
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
-        - IndexName: UserFromResetPasswordTokenIndex
+        - IndexName: UserFromPasswordResetTokenIndex
           KeySchema: 
-            - AttributeName: resetPasswordToken
+            - AttributeName: passwordResetToken
               KeyType: HASH
           Projection: 
             ProjectionType: ALL

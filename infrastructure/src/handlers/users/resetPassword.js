@@ -23,7 +23,7 @@ exports.handler = (payload, context, callback) => {
 
     dynamodb.query({
         "TableName": "BUDUserTable",
-        "IndexName": "UserFromResetPasswordTokenIndex",
+        "IndexName": "UserFromPasswordResetTokenIndex",
         "KeyConditionExpression": "#passwordResetToken = :passwordResetToken",
         "ExpressionAttributeNames": {
             "#passwordResetToken": "passwordResetToken"
