@@ -31,7 +31,7 @@ exports.handler = (payload, context, callback) => {
         "ExpressionAttributeValues": {
             ":resetPasswordToken": resetPasswordToken
         },
-        "ConsistentRead": true,
+        "ConsistentRead": false,
     }, (err, data) => {
         if (err) {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
