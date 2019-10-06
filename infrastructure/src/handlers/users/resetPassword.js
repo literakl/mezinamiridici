@@ -19,17 +19,17 @@ const response = (status, body) => {
 }
 
 exports.handler = (payload, context, callback) => {
-    const { resetPasswordToken, password } = JSON.parse(payload.body);
+    const { passwordResetToken, password } = JSON.parse(payload.body);
 
     dynamodb.query({
         "TableName": "BUDUserTable",
         "IndexName": "UserFromResetPasswordTokenIndex",
-        "KeyConditionExpression": "#resetPasswordToken = :resetPasswordToken",
+        "KeyConditionExpression": "#passwordResetToken = :passwordResetToken",
         "ExpressionAttributeNames": {
-            "#resetPasswordToken": "resetPasswordToken"
+            "#passwordResetToken": "passwordResetToken"
         },
         "ExpressionAttributeValues": {
-            ":resetPasswordToken": resetPasswordToken
+            ":passwordResetToken": passwordResetToken
         },
         "ConsistentRead": false,
     }, (err, data) => {
