@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
+const bcrypt = require('bcryptjs');
 
 const responses = require('../../utils/responses.js');
 
@@ -41,6 +41,9 @@ exports.handler = (payload, context, callback) => {
 
         if (!user) return responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
 
+        const salt = bcrypt.genSaltSync(10);
+        const passwordHash = bcrypt.hashSync(password, salt);
+
         dynamodb.update({
             TableName: 'BUDUserTable',
             Key: {
@@ -48,7 +51,7 @@ exports.handler = (payload, context, callback) => {
             },
             UpdateExpression: "set password = :password",
             ExpressionAttributeValues: {
-                ":password": password
+                ":password": passwordHash
             },
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
