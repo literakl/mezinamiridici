@@ -58,6 +58,8 @@ exports.handler = (payload, context, callback) => {
     const { email } = JSON.parse(payload.body);
     const passwordResetToken = uuidv4();
 
+    console.log(email);
+
     dynamodb.update({
         TableName: "BUDUserTable",
         IndexName: "PasswordFromEmailIndex",
@@ -73,7 +75,7 @@ exports.handler = (payload, context, callback) => {
     }, (err, data) => {
         console.log("err", err);
         console.log("data", data);
-        sendVerificationEmail(email, resetToken, (err, emailData) => {
+        sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
             return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
         });
     });
