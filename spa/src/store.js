@@ -97,13 +97,15 @@ export default new Vuex.Store({
     GET_POLL_COMMENTS: async (context, payload) => {
       context.commit('SET_POLL_COMMENTS', null);
       const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comments`);
-      
-      pollData.data.map(async comment => {
+      const comments = [];
+
+      pollData.data.forEach(async comment => {
         const userData = await axios.get(`${API_ENDPOINT}/users/${comment.userId}`);
         comment.nickname = userData.data.nickname
+        comments.push(comment);
       });
 
-      context.commit('SET_POLL_COMMENTS', pollData.data);
+      context.commit('SET_POLL_COMMENTS', comments);
     },
     FORGOT_PASSWORD: async (context, payload) => {
       try {
