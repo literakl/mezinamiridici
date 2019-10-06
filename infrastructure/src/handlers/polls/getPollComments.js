@@ -35,11 +35,6 @@ exports.handler = (payload, context, callback) => {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
         }
 
-        console.log(err);
-        console.log(data);
-
-        return responses.OK_200({
-            data
-        }, callback, response)
+        return responses.OK_200(data, callback, response)
     });
 };
