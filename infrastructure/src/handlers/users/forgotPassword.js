@@ -63,7 +63,6 @@ exports.handler = (payload, context, callback) => {
     dynamodb.update({
         TableName: "BUDUserTable",
         IndexName: "PasswordFromEmailIndex",
-        TableName: 'BUDUserTable',
         Key: {
             "email": email
         },
