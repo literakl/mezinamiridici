@@ -49,10 +49,9 @@ exports.handler = (payload, context, callback) => {
             Key: {
                 "userId": user.userId
             },
-            UpdateExpression: "set password = :password, passwordResetToken = :passwordResetToken",
+            UpdateExpression: "SET password = :password, passwordResetToken = :passwordResetToken REMOVE passwordResetToken",
             ExpressionAttributeValues: {
-                ":password": passwordHash,
-                ":passwordResetToken": ""
+                ":password": passwordHash
             },
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
