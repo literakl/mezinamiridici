@@ -58,24 +58,40 @@ exports.handler = (payload, context, callback) => {
     const { email } = JSON.parse(payload.body);
     const passwordResetToken = uuidv4();
 
-    console.log(email);
-
-    dynamodb.update({
-        TableName: "BUDUserTable",
-        IndexName: "PasswordFromEmailIndex",
-        Key: {
-            "email": email
+    dynamodb.query({
+        "TableName": "BUDUserTable",
+        "IndexName": "PasswordFromEmailIndex",
+        "KeyConditionExpression": "#email = :email",
+        "ExpressionAttributeNames": {
+            "#email": "email"
         },
-        UpdateExpression: "set passwordResetToken = :passwordResetToken",
-        ExpressionAttributeValues: {
-            ":passwordResetToken": passwordResetToken
+        "ExpressionAttributeValues": {
+            ":email": email
         },
-        ReturnValues: "UPDATED_NEW"
+        "ConsistentRead": false,
     }, (err, data) => {
-        console.log("err", err);
-        console.log("data", data);
-        sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
-            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+        if (err) {
+            return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+        }
+
+        const user = data.Items.find(item => item.email === email);
+
+        dynamodb.update({
+            TableName: 'BUDUserTable',
+            Key: {
+                "userId": user.userId
+            },
+            UpdateExpression: "set passwordResetToken = :passwordResetToken",
+            ExpressionAttributeValues: {
+                ":passwordResetToken": passwordResetToken
+            },
+            ReturnValues: "UPDATED_NEW"
+        }, (err, data) => {
+            console.log("err", err);
+            console.log("data", data);
+            sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
+                return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+            });
         });
     });
 };
