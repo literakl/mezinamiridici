@@ -529,12 +529,12 @@ Resources:
           Statement:
             - Effect: Allow
               Action:
-                - 'dynamodb:PutItem'
+                - 'dynamodb:UpdateItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable"
             - Effect: Allow
               Action:
-                - 'dynamodb:PutItem'
+                - 'dynamodb:UpdateItem'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex"
             - Effect: Allow
