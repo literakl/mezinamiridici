@@ -23,7 +23,7 @@ exports.handler = (payload, context, callback) => {
 
     dynamodb.query({
         "TableName": "BUDUserTable",
-        "IndexName": "UserFromResetPasswordTokenIndex",
+        "IndexName": "UserFromPasswordResetTokenIndex",
         "KeyConditionExpression": "#passwordResetToken = :passwordResetToken",
         "ExpressionAttributeNames": {
             "#passwordResetToken": "passwordResetToken"
@@ -37,8 +37,6 @@ exports.handler = (payload, context, callback) => {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
         }
 
-        console.log(data);
-
         const user = data.Items.find(item => item.email === email);
 
         if (!user) return responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
@@ -51,9 +49,10 @@ exports.handler = (payload, context, callback) => {
             Key: {
                 "userId": user.userId
             },
-            UpdateExpression: "set password = :password",
+            UpdateExpression: "set password = :password, passwordResetToken = :passwordResetToken",
             ExpressionAttributeValues: {
-                ":password": passwordHash
+                ":password": passwordHash,
+                ":passwordResetToken": null
             },
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {

@@ -18,7 +18,7 @@ import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 import PollVoting from '@/components/organisms/PollVoting.vue';
 
-const pollId = "769a6250-a781-46c1-80e2-8ffd78f48869"
+const pollId = "30cc4cab-4fe7-4a9b-a5c2-eaa93811ef599"
 
 export default {
   name: 'home',
