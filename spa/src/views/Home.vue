@@ -14,8 +14,6 @@
 import axios from 'axios';
 
 import TopPolls from '@/components/molecules/TopPolls.vue';
-import Heading from '@/components/molecules/Heading.vue';
-import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 import PollVoting from '@/components/organisms/PollVoting.vue';
 
 const pollId = "30cc4cab-4fe7-4a9b-a5c2-eaa93811ef59"
@@ -24,52 +22,18 @@ export default {
   name: 'home',
   components: {
     TopPolls,
-    Heading,
-    OpinionButtons,
     PollVoting
   },
   data() {
     return {
-      votedAlready: false,
       pollId
     }
-  },
-  computed: {
-
   },
  async created() {
     this.$store.dispatch('GET_POLLS');
     this.$store.dispatch('GET_USER_NICKNAME');
     this.$store.dispatch('GET_USER_ID');
-    this.$store.dispatch('GET_POLL_VOTES', {
-      id: pollId
-    });
-    this.$store.dispatch('GET_POLL_COMMENTS', {
-      id: pollId
-    });
-  
-    const hasVoted = await this.$store.dispatch('GET_USERS_VOTES', { 
-      userId: this.$store.getters.USER_ID,
-      pollId
-    });
-
-    if(hasVoted) {
-      this.votedAlready = true;
-    }
-  },
-  methods: {
-    async voted(category) {
-      const params = {
-        id: this.poll.poll.pollId,
-        vote: category,
-      };
-
-      this.$router.push({
-        name: 'poll',
-        params
-      });
-    },
-  },
+  }
 };
 </script>
 
