@@ -56,24 +56,23 @@ const response = (status, body) => {
 
 exports.handler = (payload, context, callback) => {
     const { email } = JSON.parse(payload.body);
-    const resetToken = uuidv4();
+    const passwordResetToken = uuidv4();
 
-    dynamodb.put({
+    dynamodb.update({
         TableName: "BUDUserTable",
         IndexName: "PasswordFromEmailIndex",
-        KeyConditionExpression: "#email = :email",
-        ExpressionAttributeNames: {
-            "#email": "email"
+        TableName: 'BUDUserTable',
+        Key: {
+            "email": email
         },
+        UpdateExpression: "set passwordResetToken = :passwordResetToken",
         ExpressionAttributeValues: {
-            ":email": email
+            ":passwordResetToken": passwordResetToken
         },
-        ConsistentRead: false,
-        Item: {
-            passwordResetToken: resetToken
-        }
+        ReturnValues: "UPDATED_NEW"
     }, (err, data) => {
-        console.log(err, data);
+        console.log("err", err);
+        console.log("data", data);
         sendVerificationEmail(email, resetToken, (err, emailData) => {
             return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
         });
