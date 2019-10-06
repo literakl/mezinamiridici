@@ -60,8 +60,7 @@ export default {
   },
   computed: {
     created() {
-      const date = new Date(0);
-      date.setUTCSeconds(this.poll.poll.created);
+      const date = new Date(this.poll.poll.created);
       return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
     },
     urlToShare() {

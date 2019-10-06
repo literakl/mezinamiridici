@@ -11,9 +11,11 @@
     <div class="poll__discussion-break-out">
       <div class="poll__discussion-wrapper">
         <h2>{{ $t('poll.discussion') }} ({{comments.length}})</h2>
-        <h3>{{ $t('poll.your-say') }}</h3>
 
-        <Textarea />
+        <div v-if="signedIn">
+          <h3>{{ $t('poll.your-say') }}</h3>
+          <Textarea />
+        </div>
 
         <Comments :comments="comments" :depth="parseInt(0)" />
 
@@ -65,6 +67,11 @@ export default {
     redirectToAnalyzeVotes() {
       this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
     },
+  },
+  computed: {
+    signedIn() {
+      return this.$store.getters.SIGNED_IN;
+    }
   },
   components: {
     Heading,

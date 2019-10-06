@@ -97,7 +97,7 @@ export default {
     },
     async forgotPassword() {
       try {
-        const response = await this.$store.dispatch('RESET_PASSWORD', {
+        const response = await this.$store.dispatch('FORGOT_PASSWORD', {
           email: this.forgotPasswordEmail,
         });
 

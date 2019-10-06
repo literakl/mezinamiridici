@@ -88,6 +88,13 @@ export default new Router({
       props: true
     },
     {
+      path: '/reset/:passwordResetToken',
+      name: 'reset',
+      component: () => import('./views/Reset.vue'),
+      beforeEnter: requireUnauth,
+      props: true
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/404.vue'),

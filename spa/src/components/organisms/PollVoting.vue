@@ -75,6 +75,7 @@ export default {
       let numberOfVotes = 0;
 
       if(this.mutableVote) {
+        console.log("here")
         numberOfVotes = votes ? votes.length + 1 : 1;
       } else {
         numberOfVotes = votes ? votes.length : 0;
@@ -151,6 +152,7 @@ export default {
 
       await this.$store.dispatch('GET_POLL_VOTES', { id: this.id });
 
+      this.mutableVote = vote;
       this.votedAlready = true;
     },
     redirectToOtherPolls() {
