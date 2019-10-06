@@ -24,12 +24,21 @@ exports.handler = (payload, context, callback) => {
 
     const commentId = uuidv4();
 
+    console.log({
+        "commentId": commentId,
+        "pollId": pollId,
+        "userId": principalId,
+        "parent": parent ? parent : commentId,
+        "text": text,
+        "created": Date.now()
+    });
+
     dynamodb.put({
         Item: {
             "commentId": commentId,
             "pollId": pollId,
             "userId": principalId,
-            "parent": parent,
+            "parent": parent ? parent : commentId,
             "text": text,
             "created": Date.now()
         },

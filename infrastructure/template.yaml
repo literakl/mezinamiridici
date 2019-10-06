@@ -837,7 +837,7 @@ Resources:
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
-        WriteCapacityUnits: 1 
+        WriteCapacityUnits: 1
       GlobalSecondaryIndexes: 
         - IndexName: CommentsFromPollIdIndex
           KeySchema: 
