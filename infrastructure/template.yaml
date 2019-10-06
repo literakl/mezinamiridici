@@ -63,6 +63,12 @@ Resources:
         - ResourcePath: /v1/polls/{pollId}/votes
           CachingEnabled: false
           HttpMethod: "GET"
+        - ResourcePath: /v1/polls/{pollId}/comments
+          CachingEnabled: false
+          HttpMethod: "POST"
+        - ResourcePath: /v1/polls/{pollId}/comments
+          CachingEnabled: false
+          HttpMethod: "GET"
         - ResourcePath: /v1/users
           CachingEnabled: false
           HttpMethod: "POST"
@@ -161,6 +167,37 @@ Resources:
                 x-amazon-apigateway-integration:
                   uri: 
                     Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollVotesHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "POST"
+                  type: "aws_proxy"
+            /v1/polls/{pollId}/comments:
+              post:
+                responses: {}
+                security:
+                - TokenAuthorizer: []
+                produces:
+                - "application/json"
+                parameters:
+                - name: "pollId"
+                  in: "path"
+                  required: true
+                  type: "string"
+                x-amazon-apigateway-integration:
+                  uri: 
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDPollCommentHandler/invocations"
+                  passthroughBehavior: "when_no_match"
+                  httpMethod: "POST"
+                  type: "aws_proxy"
+              get:
+                responses: {}
+                parameters:
+                - name: "pollId"
+                  in: "path"
+                  required: true
+                  type: "string"
+                x-amazon-apigateway-integration:
+                  uri: 
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollCommentsHandler/invocations"
                   passthroughBehavior: "when_no_match"
                   httpMethod: "POST"
                   type: "aws_proxy"
@@ -392,6 +429,53 @@ Resources:
                 - 'dynamodb:Query'
               Resource:
                 Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable/index/VoteFromPollIdIndex"
+  BUDPollCommentHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDPollCommentHandler"
+      Handler: src/handlers/polls/createPollComment.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/polls/{pollId}/comments
+            Method: Post
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:PutItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable"
+  BUDGetPollCommentsHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: "BUDGetPollCommentsHandler"
+      Handler: src/handlers/polls/getPollComments.handler
+      Runtime: nodejs8.10
+      Events:
+        Api:
+          Type: Api
+          Properties: 
+            Path: /v1/polls/{pollId}/comments
+            Method: Get
+            RestApiId: !Ref BUDAPI
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:GetItem'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable"
+            - Effect: Allow
+              Action:
+                - 'dynamodb:Query'
+              Resource:
+                Fn::Sub: "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable/index/CommentsFromPollIdIndex"
   BUDGetUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -746,12 +830,24 @@ Resources:
       AttributeDefinitions:
         - AttributeName: commentId
           AttributeType: S
+        - AttributeName: pollId
+          AttributeType: S
       KeySchema:
         - AttributeName: commentId
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1 
+      GlobalSecondaryIndexes: 
+        - IndexName: CommentsFromPollIdIndex
+          KeySchema: 
+            - AttributeName: pollId
+              KeyType: HASH
+          Projection: 
+            ProjectionType: ALL
+          ProvisionedThroughput: 
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
   BUDCommentVoteTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
