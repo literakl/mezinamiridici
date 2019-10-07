@@ -17,7 +17,7 @@
           <Textarea :id="id" />
         </div>
 
-        <Comments :comments="comments" :depth="parseInt(0)"  v-if="comments" />
+        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />
 
         <div class="poll__other-polls">
           <h2>
@@ -74,7 +74,23 @@ export default {
 
       if(!comments) return [];
 
-      return comments.sort((a, b) => (a.created < b.created) ? 1 : -1)    
+      const commentsTree = [];
+
+      comments.forEach(comment => {
+        if(!comment.parent){
+          commentsTree.push(comment);
+        }
+
+        if(comment.parent){
+          const found = comments.find(x => x.commentId === comment.parent);
+
+          if(found) {
+            found.comments = [comment];
+          }
+        }
+      })
+
+      return commentsTree.sort((a, b) => (a.created < b.created) ? 1 : -1);
     },
   },
   components: {

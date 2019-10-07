@@ -8,6 +8,8 @@
                     'comment__child'"
             >   
                 <Comment
+                    :pollId="pollId"
+                    :commentId="comment.commentId"
                     :userId="comment.userId"
                     :name="comment.nickname"
                     :title="comment.text"
@@ -17,6 +19,7 @@
                     :depth="parseInt(depth)"
                 />
                 <Comments
+                    :pollId="pollId"
                     v-if="comment.comments !== undefined"
                     :comments="comment.comments"
                     :depth="parseInt(depth) + 1"
@@ -32,6 +35,7 @@ import Comment from '@/components/molecules/Comment.vue';
 export default {
   name: 'Comments',
   props: {
+    pollId: String,
     comments: Array,
     depth: Number,
   },

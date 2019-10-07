@@ -13,7 +13,7 @@
             <span class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
             <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span>
             <div v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
-              <Textarea />
+              <Textarea :id="pollId" :parent="commentId" />
             </div>
         </div>
     </div>
@@ -25,6 +25,8 @@ import Textarea from '@/components/atoms/Textarea.vue';
 export default {
   name: 'Comment',
   props: {
+    pollId: String,
+    commentId: String,
     name: String,
     title: String,
     date: String,

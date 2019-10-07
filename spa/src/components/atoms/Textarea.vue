@@ -12,6 +12,7 @@ export default {
   name: 'Textarea',
   props: {
     id: String,
+    parent: String
   },
   components: {
     Button,
@@ -26,10 +27,16 @@ export default {
     async send(){
       this.sending = true;
 
-      await this.$store.dispatch("COMMENT", {
+      const payload = {
         id: this.id,
         text: this.text
-      });
+      };
+
+      if(this.parent) {
+        payload['parent'] = this.parent;
+      }
+
+      await this.$store.dispatch("COMMENT", payload);
 
       this.$store.dispatch("GET_POLL_COMMENTS", {
         id: this.id
