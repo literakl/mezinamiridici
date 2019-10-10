@@ -1,6 +1,0 @@
-[default]
-region=eu-west-1
-output=json
-
-[profile imjacobclark-amplify]
-region=eu-west-1
