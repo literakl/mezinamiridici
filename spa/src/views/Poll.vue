@@ -64,6 +64,21 @@ export default {
     redirectToAnalyzeVotes() {
       this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
     },
+    recursivleyBuildComments(allComments, commentsToSearchThrough){
+      allComments.forEach(comment => {
+        if(comment.parent){
+          commentsToSearchThrough.forEach(x => {
+            if(!x.comments) return;
+            const found = x.comments.find(x => x.commentId === comment.parent);
+
+            if(found) {
+              found.comments = [comment];
+              this.recursivleyBuildComments(allComments, x.comments);
+            }
+          });
+        }
+      });
+    }
   },
   computed: {
     signedIn() {
@@ -80,15 +95,20 @@ export default {
         if(!comment.parent){
           commentsTree.push(comment);
         }
+      });
 
+
+      comments.forEach(comment => {
         if(comment.parent){
-          const found = comments.find(x => x.commentId === comment.parent);
+          const found = commentsTree.find(x => x.commentId === comment.parent);
 
           if(found) {
             found.comments = [comment];
           }
         }
-      })
+      });
+
+      this.recursivleyBuildComments(comments, commentsTree);
 
       return commentsTree.sort((a, b) => (a.created < b.created) ? 1 : -1);
     },
