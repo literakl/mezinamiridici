@@ -183,6 +183,8 @@ export default new Vuex.Store({
 
       const { data } = await axios.get(`${API_ENDPOINT}/users/${jwtData.userId}`);
       context.commit('SET_SIGNED_IN_USER_PROFILE', data);
+
+      return data;
     },
     CREATE_USER_PROFILE: async (context, payload) => {
       return await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({

@@ -2,7 +2,6 @@
   <div class="complete-profile__wrapper">
         <div>
             <h2>{{ $t('complete-profile.heading') }}</h2>
-            <h3>{{ $t('complete-profile.subheading') }}</h3>
             <CompleteProfileForm />
         </div>
   </div>

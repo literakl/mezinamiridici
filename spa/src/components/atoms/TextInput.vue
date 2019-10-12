@@ -7,6 +7,7 @@
         ref="input"
         class="sign-up-form__input-text"
         @input="updateInput()"
+        :value="value"
     >
 </template>
 

@@ -8,6 +8,7 @@
             ref="checkbox"
             class="atoms__checkbox-input"
             @input="updateCheckbox()"
+            :checked="checked"
         >
         <label :for="identifier" class="atoms__checkbox-label">
             <span>
@@ -19,7 +20,7 @@
 
 <script>
 export default {
-  props: ['value', 'name', 'identifier', 'text'],
+  props: ['value', 'name', 'identifier', 'text', 'checked'],
 
   methods: {
     updateCheckbox() {

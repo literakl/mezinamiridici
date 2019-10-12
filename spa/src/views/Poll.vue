@@ -97,7 +97,6 @@ export default {
         }
       });
 
-
       comments.forEach(comment => {
         if(comment.parent){
           const found = commentsTree.find(x => x.commentId === comment.parent);

@@ -22,6 +22,11 @@
                     <dl v-if="!nicknameOnly">{{profile.sex}}</dl>
                 </dl>
 
+                <p>
+                  <router-link :to="{ name: 'update-profile'}">Update your profile</router-link> &middot;
+                  <router-link :to="{ name: 'update-password'}">Change your password</router-link>
+                </p>
+
                  <content-loader
                   :height="100"
                   :width="400"

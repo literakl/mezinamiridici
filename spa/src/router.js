@@ -75,9 +75,9 @@ export default new Router({
       component: () => import('./views/AnalyzeVotes.vue'),
     },
     {
-      path: '/complete-profile',
-      name: 'complete-profile',
-      component: () => import('./views/CompleteProfile.vue'),
+      path: '/update-profile',
+      name: 'update-profile',
+      component: () => import('./views/UpdateProfile.vue'),
       beforeEnter: requireAuth
     },
     {

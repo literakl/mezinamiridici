@@ -7,23 +7,24 @@
             <div class="complete-profile-form__label">
                 <label for="nickname">{{ $t('profile.nickname') }}</label>
             </div>
-            <TextInput v-model="nickname" identifier="nickname" type="text" />
+            <TextInput v-model="nickname" identifier="nickname" type="text" :value="nickname" />
 
             <div class="complete-profile-form__label">
                 <label for="driving-since">{{ $t('profile.driving-since') }}</label>
             </div>
-            <TextInput v-model="drivingSince" identifier="driving-since" type="number" />
+            <TextInput v-model="drivingSince" identifier="driving-since" type="number" :value="drivingSince" />
 
             <div class="complete-profile-form__label">
                 <label for="vehicle">{{ $t('profile.vehicle') }}</label>
             </div>
+
             <div class="complete-profile-form__input">
-                <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" />
-                <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" />
-                <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" />
-                <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" />
-                <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" />
-                <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" />
+                <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" :checked="bike"/>
+                <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" :checked="car"/>
+                <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" :checked="bus" />
+                <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" :checked="van" />
+                <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" :checked="truck" />
+                <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" :checked="tramway" />
             </div>
 
             <div class="complete-profile-form__label">
@@ -46,7 +47,7 @@
             <div class="complete-profile-form__label">
                 <label for="born-in-year">{{ $t('profile.born') }}</label>
             </div>
-            <TextInput v-model="bornInYear" identifier="born-in-year" type="number" />
+            <TextInput v-model="bornInYear" identifier="born-in-year" type="number" :value="bornInYear" />
 
             <div class="complete-profile-form__label">
                 <label for="region">{{ $t('profile.region') }}</label>
@@ -144,6 +145,21 @@ export default {
     onlyNickname: null,
     everything: null,
   }),
+  async created(){
+    await this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
+      console.log("here")
+      if(this.$store.getters.SIGNED_IN_USER_PROFILE) {
+          this.nickname = this.$store.getters.SIGNED_IN_USER_PROFILE.nickname;
+          this.drivingSince = this.$store.getters.SIGNED_IN_USER_PROFILE.drivingSince;
+          this.bornInYear = this.$store.getters.SIGNED_IN_USER_PROFILE.born;
+          this.bike = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "bike") === "bike";
+          this.car = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "car") === "car";
+          this.bus = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "bus") === "bus";
+          this.van = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "van") === "van";
+          this.truck = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "truck") === "truck";
+          this.tramway = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "tramway") === "tramway";
+      }
+  },
   methods: {
     checkForm(e) {
       e.preventDefault();
@@ -158,7 +174,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss">
 #complete-profile-form-wrapper {
