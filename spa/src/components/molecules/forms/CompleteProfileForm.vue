@@ -1,122 +1,131 @@
 <template>
-    <form
-        id="app"
-        @submit="checkForm"
-    >
-        <div id="complete-profile-form-wrapper">
-            <div class="complete-profile-form__label">
-                <label for="nickname">{{ $t('profile.nickname') }}</label>
-            </div>
-            <TextInput v-model="nickname" identifier="nickname" type="text" :value="nickname" />
+    <div>
+        <form
+            id="app"
+            @submit="checkForm"
+            v-if="success == null"
+        >
+            <div id="complete-profile-form-wrapper">
+                <div class="complete-profile-form__label">
+                    <label for="nickname">{{ $t('profile.nickname') }}</label>
+                </div>
+                <TextInput v-model="nickname" identifier="nickname" type="text" :value="nickname" />
 
-            <div class="complete-profile-form__label">
-                <label for="driving-since">{{ $t('profile.driving-since') }}</label>
-            </div>
-            <TextInput v-model="drivingSince" identifier="driving-since" type="number" :value="drivingSince" />
+                <div class="complete-profile-form__label">
+                    <label for="driving-since">{{ $t('profile.driving-since') }}</label>
+                </div>
+                <TextInput v-model="drivingSince" identifier="driving-since" type="number" :value="drivingSince" />
 
-            <div class="complete-profile-form__label">
-                <label for="vehicle">{{ $t('profile.vehicle') }}</label>
+                <div class="complete-profile-form__label">
+                    <label for="vehicle">{{ $t('profile.vehicle') }}</label>
+                </div>
+
+                <div class="complete-profile-form__input">
+                    <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" :checked="bike"/>
+                    <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" :checked="car"/>
+                    <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" :checked="bus" />
+                    <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" :checked="van" />
+                    <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" :checked="truck" />
+                    <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" :checked="tramway" />
+                </div>
+
+                <div class="complete-profile-form__label">
+                    <label for="sex">{{ $t('profile.sex') }}</label>
+                </div>
+                <div class="complete-profile-form__input">
+                    <Radio
+                        name="sex"
+                        identifier="male"
+                        text="Male"
+                        :checked="male"
+                    />
+
+                    <Radio
+                        name="sex"
+                        identifier="false"
+                        text="Female"
+                        :checked="female"
+                    />
+                </div>
+
+                <div class="complete-profile-form__label">
+                    <label for="born-in-year">{{ $t('profile.born') }}</label>
+                </div>
+                <TextInput v-model="bornInYear" identifier="born-in-year" type="number" :value="bornInYear" />
+
+                <div class="complete-profile-form__label">
+                    <label for="region">{{ $t('profile.region') }}</label>
+                </div>
+                <div class="complete-profile-form__input">
+                    <select
+                        id="region"
+                        v-model="region"
+                        :value="region"
+                    >
+                        <option value="">Please select</option>
+                        <option value="praha">Praha</option>
+                        <option value="stredocesky">Stredocesky</option>
+                        <option value="jihocesky">Jihocesky</option>
+                        <option value="plzensky">Plzensky</option>
+                        <option value="karlovarsky">Karlovarsky</option>
+                        <option value="ustecky">Ustecky</option>
+                        <option value="liberecky">Liberecky</option>
+                        <option value="liberecky">Liberecky</option>
+                        <option value="kralovohradecky">Kralovohradecky</option>
+                        <option value="pardubicky">Pardubicky</option>
+                        <option value="vysocina">Vysocina</option>
+                        <option value="jihomoravsky">Jihomoravsky</option>
+                        <option value="olomoucky">Olomoucky</option>
+                        <option value="zlinsky">Zlinsky</option>
+                        <option value="moravskoslezsky">Moravskoslezsky</option>
+                    </select>
+                </div>
+
+                <div class="complete-profile-form__label">
+                    <label for="education">{{ $t('profile.education') }}</label>
+                </div>
+                <div class="complete-profile-form__input">
+                    <select
+                        id="education"
+                        v-model="education"
+                        :value="education"
+                    >
+                        <option value="">Please select</option>
+                        <option value="primary">Primary</option>
+                        <option value="secondary">Secondary</option>
+                        <option value="university">University</option>
+                    </select>
+                </div>
+
+                <div class="complete-profile-form__label">
+                    <label for="share-profile">{{ $t('profile.share-profile') }}</label>
+                </div>
+                <div class="complete-profile-form__input">
+                    <Radio
+                        name="share-profile"
+                        identifier="onlyNickname"
+                        text="Only Nickname"
+                        :checked="onlyNickname"
+                    />
+
+                    <Radio
+                        name="share-profile"
+                        identifier="everything"
+                        text="Everything"
+                        :checked="everything"
+                    />
+                </div>
             </div>
 
-            <div class="complete-profile-form__input">
-                <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" :checked="bike"/>
-                <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" :checked="car"/>
-                <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" :checked="bus" />
-                <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" :checked="van" />
-                <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" :checked="truck" />
-                <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" :checked="tramway" />
-            </div>
-
-            <div class="complete-profile-form__label">
-                <label for="sex">{{ $t('profile.sex') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-                <Radio
-                    name="sex"
-                    identifier="male"
-                    text="Male"
-                    :checked="male"
-                />
-
-                <Radio
-                    name="sex"
-                    identifier="false"
-                    text="Female"
-                    :checked="female"
-                />
-            </div>
-
-            <div class="complete-profile-form__label">
-                <label for="born-in-year">{{ $t('profile.born') }}</label>
-            </div>
-            <TextInput v-model="bornInYear" identifier="born-in-year" type="number" :value="bornInYear" />
-
-            <div class="complete-profile-form__label">
-                <label for="region">{{ $t('profile.region') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-                <select
-                    id="region"
-                    v-model="region"
-                    :value="region"
-                >
-                    <option value="">Please select</option>
-                    <option value="praha">Praha</option>
-                    <option value="stredocesky">Stredocesky</option>
-                    <option value="jihocesky">Jihocesky</option>
-                    <option value="plzensky">Plzensky</option>
-                    <option value="karlovarsky">Karlovarsky</option>
-                    <option value="ustecky">Ustecky</option>
-                    <option value="liberecky">Liberecky</option>
-                    <option value="liberecky">Liberecky</option>
-                    <option value="kralovohradecky">Kralovohradecky</option>
-                    <option value="pardubicky">Pardubicky</option>
-                    <option value="vysocina">Vysocina</option>
-                    <option value="jihomoravsky">Jihomoravsky</option>
-                    <option value="olomoucky">Olomoucky</option>
-                    <option value="zlinsky">Zlinsky</option>
-                    <option value="moravskoslezsky">Moravskoslezsky</option>
-                </select>
-            </div>
-
-            <div class="complete-profile-form__label">
-                <label for="education">{{ $t('profile.education') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-                <select
-                    id="education"
-                    v-model="education"
-                    :value="education"
-                >
-                    <option value="">Please select</option>
-                    <option value="primary">Primary</option>
-                    <option value="secondary">Secondary</option>
-                    <option value="university">University</option>
-                </select>
-            </div>
-
-            <div class="complete-profile-form__label">
-                <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-                <Radio
-                    name="share-profile"
-                    identifier="onlyNickname"
-                    text="Only Nickname"
-                    :checked="onlyNickname"
-                />
-
-                <Radio
-                    name="share-profile"
-                    identifier="everything"
-                    text="Everything"
-                    :checked="everything"
-                />
-            </div>
+            <Submit :value="$t('profile.finish-button')" />
+        </form>
+        <div v-if="success === true">
+            <p>Profile updated successfully</p>
         </div>
-
-        <Submit :value="$t('profile.finish-button')" />
-    </form>
+        <div v-if="success === false">
+            <p>Something wen't wrong updating your profile, please refresh and try again.</p>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -135,6 +144,7 @@ export default {
     Submit,
   },
   data: () => ({
+    success: null,
     nickname: null,
     drivingSince: null,
     bike: null,
@@ -172,15 +182,37 @@ export default {
       }
   },
   methods: {
-    checkForm(e) {
-      e.preventDefault();
+    async checkForm(e) {
+        e.preventDefault();
+        const jwtData = await this.$store.dispatch("GET_DECODED_JWT");
 
-      if (this.errors.length === 0) {
-        // This will eventually call the API to create the user as validation has passed.
-        this.$router.push('/');
-      }
+        try {
+            const vehicles = [];
 
-      return this.errors.length !== 0;
+            if(this.bike) vehicles.push("bike");
+            if(this.car) vehicles.push("car");
+            if(this.bus) vehicles.push("bus");
+            if(this.van) vehicles.push("van");
+            if(this.truck) vehicles.push("truck");
+            if(this.tramway) vehicles.push("tramway");
+
+            await this.$store.dispatch('UPDATE_USER_PROFILE', {
+                jwt: jwtData.encoded,
+                userId: jwtData.decoded.userId,
+                nickname: this.nickname,
+                drivingSince: this.drivingSince,
+                vehicle: vehicles,
+                sex: this.sex,
+                bornInYear: this.bornInYear,
+                locationalRegion: this.region,
+                education: this.education,
+                shareProfile: this.share
+            });
+
+            this.success = true;
+        } catch(e) {
+            this.success = false;
+        }
     },
   },
 };

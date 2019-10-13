@@ -158,6 +158,19 @@ export default new Vuex.Store({
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
     },
+    GET_DECODED_JWT: (context, payload) => {
+      const jwt = localStorage.getItem('jwt');
+      
+      if(!jwt) return;
+
+      const jwtData = jwtDecode(jwt);
+      return {
+        decoded: jwtData,
+        encoded: {
+          token: jwt
+        }
+      }
+    },
     GET_USER_ID: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
       
