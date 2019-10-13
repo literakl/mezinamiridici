@@ -7,38 +7,38 @@ Globals:
       AllowHeaders: "'Authorization,Content-Type'"
       AllowOrigin: "'*'"
 Resources:
-  BUDDomainName:
-    Type: AWS::ApiGateway::DomainName
-    Properties:
-      CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/a42914a1-583d-479a-b3a5-1ebd2651491d
-      DomainName: 'api.betweenusdrivers.jacobclark.dev'
+  # BUDDomainName:
+  #   Type: AWS::ApiGateway::DomainName
+  #   Properties:
+  #     CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/a42914a1-583d-479a-b3a5-1ebd2651491d
+  #     DomainName: 'mezinamiridici.cz'
   BUDHostedZone:
     Type: AWS::Route53::HostedZone
     Properties:
-      Name: 'api.betweenusdrivers.jacobclark.dev'
-  APIBasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      DomainName: !Ref BUDDomainName
-      RestApiId: !Ref BUDAPI
-      Stage: production
+      Name: 'mezinamiridici.cz'
+  # APIBasePathMapping:
+  #   Type: AWS::ApiGateway::BasePathMapping
+  #   Properties:
+  #     DomainName: !Ref BUDDomainName
+  #     RestApiId: !Ref BUDAPI
+  #     Stage: production
   APIDomain:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Ref BUDHostedZone
       RecordSets:
-      - Name: 'api.betweenusdrivers.jacobclark.dev'
-        Type: A
-        AliasTarget:
-          DNSName: !GetAtt BUDDomainName.DistributionDomainName
-          HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
-      - Name: '_9492ef477a77eb88288d14ff52b92377.api.betweenusdrivers.jacobclark.dev.'
+      # - Name: 'api.mezinamiridici.cz'
+      #   Type: A
+      #   AliasTarget:
+      #     DNSName: !GetAtt BUDDomainName.DistributionDomainName
+      #     HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
+      - Name: '_2cfb19df34037aea8e7a89ef4d9f1f19.mezinamiridici.cz.'
         Type: CNAME
         TTL: '900'
         SetIdentifier: 'DNS Verification'
         Weight: '6'
         ResourceRecords:
-        - _08364b503ac9876f834dcccc940494b1.olprtlswtu.acm-validations.aws.
+        - _39cd1f3ffb46695da2d31461f3cbcb0e.olprtlswtu.acm-validations.aws.
   BUDAPI:
     Type: AWS::Serverless::Api
     Properties:
