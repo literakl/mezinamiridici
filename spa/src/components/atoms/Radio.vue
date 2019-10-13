@@ -8,6 +8,7 @@
             ref="radio"
             class="atoms__radio-input"
             @input="updateRadio()"
+            :checked="checked"
         >
         <label :for="identifier" class="atoms__radio-label">
             <span>
@@ -19,7 +20,7 @@
 
 <script>
 export default {
-  props: ['value', 'name', 'identifier', 'text'],
+  props: ['value', 'name', 'identifier', 'text', 'checked'],
 
   methods: {
     updateRadio() {

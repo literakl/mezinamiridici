@@ -35,12 +35,14 @@
                     name="sex"
                     identifier="male"
                     text="Male"
+                    :checked="male"
                 />
 
                 <Radio
                     name="sex"
                     identifier="false"
                     text="Female"
+                    :checked="female"
                 />
             </div>
 
@@ -56,6 +58,7 @@
                 <select
                     id="region"
                     v-model="region"
+                    :value="region"
                 >
                     <option value="">Please select</option>
                     <option value="praha">Praha</option>
@@ -83,6 +86,7 @@
                 <select
                     id="education"
                     v-model="education"
+                    :value="education"
                 >
                     <option value="">Please select</option>
                     <option value="primary">Primary</option>
@@ -99,12 +103,14 @@
                     name="share-profile"
                     identifier="onlyNickname"
                     text="Only Nickname"
+                    :checked="onlyNickname"
                 />
 
                 <Radio
                     name="share-profile"
                     identifier="everything"
                     text="Everything"
+                    :checked="everything"
                 />
             </div>
         </div>
@@ -147,7 +153,6 @@ export default {
   }),
   async created(){
     await this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
-      console.log("here")
       if(this.$store.getters.SIGNED_IN_USER_PROFILE) {
           this.nickname = this.$store.getters.SIGNED_IN_USER_PROFILE.nickname;
           this.drivingSince = this.$store.getters.SIGNED_IN_USER_PROFILE.drivingSince;
@@ -158,6 +163,12 @@ export default {
           this.van = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "van") === "van";
           this.truck = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "truck") === "truck";
           this.tramway = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "tramway") === "tramway";
+          this.male = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === "male";
+          this.female = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === "female";
+          this.region = this.$store.getters.SIGNED_IN_USER_PROFILE.locationalRegion;
+          this.education = this.$store.getters.SIGNED_IN_USER_PROFILE.education;
+          this.everyting = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile === "everything";
+          this.onlyNickname = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile = "onlyNickname";
       }
   },
   methods: {
