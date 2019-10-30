@@ -11,7 +11,7 @@ Vue.mixin({
   data() {
     return {
       get apiEndpoint() {
-        return 'https://api.betweenusdrivers.jacobclark.dev/v1';
+        return 'https://api.mezinamiridici.cz/v1';
       },
     };
   },

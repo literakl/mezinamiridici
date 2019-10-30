@@ -7,38 +7,38 @@ Globals:
       AllowHeaders: "'Authorization,Content-Type'"
       AllowOrigin: "'*'"
 Resources:
-  # BUDDomainName:
-  #   Type: AWS::ApiGateway::DomainName
-  #   Properties:
-  #     CertificateArn: arn:aws:acm:us-east-1:349390452115:certificate/a42914a1-583d-479a-b3a5-1ebd2651491d
-  #     DomainName: 'mezinamiridici.cz'
+  BUDDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      CertificateArn: arn:aws:acm:us-east-1:127350623136:certificate/eaf47a42-1fc6-4011-92f9-f9529b17558d
+      DomainName: 'api.mezinamiridici.cz'
   BUDHostedZone:
     Type: AWS::Route53::HostedZone
     Properties:
       Name: 'mezinamiridici.cz'
-  # APIBasePathMapping:
-  #   Type: AWS::ApiGateway::BasePathMapping
-  #   Properties:
-  #     DomainName: !Ref BUDDomainName
-  #     RestApiId: !Ref BUDAPI
-  #     Stage: production
+  APIBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref BUDDomainName
+      RestApiId: !Ref BUDAPI
+      Stage: production
   APIDomain:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Ref BUDHostedZone
       RecordSets:
-      # - Name: 'api.mezinamiridici.cz'
-      #   Type: A
-      #   AliasTarget:
-      #     DNSName: !GetAtt BUDDomainName.DistributionDomainName
-      #     HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
-      - Name: '_2cfb19df34037aea8e7a89ef4d9f1f19.mezinamiridici.cz.'
-        Type: CNAME
-        TTL: '900'
-        SetIdentifier: 'DNS Verification'
-        Weight: '6'
-        ResourceRecords:
-        - _39cd1f3ffb46695da2d31461f3cbcb0e.olprtlswtu.acm-validations.aws.
+      - Name: 'api.mezinamiridici.cz'
+        Type: A
+        AliasTarget:
+          DNSName: !GetAtt BUDDomainName.DistributionDomainName
+          HostedZoneId: Z2FDTNDATAQYW2 # static ID for CloudFront aliases
+      # - Name: '_2cfb19df34037aea8e7a89ef4d9f1f19.mezinamiridici.cz.'
+      #   Type: CNAME
+      #   TTL: '900'
+      #   SetIdentifier: 'DNS Verification'
+      #   Weight: '6'
+      #   ResourceRecords:
+      #   - _39cd1f3ffb46695da2d31461f3cbcb0e.olprtlswtu.acm-validations.aws.
   BUDAPI:
     Type: AWS::Serverless::Api
     Properties:

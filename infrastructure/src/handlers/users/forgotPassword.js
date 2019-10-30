@@ -7,7 +7,7 @@ const responses = require('../../utils/responses.js');
 
 const sendVerificationEmail = (email, token, fn) => {
 	const subject = "Reset your Between us Drivers password";
-	const resetLink = "https://betweenusdrivers.jacobclark.dev/reset/" + token;
+	const resetLink = "https://mezinamiridici.cz/reset/" + token;
 
 	ses.sendEmail({
 		Source: "jacob.jh.clark@googlemail.com",

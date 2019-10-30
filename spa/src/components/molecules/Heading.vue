@@ -48,7 +48,7 @@ export default {
       const text = this.poll.poll.text;
 
       twttr.widgets.createShareButton(
-        'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.poll.pollId,
+        'https://mezinamiridici.cz/polls/' + this.poll.poll.pollId,
         document.getElementById('twitter-share'),
         {
           text: 'Between us Drivers - ' + text
@@ -64,7 +64,7 @@ export default {
       return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return 'https://betweenusdrivers.jacobclark.dev/polls/' + this.poll.poll.pollId
+      return 'https://mezinamiridici.cz/polls/' + this.poll.poll.pollId
     }
   },
   components: {

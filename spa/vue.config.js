@@ -4,7 +4,7 @@ module.exports = {
       registry: undefined,
       awsProfile: 'default',
       region: 'eu-west-1',
-      bucket: 'betweenusdrivers.jacobclark.dev',
+      bucket: 'mezinamiridici.cz',
       createBucket: true,
       staticHosting: true,
       staticIndexPage: 'index.html',
