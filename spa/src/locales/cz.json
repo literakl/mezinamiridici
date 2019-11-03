@@ -1,3 +1,83 @@
 {
-    "name": "Mezi Nami Ridici"
+    "app": {
+        "name": "Mezi námi řidiči",
+        "logo-alt": "Muž za volantem",
+        "slogan": "Jediný web, kde si můžete vyříkat, co vás na silnicích štve",
+        "sign-in": "Přihlásit se",
+        "sign-up": "Založit účet",
+        "help": "Nápověda",
+        "our-mission": "Naše mise",
+        "contact": "Kontakt",
+        "advertisement": "Reklama",
+        "archive": "Archiv"
+    },
+    "sign-in": {
+        "forgot-password-heading": "Zapomenuté heslo",
+        "email-reset-description": "Zadejte email a pošleme vám odkaz na nastavení hesla",
+        "email-placeholder": "Email",
+        "password-placeholder": "Heslo",
+        "reset-password-button": "Resetuj heslo",
+        "modal-close-button": "Zavřít",
+        "terms-conditions-required": "You must agree to our terms and conditions",
+        "data-processing-required": "You must agree to us processing your personal data",
+        "sign-in-heading": "Přihlášení",
+        "sign-up-create-account-heading": "If you don't already have an account, click the button below to create one",
+        "forgot-password-link": "Zapomenuté heslo?",
+        "sign-in-button": "Přihlásit",
+        "or": "OR"
+    },
+    "sign-up": {
+        "heading": "Registrace",
+        "body": "Jste kousíček od dokončení registrace. Zvolte si jedinečnou přezdívku a chcete-li, vyplňte informace o sobě pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
+        "email-label": "Email",
+        "password-label": "Heslo",
+        "terms-label": "Souhlasím s podmínkami užití",
+        "processing-label": "Souhlasím se zpracováním osobních údajů",
+        "notifications-label": "Chci přijímat emaily o novinkách",
+        "finished-button-label": "Dokončit",
+        "errors-heading": "Prosím opravte následující chybu (chyby):",
+        "something-went-wrong-heading": "Něco se pokazilo, zkuste to znovu",
+        "email-required": "Email je vyžadován",
+        "password-required": "Heslo je vyžadováno",
+        "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu.",
+        "terms-conditions-required": "Souhlas s podmínkami užití je vyžadován",
+        "data-processing-required": "Souhlas se zpracováním osobních údajů je vyžadován"
+    },
+    "complete-profile": {
+        "heading": "Update your profile"
+    },
+    "analyze-votes": {
+        "first-group": "První skupina",
+        "second-group": "Druhá skupina",
+        "button": "Analyzuj hlasy"
+    },
+    "poll": {
+        "your-vote": "Váš hlas",
+        "analyze-votes": "Analyzuj hlasování",
+        "discussion": "Diskuse",
+        "your-say": "Co si o tom myslíte vy?",
+        "other-polls-button": "Další ankety"
+    },
+    "profile": {
+        "nickname": "Přezdívka",
+        "driving-for": "Řídím",
+        "driving-since": "Řídím od",
+        "vehicle": "Vozidlo",
+        "region": "Kraj",
+        "education": "Vzdělání",
+        "sex": "Pohlaví",
+        "share-profile": "Zveřejnit",
+        "finish-button": "Dokončit",
+        "born": "Rok narození"
+    },
+    "bar-chart": {
+        "no-problem": "Není problém",
+        "trivial-trouble": "Banalita",
+        "i-dont-like-it": "Vadí mi to",
+        "i-hate-it": "Štve mě to"
+    },
+    "comment": {
+        "reply": "Odpověď",
+        "close": "Zavřít"
+    }
 }
