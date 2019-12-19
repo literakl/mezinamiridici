@@ -62,12 +62,12 @@ export default {
     },
     upvote() {
       if (this.upvoted) return;
-      this.mutableUpvotes = this.mutableUpvotes + 1;
+      this.mutableUpvotes = (this.mutableUpvotes  || 0) + 1;
       this.toggleUpvoted();
     },
     downvote() {
       if (this.downvoted) return;
-      this.mutableDownvotes = this.mutableDownvotes - 1;
+      this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
       this.toggleDownvoted();
     },
     reply() {
