@@ -39,6 +39,7 @@
     "something-went-wrong-heading": "Something wen't wrong creating your account, please try again.",
     "email-required": "Email required",
     "password-required": "Password required",
+    "nickname-required": "Nickname required",
     "success-message": "All set, please check your email and verify your account!",
     "terms-conditions-required": "Terms and conditions required",
     "data-processing-required": "Data processing required"

@@ -220,6 +220,9 @@ export default {
       if (!this.password) {
         this.errors.push(this.$t('sign-up.password-required'));
       }
+      if (!this.nickname) {
+        this.errors.push(this.$t('sign-up.nickname-required'));
+      }
       if (!this.termsAndConditions) {
         this.errors.push(this.$t('sign-up.terms-conditions-required'));
       }
@@ -234,36 +237,46 @@ export default {
             const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
                 email: this.email,
                 password: this.password,
+                nickname: this.nickname,
                 tandcs: this.termsAndConditions,
                 dataProcessing: this.personalDataProcessing,
                 marketing: this.emailNotifications
             });
+            //check if the email or nickname is already exist or not
+            console.log(data);
+            if(data.token != undefined){
+                const jwtData = jwtDecode(data.token);
+                if(this.bike) vehicles.push("bike");
+                if(this.car) vehicles.push("car");
+                if(this.bus) vehicles.push("bus");
+                if(this.van) vehicles.push("van");
+                if(this.truck) vehicles.push("truck");
+                if(this.tramway) vehicles.push("tramway");
 
-            const jwtData = jwtDecode(data.token);
+                await this.$store.dispatch('UPDATE_USER_PROFILE', {
+                    jwt: data,
+                    userId: jwtData.userId,
+                    nickname: this.nickname,
+                    drivingSince: this.drivingSince,
+                    vehicle: vehicles,
+                    sex: this.sex,
+                    bornInYear: this.bornInYear,
+                    locationalRegion: this.region,
+                    education: this.education,
+                    shareProfile: this.share
+                });
+
+                this.success = true;
+            } else {
+                console.log(this.errors)
+                // this.success = false;
+                this.signingIn = false;
+                this.errors.push(data.message);
+            }
 
 
-            if(this.bike) vehicles.push("bike");
-            if(this.car) vehicles.push("car");
-            if(this.bus) vehicles.push("bus");
-            if(this.van) vehicles.push("van");
-            if(this.truck) vehicles.push("truck");
-            if(this.tramway) vehicles.push("tramway");
-
-            await this.$store.dispatch('UPDATE_USER_PROFILE', {
-                jwt: data,
-                userId: jwtData.userId,
-                nickname: this.nickname,
-                drivingSince: this.drivingSince,
-                vehicle: vehicles,
-                sex: this.sex,
-                bornInYear: this.bornInYear,
-                locationalRegion: this.region,
-                education: this.education,
-                shareProfile: this.share
-            });
-
-            this.success = true;
-        } catch {
+        } catch(error) {
+            console.log(error);
             this.success = false;
             this.signingIn = false;
         }

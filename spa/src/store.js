@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 
 Vue.use(Vuex);
 
-const API_ENDPOINT = 'https://api.mezinamiridici.cz/v1';
+const API_ENDPOINT = 'https://api2.mezinamiridici.cz/v1';
 
 export default new Vuex.Store({
   state: {
@@ -66,7 +66,13 @@ export default new Vuex.Store({
   },
   actions: {
     GET_POLLS: async (context, payload) => {
-      const pollData = await axios.get(`${API_ENDPOINT}/polls`);
+      var pollData;
+      if(payload != undefined && payload.userId != undefined){
+        const userId = payload.userId;
+        pollData  = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`)
+      }else {
+        pollData  = await axios.get(`${API_ENDPOINT}/polls`);
+      }
       const polls = [];
     
       pollData.data.forEach(async poll => {
@@ -203,6 +209,7 @@ export default new Vuex.Store({
       return await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
         email: payload.email,
         password: payload.password,
+        nickname: payload.nickname,
         tandcs: payload.tandcs, 
         dataProcessing : payload.dataProcessing, 
         marketing: payload.marketing,
@@ -277,5 +284,21 @@ export default new Vuex.Store({
         },
       );
     },
+    COMMENT_VOTE: async (context, payload) => {
+      const jwt = localStorage.getItem('jwt');
+      if (!jwt) return;
+
+      return await axios.post(
+        `${API_ENDPOINT}/polls/${payload.pollId}/comment/${payload.commentId}/vote`,
+        {
+          vote: payload.vote
+        },
+        {
+          headers: {
+            Authorization: `bearer ${jwt}`,
+          },
+        },
+      );
+    }    
   },
 });

@@ -11,7 +11,7 @@ Vue.mixin({
   data() {
     return {
       get apiEndpoint() {
-        return 'https://api.mezinamiridici.cz/v1';
+        return 'https://api2.mezinamiridici.cz/v1';
       },
     };
   },

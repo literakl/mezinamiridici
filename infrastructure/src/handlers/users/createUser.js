@@ -11,7 +11,7 @@ const SECRET = 'betweenusdrivers2019';
 
 const sendVerificationEmail = (email, token, fn) => {
 	const subject = "Verify your Between us Drivers account";
-	const verificationLink = "https://mezinamiridici.cz/verify/" + token;
+	const verificationLink = "https://api2.mezinamiridici.cz/v1/verify/" + token;
 
 	ses.sendEmail({
 		Source: "jacob.jh.clark@googlemail.com",

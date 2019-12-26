@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
         <h4>
             <router-link :to="{ name: 'user-profile', params: { id: userId }}">{{name}}</router-link>, {{epochToTime(date)}}
         </h4>
@@ -8,11 +8,11 @@
         </p>
         <div>
             +{{mutableUpvotes}} / -{{mutableDownvotes}}
-            <button v-on:click="upvote" class="comment__reply-vote-button">+</button>
-            <button v-on:click="downvote"  class="comment__reply-vote-button">-</button>
-            <span class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
-            <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span>
-            <div v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
+            <button v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+</button>
+            <button v-show="showByIndex === 1" v-on:click="downvote"  class="comment__reply-vote-button">-</button>
+            <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
+            <!-- <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span> -->
+            <div v-show="replying" v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
               <Textarea :id="pollId" :parent="commentId" />
             </div>
         </div>
@@ -42,6 +42,7 @@ export default {
     return {
       mutableUpvotes: this.upvotes,
       mutableDownvotes: this.downvotes,
+      showByIndex: null,
       upvoted: false,
       downvoted: false,
       replying: false,
@@ -64,15 +65,33 @@ export default {
       if (this.upvoted) return;
       this.mutableUpvotes = (this.mutableUpvotes  || 0) + 1;
       this.toggleUpvoted();
+      //call post webservices here
+      this.$store.dispatch('COMMENT_VOTE', { vote: 1,pollId:this.pollId,commentId:this.commentId });
     },
     downvote() {
       if (this.downvoted) return;
       this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
       this.toggleDownvoted();
+      //call post webservices here
+      this.$store.dispatch('COMMENT_VOTE', { vote: -1,pollId:this.pollId,commentId:this.commentId });
     },
     reply() {
+      // this.showByIndex = null
       this.replying = !this.replying;
+      this.showByIndex = 1;
     },
+    hoverIn() {
+      console.log('[hoverIn]');
+      this.showByIndex = 1;
+    },
+    hoverOut() {
+      console.log('[hoverOut]');
+      if(this.replying){
+        this.replying = !this.replying;
+      }
+      this.showByIndex = null;
+    },
+  
   },
 };
 </script>
@@ -114,5 +133,8 @@ export default {
 
 .comment__reply-vote-button:hover {
   background: #333333;
+}
+.comment_outer:hover {
+  background: #CFD8DC
 }
 </style>

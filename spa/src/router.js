@@ -47,7 +47,7 @@ export default new Router({
       beforeEnter: requireUnauth
     },
     {
-      path: '/poll/:id',
+      path: '/poll/:id/:text',
       name: 'poll',
       component: () => import('./views/Poll.vue'),
       props: true,
@@ -66,7 +66,7 @@ export default new Router({
     {
       path: '/profile/:id',
       name: 'user-profile',
-      component: () => import('./views/Profile.vue'),
+      component: () => import('./views/ProfileVisitor.vue'),
       props: true
     },
     {

@@ -48,7 +48,7 @@ export default {
       const text = this.poll.poll.text;
 
       twttr.widgets.createShareButton(
-        'https://mezinamiridici.cz/polls/' + this.poll.poll.pollId,
+        'https://api2.mezinamiridici.cz/v1/polls/' + this.poll.poll.pollId,
         document.getElementById('twitter-share'),
         {
           text: 'Between us Drivers - ' + text
@@ -64,7 +64,7 @@ export default {
       return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return 'https://mezinamiridici.cz/polls/' + this.poll.poll.pollId
+      return 'https://api2.mezinamiridici.cz/v1/polls/' + this.poll.poll.pollId
     }
   },
   components: {

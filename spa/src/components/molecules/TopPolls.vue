@@ -5,7 +5,7 @@
           <div v-for="poll in polls" v-bind:key="poll.id">
               <hr />
               <h4>
-                  <router-link :to="{ name: 'poll', params: { id: poll.pollId }}">
+                  <router-link :to="{ name: 'poll', params: { id: poll.pollId, text: poll.seoText }}">
                   {{poll.text}}
                   </router-link> &middot; {{poll.votes}} Votes &middot; {{poll.comments}} comments
               </h4>
@@ -80,7 +80,15 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('GET_POLLS');
+    this.$store.dispatch('GET_USER_ID');
+    console.log(this.$store.getters.USER_ID);
+    var endpoint = window.location.pathname.split('/')[1];
+    console.log(endpoint);
+    if(endpoint == 'profile'){
+      this.$store.dispatch('GET_POLLS',{userId:this.$store.getters.USER_ID});
+    } else {
+      this.$store.dispatch('GET_POLLS');
+    }
   },
 };
 </script>
