@@ -11,6 +11,7 @@ export default new Vuex.Store({
   state: {
     polls: null,
     poll: null,
+    latestPollId: null,
     pollVotes: null,
     pollComments: null,
     userToken: null,
@@ -23,6 +24,7 @@ export default new Vuex.Store({
   getters: {
     POLLS: state => state.polls,
     POLL: state => state.poll,
+    LATEST_POLL: state => state.latestPollId,
     POLL_VOTES: state => state.pollVotes,
     POLL_COMMENTS: state => state.pollComments,
     USER_TOKEN: state => state.userToken,
@@ -38,6 +40,10 @@ export default new Vuex.Store({
     },
     SET_POLL: (state, payload) => {
       state.poll = payload;
+    },
+    SET_LATEST_POLL: (state, payload) => {
+      console.log('[SET_LATEST_POLL] ',payload);
+      state.latestPollId = payload;
     },
     SET_POLL_VOTES: (state, payload) => {
       state.pollVotes = payload;
@@ -66,26 +72,48 @@ export default new Vuex.Store({
   },
   actions: {
     GET_POLLS: async (context, payload) => {
+      console.log('[GET_POLLS]');
+      console.log('payload');
+      console.log(payload);
       var pollData;
       if(payload != undefined && payload.userId != undefined){
         const userId = payload.userId;
+        console.log('[fetching user specific poll]');
         pollData  = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`)
       }else {
+        console.log('[fetching all poll]');
         pollData  = await axios.get(`${API_ENDPOINT}/polls`);
       }
       const polls = [];
     
+      // console.log(JSON.stringify(pollData.data));
+      var uniqueUserId = [];
+      var latestPollTime = -1;
+      var latestPollId = null;
+      var userData = {};
       pollData.data.forEach(async poll => {
-        const userData = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
+        console.log('[pollId]',poll.pollId,'[userId]',poll.userId);
+        if(poll.created > latestPollTime){
+          latestPollTime = poll.created;
+          latestPollId = poll.pollId;
+        }
+        if(uniqueUserId.indexOf(poll.userId) < 0){
+          uniqueUserId.push(poll.userId);
+          const user = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
+          // console.log(JSON.stringify(user.data));
+          userData[poll.userId] = user.data; 
+        }
         const pollVotesData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/votes`);
         const pollCommentsData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/comments`);
 
         poll['votes'] = pollVotesData.data.length
         poll['comments'] = pollCommentsData.data.length
-        poll['userData'] = userData.data;
+        poll['userData'] = userData[poll.userId];
         polls.push(poll);
       });
-
+      console.log('[latestPollId] ',latestPollId);
+      context.commit('SET_LATEST_POLL',latestPollId);
+      // console.log(this.$store.getters.LATEST_POLL);
       context.commit('SET_POLLS', polls);
     },
     GET_POLL: async (context, payload) => {

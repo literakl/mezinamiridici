@@ -85,7 +85,11 @@ export default {
     var endpoint = window.location.pathname.split('/')[1];
     console.log(endpoint);
     if(endpoint == 'profile'){
-      this.$store.dispatch('GET_POLLS',{userId:this.$store.getters.USER_ID});
+      if(this.$store.getters.USER_ID != undefined) {
+        this.$store.dispatch('GET_POLLS',{userId:this.$store.getters.USER_ID});
+      } else {
+        this.$store.dispatch('GET_POLLS',{userId:window.location.pathname.split('/')[2]});
+      }
     } else {
       this.$store.dispatch('GET_POLLS');
     }

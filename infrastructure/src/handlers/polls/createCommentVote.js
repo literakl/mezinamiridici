@@ -19,27 +19,27 @@ const response = (status, body) => {
 }
 
 exports.handler = (payload, context, callback) => {
-    console.log('[createPollComment]');
+    console.log('[createCommentVote]');
     console.log(payload.body);
-    const { parent, text } = JSON.parse(payload.body);
+    const { vote } = JSON.parse(payload.body);
     const token = payload.headers.Authorization.split(" ")[1];
     const decoded = jwt.verify(token, SECRET);
     const principalId = decoded.userId;
     // const { requestContext: { authorizer: { principalId } } } = payload;
-    const { pollId } = payload.pathParameters;
+    console.log(payload.pathParameters);
+    const { pollId,commentId } = payload.pathParameters;
 
-    const commentId = uuidv4();
+    const commentVoteId = uuidv4();
 
     dynamodb.put({
         Item: {
-            "commentId": commentId,
+            "commentVoteId": commentVoteId,
             "pollId": pollId,
+            "commentId":commentId,
             "userId": principalId,
-            "parent": parent,
-            "text": text,
-            "created": Date.now()
+            "vote":vote
         },
-        TableName: "BUDCommentTable"
+        TableName: "BUDCommentVoteTable"
     }, (err, data) => {
         if (err) {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);

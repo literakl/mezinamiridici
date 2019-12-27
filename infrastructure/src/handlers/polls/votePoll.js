@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 const jwt = require('jsonwebtoken');
 
 const responses = require('../../utils/responses.js');
-
+const SECRET = 'betweenusdrivers2019';
 const response = (status, body) => {
     return {
         "statusCode": status,
@@ -19,8 +19,12 @@ const response = (status, body) => {
 }
 
 exports.handler = (payload, context, callback) => {
+    console.log(payload.body);
     const { score } = JSON.parse(payload.body);
-    const { requestContext: { authorizer: { principalId }} } = payload;
+    const token = payload.headers.Authorization.split(" ")[1];
+    const decoded = jwt.verify(token, SECRET);
+    const principalId = decoded.userId;
+    // const { requestContext: { authorizer: { principalId }} } = payload;
     const { pollId } = payload.pathParameters;
 
     if(score === undefined || score === null) return responses.INTERNAL_SERVER_ERROR_500("score is required", callback, response)
@@ -35,6 +39,8 @@ exports.handler = (payload, context, callback) => {
         },
         "ConsistentRead": false,
     }, (err, userData) => {
+        if(err)
+            console.log('[err]',err)
         if(err) {
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
         }
@@ -54,6 +60,8 @@ exports.handler = (payload, context, callback) => {
             },
             TableName: "BUDVoteTable"
         }, (err, voteData) => {
+            if(err)
+            console.log('[err]',err)
             if(err) {
                 return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
             }
@@ -67,7 +75,9 @@ exports.handler = (payload, context, callback) => {
                 },
                 TableName: "BUDUserVoteTable"
             }, (err, userVoteData) => {
-                return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(userVoteData, callback, response)
+                if(err)
+                console.log('[err]',err)
+                    return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(userVoteData, callback, response)
             })
         });
     });

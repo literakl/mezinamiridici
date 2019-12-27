@@ -53,9 +53,10 @@ export default {
   },
   async created() {
     this.$store.dispatch('GET_USER_ID');
-    await this.$store.dispatch('GET_POLL_COMMENTS', {
-      id: this.id
-    });
+    //TODO:WARNING commenting this because of duplicate network call
+    // await this.$store.dispatch('GET_POLL_COMMENTS', {
+    //   id: this.id
+    // });
   },
   methods: {
     redirectToOtherPolls() {

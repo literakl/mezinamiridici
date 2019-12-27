@@ -30,6 +30,8 @@ exports.handler = (payload, context, callback) => {
         delete data.verified;
         delete data.dataProcessing;
         delete data.email;
+        if(data.Item.nickname != undefined)
+            data.Item.nickname = data.Item.nickname.toLowerCase()
 
         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
     });

@@ -4,7 +4,7 @@
       Ads
     </div>
     <div id="home__content">
-      <PollVoting :id="pollId" />
+      <PollVoting v-if="this.$store.getters.LATEST_POLL" :id="this.$store.getters.LATEST_POLL" />
       <TopPolls />
     </div>
   </div>
@@ -16,7 +16,7 @@ import axios from 'axios';
 import TopPolls from '@/components/molecules/TopPolls.vue';
 import PollVoting from '@/components/organisms/PollVoting.vue';
 
-const pollId = "30cc4cab-4fe7-4a9b-a5c2-eaa93811ef59"
+// const pollId = "30cc4cab-4fe7-4a9b-a5c2-eaa93811ef59"
 
 export default {
   name: 'home',
@@ -24,15 +24,16 @@ export default {
     TopPolls,
     PollVoting
   },
-  data() {
-    return {
-      pollId
-    }
-  },
+  // data() {
+  //   return {
+  //     pollId
+  //   }
+  // },
  async created() {
     await this.$store.dispatch('GET_USER_ID');
     await this.$store.dispatch('GET_USER_NICKNAME');
-    await this.$store.dispatch('GET_POLLS');
+    //TODO:Warning
+    // await this.$store.dispatch('GET_POLLS');
   }
 };
 </script>

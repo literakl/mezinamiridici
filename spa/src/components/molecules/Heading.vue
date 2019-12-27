@@ -3,7 +3,7 @@
         <hr />
         <div v-if="poll.poll">
           <h2 id="home__heading-title">
-              <router-link :to="{ name: 'poll', params: { id: poll.poll.pollId }}" class="home__heading-link">{{poll.poll.text}}</router-link>
+              <router-link :to="{ name: 'poll', params: { id: poll.poll.pollId, text: poll.seoText }}" class="home__heading-link">{{poll.poll.text}}</router-link>
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
@@ -64,7 +64,7 @@ export default {
       return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return 'https://api2.mezinamiridici.cz/v1/polls/' + this.poll.poll.pollId
+      return 'http://mezinamiridici.cz/poll/' + this.poll.poll.pollId + '/'+this.poll.poll.seoText
     }
   },
   components: {
