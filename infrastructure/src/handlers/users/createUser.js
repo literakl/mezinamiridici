@@ -14,10 +14,10 @@ const sendVerificationEmail = (email, token, fn) => {
     const verificationLink = "https://mezinamiridici.cz/verify/" + token;
 
 	ses.sendEmail({
-		Source: "jacob.jh.clark@googlemail.com",
+		Source: "robot@mezinamiridici.cz",
 		Destination: {
 			ToAddresses: [
-				"jacob.jh.clark@googlemail.com"
+				email
 			]
 		},
 		Message: {
@@ -104,14 +104,14 @@ exports.handler = (payload, context, callback) => {
                             console.log('err', err);
                         if (data)
                             console.log('data', data);
-                        // sendVerificationEmail(email, verificationToken, (err, data) => {
+                        sendVerificationEmail(email, verificationToken, (err, data) => {
                         const token = jwt.sign({
                             "userId": userId,
                             "nickname": nickname
                         }, SECRET, { expiresIn: '1m' });
 
                         return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ token }, callback, response)
-                        // });
+                        });
 
                     });
                 }

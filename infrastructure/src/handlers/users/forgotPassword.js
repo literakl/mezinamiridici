@@ -10,10 +10,10 @@ const sendVerificationEmail = (email, token, fn) => {
 	const resetLink = "https://mezinamiridici.cz/reset/" + token;
 
 	ses.sendEmail({
-		Source: "jacob.jh.clark@googlemail.com",
+		Source: "robot@mezinamiridici.cz",
 		Destination: {
 			ToAddresses: [
-				"jacob.jh.clark@googlemail.com"
+				email
 			]
 		},
 		Message: {
