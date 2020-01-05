@@ -36,7 +36,7 @@
                 <div class="sign-up-form__label">
                     <label for="nickname">{{ $t('profile.nickname') }}</label>
                 </div>
-                <TextInput v-model="nickname" identifier="nickname" type="text" />
+                <TextInput class="sign-up-form__input" v-model="nickname" identifier="nickname" type="text" />
 
                 <div class="sign-up-form__label">
                     <label for="driving-since">{{ $t('profile.driving-for') }}</label>
@@ -89,20 +89,20 @@
                     >
                         <option value="">Please select</option>
                         <option value="praha">Praha</option>
-                        <option value="stredocesky">Stredocesky</option>
-                        <option value="jihocesky">Jihocesky</option>
-                        <option value="plzensky">Plzensky</option>
-                        <option value="karlovarsky">Karlovarsky</option>
-                        <option value="ustecky">Ustecky</option>
-                        <option value="liberecky">Liberecky</option>
-                        <option value="liberecky">Liberecky</option>
-                        <option value="kralovohradecky">Kralovohradecky</option>
-                        <option value="pardubicky">Pardubicky</option>
-                        <option value="vysocina">Vysocina</option>
-                        <option value="jihomoravsky">Jihomoravsky</option>
-                        <option value="olomoucky">Olomoucky</option>
-                        <option value="zlinsky">Zlinsky</option>
-                        <option value="moravskoslezsky">Moravskoslezsky</option>
+                        <option value="stredocesky">Stredočeský</option>
+                        <option value="jihocesky">Jihočeský</option>
+                        <option value="plzensky">Plzeňský</option>
+                        <option value="karlovarsky">Karlovarský</option>
+                        <option value="ustecky">Ústecký</option>
+                        <option value="liberecky">Liberecký</option>
+                        <option value="liberecky">Liberecký</option>
+                        <option value="kralovohradecky">Královohradecký</option>
+                        <option value="pardubicky">Pardubický</option>
+                        <option value="vysocina">Vysočina</option>
+                        <option value="jihomoravsky">Jihomoravský</option>
+                        <option value="olomoucky">Olomoucký</option>
+                        <option value="zlinsky">Zlínský</option>
+                        <option value="moravskoslezsky">Moravskoslezský</option>
                     </select>
                 </div>
 

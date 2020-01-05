@@ -37,11 +37,12 @@
         "finished-button-label": "Dokončit",
         "errors-heading": "Prosím opravte následující chybu (chyby):",
         "something-went-wrong-heading": "Něco se pokazilo, zkuste to znovu",
-        "email-required": "Email je vyžadován",
-        "password-required": "Heslo je vyžadováno",
+        "email-required": "Email je nutný, například pro obnovu hesla.",
+        "password-required": "Bez hesla se neobejdeme.",
+        "nickname-required": "Unikátní přezdívka je potřebná.",
+        "terms-conditions-required": "Potřebujeme váš souhlas s podmínkami užití.",
+        "data-processing-required": "Bez vašeho souhlasu se zpracováním osobních údajů to fakt nejde.",
         "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu.",
-        "terms-conditions-required": "Souhlas s podmínkami užití je vyžadován",
-        "data-processing-required": "Souhlas se zpracováním osobních údajů je vyžadován"
     },
     "complete-profile": {
         "heading": "Update your profile"
