@@ -20,8 +20,8 @@ module.exports = {
       pluginVersion: '3.0.0',
     },
     i18n: {
-      locale: 'en',
-      fallbackLocale: 'en',
+      locale: 'cz',
+      fallbackLocale: 'cz',
       localeDir: 'locales',
       enableInSFC: true,
     },
