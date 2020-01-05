@@ -245,7 +245,6 @@ export default new Vuex.Store({
       await axios.patch(
         `${API_ENDPOINT}/users/${payload.userId}`,
         JSON.stringify({
-          nickname: payload.nickname,
           drivingSince: payload.drivingSince,
           vehicle: payload.vehicle,
           sex: payload.sex,
