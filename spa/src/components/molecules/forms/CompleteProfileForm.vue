@@ -7,11 +7,6 @@
         >
             <div id="complete-profile-form-wrapper">
                 <div class="complete-profile-form__label">
-                    <label for="nickname">{{ $t('profile.nickname') }}</label>
-                </div>
-                <TextInput v-model="nickname" identifier="nickname" type="text" :value="nickname" />
-
-                <div class="complete-profile-form__label">
                     <label for="driving-since">{{ $t('profile.driving-since') }}</label>
                 </div>
                 <TextInput v-model="drivingSince" identifier="driving-since" type="number" :value="drivingSince" />

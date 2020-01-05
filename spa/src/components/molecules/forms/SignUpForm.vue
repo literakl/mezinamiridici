@@ -24,17 +24,17 @@
 
             <div id="sign-up-form-wrapper">
                 <div class="sign-up-form__label">
-                    <label for="email">{{ $t('sign-up.email-label') }}</label>
+                    <label for="email">{{ $t('sign-up.email-label') }} <span class="mandatory">*</span></label>
                 </div>
                 <TextInput class="sign-up-form__input" v-model="email" identifier="email" type="email" />
 
                 <div class="sign-up-form__label">
-                    <label for="password">{{ $t('sign-up.password-label') }}</label>
+                    <label for="password">{{ $t('sign-up.password-label') }} <span class="mandatory">*</span></label>
                 </div>
                 <TextInput class="sign-up-form__input" v-model="password" identifier="password" type="password" />
 
                 <div class="sign-up-form__label">
-                    <label for="nickname">{{ $t('profile.nickname') }}</label>
+                    <label for="nickname">{{ $t('profile.nickname') }} <span class="mandatory">*</span></label>
                 </div>
                 <TextInput class="sign-up-form__input" v-model="nickname" identifier="nickname" type="text" />
 
@@ -314,6 +314,10 @@ export default {
 
 .sign-up-form__button {
     width: 100%;
+}
+
+.mandatory {
+  color: darkred;
 }
 
 @media all and (min-width: 850px) {

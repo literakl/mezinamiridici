@@ -28,7 +28,7 @@
     },
     "sign-up": {
         "heading": "Registrace",
-        "body": "Jste kousíček od dokončení registrace. Zvolte si jedinečnou přezdívku a chcete-li, vyplňte informace o sobě pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
+        "body": "Jste kousíček od dokončení registrace. Zvolte si jedinečnou přezdívku a chcete-li, vyplňte informace o vaší osobě pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
         "email-label": "Email",
         "password-label": "Heslo",
         "terms-label": "Souhlasím s podmínkami užití",
@@ -42,7 +42,7 @@
         "nickname-required": "Unikátní přezdívka je potřebná.",
         "terms-conditions-required": "Potřebujeme váš souhlas s podmínkami užití.",
         "data-processing-required": "Bez vašeho souhlasu se zpracováním osobních údajů to fakt nejde.",
-        "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu.",
+        "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu."
     },
     "complete-profile": {
         "heading": "Update your profile"
