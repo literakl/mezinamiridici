@@ -1,0 +1,786 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'sam-app
+
+  Sample SAM Template for sam-app
+
+  '
+Globals:
+  Api:
+    Cors:
+      AllowMethods: '''OPTIONS,POST,GET,PATCH'''
+      AllowHeaders: '''Authorization,Content-Type'''
+      AllowOrigin: '''*'''
+Resources:
+  BUDAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: production
+      CacheClusterEnabled: true
+      CacheClusterSize: '0.5'
+      MethodSettings:
+      - ResourcePath: /v1/polls
+        CachingEnabled: false
+        CacheTtlInSeconds: 600
+        HttpMethod: GET
+      - ResourcePath: /v1/polls
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/polls/{pollId}
+        CachingEnabled: true
+        CacheTtlInSeconds: 600
+        HttpMethod: GET
+      - ResourcePath: /v1/polls/{pollId}/votes
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/polls/{pollId}/votes
+        CachingEnabled: false
+        HttpMethod: GET
+      - ResourcePath: /v1/polls/{pollId}/comments
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/polls/{pollId}/comments
+        CachingEnabled: false
+        HttpMethod: GET
+      - ResourcePath: /v1/polls/{pollId}/comment/{commentId}
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/users
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/users/{userId}
+        CachingEnabled: true
+        CacheTtlInSeconds: 600
+        HttpMethod: GET
+      - ResourcePath: /v1/users/{userId}/votes
+        CachingEnabled: false
+        HttpMethod: GET
+      - ResourcePath: /v1/users/{userId}
+        CachingEnabled: false
+        HttpMethod: PATCH
+      - ResourcePath: /v1/authorizeUser
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/forgotPassword
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/resetPassword
+        CachingEnabled: false
+        HttpMethod: POST
+      - ResourcePath: /v1/verify/{token}
+        CachingEnabled: false
+        HttpMethod: GET
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          version: '1'
+          title: awssambuild
+        basePath: /v1
+        schemes:
+        - https
+        paths:
+          /v1/polls:
+            get:
+              responses: {}
+              produces:
+              - application/json
+              parameters:
+              - name: userId
+                in: query
+                required: false
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollsHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDCreatePollHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/polls/{pollId}:
+            get:
+              responses: {}
+              produces:
+              - application/json
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+                cacheNamespace: cs0i4n
+                cacheKeyParameters:
+                - method.request.path.pollId
+          /v1/polls/{pollId}/votes:
+            post:
+              responses: {}
+              security:
+              - TokenAuthorizer: []
+              produces:
+              - application/json
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDPollVoteHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+            get:
+              responses: {}
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollVotesHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/polls/{pollId}/comments:
+            post:
+              responses: {}
+              security:
+              - TokenAuthorizer: []
+              produces:
+              - application/json
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDPollCommentHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+            get:
+              responses: {}
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetPollCommentsHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/polls/{pollId}/comment/{commentId}/vote:
+            post:
+              responses: {}
+              security:
+              - TokenAuthorizer: []
+              produces:
+              - application/json
+              parameters:
+              - name: pollId
+                in: path
+                required: true
+                type: string
+              - name: commentId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDCommentVoteHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/users:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDCreateUserHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/users/{userId}:
+            patch:
+              responses: {}
+              security:
+              - TokenAuthorizer: []
+              parameters:
+              - name: userId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDUpdateUserHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+            get:
+              responses: {}
+              parameters:
+              - name: userId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetUserHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+                cacheNamespace: cs0i4n
+                cacheKeyParameters:
+                - method.request.path.userId
+          /v1/users/{userId}/votes:
+            get:
+              responses: {}
+              parameters:
+              - name: userId
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDGetUsersVotesHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/verify/{token}:
+            get:
+              responses: {}
+              parameters:
+              - name: token
+                in: path
+                required: true
+                type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDVerifyUserHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/authorizeUser:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDAuthorizeUserHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/forgotPassword:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDForgotPasswordHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+          /v1/resetPassword:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDResetPasswordHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
+        securityDefinitions:
+          TokenAuthorizer:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: custom
+            x-amazon-apigateway-authorizer:
+              authorizerUri:
+                Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDAuthorizerHandler/invocations
+              authorizerResultTtlInSeconds: 0
+              identityValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
+              type: token
+  BUDGetPollHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetPollHandler
+      Handler: src/handlers/polls/getPoll.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
+  BUDCreatePollHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDCreatePollHandler
+      Handler: src/handlers/polls/createPoll.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
+  BUDGetPollsHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetPollsHandler
+      Handler: src/handlers/polls/getPolls.handler
+      Runtime: nodejs10.x
+      Timeout: 12
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDPollTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable
+  BUDPollVoteHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDPollVoteHandler
+      Handler: src/handlers/polls/votePoll.handler
+      Runtime: nodejs10.x
+      Timeout: 15
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}/votes
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserVoteTable
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+  BUDGetPollVotesHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetPollVotesHandler
+      Handler: src/handlers/polls/getPollVotes.handler
+      Runtime: nodejs10.x
+      Timeout: 10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}/votes
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDVoteTable/index/VoteFromPollIdIndex
+  BUDPollCommentHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDPollCommentHandler
+      Handler: src/handlers/polls/createPollComment.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}/comments
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable
+  BUDGetPollCommentsHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetPollCommentsHandler
+      Handler: src/handlers/polls/getPollComments.handler
+      Runtime: nodejs10.x
+      Timeout: 10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}/comments
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentTable/index/CommentsFromPollIdIndex
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentVoteTable
+  BUDGetUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetUserHandler
+      Handler: src/handlers/users/getUser.handler
+      Runtime: nodejs10.x
+      Timeout: 12
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users/{userId}
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+  BUDGetUsersVotesHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetUsersVotesHandler
+      Handler: src/handlers/users/getUsersVotes.handler
+      Runtime: nodejs10.x
+      Timeout: 10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users/{userId}/votes
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserVoteTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserVoteTable/index/UsersVotesFromUserIdIndex
+  BUDCreateUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDCreateUserHandler
+      Handler: src/handlers/users/createUser.handler
+      Runtime: nodejs10.x
+      Timeout: 10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
+        - Effect: Allow
+          Action:
+          - ses:SendEmail
+          - ses:SendRawEmail
+          Resource: '*'
+  BUDUpdateUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDUpdateUserHandler
+      Handler: src/handlers/users/updateUser.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users/{userId}
+            Method: Patch
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:UpdateItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:UpdateItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
+  BUDCommentVoteHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDCommentVoteHandler
+      Handler: src/handlers/polls/createCommentVote.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/polls/{pollId}/comment/{commentId}/vote
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:PutItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentVoteTable
+  BUDAuthorizerHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDAuthorizerHandler
+      Handler: src/handlers/authorizer/authorize.handler
+      Runtime: nodejs10.x
+  BUDAuthorizeUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDAuthorizeUserHandler
+      Handler: src/handlers/users/authorizeUser.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/authorizeUser
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
+  BUDVerifyUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDVerifyUserHandler
+      Handler: src/handlers/users/verifyUser.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/verify/{token}
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:UpdateItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromVerificationTokenIndex
+  BUDForgotPasswordHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDForgotPasswordHandler
+      Handler: src/handlers/users/forgotPassword.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/forgotPassword
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:UpdateItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
+        - Effect: Allow
+          Action:
+          - ses:SendEmail
+          - ses:SendRawEmail
+          Resource: '*'
+  BUDResetPasswordHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDResetPasswordHandler
+      Handler: src/handlers/users/resetPassword.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/resetPassword
+            Method: Post
+            RestApiId:
+              Ref: BUDAPI
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:UpdateItem
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          Resource:
+            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromPasswordResetTokenIndex
+  ConfigLambdaPermission:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+    - BUDAPI
+    - BUDAuthorizerHandler
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: BUDAuthorizerHandler
+      Principal: apigateway.amazonaws.com
