@@ -9,6 +9,7 @@
             >   
                 <Comment
                     :pollId="pollId"
+                    :comment="comment"
                     :commentId="comment.commentId"
                     :userId="comment.userId"
                     :name="comment.nickname"

@@ -61,7 +61,7 @@ export default {
   computed: {
     created() {
       const date = new Date(this.poll.poll.created);
-      return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+      return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
     },
     urlToShare() {
       return 'http://mezinamiridici.cz/poll/' + this.poll.poll.pollId + '/'+this.poll.poll.seoText

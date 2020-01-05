@@ -76,7 +76,7 @@ export default {
       let numberOfVotes = 0;
 
       if(this.mutableVote) {
-        numberOfVotes = votes ? votes.length + 1 : 1;
+        numberOfVotes = votes ? votes.length : 1;
       } else {
         numberOfVotes = votes ? votes.length : 0;
       }

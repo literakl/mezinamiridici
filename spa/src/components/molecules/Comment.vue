@@ -27,6 +27,7 @@ export default {
   props: {
     pollId: String,
     commentId: String,
+    comment: Object,
     name: String,
     title: String,
     date: String,
@@ -39,29 +40,38 @@ export default {
     Textarea,
   },
   data() {
+    if(this.comment != undefined && this.comment.votedUserList != undefined && 
+    this.comment.votedUserList.length >0  && this.comment.votedUserList.indexOf(this.$store.getters.USER_ID) > -1 &&
+    ((this.comment.upvotes != undefined && this.comment.upvotes > 0) ||
+    ( this.comment.downvotes != undefined && this.comment.downvotes > 0))){
+      this.fetched = true;
+      this.upvoted = true;
+      this.downvoted = true;      
+    }
     return {
       mutableUpvotes: this.upvotes,
       mutableDownvotes: this.downvotes,
       showByIndex: null,
-      upvoted: false,
-      downvoted: false,
+      upvoted: this.upvoted || false,
+      downvoted: this.downvoted || false,
       replying: false,
     };
   },
   methods: {
     epochToTime(epoch){
       const date = new Date(parseInt(epoch));
-      return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+      return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
     },
     toggleUpvoted() {
       this.upvoted = true;
-      this.downvoted = false;
+      this.downvoted = true//false;
     },
     toggleDownvoted() {
-      this.upvoted = false;
+      this.upvoted = true//false;
       this.downvoted = true;
     },
     upvote() {
+      console.log('[upvote] ',this.upvoted);
       if (this.upvoted) return;
       this.mutableUpvotes = (this.mutableUpvotes  || 0) + 1;
       this.toggleUpvoted();
@@ -69,6 +79,7 @@ export default {
       this.$store.dispatch('COMMENT_VOTE', { vote: 1,pollId:this.pollId,commentId:this.commentId });
     },
     downvote() {
+      console.log('[downvote] ',this.downvoted);
       if (this.downvoted) return;
       this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
       this.toggleDownvoted();
@@ -81,11 +92,9 @@ export default {
       this.showByIndex = 1;
     },
     hoverIn() {
-      console.log('[hoverIn]');
       this.showByIndex = 1;
     },
     hoverOut() {
-      console.log('[hoverOut]');
       if(this.replying){
         this.replying = !this.replying;
       }
