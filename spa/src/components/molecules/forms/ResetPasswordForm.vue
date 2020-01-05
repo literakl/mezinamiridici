@@ -40,10 +40,10 @@ export default {
   data: () => ({
     password: null,
     success: null,
-    resetting: null
+    resetting: null,
   }),
   props: {
-      passwordResetToken: String
+    passwordResetToken: String,
   },
   methods: {
     async checkForm() {
@@ -56,16 +56,16 @@ export default {
 
       if (this.errors.length === 0) {
         try {
-            const { data } = await this.$store.dispatch('RESET_PASSWORD', {
-                passwordResetToken: this.passwordResetToken,
-                password: this.password,
-            });
+          const { data } = await this.$store.dispatch('RESET_PASSWORD', {
+            passwordResetToken: this.passwordResetToken,
+            password: this.password,
+          });
 
-            this.success = true;
-            this.resetting = false;
+          this.success = true;
+          this.resetting = false;
         } catch {
-            this.success = false;
-            this.resetting = false;
+          this.success = false;
+          this.resetting = false;
         }
       } else {
         this.success = false;

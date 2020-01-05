@@ -161,58 +161,58 @@ export default {
     onlyNickname: null,
     everything: null,
   }),
-  async created(){
+  async created() {
     await this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
-      if(this.$store.getters.SIGNED_IN_USER_PROFILE) {
-          this.nickname = this.$store.getters.SIGNED_IN_USER_PROFILE.nickname;
-          this.drivingSince = this.$store.getters.SIGNED_IN_USER_PROFILE.drivingSince;
-          this.bornInYear = this.$store.getters.SIGNED_IN_USER_PROFILE.born;
-          this.bike = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "bike") === "bike";
-          this.car = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "car") === "car";
-          this.bus = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "bus") === "bus";
-          this.van = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "van") === "van";
-          this.truck = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "truck") === "truck";
-          this.tramway = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === "tramway") === "tramway";
-          this.male = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === "male";
-          this.female = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === "female";
-          this.region = this.$store.getters.SIGNED_IN_USER_PROFILE.locationalRegion;
-          this.education = this.$store.getters.SIGNED_IN_USER_PROFILE.education;
-          this.everyting = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile === "everything";
-          this.onlyNickname = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile = "onlyNickname";
-      }
+    if (this.$store.getters.SIGNED_IN_USER_PROFILE) {
+      this.nickname = this.$store.getters.SIGNED_IN_USER_PROFILE.nickname;
+      this.drivingSince = this.$store.getters.SIGNED_IN_USER_PROFILE.drivingSince;
+      this.bornInYear = this.$store.getters.SIGNED_IN_USER_PROFILE.born;
+      this.bike = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === 'bike') === 'bike';
+      this.car = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === 'car') === 'car';
+      this.bus = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === 'bus') === 'bus';
+      this.van = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === 'van') === 'van';
+      this.truck = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === 'truck') === 'truck';
+      this.tramway = this.$store.getters.SIGNED_IN_USER_PROFILE.vehicle.find(v => v === 'tramway') === 'tramway';
+      this.male = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === 'male';
+      this.female = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === 'female';
+      this.region = this.$store.getters.SIGNED_IN_USER_PROFILE.locationalRegion;
+      this.education = this.$store.getters.SIGNED_IN_USER_PROFILE.education;
+      this.everyting = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile === 'everything';
+      this.onlyNickname = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile = 'onlyNickname';
+    }
   },
   methods: {
     async checkForm(e) {
-        e.preventDefault();
-        const jwtData = await this.$store.dispatch("GET_DECODED_JWT");
+      e.preventDefault();
+      const jwtData = await this.$store.dispatch('GET_DECODED_JWT');
 
-        try {
-            const vehicles = [];
+      try {
+        const vehicles = [];
 
-            if(this.bike) vehicles.push("bike");
-            if(this.car) vehicles.push("car");
-            if(this.bus) vehicles.push("bus");
-            if(this.van) vehicles.push("van");
-            if(this.truck) vehicles.push("truck");
-            if(this.tramway) vehicles.push("tramway");
+        if (this.bike) vehicles.push('bike');
+        if (this.car) vehicles.push('car');
+        if (this.bus) vehicles.push('bus');
+        if (this.van) vehicles.push('van');
+        if (this.truck) vehicles.push('truck');
+        if (this.tramway) vehicles.push('tramway');
 
-            await this.$store.dispatch('UPDATE_USER_PROFILE', {
-                jwt: jwtData.encoded,
-                userId: jwtData.decoded.userId,
-                nickname: this.nickname,
-                drivingSince: this.drivingSince,
-                vehicle: vehicles,
-                sex: this.sex,
-                bornInYear: this.bornInYear,
-                locationalRegion: this.region,
-                education: this.education,
-                shareProfile: this.share
-            });
+        await this.$store.dispatch('UPDATE_USER_PROFILE', {
+          jwt: jwtData.encoded,
+          userId: jwtData.decoded.userId,
+          nickname: this.nickname,
+          drivingSince: this.drivingSince,
+          vehicle: vehicles,
+          sex: this.sex,
+          bornInYear: this.bornInYear,
+          locationalRegion: this.region,
+          education: this.education,
+          shareProfile: this.share,
+        });
 
-            this.success = true;
-        } catch(e) {
-            this.success = false;
-        }
+        this.success = true;
+      } catch (e) {
+        this.success = false;
+      }
     },
   },
 };

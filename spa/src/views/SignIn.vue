@@ -67,7 +67,7 @@ export default {
     password: null,
     signingIn: false,
     forgotPasswordEmail: null,
-    passwordReset: null
+    passwordReset: null,
   }),
   methods: {
     openForgottenPassword() {
@@ -75,7 +75,7 @@ export default {
     },
     closeForgottenPassword() {
       this.forottenPassword = false;
-      this.passwordReset = null
+      this.passwordReset = null;
     },
     redirectToSignIn() {
       this.$router.push({ name: 'sign-up' });

@@ -12,40 +12,38 @@ export default {
   name: 'Textarea',
   props: {
     id: String,
-    parent: String
+    parent: String,
   },
   components: {
     Button,
   },
-  data: () => {
-    return {
-      text: null,
-      sending: null
-    }
-  },
+  data: () => ({
+    text: null,
+    sending: null,
+  }),
   methods: {
-    async send(){
+    async send() {
       this.sending = true;
 
       const payload = {
         id: this.id,
-        text: this.text
+        text: this.text,
       };
 
-      if(this.parent) {
-        payload['parent'] = this.parent;
+      if (this.parent) {
+        payload.parent = this.parent;
       }
 
-      await this.$store.dispatch("COMMENT", payload);
+      await this.$store.dispatch('COMMENT', payload);
 
-      this.$store.dispatch("GET_POLL_COMMENTS", {
-        id: this.id
+      this.$store.dispatch('GET_POLL_COMMENTS', {
+        id: this.id,
       });
 
       this.sending = false;
-      this.text = "";
-    }
-  }
+      this.text = '';
+    },
+  },
 };
 </script>
 

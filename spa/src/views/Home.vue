@@ -22,19 +22,19 @@ export default {
   name: 'home',
   components: {
     TopPolls,
-    PollVoting
+    PollVoting,
   },
   // data() {
   //   return {
   //     pollId
   //   }
   // },
- async created() {
+  async created() {
     await this.$store.dispatch('GET_USER_ID');
     await this.$store.dispatch('GET_USER_NICKNAME');
-    //TODO:Warning
+    // TODO:Warning
     // await this.$store.dispatch('GET_POLLS');
-  }
+  },
 };
 </script>
 

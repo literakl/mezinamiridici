@@ -172,11 +172,11 @@
 
 <script>
 
+import jwtDecode from 'jwt-decode';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import jwtDecode from 'jwt-decode';
 
 export default {
   name: 'SignUpForm',
@@ -184,7 +184,7 @@ export default {
     Checkbox,
     TextInput,
     Button,
-    Radio
+    Radio,
   },
   data: () => ({
     errors: [],
@@ -207,7 +207,7 @@ export default {
     education: '',
     share: null,
     success: null,
-    signingIn: false
+    signingIn: false,
   }),
   methods: {
     async checkForm() {
@@ -232,53 +232,51 @@ export default {
 
       if (this.errors.length === 0) {
         try {
-            const vehicles = [];
+          const vehicles = [];
 
-            const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
-                email: this.email,
-                password: this.password,
-                nickname: this.nickname,
-                tandcs: this.termsAndConditions,
-                dataProcessing: this.personalDataProcessing,
-                marketing: this.emailNotifications
+          const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
+            email: this.email,
+            password: this.password,
+            nickname: this.nickname,
+            tandcs: this.termsAndConditions,
+            dataProcessing: this.personalDataProcessing,
+            marketing: this.emailNotifications,
+          });
+            // check if the email or nickname is already exist or not
+          console.log(data);
+          if (data.token != undefined) {
+            const jwtData = jwtDecode(data.token);
+            if (this.bike) vehicles.push('bike');
+            if (this.car) vehicles.push('car');
+            if (this.bus) vehicles.push('bus');
+            if (this.van) vehicles.push('van');
+            if (this.truck) vehicles.push('truck');
+            if (this.tramway) vehicles.push('tramway');
+
+            await this.$store.dispatch('UPDATE_USER_PROFILE', {
+              jwt: data,
+              userId: jwtData.userId,
+              nickname: this.nickname,
+              drivingSince: this.drivingSince,
+              vehicle: vehicles,
+              sex: this.sex,
+              bornInYear: this.bornInYear,
+              locationalRegion: this.region,
+              education: this.education,
+              shareProfile: this.share,
             });
-            //check if the email or nickname is already exist or not
-            console.log(data);
-            if(data.token != undefined){
-                const jwtData = jwtDecode(data.token);
-                if(this.bike) vehicles.push("bike");
-                if(this.car) vehicles.push("car");
-                if(this.bus) vehicles.push("bus");
-                if(this.van) vehicles.push("van");
-                if(this.truck) vehicles.push("truck");
-                if(this.tramway) vehicles.push("tramway");
 
-                await this.$store.dispatch('UPDATE_USER_PROFILE', {
-                    jwt: data,
-                    userId: jwtData.userId,
-                    nickname: this.nickname,
-                    drivingSince: this.drivingSince,
-                    vehicle: vehicles,
-                    sex: this.sex,
-                    bornInYear: this.bornInYear,
-                    locationalRegion: this.region,
-                    education: this.education,
-                    shareProfile: this.share
-                });
-
-                this.success = true;
-            } else {
-                console.log(this.errors)
-                // this.success = false;
-                this.signingIn = false;
-                this.errors.push(data.message);
-            }
-
-
-        } catch(error) {
-            console.log(error);
-            this.success = false;
+            this.success = true;
+          } else {
+            console.log(this.errors);
+            // this.success = false;
             this.signingIn = false;
+            this.errors.push(data.message);
+          }
+        } catch (error) {
+          console.log(error);
+          this.success = false;
+          this.signingIn = false;
         }
       } else {
         this.signingIn = false;

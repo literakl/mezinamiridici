@@ -15,16 +15,16 @@ export default {
   name: 'Reset',
   components: {
     Button,
-    TextInput, 
+    TextInput,
     Submit,
-    ResetPasswordForm
+    ResetPasswordForm,
   },
   data: () => ({
-    verified: null
+    verified: null,
   }),
   props: {
-    passwordResetToken: String
-  }
+    passwordResetToken: String,
+  },
 };
 </script>
 

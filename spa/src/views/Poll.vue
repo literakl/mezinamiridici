@@ -34,6 +34,7 @@
 <script>
 import axios from 'axios';
 
+import { ContentLoader } from 'vue-content-loader';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 import PollVoting from '@/components/organisms/PollVoting.vue';
@@ -41,7 +42,6 @@ import BarChart from '@/components/molecules/charts/BarChart.vue';
 import Button from '@/components/atoms/Button.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import Comments from '@/components/organisms/Comments.vue';
-import { ContentLoader } from "vue-content-loader"
 
 import users from '@/static-data/users.json';
 
@@ -53,7 +53,7 @@ export default {
   },
   async created() {
     this.$store.dispatch('GET_USER_ID');
-    //TODO:WARNING commenting this because of duplicate network call
+    // TODO:WARNING commenting this because of duplicate network call
     // await this.$store.dispatch('GET_POLL_COMMENTS', {
     //   id: this.id
     // });
@@ -65,21 +65,21 @@ export default {
     redirectToAnalyzeVotes() {
       this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
     },
-    recursivleyBuildComments(allComments, commentsToSearchThrough){
-      allComments.forEach(comment => {
-        if(comment.parent){
-          commentsToSearchThrough.forEach(x => {
-            if(!x.comments) return;
+    recursivleyBuildComments(allComments, commentsToSearchThrough) {
+      allComments.forEach((comment) => {
+        if (comment.parent) {
+          commentsToSearchThrough.forEach((x) => {
+            if (!x.comments) return;
             const found = x.comments.find(x => x.commentId === comment.parent);
 
-            if(found) {
+            if (found) {
               found.comments = [comment];
               this.recursivleyBuildComments(allComments, x.comments);
             }
           });
         }
       });
-    }
+    },
   },
   computed: {
     signedIn() {
@@ -88,21 +88,21 @@ export default {
     comments() {
       const comments = this.$store.getters.POLL_COMMENTS;
 
-      if(!comments) return [];
+      if (!comments) return [];
 
       const commentsTree = [];
 
-      comments.forEach(comment => {
-        if(!comment.parent){
+      comments.forEach((comment) => {
+        if (!comment.parent) {
           commentsTree.push(comment);
         }
       });
 
-      comments.forEach(comment => {
-        if(comment.parent){
+      comments.forEach((comment) => {
+        if (comment.parent) {
           const found = commentsTree.find(x => x.commentId === comment.parent);
 
-          if(found) {
+          if (found) {
             found.comments = [comment];
           }
         }
@@ -110,7 +110,7 @@ export default {
 
       this.recursivleyBuildComments(comments, commentsTree);
 
-      return commentsTree.sort((a, b) => (a.created < b.created) ? 1 : -1);
+      return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
     },
   },
   components: {
@@ -119,7 +119,7 @@ export default {
     Comment,
     Comments,
     Textarea,
-    PollVoting
+    PollVoting,
   },
 };
 </script>

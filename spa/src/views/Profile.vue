@@ -35,19 +35,19 @@
                   secondaryColor="#606060"
                   v-if="!profile"
                 >
-                  <rect x="9" y="12" rx="3" ry="3" width="50" height="5" /> 
-                  <rect x="70" y="12" rx="3" ry="3" width="100" height="5" /> 
+                  <rect x="9" y="12" rx="3" ry="3" width="50" height="5" />
+                  <rect x="70" y="12" rx="3" ry="3" width="100" height="5" />
 
-                  <rect x="9" y="31" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="9" y="31" rx="3" ry="3" width="50" height="5" />
                   <rect x="70" y="31" rx="3" ry="3" width="100" height="5" />
 
-                  <rect x="9" y="51" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="9" y="51" rx="3" ry="3" width="50" height="5" />
                   <rect x="70" y="51" rx="3" ry="3" width="100" height="5" />
 
-                  <rect x="9" y="71" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="9" y="71" rx="3" ry="3" width="50" height="5" />
                   <rect x="70" y="71" rx="3" ry="3" width="100" height="5" />
 
-                  <rect x="9" y="91" rx="3" ry="3" width="50" height="5" /> 
+                  <rect x="9" y="91" rx="3" ry="3" width="50" height="5" />
                   <rect x="70" y="91" rx="3" ry="3" width="100" height="5" />
                 </content-loader>
             </div>
@@ -57,59 +57,58 @@
 </template>
 
 <script>
+import { ContentLoader } from 'vue-content-loader';
 import Button from '@/components/atoms/Button.vue';
 import PaginatedTopPolls from '@/components/organisms/PaginatedTopPolls.vue';
-import { ContentLoader } from "vue-content-loader"
 
 export default {
   name: 'profile',
   components: {
     PaginatedTopPolls,
     Button,
-    ContentLoader
+    ContentLoader,
   },
   props: {
-    id: String
+    id: String,
   },
   computed: {
     profile() {
-      if(this.id){
-        return this.$store.getters.USER_PROFILE;  
-      }else{
-        return this.$store.getters.SIGNED_IN_USER_PROFILE;  
+      if (this.id) {
+        return this.$store.getters.USER_PROFILE;
       }
+      return this.$store.getters.SIGNED_IN_USER_PROFILE;
     },
-    nicknameOnly(){
-      return this.profile.shareProfile === 'share-nickname' && this.id !== undefined  && this.id !== null;
+    nicknameOnly() {
+      return this.profile.shareProfile === 'share-nickname' && this.id !== undefined && this.id !== null;
     },
     drivingSince() {
       const length = new Date().getFullYear() - parseInt(this.profile.drivingSince);
 
-      if(length === 1) {
+      if (length === 1) {
         return '1 year';
       }
 
-      if(length > 1) {
-        return length + ' years';
+      if (length > 1) {
+        return `${length} years`;
       }
 
       return '0 years';
     },
-    vehicles(){
-      return this.profile.vehicle.join(" ");
-    }
+    vehicles() {
+      return this.profile.vehicle.join(' ');
+    },
   },
-  created(){
-    if(this.id !== undefined && this.id !== null){
+  created() {
+    if (this.id !== undefined && this.id !== null) {
       this.$store.dispatch('GET_USER_PROFILE_BY_ID', {
-        id: this.id
+        id: this.id,
       });
-    }else{
+    } else {
       this.$store.dispatch('GET_SIGNED_IN_USER_PROFILE');
     }
   },
   data: () => ({
-    page: 0
+    page: 0,
   }),
   methods: {
     clicked() {

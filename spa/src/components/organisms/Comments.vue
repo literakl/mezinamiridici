@@ -6,7 +6,7 @@
                     parseInt(depth) === 0  || parseInt(depth) > 5) ?
                     'comment__parent' :
                     'comment__child'"
-            >   
+            >
                 <Comment
                     :pollId="pollId"
                     :comment="comment"

@@ -12,21 +12,21 @@
 export default {
   name: 'Verify',
   data: () => ({
-    verified: null
+    verified: null,
   }),
   props: {
-    token: String
+    token: String,
   },
-  created: async function (){
+  async created() {
     try {
       await this.$store.dispatch('VERIFY_USER', {
-        token: this.token
+        token: this.token,
       });
       this.verified = true;
-    } catch(e) {
+    } catch (e) {
       this.verified = false;
     }
-  }
+  },
 };
 </script>
 

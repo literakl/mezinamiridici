@@ -19,7 +19,7 @@ export default new Vuex.Store({
     userNickname: null,
     signedIn: false,
     signedInUserProfile: null,
-    userProfile: null
+    userProfile: null,
   },
   getters: {
     POLLS: state => state.polls,
@@ -32,7 +32,7 @@ export default new Vuex.Store({
     USER_NICKNAME: state => state.userNickname,
     SIGNED_IN: state => state.signedIn,
     SIGNED_IN_USER_PROFILE: state => state.signedInUserProfile,
-    USER_PROFILE: state => state.userProfile
+    USER_PROFILE: state => state.userProfile,
   },
   mutations: {
     SET_POLLS: (state, payload) => {
@@ -42,7 +42,7 @@ export default new Vuex.Store({
       state.poll = payload;
     },
     SET_LATEST_POLL: (state, payload) => {
-      console.log('[SET_LATEST_POLL] ',payload);
+      console.log('[SET_LATEST_POLL] ', payload);
       state.latestPollId = payload;
     },
     SET_POLL_VOTES: (state, payload) => {
@@ -61,58 +61,58 @@ export default new Vuex.Store({
       state.userNickname = payload;
     },
     SET_SIGNED_IN: (state, payload) => {
-      state.signedIn = payload
+      state.signedIn = payload;
     },
     SET_SIGNED_IN_USER_PROFILE: (state, payload) => {
       state.signedInUserProfile = payload;
     },
     SET_USER_PROFILE: (state, payload) => {
       state.userProfile = payload;
-    }
+    },
   },
   actions: {
     GET_POLLS: async (context, payload) => {
       console.log('[GET_POLLS]');
       console.log('payload');
       console.log(payload);
-      var pollData;
-      if(payload != undefined && payload.userId != undefined){
-        const userId = payload.userId;
+      let pollData;
+      if (payload != undefined && payload.userId != undefined) {
+        const { userId } = payload;
         console.log('[fetching user specific poll]');
-        pollData  = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`)
-      }else {
+        pollData = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`);
+      } else {
         console.log('[fetching all poll]');
-        pollData  = await axios.get(`${API_ENDPOINT}/polls`);
+        pollData = await axios.get(`${API_ENDPOINT}/polls`);
       }
       const polls = [];
-    
+
       // console.log(JSON.stringify(pollData.data));
-      var uniqueUserId = [];
-      var latestPollTime = -1;
-      var latestPollId = null;
-      var userData = {};
-      pollData.data.forEach(async poll => {
-        console.log('[pollId]',poll.pollId,'[userId]',poll.userId);
-        if(poll.created > latestPollTime){
+      const uniqueUserId = [];
+      let latestPollTime = -1;
+      let latestPollId = null;
+      const userData = {};
+      pollData.data.forEach(async (poll) => {
+        console.log('[pollId]', poll.pollId, '[userId]', poll.userId);
+        if (poll.created > latestPollTime) {
           latestPollTime = poll.created;
           latestPollId = poll.pollId;
         }
-        if(uniqueUserId.indexOf(poll.userId) < 0){
+        if (uniqueUserId.indexOf(poll.userId) < 0) {
           uniqueUserId.push(poll.userId);
           const user = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
           // console.log(JSON.stringify(user.data));
-          userData[poll.userId] = user.data; 
+          userData[poll.userId] = user.data;
         }
         const pollVotesData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/votes`);
         const pollCommentsData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/comments`);
 
-        poll['votes'] = pollVotesData.data.length
-        poll['comments'] = pollCommentsData.data.length
-        poll['userData'] = userData[poll.userId];
+        poll.votes = pollVotesData.data.length;
+        poll.comments = pollCommentsData.data.length;
+        poll.userData = userData[poll.userId];
         polls.push(poll);
       });
-      console.log('[latestPollId] ',latestPollId);
-      context.commit('SET_LATEST_POLL',latestPollId);
+      console.log('[latestPollId] ', latestPollId);
+      context.commit('SET_LATEST_POLL', latestPollId);
       // console.log(this.$store.getters.LATEST_POLL);
       context.commit('SET_POLLS', polls);
     },
@@ -120,7 +120,7 @@ export default new Vuex.Store({
       context.commit('SET_POLL', null);
       const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
       const userData = await axios.get(`${API_ENDPOINT}/users/${pollData.data.userId}`);
-      pollData.data['userData'] = userData.data;
+      pollData.data.userData = userData.data;
       context.commit('SET_POLL', pollData.data);
     },
     GET_POLL_VOTES: async (context, payload) => {
@@ -133,9 +133,9 @@ export default new Vuex.Store({
       const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comments`);
       const comments = [];
 
-      pollData.data.forEach(async comment => {
+      pollData.data.forEach(async (comment) => {
         const userData = await axios.get(`${API_ENDPOINT}/users/${comment.userId}`);
-        comment.nickname = userData.data.nickname
+        comment.nickname = userData.data.nickname;
         comments.push(comment);
       });
 
@@ -144,7 +144,7 @@ export default new Vuex.Store({
     FORGOT_PASSWORD: async (context, payload) => {
       try {
         const request = await axios.post(`${API_ENDPOINT}/forgotPassword`, JSON.stringify({
-          email: payload.email
+          email: payload.email,
         }));
 
         return request;
@@ -156,7 +156,7 @@ export default new Vuex.Store({
       try {
         const request = await axios.post(`${API_ENDPOINT}/resetPassword`, JSON.stringify({
           passwordResetToken: payload.passwordResetToken,
-          password: payload.password
+          password: payload.password,
         }));
 
         return request;
@@ -174,7 +174,7 @@ export default new Vuex.Store({
         }));
 
         const jwtData = jwtDecode(request.data.token);
-        
+
         context.commit('SET_SIGNED_IN', true);
         context.commit('SET_USER_TOKEN', request.data);
         context.commit('SET_USER_ID', jwtData.userId);
@@ -186,37 +186,37 @@ export default new Vuex.Store({
     },
     GET_USER_NICKNAME: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
-      
-      if(!jwt) return;
+
+      if (!jwt) return;
 
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
     },
     GET_DECODED_JWT: (context, payload) => {
       const jwt = localStorage.getItem('jwt');
-      
-      if(!jwt) return;
+
+      if (!jwt) return;
 
       const jwtData = jwtDecode(jwt);
       return {
         decoded: jwtData,
         encoded: {
-          token: jwt
-        }
-      }
+          token: jwt,
+        },
+      };
     },
     GET_USER_ID: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
-      
-      if(!jwt) return;
+
+      if (!jwt) return;
 
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_ID', jwtData.userId);
     },
     GET_SIGNED_IN: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
-      
-      if(jwt) {
+
+      if (jwt) {
         context.commit('SET_SIGNED_IN', true);
       } else {
         context.commit('SET_SIGNED_IN', false);
@@ -224,7 +224,7 @@ export default new Vuex.Store({
     },
     GET_SIGNED_IN_USER_PROFILE: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
-      if(!jwt) return 
+      if (!jwt) return;
 
       const jwtData = jwtDecode(jwt);
 
@@ -233,16 +233,14 @@ export default new Vuex.Store({
 
       return data;
     },
-    CREATE_USER_PROFILE: async (context, payload) => {
-      return await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
-        email: payload.email,
-        password: payload.password,
-        nickname: payload.nickname,
-        tandcs: payload.tandcs, 
-        dataProcessing : payload.dataProcessing, 
-        marketing: payload.marketing,
-      }));
-    },
+    CREATE_USER_PROFILE: async (context, payload) => await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
+      email: payload.email,
+      password: payload.password,
+      nickname: payload.nickname,
+      tandcs: payload.tandcs,
+      dataProcessing: payload.dataProcessing,
+      marketing: payload.marketing,
+    })),
     UPDATE_USER_PROFILE: async (context, payload) => {
       await axios.patch(
         `${API_ENDPOINT}/users/${payload.userId}`,
@@ -319,7 +317,7 @@ export default new Vuex.Store({
       return await axios.post(
         `${API_ENDPOINT}/polls/${payload.pollId}/comment/${payload.commentId}/vote`,
         {
-          vote: payload.vote
+          vote: payload.vote,
         },
         {
           headers: {
@@ -327,6 +325,6 @@ export default new Vuex.Store({
           },
         },
       );
-    }    
+    },
   },
 });

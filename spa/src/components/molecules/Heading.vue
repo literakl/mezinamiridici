@@ -36,23 +36,24 @@
 
 <script>
 import { ContentLoader } from 'vue-content-loader';
+
 let twitterLoaded = false;
 
 export default {
   name: 'Heading',
   props: {
-    poll: Object
+    poll: Object,
   },
-  updated: async function(){
-    if(this.poll.poll && twttr && !twitterLoaded){
-      const text = this.poll.poll.text;
+  async updated() {
+    if (this.poll.poll && twttr && !twitterLoaded) {
+      const { text } = this.poll.poll;
 
       twttr.widgets.createShareButton(
-        'https://api2.mezinamiridici.cz/v1/polls/' + this.poll.poll.pollId,
+        `https://api2.mezinamiridici.cz/v1/polls/${this.poll.poll.pollId}`,
         document.getElementById('twitter-share'),
         {
-          text: 'Between us Drivers - ' + text
-        }
+          text: `Between us Drivers - ${text}`,
+        },
       );
 
       twitterLoaded = true;
@@ -61,11 +62,11 @@ export default {
   computed: {
     created() {
       const date = new Date(this.poll.poll.created);
-      return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
+      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return 'http://mezinamiridici.cz/poll/' + this.poll.poll.pollId + '/'+this.poll.poll.seoText
-    }
+      return `http://mezinamiridici.cz/poll/${this.poll.poll.pollId}/${this.poll.poll.seoText}`;
+    },
   },
   components: {
     ContentLoader,

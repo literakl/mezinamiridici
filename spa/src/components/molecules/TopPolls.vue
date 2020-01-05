@@ -20,9 +20,9 @@
             primaryColor="#f3f3f3"
             secondaryColor="#ecebeb"
           >
-            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" /> 
-            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" /> 
-            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" /> 
+            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" />
+            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" />
+            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" />
           </content-loader>
           <hr/>
           <content-loader
@@ -32,9 +32,9 @@
             primaryColor="#f3f3f3"
             secondaryColor="#ecebeb"
           >
-            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" /> 
-            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" /> 
-            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" /> 
+            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" />
+            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" />
+            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" />
           </content-loader>
           <hr/>
           <content-loader
@@ -44,9 +44,9 @@
             primaryColor="#f3f3f3"
             secondaryColor="#ecebeb"
           >
-            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" /> 
-            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" /> 
-            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" /> 
+            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" />
+            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" />
+            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" />
           </content-loader>
           <hr/>
           <content-loader
@@ -56,9 +56,9 @@
             primaryColor="#f3f3f3"
             secondaryColor="#ecebeb"
           >
-            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" /> 
-            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" /> 
-            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" /> 
+            <rect x="0" y="12" rx="3" ry="3" width="70" height="5" />
+            <rect x="80" y="12" rx="3" ry="3" width="30" height="5" />
+            <rect x="120" y="12" rx="3" ry="3" width="30" height="5" />
           </content-loader>
           <hr/>
         </div>
@@ -67,12 +67,12 @@
 
 <script>
 import axios from 'axios';
-import { ContentLoader } from "vue-content-loader"
+import { ContentLoader } from 'vue-content-loader';
 
 export default {
   name: 'TopPolls',
   components: {
-    ContentLoader
+    ContentLoader,
   },
   computed: {
     polls() {
@@ -82,13 +82,13 @@ export default {
   created() {
     this.$store.dispatch('GET_USER_ID');
     console.log(this.$store.getters.USER_ID);
-    var endpoint = window.location.pathname.split('/')[1];
+    const endpoint = window.location.pathname.split('/')[1];
     console.log(endpoint);
-    if(endpoint == 'profile'){
-      if(this.$store.getters.USER_ID != undefined) {
-        this.$store.dispatch('GET_POLLS',{userId:this.$store.getters.USER_ID});
+    if (endpoint == 'profile') {
+      if (this.$store.getters.USER_ID != undefined) {
+        this.$store.dispatch('GET_POLLS', { userId: this.$store.getters.USER_ID });
       } else {
-        this.$store.dispatch('GET_POLLS',{userId:window.location.pathname.split('/')[2]});
+        this.$store.dispatch('GET_POLLS', { userId: window.location.pathname.split('/')[2] });
       }
     } else {
       this.$store.dispatch('GET_POLLS');

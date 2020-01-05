@@ -34,13 +34,13 @@ export default {
   computed: {
     signedIn() {
       return this.$store.getters.SIGNED_IN;
-    }
+    },
   },
   methods: {
     voted(vote) {
-      if(!this.signedIn){
+      if (!this.signedIn) {
         this.$router.push({ name: 'sign-in' });
-      }else{
+      } else {
         this.$emit('voted', vote);
       }
     },

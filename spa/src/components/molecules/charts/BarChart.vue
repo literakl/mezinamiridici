@@ -36,7 +36,7 @@ export default {
   name: 'BarChart',
   props: {
     voted: String,
-    percentages: Object
+    percentages: Object,
   },
 };
 </script>

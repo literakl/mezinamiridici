@@ -44,7 +44,7 @@ export default {
     },
     nickname() {
       return this.$store.getters.USER_NICKNAME;
-    }
+    },
   },
   created() {
     this.$store.dispatch('GET_SIGNED_IN');

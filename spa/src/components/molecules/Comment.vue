@@ -34,19 +34,19 @@ export default {
     upvotes: Number,
     downvotes: Number,
     depth: Number,
-    userId: String
+    userId: String,
   },
   components: {
     Textarea,
   },
   data() {
-    if(this.comment != undefined && this.comment.votedUserList != undefined && 
-    this.comment.votedUserList.length >0  && this.comment.votedUserList.indexOf(this.$store.getters.USER_ID) > -1 &&
-    ((this.comment.upvotes != undefined && this.comment.upvotes > 0) ||
-    ( this.comment.downvotes != undefined && this.comment.downvotes > 0))){
+    if (this.comment != undefined && this.comment.votedUserList != undefined
+    && this.comment.votedUserList.length > 0 && this.comment.votedUserList.indexOf(this.$store.getters.USER_ID) > -1
+    && ((this.comment.upvotes != undefined && this.comment.upvotes > 0)
+    || (this.comment.downvotes != undefined && this.comment.downvotes > 0))) {
       this.fetched = true;
       this.upvoted = true;
-      this.downvoted = true;      
+      this.downvoted = true;
     }
     return {
       mutableUpvotes: this.upvotes,
@@ -58,33 +58,33 @@ export default {
     };
   },
   methods: {
-    epochToTime(epoch){
+    epochToTime(epoch) {
       const date = new Date(parseInt(epoch));
-      return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
+      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     toggleUpvoted() {
       this.upvoted = true;
-      this.downvoted = true//false;
+      this.downvoted = true;// false;
     },
     toggleDownvoted() {
-      this.upvoted = true//false;
+      this.upvoted = true;// false;
       this.downvoted = true;
     },
     upvote() {
-      console.log('[upvote] ',this.upvoted);
+      console.log('[upvote] ', this.upvoted);
       if (this.upvoted) return;
-      this.mutableUpvotes = (this.mutableUpvotes  || 0) + 1;
+      this.mutableUpvotes = (this.mutableUpvotes || 0) + 1;
       this.toggleUpvoted();
-      //call post webservices here
-      this.$store.dispatch('COMMENT_VOTE', { vote: 1,pollId:this.pollId,commentId:this.commentId });
+      // call post webservices here
+      this.$store.dispatch('COMMENT_VOTE', { vote: 1, pollId: this.pollId, commentId: this.commentId });
     },
     downvote() {
-      console.log('[downvote] ',this.downvoted);
+      console.log('[downvote] ', this.downvoted);
       if (this.downvoted) return;
       this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
       this.toggleDownvoted();
-      //call post webservices here
-      this.$store.dispatch('COMMENT_VOTE', { vote: -1,pollId:this.pollId,commentId:this.commentId });
+      // call post webservices here
+      this.$store.dispatch('COMMENT_VOTE', { vote: -1, pollId: this.pollId, commentId: this.commentId });
     },
     reply() {
       // this.showByIndex = null
@@ -95,12 +95,12 @@ export default {
       this.showByIndex = 1;
     },
     hoverOut() {
-      if(this.replying){
+      if (this.replying) {
         this.replying = !this.replying;
       }
       this.showByIndex = null;
     },
-  
+
   },
 };
 </script>

@@ -7,23 +7,23 @@ Vue.use(Router);
 
 const requireUnauth = (to, from, next) => {
   store.dispatch('GET_SIGNED_IN');
-  if(store.getters.SIGNED_IN){
-    next({ name: "home" });
+  if (store.getters.SIGNED_IN) {
+    next({ name: 'home' });
     return;
   }
 
   next();
-}
+};
 
 const requireAuth = (to, from, next) => {
   store.dispatch('GET_SIGNED_IN');
-  if(store.getters.SIGNED_IN){
+  if (store.getters.SIGNED_IN) {
     next();
-    return
+    return;
   }
 
-  next({ name: "sign-in" });
-}
+  next({ name: 'sign-in' });
+};
 
 export default new Router({
   mode: 'history',
@@ -38,13 +38,13 @@ export default new Router({
       path: '/sign-in',
       name: 'sign-in',
       component: () => import('./views/SignIn.vue'),
-      beforeEnter: requireUnauth
+      beforeEnter: requireUnauth,
     },
     {
       path: '/sign-up',
       name: 'sign-up',
       component: () => import('./views/SignUp.vue'),
-      beforeEnter: requireUnauth
+      beforeEnter: requireUnauth,
     },
     {
       path: '/poll/:id/:text',
@@ -61,13 +61,13 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: () => import('./views/Profile.vue'),
-      beforeEnter: requireAuth
+      beforeEnter: requireAuth,
     },
     {
       path: '/profile/:id',
       name: 'user-profile',
       component: () => import('./views/ProfileVisitor.vue'),
-      props: true
+      props: true,
     },
     {
       path: '/analyze-votes/:id',
@@ -78,46 +78,46 @@ export default new Router({
       path: '/update-profile',
       name: 'update-profile',
       component: () => import('./views/UpdateProfile.vue'),
-      beforeEnter: requireAuth
+      beforeEnter: requireAuth,
     },
     {
       path: '/verify/:token',
       name: 'verify',
       component: () => import('./views/Verify.vue'),
       beforeEnter: requireUnauth,
-      props: true
+      props: true,
     },
     {
       path: '/reset/:passwordResetToken',
       name: 'reset',
       component: () => import('./views/Reset.vue'),
       beforeEnter: requireUnauth,
-      props: true
+      props: true,
     },
     {
       path: '/help',
       name: 'help',
-      component: () => import('./views/Help.vue')
+      component: () => import('./views/Help.vue'),
     },
     {
       path: '/mission',
       name: 'mission',
-      component: () => import('./views/Mission.vue')
+      component: () => import('./views/Mission.vue'),
     },
     {
       path: '/contact',
       name: 'contact',
-      component: () => import('./views/Contact.vue')
+      component: () => import('./views/Contact.vue'),
     },
     {
       path: '/advertisement',
       name: 'advertisement',
-      component: () => import('./views/Advertisement.vue')
+      component: () => import('./views/Advertisement.vue'),
     },
     {
       path: '/archive',
       name: 'archive',
-      component: () => import('./views/Archive.vue')
+      component: () => import('./views/Archive.vue'),
     },
     {
       path: '*',
