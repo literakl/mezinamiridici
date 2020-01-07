@@ -47,6 +47,7 @@ export default {
     },
   },
   created() {
+    console.log('Created');
     this.$store.dispatch('GET_SIGNED_IN');
     this.$store.dispatch('GET_USER_NICKNAME');
   },

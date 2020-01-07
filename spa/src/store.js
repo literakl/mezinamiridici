@@ -165,6 +165,7 @@ export default new Vuex.Store({
       }
     },
     SIGN_USER_IN: async (context, payload) => {
+      console.log('SIGN_USER_IN');
       context.commit('SET_USER_TOKEN', null);
 
       try {
@@ -268,7 +269,11 @@ export default new Vuex.Store({
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);
       context.commit('SET_USER_PROFILE', data);
     },
-    VERIFY_USER: async (context, payload) => await axios.get(`${API_ENDPOINT}/verify/${payload.token}`),
+    VERIFY_USER: async (context, payload) => {
+      console.log('Verify user');
+      console.log(payload);
+      await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);
+    },
     VOTE: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
       if (!jwt) return;
