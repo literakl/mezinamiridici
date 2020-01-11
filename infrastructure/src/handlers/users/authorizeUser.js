@@ -25,49 +25,52 @@ const MONGODB_URI = "mongodb+srv://literakl:CgTqEq4nkgLolm5i@atlas-ozgwo.mongodb
 
 let cachedDb = null;
 
-function connectToDatabase (uri) {
-    console.log('Connect to mongo database');
+    function connectToDatabase(uri) {
+        console.log("Connect to mongo database");
 
-    if (cachedDb) {
-        console.log('Using cached database instance');
-        return Promise.resolve(cachedDb);
+        if (cachedDb) {
+            console.log("Using cached database instance");
+            return Promise.resolve(cachedDb);
+        }
+
+        return MongoClient.connect(uri)
+            .then(db => {
+                console.log("Successful connect");
+                cachedDb = db;
+                return cachedDb;
+            })
+            .catch(err => {
+                console.log("Connection error occurred: ", err);
+            });
     }
 
-    return MongoClient.connect(uri)
-        .then(db => {
-            console.log('Successful connect');
-            cachedDb = db;
-            return cachedDb;
-        }).catch(err => {
-            console.log('Connection error occurred: ', err);
-            callback(err);
-        });
-}
-
-function insertUser(db, email) {
-    console.log('=> modify database');
-    return db.collection('users').insertOne({"email" : email})
-        .then(() => { callback(null, result); })
-        .catch(err => {
-            console.log('Insert error occurred: ', err);
-            callback(err);
-        });
-}
+    function insertUser(db, email) {
+        console.log("=> modify database");
+        return db
+            .collection("users")
+            .insertOne({ email: email })
+            .catch(err => {
+                console.log("Insert error occurred: ", err);
+                callback(err);
+            });
+    }
 
     exports.handler = (payload, context, callback) => {
         const { email, password } = JSON.parse(payload.body);
 
         context.callbackWaitsForEmptyEventLoop = false;
         connectToDatabase(MONGODB_URI)
-            .then(db  => {
-                console.log('Mongo connected')
-                insertUser(db, email);
-                })
+            .then(db => {
+                console.log("Mongo connected");
+                return insertUser(db, email);
+            })
             .then(result => {
-                console.log('Mongo insert succeeded', result);
+                console.log("Mongo insert succeeded", result);
+                callback(null, result);
             })
             .catch(err => {
-                console.log('Mongo insert failed', err);
+                console.log("Mongo insert failed", err);
+                callback(err, null);
                 return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
             });
 
