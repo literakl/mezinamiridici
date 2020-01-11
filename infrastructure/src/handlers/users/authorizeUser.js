@@ -21,7 +21,7 @@ const response = (status, body) => {
 }
 
 const MongoClient = require('mongodb').MongoClient;
-const MONGODB_URI = "mongodb+srv://literakl:CgTqEq4nkgLolm5i@atlas-ozgwo.mongodb.net/test?retryWrites=true&w=majority"; // or Atlas connection string
+const MONGODB_URI = "mongodb+srv://literakl:CgTqEq4nkgLolm5i@atlas-ozgwo.mongodb.net/bud?retryWrites=true&w=majority";
 
 let cachedDb = null;
 
@@ -45,32 +45,29 @@ let cachedDb = null;
     }
 
     function insertUser(db, email) {
-        console.log("=> modify database");
-        return db
+        console.log("insertUser");
+        return db.db()
             .collection("users")
             .insertOne({ email: email })
             .catch(err => {
                 console.log("Insert error occurred: ", err);
-                callback(err);
             });
     }
 
     exports.handler = (payload, context, callback) => {
         const { email, password } = JSON.parse(payload.body);
 
-        context.callbackWaitsForEmptyEventLoop = false;
+        // context.callbackWaitsForEmptyEventLoop = false;
         connectToDatabase(MONGODB_URI)
             .then(db => {
                 console.log("Mongo connected");
-                return insertUser(db, email);
+                insertUser(db, email);
             })
             .then(result => {
-                console.log("Mongo insert succeeded", result);
-                callback(null, result);
+                console.log("Mongo insert succeeded");
             })
             .catch(err => {
                 console.log("Mongo insert failed", err);
-                callback(err, null);
                 return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
             });
 
