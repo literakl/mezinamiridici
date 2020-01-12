@@ -1,7 +1,6 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const MongoClient = require('mongodb').MongoClient;
 
 const responses = require('../../utils/responses.js');
 
@@ -20,93 +19,88 @@ const response = (status, body) => {
     }
 }
 
-const MongoClient = require('mongodb').MongoClient;
 const MONGODB_URI = "mongodb+srv://literakl:CgTqEq4nkgLolm5i@atlas-ozgwo.mongodb.net/bud?retryWrites=true&w=majority";
 
 let cachedDb = null;
 
-    function connectToDatabase(uri) {
-        console.log("Connect to mongo database");
+function connectToDatabase(uri) {
+    console.log("Connect to mongo database");
 
-        if (cachedDb) {
-            console.log("Using cached database instance");
-            return Promise.resolve(cachedDb);
-        }
-
-        return MongoClient.connect(uri)
-            .then(db => {
-                console.log("Successful connect");
-                cachedDb = db;
-                return cachedDb;
-            })
-            .catch(err => {
-                console.log("Connection error occurred: ", err);
-            });
+    if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
+        console.log("Using cached database instance");
+        return Promise.resolve(cachedDb);
     }
 
-    function insertUser(db, email) {
-        console.log("insertUser");
-        return db.db()
-            .collection("users")
-            .insertOne({ email: email })
-            .catch(err => {
-                console.log("Insert error occurred: ", err);
-            });
-    }
+    return MongoClient.connect(uri)
+        .then(db => {
+            console.log("Successful connect");
+            cachedDb = db;
+            return cachedDb;
+        })
+        .catch(err => {
+            console.log("Connection error occurred: ", err);
+            throw err;
+        });
+}
 
-    exports.handler = (payload, context, callback) => {
-        const { email, password } = JSON.parse(payload.body);
+function insertUser(dbClient, email) {
+    console.log("insertUser");
+    return dbClient.db()
+        .collection("users")
+        .insertOne({ email: email, created: new Date() })
+        .catch(err => {
+            console.log("Insert error occurred: ", err);
+        });
+}
 
-        // context.callbackWaitsForEmptyEventLoop = false;
-        connectToDatabase(MONGODB_URI)
-            .then(db => {
-                console.log("Mongo connected");
-                insertUser(db, email);
-            })
-            .then(result => {
-                console.log("Mongo insert succeeded");
-            })
-            .catch(err => {
-                console.log("Mongo insert failed", err);
-                return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
-            });
+function findUser(dbClient, email) {
+    console.log("findUser");
+    return dbClient.db()
+        .collection("users")
+        .findOne({ email: email })
+        .then(doc => {
+            if(!doc)
+                throw new Error('No record found for ' + email);
+            console.log(doc);
+            return doc;
+        });
+}
 
-        console.log('finished mongo stuff');
+exports.handler = (payload, context, callback) => {
+    const { email, password } = JSON.parse(payload.body);
+    console.log("handler starts");
 
-    dynamodb.query({
-        "TableName": "BUDUserTable",
-        "IndexName": "PasswordFromEmailIndex",
-        "KeyConditionExpression": "#email = :email",
-        "ExpressionAttributeNames": {
-            "#email": "email"
-        },
-        "ExpressionAttributeValues": {
-            ":email": email
-        },
-        "ConsistentRead": false,
-    }, (err, data) => {
-        if(err){
+    // This freezes node event loop when callback is invoked
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    connectToDatabase(MONGODB_URI)
+        .then(db => {
+            console.log("Mongo connected");
+            return findUser(db, email);
+        })
+        .then(user => {
+            console.log("Mongo search succeeded");
+
+            // if(!user.verified){
+            //     return responses.FORBIDDEN_403(callback, response);
+            // }
+
+            if (bcrypt.compareSync(password, user.password)) {
+                const token = jwt.sign({
+                    "userId": user.email,
+                    "nickname": user.nickname
+                }, SECRET);
+                console.log("All good");
+                return responses.OK_200({token}, callback, response)
+            } else {
+                console.log("Password mismatch for user " + user._id);
+                return responses.FORBIDDEN_403(callback, response);
+            }
+        })
+        .catch(err => {
+            console.log("Request failed", err);
             return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
-        }
+        });
 
-        const user = data.Items.find(item => item.email === email);
-
-        if(!user.verified){
-            return responses.FORBIDDEN_403(callback, response);
-        }
-
-        if(bcrypt.compareSync(password, user.password)){
-            const token = jwt.sign({
-                "userId": user.userId,
-                "nickname": user.nickname.toLowerCase()
-            }, SECRET);
-
-            return responses.OK_200({
-                token
-            }, callback, response)
-
-        }
-
-        return responses.FORBIDDEN_403(callback, response);
-    });
+    console.log("At the end");
 };
