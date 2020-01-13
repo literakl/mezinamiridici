@@ -6,6 +6,10 @@ Globals:
       AllowMethods: '''OPTIONS,POST,GET,PATCH'''
       AllowHeaders: '''Authorization,Content-Type'''
       AllowOrigin: '''*'''
+Parameters:
+  DATABASE_URI:
+    Description: 'Required. MongoDB connection URL'
+    Type: 'String'
 Resources:
   BUDDomainName:
     Type: AWS::ApiGateway::DomainName
@@ -313,7 +317,7 @@ Resources:
     Properties:
       FunctionName: BUDGetPollHandler
       Handler: src/handlers/polls/getPoll.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -336,7 +340,7 @@ Resources:
     Properties:
       FunctionName: BUDCreatePollHandler
       Handler: src/handlers/polls/createPoll.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -359,7 +363,7 @@ Resources:
     Properties:
       FunctionName: BUDGetPollsHandler
       Handler: src/handlers/polls/getPolls.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -382,7 +386,7 @@ Resources:
     Properties:
       FunctionName: BUDPollVoteHandler
       Handler: src/handlers/polls/votePoll.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -415,7 +419,7 @@ Resources:
     Properties:
       FunctionName: BUDGetPollVotesHandler
       Handler: src/handlers/polls/getPollVotes.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -443,7 +447,7 @@ Resources:
     Properties:
       FunctionName: BUDPollCommentHandler
       Handler: src/handlers/polls/createPollComment.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -466,7 +470,7 @@ Resources:
     Properties:
       FunctionName: BUDGetPollCommentsHandler
       Handler: src/handlers/polls/getPollComments.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -494,7 +498,7 @@ Resources:
     Properties:
       FunctionName: BUDGetUserHandler
       Handler: src/handlers/users/getUser.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -517,7 +521,7 @@ Resources:
     Properties:
       FunctionName: BUDGetUsersVotesHandler
       Handler: src/handlers/users/getUsersVotes.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -545,7 +549,7 @@ Resources:
     Properties:
       FunctionName: BUDCreateUserHandler
       Handler: src/handlers/users/createUser.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Timeout: 10
       Events:
         Api:
@@ -579,7 +583,7 @@ Resources:
     Properties:
       FunctionName: BUDUpdateUserHandler
       Handler: src/handlers/users/updateUser.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -607,7 +611,10 @@ Resources:
     Properties:
       FunctionName: BUDAuthorizeUserHandler
       Handler: src/handlers/users/authorizeUser.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DATABASE_URI
       Events:
         Api:
           Type: Api
@@ -616,26 +623,13 @@ Resources:
             Method: Post
             RestApiId:
               Ref: BUDAPI
-      Policies:
-      - Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Action:
-          - dynamodb:Query
-          Resource:
-            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-        - Effect: Allow
-          Action:
-          - dynamodb:Query
-          Resource:
-            Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
       CodeUri: s3://between-us-drivers/f3b60f9b137f001b4f0e90807934d93e
   BUDForgotPasswordHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDForgotPasswordHandler
       Handler: src/handlers/users/forgotPassword.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -669,7 +663,7 @@ Resources:
     Properties:
       FunctionName: BUDResetPasswordHandler
       Handler: src/handlers/users/resetPassword.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Timeout: 10
       Events:
         Api:
@@ -699,7 +693,7 @@ Resources:
     Properties:
       FunctionName: BUDVerifyUserHandler
       Handler: src/handlers/users/verifyUser.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Events:
         Api:
           Type: Api
@@ -732,7 +726,7 @@ Resources:
     Properties:
       FunctionName: BUDAuthorizerHandler
       Handler: src/handlers/authorizer/authorize.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       CodeUri: s3://between-us-drivers/f3b60f9b137f001b4f0e90807934d93e
   ConfigLambdaPermission:
     Type: AWS::Lambda::Permission
