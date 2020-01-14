@@ -1,4 +1,5 @@
 const AWS = require('aws-sdk');
+const MongoClient = require('mongodb').MongoClient;
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcryptjs');
@@ -52,6 +53,16 @@ const response = (status, body) => {
         "body": JSON.stringify(body),
         "isBase64Encoded": false
     }
+}
+
+function insertUser(dbClient, email) {
+    console.log("insertUser");
+    return dbClient.db()
+        .collection("users")
+        .insertOne({ email: email, created: new Date() })
+        .catch(err => {
+            console.log("Insert error occurred: ", err);
+        });
 }
 
 exports.handler = (payload, context, callback) => {
