@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 var ses = new AWS.SES();
 
-const responses = require('../../utils/responses.js');
+const http = require('../../utils/http.js');
+//             "Access-Control-Allow-Headers": "*",
 
 const SECRET = 'betweenusdrivers2019';
 
@@ -41,20 +42,6 @@ const sendVerificationEmail = (email, token, fn) => {
 	}, fn);
 }
 
-const response = (status, body) => {
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Cache-Control": "private"
-        },
-        "body": JSON.stringify(body),
-        "isBase64Encoded": false
-    }
-}
-
 function insertUser(dbClient, email) {
     console.log("insertUser");
     return dbClient.db()
@@ -87,10 +74,10 @@ exports.handler = (payload, context, callback) => {
                 "ConsistentRead": false,
             }, (err, data) => {
                 if (err) {
-                    return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+                    return http.sendInternalError(callback, err.Item);
                 }
                 if(data != undefined && data.Count > 0){
-                    return responses.OK_200({success:false, message:'email or nickname is already exist'}, callback, response)
+                    return http.sendRresponse(callback, {success:false, message:'email or nickname already exists'});
                 } else {
                     const salt = bcrypt.genSaltSync(10);
                     const passwordHash = bcrypt.hashSync(password, salt);
@@ -116,21 +103,24 @@ exports.handler = (payload, context, callback) => {
                         if (data)
                             console.log('data', data);
                         sendVerificationEmail(email, verificationToken, (err, data) => {
-                        const token = jwt.sign({
-                            "userId": userId,
-                            "nickname": nickname
-                        }, SECRET, { expiresIn: '1m' });
+                            const token = jwt.sign({
+                                "userId": userId,
+                                "nickname": nickname
+                            }, SECRET, { expiresIn: '1m' });
 
-                        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200({ token }, callback, response)
+                            if (err) {
+                                return http.sendInternalError(callback, err.Item);
+                            } else {
+                                return http.sendRresponse(callback, {token});
+                            }
                         });
-
                     });
                 }
             });
         } else {
-            return callback(null, response(200, { success:false, response: 'bad request' }));
+            return http.sendRresponse(callback, { success:false, response: 'bad request' });
         }
     } else {
-        return callback(null, response(200, { success:false, response: 'body is null' }));
+        return http.sendRresponse(callback, { success:false, response: 'body is null' });
     }
 };

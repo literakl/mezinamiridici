@@ -3,7 +3,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 var ses = new AWS.SES();
 
-const responses = require('../../utils/responses.js');
+const http = require('../../utils/http.js');
+//             "Access-Control-Allow-Headers": "*",
 
 const sendVerificationEmail = (email, token, fn) => {
 	const subject = "Reset your Between us Drivers password";
@@ -36,20 +37,6 @@ const sendVerificationEmail = (email, token, fn) => {
 	}, fn);
 }
 
-const response = (status, body) => {
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Cache-Control": "private"
-        },
-        "body": JSON.stringify(body),
-        "isBase64Encoded": false
-    }
-}
-
 exports.handler = (payload, context, callback) => {
     const { email } = JSON.parse(payload.body);
     const passwordResetToken = uuidv4();
@@ -67,12 +54,13 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if (err) {
-            return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+            return http.sendInternalError(callback, err.Item);
         }
 
         const user = data.Items.find(item => item.email === email);
 
-        if (!user) return responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
+        if (!user)
+            return http.sendInternalError(callback, {})
 
         dynamodb.update({
             TableName: 'BUDUserTable',
@@ -86,11 +74,15 @@ exports.handler = (payload, context, callback) => {
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
             if (err) {
-                return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+                return http.sendInternalError(callback, err.Item);
             }
 
             sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
-                return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+                if (err) {
+                    return http.sendInternalError(callback, err.Item);
+                } else {
+                    return http.sendRresponse(callback, data.Item);
+                }
             });
         });
     });

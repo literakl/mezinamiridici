@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const MongoClient = require('mongodb').MongoClient;
 
-const responses = require('../../utils/responses.js');
+const http = require('../../utils/http.js');
 
 // TODO this needs to be externalized
 const SECRET = 'betweenusdrivers2019';
@@ -73,14 +73,14 @@ exports.handler = (payload, context, callback) => {
                     "nickname": user.nickname
                 }, SECRET);
                 console.log("All good");
-                return responses.OK_200({token}, callback, responses.sendRresponse)
+                return http.sendRresponse(callback, {token});
             } else {
                 console.log("Password mismatch for user " + user._id);
-                return responses.FORBIDDEN_403(callback, responses.sendRresponse);
+                return http.sendErrorForbidden(callback,"Forbbiden");
             }
         })
         .catch(err => {
             console.log("Request failed", err);
-            return responses.INTERNAL_SERVER_ERROR_500(err, callback, responses.sendRresponse);
+            return http.sendInternalError(callback, err.Item);
         });
 };
