@@ -7,10 +7,8 @@ const http = require('../../utils/http.js');
 // TODO this needs to be externalized
 const SECRET = 'betweenusdrivers2019';
 
-const MONGODB_URI = "mongodb+srv://literakl:CgTqEq4nkgLolm5i@atlas-ozgwo.mongodb.net/bud?retryWrites=true&w=majority";
-// TODO we need to externalize MongoURI URI
-console.log("Mongo parameter: " + process.env.MONGODB_URI);
-console.log("Process environment" + process.env);
+let MONGODB_URI = process.env.MONGODB_URI;
+console.log("Mongo parameter: " + MONGODB_URI);
 
 let cachedDb = null;
 
