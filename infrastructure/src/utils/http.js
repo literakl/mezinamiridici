@@ -1,6 +1,6 @@
-module.exports = {
-    sendRresponse, sendErrorForbidden, sendInternalError
-};
+module.exports.sendRresponse = sendResponse;
+module.exports.sendErrorForbidden=sendErrorForbidden;
+module.exports.sendInternalError=sendInternalError;
 
 function sendResponse(callback, body, cacheControl = "private") {
     response(callback, 200, body, cacheControl);
