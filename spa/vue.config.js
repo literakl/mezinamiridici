@@ -3,7 +3,7 @@ module.exports = {
     s3Deploy: {
       registry: undefined,
       awsProfile: 'default',
-      region: 'eu-west-1',
+      region: 'eu-central-1',
       bucket: 'mezinamiridici.cz',
       createBucket: true,
       staticHosting: true,
