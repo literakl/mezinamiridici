@@ -6,6 +6,10 @@ Globals:
       AllowMethods: "'OPTIONS,POST,GET,PATCH'"
       AllowHeaders: "'Authorization,Content-Type'"
       AllowOrigin: "'*'"
+Parameters:
+  DatabaseUri:
+    Description: 'Required. MongoDB connection URL'
+    Type: 'String'
 Resources:
   BUDDomainName:
     Type: AWS::ApiGateway::DomainName
@@ -587,6 +591,9 @@ Resources:
       FunctionName: "BUDAuthorizeUserHandler"
       Handler: src/handlers/users/authorizeUser.handler
       Runtime: nodejs8.10
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
       Events:
         Api:
           Type: Api
