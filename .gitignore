@@ -1,6 +1,7 @@
 .DS_Store
-node_modules
 spa/dist
+**/.aws-sam
+**/.node_modules
 
 spa/tests/e2e/videos/
 spa/tests/e2e/screenshots/
@@ -8,6 +9,7 @@ spa/tests/e2e/screenshots/
 # local env files
 .env.local
 .env.*.local
+**/env.json
 
 # Log files
 npm-debug.log*
