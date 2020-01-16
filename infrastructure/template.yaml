@@ -450,7 +450,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDPollCommentHandler
-      Handler: src/handlers/polls/createPollComment.handler
+      Handler: src/handlers/comments/createComment.handler
       Runtime: nodejs10.x
       Events:
         Api:
@@ -472,7 +472,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDGetPollCommentsHandler
-      Handler: src/handlers/polls/getPollComments.handler
+      Handler: src/handlers/comments/getComments.handler
       Runtime: nodejs10.x
       Timeout: 10
       Events:
@@ -621,7 +621,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDCommentVoteHandler
-      Handler: src/handlers/polls/createCommentVote.handler
+      Handler: src/handlers/comments/voteComment.handler
       Runtime: nodejs10.x
       Events:
         Api:
