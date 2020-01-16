@@ -1,36 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const MongoClient = require('mongodb').MongoClient;
-
+const mongo = require('../../utils/mongo.js');
 const http = require('../../utils/http.js');
 
 // TODO this needs to be externalized
 const SECRET = 'betweenusdrivers2019';
-
-let MONGODB_URI = process.env.MONGODB_URI;
-console.log("Mongo parameter: " + MONGODB_URI);
-
-let cachedDb = null;
-
-function connectToDatabase(uri) {
-    console.log("Connect to mongo database");
-
-    if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
-        console.log("Using cached database instance");
-        return Promise.resolve(cachedDb);
-    }
-
-    return MongoClient.connect(uri)
-        .then(db => {
-            console.log("Successful connect");
-            cachedDb = db;
-            return cachedDb;
-        })
-        .catch(err => {
-            console.log("Connection error occurred: ", err);
-            throw err;
-        });
-}
 
 function findUser(dbClient, email) {
     console.log("findUser");
@@ -52,18 +26,19 @@ exports.handler = (payload, context, callback) => {
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;
 
-    connectToDatabase(MONGODB_URI)
+    mongo.connectToDatabase()
         .then(db => {
             console.log("Mongo connected");
             return findUser(db, email);
         })
         .then(user => {
-            console.log("User was found"); // following part takes more than 1 second!
+            console.log("User was found");
 
             // if(!user.verified){
             //     return responses.FORBIDDEN_403(callback, responses.sendRresponse);
             // }
 
+            // following part takes more than 1 second with 128 MB RAM!
             if (bcrypt.compareSync(password, user.password)) {
                 console.log("Password verified"); //
                 const token = jwt.sign({
