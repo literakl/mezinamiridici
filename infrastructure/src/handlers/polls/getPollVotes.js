@@ -1,20 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const responses = require('../../utils/responses.js');
-
-const response = (status, body) => {
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Cache-Control": "public, max-age=600"
-        },
-        "body": JSON.stringify(body.Items),
-        "isBase64Encoded": false
-    }
-}
+const http = require('../../utils/http.js');
 
 exports.handler = (payload, context, callback) => {
     const { pollId } = payload.pathParameters;
@@ -31,6 +18,10 @@ exports.handler = (payload, context, callback) => {
         },
         "ConsistentRead": false,
     }, (err, data) => {
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+        if (err) {
+            return http.sendInternalError(callback, err.Item);
+        } else {
+            return http.sendRresponse(callback, data.Items, "public, max-age=600");
+        }
     });
 };

@@ -2,21 +2,8 @@ const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
 
-const responses = require('../../utils/responses.js');
-
-const response = (status, body) => {
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Cache-Control": "private"
-        },
-        "body": JSON.stringify(body),
-        "isBase64Encoded": false
-    }
-}
+const http = require('../../utils/http.js');
+//            "Access-Control-Allow-Headers": "*",
 
 exports.handler = (payload, context, callback) => {
     const { passwordResetToken, password } = JSON.parse(payload.body);
@@ -34,12 +21,13 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if (err) {
-            return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+            return http.sendInternalError(callback, err.Item);
         }
 
         const user = data.Items.find(item => item.passwordResetToken === passwordResetToken);
 
-        if (!user) return responses.INTERNAL_SERVER_ERROR_500({}, callback, response)
+        if (!user)
+            return http.sendInternalError(callback, {});
 
         const salt = bcrypt.genSaltSync(10);
         const passwordHash = bcrypt.hashSync(password, salt);
@@ -55,7 +43,11 @@ exports.handler = (payload, context, callback) => {
             },
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
-            return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+            if (err) {
+                return http.sendInternalError(callback, err.Item);
+            } else {
+                return http.sendRresponse(callback, data.Item);
+            }
         });
     });
 };

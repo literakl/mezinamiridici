@@ -3,20 +3,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 const jwt = require('jsonwebtoken');
 
-const responses = require('../../utils/responses.js');
+const http = require('../../utils/http.js');
 const SECRET = 'betweenusdrivers2019';
-const response = (status, body) => {
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Cache-Control": "private"
-        },
-        "body": JSON.stringify(body),
-        "isBase64Encoded": false
-    }
-}
 
 exports.handler = (payload, context, callback) => {
     console.log(payload.body);
@@ -27,7 +15,8 @@ exports.handler = (payload, context, callback) => {
     // const { requestContext: { authorizer: { principalId }} } = payload;
     const { pollId } = payload.pathParameters;
 
-    if(score === undefined || score === null) return responses.INTERNAL_SERVER_ERROR_500("score is required", callback, response)
+    if (score === undefined || score === null)
+        return http.sendInternalError(callback, "score is required");
 
     const voteId = uuidv4();
     const userVoteId = uuidv4();
@@ -42,7 +31,7 @@ exports.handler = (payload, context, callback) => {
         if(err)
             console.log('[err]',err)
         if(err) {
-            return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+            return http.sendInternalError(callback, err.Item);
         }
 
         dynamodb.put({
@@ -60,10 +49,9 @@ exports.handler = (payload, context, callback) => {
             },
             TableName: "BUDVoteTable"
         }, (err, voteData) => {
-            if(err)
-            console.log('[err]',err)
             if(err) {
-                return responses.INTERNAL_SERVER_ERROR_500(err, callback, response);
+                console.log('[err]',err)
+                return http.sendInternalError(callback, err.Item);
             }
 
             dynamodb.put({
@@ -75,9 +63,12 @@ exports.handler = (payload, context, callback) => {
                 },
                 TableName: "BUDUserVoteTable"
             }, (err, userVoteData) => {
-                if(err)
-                console.log('[err]',err)
-                    return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(userVoteData, callback, response)
+                if (err) {
+                    console.log('[err]',err)
+                    return http.sendInternalError(callback, err.Item);
+                } else {
+                    return http.sendRresponse(callback, userVoteData.Item);
+                }
             })
         });
     });

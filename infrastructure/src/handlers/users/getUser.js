@@ -1,20 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const responses = require('../../utils/responses.js');
-
-const response = (status, body) => {
-    return {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Cache-Control": "public, max-age=600"
-        },
-        "body": JSON.stringify(body.Item),
-        "isBase64Encoded": false
-    }
-}
+const http = require('../../utils/http.js');
 
 exports.handler = (payload, context, callback) => {
     dynamodb.get({
@@ -33,6 +20,10 @@ exports.handler = (payload, context, callback) => {
         if(data.Item.nickname != undefined)
             data.Item.nickname = data.Item.nickname.toLowerCase()
 
-        return err ? responses.INTERNAL_SERVER_ERROR_500(err, callback, response) : responses.OK_200(data, callback, response)
+        if (err) {
+            return http.sendInternalError(callback, err.Item);
+        } else {
+            return http.sendRresponse(callback, data.Item, "public, max-age=600");
+        }
     });
 };
