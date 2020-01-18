@@ -1,0 +1,32 @@
+{
+  "_id" : ObjectId("LL"),
+  "auth": {
+    "email": "leos@literak.cz",
+    "pwdHash": "ABCDEFGH",
+    "verified": true,
+    "verifyToken": "ABCDEFGH"
+  },
+  "bio": {
+    "nickname": "literakl",
+    "sex": "man",
+    "born": 1975,
+    "region": "PRG",
+    "edu": "VS"
+  },
+  "driving": {
+    "since": 2007,
+    "vehice": ["car"]
+  },
+  "prefs": {
+    "public": true,
+    "email": {
+      "newsletter": true,
+      "summary": "daily"
+    }
+  },
+  "consent": {
+    "terms": 1579203825,
+    "data": 1579203825,
+    "email": 1579203825
+  }
+}

@@ -6,6 +6,7 @@
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.4.1",
+    "nanoid": "^2.1.9",
     "uuid": "^3.3.3"
   }
 }

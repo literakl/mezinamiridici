@@ -1,0 +1,6 @@
+{
+  "BUDAuthorizeUserHandler": {
+    "MONGODB_URI": "mongodb://localhost/bud?retryWrites=true&w=majority",
+    "JTW_SECRET": "SUPERTAJNEHESLO"
+  }
+}

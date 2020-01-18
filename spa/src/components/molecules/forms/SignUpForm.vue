@@ -1,10 +1,6 @@
 <template>
     <div>
-        <form
-            id="app"
-            @submit.prevent="checkForm"
-            v-if="success === false || success === null"
-        >
+        <form id="app" @submit.prevent="checkForm" v-if="success === false || success === null">
             <div v-if="errors.length">
                 <strong class="sign-up-form__errors-heading">
                     {{ $t('sign-up.errors-heading') }}
@@ -47,31 +43,20 @@
                     <label for="vehicle">{{ $t('profile.vehicle') }}</label>
                 </div>
                 <div class="sign-up-form__input">
-                    <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" />
-                    <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" />
-                    <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" />
-                    <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" />
-                    <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" />
-                    <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" />
+                    <Checkbox v-model="bike" name="vehicle" identifier="bike" :text="$t('profile.vehicle-bike')" />
+                    <Checkbox v-model="car" name="vehicle" identifier="car" :text="$t('profile.vehicle-car')" />
+                    <Checkbox v-model="bus" name="vehicle" identifier="bus" :text="$t('profile.vehicle-bus')" />
+                    <Checkbox v-model="van" name="vehicle" identifier="van" :text="$t('profile.vehicle-van')" />
+                    <Checkbox v-model="truck" name="vehicle" identifier="truck" :text="$t('profile.vehicle-truck')" />
+                    <Checkbox v-model="tramway" name="vehicle" identifier="tramway" :text="$t('profile.vehicle-tramway')" />
                 </div>
 
                 <div class="sign-up-form__label">
                     <label for="sex">{{ $t('profile.sex') }}</label>
                 </div>
                 <div class="sign-up-form__input">
-                    <Radio
-                        name="sex"
-                        identifier="male"
-                        text="Male"
-                        v-model="sex"
-                    />
-
-                    <Radio
-                        name="sex"
-                        identifier="female"
-                        text="Female"
-                        v-model="sex"
-                    />
+                    <Radio name="sex" identifier="male" :text="$t('profile.sex-man')" v-model="sex" />
+                    <Radio name="sex" identifier="female" :text="$t('profile.sex-woman')" v-model="sex" />
                 </div>
 
                 <div class="sign-up-form__label">
@@ -83,26 +68,22 @@
                     <label for="region">{{ $t('profile.region') }}</label>
                 </div>
                 <div class="sign-up-form__input">
-                    <select
-                        id="region"
-                        v-model="region"
-                    >
-                        <option value="">Please select</option>
-                        <option value="praha">Praha</option>
-                        <option value="stredocesky">Stredočeský</option>
-                        <option value="jihocesky">Jihočeský</option>
-                        <option value="plzensky">Plzeňský</option>
-                        <option value="karlovarsky">Karlovarský</option>
-                        <option value="ustecky">Ústecký</option>
-                        <option value="liberecky">Liberecký</option>
-                        <option value="liberecky">Liberecký</option>
-                        <option value="kralovohradecky">Královohradecký</option>
-                        <option value="pardubicky">Pardubický</option>
-                        <option value="vysocina">Vysočina</option>
-                        <option value="jihomoravsky">Jihomoravský</option>
-                        <option value="olomoucky">Olomoucký</option>
-                        <option value="zlinsky">Zlínský</option>
-                        <option value="moravskoslezsky">Moravskoslezský</option>
+                    <select id="region" v-model="region">
+                        <option value="">{{ $t('sign-up.region-options') }}</option>
+                        <option value="PRG">Praha</option>
+                        <option value="SC">Stredočeský</option>
+                        <option value="JC">Jihočeský</option>
+                        <option value="PLS">Plzeňský</option>
+                        <option value="KV">Karlovarský</option>
+                        <option value="UST">Ústecký</option>
+                        <option value="LBR">Liberecký</option>
+                        <option value="KH">Královohradecký</option>
+                        <option value="PRD">Pardubický</option>
+                        <option value="VSC">Vysočina</option>
+                        <option value="JM">Jihomoravský</option>
+                        <option value="OLM">Olomoucký</option>
+                        <option value="ZLN">Zlínský</option>
+                        <option value="MS">Moravskoslezský</option>
                     </select>
                 </div>
 
@@ -110,34 +91,17 @@
                     <label for="education">{{ $t('profile.education') }}</label>
                 </div>
                 <div class="sign-up-form__input">
-                    <select
-                        id="education"
-                        v-model="education"
-                    >
-                        <option value="">Please select</option>
-                        <option value="primary">Primary</option>
-                        <option value="secondary">Secondary</option>
-                        <option value="university">University</option>
-                    </select>
+                  <Radio name="education" identifier="primary" :text="$t('profile.edu-basic')" v-model="education" />
+                  <Radio name="education" identifier="secondary" :text="$t('profile.edu-high')" v-model="education" />
+                  <Radio name="education" identifier="university" :text="$t('profile.edu-university')" v-model="education" />
                 </div>
 
                 <div class="sign-up-form__label">
                     <label for="share-profile">{{ $t('profile.share-profile') }}</label>
                 </div>
                 <div class="sign-up-form__input">
-                    <Radio
-                        name="share-profile"
-                        identifier="share-nickname"
-                        text="Only Nickname"
-                        v-model="share"
-                    />
-
-                    <Radio
-                        name="share-profile"
-                        identifier="share-everything"
-                        text="Everything"
-                        v-model="share"
-                    />
+                    <Radio name="share-profile" identifier="public" :text="$t('profile.public')" v-model="share" />
+                    <Radio name="share-profile" identifier="private" :text="$t('profile.private')" v-model="share" />
                 </div>
 
                 <div class="sign-up-form__input">
@@ -178,6 +142,33 @@ import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 
+function validateForm() {
+  if (!this.email) {
+    this.errors.push(this.$t('sign-up.email-required'));
+  }
+  if (!this.password) {
+    this.errors.push(this.$t('sign-up.password-required'));
+  }
+  if (!this.nickname) {
+    this.errors.push(this.$t('sign-up.nickname-required'));
+  }
+  if (!this.termsAndConditions) {
+    this.errors.push(this.$t('sign-up.terms-conditions-required'));
+  }
+  if (!this.personalDataProcessing) {
+    this.errors.push(this.$t('sign-up.data-processing-required'));
+  }
+}
+
+function setVehicles(vehicles) {
+  if (this.bike) vehicles.push('bike');
+  if (this.car) vehicles.push('car');
+  if (this.bus) vehicles.push('bus');
+  if (this.van) vehicles.push('van');
+  if (this.truck) vehicles.push('truck');
+  if (this.tramway) vehicles.push('tramway');
+}
+
 export default {
   name: 'SignUpForm',
   components: {
@@ -213,23 +204,7 @@ export default {
     async checkForm() {
       this.signingIn = true;
       this.errors = [];
-
-      if (!this.email) {
-        this.errors.push(this.$t('sign-up.email-required'));
-      }
-      if (!this.password) {
-        this.errors.push(this.$t('sign-up.password-required'));
-      }
-      if (!this.nickname) {
-        this.errors.push(this.$t('sign-up.nickname-required'));
-      }
-      if (!this.termsAndConditions) {
-        this.errors.push(this.$t('sign-up.terms-conditions-required'));
-      }
-      if (!this.personalDataProcessing) {
-        this.errors.push(this.$t('sign-up.data-processing-required'));
-      }
-
+      validateForm.call(this);
       if (this.errors.length === 0) {
         try {
           const vehicles = [];
@@ -238,20 +213,15 @@ export default {
             email: this.email,
             password: this.password,
             nickname: this.nickname,
-            tandcs: this.termsAndConditions,
+            termsAndConditions: this.termsAndConditions,
             dataProcessing: this.personalDataProcessing,
-            marketing: this.emailNotifications,
+            emails: this.emailNotifications,
           });
-            // check if the email or nickname is already exist or not
+          // check if the email or nickname is already exist or not
           console.log(data);
-          if (data.token != undefined) {
+          if (data.token !== undefined) {
             const jwtData = jwtDecode(data.token);
-            if (this.bike) vehicles.push('bike');
-            if (this.car) vehicles.push('car');
-            if (this.bus) vehicles.push('bus');
-            if (this.van) vehicles.push('van');
-            if (this.truck) vehicles.push('truck');
-            if (this.tramway) vehicles.push('tramway');
+            setVehicles.call(this, vehicles);
 
             await this.$store.dispatch('UPDATE_USER_PROFILE', {
               jwt: data,
@@ -261,7 +231,7 @@ export default {
               vehicle: vehicles,
               sex: this.sex,
               bornInYear: this.bornInYear,
-              locationalRegion: this.region,
+              region: this.region,
               education: this.education,
               shareProfile: this.share,
             });
@@ -321,13 +291,12 @@ export default {
 }
 
 @media all and (min-width: 850px) {
-
     .sign-up-form__button {
         width: 30%;
     }
 
     #sign-up-form-wrapper {
-        grid-template-columns: 0.3fr 1fr;
+        /*grid-template-columns: 0.3fr 1fr;*/
     }
 
     .sign-up-form__input {

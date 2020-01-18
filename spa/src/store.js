@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 
 Vue.use(Vuex);
 
-const API_ENDPOINT = 'https://api2.mezinamiridici.cz/v1';
+const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
 
 export default new Vuex.Store({
   state: {
@@ -76,7 +76,7 @@ export default new Vuex.Store({
       console.log('payload');
       console.log(payload);
       let pollData;
-      if (payload != undefined && payload.userId != undefined) {
+      if (payload !== undefined && payload.userId !== undefined) {
         const { userId } = payload;
         console.log('[fetching user specific poll]');
         pollData = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`);
@@ -238,7 +238,7 @@ export default new Vuex.Store({
       email: payload.email,
       password: payload.password,
       nickname: payload.nickname,
-      tandcs: payload.tandcs,
+      termsAndConditions: payload.termsAndConditions,
       dataProcessing: payload.dataProcessing,
       marketing: payload.marketing,
     })),

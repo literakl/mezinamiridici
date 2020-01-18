@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET = 'betweenusdrivers2019';
-
 const generatePolicy = function(principalId, effect, resource) {
     const authResponse = {};
     authResponse.principalId = principalId;
@@ -24,7 +22,7 @@ const generatePolicy = function(principalId, effect, resource) {
 exports.handler =  function(event, context, callback) {
     try {
         const token = event.authorizationToken.split(" ")[1];
-        const decoded = jwt.verify(token, SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         callback(null, generatePolicy(decoded.userId, 'Allow', event.methodArn));
     } catch(err) {
         callback("Unauthorized");

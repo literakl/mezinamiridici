@@ -10,6 +10,9 @@ Parameters:
   DatabaseUri:
     Description: 'Required. MongoDB connection URL'
     Type: 'String'
+  JwtSecret:
+    Description: 'Required. JSON web toolkit secret key'
+    Type: 'String'
 Resources:
   BUDAPI:
     Type: AWS::Serverless::Api
@@ -391,6 +394,10 @@ Resources:
       FunctionName: BUDPollVoteHandler
       Handler: src/handlers/polls/votePoll.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
       Timeout: 15
       Events:
         Api:
@@ -452,6 +459,10 @@ Resources:
       FunctionName: BUDPollCommentHandler
       Handler: src/handlers/comments/createComment.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
       Events:
         Api:
           Type: Api
@@ -501,29 +512,6 @@ Resources:
                 - dynamodb:Scan
               Resource:
                 Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentVoteTable
-  BUDGetUserHandler:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: BUDGetUserHandler
-      Handler: src/handlers/users/getUser.handler
-      Runtime: nodejs10.x
-      Timeout: 12
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /v1/users/{userId}
-            Method: Get
-            RestApiId:
-              Ref: BUDAPI
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:GetItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
   BUDGetUsersVotesHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -552,12 +540,34 @@ Resources:
                 - dynamodb:Query
               Resource:
                 Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserVoteTable/index/UsersVotesFromUserIdIndex
+  BUDGetUserHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDGetUserHandler
+      Handler: src/handlers/users/getUser.handler
+      Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+      Timeout: 12
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users/{userId}
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
   BUDCreateUserHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDCreateUserHandler
       Handler: src/handlers/users/createUser.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
       Timeout: 10
       Events:
         Api:
@@ -572,21 +582,6 @@ Resources:
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:PutItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:Scan
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:PutItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-            - Effect: Allow
-              Action:
                 - ses:SendEmail
                 - ses:SendRawEmail
               Resource: '*'
@@ -596,6 +591,9 @@ Resources:
       FunctionName: BUDUpdateUserHandler
       Handler: src/handlers/users/updateUser.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
       Events:
         Api:
           Type: Api
@@ -604,47 +602,16 @@ Resources:
             Method: Patch
             RestApiId:
               Ref: BUDAPI
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:UpdateItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:UpdateItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-  BUDCommentVoteHandler:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: BUDCommentVoteHandler
-      Handler: src/handlers/comments/voteComment.handler
-      Runtime: nodejs10.x
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /v1/polls/{pollId}/comment/{commentId}/vote
-            Method: Post
-            RestApiId:
-              Ref: BUDAPI
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:PutItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDCommentVoteTable
   BUDAuthorizerHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDAuthorizerHandler
       Handler: src/handlers/authorizer/authorize.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
   BUDAuthorizeUserHandler:
     Type: AWS::Serverless::Function
     Properties:
@@ -654,6 +621,7 @@ Resources:
       Environment:
         Variables:
           MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
       Events:
         Api:
           Type: Api
@@ -664,23 +632,15 @@ Resources:
               Ref: BUDAPI
       Policies:
         - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:GetItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
   BUDVerifyUserHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDVerifyUserHandler
       Handler: src/handlers/users/verifyUser.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
       Events:
         Api:
           Type: Api
@@ -689,30 +649,15 @@ Resources:
             Method: Get
             RestApiId:
               Ref: BUDAPI
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:UpdateItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromVerificationTokenIndex
   BUDForgotPasswordHandler:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: BUDForgotPasswordHandler
       Handler: src/handlers/users/forgotPassword.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
       Events:
         Api:
           Type: Api
@@ -726,21 +671,6 @@ Resources:
           Statement:
             - Effect: Allow
               Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:UpdateItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/PasswordFromEmailIndex
-            - Effect: Allow
-              Action:
                 - ses:SendEmail
                 - ses:SendRawEmail
               Resource: '*'
@@ -750,6 +680,9 @@ Resources:
       FunctionName: BUDResetPasswordHandler
       Handler: src/handlers/users/resetPassword.handler
       Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
       Events:
         Api:
           Type: Api
@@ -758,24 +691,6 @@ Resources:
             Method: Post
             RestApiId:
               Ref: BUDAPI
-      Policies:
-        - Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:UpdateItem
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable
-            - Effect: Allow
-              Action:
-                - dynamodb:Query
-              Resource:
-                Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/BUDUserTable/index/UserFromPasswordResetTokenIndex
   ConfigLambdaPermission:
     Type: AWS::Lambda::Permission
     DependsOn:

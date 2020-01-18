@@ -4,14 +4,13 @@ const uuidv4 = require('uuid/v4');
 const jwt = require('jsonwebtoken');
 
 const http = require('../../utils/http.js');
-const SECRET = 'betweenusdrivers2019';
 
 exports.handler = (payload, context, callback) => {
     console.log('[createCommentVote]');
     console.log(payload.body);
     const { vote } = JSON.parse(payload.body);
     const token = payload.headers.Authorization.split(" ")[1];
-    const decoded = jwt.verify(token, SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const principalId = decoded.userId;
     // const { requestContext: { authorizer: { principalId } } } = payload;
     console.log(payload.pathParameters);

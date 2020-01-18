@@ -1,7 +1,7 @@
 .DS_Store
 spa/dist
 **/.aws-sam
-**/.node_modules
+**/node_modules/
 
 spa/tests/e2e/videos/
 spa/tests/e2e/screenshots/
@@ -24,3 +24,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+#sensitive
+/infrastructure/awsdeploy.bat
