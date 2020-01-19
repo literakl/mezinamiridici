@@ -21,7 +21,11 @@ exports.handler = (payload, context, callback) => {
             return findUser(db, email);
         })
         .then(user => {
-            console.log("User was found " + user);
+            console.log("User checks");
+            if (!user) {
+                console.log("User not found " + email);
+                return api.sendErrorForbidden(callback, api.createError(2004, "Bad credentials"));
+            }
 
             if (! user.auth.verified) {
                 return api.sendErrorForbidden(callback, api.createError(2003, "User not verified"));
@@ -35,7 +39,7 @@ exports.handler = (payload, context, callback) => {
                 return api.sendRresponse(callback, api.createResponse(token));
             } else {
                 console.log("Password mismatch for user " + user._id);
-                return api.sendErrorForbidden(callback, api.createError(2003, "User not verified"));
+                return api.sendErrorForbidden(callback, api.createError(2004, "Bad credentials"));
             }
         })
         .catch(err => {
@@ -52,12 +56,6 @@ function findUser(dbClient, email) {
         .then(doc => {
             console.log("findUser mongo responded: " + doc);
             return doc;
-/*
-            if (!doc)
-                throw new Error('No record found for ' + email);
-            else
-                return doc;
-*/
         });
 }
 

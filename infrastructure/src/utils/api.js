@@ -59,6 +59,7 @@ function createError(code, message) {
     if (message !== undefined) {
         result.error.message = message;
     }
+    return result;
 }
 
 function addValidationError(result, code, argument, message) {
