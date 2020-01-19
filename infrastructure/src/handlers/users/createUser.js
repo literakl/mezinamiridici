@@ -14,8 +14,9 @@ exports.handler = (payload, context, callback) => {
     }
 
     const {email, password, nickname, termsAndConditions, dataProcessing, emails} = JSON.parse(payload.body);
-    if (email === undefined || password === undefined || nickname === undefined || !termsAndConditions || !dataProcessing) {
-        return http.sendRresponse(callback, {success: false, response: 'Bad request - mandatory parameter is empty!'});
+    let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
+    if (! result.success) {
+        return http.sendBadRequest(callback, result);
     }
 
     // This freezes node event loop when callback is invoked
@@ -36,15 +37,15 @@ exports.handler = (payload, context, callback) => {
                 if (err) {
                     return http.sendInternalError(callback, err.Item);
                 } else {
-                    return http.sendRresponse(callback, {token});
+                    return http.sendCreated(callback, {token});
                 }
             });
         })
         .catch(err => {
             console.log("Request failed", err);
             if (err.code === 11000) {
-                console.log(err.keyValue);
-                return http.sendInternalError(callback, {success: false, message: 'email or nickname already exists'});
+                console.log(err.keyValue); // 409 conflict
+                return http.sendConflict(callback, {success: false, message: 'email or nickname already exists'});
             }
             return http.sendInternalError(callback, {success: false, message: 'email or nickname already exists'});
         });
@@ -103,4 +104,44 @@ const sendVerificationEmail = (email, token, fn) => {
             }
         }
     }, fn);
+};
+
+const validateParameters = (email, password, nickname, termsAndConditions, dataProcessing) => {
+    let result = { "success": true };
+    if (!termsAndConditions) {
+        result.success = false;
+        result.code = 1000;
+        http.addValidationError(result, "termsAndConditions", "Missing consent");
+    }
+    if (!dataProcessing) {
+        result.success = false;
+        result.code = 1000;
+        http.addValidationError(result, "dataProcessing", "Missing consent");
+    }
+    if (email === undefined) {
+        result.success = false;
+        result.code = 1000;
+        http.addValidationError(result, "email", "Missing email");
+    }
+    if (email.indexOf("@") === -1 || email.indexOf(".") === -1 ) {
+        result.success = false;
+        result.code = 1001;
+        http.addValidationError(result, "email", "Invalid email");
+    }
+    if (password === undefined) {
+        result.success = false;
+        result.code = 1000;
+        http.addValidationError(result, "password", "Missing password");
+    }
+    if (password.length < 6 ) {
+        result.success = false;
+        result.code = 1001;
+        http.addValidationError(result, "password", "Password too short");
+    }
+    if (nickname === undefined) {
+        result.success = false;
+        result.code = 1000;
+        http.addValidationError(result, "nickname", "Missing nickname");
+    }
+    return result;
 }
