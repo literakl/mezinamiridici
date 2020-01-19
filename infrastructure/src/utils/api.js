@@ -67,5 +67,7 @@ function addValidationError(result, code, argument, message) {
         result.error.validation = [];
     }
     result.error.code = 1000;
-    result.error.validation.push({ argument : message });
+    let x = {};
+    x[argument] = message;
+    result.error.validation.push(x);
 }
