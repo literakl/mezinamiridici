@@ -205,7 +205,7 @@ export default {
         });
 
         this.success = true;
-      } catch (e) {
+      } catch (exception) {
         this.success = false;
       }
     },

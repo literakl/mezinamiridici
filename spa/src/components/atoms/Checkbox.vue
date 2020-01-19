@@ -1,5 +1,5 @@
 <template>
-  <div class="atoms__checkbox">
+  <span class="atoms__checkbox">
         <input
             type="checkbox"
             :id="identifier"
@@ -15,7 +15,7 @@
                 {{text}}
             </span>
         </label>
-    </div>
+    </span>
 </template>
 
 <script>

@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 import TopPolls from '@/components/molecules/TopPolls.vue';
 import PollVoting from '@/components/organisms/PollVoting.vue';
 

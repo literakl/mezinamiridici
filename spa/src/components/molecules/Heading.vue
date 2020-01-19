@@ -14,7 +14,6 @@
               </ul>
               <ul id="home__heading-metadata-social">
                 <li><iframe :src="'https://www.facebook.com/plugins/like.php?href=' + urlToShare + '&width=79&layout=button_count&action=like&size=small&show_faces=true&share=false&height=21&appId=2402472069835800'" width="61" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></li>
-                <li><span id="twitter-share"></span></li>
               </ul>
           </div>
         </div>
@@ -37,27 +36,10 @@
 <script>
 import { ContentLoader } from 'vue-content-loader';
 
-let twitterLoaded = false;
-
 export default {
   name: 'Heading',
   props: {
     poll: Object,
-  },
-  async updated() {
-    if (this.poll.poll && twttr && !twitterLoaded) {
-      const { text } = this.poll.poll;
-
-      twttr.widgets.createShareButton(
-        `https://api2.mezinamiridici.cz/v1/polls/${this.poll.poll.pollId}`,
-        document.getElementById('twitter-share'),
-        {
-          text: `Between us Drivers - ${text}`,
-        },
-      );
-
-      twitterLoaded = true;
-    }
   },
   computed: {
     created() {

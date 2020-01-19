@@ -32,18 +32,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-import { ContentLoader } from 'vue-content-loader';
-import Heading from '@/components/molecules/Heading.vue';
-import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 import PollVoting from '@/components/organisms/PollVoting.vue';
-import BarChart from '@/components/molecules/charts/BarChart.vue';
 import Button from '@/components/atoms/Button.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import Comments from '@/components/organisms/Comments.vue';
-
-import users from '@/static-data/users.json';
 
 export default {
   name: 'poll',
@@ -65,16 +57,16 @@ export default {
     redirectToAnalyzeVotes() {
       this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
     },
-    recursivleyBuildComments(allComments, commentsToSearchThrough) {
+    recursivelyBuildComments(allComments, commentsToSearchThrough) {
       allComments.forEach((comment) => {
         if (comment.parent) {
           commentsToSearchThrough.forEach((x) => {
             if (!x.comments) return;
-            const found = x.comments.find(x => x.commentId === comment.parent);
+            const found = x.comments.find(y => y.commentId === comment.parent);
 
             if (found) {
               found.comments = [comment];
-              this.recursivleyBuildComments(allComments, x.comments);
+              this.recursivelyBuildComments(allComments, x.comments);
             }
           });
         }
@@ -108,15 +100,13 @@ export default {
         }
       });
 
-      this.recursivleyBuildComments(comments, commentsTree);
+      this.recursivelyBuildComments(comments, commentsTree);
 
       return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
     },
   },
   components: {
-    Heading,
     Button,
-    Comment,
     Comments,
     Textarea,
     PollVoting,
