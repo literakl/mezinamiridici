@@ -148,7 +148,7 @@ dl {
 
 dt {
   grid-column-start: 1;
-  font-weight: 900;
+  font-weight: bolder;
   padding-right: 50px;
   padding-bottom: 20px;
 }

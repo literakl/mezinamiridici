@@ -107,7 +107,7 @@ export default {
 
 <style>
 .comment__reply-link{
-    font-weight: 900;
+    font-weight: bolder;
     padding-left: 10px;
 }
 

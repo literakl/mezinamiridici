@@ -19,25 +19,25 @@
             </div>
 
             <div id="sign-up-form-wrapper">
-                <div class="sign-up-form__label">
-                    <label for="email">{{ $t('sign-up.email-label') }} <span class="mandatory">*</span></label>
+                <div class="sign-up-form__label mandatory">
+                    <label for="email">{{ $t('sign-up.email-label') }}</label>
                 </div>
                 <TextInput class="sign-up-form__input" v-model="email" identifier="email" type="email" />
 
-                <div class="sign-up-form__label">
-                    <label for="password">{{ $t('sign-up.password-label') }} <span class="mandatory">*</span></label>
+                <div class="sign-up-form__label mandatory">
+                    <label for="password">{{ $t('sign-up.password-label') }}</label>
                 </div>
                 <TextInput class="sign-up-form__input" v-model="password" identifier="password" type="password" />
 
-                <div class="sign-up-form__label">
-                    <label for="nickname">{{ $t('profile.nickname') }} <span class="mandatory">*</span></label>
+                <div class="sign-up-form__label mandatory">
+                    <label for="nickname">{{ $t('profile.nickname') }}</label>
                 </div>
                 <TextInput class="sign-up-form__input" v-model="nickname" identifier="nickname" type="text" />
 
                 <div class="sign-up-form__label">
-                    <label for="driving-since">{{ $t('profile.driving-for') }}</label>
+                    <label for="driving-since">{{ $t('profile.driving-since') }}</label>
                 </div>
-                <TextInput v-model="drivingSince" identifier="driving-since" type="number" />
+                <TextInput class="sign-up-form__year" v-model="drivingSince" identifier="driving-since" type="number" />
 
                 <div class="sign-up-form__label">
                     <label for="vehicle">{{ $t('profile.vehicle') }}</label>
@@ -62,7 +62,7 @@
                 <div class="sign-up-form__label">
                     <label for="born-in-year">{{ $t('profile.born') }}</label>
                 </div>
-                <TextInput v-model="bornInYear" identifier="born-in-year" type="number" />
+                <TextInput class="sign-up-form__year" v-model="bornInYear" identifier="born-in-year" type="number" />
 
                 <div class="sign-up-form__label">
                     <label for="region">{{ $t('profile.region') }}</label>
@@ -260,6 +260,15 @@ export default {
 
 
 <style lang="scss">
+.atoms__checkbox {
+  width: 9em;
+  float: left;
+}
+.atoms__radio {
+  width: 9em;
+  float: left;
+}
+
 #sign-up-form-wrapper {
     display: grid;
     margin-top: 40px;
@@ -271,11 +280,15 @@ export default {
 
 .sign-up-form__label {
     margin-bottom: 20px;
-    font-weight: 900;
+    font-weight: normal;
 }
 
 .sign-up-form__errors-heading {
     color: rgb(209, 49, 49);
+}
+
+.sign-up-form__year {
+    width: 4em;
 }
 
 .sign-up-form__input {
@@ -287,7 +300,7 @@ export default {
 }
 
 .mandatory {
-  color: darkred;
+  font-weight: bold;
 }
 
 @media all and (min-width: 850px) {
@@ -296,11 +309,11 @@ export default {
     }
 
     #sign-up-form-wrapper {
-        /*grid-template-columns: 0.3fr 1fr;*/
+        grid-template-columns: 0.3fr 1fr;
     }
 
     .sign-up-form__input {
-        width: 70%;
+        /*width: 70%;*/
     }
 }
 </style>

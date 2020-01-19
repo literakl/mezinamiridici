@@ -142,7 +142,7 @@ export default {
 .signin__or {
     text-align: center;
     padding-top: 20px;
-    font-weight: 900;
+    font-weight: bolder;
 }
 
 input {

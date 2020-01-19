@@ -92,7 +92,7 @@ export default {
 
 .reset-password-form__label {
     margin-bottom: 20px;
-    font-weight: 900;
+    font-weight: bolder;
 }
 
 .reset-password-form__errors-heading {

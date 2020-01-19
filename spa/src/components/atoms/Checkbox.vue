@@ -1,5 +1,5 @@
 <template>
-  <span class="atoms__checkbox">
+  <div class="atoms__checkbox">
         <input
             type="checkbox"
             :id="identifier"
@@ -11,11 +11,9 @@
             :checked="checked"
         >
         <label :for="identifier" class="atoms__checkbox-label">
-            <span>
-                {{text}}
-            </span>
+            <span>{{text}}</span>
         </label>
-    </span>
+    </div>
 </template>
 
 <script>

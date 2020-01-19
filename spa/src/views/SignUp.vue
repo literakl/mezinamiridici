@@ -34,7 +34,7 @@ export default {
 
   @media all and (min-width: 850px) {
   .sign-up {
-      grid-template-columns: 0.5fr;
+      grid-template-columns: 1fr;
       max-width: 80%;
     }
   }

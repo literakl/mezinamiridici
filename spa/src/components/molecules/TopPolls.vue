@@ -106,7 +106,7 @@ export default {
 
 .sign-up-form__label {
     margin-bottom: 20px;
-    font-weight: 900;
+    font-weight: bolder;
 }
 
 .sign-up-form__errors-heading {

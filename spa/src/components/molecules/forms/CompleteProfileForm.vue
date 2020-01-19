@@ -222,7 +222,7 @@ export default {
 
 .complete-profile-form__label {
     margin-bottom: 20px;
-    font-weight: 900;
+    font-weight: bolder;
 }
 
 .complete-profile-form__errors-heading {
