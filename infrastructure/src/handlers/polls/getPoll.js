@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const http = require('../../utils/http.js');
+const http = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
     dynamodb.get({

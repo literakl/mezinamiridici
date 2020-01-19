@@ -3,7 +3,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 var ses = new AWS.SES();
 
-const http = require('../../utils/http.js');
+const api = require('../../utils/api.js');
 //             "Access-Control-Allow-Headers": "*",
 
 const sendVerificationEmail = (email, token, fn) => {
@@ -54,13 +54,13 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if (err) {
-            return http.sendInternalError(callback, err.Item);
+            return api.sendInternalError(callback, err.Item);
         }
 
         const user = data.Items.find(item => item.email === email);
 
         if (!user)
-            return http.sendInternalError(callback, {})
+            return api.sendInternalError(callback, {})
 
         dynamodb.update({
             TableName: 'BUDUserTable',
@@ -74,14 +74,14 @@ exports.handler = (payload, context, callback) => {
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
             if (err) {
-                return http.sendInternalError(callback, err.Item);
+                return api.sendInternalError(callback, err.Item);
             }
 
             sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
                 if (err) {
-                    return http.sendInternalError(callback, err.Item);
+                    return api.sendInternalError(callback, err.Item);
                 } else {
-                    return http.sendRresponse(callback, data.Item);
+                    return api.sendRresponse(callback, data.Item);
                 }
             });
         });

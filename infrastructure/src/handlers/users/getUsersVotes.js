@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const http = require('../../utils/http.js');
+const api = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
     const { userId } = payload.pathParameters;
@@ -19,9 +19,9 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if (err) {
-            return http.sendInternalError(callback, err.Item);
+            return api.sendInternalError(callback, err.Item);
         } else {
-            return http.sendRresponse(callback, data.Items, "public, max-age=600");
+            return api.sendRresponse(callback, data.Items, "public, max-age=600");
         }
     });
 };

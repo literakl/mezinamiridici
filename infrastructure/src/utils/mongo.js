@@ -3,6 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 exports.connectToDatabase = connectToDatabase;
 exports.generateId = generateId;
+exports.generateTimeId = generateTimeId;
 
 let MONGODB_URI = process.env.MONGODB_URI;
 let cachedDb = null;
@@ -27,10 +28,11 @@ function connectToDatabase() {
         });
 }
 
-// todo remove logs once analyzed
+// Takes milliseconds and appends a random character to avoid sub-millisecond conflicts
+function generateTimeId() {
+    return Date.now().toString(32) + Number(Math.random() * 35).toString(36);
+}
+
 function generateId (idLength = 10) {
-    const start = Date.now();
-    const x = generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', idLength);
-    console.log("generateId took " + (Date.now() - start) + " ms");
-    return x;
+    return generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', idLength);
 }

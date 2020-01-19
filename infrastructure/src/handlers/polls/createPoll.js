@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 var shortid = require('shortid');
 const slug = require('limax');
 
-const http = require('../../utils/http.js');
+const http = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
     const { text, userId } = JSON.parse(payload.body);

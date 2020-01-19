@@ -3,7 +3,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const uuidv4 = require('uuid/v4');
 const jwt = require('jsonwebtoken');
 
-const http = require('../../utils/http.js');
+const http = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
     console.log(payload.body);

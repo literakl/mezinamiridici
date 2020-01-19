@@ -1,28 +1,27 @@
 const AWS = require('aws-sdk');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const generate = require('nanoid/generate');
 const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
-const http = require('../../utils/http.js');
+const api = require('../../utils/api.js');
 //             "Access-Control-Allow-Headers": "*",
 
 exports.handler = (payload, context, callback) => {
     console.log("handler starts");
     if (payload.body === undefined || payload.body === null) {
-        return http.sendRresponse(callback, {success: false, response: 'body is null'});
+        return api.sendRresponse(callback, {success: false, response: 'body is null'});
     }
 
     const {email, password, nickname, termsAndConditions, dataProcessing, emails} = JSON.parse(payload.body);
     let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
     if (! result.success) {
-        return http.sendBadRequest(callback, result);
+        return api.sendBadRequest(callback, result);
     }
 
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;
 
-    const verificationToken = generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 10);
+    const verificationToken = mongo.generateId(8);
     mongo.connectToDatabase()
         .then(db => {
             console.log("Mongo connected");
@@ -32,22 +31,22 @@ exports.handler = (payload, context, callback) => {
             if (data)
                 console.log('data', data);
             sendVerificationEmail(email, verificationToken, (err, data) => {
-                console.log("email sent");
-                const token = jwt.sign({"userId": userId,"nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
+                console.log("email sent"+data);
                 if (err) {
-                    return http.sendInternalError(callback, err.Item);
+                    return api.sendInternalError(callback, api.createError(3001, err.Item));
                 } else {
-                    return http.sendCreated(callback, {token});
+                    const token = jwt.sign({"userId": userId,"nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
+                    return api.sendCreated(callback, api.createResponse(token));
                 }
             });
         })
         .catch(err => {
             console.log("Request failed", err);
             if (err.code === 11000) {
-                console.log(err.keyValue); // 409 conflict
-                return http.sendConflict(callback, {success: false, message: 'email or nickname already exists'});
+                console.log(err.keyValue);
+                return api.sendConflict(callback, api.createError(1002, 'email or nickname already exists'));
             }
-            return http.sendInternalError(callback, {success: false, message: 'email or nickname already exists'});
+            return api.sendConflict(callback, api.createError(1002, 'email or nickname already exists'));
         });
 };
 
@@ -57,7 +56,7 @@ function insertUser(dbClient, email, password, nickname, emails, verificationTok
     const passwordHash = bcrypt.hashSync(password, salt);
     const now = new Date();
     let userDoc = {
-        "_id" : mongo.generateId(8),
+        "_id" : mongo.generateTimeId(),
         "auth": {
             "email": email,
             "pwdHash": passwordHash,
@@ -110,38 +109,33 @@ const validateParameters = (email, password, nickname, termsAndConditions, dataP
     let result = { "success": true };
     if (!termsAndConditions) {
         result.success = false;
-        result.code = 1000;
-        http.addValidationError(result, "termsAndConditions", "Missing consent");
+        api.addValidationError(result, 1000, "termsAndConditions", "Missing consent");
     }
     if (!dataProcessing) {
         result.success = false;
-        result.code = 1000;
-        http.addValidationError(result, "dataProcessing", "Missing consent");
+        api.addValidationError(result, 1000, "dataProcessing", "Missing consent");
     }
-    if (email === undefined) {
+    if (!email) {
         result.success = false;
-        result.code = 1000;
-        http.addValidationError(result, "email", "Missing email");
+        api.addValidationError(result, 1000, "email", "Missing email");
+    } else {
+        if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+            result.success = false;
+            api.addValidationError(result, 1001, "email", "Invalid email");
+        }
     }
-    if (email.indexOf("@") === -1 || email.indexOf(".") === -1 ) {
+    if (!password) {
         result.success = false;
-        result.code = 1001;
-        http.addValidationError(result, "email", "Invalid email");
+        api.addValidationError(result, 1000, "password", "Missing password");
+    } else {
+        if (password.length < 6) {
+            result.success = false;
+            api.addValidationError(result, 1001, "password", "Password too short");
+        }
     }
-    if (password === undefined) {
+    if (!nickname) {
         result.success = false;
-        result.code = 1000;
-        http.addValidationError(result, "password", "Missing password");
-    }
-    if (password.length < 6 ) {
-        result.success = false;
-        result.code = 1001;
-        http.addValidationError(result, "password", "Password too short");
-    }
-    if (nickname === undefined) {
-        result.success = false;
-        result.code = 1000;
-        http.addValidationError(result, "nickname", "Missing nickname");
+        api.addValidationError(result, 1000, "nickname", "Missing nickname");
     }
     return result;
-}
+};

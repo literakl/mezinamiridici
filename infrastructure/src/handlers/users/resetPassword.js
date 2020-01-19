@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
 
-const http = require('../../utils/http.js');
+const api = require('../../utils/api.js');
 //            "Access-Control-Allow-Headers": "*",
 
 exports.handler = (payload, context, callback) => {
@@ -21,13 +21,13 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if (err) {
-            return http.sendInternalError(callback, err.Item);
+            return api.sendInternalError(callback, err.Item);
         }
 
         const user = data.Items.find(item => item.passwordResetToken === passwordResetToken);
 
         if (!user)
-            return http.sendInternalError(callback, {});
+            return api.sendInternalError(callback, {});
 
         const salt = bcrypt.genSaltSync(10);
         const passwordHash = bcrypt.hashSync(password, salt);
@@ -44,9 +44,9 @@ exports.handler = (payload, context, callback) => {
             ReturnValues: "UPDATED_NEW"
         }, (err, data) => {
             if (err) {
-                return http.sendInternalError(callback, err.Item);
+                return api.sendInternalError(callback, err.Item);
             } else {
-                return http.sendRresponse(callback, data.Item);
+                return api.sendRresponse(callback, data.Item);
             }
         });
     });

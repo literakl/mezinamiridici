@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const http = require('../../utils/http.js');
+const api = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
     const { token } = payload.pathParameters;
@@ -19,13 +19,13 @@ exports.handler = (payload, context, callback) => {
         "ConsistentRead": false,
     }, (err, data) => {
         if(err){
-            return http.sendInternalError(callback, err.Item);
+            return api.sendInternalError(callback, err.Item);
         }
 
         const user = data.Items.find(item => item.verificationToken === token);
 
         if(user.verified){
-            return http.sendErrorForbidden(callback, "Forbidden");
+            return api.sendErrorForbidden(callback, "Forbidden");
         }
 
         dynamodb.update({
@@ -39,9 +39,9 @@ exports.handler = (payload, context, callback) => {
             }
         }, (err, data) => {
             if (err) {
-                return http.sendInternalError(callback, err.Item);
+                return api.sendInternalError(callback, err.Item);
             } else {
-                return http.sendRresponse(callback, data.Item);
+                return api.sendRresponse(callback, data.Item);
             }
         });
     });

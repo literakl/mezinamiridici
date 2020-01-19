@@ -43,5 +43,7 @@ JSON structure
 * 2000 authorization token missing
 * 2001 authorization token expired
 * 2002 authorization token invalid
+* 2003 user has not finished a verification
+* 2004 wrong credentials
 * 3000 database error
 * 3001 email server error

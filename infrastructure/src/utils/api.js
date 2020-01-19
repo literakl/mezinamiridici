@@ -6,6 +6,8 @@ module.exports.sendCreated=sendCreated;
 module.exports.sendNotAuthorized=sendNotAuthorized;
 module.exports.sendConflict=sendConflict;
 module.exports.addValidationError=addValidationError;
+module.exports.createError=createError;
+module.exports.createResponse=createResponse;
 
 function sendResponse(callback, body, cacheControl = "private") {
     response(callback, 200, body, cacheControl);
@@ -48,9 +50,22 @@ function response(callback, status, body, cacheControl) {
     });
 }
 
-function addValidationError(result, argument, message) {
-    if (result.validation === undefined) {
-        result.validation = [];
+function createResponse(body) {
+    return { "success" : true, "data" : body };
+}
+
+function createError(code, message) {
+    let result = { "success" : false, "error" : { "code" : code } };
+    if (message !== undefined) {
+        result.error.message = message;
     }
-    result.validation.push({ argument : message });
+}
+
+function addValidationError(result, code, argument, message) {
+    if (result.error === undefined || result.error.validation === undefined) {
+        result.error = {};
+        result.error.validation = [];
+    }
+    result.error.code = 1000;
+    result.error.validation.push({ argument : message });
 }
