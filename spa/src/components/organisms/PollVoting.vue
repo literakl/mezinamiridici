@@ -44,17 +44,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 import { ContentLoader } from 'vue-content-loader';
 import Heading from '@/components/molecules/Heading.vue';
 import OpinionButtons from '@/components/molecules/OpinionButtons.vue';
 import BarChart from '@/components/molecules/charts/BarChart.vue';
 import Button from '@/components/atoms/Button.vue';
-import Textarea from '@/components/atoms/Textarea.vue';
-import Comments from '@/components/organisms/Comments.vue';
-
-import users from '@/static-data/users.json';
 
 export default {
   name: 'PollVoting',
@@ -119,7 +113,7 @@ export default {
     const voteTypes = {
       1: 'No problem',
       0: ' Trivial trouble',
-      '-1': "I don\'t like it",
+      '-1': "I don't like it",
       '-2': 'I hate it',
     };
 
@@ -138,7 +132,7 @@ export default {
     } else {
       this.votedAlready = false;
       if (this.mutableVote) {
-        const voted = await this.$store.dispatch('VOTE', {
+        await this.$store.dispatch('VOTE', {
           id: this.id,
           vote: this.vote,
         });
@@ -149,7 +143,7 @@ export default {
   },
   methods: {
     async voted(vote) {
-      const voted = await this.$store.dispatch('VOTE', {
+      await this.$store.dispatch('VOTE', {
         id: this.id,
         vote,
       });
@@ -171,7 +165,6 @@ export default {
     Button,
     BarChart,
     OpinionButtons,
-    Textarea,
     ContentLoader,
   },
 };

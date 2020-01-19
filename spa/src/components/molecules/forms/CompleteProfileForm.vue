@@ -172,8 +172,8 @@ export default {
       this.female = this.$store.getters.SIGNED_IN_USER_PROFILE.sex === 'female';
       this.region = this.$store.getters.SIGNED_IN_USER_PROFILE.locationalRegion;
       this.education = this.$store.getters.SIGNED_IN_USER_PROFILE.education;
-      this.everyting = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile === 'everything';
-      this.onlyNickname = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile = 'onlyNickname';
+      this.everything = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile === 'everything';
+      this.onlyNickname = this.$store.getters.SIGNED_IN_USER_PROFILE.shareProfile === 'onlyNickname';
     }
   },
   methods: {

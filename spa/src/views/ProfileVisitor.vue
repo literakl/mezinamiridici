@@ -54,14 +54,12 @@
 
 <script>
 import { ContentLoader } from 'vue-content-loader';
-import Button from '@/components/atoms/Button.vue';
 import PaginatedTopPolls from '@/components/organisms/PaginatedTopPolls.vue';
 
 export default {
   name: 'profile',
   components: {
     PaginatedTopPolls,
-    Button,
     ContentLoader,
   },
   props: {
@@ -78,7 +76,7 @@ export default {
       return this.profile.shareProfile === 'share-nickname' && this.id !== undefined && this.id !== null;
     },
     drivingSince() {
-      const length = new Date().getFullYear() - parseInt(this.profile.drivingSince);
+      const length = new Date().getFullYear() - parseInt(this.profile.drivingSince, 10);
 
       if (length === 1) {
         return '1 year';
@@ -91,7 +89,7 @@ export default {
       return '0 years';
     },
     vehicles() {
-      if (this.profile.vehicle) return this.profile.vehicle.join(' ');
+      return (this.profile.vehicle) ? this.profile.vehicle.join(' ') : '';
     },
   },
   created() {
@@ -109,7 +107,7 @@ export default {
   methods: {
     clicked() {
       console.log('Loading more...');
-      this.page++;
+      this.page += 1;
     },
   },
 };

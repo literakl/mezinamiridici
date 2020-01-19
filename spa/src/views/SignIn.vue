@@ -48,7 +48,6 @@
 <script>
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import Submit from '@/components/atoms/Submit.vue';
 import Modal from '@/components/molecules/Modal.vue';
 
 export default {
@@ -56,7 +55,6 @@ export default {
   components: {
     Button,
     TextInput,
-    Submit,
     Modal,
   },
   data: () => ({

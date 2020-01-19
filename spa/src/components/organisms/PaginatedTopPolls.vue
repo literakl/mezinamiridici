@@ -22,7 +22,7 @@ export default {
   methods: {
     clicked() {
       console.log('Loading more...');
-      this.page++;
+      this.page += 1;
     },
   },
 };

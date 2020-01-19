@@ -6,17 +6,11 @@
 </template>
 
 <script>
-import Button from '@/components/atoms/Button.vue';
-import TextInput from '@/components/atoms/TextInput.vue';
-import Submit from '@/components/atoms/Submit.vue';
 import ResetPasswordForm from '@/components/molecules/forms/ResetPasswordForm.vue';
 
 export default {
   name: 'Reset',
   components: {
-    Button,
-    TextInput,
-    Submit,
     ResetPasswordForm,
   },
   data: () => ({

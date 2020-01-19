@@ -56,7 +56,7 @@ export default {
 
       if (this.errors.length === 0) {
         try {
-          const { data } = await this.$store.dispatch('RESET_PASSWORD', {
+          await this.$store.dispatch('RESET_PASSWORD', {
             passwordResetToken: this.passwordResetToken,
             password: this.password,
           });

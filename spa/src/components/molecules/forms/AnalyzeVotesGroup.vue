@@ -90,7 +90,6 @@
 <script>
 import Radio from '@/components/atoms/Radio.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
-import Button from '@/components/atoms/Button.vue';
 
 export default {
   name: 'analyze-votes-group',
@@ -100,7 +99,6 @@ export default {
   components: {
     Radio,
     Checkbox,
-    Button,
   },
   methods: {
   },

@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { ContentLoader } from 'vue-content-loader';
 
 export default {
@@ -84,8 +83,8 @@ export default {
     console.log(this.$store.getters.USER_ID);
     const endpoint = window.location.pathname.split('/')[1];
     console.log(endpoint);
-    if (endpoint == 'profile') {
-      if (this.$store.getters.USER_ID != undefined) {
+    if (endpoint === 'profile') {
+      if (this.$store.getters.USER_ID !== undefined) {
         this.$store.dispatch('GET_POLLS', { userId: this.$store.getters.USER_ID });
       } else {
         this.$store.dispatch('GET_POLLS', { userId: window.location.pathname.split('/')[2] });

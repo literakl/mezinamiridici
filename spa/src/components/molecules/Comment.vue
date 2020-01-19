@@ -40,10 +40,10 @@ export default {
     Textarea,
   },
   data() {
-    if (this.comment != undefined && this.comment.votedUserList != undefined
+    if (this.comment !== undefined && this.comment.votedUserList !== undefined
     && this.comment.votedUserList.length > 0 && this.comment.votedUserList.indexOf(this.$store.getters.USER_ID) > -1
-    && ((this.comment.upvotes != undefined && this.comment.upvotes > 0)
-    || (this.comment.downvotes != undefined && this.comment.downvotes > 0))) {
+    && ((this.comment.upvotes !== undefined && this.comment.upvotes > 0)
+    || (this.comment.downvotes !== undefined && this.comment.downvotes > 0))) {
       this.fetched = true;
       this.upvoted = true;
       this.downvoted = true;
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     epochToTime(epoch) {
-      const date = new Date(parseInt(epoch));
+      const date = new Date(parseInt(epoch, 10));
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     toggleUpvoted() {
