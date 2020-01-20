@@ -4,7 +4,6 @@ const uuidv4 = require('uuid/v4');
 var ses = new AWS.SES();
 
 const api = require('../../utils/api.js');
-//             "Access-Control-Allow-Headers": "*",
 
 const sendVerificationEmail = (email, token, fn) => {
 	const subject = "Reset your Between us Drivers password";

@@ -3,7 +3,6 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
 
 const api = require('../../utils/api.js');
-//            "Access-Control-Allow-Headers": "*",
 
 exports.handler = (payload, context, callback) => {
     const { passwordResetToken, password } = JSON.parse(payload.body);

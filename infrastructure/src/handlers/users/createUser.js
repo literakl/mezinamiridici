@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
-//             "Access-Control-Allow-Headers": "*",
 
 exports.handler = (payload, context, callback) => {
     console.log("handler starts");
