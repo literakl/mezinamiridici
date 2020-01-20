@@ -12,7 +12,7 @@
                 </ul>
             </div>
 
-            <div v-if="success !== true && success !== null">
+            <div v-if="success !== true && success !== null && errors.length === 0">
                 <strong class="sign-up-form__errors-heading">
                     {{ $t('sign-up.something-went-wrong-heading') }}
                 </strong>
@@ -145,9 +145,13 @@ import TextInput from '@/components/atoms/TextInput.vue';
 function validateForm() {
   if (!this.email) {
     this.errors.push(this.$t('sign-up.email-required'));
+  } else if (!(/\S+@\S+\.\S+/.test(this.email))) {
+    this.errors.push(this.$t('sign-up.email-illegal'));
   }
   if (!this.password) {
     this.errors.push(this.$t('sign-up.password-required'));
+  } else if (this.password.length < 6) {
+    this.errors.push(this.$t('sign-up.password-short'));
   }
   if (!this.nickname) {
     this.errors.push(this.$t('sign-up.nickname-required'));
@@ -205,53 +209,62 @@ export default {
       this.signingIn = true;
       this.errors = [];
       validateForm.call(this);
-      if (this.errors.length === 0) {
-        try {
-          const vehicles = [];
-
-          const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
-            email: this.email,
-            password: this.password,
-            nickname: this.nickname,
-            termsAndConditions: this.termsAndConditions,
-            dataProcessing: this.personalDataProcessing,
-            emails: this.emailNotifications,
-          });
-          // check if the email or nickname is already exist or not
-          console.log(data);
-          if (data.token !== undefined) {
-            const jwtData = jwtDecode(data.token);
-            setVehicles.call(this, vehicles);
-
-            await this.$store.dispatch('UPDATE_USER_PROFILE', {
-              jwt: data,
-              userId: jwtData.userId,
-              nickname: this.nickname,
-              drivingSince: this.drivingSince,
-              vehicle: vehicles,
-              sex: this.sex,
-              bornInYear: this.bornInYear,
-              region: this.region,
-              education: this.education,
-              shareProfile: this.share,
-            });
-
-            this.success = true;
-          } else {
-            console.log(this.errors);
-            // this.success = false;
-            this.signingIn = false;
-            this.errors.push(data.message);
-          }
-        } catch (error) {
-          console.log(error);
-          this.success = false;
-          this.signingIn = false;
-        }
-      } else {
+      if (this.errors.length > 0) {
         this.signingIn = false;
+        return false;
       }
 
+      try {
+        const vehicles = [];
+        const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
+          email: this.email,
+          password: this.password,
+          nickname: this.nickname,
+          termsAndConditions: this.termsAndConditions,
+          dataProcessing: this.personalDataProcessing,
+          emails: this.emailNotifications,
+        });
+
+        if (data.token !== undefined) {
+          const jwtData = jwtDecode(data.token);
+          setVehicles.call(this, vehicles);
+          await this.$store.dispatch('UPDATE_USER_PROFILE', {
+            jwt: data,
+            userId: jwtData.userId,
+            nickname: this.nickname,
+            drivingSince: this.drivingSince,
+            vehicle: vehicles,
+            sex: this.sex,
+            bornInYear: this.bornInYear,
+            region: this.region,
+            education: this.education,
+            shareProfile: this.share,
+          });
+          this.success = true;
+        } else {
+          console.log('token is missing', this.errors);
+          this.signingIn = false;
+          this.errors.push(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        this.signingIn = false;
+        this.success = false;
+        const e = error.response.data;
+        if (e.error.code === 1002) {
+          e.error.validation.forEach((v) => {
+            // eslint-disable-next-line default-case
+            switch (v.field) {
+              case 'email':
+                this.errors.push(this.$t('sign-up.email-exists')); break;
+              case 'nickname':
+                this.errors.push(this.$t('sign-up.nickname-exists')); break;
+            }
+          });
+        } else {
+          console.log('other error', error);
+        }
+      }
       return this.errors.length !== 0;
     },
   },

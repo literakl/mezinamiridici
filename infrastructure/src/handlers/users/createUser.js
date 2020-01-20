@@ -14,6 +14,7 @@ exports.handler = (payload, context, callback) => {
     const {email, password, nickname, termsAndConditions, dataProcessing, emails} = JSON.parse(payload.body);
     let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
     if (! result.success) {
+        console.log("validation failed" + result);
         return api.sendBadRequest(callback, result);
     }
 
@@ -42,10 +43,18 @@ exports.handler = (payload, context, callback) => {
         .catch(err => {
             console.log("Request failed", err);
             if (err.code === 11000) {
-                console.log(err.keyValue);
-                return api.sendConflict(callback, api.createError(1002, 'email or nickname already exists'));
+                let error = api.createError(1002, 'email or nickname already exists');
+                if (!!err.keyValue["auth.email"]) {
+                    api.addValidationError(error, 1002, "email", "email " + email + " is already registered");
+                    api.addValidationError(error, 1002, "nickname", "nickname " + email + " has been already taken"); // todo remove
+                }
+                if (!!err.keyValue["auth.login"]) {
+                    api.addValidationError(error, 1002, "nickname", "nickname " + email + " has been already taken");
+                    api.addValidationError(error, 1002, "email", "email " + email + " is already registered"); // todo remove
+                }
+                return api.sendConflict(callback, error);
             }
-            return api.sendConflict(callback, api.createError(1002, 'email or nickname already exists'));
+            return api.sendConflict(callback, api.createError(3000, 'failed to create new user'));
         });
 };
 

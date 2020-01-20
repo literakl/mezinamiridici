@@ -39,8 +39,12 @@
     "errors-heading": "Please correct the following error(s):",
     "something-went-wrong-heading": "Something wen't wrong creating your account, please try again.",
     "email-required": "Email required",
+    "email-illegal": "Check your email",
+    "email-exists": "This email is already used, try to login or reset your password.",
     "password-required": "Password required",
+    "password-short": "Password must have at least six characters",
     "nickname-required": "Nickname required",
+    "nickname-exists": "Sorry, this nickname has already been taken.",
     "success-message": "All set, please check your email and verify your account!",
     "terms-conditions-required": "Terms and conditions required",
     "data-processing-required": "Data processing required"

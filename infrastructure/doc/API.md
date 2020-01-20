@@ -20,7 +20,7 @@ JSON structure
  "error": {
     "code": 1000,
     "validation": [
-        {"arg1": "Validation message"}
+        {"field" : "arg1", "message": "Validation message"}
     ]
  }
 }

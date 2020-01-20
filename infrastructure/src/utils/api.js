@@ -55,7 +55,10 @@ function createResponse(body) {
 }
 
 function createError(code, message) {
-    let result = { "success" : false, "error" : { "code" : code } };
+    let result = {
+        "success" : false,
+        "error" : { "code" : code }
+    };
     if (message !== undefined) {
         result.error.message = message;
     }
@@ -64,11 +67,14 @@ function createError(code, message) {
 
 function addValidationError(result, code, argument, message) {
     if (result.error === undefined || result.error.validation === undefined) {
-        result.error = {};
+        result.error = {
+        };
         result.error.validation = [];
     }
-    result.error.code = 1000;
-    let x = {};
-    x[argument] = message;
+    result.error.code = code;
+    let x = {
+        "field" : argument,
+        "message": message
+    };
     result.error.validation.push(x);
 }
