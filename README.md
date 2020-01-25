@@ -33,10 +33,12 @@ Upload dist folder content to S3 interface, select all and make public
 
 ##### infrastructure
 
+```
 {
   "BUDAuthorizeUserHandler": {
     "MONGODB_URI": "mongodb://localhost/bud?retryWrites=true&w=majority",
     "JTW_SECRET": "SECRET"
   }
 }
+```
 
