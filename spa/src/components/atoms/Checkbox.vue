@@ -1,25 +1,62 @@
 <template>
-  <div class="atoms__checkbox">
-        <input
-            type="checkbox"
-            :id="identifier"
-            :name="name"
-            :value="identifier"
-            ref="checkbox"
-            class="atoms__checkbox-input"
-            @input="updateCheckbox()"
-            :checked="checked"
-        >
-        <label :for="identifier" class="atoms__checkbox-label">
-            <span>{{text}}</span>
-        </label>
+  <ValidationProvider
+    class="relative appearance-none w-full TextInput"
+    tag="div"
+    :vid="vid"
+    :rules="rules"
+    :name="name || label"
+    v-slot="{ errors, required }"
+  >
+    <div class="">
+      <input
+        class="w-full py-2 px-3 leading-normal bg-transparent border-b"
+        :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0], 'has-value': hasValue }"
+        :id="name"
+        type="checkbox"
+        ref="input"
+        v-model="innerValue"
+        v-bind="ariaInput"
+      >
+      <label :for="identifier" class="atoms__checkbox-label">
+        <span>{{label}}</span>
+      </label>
     </div>
+  </ValidationProvider>
 </template>
 
 <script>
-export default {
-  props: ['value', 'name', 'identifier', 'text', 'checked'],
+import { ValidationProvider } from 'vee-validate';
 
+export default {
+  props: {
+    vid: {
+      type: String,
+      default: undefined,
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    rules: {
+      type: [Object, String],
+      default: '',
+    },
+    value: {
+      type: null,
+      default: '',
+    },
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: {
+    ValidationProvider,
+  },
   methods: {
     updateCheckbox() {
       this.$emit('input', this.$refs.checkbox.checked);

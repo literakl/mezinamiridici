@@ -1,5 +1,13 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
+import en from 'vee-validate/dist/locale/en.json';
+import cs from 'vee-validate/dist/locale/cs.json';
+import { localize } from 'vee-validate';
+
+localize({
+  cs, en,
+});
+localize('cs');
 
 Vue.use(VueI18n);
 
@@ -17,7 +25,7 @@ function loadLocaleMessages() {
 }
 
 export default new VueI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'cz',
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'cz',
+  locale: process.env.VUE_APP_I18N_LOCALE || 'cs',
+  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'cs',
   messages: loadLocaleMessages(),
 });

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <form id="app" @submit.prevent="checkForm" v-if="success === false || success === null">
+      <ValidationObserver v-slot="{ passes }">
+        <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
             <div v-if="errors.length">
                 <strong class="sign-up-form__errors-heading">
                     {{ $t('sign-up.errors-heading') }}
@@ -18,149 +19,110 @@
                 </strong>
             </div>
 
-            <div id="sign-up-form-wrapper">
-                <div class="sign-up-form__label mandatory">
-                    <label for="email">{{ $t('sign-up.email-label') }}</label>
-                </div>
-                <TextInput class="sign-up-form__input" v-model="email" identifier="email" type="email" />
+          <TextInput v-model="email" rules="required|email" :label="$t('sign-up.email-label')" name="email" placeholder="placeholder"/>
+          <TextInput v-model="password" rules="required|min:6" :label="$t('sign-up.password-label')" name="password" type="password" />
+          <TextInput v-model="nickname" rules="required|min:3" :label="$t('profile.nickname')" name="nickname" />
+          <TextInput v-model="drivingSince" rules="min_value:1935" :label="$t('profile.driving-since')" name="driving-since" type="number" />
 
-                <div class="sign-up-form__label mandatory">
-                    <label for="password">{{ $t('sign-up.password-label') }}</label>
-                </div>
-                <TextInput class="sign-up-form__input" v-model="password" identifier="password" type="password" />
-
-                <div class="sign-up-form__label mandatory">
-                    <label for="nickname">{{ $t('profile.nickname') }}</label>
-                </div>
-                <TextInput class="sign-up-form__input" v-model="nickname" identifier="nickname" type="text" />
-
-                <div class="sign-up-form__label">
-                    <label for="driving-since">{{ $t('profile.driving-since') }}</label>
-                </div>
-                <TextInput class="sign-up-form__year" v-model="drivingSince" identifier="driving-since" type="number" />
-
-                <div class="sign-up-form__label">
-                    <label for="vehicle">{{ $t('profile.vehicle') }}</label>
-                </div>
-                <div class="sign-up-form__input">
-                    <Checkbox v-model="bike" name="vehicle" identifier="bike" :text="$t('profile.vehicle-bike')" />
-                    <Checkbox v-model="car" name="vehicle" identifier="car" :text="$t('profile.vehicle-car')" />
-                    <Checkbox v-model="bus" name="vehicle" identifier="bus" :text="$t('profile.vehicle-bus')" />
-                    <Checkbox v-model="van" name="vehicle" identifier="van" :text="$t('profile.vehicle-van')" />
-                    <Checkbox v-model="truck" name="vehicle" identifier="truck" :text="$t('profile.vehicle-truck')" />
-                    <Checkbox v-model="tramway" name="vehicle" identifier="tramway" :text="$t('profile.vehicle-tramway')" />
-                </div>
-
-                <div class="sign-up-form__label">
-                    <label for="sex">{{ $t('profile.sex') }}</label>
-                </div>
-                <div class="sign-up-form__input">
-                    <Radio name="sex" identifier="male" :text="$t('profile.sex-man')" v-model="sex" />
-                    <Radio name="sex" identifier="female" :text="$t('profile.sex-woman')" v-model="sex" />
-                </div>
-
-                <div class="sign-up-form__label">
-                    <label for="born-in-year">{{ $t('profile.born') }}</label>
-                </div>
-                <TextInput class="sign-up-form__year" v-model="bornInYear" identifier="born-in-year" type="number" />
-
-                <div class="sign-up-form__label">
-                    <label for="region">{{ $t('profile.region') }}</label>
-                </div>
-                <div class="sign-up-form__input">
-                    <select id="region" v-model="region">
-                        <option value="">{{ $t('sign-up.region-options') }}</option>
-                        <option value="PRG">Praha</option>
-                        <option value="SC">Stredočeský</option>
-                        <option value="JC">Jihočeský</option>
-                        <option value="PLS">Plzeňský</option>
-                        <option value="KV">Karlovarský</option>
-                        <option value="UST">Ústecký</option>
-                        <option value="LBR">Liberecký</option>
-                        <option value="KH">Královohradecký</option>
-                        <option value="PRD">Pardubický</option>
-                        <option value="VSC">Vysočina</option>
-                        <option value="JM">Jihomoravský</option>
-                        <option value="OLM">Olomoucký</option>
-                        <option value="ZLN">Zlínský</option>
-                        <option value="MS">Moravskoslezský</option>
-                    </select>
-                </div>
-
-                <div class="sign-up-form__label">
-                    <label for="education">{{ $t('profile.education') }}</label>
-                </div>
-                <div class="sign-up-form__input">
-                  <Radio name="education" identifier="primary" :text="$t('profile.edu-basic')" v-model="education" />
-                  <Radio name="education" identifier="secondary" :text="$t('profile.edu-high')" v-model="education" />
-                  <Radio name="education" identifier="university" :text="$t('profile.edu-university')" v-model="education" />
-                </div>
-
-                <div class="sign-up-form__label">
-                    <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-                </div>
-                <div class="sign-up-form__input">
-                    <Radio name="share-profile" identifier="public" :text="$t('profile.public')" v-model="share" />
-                    <Radio name="share-profile" identifier="private" :text="$t('profile.private')" v-model="share" />
-                </div>
-
-                <div class="sign-up-form__input">
-                    <Checkbox v-model="termsAndConditions" name="terms-and-conditions" identifier="terms-and-conditions"/>
-                </div>
-                <div class="sign-up-form__label">
-                    <label for="terms-and-conditions">{{ $t('sign-up.terms-label') }}</label>
-                </div>
-
-                <div class="sign-up-form__input">
-                    <Checkbox v-model="personalDataProcessing" name="personal-data-processing" identifier="personal-data-processing"/>
-                </div>
-                <div class="sign-up-form__label">
-                    <label for="personal-data-processing">{{ $t('sign-up.processing-label') }}</label>
-                </div>
-
-                <div class="sign-up-form__input">
-                    <Checkbox v-model="emailNotifications" name="email-notifications" identifier="email-notifications"/>
-                </div>
-                <div class="sign-up-form__label">
-                    <label for="email-notifications">{{ $t('sign-up.notifications-label') }}</label>
-                </div>
+            <div class="sign-up-form__label">
+                <label for="vehicle">{{ $t('profile.vehicle') }}</label>
+            </div>
+            <div class="sign-up-form__input">
+                <Checkbox v-model="bike" :label="$t('profile.vehicle-bike')" name="vehicle" identifier="bike" />
+                <Checkbox v-model="car" :label="$t('profile.vehicle-car')" name="vehicle" identifier="car" />
+                <Checkbox v-model="bus" :label="$t('profile.vehicle-bus')" name="vehicle" identifier="bus" />
+                <Checkbox v-model="van" :label="$t('profile.vehicle-van')" name="vehicle" identifier="van" />
+                <Checkbox v-model="truck" :label="$t('profile.vehicle-truck')" name="vehicle" identifier="truck" />
+                <Checkbox v-model="tramway" :label="$t('profile.vehicle-tramway')" name="vehicle" identifier="tramway" />
             </div>
 
-            <Button :disabled="signingIn" :value="$t('sign-up.finished-button-label')" @clicked="checkForm" class="sign-up-form__button"/>
+            <div class="sign-up-form__label">
+                <label for="sex">{{ $t('profile.sex') }}</label>
+            </div>
+            <div class="sign-up-form__input">
+                <Radio v-model="sex" :label="$t('profile.sex-man')" name="sex" identifier="male" />
+                <Radio v-model="sex" :label="$t('profile.sex-woman')" name="sex" identifier="female" />
+            </div>
+
+          <TextInput v-model="bornInYear" rules="min_value:1915" :label="$t('profile.born')" name="born-in-year" type="number" />
+
+            <div class="sign-up-form__label">
+                <label for="region">{{ $t('profile.region') }}</label>
+            </div>
+            <div class="sign-up-form__input">
+                <select id="region" v-model="region">
+                    <option value="">{{ $t('sign-up.region-options') }}</option>
+                    <option value="PRG">Praha</option>
+                    <option value="SC">Stredočeský</option>
+                    <option value="JC">Jihočeský</option>
+                    <option value="PLS">Plzeňský</option>
+                    <option value="KV">Karlovarský</option>
+                    <option value="UST">Ústecký</option>
+                    <option value="LBR">Liberecký</option>
+                    <option value="KH">Královohradecký</option>
+                    <option value="PRD">Pardubický</option>
+                    <option value="VSC">Vysočina</option>
+                    <option value="JM">Jihomoravský</option>
+                    <option value="OLM">Olomoucký</option>
+                    <option value="ZLN">Zlínský</option>
+                    <option value="MS">Moravskoslezský</option>
+                </select>
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="education">{{ $t('profile.education') }}</label>
+            </div>
+            <div class="sign-up-form__input">
+              <Radio v-model="education" :label="$t('profile.edu-basic')" name="education" identifier="primary" />
+              <Radio v-model="education" :label="$t('profile.edu-high')" name="education" identifier="secondary" />
+              <Radio v-model="education" :label="$t('profile.edu-university')" name="education" identifier="university" />
+            </div>
+
+            <div class="sign-up-form__label">
+                <label for="share-profile">{{ $t('profile.share-profile') }}</label>
+            </div>
+            <div class="sign-up-form__input">
+                <Radio name="share-profile" identifier="public" :text="$t('profile.public')" v-model="share" />
+                <Radio name="share-profile" identifier="private" :text="$t('profile.private')" v-model="share" />
+            </div>
+
+          <Checkbox v-model="termsAndConditions" rules="required" :label="$t('sign-up.terms-label')" name="terms-and-conditions"/>
+          <Checkbox v-model="personalDataProcessing" rules="required" :label="$t('sign-up.processing-label')" name="personal-data-processing"/>
+          <Checkbox v-model="emailNotifications" :label="$t('sign-up.notifications-label')" name="email-notifications"/>
+
+          <Button :disabled="signingIn" :value="$t('sign-up.finished-button-label')" @clicked="submitForm" class="sign-up-form__button"/>
         </form>
-        <div id="sign-up-form-success" v-if="success === true">
-            <p>{{ $t('sign-up.success-message') }}</p>
-        </div>
+      </ValidationObserver>
+      <div id="sign-up-form-success" v-if="success === true">
+          <p>{{ $t('sign-up.success-message') }}</p>
+      </div>
     </div>
 </template>
 
 <script>
 
 import jwtDecode from 'jwt-decode';
+import { extend, ValidationObserver } from 'vee-validate';
+import {
+// eslint-disable-next-line camelcase
+  required, email, min, min_value,
+} from 'vee-validate/dist/rules';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 
+extend('email', email);
+extend('required', required);
+extend('min', min);
+extend('min_value', min_value);
+
 function validateForm() {
-  if (!this.email) {
-    this.errors.push(this.$t('sign-up.email-required'));
-  } else if (!(/\S+@\S+\.\S+/.test(this.email))) {
-    this.errors.push(this.$t('sign-up.email-illegal'));
-  }
-  if (!this.password) {
-    this.errors.push(this.$t('sign-up.password-required'));
-  } else if (this.password.length < 6) {
-    this.errors.push(this.$t('sign-up.password-short'));
-  }
-  if (!this.nickname) {
-    this.errors.push(this.$t('sign-up.nickname-required'));
-  }
   if (!this.termsAndConditions) {
-    this.errors.push(this.$t('sign-up.terms-conditions-required'));
+    this.errors.push(this.$t('sign-up.consent-missing'));
   }
   if (!this.personalDataProcessing) {
-    this.errors.push(this.$t('sign-up.data-processing-required'));
+    this.errors.push(this.$t('sign-up.consent-missing'));
   }
 }
 
@@ -176,6 +138,7 @@ function setVehicles(vehicles) {
 export default {
   name: 'SignUpForm',
   components: {
+    ValidationObserver,
     Checkbox,
     TextInput,
     Button,
@@ -205,7 +168,7 @@ export default {
     signingIn: false,
   }),
   methods: {
-    async checkForm() {
+    async submitForm() {
       this.signingIn = true;
       this.errors = [];
       validateForm.call(this);
