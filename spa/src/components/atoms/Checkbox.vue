@@ -1,26 +1,22 @@
 <template>
   <ValidationProvider
-    class="relative appearance-none w-full TextInput"
+    class="relative"
     tag="div"
     :vid="vid"
     :rules="rules"
     :name="name || label"
     v-slot="{ errors, required }"
   >
-    <div class="">
-      <input
-        class="w-full py-2 px-3 leading-normal bg-transparent border-b"
-        :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0], 'has-value': hasValue }"
-        :id="name"
-        type="checkbox"
-        ref="input"
-        v-model="innerValue"
-        v-bind="ariaInput"
-      >
-      <label :for="identifier" class="atoms__checkbox-label">
-        <span>{{label}}</span>
-      </label>
-    </div>
+    <input
+      class=""
+      :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
+      :id="identifier"
+      type="checkbox"
+      ref="input"
+    >
+    <label :for="identifier" class="atoms__checkbox-label">
+      <span>{{label}}</span>
+    </label>
   </ValidationProvider>
 </template>
 
@@ -30,6 +26,10 @@ import { ValidationProvider } from 'vee-validate';
 export default {
   props: {
     vid: {
+      type: String,
+      default: undefined,
+    },
+    identifier: {
       type: String,
       default: undefined,
     },
