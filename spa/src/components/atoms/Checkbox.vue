@@ -8,9 +8,10 @@
     v-slot="{ errors, required }"
   >
     <input
-      class=""
+      class="atoms__checkbox-input"
       :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
       :id="identifier"
+      :value="identifier"
       type="checkbox"
       ref="input"
     >

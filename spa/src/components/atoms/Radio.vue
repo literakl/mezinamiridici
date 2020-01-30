@@ -12,7 +12,7 @@
         >
         <label :for="identifier" class="atoms__radio-label">
             <span>
-                {{text}}
+                {{label}}
             </span>
         </label>
     </div>
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ['value', 'name', 'identifier', 'text', 'checked'],
+  props: ['value', 'name', 'identifier', 'label', 'checked'],
 
   methods: {
     updateRadio() {

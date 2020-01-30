@@ -86,9 +86,9 @@
                 <Radio name="share-profile" identifier="private" :text="$t('profile.private')" v-model="share" />
             </div>
 
-          <Checkbox v-model="termsAndConditions" rules="required" :label="$t('sign-up.terms-label')" name="terms-and-conditions"/>
-          <Checkbox v-model="personalDataProcessing" rules="required" :label="$t('sign-up.processing-label')" name="personal-data-processing"/>
-          <Checkbox v-model="emailNotifications" :label="$t('sign-up.notifications-label')" name="email-notifications"/>
+          <Checkbox v-model="termsAndConditions" rules="required" :label="$t('sign-up.terms-label')" name="terms-and-conditions" identifier="termsAndConditions" />
+          <Checkbox v-model="personalDataProcessing" rules="required" :label="$t('sign-up.processing-label')" name="personal-data-processing" identifier="personalDataProcessing" />
+          <Checkbox v-model="emailNotifications" :label="$t('sign-up.notifications-label')" name="email-notifications" identifier="emailNotifications" />
 
           <Button :disabled="signingIn" :value="$t('sign-up.finished-button-label')" @clicked="submitForm" class="sign-up-form__button"/>
         </form>
@@ -117,6 +117,7 @@ extend('required', required);
 extend('min', min);
 extend('min_value', min_value);
 
+/*
 function validateForm() {
   if (!this.termsAndConditions) {
     this.errors.push(this.$t('sign-up.consent-missing'));
@@ -125,6 +126,7 @@ function validateForm() {
     this.errors.push(this.$t('sign-up.consent-missing'));
   }
 }
+*/
 
 function setVehicles(vehicles) {
   if (this.bike) vehicles.push('bike');
@@ -171,7 +173,7 @@ export default {
     async submitForm() {
       this.signingIn = true;
       this.errors = [];
-      validateForm.call(this);
+      // validateForm.call(this);
       if (this.errors.length > 0) {
         this.signingIn = false;
         return false;
