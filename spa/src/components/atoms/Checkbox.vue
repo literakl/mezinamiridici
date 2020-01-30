@@ -1,5 +1,6 @@
 <template>
   <ValidationProvider
+    mode="passive"
     class="relative"
     tag="div"
     :vid="vid"
