@@ -86,10 +86,10 @@
           <Radio name="share-profile" identifier="private" :label="$t('profile.private')" v-model="share" />
         </div>
 
-        <Checkbox v-model="termsAndConditions" rules="required" :label="$t('sign-up.terms-label')" name="terms-and-conditions" identifier="termsAndConditions" />
-        <Checkbox v-model="personalDataProcessing" rules="required" :label="$t('sign-up.processing-label')" name="personal-data-processing" identifier="personalDataProcessing" />
+        <Checkbox v-model="termsAndConditions"  :rules="{ required: { allowFalse: false} }" :label="$t('sign-up.terms-label')" name="terms-and-conditions" identifier="termsAndConditions" />
+        <Checkbox v-model="personalDataProcessing"  :rules="{ required: { allowFalse: false} }" :label="$t('sign-up.processing-label')" name="personal-data-processing" identifier="personalDataProcessing" />
         <Checkbox v-model="emailNotifications" :label="$t('sign-up.notifications-label')" name="email-notifications" identifier="emailNotifications" />
-        <Button :disabled="invalid" :value="$t('sign-up.finished-button-label')" @clicked="submitForm()" class="sign-up-form__button"/>
+        <Button :disabled="invalid"  :value="$t('sign-up.finished-button-label')" @clicked="submitForm()" class="sign-up-form__button"/>
       </form>
     </ValidationObserver>
     <div id="sign-up-form-success" v-if="success === true">
@@ -135,7 +135,6 @@ function setVehicles(vehicles) {
   if (this.truck) vehicles.push('truck');
   if (this.tramway) vehicles.push('tramway');
 }
-
 export default {
   name: 'SignUpForm',
   components: {
@@ -230,6 +229,9 @@ export default {
         }
       }
       return this.errors.length !== 0;
+    },
+    checkClick() {
+      console.log('aaaaaaaaaaaa');
     },
   },
 };

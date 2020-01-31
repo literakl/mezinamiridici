@@ -1,17 +1,18 @@
 <template>
   <ValidationProvider
-    mode="passive"
     class="relative"
     tag="div"
     :vid="vid"
     :rules="rules"
     :name="name || label"
     v-slot="{ errors, required }"
+
   >
     <input
       class="atoms__checkbox-input"
       :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
       :id="identifier"
+      v-model="innerValue"
       :value="identifier"
       type="checkbox"
       ref="input"
@@ -59,9 +60,12 @@ export default {
   components: {
     ValidationProvider,
   },
-  methods: {
-    updateCheckbox() {
-      this.$emit('input', this.$refs.checkbox.checked);
+  data: () => ({
+    innerValue: null,
+  }),
+  watch: {
+    innerValue(value) {
+      this.$emit('input', value);
     },
   },
 };
