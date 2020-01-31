@@ -2,6 +2,7 @@
   <ValidationProvider
     class="relative"
     tag="div"
+    v-model="innerValue"
     :vid="vid"
     :rules="rules"
     :name="name || label"

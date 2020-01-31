@@ -86,10 +86,12 @@
           <Radio name="share-profile" identifier="private" :label="$t('profile.private')" v-model="share" />
         </div>
 
+
         <Checkbox v-model="termsAndConditions"  :rules="{ required: { allowFalse: false} }" :label="$t('sign-up.terms-label')" name="terms-and-conditions" identifier="termsAndConditions" />
         <Checkbox v-model="personalDataProcessing"  :rules="{ required: { allowFalse: false} }" :label="$t('sign-up.processing-label')" name="personal-data-processing" identifier="personalDataProcessing" />
         <Checkbox v-model="emailNotifications" :label="$t('sign-up.notifications-label')" name="email-notifications" identifier="emailNotifications" />
         <Button :disabled="invalid"  :value="$t('sign-up.finished-button-label')" @clicked="submitForm()" class="sign-up-form__button"/>
+
       </form>
     </ValidationObserver>
     <div id="sign-up-form-success" v-if="success === true">
@@ -115,17 +117,6 @@ extend('email', email);
 extend('required', required);
 extend('min', min);
 extend('min_value', min_value);
-
-/*
-  function validateForm() {
-    if (!this.termsAndConditions) {
-      this.errors.push(this.$t('sign-up.consent-missing'));
-    }
-    if (!this.personalDataProcessing) {
-      this.errors.push(this.$t('sign-up.consent-missing'));
-    }
-  }
-  */
 
 function setVehicles(vehicles) {
   if (this.bike) vehicles.push('bike');
