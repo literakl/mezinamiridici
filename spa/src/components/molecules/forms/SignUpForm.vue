@@ -86,8 +86,13 @@
           <Radio name="share-profile" identifier="private" :label="$t('profile.private')" v-model="share" />
         </div>
 
-        <Checkbox v-model="termsAndConditions" rules="required" :label="$t('sign-up.terms-label')" name="terms-and-conditions" identifier="termsAndConditions" />
-        <Checkbox v-model="personalDataProcessing" rules="required" :label="$t('sign-up.processing-label')" name="personal-data-processing" identifier="personalDataProcessing" />
+        <ValidationProvider :rules="{ required: { allowFalse: false } }" v-slot="{ errors }">
+          <input v-model="termsAndConditions" :id="termsAndConditions" :value="termsAndConditions" type="checkbox">
+          <label :for="termsAndConditions">I agree with the terms</label>
+        </ValidationProvider>
+
+<!--        <Checkbox v-model="termsAndConditions" :rules="{ required: { allowFalse: false } }" :label="$t('sign-up.terms-label')" identifier="termsAndConditions" />-->
+        <Checkbox v-model="personalDataProcessing" :rules="{ required: { allowFalse: false } }" :label="$t('sign-up.processing-label')" identifier="personalDataProcessing" />
         <Checkbox v-model="emailNotifications" :label="$t('sign-up.notifications-label')" name="email-notifications" identifier="emailNotifications" />
         <Button :disabled="invalid" :value="$t('sign-up.finished-button-label')" @clicked="submitForm()" class="sign-up-form__button"/>
       </form>
@@ -101,7 +106,7 @@
 <script>
 
 import jwtDecode from 'jwt-decode';
-import { extend, ValidationObserver } from 'vee-validate';
+import { extend, ValidationProvider, ValidationObserver } from 'vee-validate';
 import {
 // eslint-disable-next-line camelcase
   required, email, min, min_value,
@@ -139,6 +144,7 @@ function setVehicles(vehicles) {
 export default {
   name: 'SignUpForm',
   components: {
+    ValidationProvider,
     ValidationObserver,
     Checkbox,
     TextInput,
