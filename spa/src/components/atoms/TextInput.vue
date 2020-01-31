@@ -40,81 +40,81 @@
 </template>
 
 <script>
-  import { ValidationProvider } from 'vee-validate';
+import { ValidationProvider } from 'vee-validate';
 
-  export default {
-    name: 'TextInput',
-    components: {
-      ValidationProvider,
+export default {
+  name: 'TextInput',
+  components: {
+    ValidationProvider,
+  },
+  props: {
+    vid: {
+      type: String,
+      default: undefined,
     },
-    props: {
-      vid: {
-        type: String,
-        default: undefined,
-      },
-      mode: {
-        type: String,
-      },
-      name: {
-        type: String,
-        default: '',
-      },
-      label: {
-        type: String,
-        default: '',
-      },
-      rules: {
-        type: [Object, String],
-        default: '',
-      },
-      placeholder: {
-        type: String,
-        default: '',
-      },
-      type: {
-        type: String,
-        default: 'text',
-        validator(value) {
-          return [
-            'url',
-            'text',
-            'password',
-            'tel',
-            'search',
-            'number',
-            'email',
-          ].includes(value);
-        },
-      },
-      value: {
-        type: null,
-        default: '',
+    mode: {
+      type: String,
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    rules: {
+      type: [Object, String],
+      default: '',
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    type: {
+      type: String,
+      default: 'text',
+      validator(value) {
+        return [
+          'url',
+          'text',
+          'password',
+          'tel',
+          'search',
+          'number',
+          'email',
+        ].includes(value);
       },
     },
-    data: () => ({
-      innerValue: '',
-    }),
-    computed: {
-      hasValue() {
-        return !!this.innerValue;
-      },
+    value: {
+      type: null,
+      default: '',
     },
-    watch: {
-      innerValue(value) {
-        this.$emit('input', value);
-      },
-      value(val) {
-        if (val !== this.innerValue) {
-          this.innerValue = val;
-        }
-      },
+  },
+  data: () => ({
+    innerValue: '',
+  }),
+  computed: {
+    hasValue() {
+      return !!this.innerValue;
     },
-    created() {
-      if (this.value) {
-        this.innerValue = this.value;
+  },
+  watch: {
+    innerValue(value) {
+      this.$emit('input', value);
+    },
+    value(val) {
+      if (val !== this.innerValue) {
+        this.innerValue = val;
       }
     },
-  };
+  },
+  created() {
+    if (this.value) {
+      this.innerValue = this.value;
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

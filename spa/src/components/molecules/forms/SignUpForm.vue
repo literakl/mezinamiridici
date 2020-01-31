@@ -82,8 +82,8 @@
           <label for="share-profile">{{ $t('profile.share-profile') }}</label>
         </div>
         <div class="sign-up-form__input">
-          <Radio name="share-profile" identifier="public" :text="$t('profile.public')" v-model="share" />
-          <Radio name="share-profile" identifier="private" :text="$t('profile.private')" v-model="share" />
+          <Radio name="share-profile" identifier="public" :label="$t('profile.public')" v-model="share" />
+          <Radio name="share-profile" identifier="private" :label="$t('profile.private')" v-model="share" />
         </div>
 
         <Checkbox v-model="termsAndConditions" rules="required" :label="$t('sign-up.terms-label')" name="terms-and-conditions" identifier="termsAndConditions" />
@@ -100,23 +100,23 @@
 
 <script>
 
-  import jwtDecode from 'jwt-decode';
-  import { extend, ValidationObserver } from 'vee-validate';
-  import {
+import jwtDecode from 'jwt-decode';
+import { extend, ValidationObserver } from 'vee-validate';
+import {
 // eslint-disable-next-line camelcase
-    required, email, min, min_value,
-  } from 'vee-validate/dist/rules';
-  import Button from '../../atoms/Button.vue';
-  import Checkbox from '../../atoms/Checkbox.vue';
-  import Radio from '../../atoms/Radio.vue';
-  import TextInput from '../../atoms/TextInput.vue';
+  required, email, min, min_value,
+} from 'vee-validate/dist/rules';
+import Button from '../../atoms/Button.vue';
+import Checkbox from '../../atoms/Checkbox.vue';
+import Radio from '../../atoms/Radio.vue';
+import TextInput from '../../atoms/TextInput.vue';
 
-  extend('email', email);
-  extend('required', required);
-  extend('min', min);
-  extend('min_value', min_value);
+extend('email', email);
+extend('required', required);
+extend('min', min);
+extend('min_value', min_value);
 
-  /*
+/*
   function validateForm() {
     if (!this.termsAndConditions) {
       this.errors.push(this.$t('sign-up.consent-missing'));
@@ -127,112 +127,112 @@
   }
   */
 
-  function setVehicles(vehicles) {
-    if (this.bike) vehicles.push('bike');
-    if (this.car) vehicles.push('car');
-    if (this.bus) vehicles.push('bus');
-    if (this.van) vehicles.push('van');
-    if (this.truck) vehicles.push('truck');
-    if (this.tramway) vehicles.push('tramway');
-  }
+function setVehicles(vehicles) {
+  if (this.bike) vehicles.push('bike');
+  if (this.car) vehicles.push('car');
+  if (this.bus) vehicles.push('bus');
+  if (this.van) vehicles.push('van');
+  if (this.truck) vehicles.push('truck');
+  if (this.tramway) vehicles.push('tramway');
+}
 
-  export default {
-    name: 'SignUpForm',
-    components: {
-      ValidationObserver,
-      Checkbox,
-      TextInput,
-      Button,
-      Radio,
-    },
-    data: () => ({
-      errors: [],
-      email: null,
-      password: null,
-      termsAndConditions: false,
-      personalDataProcessing: false,
-      emailNotifications: false,
-      nickname: null,
-      drivingSince: null,
-      bike: null,
-      car: null,
-      bus: null,
-      van: null,
-      truck: null,
-      tramway: null,
-      sex: null,
-      bornInYear: null,
-      region: '',
-      education: '',
-      share: null,
-      success: null,
-      signingIn: false,
-    }),
-    methods: {
-      async submitForm() {
-        this.signingIn = true;
-        this.errors = [];
-        // validateForm.call(this);
-        if (this.errors.length > 0) {
-          this.signingIn = false;
-          return false;
-        }
+export default {
+  name: 'SignUpForm',
+  components: {
+    ValidationObserver,
+    Checkbox,
+    TextInput,
+    Button,
+    Radio,
+  },
+  data: () => ({
+    errors: [],
+    email: null,
+    password: null,
+    termsAndConditions: false,
+    personalDataProcessing: false,
+    emailNotifications: false,
+    nickname: null,
+    drivingSince: null,
+    bike: null,
+    car: null,
+    bus: null,
+    van: null,
+    truck: null,
+    tramway: null,
+    sex: null,
+    bornInYear: null,
+    region: '',
+    education: '',
+    share: null,
+    success: null,
+    signingIn: false,
+  }),
+  methods: {
+    async submitForm() {
+      this.signingIn = true;
+      this.errors = [];
+      // validateForm.call(this);
+      if (this.errors.length > 0) {
+        this.signingIn = false;
+        return false;
+      }
 
-        try {
-          const vehicles = [];
-          const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
-            email: this.email,
-            password: this.password,
+      try {
+        const vehicles = [];
+        const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
+          email: this.email,
+          password: this.password,
+          nickname: this.nickname,
+          termsAndConditions: this.termsAndConditions,
+          dataProcessing: this.personalDataProcessing,
+          emails: this.emailNotifications,
+        });
+
+        if (data.token !== undefined) {
+          const jwtData = jwtDecode(data.token);
+          setVehicles.call(this, vehicles);
+          await this.$store.dispatch('UPDATE_USER_PROFILE', {
+            jwt: data,
+            userId: jwtData.userId,
             nickname: this.nickname,
-            termsAndConditions: this.termsAndConditions,
-            dataProcessing: this.personalDataProcessing,
-            emails: this.emailNotifications,
+            drivingSince: this.drivingSince,
+            vehicle: vehicles,
+            sex: this.sex,
+            bornInYear: this.bornInYear,
+            region: this.region,
+            education: this.education,
+            shareProfile: this.share,
           });
-
-          if (data.token !== undefined) {
-            const jwtData = jwtDecode(data.token);
-            setVehicles.call(this, vehicles);
-            await this.$store.dispatch('UPDATE_USER_PROFILE', {
-              jwt: data,
-              userId: jwtData.userId,
-              nickname: this.nickname,
-              drivingSince: this.drivingSince,
-              vehicle: vehicles,
-              sex: this.sex,
-              bornInYear: this.bornInYear,
-              region: this.region,
-              education: this.education,
-              shareProfile: this.share,
-            });
-            this.success = true;
-          } else {
-            console.log('token is missing', this.errors);
-            this.signingIn = false;
-            this.errors.push(data.message);
-          }
-        } catch (error) {
-          console.log(error);
+          this.success = true;
+        } else {
+          console.log('token is missing', this.errors);
           this.signingIn = false;
-          this.success = false;
-          const e = error.response.data;
-          if (e.error.code === 1002) {
-            e.error.validation.forEach((v) => {
-              // eslint-disable-next-line default-case
-              switch (v.field) {
-                case 'email':
-                  this.errors.push(this.$t('sign-up.email-exists')); break;
-                case 'nickname':
-                  this.errors.push(this.$t('sign-up.nickname-exists')); break;
-              }
-            });
-          } else {
-            console.log('other error', error);
-          }
+          this.errors.push(data.message);
         }
-        return this.errors.length !== 0;
-      },
+      } catch (error) {
+        console.log(error);
+        this.signingIn = false;
+        this.success = false;
+        const e = error.response.data;
+        if (e.error.code === 1002) {
+          e.error.validation.forEach((v) => {
+            // eslint-disable-next-line default-case
+            switch (v.field) {
+              case 'email':
+                this.errors.push(this.$t('sign-up.email-exists')); break;
+              case 'nickname':
+                this.errors.push(this.$t('sign-up.nickname-exists')); break;
+            }
+          });
+        } else {
+          console.log('other error', error);
+        }
+      }
+      return this.errors.length !== 0;
     },
-  };
+  },
+};
 </script>
 
 

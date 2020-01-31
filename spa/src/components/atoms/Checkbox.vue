@@ -23,48 +23,48 @@
 </template>
 
 <script>
-  import { ValidationProvider } from 'vee-validate';
+import { ValidationProvider } from 'vee-validate';
 
-  export default {
-    props: {
-      vid: {
-        type: String,
-        default: undefined,
-      },
-      identifier: {
-        type: String,
-        default: undefined,
-      },
-      name: {
-        type: String,
-        default: '',
-      },
-      label: {
-        type: String,
-        default: '',
-      },
-      rules: {
-        type: [Object, String],
-        default: '',
-      },
-      value: {
-        type: null,
-        default: '',
-      },
-      checked: {
-        type: Boolean,
-        default: false,
-      },
+export default {
+  props: {
+    vid: {
+      type: String,
+      default: undefined,
     },
-    components: {
-      ValidationProvider,
+    identifier: {
+      type: String,
+      default: undefined,
     },
-    methods: {
-      updateCheckbox() {
-        this.$emit('input', this.$refs.checkbox.checked);
-      },
+    name: {
+      type: String,
+      default: '',
     },
-  };
+    label: {
+      type: String,
+      default: '',
+    },
+    rules: {
+      type: [Object, String],
+      default: '',
+    },
+    value: {
+      type: null,
+      default: '',
+    },
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: {
+    ValidationProvider,
+  },
+  methods: {
+    updateCheckbox() {
+      this.$emit('input', this.$refs.checkbox.checked);
+    },
+  },
+};
 </script>
 
 <style>

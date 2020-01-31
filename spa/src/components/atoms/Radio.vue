@@ -19,15 +19,15 @@
 </template>
 
 <script>
-  export default {
-    props: ['value', 'name', 'identifier', 'label', 'checked'],
+export default {
+  props: ['value', 'name', 'identifier', 'label', 'checked'],
 
-    methods: {
-      updateRadio() {
-        this.$emit('input', this.$refs.radio.value);
-      },
+  methods: {
+    updateRadio() {
+      this.$emit('input', this.$refs.radio.value);
     },
-  };
+  },
+};
 </script>
 
 <style>
