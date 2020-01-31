@@ -3,6 +3,7 @@
     mode="passive"
     class="relative"
     tag="div"
+    v-model="innerValue"
     :vid="vid"
     :rules="rules"
     :name="name || label"
@@ -59,9 +60,12 @@ export default {
   components: {
     ValidationProvider,
   },
-  methods: {
-    updateCheckbox() {
-      this.$emit('input', this.$refs.checkbox.checked);
+  data: () => ({
+    innerValue: null,
+  }),
+  watch: {
+    innerValue(value) {
+      this.$emit('input', value);
     },
   },
 };
