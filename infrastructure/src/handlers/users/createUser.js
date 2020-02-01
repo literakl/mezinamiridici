@@ -31,9 +31,9 @@ exports.handler = (payload, context, callback) => {
             if (data)
                 console.log('data', data);
             sendVerificationEmail(email, verificationToken, (err, data) => {
-                console.log("email sent"+data);
+                console.log("email sent " + data);
                 if (err) {
-                    return api.sendInternalError(callback, api.createError(3001, err.Item));
+                    return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
                 } else {
                     const token = jwt.sign({"userId": userId,"nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
                     return api.sendCreated(callback, api.createResponse(token));
@@ -42,19 +42,17 @@ exports.handler = (payload, context, callback) => {
         })
         .catch(err => {
             console.log("Request failed", err);
+            result.success = false;
             if (err.code === 11000) {
-                let error = api.createError(1002, 'email or nickname already exists');
                 if (!!err.keyValue["auth.email"]) {
-                    api.addValidationError(error, 1002, "email", "email " + email + " is already registered");
-                    api.addValidationError(error, 1002, "nickname", "nickname " + email + " has been already taken"); // todo remove
+                    api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
                 }
                 if (!!err.keyValue["auth.login"]) {
-                    api.addValidationError(error, 1002, "nickname", "nickname " + email + " has been already taken");
-                    api.addValidationError(error, 1002, "email", "email " + email + " is already registered"); // todo remove
+                    api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
                 }
-                return api.sendConflict(callback, error);
+                return api.sendConflict(callback, result);
             }
-            return api.sendConflict(callback, api.createError(3000, 'failed to create new user'));
+            return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
         });
 };
 
@@ -117,33 +115,23 @@ const validateParameters = (email, password, nickname, termsAndConditions, dataP
     let result = { "success": true };
     if (!termsAndConditions) {
         result.success = false;
-        api.addValidationError(result, 1000, "termsAndConditions", "Missing consent");
+        api.addValidationError(result, "termsAndConditions", "Missing consent", "sign-up.consent-missing");
     }
     if (!dataProcessing) {
         result.success = false;
-        api.addValidationError(result, 1000, "dataProcessing", "Missing consent");
+        api.addValidationError(result, "dataProcessing", "Missing consent", "sign-up.consent-missing");
     }
-    if (!email) {
+    if (!email || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
         result.success = false;
-        api.addValidationError(result, 1000, "email", "Missing email");
-    } else {
-        if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
-            result.success = false;
-            api.addValidationError(result, 1001, "email", "Invalid email");
-        }
+        api.addValidationError(result, "email", "Missing or invalid email", "sign-up.email-required");
     }
-    if (!password) {
+    if (!password || password.length < 6) {
         result.success = false;
-        api.addValidationError(result, 1000, "password", "Missing password");
-    } else {
-        if (password.length < 6) {
-            result.success = false;
-            api.addValidationError(result, 1001, "password", "Password too short");
-        }
+        api.addValidationError(result, "password", "Missing or short password", "sign-up.password-required");
     }
-    if (!nickname) {
+    if (!nickname || nickname.length < 3) {
         result.success = false;
-        api.addValidationError(result, 1000, "nickname", "Missing nickname");
+        api.addValidationError(result, "nickname", "Missing or short nickname", "sign-up.nickname-required");
     }
     return result;
 };

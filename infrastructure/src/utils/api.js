@@ -54,27 +54,29 @@ function createResponse(body) {
     return { "success" : true, "data" : body };
 }
 
-function createError(code, message) {
+function createError(message, messageKey) {
     let result = {
-        "success" : false,
-        "error" : { "code" : code }
+        "success" : false
     };
+
     if (message !== undefined) {
-        result.error.message = message;
+        let x = {
+            "message": message,
+            "messageKey": messageKey,
+        };
+        result.errors = [].push(x);
     }
     return result;
 }
 
-function addValidationError(result, code, argument, message) {
-    if (result.error === undefined || result.error.validation === undefined) {
-        result.error = {
-        };
-        result.error.validation = [];
+function addValidationError(result, argument, message, messageKey) {
+    if (result.errors === undefined) {
+        result.errors = [];
     }
-    result.error.code = code;
     let x = {
         "field" : argument,
-        "message": message
+        "message": message,
+        "messageKey": messageKey,
     };
-    result.error.validation.push(x);
+    result.errors.push(x);
 }

@@ -1,21 +1,10 @@
 <template>
   <div class="col-sm-8 offset-sm-2">
-    <ValidationObserver v-slot="{ passes, invalid }">
+    <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-        <div v-if="errors.length">
+        <div v-if="error">
           <strong class="sign-up-form__errors-heading">
-            {{ $t('sign-up.errors-heading') }}
-          </strong>
-          <ul>
-            <li v-for="error in errors" v-bind:key="error">
-              {{ error }}
-            </li>
-          </ul>
-        </div>
-
-        <div v-if="success !== true && success !== null && errors.length === 0">
-          <strong class="sign-up-form__errors-heading">
-            {{ $t('sign-up.something-went-wrong-heading') }}
+            {{ error }}
           </strong>
         </div>
 
@@ -233,6 +222,29 @@ function setVehicles(vehicles) {
   if (this.truck) vehicles.push('truck');
   if (this.tramway) vehicles.push('tramway');
 }
+
+function convertErrors(jsonErrors) {
+/*
+  let x = {
+    email: ['The email field is required', 'The email field must be a valid email'],
+      name: ['The email field is required'],
+    age: ['The age field must be a valid number'],
+  };
+*/
+  console.log(this.$t('sign-up.something-went-wrong'));
+  const veeErrors = {};
+  const self = this;
+  jsonErrors.errors.forEach((error) => {
+    if (error.field) {
+      veeErrors.$field = [].push(self.$t(error.messageKey));
+    } else {
+      this.error = self.$t(error.messageKey);
+    }
+  });
+  console.log(veeErrors);
+  return veeErrors;
+}
+
 export default {
   name: 'SignUpForm',
   components: {
@@ -243,7 +255,6 @@ export default {
     Radio,
   },
   data: () => ({
-    errors: [],
     email: null,
     password: null,
     termsAndConditions: false,
@@ -263,20 +274,12 @@ export default {
     education: '',
     share: null,
     personalData: false,
+    error: null,
     success: null,
-    signingIn: false,
   }),
   methods: {
     async submitForm() {
-      this.signingIn = true;
-      this.errors = [];
-      if (this.errors.length > 0) {
-        this.signingIn = false;
-        return false;
-      }
-
       try {
-        const vehicles = [];
         const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
           email: this.email,
           password: this.password,
@@ -287,50 +290,42 @@ export default {
         });
 
         if (!this.personalData) {
+          this.success = true;
           return true;
         }
 
-        if (data.token !== undefined) {
-          const jwtData = jwtDecode(data.token);
-          setVehicles.call(this, vehicles);
-          await this.$store.dispatch('UPDATE_USER_PROFILE', {
-            jwt: data,
-            userId: jwtData.userId,
-            nickname: this.nickname,
-            drivingSince: this.drivingSince,
-            vehicle: vehicles,
-            sex: this.sex,
-            bornInYear: this.bornInYear,
-            region: this.region,
-            education: this.education,
-            shareProfile: this.share,
-          });
-          this.success = true;
-        } else {
-          console.log('token is missing', this.errors);
-          this.signingIn = false;
-          this.errors.push(data.message);
+        if (data.token === undefined) {
+          this.error = this.$t('sign-up.something-went-wrong');
+          return false;
         }
+
+        const jwtData = jwtDecode(data.token);
+        const vehicles = [];
+        setVehicles.call(this, vehicles);
+        await this.$store.dispatch('UPDATE_USER_PROFILE', {
+          jwt: data,
+          userId: jwtData.userId,
+          nickname: this.nickname,
+          drivingSince: this.drivingSince,
+          vehicle: vehicles,
+          sex: this.sex,
+          bornInYear: this.bornInYear,
+          region: this.region,
+          education: this.education,
+          shareProfile: this.share,
+        });
+        this.success = true;
       } catch (error) {
-        console.log(error);
-        this.signingIn = false;
         this.success = false;
-        const e = error.response.data;
-        if (e.error.code === 1002) {
-          e.error.validation.forEach((v) => {
-            // eslint-disable-next-line default-case
-            switch (v.field) {
-              case 'email':
-                this.errors.push(this.$t('sign-up.email-exists')); break;
-              case 'nickname':
-                this.errors.push(this.$t('sign-up.nickname-exists')); break;
-            }
-          });
+        if (error.response) {
+          console.log(this.$t('sign-up.something-went-wrong'));
+          const veeErrors = convertErrors(error.response.data);
+          this.$refs.form.setErrors(veeErrors);
         } else {
-          console.log('other error', error);
+          this.error = this.$t('sign-up.something-went-wrong');
         }
       }
-      return this.errors.length !== 0;
+      return this.success;
     },
   },
 };
