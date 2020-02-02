@@ -106,8 +106,11 @@ export default new Vuex.Store({
         const pollVotesData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/votes`);
         const pollCommentsData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/comments`);
 
+        // eslint-disable-next-line no-param-reassign
         poll.votes = pollVotesData.data.length;
+        // eslint-disable-next-line no-param-reassign
         poll.comments = pollCommentsData.data.length;
+        // eslint-disable-next-line no-param-reassign
         poll.userData = userData[poll.userId];
         polls.push(poll);
       });
@@ -135,6 +138,7 @@ export default new Vuex.Store({
 
       pollData.data.forEach(async (comment) => {
         const userData = await axios.get(`${API_ENDPOINT}/users/${comment.userId}`);
+        // eslint-disable-next-line no-param-reassign
         comment.nickname = userData.data.nickname;
         comments.push(comment);
       });
@@ -185,7 +189,7 @@ export default new Vuex.Store({
         throw err;
       }
     },
-    GET_USER_NICKNAME: async (context, payload) => {
+    GET_USER_NICKNAME: async (context) => {
       const jwt = localStorage.getItem('jwt');
 
       if (!jwt) return;
@@ -193,12 +197,13 @@ export default new Vuex.Store({
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
     },
-    GET_DECODED_JWT: (context, payload) => {
+    GET_DECODED_JWT: () => {
       const jwt = localStorage.getItem('jwt');
 
       if (!jwt) return;
 
       const jwtData = jwtDecode(jwt);
+      // eslint-disable-next-line consistent-return
       return {
         decoded: jwtData,
         encoded: {
@@ -206,7 +211,7 @@ export default new Vuex.Store({
         },
       };
     },
-    GET_USER_ID: async (context, payload) => {
+    GET_USER_ID: async (context) => {
       const jwt = localStorage.getItem('jwt');
 
       if (!jwt) return;
@@ -214,7 +219,7 @@ export default new Vuex.Store({
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_ID', jwtData.userId);
     },
-    GET_SIGNED_IN: async (context, payload) => {
+    GET_SIGNED_IN: async (context) => {
       const jwt = localStorage.getItem('jwt');
 
       if (jwt) {
@@ -223,7 +228,7 @@ export default new Vuex.Store({
         context.commit('SET_SIGNED_IN', false);
       }
     },
-    GET_SIGNED_IN_USER_PROFILE: async (context, payload) => {
+    GET_SIGNED_IN_USER_PROFILE: async (context) => {
       const jwt = localStorage.getItem('jwt');
       if (!jwt) return;
 
@@ -232,9 +237,10 @@ export default new Vuex.Store({
       const { data } = await axios.get(`${API_ENDPOINT}/users/${jwtData.userId}`);
       context.commit('SET_SIGNED_IN_USER_PROFILE', data);
 
+      // eslint-disable-next-line consistent-return
       return data;
     },
-    CREATE_USER_PROFILE: async (context, payload) => await axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
+    CREATE_USER_PROFILE: async (context, payload) => axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
       email: payload.email,
       password: payload.password,
       nickname: payload.nickname,
@@ -247,12 +253,12 @@ export default new Vuex.Store({
         `${API_ENDPOINT}/users/${payload.userId}`,
         JSON.stringify({
           drivingSince: payload.drivingSince,
-          vehicle: payload.vehicle,
+          vehicles: payload.vehicle,
           sex: payload.sex,
           born: payload.bornInYear,
-          locationalRegion: payload.locationalRegion,
+          region: payload.region,
           education: payload.education,
-          shareProfile: payload.shareProfile,
+          publicProfile: payload.publicProfile,
         }),
         {
           headers: {
@@ -285,7 +291,8 @@ export default new Vuex.Store({
         'I hate it': -2,
       };
 
-      return await axios.post(
+      // eslint-disable-next-line consistent-return
+      return axios.post(
         `${API_ENDPOINT}/polls/${payload.id}/votes`,
         {
           score: voteToScore[payload.vote],
@@ -301,7 +308,8 @@ export default new Vuex.Store({
       const jwt = localStorage.getItem('jwt');
       if (!jwt) return;
 
-      return await axios.post(
+      // eslint-disable-next-line consistent-return
+      return axios.post(
         `${API_ENDPOINT}/polls/${payload.id}/comments`,
         {
           text: payload.text,
@@ -318,7 +326,8 @@ export default new Vuex.Store({
       const jwt = localStorage.getItem('jwt');
       if (!jwt) return;
 
-      return await axios.post(
+      // eslint-disable-next-line consistent-return
+      return axios.post(
         `${API_ENDPOINT}/polls/${payload.pollId}/comment/${payload.commentId}/vote`,
         {
           vote: payload.vote,

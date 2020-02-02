@@ -8,8 +8,9 @@ const api = require('../../utils/api.js');
 exports.handler = (payload, context, callback) => {
     console.log("handler starts");
     if (payload.body === undefined || payload.body === null) {
-        return api.sendRresponse(callback, {success: false, response: 'body is null'});
+        return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
     }
+    console.log(process.env.JWT_SECRET);
 
     const {email, password, nickname, termsAndConditions, dataProcessing, emails} = JSON.parse(payload.body);
     let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
@@ -22,23 +23,29 @@ exports.handler = (payload, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
 
     const verificationToken = mongo.generateId(8);
+    const userId = mongo.generateTimeId();
     mongo.connectToDatabase()
         .then(db => {
             console.log("Mongo connected");
-            return insertUser(db, email, password, nickname, emails, verificationToken);
+            return insertUser(db, userId, email, password, nickname, emails, verificationToken);
         })
         .then((err, data) => {
             if (data)
                 console.log('data', data);
-            sendVerificationEmail(email, verificationToken, (err, data) => {
-                console.log("email sent " + data);
-                if (err) {
-                    return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
-                } else {
-                    const token = jwt.sign({"userId": userId,"nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
-                    return api.sendCreated(callback, api.createResponse(token));
-                }
-            });
+            const token = jwt.sign({"userId": userId, "nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
+            return api.sendCreated(callback, api.createResponse(token));
+            /*
+            todo uncomment for AWS deployment
+                        sendVerificationEmail(email, verificationToken, (err, data) => {
+                            console.log("email sent " + data);
+                            if (err) {
+                                return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
+                            } else {
+                                const token = jwt.sign({"userId": userId,"nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
+                                return api.sendCreated(callback, api.createResponse(token));
+                            }
+                        });
+            */
         })
         .catch(err => {
             console.log("Request failed", err);
@@ -56,13 +63,13 @@ exports.handler = (payload, context, callback) => {
         });
 };
 
-function insertUser(dbClient, email, password, nickname, emails, verificationToken) {
+function insertUser(dbClient, id, email, password, nickname, emails, verificationToken) {
     console.log("insertUser");
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
     const now = new Date();
     let userDoc = {
-        "_id" : mongo.generateTimeId(),
+        "_id" : id,
         "auth": {
             "email": email,
             "pwdHash": passwordHash,
@@ -72,6 +79,7 @@ function insertUser(dbClient, email, password, nickname, emails, verificationTok
         "bio": {
             "nickname": nickname
         },
+        "driving": {},
         "prefs": {
             "public": true
         },

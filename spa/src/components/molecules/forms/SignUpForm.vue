@@ -102,12 +102,12 @@
               v-model="sex"
               :label="$t('profile.sex-man')"
               name="sex"
-              identifier="male" />
+              identifier="man" />
             <Radio
               v-model="sex"
               :label="$t('profile.sex-woman')"
               name="sex"
-              identifier="female" />
+              identifier="woman" />
           </div>
 
           <TextInput
@@ -263,7 +263,7 @@ export default {
     bornInYear: null,
     region: '',
     education: '',
-    share: null,
+    share: 'public',
     personalData: false,
     error: null,
     success: null,
@@ -285,25 +285,25 @@ export default {
           return true;
         }
 
-        if (data.token === undefined) {
+        const token = data.data;
+        if (token === undefined) {
           this.error = this.$t('sign-up.something-went-wrong');
           return false;
         }
 
-        const jwtData = jwtDecode(data.token);
+        const jwtData = jwtDecode(token);
         const vehicles = [];
         setVehicles.call(this, vehicles);
         await this.$store.dispatch('UPDATE_USER_PROFILE', {
-          jwt: data,
+          jwt: token,
           userId: jwtData.userId,
-          nickname: this.nickname,
           drivingSince: this.drivingSince,
           vehicle: vehicles,
           sex: this.sex,
           bornInYear: this.bornInYear,
           region: this.region,
           education: this.education,
-          shareProfile: this.share,
+          publicProfile: this.share,
         });
         this.success = true;
       } catch (error) {

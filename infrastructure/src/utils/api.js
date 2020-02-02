@@ -64,7 +64,8 @@ function createError(message, messageKey) {
             "message": message,
             "messageKey": messageKey,
         };
-        result.errors = [].push(x);
+        result.errors = [];
+        result.errors.push(x);
     }
     return result;
 }

@@ -1,35 +1,81 @@
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
-var bcrypt = require('bcryptjs');
-
+const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
-    const { nickname, drivingSince, vehicle, sex, born, locationalRegion, education, shareProfile } = JSON.parse(payload.body);
+    console.log("handler starts");
+    if (payload.body === undefined || payload.body === null) {
+        return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
+    }
+    const userId = payload.pathParameters.userId;
 
-    dynamodb.update({
-        TableName: 'BUDUserTable',
-        Key: { 
-            "userId": payload.pathParameters.userId
-        },
-        UpdateExpression: "set nickname = :nickname, drivingSince = :drivingSince, vehicle = :vehicle, sex = :sex, born = :born, locationalRegion = :locationalRegion, education = :education, shareProfile = :shareProfile",
-        ExpressionAttributeValues: {
-            ":nickname": nickname ? nickname : null,
-            ":drivingSince": drivingSince ? drivingSince : null,
-            ":vehicle": vehicle ? vehicle : [],
-            ":sex": sex ? sex : null,
-            ":born": born ? born : null,
-            ":locationalRegion": locationalRegion ? locationalRegion : null, 
-            ":education": education ? education : null,
-            ":shareProfile": shareProfile ? shareProfile : 'everything',
-        },
-        ReturnValues: "UPDATED_NEW"
-    }, (err, data) => {
-        if (err) {
-            return api.sendInternalError(callback, err.Item);
-        } else {
-            return api.sendRresponse(callback, data.Item);
-        }
-    });
+    //todo overit, zda funguje autorizace spravne. co se stane, kdyz chybi nebo je volana na jineho uzivatele?
+
+    // This freezes node event loop when callback is invoked
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    mongo.connectToDatabase()
+        .then(dbClient => {
+            console.log("Mongo connected");
+            const query = prepareQuery(payload);
+            console.log(query);
+            // dbClient.db().collection("users").updateOne({_id: Object(userId)}, query);
+            dbClient.db().collection("users").updateOne({_id: userId}, query);
+        })
+        .then((err, data) => {
+            if (err) {
+                console.log("eror", err);
+            } else {
+                console.log(data);
+                return api.sendRresponse(callback, api.createResponse());
+            }
+        })
+        .catch(err => {
+            console.log("Request failed", err);
+            // const result = api.createError();
+            // if (err.code === 11000) {
+            // }
+            return api.sendInternalError(callback, api.createError('failed update the user', "sign-up.something-went-wrong"));
+        });
+};
+
+const prepareQuery = (payload) => {
+    const { drivingSince, vehicles, sex, born, region, education, publicProfile } = JSON.parse(payload.body);
+    let query = { $set: { bio: {}, driving: {}, prefs: {}}, $unset: { bio: {}, driving: {}, prefs: {}} };
+    if (sex) {
+        query.$set.bio.sex = sex;
+    } else {
+        query.$unset.bio.sex = '';
+    }
+    if (born) {
+        query.$set.bio.born = born;
+    } else  {
+        query.$unset.bio.born = '';
+    }
+    if (region) {
+        query.$set.bio.region = region;
+    } else {
+        query.$unset.bio.region = '';
+    }
+    if (education) {
+        query.$set.bio.edu = education;
+    } else {
+        query.$unset.bio.edu = '';
+    }
+    if (drivingSince) {
+        query.$set.driving.since = drivingSince;
+    } else {
+        query.$unset.driving.since = '';
+    }
+    if (vehicles) {
+        query.$set.driving.vehicles = vehicles;
+    } else {
+        query.$unset.driving.vehicles = '';
+    }
+    if (publicProfile) {
+        query.$set.prefs.public = !!'public';
+    } else {
+        query.$set.prefs.public = '';
+    }
+    return query;
 };
