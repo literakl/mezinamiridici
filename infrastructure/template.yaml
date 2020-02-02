@@ -594,6 +594,7 @@ Resources:
       Environment:
         Variables:
           MONGODB_URI: !Ref DatabaseUri
+      Timeout: 10
       Events:
         Api:
           Type: Api

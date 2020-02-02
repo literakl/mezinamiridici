@@ -18,15 +18,13 @@ exports.handler = (payload, context, callback) => {
         .then(dbClient => {
             console.log("Mongo connected");
             const query = prepareQuery(payload);
-            console.log(query);
-            // dbClient.db().collection("users").updateOne({_id: Object(userId)}, query);
-            dbClient.db().collection("users").updateOne({_id: userId}, query);
+            return dbClient.db().collection("users").updateOne({_id: userId}, query);
         })
-        .then((err, data) => {
+        .then((data, err) => {
             if (err) {
-                console.log("eror", err);
+                console.log("error", err);
+                return api.sendInternalError(callback, api.createError('failed to update new user', "sign-up.something-went-wrong"));
             } else {
-                console.log(data);
                 return api.sendRresponse(callback, api.createResponse());
             }
         })
@@ -41,41 +39,41 @@ exports.handler = (payload, context, callback) => {
 
 const prepareQuery = (payload) => {
     const { drivingSince, vehicles, sex, born, region, education, publicProfile } = JSON.parse(payload.body);
-    let query = { $set: { bio: {}, driving: {}, prefs: {}}, $unset: { bio: {}, driving: {}, prefs: {}} };
+    let query = { $set: { } };
     if (sex) {
-        query.$set.bio.sex = sex;
-    } else {
-        query.$unset.bio.sex = '';
+        query.$set['bio.sex'] = sex;
+    // } else {
+    //     query.$unset.bio.sex = '';
     }
     if (born) {
-        query.$set.bio.born = born;
-    } else  {
-        query.$unset.bio.born = '';
+        query.$set['bio.born'] = born;
+    // } else  {
+    //     query.$unset.bio.born = '';
     }
     if (region) {
-        query.$set.bio.region = region;
-    } else {
-        query.$unset.bio.region = '';
+        query.$set['bio.region'] = region;
+    // } else {
+    //     query.$unset.bio.region = '';
     }
     if (education) {
-        query.$set.bio.edu = education;
-    } else {
-        query.$unset.bio.edu = '';
+        query.$set['bio.edu'] = education;
+    // } else {
+    //     query.$unset.bio.edu = '';
     }
     if (drivingSince) {
-        query.$set.driving.since = drivingSince;
-    } else {
-        query.$unset.driving.since = '';
+        query.$set['driving.since'] = drivingSince;
+    // } else {
+    //     query.$unset.driving.since = '';
     }
     if (vehicles) {
-        query.$set.driving.vehicles = vehicles;
-    } else {
-        query.$unset.driving.vehicles = '';
+        query.$set['driving.vehicles'] = vehicles;
+    // } else {
+    //     query.$unset.driving.vehicles = '';
     }
     if (publicProfile) {
-        query.$set.prefs.public = !!'public';
-    } else {
-        query.$set.prefs.public = '';
+        query.$set['prefs.public'] = !!'public';
+    // } else {
+    //     query.$set.prefs.public = '';
     }
     return query;
 };

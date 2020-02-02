@@ -29,11 +29,14 @@ exports.handler = (payload, context, callback) => {
             console.log("Mongo connected");
             return insertUser(db, userId, email, password, nickname, emails, verificationToken);
         })
-        .then((err, data) => {
-            if (data)
-                console.log('data', data);
-            const token = jwt.sign({"userId": userId, "nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
-            return api.sendCreated(callback, api.createResponse(token));
+        .then((data, err) => {
+            if (err) {
+                console.log("error", err);
+                return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
+            } else {
+                const token = jwt.sign({"userId": userId, "nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
+                return api.sendCreated(callback, api.createResponse(token));
+            }
             /*
             todo uncomment for AWS deployment
                         sendVerificationEmail(email, verificationToken, (err, data) => {
