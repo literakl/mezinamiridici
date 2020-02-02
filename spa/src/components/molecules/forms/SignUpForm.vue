@@ -2,12 +2,6 @@
   <div class="col-sm-8 offset-sm-2">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-        <div v-if="error">
-          <strong class="sign-up-form__errors-heading">
-            {{ error }}
-          </strong>
-        </div>
-
         <TextInput
           v-model="email"
           rules="required|email"
@@ -181,6 +175,12 @@
           :label="$t('sign-up.notifications-label')"
           name="email-notifications"
           identifier="emailNotifications" />
+
+        <div v-if="error">
+          <strong class="sign-up-form__errors-heading">
+            {{ error }}
+          </strong>
+        </div>
 
         <Button
           :disabled="invalid"
