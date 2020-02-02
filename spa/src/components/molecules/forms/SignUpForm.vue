@@ -224,24 +224,15 @@ function setVehicles(vehicles) {
 }
 
 function convertErrors(jsonErrors) {
-/*
-  let x = {
-    email: ['The email field is required', 'The email field must be a valid email'],
-      name: ['The email field is required'],
-    age: ['The age field must be a valid number'],
-  };
-*/
-  console.log(this.$t('sign-up.something-went-wrong'));
   const veeErrors = {};
-  const self = this;
   jsonErrors.errors.forEach((error) => {
     if (error.field) {
-      veeErrors.$field = [].push(self.$t(error.messageKey));
+      veeErrors[error.field] = [];
+      veeErrors[error.field].push(this.$t(error.messageKey));
     } else {
-      this.error = self.$t(error.messageKey);
+      this.error = this.$t(error.messageKey);
     }
   });
-  console.log(veeErrors);
   return veeErrors;
 }
 
@@ -318,8 +309,7 @@ export default {
       } catch (error) {
         this.success = false;
         if (error.response) {
-          console.log(this.$t('sign-up.something-went-wrong'));
-          const veeErrors = convertErrors(error.response.data);
+          const veeErrors = convertErrors.call(this, error.response.data);
           this.$refs.form.setErrors(veeErrors);
         } else {
           this.error = this.$t('sign-up.something-went-wrong');
