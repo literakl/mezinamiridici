@@ -9,7 +9,7 @@ let MONGODB_URI = process.env.MONGODB_URI;
 let cachedDb = null;
 
 function connectToDatabase() {
-    console.log("Connect to mongo database");
+    console.log("Connect to mongo database " + MONGODB_URI);
 
     if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
         console.log("Using cached database instance");
@@ -28,9 +28,9 @@ function connectToDatabase() {
         });
 }
 
-// Takes milliseconds and appends a random character to avoid sub-millisecond conflicts
+// Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
 function generateTimeId() {
-    return Date.now().toString(32) + Number(Math.random() * 35).toString(36);
+    return Date.now().toString(32) + Math.round(Math.random() * 35).toString(36);
 }
 
 function generateId (idLength = 10) {
