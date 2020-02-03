@@ -34,15 +34,17 @@
           </div>
           <div class="sign-up-form__input">
             <Radio
-              name="share-profile"
+              v-model="share"
               identifier="public"
               :label="$t('profile.public')"
-              v-model="share" />
-            <Radio
               name="share-profile"
+            />
+            <Radio
+              v-model="share"
               identifier="private"
               :label="$t('profile.private')"
-              v-model="share" />
+              name="share-profile"
+            />
           </div>
 
           <TextInput

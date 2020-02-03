@@ -3,8 +3,8 @@
     <input
       type="radio"
       :id="identifier"
-      :name="name"
       :value="identifier"
+      :name="name"
       ref="radio"
       class="atoms__radio-input"
       @input="updateRadio()"
