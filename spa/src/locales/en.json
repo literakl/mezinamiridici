@@ -36,8 +36,6 @@
     "nickname-exists": "Sorry, this nickname has already been taken",
     "nickname-required": "Nickname long at least 3 characters is required",
     "consents": "Consents",
-    "terms-label": "I agree with terms and conditions",
-    "processing-label": "I agree with processing of my personal data",
     "consent-missing": "We cannot continue without your consent",
     "notifications-label": "I want to recieve email notifications",
     "finished-button-label": "Register",
@@ -86,7 +84,9 @@
     "private": "Private",
     "share-profile": "Share profile",
     "finish-button": "Finish",
-    "born": "Born"
+    "born": "Born",
+    "terms": "I agree with terms and conditions",
+    "processing": "I agree with processing of my personal data"
   },
   "bar-chart": {
     "no-problem": "No problem",

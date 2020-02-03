@@ -36,8 +36,6 @@
         "nickname-exists": "Litujeme, ale tuto přezdívku již používá jiný řidič",
         "nickname-required": "Potřebujeme přezdívku dlouhou aspoň 3 znaky",
         "consents": "Papírování",
-        "terms-label": "Souhlasím s podmínkami užití",
-        "processing-label": "Souhlasím se zpracováním osobních údajů",
         "consent-missing": "Bez vašeho souhlasu nemůžeme pokračovat",
         "notifications-label": "Chci přijímat měsíční zpravodaj a upozornění",
         "finished-button-label": "Dokončit",
@@ -86,7 +84,9 @@
         "private": "Soukromý",
         "share-profile": "Profil je",
         "finish-button": "Dokončit",
-        "born": "Rok narození"
+        "born": "Rok narození",
+        "terms": "Souhlasím s podmínkami užití",
+        "processing": "Souhlasím se zpracováním osobních údajů"
     },
     "bar-chart": {
         "no-problem": "Není problém",

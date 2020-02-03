@@ -163,14 +163,14 @@
         <Checkbox
           v-model="termsAndConditions"
           :rules="{ required: { allowFalse: false} }"
-          :label="$t('sign-up.terms-label')"
-          name="terms-and-conditions"
+          :label="$t('profile.terms')"
+          name="terms"
           identifier="termsAndConditions" />
         <Checkbox
           v-model="personalDataProcessing"
           :rules="{ required: { allowFalse: false} }"
-          :label="$t('sign-up.processing-label')"
-          name="personal-data-processing"
+          :label="$t('profile.processing')"
+          name="processing"
           identifier="personalDataProcessing" />
         <Checkbox
           v-model="emailNotifications"
