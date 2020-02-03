@@ -126,11 +126,11 @@ const validateParameters = (email, password, nickname, termsAndConditions, dataP
     let result = { "success": true };
     if (!termsAndConditions) {
         result.success = false;
-        api.addValidationError(result, "termsAndConditions", "Missing consent", "sign-up.consent-missing");
+        api.addValidationError(result, undefined, "Missing consent", "sign-up.consent-missing");
     }
     if (!dataProcessing) {
         result.success = false;
-        api.addValidationError(result, "dataProcessing", "Missing consent", "sign-up.consent-missing");
+        api.addValidationError(result, undefined, "Missing consent", "sign-up.consent-missing");
     }
     if (!email || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
         result.success = false;
