@@ -16,11 +16,14 @@ const generatePolicy = function(principalId, effect, resource) {
         authResponse.policyDocument = policyDocument;
     }
 
+    console.log(authResponse);
     return authResponse;
 }
 
 exports.handler =  function(event, context, callback) {
     try {
+        console.log('authorize handler');
+        console.log(event.authorizationToken);
         const token = event.authorizationToken.split(" ")[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         callback(null, generatePolicy(decoded.userId, 'Allow', event.methodArn));

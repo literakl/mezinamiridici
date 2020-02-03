@@ -9,6 +9,7 @@ exports.handler = (payload, context, callback) => {
     }
     const userId = payload.pathParameters.userId;
 
+    console.log(context);
     //todo overit, zda funguje autorizace spravne. co se stane, kdyz chybi nebo je volana na jineho uzivatele?
 
     // This freezes node event loop when callback is invoked

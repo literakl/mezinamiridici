@@ -10,7 +10,6 @@ exports.handler = (payload, context, callback) => {
     if (payload.body === undefined || payload.body === null) {
         return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
     }
-    console.log(process.env.JWT_SECRET);
 
     const {email, password, nickname, termsAndConditions, dataProcessing, emails} = JSON.parse(payload.body);
     let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
