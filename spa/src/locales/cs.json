@@ -27,11 +27,9 @@
     "sign-up": {
         "heading": "Registrace",
         "body": "Jste kousíček od dokončení registrace. Zvolte si jedinečnou přezdívku a chcete-li, vyplňte informace o vaší osobě pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
-        "email-label": "Email",
         "email-hint": "Emailem se budete přihlašovat",
         "email-required": "Potřebujeme platný email",
         "email-exists": "Tento email je již evidován. Zkuste se přihlásit nebo si obnovte heslo.",
-        "password-label": "Heslo",
         "password-hint": "Aspoň 6 písmen, ideál je generované heslo",
         "password-required": "Potřebujeme heslo dlouhé aspoň 6 znaků",
         "nickname-hint": "Unikátní přezdívka vás odliší",
@@ -64,6 +62,8 @@
         "other-polls-button": "Další ankety"
     },
     "profile": {
+        "email": "Email",
+        "password": "Heslo",
         "nickname": "Přezdívka",
         "driving-for": "Řídím",
         "driving-since": "Řídím od roku",

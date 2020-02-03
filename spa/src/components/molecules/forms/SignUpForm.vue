@@ -5,14 +5,14 @@
         <TextInput
           v-model="email"
           rules="required|email"
-          :label="$t('sign-up.email-label')"
+          :label="$t('profile.email')"
           :placeholder="$t('sign-up.email-hint')"
           name="email"
           type="email"/>
         <TextInput
           v-model="password"
           rules="required|min:6"
-          :label="$t('sign-up.password-label')"
+          :label="$t('profile.password')"
           :placeholder="$t('sign-up.password-hint')"
           name="password" type="password" />
         <TextInput
@@ -110,7 +110,7 @@
             v-model="bornInYear"
             rules="min_value:1915"
             :label="$t('profile.born')"
-            name="born-in-year"
+            name="born"
             type="number" />
 
           <div class="sign-up-form__label">
@@ -201,7 +201,7 @@
 <script>
 
 import jwtDecode from 'jwt-decode';
-import { extend, ValidationObserver } from 'vee-validate';
+import { extend, ValidationObserver, configure } from 'vee-validate';
 import {
 // eslint-disable-next-line camelcase
   required, email, min, min_value,
@@ -210,11 +210,20 @@ import Button from '../../atoms/Button.vue';
 import Checkbox from '../../atoms/Checkbox.vue';
 import Radio from '../../atoms/Radio.vue';
 import TextInput from '../../atoms/TextInput.vue';
+import i18n from '../../../i18n';
 
 extend('email', email);
 extend('required', required);
 extend('min', min);
 extend('min_value', min_value);
+configure({
+  defaultMessage: (field, values) => {
+    /* eslint no-underscore-dangle: 0 */
+    /* eslint no-param-reassign: ["error", { "props": false }] */
+    values._field_ = i18n.t(`profile.${field}`);
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
 
 function setVehicles(vehicles) {
   if (this.bike) vehicles.push('bike');
