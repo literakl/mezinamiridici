@@ -1,11 +1,11 @@
 {
   "BUDAuthorizeUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority",
-    "JTW_SECRET": "SUPERTAJNEHESLO"
+    "JWT_SECRET": "SUPERTAJNEHESLO"
   },
   "BUDCreateUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority",
-    "JTW_SECRET": "SUPERTAJNEHESLO"
+    "JWT_SECRET": "SUPERTAJNEHESLO"
   },
   "BUDUpdateUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
