@@ -8,7 +8,7 @@
       ref="radio"
       class="atoms__radio-input"
       @input="updateRadio()"
-      :checked="checked"
+      :checked="value === identifier"
     >
     <label :for="identifier" class="atoms__radio-label">
             <span>
