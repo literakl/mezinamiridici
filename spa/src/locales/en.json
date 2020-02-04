@@ -41,7 +41,8 @@
     "finished-button-label": "Register",
     "personal-data": "I want to enter my personal information now",
     "region-options": "Choose region",
-    "something-went-wrong": "Something wen't wrong creating your account, please try again",
+    "something-went-wrong": "Something wen't wrong, please try again",
+    "already-verified": "You have already been verified",
     "success-message": "All set, please check your email and verify your account!"
   },
   "complete-profile": {

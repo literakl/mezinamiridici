@@ -24,9 +24,9 @@ exports.handler = (payload, context, callback) => {
     const verificationToken = mongo.generateId(8);
     const userId = mongo.generateTimeId();
     mongo.connectToDatabase()
-        .then(db => {
+        .then(dbClient => {
             console.log("Mongo connected");
-            return insertUser(db, userId, email, password, nickname, emails, verificationToken);
+            return insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
         })
         .then((data, err) => {
             if (err) {

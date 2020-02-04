@@ -9,5 +9,8 @@
   },
   "BUDUpdateUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
+  },
+  "BUDVerifyUserHandler": {
+    "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
   }
 }

@@ -42,6 +42,7 @@
         "personal-data": "Chci teď zadat osobní data",
         "region-options": "Zvolte kraj",
         "something-went-wrong": "Něco se pokazilo, zkuste to znovu.",
+        "already-verified": "Již jste byl(a) verifikován(a).",
         "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu."
     },
     "complete-profile": {

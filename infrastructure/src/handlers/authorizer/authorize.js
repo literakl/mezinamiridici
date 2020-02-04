@@ -26,6 +26,7 @@ exports.handler =  function(event, context, callback) {
         console.log(event.authorizationToken);
         const token = event.authorizationToken.split(" ")[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // todo perform user check in db, compare db password
         callback(null, generatePolicy(decoded.userId, 'Allow', event.methodArn));
     } catch(err) {
         callback("Unauthorized");
