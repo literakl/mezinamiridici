@@ -276,8 +276,6 @@ export default new Vuex.Store({
       context.commit('SET_USER_PROFILE', data);
     },
     VERIFY_USER: async (context, payload) => {
-      console.log('Verify user');
-      console.log(payload);
       await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);
     },
     VOTE: async (context, payload) => {

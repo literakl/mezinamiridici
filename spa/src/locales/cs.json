@@ -43,7 +43,11 @@
         "region-options": "Zvolte kraj",
         "something-went-wrong": "Něco se pokazilo, zkuste to znovu.",
         "already-verified": "Již jste byl(a) verifikován(a).",
-        "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu."
+        "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu.",
+        "verify-heading": "Ověření vašeho účtu",
+        "verify-running": "Momentíček, právě kontrolujeme naše záznamy v registru ..",
+        "verify-success": "V pořádku.",
+        "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu."
     },
     "complete-profile": {
         "heading": "Update your profile"

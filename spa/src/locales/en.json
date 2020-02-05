@@ -43,7 +43,11 @@
     "region-options": "Choose region",
     "something-went-wrong": "Something wen't wrong, please try again",
     "already-verified": "You have already been verified",
-    "success-message": "All set, please check your email and verify your account!"
+    "success-message": "All set, please check your email and verify your account!",
+    "verify-heading": "Verify your account",
+    "verify-running": "Thanks, we're just verifying that for you, hold tight...",
+    "verify-success": "Account is verified now.",
+    "verify-error": "Sorry, we couldn't verify that account, please try again or contact support."
   },
   "complete-profile": {
     "heading": "Update your profile"
