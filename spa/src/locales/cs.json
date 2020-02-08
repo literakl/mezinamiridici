@@ -26,7 +26,7 @@
         "sign-up-button": "Registrovat",
         "or": "NEBO",
         "auth-error": "Nesprávné přihlašovací údaje",
-        "reset-succees": "Poslali jsme vám email s instrukcemi pro zmenu hesla. Pokud email nevidíte, podívejte se mezi spamy.",
+        "reset-success": "Poslali jsme vám email s instrukcemi pro zmenu hesla. Pokud email nevidíte, podívejte se mezi spamy.",
         "reset-error": "Nepodařilo se nám odeslat email s instrukcemi. Zkontrolujte si zadaný email a zkuste znovu."
     },
     "sign-up": {

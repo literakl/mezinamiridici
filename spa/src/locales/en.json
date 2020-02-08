@@ -26,7 +26,7 @@
     "sign-up-button": "Sign up",
     "or": "OR",
     "auth-error": "Incorrect username/password, please try again",
-    "reset-succees": "Please check your email for instructions on how to reset your password!",
+    "reset-success": "Please check your email for instructions on how to reset your password!",
     "reset-error": "There was a problem sending a reset link to the email provided, please try again."
   },
   "sign-up": {
