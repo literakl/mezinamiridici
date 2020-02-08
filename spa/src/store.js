@@ -173,17 +173,18 @@ export default new Vuex.Store({
       context.commit('SET_USER_TOKEN', null);
 
       try {
-        const request = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
+        const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
           email: payload.email,
           password: payload.password,
         }));
 
-        const jwtData = jwtDecode(request.data.token);
+        const jwtData = jwtDecode(axiosResponse.data.data);
+        localStorage.setItem('jwt', axiosResponse.data.data);
 
         context.commit('SET_SIGNED_IN', true);
-        context.commit('SET_USER_TOKEN', request.data);
+        context.commit('SET_USER_TOKEN', axiosResponse.data);
         context.commit('SET_USER_ID', jwtData.userId);
-        return request;
+        return true;
       } catch (err) {
         context.commit('SET_SIGNED_IN', false);
         throw err;
@@ -191,17 +192,13 @@ export default new Vuex.Store({
     },
     GET_USER_NICKNAME: async (context) => {
       const jwt = localStorage.getItem('jwt');
-
       if (!jwt) return;
-
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
     },
     GET_DECODED_JWT: () => {
       const jwt = localStorage.getItem('jwt');
-
       if (!jwt) return;
-
       const jwtData = jwtDecode(jwt);
       // eslint-disable-next-line consistent-return
       return {
@@ -213,15 +210,12 @@ export default new Vuex.Store({
     },
     GET_USER_ID: async (context) => {
       const jwt = localStorage.getItem('jwt');
-
       if (!jwt) return;
-
       const jwtData = jwtDecode(jwt);
       context.commit('SET_USER_ID', jwtData.userId);
     },
     GET_SIGNED_IN: async (context) => {
       const jwt = localStorage.getItem('jwt');
-
       if (jwt) {
         context.commit('SET_SIGNED_IN', true);
       } else {
@@ -231,7 +225,6 @@ export default new Vuex.Store({
     GET_SIGNED_IN_USER_PROFILE: async (context) => {
       const jwt = localStorage.getItem('jwt');
       if (!jwt) return;
-
       const jwtData = jwtDecode(jwt);
 
       const { data } = await axios.get(`${API_ENDPOINT}/users/${jwtData.userId}`);

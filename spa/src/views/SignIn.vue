@@ -43,7 +43,7 @@
                     <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
                 </div>
                 <div>
-                    <p v-if="loginError" class="signin__login-error">{{ $t('sign-in.reset-success') }}auth-error</p>
+                    <p v-if="loginError" class="signin__login-error">{{ $t('sign-in.auth-error') }}</p>
 
                     <TextInput
                       @input="emailInput"
@@ -178,13 +178,12 @@ export default {
       this.signingIn = true;
 
       try {
-        const response = await this.$store.dispatch('SIGN_USER_IN', {
+        const result = await this.$store.dispatch('SIGN_USER_IN', {
           email: this.email,
           password: this.password,
         });
 
-        if (response.status === 200) {
-          localStorage.setItem('jwt', response.data.token);
+        if (result) {
           await this.$router.push('/');
         } else {
           this.signInFailed();
