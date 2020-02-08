@@ -10,7 +10,7 @@
             </div>
 
             <TextInput
-              @input="forgotPasswordEmailInput"
+              v-model="forgotPasswordEmail"
               type="email"
               identifier="resetEmail"
               :placeholder="$t('sign-in.email-placeholder')"
@@ -46,7 +46,7 @@
                     <p v-if="loginError" class="signin__login-error">{{ $t('sign-in.auth-error') }}</p>
 
                     <TextInput
-                      @input="emailInput"
+                      v-model="email"
                       rules="required|email"
                       :placeholder="$t('sign-in.email-placeholder')"
                       class="signin__text-input"
@@ -55,7 +55,7 @@
                       />
 
                     <TextInput
-                      @input="passwordInput"
+                      v-model="password"
                       rules="required"
                       :placeholder="$t('sign-in.password-placeholder')"
                       class="signin__text-input"
@@ -141,15 +141,6 @@ export default {
     },
     redirectToSignUp() {
       this.$router.push({ name: 'sign-up' });
-    },
-    forgotPasswordEmailInput(data) {
-      this.forgotPasswordEmail = data;
-    },
-    passwordInput(data) {
-      this.password = data;
-    },
-    emailInput(data) {
-      this.email = data;
     },
     signInFailed() {
       this.email = '';
