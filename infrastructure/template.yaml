@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: production
-      CacheClusterEnabled: true
+      CacheClusterEnabled: false
       CacheClusterSize: '0.5'
       MethodSettings:
         - ResourcePath: /v1/polls
@@ -29,7 +29,7 @@ Resources:
           CachingEnabled: false
           HttpMethod: POST
         - ResourcePath: /v1/polls/{pollId}
-          CachingEnabled: true
+          CachingEnabled: false
           CacheTtlInSeconds: 600
           HttpMethod: GET
         - ResourcePath: /v1/polls/{pollId}/votes
@@ -51,7 +51,7 @@ Resources:
           CachingEnabled: false
           HttpMethod: POST
         - ResourcePath: /v1/users/{userId}
-          CachingEnabled: true
+          CachingEnabled: false
           CacheTtlInSeconds: 600
           HttpMethod: GET
         - ResourcePath: /v1/users/{userId}/votes
