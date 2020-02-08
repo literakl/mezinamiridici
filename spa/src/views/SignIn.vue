@@ -1,6 +1,6 @@
 <template>
   <div>
-      <Modal :show="forottenPassword">
+      <Modal :show="forgottenPassword">
           <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
 
           <div v-if="!passwordReset">
@@ -43,8 +43,6 @@
                     <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
                 </div>
                 <div>
-                    <p v-if="loginError" class="signin__login-error">{{ $t('sign-in.auth-error') }}</p>
-
                     <TextInput
                       v-model="email"
                       rules="required|email"
@@ -64,6 +62,12 @@
                       />
 
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
+
+                    <div v-if="error">
+                      <strong class="sign-up-form__errors-heading">
+                        {{ error }}
+                      </strong>
+                    </div>
 
                     <Button
                       :disabled="invalid"
@@ -123,30 +127,24 @@ export default {
   },
   data: () => ({
     page: 0,
-    forottenPassword: false,
-    loginError: false,
+    forgottenPassword: false,
     email: null,
     password: null,
     signingIn: false,
     forgotPasswordEmail: null,
     passwordReset: null,
+    error: null,
   }),
   methods: {
     openForgottenPassword() {
-      this.forottenPassword = true;
+      this.forgottenPassword = true;
     },
     closeForgottenPassword() {
-      this.forottenPassword = false;
+      this.forgottenPassword = false;
       this.passwordReset = null;
     },
     redirectToSignUp() {
       this.$router.push({ name: 'sign-up' });
-    },
-    signInFailed() {
-      this.email = '';
-      this.password = '';
-      this.loginError = true;
-      this.signingIn = false;
     },
     async forgotPassword() {
       try {
@@ -169,18 +167,20 @@ export default {
       this.signingIn = true;
 
       try {
-        const result = await this.$store.dispatch('SIGN_USER_IN', {
+        await this.$store.dispatch('SIGN_USER_IN', {
           email: this.email,
           password: this.password,
         });
 
-        if (result) {
-          await this.$router.push('/');
+        await this.$router.push('/');
+      } catch (error) {
+        console.log(error);
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.error = this.$t(error.response.data.errors[0].messageKey);
         } else {
-          this.signInFailed();
+          this.error = this.$t('sign-in.auth-error');
         }
-      } catch (e) {
-        this.signInFailed();
+        this.signingIn = false;
       }
     },
   },

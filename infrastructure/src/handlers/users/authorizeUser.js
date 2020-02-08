@@ -24,11 +24,11 @@ exports.handler = (payload, context, callback) => {
             console.log("User checks");
             if (!user) {
                 console.log("User not found " + email);
-                return api.sendErrorForbidden(callback, api.createError(2004, "Bad credentials"));
+                return api.sendErrorForbidden(callback, api.createError("Bad credentials", "sign-in.auth-error"));
             }
 
             if (! user.auth.verified) {
-                return api.sendErrorForbidden(callback, api.createError(2003, "User not verified"));
+                return api.sendErrorForbidden(callback, api.createError("User not verified", "sign-in.auth-not-verified"));
             }
 
             // following part takes more than 1 second with 128 MB RAM!
@@ -39,12 +39,12 @@ exports.handler = (payload, context, callback) => {
                 return api.sendRresponse(callback, api.createResponse(token));
             } else {
                 console.log("Password mismatch for user " + user._id);
-                return api.sendErrorForbidden(callback, api.createError(2004, "Bad credentials"));
+                return api.sendErrorForbidden(callback, api.createError("Bad credentials", "sign-in.auth-error"));
             }
         })
         .catch(err => {
             console.log("Request failed", err);
-            return api.sendInternalError(callback, api.createError(2003, err.Item));
+            return api.sendInternalError(callback, api.createError('Failed to authorize the user', "sign-in.something-went-wrong"));
         });
 };
 
