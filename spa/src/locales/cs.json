@@ -13,16 +13,21 @@
     },
     "sign-in": {
         "forgot-password-heading": "Zapomenuté heslo",
-        "email-reset-description": "Zadejte email a pošleme vám odkaz na nastavení hesla",
+        "email-reset-description": "Zadejte email a pošleme vám na něj odkaz na nastavení hesla",
         "email-placeholder": "Email",
         "password-placeholder": "Heslo",
         "reset-password-button": "Resetuj heslo",
         "modal-close-button": "Zavřít",
-        "sign-in-heading": "Přihlášení",
-        "sign-up-create-account-heading": "If you don't already have an account, click the button below to create one",
+        "sign-in-heading": "Přihlášení řidiče",
+        "sign-up-create-account-heading": "Registrace řidiče",
+        "sign-up-create-account-message": "Ještě nemáte řidičský účet? Pozor na kontroly! Bez místního řidičáku nemůžete plnohodnotně používat portál a zapojit se do komunity řidičů.",
         "forgot-password-link": "Zapomenuté heslo?",
         "sign-in-button": "Přihlásit",
-        "or": "OR"
+        "sign-up-button": "Registrovat",
+        "or": "NEBO",
+        "auth-error": "Nesprávné přihlašovací údaje",
+        "reset-succees": "Poslali jsme vám email s instrukcemi pro zmenu hesla. Pokud email nevidíte, podívejte se mezi spamy.",
+        "reset-error": "Nepodařilo se nám odeslat email s instrukcemi. Zkontrolujte si zadaný email a zkuste znovu."
     },
     "sign-up": {
         "heading": "Registrace",

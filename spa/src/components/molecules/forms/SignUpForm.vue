@@ -14,7 +14,8 @@
           rules="required|min:6"
           :label="$t('profile.password')"
           :placeholder="$t('sign-up.password-hint')"
-          name="password" type="password" />
+          name="password"
+          type="password" />
         <TextInput
           v-model="nickname"
           rules="required|min:3"

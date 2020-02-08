@@ -19,10 +19,15 @@
     "reset-password-button": "Reset password",
     "modal-close-button": "Close",
     "sign-in-heading": "Sign in",
-    "sign-up-create-account-heading": "If you don't already have an account, click the button below to create one",
+    "sign-up-create-account-heading": "Driver registration",
+    "sign-up-create-account-message": "Are you using this web without a driving license? You cannot use full potential of this web.",
     "forgot-password-link": "Forgot password?",
     "sign-in-button": "Sign in",
-    "or": "OR"
+    "sign-up-button": "Sign up",
+    "or": "OR",
+    "auth-error": "Incorrect username/password, please try again",
+    "reset-succees": "Please check your email for instructions on how to reset your password!",
+    "reset-error": "There was a problem sending a reset link to the email provided, please try again."
   },
   "sign-up": {
     "heading": "Sign up",

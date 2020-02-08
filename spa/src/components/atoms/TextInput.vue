@@ -15,8 +15,8 @@
         :for="name"
         :class="{ 'text-gray-700': !errors[0], 'text-red-600': errors[0] }"
       >
-        <div>
-          <span>{{ label || name }}</span>
+        <div v-if="label">
+          <span>{{ label }}</span>
           <span>{{ required ? ' *' : '' }}</span>
         </div>
       </label>

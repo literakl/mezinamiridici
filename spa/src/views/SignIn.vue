@@ -1,58 +1,122 @@
 <template>
-    <div>
-
+  <div>
       <Modal :show="forottenPassword">
           <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
+
           <div v-if="!passwordReset">
             <p>{{ $t('sign-in.email-reset-description') }}</p>
             <div v-if="passwordReset === false">
-              <p class="signin__forgot-password-error">There was a problem sending a reset link to the email provided, please try again.</p>
+              <p class="signin__forgot-password-error">{{ $t('sign-in.reset-error') }}</p>
             </div>
-            <TextInput type="resetEmail" identifier="resetEmail" :placeholder="$t('sign-in.email-placeholder')" class="signin__reset-text-input" @input="forgotPasswordEmailInput"/>
-            <Button :value="$t('sign-in.reset-password-button')" class="signin__forgotten-password-submit-button" @clicked="forgotPassword" />
+
+            <TextInput
+              @input="forgotPasswordEmailInput"
+              type="email"
+              identifier="resetEmail"
+              :placeholder="$t('sign-in.email-placeholder')"
+              class="signin__reset-text-input"/>
+
+            <Button
+              :value="$t('sign-in.reset-password-button')"
+              class="signin__forgotten-password-submit-button"
+              @clicked="forgotPassword" />
           </div>
+
           <div v-if="passwordReset === true">
-            <p class="signin__forgot-password-success">Please check your email for instructions on how to reset your password!</p>
+            <p class="signin__forgot-password-success">{{ $t('sign-in.reset-success') }}</p>
           </div>
-          <Button :value="$t('sign-in.modal-close-button')" class="signin__forgotten-password-close-button" @clicked="closeForgottenPassword"/>
+
+          <Button
+            :value="$t('sign-in.modal-close-button')"
+            class="signin__forgotten-password-close-button"
+            @clicked="closeForgottenPassword"/>
       </Modal>
 
-      <form @submit.prevent="signIn">
+    <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+      <form @submit.prevent="passes(signIn)">
           <div class="signin">
               <div class="signin__wrapper">
                 <div>
                     <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
                 </div>
                 <div>
-                    <h2>{{ $t('sign-in.sign-up-create-account-heading') }}</h2>
+                    <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
                 </div>
                 <div>
-                    <p v-if="loginError" class="signin__login-error">Incorrect username/password, please try again</p>
-                    <TextInput type="email" identifier="email" :placeholder="$t('sign-in.email-placeholder')" class="signin__text-input" @input="emailInput"/>
-                    <TextInput type="password" identifier="password" :placeholder="$t('sign-in.password-placeholder')" class="signin__text-input" @input="passwordInput"/>
+                    <p v-if="loginError" class="signin__login-error">{{ $t('sign-in.reset-success') }}auth-error</p>
+
+                    <TextInput
+                      @input="emailInput"
+                      rules="required|email"
+                      :placeholder="$t('sign-in.email-placeholder')"
+                      class="signin__text-input"
+                      name="email"
+                      type="email"
+                      />
+
+                    <TextInput
+                      @input="passwordInput"
+                      rules="required"
+                      :placeholder="$t('sign-in.password-placeholder')"
+                      class="signin__text-input"
+                      name="password"
+                      type="password"
+                      />
+
                     <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
-                    <Button :disabled="signingIn" class="signin__sign-in-button" :value="$t('sign-in.sign-in-button')" @clicked="signIn"/>
+
+                    <Button
+                      :disabled="invalid"
+                      class="signin__sign-in-button"
+                      :value="$t('sign-in.sign-in-button')"
+                      @clicked="signIn"/>
                 </div>
                 <div>
-                    <Button value="Sign up now" id="signin__sign-up-button" @clicked="redirectToSignIn" />
-                    <div class="signin__or">{{ $t('sign-in.or') }}</div>
-                    <p>Facebook login button will go here</p>
-                    <p>Google login button will go here</p>
+                    {{ $t('sign-in.sign-up-create-account-message') }}
+
+                    <Button
+                      :value="$t('sign-in.sign-up-button')"
+                      id="signin__sign-up-button"
+                      @clicked="redirectToSignUp" />
+                  <!--
+                                      <div class="signin__or">{{ $t('sign-in.or') }}</div>
+                                      <p>Facebook login button will go here</p>
+                                      <p>Google login button will go here</p>
+                  -->
                 </div>
               </div>
           </div>
       </form>
-    </div>
+    </ValidationObserver>
+  </div>
 </template>
 
 <script>
+import { extend, ValidationObserver, configure } from 'vee-validate';
+import {
+// eslint-disable-next-line camelcase
+  required, email,
+} from 'vee-validate/dist/rules';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import Modal from '@/components/molecules/Modal.vue';
+import i18n from '../i18n';
+
+extend('email', email);
+extend('required', required);
+configure({
+  defaultMessage: (field, values) => {
+    /* eslint no-underscore-dangle: 0 */
+    /* eslint no-param-reassign: ["error", { "props": false }] */
+    values._field_ = i18n.t(`profile.${field}`);
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
 
 export default {
   name: 'signin',
   components: {
+    ValidationObserver,
     Button,
     TextInput,
     Modal,
@@ -75,7 +139,7 @@ export default {
       this.forottenPassword = false;
       this.passwordReset = null;
     },
-    redirectToSignIn() {
+    redirectToSignUp() {
       this.$router.push({ name: 'sign-up' });
     },
     forgotPasswordEmailInput(data) {
@@ -121,7 +185,7 @@ export default {
 
         if (response.status === 200) {
           localStorage.setItem('jwt', response.data.token);
-          this.$router.push('/');
+          await this.$router.push('/');
         } else {
           this.signInFailed();
         }
@@ -147,17 +211,17 @@ export default {
 
 input {
     width: 100%;
-    padding: 0px;
+    padding: 0;
 }
 
 h1 {
     padding: 0 0 20px 0;
-    margin: 0px;
+    margin: 0;
 }
 
 h2 {
     padding: 0 0 20px 0;
-    margin: 0px;
+    margin: 0;
     font-size: 14px;
     font-weight: normal;
     text-align: center;
@@ -177,7 +241,7 @@ h2 {
     margin: 0 auto;
     max-width: 80%;
     padding: 1em 0;
-    grid-column-gap: 20px;
+    grid-column-gap: 50px;
 }
 
 .signin__sign-in-button {
@@ -186,7 +250,7 @@ h2 {
 
 #signin__sign-up-button {
     background: #9b9b9b;
-    box-shadow: 0px 4px #868686;
+    box-shadow: 0 4px #868686;
     color: #FFF;
     font-size: 14px;
     width: 100%;
@@ -195,7 +259,7 @@ h2 {
 
 .signin__facebook-button {
     background: #9b9b9b;
-    box-shadow: 0px 4px #868686;
+    box-shadow: 0 4px #868686;
     color: #FFF;
     font-size: 14px;
     width: 100%;
@@ -233,7 +297,8 @@ h2 {
 
 @media all and (min-width: 850px) {
     .signin__wrapper {
-        grid-template-columns: 0.2fr 0.2fr;
+        grid-template-columns: 0.4fr 0.4fr;
+        align-items: end;
     }
 }
 </style>

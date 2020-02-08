@@ -6,20 +6,20 @@
                     <dt>{{ $t('profile.nickname') }}</dt>
                     <dl>{{profile.nickname}}</dl>
 
-                    <dt v-if="!nicknameOnly">{{ $t('profile.driving-for') }}</dt>
-                    <dl v-if="!nicknameOnly">{{drivingSince}}</dl>
+                    <dt v-if="publicProfile">{{ $t('profile.driving-for') }}</dt>
+                    <dl v-if="publicProfiley">{{drivingSince}}</dl>
 
-                    <dt v-if="!nicknameOnly">{{ $t('profile.vehicle') }}</dt>
-                    <dl v-if="!nicknameOnly">{{vehicles}}</dl>
+                    <dt v-if="publicProfiley">{{ $t('profile.vehicle') }}</dt>
+                    <dl v-if="publicProfiley">{{vehicles}}</dl>
 
-                    <dt v-if="!nicknameOnly">{{ $t('profile.region') }}</dt>
-                    <dl v-if="!nicknameOnly">{{profile.locationalRegion}}</dl>
+                    <dt v-if="publicProfiley">{{ $t('profile.region') }}</dt>
+                    <dl v-if="publicProfiley">{{profile.locationalRegion}}</dl>
 
-                    <dt v-if="!nicknameOnly">{{ $t('profile.education') }}</dt>
-                    <dl v-if="!nicknameOnly">{{profile.education}}</dl>
+                    <dt v-if="publicProfiley">{{ $t('profile.education') }}</dt>
+                    <dl v-if="publicProfiley">{{profile.education}}</dl>
 
-                    <dt v-if="!nicknameOnly">{{ $t('profile.sex') }}</dt>
-                    <dl v-if="!nicknameOnly">{{profile.sex}}</dl>
+                    <dt v-if="publicProfiley">{{ $t('profile.sex') }}</dt>
+                    <dl v-if="publicProfiley">{{profile.sex}}</dl>
                 </dl>
 
                 <p>
@@ -76,8 +76,8 @@ export default {
       }
       return this.$store.getters.SIGNED_IN_USER_PROFILE;
     },
-    nicknameOnly() {
-      return this.profile.shareProfile === 'share-nickname' && this.id !== undefined && this.id !== null;
+    publicProfile() {
+      return this.profile.prefs.public === true && this.id !== undefined && this.id !== null;
     },
     drivingSince() {
       const length = new Date().getFullYear() - parseInt(this.profile.drivingSince, 10);
