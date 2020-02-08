@@ -125,7 +125,7 @@ export default {
       clear: both;
       input {
         position: relative;
-        z-index: 99999;
+        /*z-index: 99999;*/
         padding: 0.4rem;
         width: 60%;
         font-size: 20px;
