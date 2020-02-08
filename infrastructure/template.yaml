@@ -623,6 +623,7 @@ Resources:
         Variables:
           MONGODB_URI: !Ref DatabaseUri
           JWT_SECRET: !Ref JwtSecret
+      Timeout: 10
       Events:
         Api:
           Type: Api
