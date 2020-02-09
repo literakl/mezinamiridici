@@ -33,7 +33,7 @@ export default {
   name: 'OpinionButtons',
   computed: {
     signedIn() {
-      return this.$store.getters.SIGNED_IN;
+      return this.$store.getters.IS_AUTHORIZED;
     },
   },
   methods: {

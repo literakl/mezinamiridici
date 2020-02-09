@@ -1,29 +1,43 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-
+const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
 exports.handler = (payload, context, callback) => {
-    dynamodb.get({
-        "TableName": "BUDUserTable",
-        "Key": {
-            "userId": payload.pathParameters.userId
-        },
-        "ConsistentRead": false,
-    }, (err, data) => {
-        delete data.password;
-        delete data.marketing;
-        delete data.verificationToken;
-        delete data.verified;
-        delete data.dataProcessing;
-        delete data.email;
-        if(data.Item.nickname != undefined)
-            data.Item.nickname = data.Item.nickname.toLowerCase()
+    console.log("handler starts");
+    console.log(payload);
+    console.log(context);
+    const userId = payload.pathParameters.userId;
+    if (! userId) {
+        return api.sendBadRequest(callback, api.createError("Missing user id", "generic.internal-error"));
+    }
 
-        if (err) {
-            return api.sendInternalError(callback, err.Item);
-        } else {
-            return api.sendRresponse(callback, data.Item, "public, max-age=600");
-        }
-    });
+    // This freezes node event loop when callback is invoked
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    mongo.connectToDatabase()
+        .then(db => {
+            console.log("Mongo connected");
+            return findUser(db, userId);
+        })
+        .then(user => {
+            console.log("User fetched");
+            if (!user) {
+                return api.sendErrorForbidden(callback, api.createError("User not found", "profile.user-not-found"));
+            }
+            // todo check user rights - signed user can see everything, other user cannot see email and profile data, unless profile is public
+            return api.sendRresponse(callback, api.createResponse(user));
+            // return api.sendRresponse(callback, api.createResponse(user), "public, max-age=600");
+        })
+        .catch(err => {
+            console.log("Request failed", err);
+            return api.sendInternalError(callback, api.createError('Failed to load  the user', "generic.something-went-wrong"));
+        });
 };
+
+function findUser(dbClient, userId) {
+    console.log("findUser");
+    return dbClient.db()
+        .collection("users")
+        .findOne({ "_id": userId }, {projection: { auth: 0, "prefs.email": 0, consent: 0 }})
+        // .project({ auth: 0, prefs: 0, consent: 0 })
+        .then(doc => { return doc; });
+}

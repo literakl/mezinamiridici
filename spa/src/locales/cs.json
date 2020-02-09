@@ -11,6 +11,9 @@
         "advertisement": "Reklama",
         "archive": "Archiv"
     },
+    "generic": {
+        "internal-error": "Jejda, chybička se vloudila. Omlouváme se."
+    },
     "sign-in": {
         "forgot-password-heading": "Zapomenuté heslo",
         "email-reset-description": "Zadejte email a pošleme vám na něj odkaz na nastavení hesla",
@@ -98,7 +101,8 @@
         "finish-button": "Dokončit",
         "born": "Rok narození",
         "terms": "Souhlasím s podmínkami užití",
-        "processing": "Souhlasím se zpracováním osobních údajů"
+        "processing": "Souhlasím se zpracováním osobních údajů",
+        "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci"
     },
     "bar-chart": {
         "no-problem": "Není problém",

@@ -14,12 +14,11 @@ export default new Vuex.Store({
     latestPollId: null,
     pollVotes: null,
     pollComments: null,
+    authorized: false,
     userToken: null,
     userId: null,
     userNickname: null,
-    signedIn: false,
     signedInUserProfile: null,
-    userProfile: null,
   },
   getters: {
     POLLS: state => state.polls,
@@ -27,12 +26,11 @@ export default new Vuex.Store({
     LATEST_POLL: state => state.latestPollId,
     POLL_VOTES: state => state.pollVotes,
     POLL_COMMENTS: state => state.pollComments,
+    IS_AUTHORIZED: state => state.authorized,
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
-    SIGNED_IN: state => state.signedIn,
     SIGNED_IN_USER_PROFILE: state => state.signedInUserProfile,
-    USER_PROFILE: state => state.userProfile,
   },
   mutations: {
     SET_POLLS: (state, payload) => {
@@ -42,7 +40,6 @@ export default new Vuex.Store({
       state.poll = payload;
     },
     SET_LATEST_POLL: (state, payload) => {
-      console.log('[SET_LATEST_POLL] ', payload);
       state.latestPollId = payload;
     },
     SET_POLL_VOTES: (state, payload) => {
@@ -65,9 +62,6 @@ export default new Vuex.Store({
     },
     SET_SIGNED_IN_USER_PROFILE: (state, payload) => {
       state.signedInUserProfile = payload;
-    },
-    SET_USER_PROFILE: (state, payload) => {
-      state.userProfile = payload;
     },
   },
   actions: {
@@ -171,24 +165,21 @@ export default new Vuex.Store({
     SIGN_USER_IN: async (context, payload) => {
       console.log('SIGN_USER_IN');
       context.commit('SET_USER_TOKEN', null);
+      context.commit('SET_SIGNED_IN', false);
+      context.commit('SET_USER_ID', null);
 
-      try {
-        const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
-          email: payload.email,
-          password: payload.password,
-        }));
+      const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
+        email: payload.email,
+        password: payload.password,
+      }));
 
-        const jwtData = jwtDecode(axiosResponse.data.data);
-        localStorage.setItem('jwt', axiosResponse.data.data);
+      const jwtData = jwtDecode(axiosResponse.data.data);
+      localStorage.setItem('jwt', axiosResponse.data.data);
 
-        context.commit('SET_SIGNED_IN', true);
-        context.commit('SET_USER_TOKEN', axiosResponse.data);
-        context.commit('SET_USER_ID', jwtData.userId);
-        return true;
-      } catch (err) {
-        context.commit('SET_SIGNED_IN', false);
-        throw err;
-      }
+      context.commit('SET_SIGNED_IN', true);
+      context.commit('SET_USER_TOKEN', axiosResponse.data);
+      context.commit('SET_USER_ID', jwtData.userId);
+      return true;
     },
     GET_USER_NICKNAME: async (context) => {
       const jwt = localStorage.getItem('jwt');
@@ -203,9 +194,7 @@ export default new Vuex.Store({
       // eslint-disable-next-line consistent-return
       return {
         decoded: jwtData,
-        encoded: {
-          token: jwt,
-        },
+        encoded: { token: jwt },
       };
     },
     GET_USER_ID: async (context) => {
@@ -227,7 +216,14 @@ export default new Vuex.Store({
       if (!jwt) return;
       const jwtData = jwtDecode(jwt);
 
-      const { data } = await axios.get(`${API_ENDPOINT}/users/${jwtData.userId}`);
+      const { data } = await axios.get(
+        `${API_ENDPOINT}/users/${jwtData.userId}`,
+        {
+          headers: {
+            Authorization: `bearer ${jwt}`,
+          },
+        },
+      );
       context.commit('SET_SIGNED_IN_USER_PROFILE', data);
 
       // eslint-disable-next-line consistent-return
@@ -264,9 +260,10 @@ export default new Vuex.Store({
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.userId}/votes`);
       return data.find(vote => vote.pollId === payload.pollId);
     },
+    // eslint-disable-next-line arrow-body-style
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
-      const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.id}`);
-      context.commit('SET_USER_PROFILE', data);
+      // const jwt = localStorage.getItem('jwt');
+      return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
     VERIFY_USER: async (context, payload) => {
       await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);

@@ -11,6 +11,9 @@
     "advertisement": "Advertisement",
     "archive": "Archive"
   },
+  "generic": {
+    "internal-error": "Oops, this is an error. We are sorry."
+  },
   "sign-in": {
     "forgot-password-heading": "Forgot password",
     "email-reset-description": "Enter your email and we will send you a reset link",
@@ -97,7 +100,8 @@
     "finish-button": "Finish",
     "born": "Born",
     "terms": "I agree with terms and conditions",
-    "processing": "I agree with processing of my personal data"
+    "processing": "I agree with processing of my personal data",
+    "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci"
   },
   "bar-chart": {
     "no-problem": "No problem",

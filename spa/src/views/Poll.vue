@@ -75,7 +75,7 @@ export default {
   },
   computed: {
     signedIn() {
-      return this.$store.getters.SIGNED_IN;
+      return this.$store.getters.IS_AUTHORIZED;
     },
     comments() {
       const comments = this.$store.getters.POLL_COMMENTS;

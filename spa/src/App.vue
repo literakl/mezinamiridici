@@ -11,12 +11,12 @@
           <h1>{{ $t('app.name') }}</h1>
           <h2>{{ $t('app.slogan') }}</h2>
         </div>
-        <div class="app__header-sign-in" v-if="!signedIn">
+        <div class="app__header-sign-in" v-if="!authorized">
           <router-link to="/sign-up">{{ $t('app.sign-up') }}</router-link> /
           <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link>
         </div>
-        <div class="app__header-sign-in" v-if="signedIn">
-          <router-link to="/profile">{{nickname}}</router-link>
+        <div class="app__header-sign-in" v-if="authorized">
+          <router-link :to="'/profile/' || {signedId}">{{nickname}}</router-link>
         </div>
       </div>
     </header>
@@ -39,8 +39,12 @@
 export default {
   name: 'App',
   computed: {
-    signedIn() {
-      return this.$store.getters.SIGNED_IN;
+    authorized() {
+      return this.$store.getters.IS_AUTHORIZED;
+    },
+    signedId() {
+      console.log(`user id = ${this.$store.getters.USER_ID}`);
+      return this.$store.getters.USER_ID;
     },
     nickname() {
       return this.$store.getters.USER_NICKNAME;

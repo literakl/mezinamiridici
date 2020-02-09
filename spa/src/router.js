@@ -7,7 +7,7 @@ Vue.use(Router);
 
 const requireUnauth = (to, from, next) => {
   store.dispatch('GET_SIGNED_IN');
-  if (store.getters.SIGNED_IN) {
+  if (store.getters.IS_AUTHORIZED) {
     next({ name: 'home' });
     return;
   }
@@ -17,7 +17,7 @@ const requireUnauth = (to, from, next) => {
 
 const requireAuth = (to, from, next) => {
   store.dispatch('GET_SIGNED_IN');
-  if (store.getters.SIGNED_IN) {
+  if (store.getters.IS_AUTHORIZED) {
     next();
     return;
   }
@@ -58,15 +58,9 @@ export default new Router({
       component: () => import('./views/Polls.vue'),
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('./views/Profile.vue'),
-      beforeEnter: requireAuth,
-    },
-    {
       path: '/profile/:id',
       name: 'user-profile',
-      component: () => import('./views/ProfileVisitor.vue'),
+      component: () => import('./views/Profile.vue'),
       props: true,
     },
     {
