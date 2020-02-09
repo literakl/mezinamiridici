@@ -79,7 +79,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('GET_USER_ID');
+    // this.$store.dispatch('GET_USER_ID');
     console.log(this.$store.getters.USER_ID);
     const endpoint = window.location.pathname.split('/')[1];
     console.log(endpoint);

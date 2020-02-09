@@ -74,7 +74,6 @@ export default {
     id: String,
   },
   data: () => ({
-    profilePromise: null,
     userProfile: null,
     error: null,
   }),
@@ -103,20 +102,15 @@ export default {
       return this.userProfile.driving.vehicles.join(' ');
     },
   },
-  created() {
+  async created() {
     if (this.myProfile) {
       // todo check case when the method is called before user is fetched
       this.userProfile = this.$store.getters.SIGNED_IN_USER_PROFILE;
       console.log(`my profile: ${this.userProfile}`);
-    } else {
-      this.profilePromise = this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id: this.id });
-      console.log(`promise: ${this.profilePromise}`);
     }
-  },
-  async mounted() {
     if (!this.userProfile) {
       try {
-        const response = await this.profilePromise;
+        const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id: this.id });
         console.log(response);
         this.userProfile = response.data.data;
       } catch (err) {
@@ -128,7 +122,6 @@ export default {
         }
       }
     }
-    return this.userProfile;
   },
 };
 

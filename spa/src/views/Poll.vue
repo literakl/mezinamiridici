@@ -44,7 +44,7 @@ export default {
     vote: String,
   },
   async created() {
-    this.$store.dispatch('GET_USER_ID');
+    // this.$store.dispatch('GET_USER_ID');
     // TODO:WARNING commenting this because of duplicate network call
     // await this.$store.dispatch('GET_POLL_COMMENTS', {
     //   id: this.id

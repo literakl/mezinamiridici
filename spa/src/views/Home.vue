@@ -28,8 +28,8 @@ export default {
   //   }
   // },
   async created() {
-    await this.$store.dispatch('GET_USER_ID');
-    await this.$store.dispatch('GET_USER_NICKNAME');
+    // await this.$store.dispatch('GET_USER_ID');
+    // await this.$store.dispatch('GET_USER_NICKNAME');
     // TODO:Warning
     // await this.$store.dispatch('GET_POLLS');
   },

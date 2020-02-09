@@ -57,8 +57,8 @@ export default new Vuex.Store({
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
     },
-    SET_SIGNED_IN: (state, payload) => {
-      state.signedIn = payload;
+    SET_AUTHORIZED: (state, payload) => {
+      state.authorized = payload;
     },
     SET_SIGNED_IN_USER_PROFILE: (state, payload) => {
       state.signedInUserProfile = payload;
@@ -165,7 +165,7 @@ export default new Vuex.Store({
     SIGN_USER_IN: async (context, payload) => {
       console.log('SIGN_USER_IN');
       context.commit('SET_USER_TOKEN', null);
-      context.commit('SET_SIGNED_IN', false);
+      context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
 
       const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
@@ -176,16 +176,10 @@ export default new Vuex.Store({
       const jwtData = jwtDecode(axiosResponse.data.data);
       localStorage.setItem('jwt', axiosResponse.data.data);
 
-      context.commit('SET_SIGNED_IN', true);
+      context.commit('SET_AUTHORIZED', true);
       context.commit('SET_USER_TOKEN', axiosResponse.data);
       context.commit('SET_USER_ID', jwtData.userId);
       return true;
-    },
-    GET_USER_NICKNAME: async (context) => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-      const jwtData = jwtDecode(jwt);
-      context.commit('SET_USER_NICKNAME', jwtData.nickname);
     },
     GET_DECODED_JWT: () => {
       const jwt = localStorage.getItem('jwt');
@@ -197,37 +191,18 @@ export default new Vuex.Store({
         encoded: { token: jwt },
       };
     },
-    GET_USER_ID: async (context) => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-      const jwtData = jwtDecode(jwt);
-      context.commit('SET_USER_ID', jwtData.userId);
-    },
-    GET_SIGNED_IN: async (context) => {
+    LOAD_USER: async (context) => {
+      console.log('LOAD_USER');
       const jwt = localStorage.getItem('jwt');
       if (jwt) {
-        context.commit('SET_SIGNED_IN', true);
+        const jwtData = jwtDecode(jwt);
+        context.commit('SET_USER_ID', jwtData.userId);
+        context.commit('SET_USER_NICKNAME', jwtData.nickname);
+        context.commit('SET_AUTHORIZED', true);
+        // todo authorize and fetch from server
       } else {
-        context.commit('SET_SIGNED_IN', false);
+        context.commit('SET_AUTHORIZED', false);
       }
-    },
-    GET_SIGNED_IN_USER_PROFILE: async (context) => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-      const jwtData = jwtDecode(jwt);
-
-      const { data } = await axios.get(
-        `${API_ENDPOINT}/users/${jwtData.userId}`,
-        {
-          headers: {
-            Authorization: `bearer ${jwt}`,
-          },
-        },
-      );
-      context.commit('SET_SIGNED_IN_USER_PROFILE', data);
-
-      // eslint-disable-next-line consistent-return
-      return data;
     },
     CREATE_USER_PROFILE: async (context, payload) => axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
       email: payload.email,

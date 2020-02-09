@@ -108,7 +108,7 @@ export default {
     },
   },
   async created() {
-    this.$store.dispatch('GET_USER_ID');
+    // this.$store.dispatch('GET_USER_ID');
 
     const voteTypes = {
       1: 'No problem',

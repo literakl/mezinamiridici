@@ -16,7 +16,7 @@
           <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link>
         </div>
         <div class="app__header-sign-in" v-if="authorized">
-          <router-link :to="'/profile/' || {signedId}">{{nickname}}</router-link>
+          <router-link :to="'/profile/' + userId">{{nickname}}</router-link>
         </div>
       </div>
     </header>
@@ -42,7 +42,7 @@ export default {
     authorized() {
       return this.$store.getters.IS_AUTHORIZED;
     },
-    signedId() {
+    userId() {
       console.log(`user id = ${this.$store.getters.USER_ID}`);
       return this.$store.getters.USER_ID;
     },
@@ -52,8 +52,8 @@ export default {
   },
   created() {
     console.log('Created');
-    this.$store.dispatch('GET_SIGNED_IN');
-    this.$store.dispatch('GET_USER_NICKNAME');
+    // this.$store.dispatch('GET_SIGNED_IN');
+    this.$store.dispatch('LOAD_USER');
   },
 };
 </script>

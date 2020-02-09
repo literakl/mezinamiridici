@@ -6,7 +6,6 @@ import store from './store';
 Vue.use(Router);
 
 const requireUnauth = (to, from, next) => {
-  store.dispatch('GET_SIGNED_IN');
   if (store.getters.IS_AUTHORIZED) {
     next({ name: 'home' });
     return;
@@ -16,7 +15,6 @@ const requireUnauth = (to, from, next) => {
 };
 
 const requireAuth = (to, from, next) => {
-  store.dispatch('GET_SIGNED_IN');
   if (store.getters.IS_AUTHORIZED) {
     next();
     return;
