@@ -17,7 +17,7 @@
         </div>
         <div class="app__header-sign-in" v-if="authorized">
           <router-link :to="'/profile/' + userId">{{nickname}}</router-link> /
-          <a v-on:click="signMeOut()" href="javascript:void(0)">{{ $t('app.sign-out') }}</a>
+          <a v-on:click="signMeOut()" href="#0">{{ $t('app.sign-out') }}</a>
         </div>
       </div>
     </header>
