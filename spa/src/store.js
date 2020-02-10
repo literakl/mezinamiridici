@@ -179,7 +179,7 @@ export default new Vuex.Store({
         context.commit('SET_AUTHORIZED', false);
         context.commit('SET_USER_ID', null);
         context.commit('SET_USER_NICKNAME', null);
-        return false;
+        throw e;
       }
     },
     SIGN_USER_OUT: (context) => {
