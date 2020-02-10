@@ -18,7 +18,6 @@ export default new Vuex.Store({
     userToken: null,
     userId: null,
     userNickname: null,
-    signedInUserProfile: null,
   },
   getters: {
     POLLS: state => state.polls,
@@ -30,7 +29,6 @@ export default new Vuex.Store({
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
-    SIGNED_IN_USER_PROFILE: state => state.signedInUserProfile,
   },
   mutations: {
     SET_POLLS: (state, payload) => {
@@ -59,9 +57,6 @@ export default new Vuex.Store({
     },
     SET_AUTHORIZED: (state, payload) => {
       state.authorized = payload;
-    },
-    SET_SIGNED_IN_USER_PROFILE: (state, payload) => {
-      state.signedInUserProfile = payload;
     },
   },
   actions: {
@@ -163,23 +158,29 @@ export default new Vuex.Store({
       }
     },
     SIGN_USER_IN: async (context, payload) => {
-      console.log('SIGN_USER_IN');
-      context.commit('SET_USER_TOKEN', null);
-      context.commit('SET_AUTHORIZED', false);
-      context.commit('SET_USER_ID', null);
+      try {
+        console.log('SIGN_USER_IN');
+        const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
+          email: payload.email,
+          password: payload.password,
+        }));
 
-      const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
-        email: payload.email,
-        password: payload.password,
-      }));
+        const jwt = axiosResponse.data.data;
+        const jwtData = jwtDecode(jwt);
+        localStorage.setItem('jwt', jwt);
 
-      const jwtData = jwtDecode(axiosResponse.data.data);
-      localStorage.setItem('jwt', axiosResponse.data.data);
-
-      context.commit('SET_AUTHORIZED', true);
-      context.commit('SET_USER_TOKEN', axiosResponse.data);
-      context.commit('SET_USER_ID', jwtData.userId);
-      return true;
+        context.commit('SET_USER_TOKEN', jwt);
+        context.commit('SET_AUTHORIZED', true);
+        context.commit('SET_USER_ID', jwtData.userId);
+        context.commit('SET_USER_NICKNAME', jwtData.nickname);
+        return true;
+      } catch (e) {
+        context.commit('SET_USER_TOKEN', null);
+        context.commit('SET_AUTHORIZED', false);
+        context.commit('SET_USER_ID', null);
+        context.commit('SET_USER_NICKNAME', null);
+        return false;
+      }
     },
     GET_DECODED_JWT: () => {
       const jwt = localStorage.getItem('jwt');
@@ -199,9 +200,12 @@ export default new Vuex.Store({
         context.commit('SET_USER_ID', jwtData.userId);
         context.commit('SET_USER_NICKNAME', jwtData.nickname);
         context.commit('SET_AUTHORIZED', true);
-        // todo authorize and fetch from server
+        context.commit('SET_USER_TOKEN', jwt);
+        // todo check JWT token
       } else {
+        context.commit('SET_USER_TOKEN', null);
         context.commit('SET_AUTHORIZED', false);
+        context.commit('SET_USER_ID', null);
       }
     },
     CREATE_USER_PROFILE: async (context, payload) => axios.post(`${API_ENDPOINT}/users`, JSON.stringify({

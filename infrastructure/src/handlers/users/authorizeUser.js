@@ -34,7 +34,7 @@ exports.handler = (payload, context, callback) => {
             // following part takes more than 1 second with 128 MB RAM!
             if (bcrypt.compareSync(password, user.auth.pwdHash)) {
                 console.log("Password verified");
-                const token = jwt.sign({"userId": user.auth._id, "nickname": user.bio.nickname}, process.env.JWT_SECRET);
+                const token = jwt.sign({"userId": user._id, "nickname": user.bio.nickname}, process.env.JWT_SECRET);
                 console.log("All good");
                 return api.sendRresponse(callback, api.createResponse(token));
             } else {

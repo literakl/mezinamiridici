@@ -103,23 +103,16 @@ export default {
     },
   },
   async created() {
-    if (this.myProfile) {
-      // todo check case when the method is called before user is fetched
-      this.userProfile = this.$store.getters.SIGNED_IN_USER_PROFILE;
-      console.log(`my profile: ${this.userProfile}`);
-    }
-    if (!this.userProfile) {
-      try {
-        const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id: this.id });
-        console.log(response);
-        this.userProfile = response.data.data;
-      } catch (err) {
-        console.log(err);
-        if (err.response && err.response.data && err.response.data.errors) {
-          this.error = this.$t(err.response.data.errors[0].messageKey);
-        } else {
-          this.error = this.$t('generic.internal-error');
-        }
+    try {
+      const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id: this.id });
+      console.log(response);
+      this.userProfile = response.data.data;
+    } catch (err) {
+      console.log(err);
+      if (err.response && err.response.data && err.response.data.errors) {
+        this.error = this.$t(err.response.data.errors[0].messageKey);
+      } else {
+        this.error = this.$t('generic.internal-error');
       }
     }
   },
