@@ -14,11 +14,10 @@ exports.handler = (payload, context, callback) => {
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;
 
-    // todo user nor found case
     mongo.connectToDatabase()
-        .then(db => {
+        .then(dbClient => {
             console.log("Mongo connected");
-            return findUser(db, email);
+            return mongo.findUser(dbClient, {email: email}, {projection: { auth: 1, "bio.nickname": 1 }});
         })
         .then(user => {
             console.log("User checks");
@@ -34,7 +33,8 @@ exports.handler = (payload, context, callback) => {
             // following part takes more than 1 second with 128 MB RAM!
             if (bcrypt.compareSync(password, user.auth.pwdHash)) {
                 console.log("Password verified");
-                const token = jwt.sign({"userId": user._id, "nickname": user.bio.nickname}, process.env.JWT_SECRET);
+                const jwtData = {"userId": user._id, "nickname": user.bio.nickname, pwdTimestamp: user.auth.pwdTimestamp};
+                const token = jwt.sign(jwtData, process.env.JWT_SECRET);
                 console.log("All good");
                 return api.sendRresponse(callback, api.createResponse(token));
             } else {
@@ -47,16 +47,6 @@ exports.handler = (payload, context, callback) => {
             return api.sendInternalError(callback, api.createError('Failed to authorize the user', "sign-in.something-went-wrong"));
         });
 };
-
-function findUser(dbClient, email) {
-    console.log("findUser");
-    return dbClient.db()
-        .collection("users")
-        .findOne({ "auth.email": email })
-        .then(doc => {
-            return doc;
-        });
-}
 
 const validateParameters = (email, password) => {
     let result = { "success": true };

@@ -32,7 +32,8 @@
     "auth-error": "Incorrect username/password, please try again",
     "auth-not-verified": "We are sorry but we can continue once you activate your account. Check email for the instructions.",
     "reset-success": "Please check your email for instructions on how to reset your password!",
-    "reset-error": "There was a problem sending a reset link to the email provided, please try again."
+    "reset-error": "There was a problem sending a reset link to the email provided, please try again.",
+    "obsolete-password": "Password has been changed. Please log in again."
   },
   "sign-up": {
     "heading": "Sign up",

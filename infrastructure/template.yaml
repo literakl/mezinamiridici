@@ -263,6 +263,15 @@ Resources:
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
+          /v1/users/validateToken:
+            post:
+              responses: {}
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDValidateTokenHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
           /v1/verify/{token}:
             get:
               responses: {}
@@ -649,6 +658,23 @@ Resources:
           Properties:
             Path: /v1/verify/{token}
             Method: Get
+            RestApiId:
+              Ref: BUDAPI
+  BUDValidateTokenHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDValidateTokenHandler
+      Handler: src/handlers/users/validateToken.handler
+      Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/validateToken
+            Method: Post
             RestApiId:
               Ref: BUDAPI
   BUDForgotPasswordHandler:

@@ -33,7 +33,8 @@
         "auth-not-verified": "Litujeme, ale nejdříve je potřeba dokončit aktivaci účtu. Otevřete email a postupujte podle instrukcí.",
         "something-went-wrong": "Něco se pokazilo, zkuste to znovu.",
         "reset-success": "Poslali jsme vám email s instrukcemi pro zmenu hesla. Pokud email nevidíte, podívejte se mezi spamy.",
-        "reset-error": "Nepodařilo se nám odeslat email s instrukcemi. Zkontrolujte si zadaný email a zkuste znovu."
+        "reset-error": "Nepodařilo se nám odeslat email s instrukcemi. Zkontrolujte si zadaný email a zkuste znovu.",
+        "obsolete-password": "Jejda, vaše heslo se mezitím změnilo. Přihlašte se znovu."
     },
     "sign-up": {
         "heading": "Registrace",

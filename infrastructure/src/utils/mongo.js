@@ -4,6 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 exports.connectToDatabase = connectToDatabase;
 exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
+exports.findUser = findUser;
 
 let MONGODB_URI = process.env.MONGODB_URI;
 let cachedDb = null;
@@ -25,6 +26,29 @@ function connectToDatabase() {
         .catch(err => {
             console.log("Connection error occurred: ", err);
             throw err;
+        });
+}
+
+function findUser(dbClient, params, projection) {
+    console.log("findUser");
+    const query = {};
+    if (params.token) {
+        query['auth.verifyToken'] = params.token;
+    }
+    if (params.userId) {
+        query._id = params.userId;
+    }
+    if (params.email) {
+        query['auth.email'] = params.email;
+    }
+    console.log(query);
+
+    return dbClient.db()
+        .collection("users")
+        .findOne(query, projection)
+        .then(doc => {
+            console.log("findUser mongo responded: " + doc);
+            return doc;
         });
 }
 

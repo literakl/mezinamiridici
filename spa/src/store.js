@@ -203,12 +203,13 @@ export default new Vuex.Store({
       console.log('LOAD_USER');
       const jwt = localStorage.getItem('jwt');
       if (jwt) {
+        await axios.post(`${API_ENDPOINT}/validateToken`, JSON.stringify({ jwtToken: jwt }));
+
         const jwtData = jwtDecode(jwt);
         context.commit('SET_USER_ID', jwtData.userId);
         context.commit('SET_USER_NICKNAME', jwtData.nickname);
         context.commit('SET_AUTHORIZED', true);
         context.commit('SET_USER_TOKEN', jwt);
-        // todo check JWT token
       } else {
         context.commit('SET_USER_TOKEN', null);
         context.commit('SET_AUTHORIZED', false);

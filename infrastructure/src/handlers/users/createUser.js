@@ -75,6 +75,7 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
         "auth": {
             "email": email,
             "pwdHash": passwordHash,
+            "pwdTimestamp": now,
             "verified": false,
             "verifyToken": verificationToken
         },

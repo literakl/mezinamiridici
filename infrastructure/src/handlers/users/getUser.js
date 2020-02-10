@@ -14,9 +14,9 @@ exports.handler = (payload, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
 
     mongo.connectToDatabase()
-        .then(db => {
+        .then(dbClient => {
             console.log("Mongo connected");
-            return findUser(db, userId);
+            return mongo.findUser(dbClient, {userId: userId}, {projection: { auth: 0, "prefs.email": 0, consent: 0 }});
         })
         .then(user => {
             console.log("User fetched");
@@ -32,12 +32,3 @@ exports.handler = (payload, context, callback) => {
             return api.sendInternalError(callback, api.createError('Failed to load  the user', "generic.something-went-wrong"));
         });
 };
-
-function findUser(dbClient, userId) {
-    console.log("findUser");
-    return dbClient.db()
-        .collection("users")
-        .findOne({ "_id": userId }, {projection: { auth: 0, "prefs.email": 0, consent: 0 }})
-        // .project({ auth: 0, prefs: 0, consent: 0 })
-        .then(doc => { return doc; });
-}

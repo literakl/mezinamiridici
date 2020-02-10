@@ -3,6 +3,7 @@
   "auth": {
     "email": "leos@literak.cz",
     "pwdHash": "ABCDEFGH",
+    "pwdTimestamp": 1579203825,
     "verified": true,
     "verifyToken": "ABCDEFGH"
   },

@@ -13,7 +13,7 @@ exports.handler = async (payload, context, callback) => {
     try {
         const dbClient = await mongo.connectToDatabase();
         console.log("Mongo connected");
-        const user = await findUser(dbClient, token);
+        const user = await mongo.findUser(dbClient, {token: token}, {projection: { auth: 1 }});
         if (!user) {
             return api.sendErrorForbidden(callback, api.createError('user has already been verified', "sign-up.already-verified"));
         }
@@ -38,15 +38,4 @@ function verifyUser(dbClient, user) {
     query.$set['auth.verified'] = true;
     query.$unset['auth.verifyToken'] = '';
     return dbClient.db().collection("users").updateOne({_id: user._id}, query);
-}
-
-function findUser(dbClient, token) {
-    console.log("findUser");
-    return dbClient.db()
-        .collection("users")
-        .findOne({ 'auth.verifyToken': token })
-        .then(doc => {
-            console.log("findUser mongo responded: " + doc);
-            return doc;
-        });
 }
