@@ -182,6 +182,13 @@ export default new Vuex.Store({
         return false;
       }
     },
+    SIGN_USER_OUT: (context) => {
+      localStorage.removeItem('jwt');
+      context.commit('SET_USER_TOKEN', null);
+      context.commit('SET_AUTHORIZED', false);
+      context.commit('SET_USER_ID', null);
+      context.commit('SET_USER_NICKNAME', null);
+    },
     GET_DECODED_JWT: () => {
       const jwt = localStorage.getItem('jwt');
       if (!jwt) return;

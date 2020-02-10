@@ -16,7 +16,8 @@
           <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link>
         </div>
         <div class="app__header-sign-in" v-if="authorized">
-          <router-link :to="'/profile/' + userId">{{nickname}}</router-link>
+          <router-link :to="'/profile/' + userId">{{nickname}}</router-link> /
+          <a v-on:click="signMeOut()" href="javascript:void(0)">{{ $t('app.sign-out') }}</a>
         </div>
       </div>
     </header>
@@ -54,6 +55,11 @@ export default {
     console.log('Created');
     // this.$store.dispatch('GET_SIGNED_IN');
     this.$store.dispatch('LOAD_USER');
+  },
+  methods: {
+    signMeOut() {
+      this.$store.dispatch('SIGN_USER_OUT');
+    },
   },
 };
 </script>
