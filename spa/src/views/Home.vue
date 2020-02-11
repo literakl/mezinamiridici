@@ -4,23 +4,23 @@
       Ads
     </div>
     <div id="home__content">
-      <PollVoting v-if="this.$store.getters.LATEST_POLL" :id="this.$store.getters.LATEST_POLL" />
-      <TopPolls />
+<!--      <PollVoting v-if="this.$store.getters.LATEST_POLL" :id="this.$store.getters.LATEST_POLL" />-->
+<!--      <TopPolls />-->
     </div>
   </div>
 </template>
 
 <script>
-import TopPolls from '@/components/molecules/TopPolls.vue';
-import PollVoting from '@/components/organisms/PollVoting.vue';
+// import TopPolls from '@/components/molecules/TopPolls.vue';
+// import PollVoting from '@/components/organisms/PollVoting.vue';
 
 // const pollId = "30cc4cab-4fe7-4a9b-a5c2-eaa93811ef59"
 
 export default {
   name: 'home',
   components: {
-    TopPolls,
-    PollVoting,
+    // TopPolls,
+    // PollVoting,
   },
   // data() {
   //   return {
