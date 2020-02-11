@@ -15,5 +15,8 @@
   },
   "BUDGetUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
+  },
+  "BUDValidateTokenHandler": {
+    "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
   }
 }

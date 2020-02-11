@@ -63,7 +63,7 @@ Resources:
         - ResourcePath: /v1/authorizeUser
           CachingEnabled: false
           HttpMethod: POST
-        - ResourcePath: /v1/validateToken
+        - ResourcePath: /v1/users/{userId}/validateToken
           CachingEnabled: false
           HttpMethod: POST
         - ResourcePath: /v1/forgotPassword
@@ -266,7 +266,7 @@ Resources:
                 passthroughBehavior: when_no_match
                 httpMethod: POST
                 type: aws_proxy
-          /v1/validateToken:
+          /v1/users/{userId}/validateToken:
             post:
               responses: {}
               x-amazon-apigateway-integration:

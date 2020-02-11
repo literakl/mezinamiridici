@@ -26,7 +26,7 @@ exports.handler = (payload, context, callback) => {
                 console.log("User not found " + jwtData.userId);
                 return api.sendErrorForbidden(callback, api.createError("User does not exist", "sign-in.auth-error"));
             }
-            if (jwtData.pwdTimestamp < user.auth.pwdTimestamp) {
+            if (Date.parse(jwtData.pwdTimestamp) <= Date.parse(user.auth.pwdTimestamp)) {
                 return api.sendErrorForbidden(callback, api.createError("Obsolete password", "sign-in.obsolete-password"));
             }
             return api.sendRresponse(callback, api.createResponse("OK"));
