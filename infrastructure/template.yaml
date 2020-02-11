@@ -63,6 +63,9 @@ Resources:
         - ResourcePath: /v1/authorizeUser
           CachingEnabled: false
           HttpMethod: POST
+        - ResourcePath: /v1/users/validateToken
+          CachingEnabled: false
+          HttpMethod: POST
         - ResourcePath: /v1/forgotPassword
           CachingEnabled: false
           HttpMethod: POST
