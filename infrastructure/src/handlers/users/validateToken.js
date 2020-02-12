@@ -10,7 +10,7 @@ exports.handler = (payload, context, callback) => {
     if (! jwtToken) {
         return api.sendBadRequest(callback, api.createError("Missing user id", "generic.internal-error"));
     }
-    const jwtData = jwt.decode(jwtToken);
+    const jwtData = jwt.verify(jwtToken, process.env.JWT_SECRET);
 
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;

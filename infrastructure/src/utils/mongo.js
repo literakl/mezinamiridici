@@ -41,13 +41,12 @@ function findUser(dbClient, params, projection) {
     if (params.email) {
         query['auth.email'] = params.email;
     }
-    console.log(query);
 
     return dbClient.db()
         .collection("users")
         .findOne(query, projection)
         .then(doc => {
-            console.log("findUser mongo responded: " + doc);
+            console.log("findUser mongo responded: ", doc);
             return doc;
         });
 }

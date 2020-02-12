@@ -1,4 +1,7 @@
 {
+  "BUDAuthorizerHandler": {
+    "JWT_SECRET": "SUPERTAJNEHESLO"
+  },
   "BUDAuthorizeUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority",
     "JWT_SECRET": "SUPERTAJNEHESLO"
@@ -17,6 +20,7 @@
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
   },
   "BUDValidateTokenHandler": {
-    "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
+    "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority",
+    "JWT_SECRET": "SUPERTAJNEHESLO"
   }
 }
