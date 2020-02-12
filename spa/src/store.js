@@ -202,15 +202,24 @@ export default new Vuex.Store({
     LOAD_USER: async (context) => {
       console.log('LOAD_USER');
       const jwt = localStorage.getItem('jwt');
+      let clean = false;
       if (jwt) {
-        const jwtData = jwtDecode(jwt);
-        await axios.post(`${API_ENDPOINT}/users/${jwtData.userId}/validateToken`, JSON.stringify({ jwtToken: jwt }));
+        try {
+          const jwtData = jwtDecode(jwt);
+          await axios.post(`${API_ENDPOINT}/users/${jwtData.userId}/validateToken`, JSON.stringify({ jwtToken: jwt }));
 
-        context.commit('SET_USER_ID', jwtData.userId);
-        context.commit('SET_USER_NICKNAME', jwtData.nickname);
-        context.commit('SET_AUTHORIZED', true);
-        context.commit('SET_USER_TOKEN', jwt);
+          context.commit('SET_USER_ID', jwtData.userId);
+          context.commit('SET_USER_NICKNAME', jwtData.nickname);
+          context.commit('SET_AUTHORIZED', true);
+          context.commit('SET_USER_TOKEN', jwt);
+        } catch (e) {
+          console.log('Validate token failed', e);
+          clean = true;
+        }
       } else {
+        clean = true;
+      }
+      if (clean) {
         localStorage.removeItem('jwt');
         context.commit('SET_USER_TOKEN', null);
         context.commit('SET_AUTHORIZED', false);
