@@ -103,7 +103,9 @@
     "born": "Born",
     "terms": "I agree with terms and conditions",
     "processing": "I agree with processing of my personal data",
-    "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci"
+    "user-not-found": "We are sorry but this driver is unknown to us",
+    "update-button": "Update my profile",
+    "password-button": "Change my password"
   },
   "bar-chart": {
     "no-problem": "No problem",

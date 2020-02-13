@@ -104,7 +104,9 @@
         "born": "Rok narození",
         "terms": "Souhlasím s podmínkami užití",
         "processing": "Souhlasím se zpracováním osobních údajů",
-        "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci"
+        "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
+        "update-button": "Upravit profil",
+        "password-button": "Změnit heslo"
     },
     "bar-chart": {
         "no-problem": "Není problém",

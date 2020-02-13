@@ -1,65 +1,84 @@
 <template>
-    <div>
-        <div class="profile">
-            <div class="profile__wrapper">
-                <div v-if="error">
-                  <strong class="profile__errors-heading">
-                    {{ error }}
-                  </strong>
-                </div>
-
-                <dl v-if="userProfile && !error">
-                    <dt>{{ $t('profile.nickname') }}</dt>
-                    <dl>{{userProfile.bio.nickname}}</dl>
-
-                    <dt v-if="publicProfile">{{ $t('profile.driving-for') }}</dt>
-                    <dl v-if="publicProfile">{{drivingSince}}</dl>
-
-                    <dt v-if="publicProfile">{{ $t('profile.vehicle') }}</dt>
-                    <dl v-if="publicProfile">{{vehicles}}</dl>
-
-                    <dt v-if="publicProfile">{{ $t('profile.region') }}</dt>
-                    <dl v-if="publicProfile">{{userProfile.region}}</dl>
-
-                    <dt v-if="publicProfile">{{ $t('profile.education') }}</dt>
-                    <dl v-if="publicProfile">{{userProfile.bio.edu}}</dl>
-
-                    <dt v-if="publicProfile">{{ $t('profile.sex') }}</dt>
-                    <dl v-if="publicProfile">{{userProfile.bio.sex}}</dl>
-                </dl>
-
-                <p v-if="myProfile && !error">
-                  <router-link :to="{ name: 'update-profile'}">Update your profile</router-link>
-                  &middot;
-                  <router-link :to="{ name: 'update-password'}">Change your password</router-link>
-                </p>
-
-                 <content-loader
-                  :height="100"
-                  :width="400"
-                  :speed="2"
-                  primaryColor="#949494"
-                  secondaryColor="#606060"
-                  v-if="!userProfile && !error"
-                >
-                  <rect x="9" y="12" rx="3" ry="3" width="50" height="5" />
-                  <rect x="70" y="12" rx="3" ry="3" width="100" height="5" />
-
-                  <rect x="9" y="31" rx="3" ry="3" width="50" height="5" />
-                  <rect x="70" y="31" rx="3" ry="3" width="100" height="5" />
-
-                  <rect x="9" y="51" rx="3" ry="3" width="50" height="5" />
-                  <rect x="70" y="51" rx="3" ry="3" width="100" height="5" />
-
-                  <rect x="9" y="71" rx="3" ry="3" width="50" height="5" />
-                  <rect x="70" y="71" rx="3" ry="3" width="100" height="5" />
-
-                  <rect x="9" y="91" rx="3" ry="3" width="50" height="5" />
-                  <rect x="70" y="91" rx="3" ry="3" width="100" height="5" />
-                </content-loader>
-            </div>
+  <div>
+    <div class="profile">
+      <div class="profile__wrapper">
+        <div v-if="error">
+          <strong class="profile__errors-heading">
+            {{ error }}
+          </strong>
         </div>
+
+        <p v-if="myProfile && !error">
+          <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}
+          </router-link>
+          &middot;
+          <router-link :to="{ name: 'update-password'}">{{ $t('profile.password-button') }}
+          </router-link>
+        </p>
+
+        <dl v-if="userProfile && !error">
+          <dt>{{ $t('profile.nickname') }}</dt>
+          <dl>{{userProfile.bio.nickname}}</dl>
+
+          <template v-if="publicProfile">
+            <template v-if="userProfile.bio.sex">
+              <dt>{{ $t('profile.sex') }}</dt>
+              <dl>{{userProfile.bio.sex}}</dl>
+            </template>
+
+            <template v-if="userProfile.bio.born">
+              <dt>{{ $t('profile.born') }}</dt>
+              <dl>{{userProfile.bio.born}}</dl>
+            </template>
+
+            <template v-if="userProfile.driving.since">
+              <dt>{{ $t('profile.driving-for') }}</dt>
+              <dl>{{userProfile.driving.since}}</dl>
+            </template>
+
+            <template v-if="vehicles">
+              <dt>{{ $t('profile.vehicle') }}</dt>
+              <dl>{{vehicles}}</dl>
+            </template>
+
+            <template v-if="userProfile.bio.region">
+              <dt>{{ $t('profile.region') }}</dt>
+              <dl>{{userProfile.bio.region}}</dl>
+            </template>
+
+            <template v-if="userProfile.bio.edu">
+              <dt>{{ $t('profile.education') }}</dt>
+              <dl>{{userProfile.bio.edu}}</dl>
+            </template>
+          </template>
+        </dl>
+
+        <content-loader
+          :height="100"
+          :width="400"
+          :speed="2"
+          primaryColor="#949494"
+          secondaryColor="#606060"
+          v-if="!userProfile && !error"
+        >
+          <rect x="9" y="12" rx="3" ry="3" width="50" height="5"/>
+          <rect x="70" y="12" rx="3" ry="3" width="100" height="5"/>
+
+          <rect x="9" y="31" rx="3" ry="3" width="50" height="5"/>
+          <rect x="70" y="31" rx="3" ry="3" width="100" height="5"/>
+
+          <rect x="9" y="51" rx="3" ry="3" width="50" height="5"/>
+          <rect x="70" y="51" rx="3" ry="3" width="100" height="5"/>
+
+          <rect x="9" y="71" rx="3" ry="3" width="50" height="5"/>
+          <rect x="70" y="71" rx="3" ry="3" width="100" height="5"/>
+
+          <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
+          <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
+        </content-loader>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -84,19 +103,6 @@ export default {
     },
     publicProfile() {
       return this.myProfile || this.userProfile.prefs.public === true;
-    },
-    drivingSince() {
-      const length = new Date().getFullYear() - parseInt(this.userProfile.driving.since, 10);
-
-      if (length === 1) {
-        return '1 year';
-      }
-
-      if (length > 1) {
-        return `${length} years`;
-      }
-
-      return '0 years';
     },
     vehicles() {
       return this.userProfile.driving.vehicles.join(' ');
