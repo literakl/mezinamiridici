@@ -8,7 +8,7 @@
           </strong>
         </div>
 
-        <p v-if="myProfile && !error">
+        <p v-if="userProfile && myProfile && !error">
           <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}
           </router-link>
           &middot;
@@ -112,6 +112,8 @@ export default {
     this.getProfile(this.id);
   },
   beforeRouteUpdate(to, from, next) {
+    this.userProfile = null;
+    this.error = null;
     const { params: { id } } = to;
     this.getProfile(id);
     next();
