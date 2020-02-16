@@ -107,18 +107,30 @@ export default {
       return this.userProfile.driving.vehicles.reduce((acc, curr) => acc.concat(this.$t(`profile.vehicles.${curr}`), ' '), '');
     },
   },
-  async created() {
-    try {
-      const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id: this.id });
-      this.userProfile = response.data.data;
-    } catch (err) {
-      console.log(err);
-      if (err.response && err.response.data && err.response.data.errors) {
-        this.error = this.$t(err.response.data.errors[0].messageKey);
-      } else {
-        this.error = this.$t('generic.internal-error');
+  created() {
+    console.log('created');
+    this.getProfile(this.id);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { params: { id } } = to;
+    this.getProfile(id);
+    next();
+  },
+  methods: {
+    async getProfile(id) {
+      try {
+        console.log('getProfile');
+        const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
+        this.userProfile = response.data.data;
+      } catch (err) {
+        console.log(err);
+        if (err.response && err.response.data && err.response.data.errors) {
+          this.error = this.$t(err.response.data.errors[0].messageKey);
+        } else {
+          this.error = this.$t('generic.internal-error');
+        }
       }
-    }
+    },
   },
 };
 
