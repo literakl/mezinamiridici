@@ -10,7 +10,13 @@ exports.handler = (payload, context, callback) => {
     if (! jwtToken) {
         return api.sendBadRequest(callback, api.createError("Missing user id", "generic.internal-error"));
     }
-    const jwtData = jwt.verify(jwtToken, process.env.JWT_SECRET);
+
+    let jwtData;
+    try {
+        jwtData = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    } catch (err) {
+        return api.sendErrorForbidden(callback, api.createError("Invalid or expired web token", null));
+    }
 
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;
@@ -29,7 +35,9 @@ exports.handler = (payload, context, callback) => {
             if (Date.parse(jwtData.pwdTimestamp) <= Date.parse(user.auth.pwdTimestamp)) {
                 return api.sendErrorForbidden(callback, api.createError("Obsolete password", "sign-in.obsolete-password"));
             }
-            return api.sendRresponse(callback, api.createResponse("OK"));
+            delete jwtData.exp;
+            const token = jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: '31d'});
+            return api.sendRresponse(callback, api.createResponse(token));
         })
         .catch(err => {
             console.log("Request failed", err);

@@ -44,7 +44,6 @@ export default {
       return this.$store.getters.IS_AUTHORIZED;
     },
     userId() {
-      console.log(`user id = ${this.$store.getters.USER_ID}`);
       return this.$store.getters.USER_ID;
     },
     nickname() {
