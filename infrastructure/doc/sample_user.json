@@ -1,5 +1,5 @@
 {
-  "_id" : ObjectId("LL"),
+  "_id" : "LL",
   "auth": {
     "email": "leos@literak.cz",
     "pwdHash": "ABCDEFGH",
@@ -12,7 +12,7 @@
     "sex": "man",
     "born": 1975,
     "region": "PRG",
-    "edu": "VS"
+    "edu": "university"
   },
   "driving": {
     "since": 2007,

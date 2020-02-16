@@ -23,7 +23,7 @@
           <template v-if="publicProfile">
             <template v-if="userProfile.bio.sex">
               <dt>{{ $t('profile.sex') }}</dt>
-              <dl>{{userProfile.bio.sex}}</dl>
+              <dl>{{ $t('profile.sexes.' + userProfile.bio.sex) }}</dl>
             </template>
 
             <template v-if="userProfile.bio.born">
@@ -32,7 +32,7 @@
             </template>
 
             <template v-if="userProfile.driving.since">
-              <dt>{{ $t('profile.driving-for') }}</dt>
+              <dt>{{ $t('profile.driving-since') }}</dt>
               <dl>{{userProfile.driving.since}}</dl>
             </template>
 
@@ -43,12 +43,12 @@
 
             <template v-if="userProfile.bio.region">
               <dt>{{ $t('profile.region') }}</dt>
-              <dl>{{userProfile.bio.region}}</dl>
+              <dl>{{ $t('profile.regions.' + userProfile.bio.region) }}</dl>
             </template>
 
             <template v-if="userProfile.bio.edu">
               <dt>{{ $t('profile.education') }}</dt>
-              <dl>{{userProfile.bio.edu}}</dl>
+              <dl>{{ $t('profile.educations.' + userProfile.bio.edu) }}</dl>
             </template>
           </template>
         </dl>
@@ -98,20 +98,18 @@ export default {
   }),
   computed: {
     myProfile() {
-      // todo check anonymous viewer
       return this.id === this.$store.getters.USER_ID;
     },
     publicProfile() {
       return this.myProfile || this.userProfile.prefs.public === true;
     },
     vehicles() {
-      return this.userProfile.driving.vehicles.join(' ');
+      return this.userProfile.driving.vehicles.reduce((acc, curr) => acc.concat(this.$t(`profile.vehicles.${curr}`), ' '), '');
     },
   },
   async created() {
     try {
       const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id: this.id });
-      console.log(response);
       this.userProfile = response.data.data;
     } catch (err) {
       console.log(err);

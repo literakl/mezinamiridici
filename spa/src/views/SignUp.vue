@@ -67,32 +67,32 @@
               <div class="sign-up-form__input">
                 <Checkbox
                   v-model="bike"
-                  :label="$t('profile.vehicle-bike')"
+                  :label="$t('profile.vehicles.bike')"
                   name="vehicle"
                   identifier="bike" />
                 <Checkbox
                   v-model="car"
-                  :label="$t('profile.vehicle-car')"
+                  :label="$t('profile.vehicles.car')"
                   name="vehicle"
                   identifier="car" />
                 <Checkbox
                   v-model="bus"
-                  :label="$t('profile.vehicle-bus')"
+                  :label="$t('profile.vehicles.bus')"
                   name="vehicle"
                   identifier="bus" />
                 <Checkbox
                   v-model="van"
-                  :label="$t('profile.vehicle-van')"
+                  :label="$t('profile.vehicles.van')"
                   name="vehicle"
                   identifier="van" />
                 <Checkbox
                   v-model="truck"
-                  :label="$t('profile.vehicle-truck')"
+                  :label="$t('profile.vehicles.truck')"
                   name="vehicle"
                   identifier="truck" />
                 <Checkbox
                   v-model="tramway"
-                  :label="$t('profile.vehicle-tramway')"
+                  :label="$t('profile.vehicles.tramway')"
                   name="vehicle"
                   identifier="tramway" />
               </div>
@@ -103,12 +103,12 @@
               <div class="sign-up-form__input">
                 <Radio
                   v-model="sex"
-                  :label="$t('profile.sex-man')"
+                  :label="$t('profile.sexes.man')"
                   name="sex"
                   identifier="man" />
                 <Radio
                   v-model="sex"
-                  :label="$t('profile.sex-woman')"
+                  :label="$t('profile.sexes.woman')"
                   name="sex"
                   identifier="woman" />
               </div>
@@ -126,20 +126,20 @@
               <div class="sign-up-form__input">
                 <select id="region" v-model="region">
                   <option value="">{{ $t('sign-up.region-options') }}</option>
-                  <option value="PRG">Praha</option>
-                  <option value="SC">Stredočeský</option>
-                  <option value="JC">Jihočeský</option>
-                  <option value="PLS">Plzeňský</option>
-                  <option value="KV">Karlovarský</option>
-                  <option value="UST">Ústecký</option>
-                  <option value="LBR">Liberecký</option>
-                  <option value="KH">Královohradecký</option>
-                  <option value="PRD">Pardubický</option>
-                  <option value="VSC">Vysočina</option>
-                  <option value="JM">Jihomoravský</option>
-                  <option value="OLM">Olomoucký</option>
-                  <option value="ZLN">Zlínský</option>
-                  <option value="MS">Moravskoslezský</option>
+                  <option value="PRG">{{ $t('profile.regions.PRG') }}</option>
+                  <option value="SC">{{ $t('profile.regions.SC') }}</option>
+                  <option value="JC">{{ $t('profile.regions.JC') }}</option>
+                  <option value="PLS">{{ $t('profile.regions.PLS') }}</option>
+                  <option value="KV">{{ $t('profile.regions.KV') }}</option>
+                  <option value="UST">{{ $t('profile.regions.UST') }}</option>
+                  <option value="LBR">{{ $t('profile.regions.LBR') }}</option>
+                  <option value="KH">{{ $t('profile.regions.KH') }}</option>
+                  <option value="PRD">{{ $t('profile.regions.PRD') }}</option>
+                  <option value="VSC">{{ $t('profile.regions.VSC') }}</option>
+                  <option value="JM">{{ $t('profile.regions.JM') }}</option>
+                  <option value="OLM">{{ $t('profile.regions.OLM') }}</option>
+                  <option value="ZLN">{{ $t('profile.regions.ZLN') }}</option>
+                  <option value="MS">{{ $t('profile.regions.MS') }}</option>
                 </select>
               </div>
 
@@ -149,17 +149,17 @@
               <div class="sign-up-form__input">
                 <Radio
                   v-model="education"
-                  :label="$t('profile.edu-basic')"
+                  :label="$t('profile.educations.primary')"
                   name="education"
                   identifier="primary" />
                 <Radio
                   v-model="education"
-                  :label="$t('profile.edu-high')"
+                  :label="$t('profile.educations.secondary')"
                   name="education"
                   identifier="secondary" />
                 <Radio
                   v-model="education"
-                  :label="$t('profile.edu-university')"
+                  :label="$t('profile.educations.university')"
                   name="education"
                   identifier="university" />
               </div>
