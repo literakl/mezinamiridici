@@ -134,6 +134,20 @@ export default new Vuex.Store({
 
       context.commit('SET_POLL_COMMENTS', comments);
     },
+    CHANGE_PASSWORD: async (context, payload) => {
+      await axios.patch(
+        `${API_ENDPOINT}/users/${context.state.userId}`,
+        JSON.stringify({
+          currentPassword: payload.currentPassword,
+          newPassword: payload.newPassword,
+        }),
+        {
+          headers: {
+            Authorization: `bearer ${context.state.USER_TOKEN}`,
+          },
+        },
+      );
+    },
     FORGOT_PASSWORD: async (context, payload) => {
       try {
         const request = await axios.post(`${API_ENDPOINT}/forgotPassword`, JSON.stringify({

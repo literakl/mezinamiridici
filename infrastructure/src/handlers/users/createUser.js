@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
@@ -33,7 +32,7 @@ exports.handler = (payload, context, callback) => {
                 console.log("error", err);
                 return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
             } else {
-                const token = jwt.sign({"userId": userId, "nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
+                const token = api.createToken(userId, nickname, new Date(), '1m');
                 return api.sendCreated(callback, api.createResponse(token));
             }
             /*

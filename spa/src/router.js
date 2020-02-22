@@ -87,6 +87,12 @@ export default new Router({
       props: true,
     },
     {
+      path: '/update-password',
+      name: 'update-password',
+      component: () => import('./views/ChangePassword'),
+      beforeEnter: requireAuth,
+    },
+    {
       path: '/help',
       name: 'help',
       component: () => import('./views/Help.vue'),

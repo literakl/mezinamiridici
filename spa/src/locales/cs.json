@@ -35,7 +35,11 @@
         "reset-success": "Poslali jsme vám email s instrukcemi pro zmenu hesla. Pokud email nevidíte, podívejte se mezi spamy.",
         "reset-error": "Nepodařilo se nám odeslat email s instrukcemi. Zkontrolujte si zadaný email a zkuste znovu.",
         "obsolete-password": "Jejda, vaše heslo se změnilo. Přihlašte se znovu.",
-        "session-expired": ". Přihlašte se znovu."
+        "session-expired": "Přihlašte se znovu.",
+        "change-password-heading": "Změna hesla",
+        "current-password": "Současné heslo",
+        "new-password": "Nové heslo",
+        "change-password-button": "Změnit heslo"
     },
     "sign-up": {
         "heading": "Registrace",

@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk');
+const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
-exports.handler = (payload, context, callback) => {
+exports.handler = async (payload, context, callback) => {
     console.log("handler starts");
     if (payload.body === undefined || payload.body === null) {
         return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
@@ -15,30 +15,56 @@ exports.handler = (payload, context, callback) => {
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;
 
-    mongo.connectToDatabase()
-        .then(dbClient => {
-            console.log("Mongo connected");
-            const query = prepareQuery(payload);
-            return dbClient.db().collection("users").updateOne({_id: userId}, query);
-        })
-        .then((data, err) => {
-            if (err) {
-                console.log("error", err);
-                return api.sendInternalError(callback, api.createError('failed to update new user', "sign-up.something-went-wrong"));
-            } else {
-                return api.sendRresponse(callback, api.createResponse());
+    try {
+        const dbClient = await mongo.connectToDatabase();
+        console.log("Mongo connected");
+
+        const {currentPassword, newPassword} = JSON.parse(payload.body);
+        if (currentPassword) {
+            if (!newPassword || newPassword.length < 6) {
+                let result = {"success": false};
+                api.addValidationError(result, "password", "Missing or short password", "sign-up.password-required");
+                return api.sendErrorForbidden(callback, result);
             }
-        })
-        .catch(err => {
-            console.log("Request failed", err);
-            // const result = api.createError();
-            // if (err.code === 11000) {
-            // }
-            return api.sendInternalError(callback, api.createError('failed update the user', "sign-up.something-went-wrong"));
-        });
+
+            const user = await mongo.findUser(dbClient, {userId: userId}, {projection: {auth: 1, "bio.nickname": 1}});
+            if (!user) {
+                return api.sendErrorForbidden(callback, api.createError("User not found", "sign-in.auth-error"));
+            }
+
+            // following part takes more than 1 second with 128 MB RAM!
+            if (!bcrypt.compareSync(currentPassword, user.auth.pwdHash)) {
+                console.log("Password mismatch for user " + user._id);
+                return api.sendErrorForbidden(callback, api.createError("Bad credentials", "sign-in.auth-error"));
+            }
+
+            const date = new Date();
+            const query = prepareChangePasswordQuery(newPassword, date);
+            await dbClient.db().collection("users").updateOne({_id: userId}, query);
+            user.auth.pwdTimestamp = date;
+            const token = api.createTokenFromUser(user);
+            return api.sendRresponse(callback, api.createResponse(token));
+        } else {
+            const query = prepareUpdateProfileQuery(payload);
+            await dbClient.db().collection("users").updateOne({_id: userId}, query);
+            return api.sendRresponse(callback, api.createResponse());
+        }
+    } catch (err) {
+        console.log("Request failed", err);
+        return api.sendInternalError(callback, api.createError('failed update the user', "sign-up.something-went-wrong"));
+    }
 };
 
-const prepareQuery = (payload) => {
+const prepareChangePasswordQuery = (password, date) => {
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(password, salt);
+    let query = { $set: { } };
+    query.$set['auth.pwdHash'] = passwordHash;
+    query.$set['auth.pwdTimestamp'] = date;
+    return query;
+};
+
+const prepareUpdateProfileQuery = (payload) => {
     const { drivingSince, vehicles, sex, born, region, education, publicProfile } = JSON.parse(payload.body);
     let query = { $set: { } };
     if (sex) {
