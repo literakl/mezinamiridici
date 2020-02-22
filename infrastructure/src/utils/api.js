@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 module.exports.sendRresponse = sendResponse;
 module.exports.sendErrorForbidden=sendErrorForbidden;
 module.exports.sendInternalError=sendInternalError;
@@ -8,6 +10,8 @@ module.exports.sendConflict=sendConflict;
 module.exports.addValidationError=addValidationError;
 module.exports.createError=createError;
 module.exports.createResponse=createResponse;
+module.exports.createToken=createToken;
+module.exports.createTokenFromUser=createTokenFromUser;
 
 function sendResponse(callback, body, cacheControl = "private") {
     response(callback, 200, body, cacheControl);
@@ -80,4 +84,17 @@ function addValidationError(result, argument, message, messageKey) {
         "messageKey": messageKey,
     };
     result.errors.push(x);
+}
+
+function createTokenFromUser(user, expiration = '31d') {
+    return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, expiration);
+}
+
+function createToken(userId, nickname, pwdTimestamp, expiration = '31d') {
+    const jwtData = {
+        "userId": userId,
+        "nickname": nickname,
+        "pwdTimestamp": pwdTimestamp
+    };
+    return jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: expiration});
 }
