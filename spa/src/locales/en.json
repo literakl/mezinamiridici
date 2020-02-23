@@ -64,8 +64,9 @@
     "verify-success": "Account is verified now.",
     "verify-error": "Sorry, we couldn't verify that account, please try again or contact support."
   },
-  "complete-profile": {
-    "heading": "Update your profile"
+  "edit-profile": {
+    "heading": "Update your profile",
+    "body": "TODO"
   },
   "analyze-votes": {
     "first-group": "First group",

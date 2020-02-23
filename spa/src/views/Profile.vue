@@ -8,7 +8,7 @@
           </strong>
         </div>
 
-        <p v-if="userProfile && myProfile && !error">
+        <p v-if="myProfile && !error">
           <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}
           </router-link>
           &middot;

@@ -1,149 +1,341 @@
 <template>
-  <div class="complete-profile__wrapper">
-    <div>
-      <h2>{{ $t('complete-profile.heading') }}</h2>
-      <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-        <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-          <div id="complete-profile-form-wrapper">
-            <div class="complete-profile-form__label">
-              <label for="driving-since">{{ $t('profile.driving-since') }}</label>
-            </div>
-            <TextInput v-model="drivingSince" identifier="driving-since" type="number" :value="drivingSince" />
+  <div class="sign-up-wrapper">
 
-            <div class="complete-profile-form__label">
-              <label for="vehicle">{{ $t('profile.vehicle') }}</label>
-            </div>
+    <div class="sign-up__heading">
+      <h2>{{ $t('edit-profile.heading') }}</h2>
+      <p>{{ $t('edit-profile.body') }}</p>
+    </div>
 
-            <div class="complete-profile-form__input">
-              <Checkbox v-model="bike" name="vehicle" identifier="bike" text="Bike" :checked="bike"/>
-              <Checkbox v-model="car" name="vehicle" identifier="car" text="Car" :checked="car"/>
-              <Checkbox v-model="bus" name="vehicle" identifier="bus" text="Bus" :checked="bus" />
-              <Checkbox v-model="van" name="vehicle" identifier="van" text="Van" :checked="van" />
-              <Checkbox v-model="truck" name="vehicle" identifier="truck" text="Truck" :checked="truck" />
-              <Checkbox v-model="tramway" name="vehicle" identifier="tramway" text="Tramway" :checked="tramway" />
-            </div>
+    <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+      <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
+        <div class="sign-up-form__label">
+          <label for="share-profile">{{ $t('profile.share-profile') }}</label>
+        </div>
+        <div class="sign-up-form__input">
+          <Radio
+            v-model="share"
+            identifier="public"
+            :label="$t('profile.public')"
+            name="share-profile"
+          />
+          <Radio
+            v-model="share"
+            identifier="private"
+            :label="$t('profile.private')"
+            name="share-profile"
+          />
+        </div>
 
-            <div class="complete-profile-form__label">
-              <label for="sex">{{ $t('profile.sex') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-              <Radio
-                name="sex"
-                identifier="male"
-                text="Male"
-                :checked="male"
-              />
+        <TextInput
+          v-model="drivingSince"
+          rules="min_value:1935"
+          :label="$t('profile.driving-since')"
+          name="driving-since"
+          type="number" />
 
-              <Radio
-                name="sex"
-                identifier="false"
-                text="Female"
-                :checked="female"
-              />
-            </div>
+        <div class="sign-up-form__label">
+          <label for="vehicle">{{ $t('profile.vehicle') }}</label>
+        </div>
+        <div class="sign-up-form__input">
+          <Checkbox
+            v-model="bike"
+            :label="$t('profile.vehicles.bike')"
+            name="vehicle"
+            identifier="bike" />
+          <Checkbox
+            v-model="car"
+            :label="$t('profile.vehicles.car')"
+            name="vehicle"
+            identifier="car" />
+          <Checkbox
+            v-model="bus"
+            :label="$t('profile.vehicles.bus')"
+            name="vehicle"
+            identifier="bus" />
+          <Checkbox
+            v-model="van"
+            :label="$t('profile.vehicles.van')"
+            name="vehicle"
+            identifier="van" />
+          <Checkbox
+            v-model="truck"
+            :label="$t('profile.vehicles.truck')"
+            name="vehicle"
+            identifier="truck" />
+          <Checkbox
+            v-model="tramway"
+            :label="$t('profile.vehicles.tramway')"
+            name="vehicle"
+            identifier="tramway" />
+        </div>
 
-            <div class="complete-profile-form__label">
-              <label for="born-in-year">{{ $t('profile.born') }}</label>
-            </div>
-            <TextInput v-model="bornInYear" identifier="born-in-year" type="number" :value="bornInYear" />
+        <div class="sign-up-form__label">
+          <label for="sex">{{ $t('profile.sex') }}</label>
+        </div>
+        <div class="sign-up-form__input">
+          <Radio
+            v-model="sex"
+            :label="$t('profile.sexes.man')"
+            name="sex"
+            identifier="man" />
+          <Radio
+            v-model="sex"
+            :label="$t('profile.sexes.woman')"
+            name="sex"
+            identifier="woman" />
+        </div>
 
-            <div class="complete-profile-form__label">
-              <label for="region">{{ $t('profile.region') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-              <select
-                id="region"
-                v-model="region"
-                :value="region"
-              >
-                <option value="">Please select</option>
-                <option value="praha">Praha</option>
-                <option value="stredocesky">Stredocesky</option>
-                <option value="jihocesky">Jihocesky</option>
-                <option value="plzensky">Plzensky</option>
-                <option value="karlovarsky">Karlovarsky</option>
-                <option value="ustecky">Ustecky</option>
-                <option value="liberecky">Liberecky</option>
-                <option value="liberecky">Liberecky</option>
-                <option value="kralovohradecky">Kralovohradecky</option>
-                <option value="pardubicky">Pardubicky</option>
-                <option value="vysocina">Vysocina</option>
-                <option value="jihomoravsky">Jihomoravsky</option>
-                <option value="olomoucky">Olomoucky</option>
-                <option value="zlinsky">Zlinsky</option>
-                <option value="moravskoslezsky">Moravskoslezsky</option>
-              </select>
-            </div>
+        <TextInput
+          v-model="bornInYear"
+          rules="min_value:1915"
+          :label="$t('profile.born')"
+          name="born"
+          type="number" />
 
-            <div class="complete-profile-form__label">
-              <label for="education">{{ $t('profile.education') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-              <select
-                id="education"
-                v-model="education"
-                :value="education"
-              >
-                <option value="">Please select</option>
-                <option value="primary">Primary</option>
-                <option value="secondary">Secondary</option>
-                <option value="university">University</option>
-              </select>
-            </div>
+        <div class="sign-up-form__label">
+          <label for="region">{{ $t('profile.region') }}</label>
+        </div>
+        <div class="sign-up-form__input">
+          <select id="region" v-model="region">
+            <option value="">{{ $t('sign-up.region-options') }}</option>
+            <option value="PRG">{{ $t('profile.regions.PRG') }}</option>
+            <option value="SC">{{ $t('profile.regions.SC') }}</option>
+            <option value="JC">{{ $t('profile.regions.JC') }}</option>
+            <option value="PLS">{{ $t('profile.regions.PLS') }}</option>
+            <option value="KV">{{ $t('profile.regions.KV') }}</option>
+            <option value="UST">{{ $t('profile.regions.UST') }}</option>
+            <option value="LBR">{{ $t('profile.regions.LBR') }}</option>
+            <option value="KH">{{ $t('profile.regions.KH') }}</option>
+            <option value="PRD">{{ $t('profile.regions.PRD') }}</option>
+            <option value="VSC">{{ $t('profile.regions.VSC') }}</option>
+            <option value="JM">{{ $t('profile.regions.JM') }}</option>
+            <option value="OLM">{{ $t('profile.regions.OLM') }}</option>
+            <option value="ZLN">{{ $t('profile.regions.ZLN') }}</option>
+            <option value="MS">{{ $t('profile.regions.MS') }}</option>
+          </select>
+        </div>
 
-            <div class="complete-profile-form__label">
-              <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-            </div>
-            <div class="complete-profile-form__input">
-              <Radio
-                name="share-profile"
-                identifier="onlyNickname"
-                text="Only Nickname"
-                :checked="onlyNickname"
-              />
+        <div class="sign-up-form__label">
+          <label for="education">{{ $t('profile.education') }}</label>
+        </div>
+        <div class="sign-up-form__input">
+          <Radio
+            v-model="education"
+            :label="$t('profile.educations.primary')"
+            name="education"
+            identifier="primary" />
+          <Radio
+            v-model="education"
+            :label="$t('profile.educations.secondary')"
+            name="education"
+            identifier="secondary" />
+          <Radio
+            v-model="education"
+            :label="$t('profile.educations.university')"
+            name="education"
+            identifier="university" />
+        </div>
 
-              <Radio
-                name="share-profile"
-                identifier="everything"
-                text="Everything"
-                :checked="everything"
-              />
-            </div>
-          </div>
+        <div v-if="error">
+          <strong class="sign-up-form__errors-heading">
+            {{ error }}
+          </strong>
+        </div>
 
-          <div v-if="error">
-            <strong class="sign-up-form__errors-heading">
-              {{ error }}
-            </strong>
-          </div>
+        <Button
+          :disabled="invalid"
+          :value="$t('sign-up.finished-button-label')"
+          @clicked="submitForm()"
+          class="sign-up-form__button"/>
+      </form>
+    </ValidationObserver>
 
-          <Submit :value="$t('profile.finish-button')" />
-        </form>
-      </ValidationObserver>
-
-      <div id="sign-up-form-success" v-if="success === true">
-        <p>{{ $t('sign-up.success-message') }}</p>
-      </div>
+    <div id="sign-up-form-success" v-if="success === true">
+      <p>{{ $t('sign-up.success-message') }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import { extend, ValidationObserver, configure } from 'vee-validate';
+import {
+// eslint-disable-next-line camelcase
+  required, min, min_value,
+} from 'vee-validate/dist/rules';
+import Button from '@/components/atoms/Button.vue';
+import Checkbox from '@/components/atoms/Checkbox.vue';
+import Radio from '@/components/atoms/Radio.vue';
+import TextInput from '@/components/atoms/TextInput.vue';
+import i18n from '@/i18n';
+
+extend('required', required);
+extend('min', min);
+extend('min_value', min_value);
+configure({
+  defaultMessage: (field, values) => {
+    /* eslint no-underscore-dangle: 0 */
+    /* eslint no-param-reassign: ["error", { "props": false }] */
+    values._field_ = i18n.t(`profile.${field}`);
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
+
+function setVehicles(vehicles) {
+  if (this.bike) vehicles.push('bike');
+  if (this.car) vehicles.push('car');
+  if (this.bus) vehicles.push('bus');
+  if (this.van) vehicles.push('van');
+  if (this.truck) vehicles.push('truck');
+  if (this.tramway) vehicles.push('tramway');
+}
+
+function convertErrors(jsonErrors) {
+  const veeErrors = {};
+  jsonErrors.errors.forEach((error) => {
+    if (error.field) {
+      veeErrors[error.field] = [];
+      veeErrors[error.field].push(this.$t(error.messageKey));
+    } else {
+      this.error = this.$t(error.messageKey);
+    }
+  });
+  return veeErrors;
+}
 
 export default {
   name: 'sign-up',
   components: {
+    ValidationObserver,
+    Checkbox,
+    TextInput,
+    Button,
+    Radio,
+  },
+  data: () => ({
+    nickname: null,
+    drivingSince: null,
+    bike: null,
+    car: null,
+    bus: null,
+    van: null,
+    truck: null,
+    tramway: null,
+    sex: null,
+    bornInYear: null,
+    region: '',
+    education: '',
+    share: 'public',
+    error: null,
+    success: null,
+  }),
+  methods: {
+    async submitForm() {
+      try {
+        const vehicles = [];
+        setVehicles.call(this, vehicles);
+        await this.$store.dispatch('UPDATE_USER_PROFILE', {
+          jwt: this.$store.getters.USER_TOKEN,
+          userId: this.$store.getters.USER_ID,
+          drivingSince: this.drivingSince,
+          vehicle: vehicles,
+          sex: this.sex,
+          bornInYear: this.bornInYear,
+          region: this.region,
+          education: this.education,
+          publicProfile: this.share,
+        });
+        this.success = true;
+      } catch (error) {
+        this.success = false;
+        if (error.response) {
+          const veeErrors = convertErrors.call(this, error.response.data);
+          this.$refs.form.setErrors(veeErrors);
+        } else {
+          this.error = this.$t('sign-up.something-went-wrong');
+        }
+      }
+      return this.success;
+    },
   },
 };
 </script>
 
 <style>
-.complete-profile__wrapper{
-    display: grid;
-    margin: 0 auto;
+.sign-up-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0 auto;
+  max-width: 80%;
+  padding: 1em 0;
+}
+
+@media all and (min-width: 850px) {
+  .sign-up {
+    grid-template-columns: 1fr;
     max-width: 80%;
-    padding: 1em 0;
-    grid-gap: 20px;
-    grid-template-columns: 0.5fr 0.5fr;
+  }
+}
+
+.atoms__checkbox {
+  width: 9em;
+  float: left;
+}
+.atoms__radio {
+  width: 9em;
+  float: left;
+}
+
+#sign-up-form-wrapper {
+  display: grid;
+  margin-top: 40px;
+}
+
+#sign-up-form-success {
+  color: green;
+}
+
+.sign-up-form__label {
+  font-size: 25px;
+  clear: both;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
+
+.sign-up-form__errors-heading {
+  color: rgb(209, 49, 49);
+}
+
+.sign-up-form__year {
+  width: 4em;
+}
+
+.sign-up-form__input {
+  width: 100%;
+  font-size: 20px;
+  overflow: auto;
+}
+
+select{
+  font-size: 20px;
+  padding: 8px;
+  margin-bottom: 20px;
+}
+
+.sign-up-form__button {
+  width: 100%;
+}
+
+@media all and (min-width: 850px) {
+  .sign-up-form__button {
+    width: 30%;
+  }
+
+  #sign-up-form-wrapper {
+    grid-template-columns: 0.3fr 1fr;
+  }
+
+  .sign-up-form__input {
+    /*width: 70%;*/
+  }
 }
 </style>

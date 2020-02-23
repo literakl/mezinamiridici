@@ -66,8 +66,9 @@
         "verify-success": "V pořádku.",
         "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu."
     },
-    "complete-profile": {
-        "heading": "Update your profile"
+    "edit-profile": {
+        "heading": "Aktualizace profilu",
+        "body": "TODO"
     },
     "analyze-votes": {
         "first-group": "První skupina",
