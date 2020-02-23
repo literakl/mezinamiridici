@@ -68,7 +68,7 @@
     },
     "edit-profile": {
         "heading": "Aktualizace profilu",
-        "body": "TODO"
+        "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě."
     },
     "analyze-votes": {
         "first-group": "První skupina",
@@ -99,19 +99,19 @@
         "region": "Kraj",
         "regions": {
             "PRG": "Praha",
-            "SC": "středočeský",
-            "JC": "jihočeský",
-            "PLS": "plzeňský",
-            "KV": "karlovarský",
-            "UST": "ústecký",
-            "LBR": "liberecký",
-            "KH": "královohradecký",
-            "PRD": "pardubický",
-            "VSC": "vysočina",
-            "JM": "jihomoravský",
-            "OLM": "olomoucký",
-            "ZLN": "zlínský",
-            "MS": "moravskoslezský"
+            "SC": "Středočeský",
+            "JC": "Jihočeský",
+            "PLS": "Plzeňský",
+            "KV": "Karlovarský",
+            "UST": "Ústecký",
+            "LBR": "Liberecký",
+            "KH": "Královohradecký",
+            "PRD": "Pardubický",
+            "VSC": "Vysočina",
+            "JM": "Jihomoravský",
+            "OLM": "Olomoucký",
+            "ZLN": "Zlínský",
+            "MS": "Moravskoslezský"
         },
         "education": "Vzdělání",
         "educations": {

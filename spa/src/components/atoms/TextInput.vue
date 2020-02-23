@@ -6,15 +6,12 @@
     :vid="vid"
     :rules="rules"
     :name="name || label"
-    v-slot="{ errors, required, ariaInput, ariaMsg }"
-  >
+    v-slot="{ errors, required, ariaInput, ariaMsg }">
     <div class="form-group">
       <label
         class="absolute block inset-0 w-full px-2 py-2 leading-normal"
         @click="$refs.input.focus()"
-        :for="name"
-        :class="{ 'text-gray-700': !errors[0], 'text-red-600': errors[0] }"
-      >
+        :for="name">
         <div v-if="label">
           <span>{{ label }}</span>
           <span>{{ required ? ' *' : '' }}</span>
@@ -22,19 +19,19 @@
       </label>
       <input
         class="form-control"
-        :class="{ 'is-invalid':errors[0] , 'has-value': hasValue }"
+        :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
         :id="name"
         :type="type"
         :placeholder="placeholder"
         ref="input"
         v-model="innerValue"
-        v-bind="ariaInput"
-      >
+        v-bind="ariaInput">
       <div
         class="display-error"
         v-bind="ariaMsg"
-        v-if="errors[0]"
-      >{{ errors[0] }}</div>
+        v-if="errors[0]">
+        {{ errors[0] }}
+      </div>
     </div>
   </ValidationProvider>
 </template>
@@ -118,41 +115,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .TextInput {
-    .form-group {
-      font-size: 25px;
-      margin-bottom: 1rem;
-      clear: both;
-      input {
-        position: relative;
-        /*z-index: 99999;*/
-        padding: 0.4rem;
-        width: 60%;
-        font-size: 20px;
-        border-radius: 4px;
-        &.has-value,
-        &:focus {
-          outline: none;
-        }
-      }
-
-      label {
-        margin-top: 1rem;
-        user-select: none;
-      }
-      .is-invalid{
-        border-color: #dc3545;
-      }
-      input.has-value ~ label,
-      input:focus ~ label {
-        font-size: 0.6rem;
-        margin-top: 0;
-        transition: all 0.2s ease-in-out;
-      }
-      .display-error{
-        padding: 10px;
-        color: firebrick;
+.TextInput {
+  .form-group {
+    font-size: 25px;
+    margin-bottom: 1rem;
+    clear: both;
+    input {
+      position: relative;
+      padding: 0.4rem;
+      margin-top: 1rem;
+      width: 60%;
+      font-size: 20px;
+      border-radius: 4px;
+      &.has-value,
+      &:focus {
+        outline: none;
       }
     }
+    label {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+    .is-invalid {
+      border-color: #dc3545;
+    }
+    input.has-value ~ label,
+    input:focus ~ label {
+      font-size: 0.6rem;
+      margin-top: 0;
+      transition: all 0.2s ease-in-out;
+    }
+    .display-error {
+      padding: 10px;
+      color: firebrick;
+    }
   }
+}
 </style>

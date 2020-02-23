@@ -1,5 +1,5 @@
 <template>
-  <div class="atoms__radio">
+  <span class="atoms__radio">
     <input
       type="radio"
       :id="identifier"
@@ -8,14 +8,13 @@
       ref="radio"
       class="atoms__radio-input"
       @input="updateRadio()"
-      :checked="value === identifier"
-    >
+      :checked="value === identifier">
     <label :for="identifier" class="atoms__radio-label">
-            <span>
-                {{label}}
-            </span>
+      <span>
+        {{label}}
+      </span>
     </label>
-  </div>
+  </span>
 </template>
 
 <script>
@@ -32,14 +31,13 @@ export default {
 
 <style>
   .atoms__radio {
-    width: 200px!important;
+    margin-bottom: 1rem;
     float: left;
   }
 
   .atoms__radio-label {
     position: relative;
     min-height: 34px;
-    display: block;
     padding-left: 40px;
     cursor: pointer;
   }
@@ -57,15 +55,14 @@ export default {
   }
 
   .atoms__radio-label span {
-    position: absolute;
     top: 50%;
+    padding-right: 1rem;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
   }
 
   .atoms__radio-label:after {
     content: '';
-    display: block;
     width: 14px;
     height: 13px;
     position: absolute;

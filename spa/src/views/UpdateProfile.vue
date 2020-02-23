@@ -286,7 +286,7 @@ export default {
 .sign-up-form__label {
   font-size: 25px;
   clear: both;
-  margin-bottom: 20px;
+  margin-bottom: 0.6rem;
   font-weight: normal;
 }
 
@@ -301,16 +301,19 @@ export default {
 .sign-up-form__input {
   width: 100%;
   font-size: 20px;
+  margin-bottom: 1rem;
   /*overflow: auto;*/
 }
 
-select{
+select {
   font-size: 20px;
   padding: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 
 .sign-up-form__button {
+  display: block;
+  clear: left;
   width: 100%;
 }
 

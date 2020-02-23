@@ -44,14 +44,12 @@
                   v-model="share"
                   identifier="public"
                   :label="$t('profile.public')"
-                  name="share-profile"
-                />
+                  name="share-profile"/>
                 <Radio
                   v-model="share"
                   identifier="private"
                   :label="$t('profile.private')"
-                  name="share-profile"
-                />
+                  name="share-profile"/>
               </div>
 
               <TextInput
@@ -392,11 +390,11 @@ export default {
 .sign-up-form__input {
   width: 100%;
   font-size: 20px;
-  /*margin-bottom: 20px;*/
-  /*overflow: auto;*/
+  margin-bottom: 20px;
+  overflow: auto;
 }
 
-select{
+select {
   font-size: 20px;
   padding: 8px;
   margin-bottom: 20px;
