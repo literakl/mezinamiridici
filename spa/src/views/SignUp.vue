@@ -392,7 +392,8 @@ export default {
 .sign-up-form__input {
   width: 100%;
   font-size: 20px;
-  overflow: auto;
+  /*margin-bottom: 20px;*/
+  /*overflow: auto;*/
 }
 
 select{

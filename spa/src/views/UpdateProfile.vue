@@ -16,14 +16,12 @@
             v-model="share"
             identifier="public"
             :label="$t('profile.public')"
-            name="share-profile"
-          />
+            name="share-profile"/>
           <Radio
             v-model="share"
             identifier="private"
             :label="$t('profile.private')"
-            name="share-profile"
-          />
+            name="share-profile"/>
         </div>
 
         <TextInput
@@ -276,15 +274,6 @@ export default {
   }
 }
 
-.atoms__checkbox {
-  width: 9em;
-  float: left;
-}
-.atoms__radio {
-  width: 9em;
-  float: left;
-}
-
 #sign-up-form-wrapper {
   display: grid;
   margin-top: 40px;
@@ -312,7 +301,7 @@ export default {
 .sign-up-form__input {
   width: 100%;
   font-size: 20px;
-  overflow: auto;
+  /*overflow: auto;*/
 }
 
 select{

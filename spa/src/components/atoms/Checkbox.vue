@@ -1,13 +1,11 @@
 <template>
   <ValidationProvider
-    class="relative"
-    tag="div"
+    tag="span"
     v-model="innerValue"
     :vid="vid"
     :rules="rules"
     :name="name || label"
     v-slot="{ errors, required }"
-
   >
     <input
       class="atoms__checkbox-input"
@@ -73,14 +71,9 @@ export default {
 </script>
 
 <style>
-  .relative{
-    clear: both;
-  }
-
   .atoms__checkbox-label {
     position: relative;
     min-height: 34px;
-    display: block;
     padding-left: 40px;
     cursor: pointer;
   }
@@ -97,7 +90,6 @@ export default {
   }
 
   .atoms__checkbox-label span {
-    position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
@@ -105,7 +97,6 @@ export default {
 
   .atoms__checkbox-label:after {
     content: '';
-    display: block;
     width: 20px;
     height: 5px;
     border-bottom: 2px solid #ffd302;
