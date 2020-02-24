@@ -267,18 +267,6 @@ export default {
   padding: 1em 0;
 }
 
-@media all and (min-width: 850px) {
-  .sign-up {
-    grid-template-columns: 1fr;
-    max-width: 80%;
-  }
-}
-
-#sign-up-form-wrapper {
-  display: grid;
-  margin-top: 40px;
-}
-
 #sign-up-form-success {
   color: green;
 }
@@ -294,15 +282,10 @@ export default {
   color: rgb(209, 49, 49);
 }
 
-.sign-up-form__year {
-  width: 4em;
-}
-
 .sign-up-form__input {
   width: 100%;
   font-size: 20px;
   margin-bottom: 1rem;
-  /*overflow: auto;*/
 }
 
 select {
@@ -318,12 +301,13 @@ select {
 }
 
 @media all and (min-width: 850px) {
-  .sign-up-form__button {
-    width: 30%;
+  .sign-up-wrapper {
+    grid-template-columns: 1fr;
+    max-width: 80%;
   }
 
-  #sign-up-form-wrapper {
-    grid-template-columns: 0.3fr 1fr;
+  .sign-up-form__button {
+    width: 30%;
   }
 
   .sign-up-form__input {
