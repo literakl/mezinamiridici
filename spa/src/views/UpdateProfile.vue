@@ -134,10 +134,8 @@
             identifier="university" />
         </div>
 
-        <div v-if="error">
-          <strong class="sign-up-form__errors-heading">
-            {{ error }}
-          </strong>
+        <div v-if="error" class="sign-up-form__errors-heading">
+          {{ error }}
         </div>
 
         <Button
@@ -210,7 +208,6 @@ export default {
     Radio,
   },
   data: () => ({
-    nickname: null,
     drivingSince: null,
     bike: null,
     car: null,
@@ -226,7 +223,36 @@ export default {
     error: null,
     success: null,
   }),
+  created() {
+    this.getProfile(this.$store.getters.USER_ID);
+  },
   methods: {
+    async getProfile(id) {
+      try {
+        const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
+        const userProfile = response.data.data;
+        console.log(userProfile);
+        this.drivingSince = userProfile.driving.since;
+        this.bike = userProfile.driving.vehicles.includes('bike');
+        this.car = userProfile.driving.vehicles.includes('car');
+        this.bus = userProfile.driving.vehicles.includes('bus');
+        this.van = userProfile.driving.vehicles.includes('van');
+        this.truck = userProfile.driving.vehicles.includes('truck');
+        this.tramway = userProfile.driving.vehicles.includes('tramway');
+        this.sex = userProfile.bio.sex;
+        this.bornInYear = userProfile.bio.born;
+        this.region = userProfile.bio.region;
+        this.education = userProfile.bio.edu;
+        this.share = userProfile.prefs.public ? 'public' : 'private';
+      } catch (err) {
+        console.log(err);
+        if (err.response && err.response.data && err.response.data.errors) {
+          this.error = this.$t(err.response.data.errors[0].messageKey);
+        } else {
+          this.error = this.$t('generic.internal-error');
+        }
+      }
+    },
     async submitForm() {
       try {
         const vehicles = [];
@@ -280,6 +306,8 @@ export default {
 
 .sign-up-form__errors-heading {
   color: rgb(209, 49, 49);
+  font-size: 150%;
+  clear: both;
 }
 
 .sign-up-form__input {
