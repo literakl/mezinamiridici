@@ -108,7 +108,6 @@ export default {
     },
   },
   created() {
-    console.log('created');
     this.getProfile(this.id);
   },
   beforeRouteUpdate(to, from, next) {
@@ -121,7 +120,6 @@ export default {
   methods: {
     async getProfile(id) {
       try {
-        console.log('getProfile');
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
       } catch (err) {
