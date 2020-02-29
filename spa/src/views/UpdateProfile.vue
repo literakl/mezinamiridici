@@ -6,7 +6,31 @@
       <p>{{ $t('edit-profile.body') }}</p>
     </div>
 
-    <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+    <content-loader
+      :height="100"
+      :width="400"
+      :speed="2"
+      primaryColor="#949494"
+      secondaryColor="#606060"
+      v-if="!userProfile && !error"
+    >
+      <rect x="9" y="12" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="12" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="31" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="31" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="51" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="51" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="71" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="71" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
+    </content-loader>
+
+    <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
       <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
         <div class="sign-up-form__label">
           <label for="share-profile">{{ $t('profile.share-profile') }}</label>
@@ -158,6 +182,7 @@ import {
 // eslint-disable-next-line camelcase
   required, min, min_value,
 } from 'vee-validate/dist/rules';
+import { ContentLoader } from 'vue-content-loader';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
@@ -201,6 +226,7 @@ function convertErrors(jsonErrors) {
 export default {
   name: 'sign-up',
   components: {
+    ContentLoader,
     ValidationObserver,
     Checkbox,
     TextInput,
@@ -208,6 +234,7 @@ export default {
     Radio,
   },
   data: () => ({
+    userProfile: null,
     drivingSince: null,
     bike: false,
     car: false,
@@ -230,20 +257,19 @@ export default {
     async getProfile(id) {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
-        const userProfile = response.data.data;
-        console.log(userProfile);
-        this.drivingSince = userProfile.driving.since;
-        this.bike = userProfile.driving.vehicles.includes('bike');
-        this.car = userProfile.driving.vehicles.includes('car');
-        this.bus = userProfile.driving.vehicles.includes('bus');
-        this.van = userProfile.driving.vehicles.includes('van');
-        this.truck = userProfile.driving.vehicles.includes('truck');
-        this.tramway = userProfile.driving.vehicles.includes('tramway');
-        this.sex = userProfile.bio.sex;
-        this.bornInYear = userProfile.bio.born;
-        this.region = userProfile.bio.region;
-        this.education = userProfile.bio.edu;
-        this.share = userProfile.prefs.public ? 'public' : 'private';
+        this.userProfile = response.data.data;
+        this.drivingSince = this.userProfile.driving.since;
+        this.bike = this.userProfile.driving.vehicles.includes('bike');
+        this.car = this.userProfile.driving.vehicles.includes('car');
+        this.bus = this.userProfile.driving.vehicles.includes('bus');
+        this.van = this.userProfile.driving.vehicles.includes('van');
+        this.truck = this.userProfile.driving.vehicles.includes('truck');
+        this.tramway = this.userProfile.driving.vehicles.includes('tramway');
+        this.sex = this.userProfile.bio.sex;
+        this.bornInYear = this.userProfile.bio.born;
+        this.region = this.userProfile.bio.region;
+        this.education = this.userProfile.bio.edu;
+        this.share = this.userProfile.prefs.public ? 'public' : 'private';
       } catch (err) {
         console.log(err);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -259,7 +285,7 @@ export default {
         setVehicles.call(this, vehicles);
         await this.$store.dispatch('UPDATE_USER_PROFILE', {
           jwt: this.$store.getters.USER_TOKEN,
-          userId: this.$store.getters.USER_ID,
+          userId: this.userProfile._id,
           drivingSince: this.drivingSince,
           vehicle: vehicles,
           sex: this.sex,
@@ -268,7 +294,7 @@ export default {
           education: this.education,
           publicProfile: this.share,
         });
-        this.success = true;
+        await this.$router.push(`/profile/${this.userProfile._id}`);
       } catch (error) {
         this.success = false;
         if (error.response) {
@@ -278,7 +304,6 @@ export default {
           this.error = this.$t('sign-up.something-went-wrong');
         }
       }
-      return this.success;
     },
   },
 };
