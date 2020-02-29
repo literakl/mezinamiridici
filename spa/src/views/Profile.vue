@@ -104,7 +104,10 @@ export default {
       return this.myProfile || this.userProfile.prefs.public === true;
     },
     vehicles() {
-      return this.userProfile.driving.vehicles.reduce((acc, curr) => acc.concat(this.$t(`profile.vehicles.${curr}`), ' '), '');
+      if (this.userProfile.driving.vehicles) {
+        return this.userProfile.driving.vehicles.reduce((acc, curr) => acc.concat(this.$t(`profile.vehicles.${curr}`), ' '), '');
+      }
+      return undefined;
     },
   },
   created() {
@@ -122,6 +125,7 @@ export default {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
+        console.log(this.userProfile);
       } catch (err) {
         console.log(err);
         if (err.response && err.response.data && err.response.data.errors) {
