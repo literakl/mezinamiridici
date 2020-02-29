@@ -1,7 +1,7 @@
 <template>
   <ValidationProvider
     tag="span"
-    v-model="innerValue"
+    v-model="value"
     :vid="vid"
     :rules="rules"
     :name="name || label"
@@ -10,8 +10,9 @@
       class="atoms__checkbox-input"
       :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
       :id="identifier"
-      v-model="innerValue"
-      :value="identifier"
+      :checked="value"
+      @input="$emit('input', $event.target.checked)"
+      :value="value"
       type="checkbox"
       ref="input">
     <label :for="identifier" class="atoms__checkbox-label">
@@ -49,21 +50,9 @@ export default {
       type: null,
       default: '',
     },
-    checked: {
-      type: Boolean,
-      default: false,
-    },
   },
   components: {
     ValidationProvider,
-  },
-  data: () => ({
-    innerValue: null,
-  }),
-  watch: {
-    innerValue(value) {
-      this.$emit('input', value);
-    },
   },
 };
 </script>
