@@ -252,6 +252,22 @@ Resources:
                 cacheNamespace: cs0i4n
                 cacheKeyParameters:
                   - method.request.path.userId
+          /v1/users/{userId}/password:
+            patch:
+              responses: {}
+              security:
+                - TokenAuthorizer: []
+              parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  type: string
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDChangePasswordHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
           /v1/users/{userId}/votes:
             get:
               responses: {}
@@ -606,13 +622,31 @@ Resources:
       Environment:
         Variables:
           MONGODB_URI: !Ref DatabaseUri
-          JWT_SECRET: !Ref JwtSecret
       Timeout: 10
       Events:
         Api:
           Type: Api
           Properties:
             Path: /v1/users/{userId}
+            Method: Patch
+            RestApiId:
+              Ref: BUDAPI
+  BUDChangePasswordHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDChangePasswordHandler
+      Handler: src/handlers/users/changePassword.handler
+      Runtime: nodejs10.x
+      Environment:
+        Variables:
+          MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
+      Timeout: 10
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/users/{userId}/password
             Method: Patch
             RestApiId:
               Ref: BUDAPI

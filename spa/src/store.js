@@ -136,7 +136,7 @@ export default new Vuex.Store({
     },
     CHANGE_PASSWORD: async (context, payload) => {
       await axios.patch(
-        `${API_ENDPOINT}/users/${context.state.userId}`,
+        `${API_ENDPOINT}/users/${context.state.userId}/password`,
         JSON.stringify({
           currentPassword: payload.currentPassword,
           newPassword: payload.newPassword,
