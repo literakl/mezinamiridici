@@ -29,41 +29,46 @@ exports.handler = async (payload, context, callback) => {
 
 const prepareUpdateProfileQuery = (payload) => {
     const { drivingSince, vehicles, sex, born, region, education, publicProfile } = JSON.parse(payload.body);
-    let query = { $set: { } };
+    let setters = {}, unsetters = {};
     if (sex) {
-        query.$set['bio.sex'] = sex;
-    // } else {
-    //     query.$unset.bio.sex = '';
+        setters['bio.sex'] = sex;
+    } else {
+        unsetters['bio.sex'] = '';
     }
     if (born) {
-        query.$set['bio.born'] = born;
-    // } else  {
-    //     query.$unset.bio.born = '';
+        setters['bio.born'] = born;
+    } else  {
+        unsetters['bio.born'] = '';
     }
     if (region) {
-        query.$set['bio.region'] = region;
-    // } else {
-    //     query.$unset.bio.region = '';
+        setters['bio.region'] = region;
+    } else {
+        unsetters['bio.region'] = '';
     }
     if (education) {
-        query.$set['bio.edu'] = education;
-    // } else {
-    //     query.$unset.bio.edu = '';
+        setters['bio.edu'] = education;
+    } else {
+        unsetters['bio.edu'] = '';
     }
     if (drivingSince) {
-        query.$set['driving.since'] = drivingSince;
-    // } else {
-    //     query.$unset.driving.since = '';
+        setters['driving.since'] = drivingSince;
+    } else {
+        unsetters['driving.since'] = '';
     }
     if (vehicles) {
-        query.$set['driving.vehicles'] = vehicles;
-    // } else {
-    //     query.$unset.driving.vehicles = '';
+        unsetters['driving.vehicles'] = vehicles;
+    } else {
+        unsetters['driving.vehicles'] = '';
     }
     if (publicProfile) {
-        query.$set['prefs.public'] = !!'public';
-    // } else {
-    //     query.$set.prefs.public = '';
+        setters['prefs.public'] = !'public';
+    }
+    let query = { };
+    if (Object.keys(setters).length !== 0) {
+        query.$set = setters;
+    }
+    if (Object.keys(unsetters).length !== 0) {
+        query.$unset = unsetters;
     }
     return query;
 };
