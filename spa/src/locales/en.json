@@ -61,7 +61,7 @@
     "success-message": "All set, please check your email and verify your account!",
     "verify-heading": "Verify your account",
     "verify-running": "Thanks, we're just verifying that for you, hold tight...",
-    "verify-success": "Account is verified now.",
+    "verify-success": "Account is verified now. You can sign it now to start using the portal full throttle.",
     "verify-error": "Sorry, we couldn't verify that account, please try again or contact support."
   },
   "edit-profile": {

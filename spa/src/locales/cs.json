@@ -63,7 +63,7 @@
         "success-message": "Povedlo se! Zkontrolujte email a potvrďte vaši emailovou adresu.",
         "verify-heading": "Ověření vašeho účtu",
         "verify-running": "Momentíček, právě kontrolujeme naše záznamy v registru ..",
-        "verify-success": "V pořádku.",
+        "verify-success": "Ověření proběhlo úspěšně. Nyní se můžete přihlásit a začít využívat portál naplno.",
         "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu."
     },
     "edit-profile": {

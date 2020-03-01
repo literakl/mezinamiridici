@@ -37,6 +37,7 @@ export default new Router({
       name: 'sign-in',
       component: () => import('./views/SignIn.vue'),
       beforeEnter: requireUnauth,
+      props: true,
     },
     {
       path: '/sign-up',

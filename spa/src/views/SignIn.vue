@@ -37,7 +37,8 @@
           <div class="signin">
               <div class="signin__wrapper">
                 <div>
-                    <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+                  <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+                  <div>{{ message }}</div>
                 </div>
                 <div>
                     <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
@@ -124,6 +125,9 @@ export default {
     Button,
     TextInput,
     Modal,
+  },
+  props: {
+    message: String,
   },
   data: () => ({
     page: 0,
