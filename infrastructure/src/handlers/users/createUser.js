@@ -4,7 +4,7 @@ const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
-exports.handler = (payload, context, callback) => {
+exports.handler = async (payload, context, callback) => {
     console.log("handler starts");
     if (payload.body === undefined || payload.body === null) {
         return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
@@ -22,46 +22,35 @@ exports.handler = (payload, context, callback) => {
 
     const verificationToken = mongo.generateId(8);
     const userId = mongo.generateTimeId();
-    mongo.connectToDatabase()
-        .then(dbClient => {
-            console.log("Mongo connected");
-            return insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
-        })
-        .then((data, err) => {
-            if (err) {
-                console.log("error", err);
-                return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
-            } else {
-                const token = api.createToken(userId, nickname, new Date(), '1m');
-                return api.sendCreated(callback, api.createResponse(token));
+    const dbClient = await mongo.connectToDatabase();
+    console.log("Mongo connected");
+
+    try {
+        await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
+        console.log("User created",);
+    } catch (err) {
+        console.log("error", err);
+        if (err.code === 11000) {
+            if (!!err.keyValue["auth.email"]) {
+                api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
             }
-            /*
-            todo uncomment for AWS deployment
-                        sendVerificationEmail(email, verificationToken, (err, data) => {
-                            console.log("email sent " + data);
-                            if (err) {
-                                return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
-                            } else {
-                                const token = jwt.sign({"userId": userId,"nickname": nickname}, process.env.JWT_SECRET, {expiresIn: '1m'});
-                                return api.sendCreated(callback, api.createResponse(token));
-                            }
-                        });
-            */
-        })
-        .catch(err => {
-            console.log("Request failed", err);
-            result.success = false;
-            if (err.code === 11000) {
-                if (!!err.keyValue["auth.email"]) {
-                    api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
-                }
-                if (!!err.keyValue["auth.login"]) {
-                    api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
-                }
-                return api.sendConflict(callback, result);
+            if (!!err.keyValue["auth.login"]) {
+                api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
             }
-            return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
-        });
+            return api.sendConflict(callback, result);
+        }
+        return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
+    }
+
+    try {
+        sendVerificationEmail(email, verificationToken);
+        console.log("email sent");
+    } catch (err) {
+        return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
+    }
+
+    const token = api.createToken(userId, nickname, new Date(), '1m');
+    return api.sendCreated(callback, api.createResponse(token));
 };
 
 function insertUser(dbClient, id, email, password, nickname, emails, verificationToken) {
@@ -101,7 +90,7 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
 
 const sendVerificationEmail = (email, token, fn) => {
     const verificationLink = "https://www.mezinamiridici.cz/verify/" + token;
-    ses.sendEmail({
+    return ses.sendEmail({
         Source: "robot@mezinamiridici.cz",
         Destination: {ToAddresses: [email]},
         Message: {
