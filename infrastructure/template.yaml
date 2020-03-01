@@ -84,6 +84,17 @@ Resources:
         schemes:
           - https
         paths:
+          /v1/status:
+            get:
+              responses: {}
+              produces:
+                - application/json
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:BUDStatusHandler/invocations
+                passthroughBehavior: when_no_match
+                httpMethod: POST
+                type: aws_proxy
           /v1/polls:
             get:
               responses: {}
@@ -344,6 +355,20 @@ Resources:
               authorizerResultTtlInSeconds: 0
               identityValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
               type: token
+  BUDStatusHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BUDStatusHandler
+      Handler: src/handlers/getStatus.handler
+      Runtime: nodejs10.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /v1/status
+            Method: Get
+            RestApiId:
+              Ref: BUDAPI
   BUDGetPollHandler:
     Type: AWS::Serverless::Function
     Properties:
