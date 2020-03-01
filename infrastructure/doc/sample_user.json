@@ -5,7 +5,11 @@
     "pwdHash": "ABCDEFGH",
     "pwdTimestamp": 1579203825,
     "verified": true,
-    "verifyToken": "ABCDEFGH"
+    "verifyToken": "ABCDEFGH",
+    "reset": {
+      "token": "QWERTY",
+      "expires": 1579203825
+    }
   },
   "bio": {
     "nickname": "literakl",

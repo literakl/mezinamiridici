@@ -156,15 +156,9 @@ export default {
           email: this.forgotPasswordEmail,
         });
 
-        if (response.status === 200) {
-          this.passwordReset = true;
-        } else {
-          this.passwordReset = false;
-          this.forgotPasswordEmail = '';
-        }
+        this.passwordReset = response.status === 200;
       } catch (e) {
         this.passwordReset = false;
-        this.forgotPasswordEmail = '';
       }
     },
     async signIn() {

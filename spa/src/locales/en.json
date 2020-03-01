@@ -33,6 +33,7 @@
     "auth-not-verified": "We are sorry but we can continue once you activate your account. Check email for the instructions.",
     "reset-success": "Please check your email for instructions on how to reset your password!",
     "reset-error": "There was a problem sending a reset link to the email provided, please try again.",
+    "expired-reset": "Reset link has expired or it was used already",
     "obsolete-password": "Password has been changed. Please log in again.",
     "change-password-heading": "Password change",
     "current-password": "Current password",

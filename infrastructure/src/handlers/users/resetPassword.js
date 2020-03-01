@@ -1,52 +1,48 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
 const bcrypt = require('bcryptjs');
-
+const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
-exports.handler = (payload, context, callback) => {
+exports.handler = async (payload, context, callback) => {
+    console.log("handler starts");
     const { passwordResetToken, password } = JSON.parse(payload.body);
 
-    dynamodb.query({
-        "TableName": "BUDUserTable",
-        "IndexName": "UserFromPasswordResetTokenIndex",
-        "KeyConditionExpression": "#passwordResetToken = :passwordResetToken",
-        "ExpressionAttributeNames": {
-            "#passwordResetToken": "passwordResetToken"
-        },
-        "ExpressionAttributeValues": {
-            ":passwordResetToken": passwordResetToken
-        },
-        "ConsistentRead": false,
-    }, (err, data) => {
-        if (err) {
-            return api.sendInternalError(callback, err.Item);
+    // This freezes node event loop when callback is invoked
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    try {
+        const dbClient = await mongo.connectToDatabase();
+        console.log("Mongo connected");
+
+        const user = await mongo.findUser(dbClient, {"auth.reset.token": passwordResetToken}, {projection: { auth: 1, "bio.nickname": 1}});
+        console.log("User checks");
+        if (!user) {
+            console.log("User not found");
+            return api.sendErrorForbidden(callback, api.createError("Token not found", "sign-in.auth-error"));
+        }
+        const now = new Date();
+        if (user.auth.reset.expires < now) {
+            return api.sendErrorForbidden(callback, api.createError("Invalid or expired web token", "sign-in.expired-reset"));
         }
 
-        const user = data.Items.find(item => item.passwordResetToken === passwordResetToken);
+        const query = prepareChangePasswordQuery(password, now);
+        dbClient.db().collection("users").updateOne({_id: user._id}, query);
+        console.log(`Password changed for user ${user.auth.email}`);
 
-        if (!user)
-            return api.sendInternalError(callback, {});
+        user.auth.pwdTimestamp = now;
+        const token = api.createTokenFromUser(user);
+        return api.sendRresponse(callback, api.createResponse(token));
+    } catch (err) {
+        console.log("Request failed", err);
+        return api.sendInternalError(callback, api.createError('Failed to reset the password', "sign-in.something-went-wrong"));
+    }
+};
 
-        const salt = bcrypt.genSaltSync(10);
-        const passwordHash = bcrypt.hashSync(password, salt);
-
-        dynamodb.update({
-            TableName: 'BUDUserTable',
-            Key: {
-                "userId": user.userId
-            },
-            UpdateExpression: "SET password = :password REMOVE passwordResetToken",
-            ExpressionAttributeValues: {
-                ":password": passwordHash
-            },
-            ReturnValues: "UPDATED_NEW"
-        }, (err, data) => {
-            if (err) {
-                return api.sendInternalError(callback, err.Item);
-            } else {
-                return api.sendRresponse(callback, data.Item);
-            }
-        });
-    });
+const prepareChangePasswordQuery = (password, date) => {
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(password, salt);
+    let query = { $set: { }, $unset: { } };
+    query.$set['auth.pwdHash'] = passwordHash;
+    query.$set['auth.pwdTimestamp'] = date;
+    query.$unset['auth.reset'] = '';
+    return query;
 };

@@ -44,7 +44,7 @@ exports.handler = async (payload, context, callback) => {
 
     try {
         sendVerificationEmail(email, verificationToken);
-        console.log("email sent");
+        console.log("Email sent");
     } catch (err) {
         return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
     }
@@ -90,16 +90,17 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
 
 const sendVerificationEmail = (email, token, fn) => {
     const verificationLink = "https://www.mezinamiridici.cz/verify/" + token;
+    const subject = "Dokončení registrace";
     return ses.sendEmail({
         Source: "robot@mezinamiridici.cz",
         Destination: {ToAddresses: [email]},
         Message: {
-            Subject: {Data: "Dokončení registrace"},
+            Subject: {Data: subject},
             Body: {
                 Html: {
                     Data: '<html><head>'
                         + '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-                        + '<title>"Dokončení registrace"</title>'
+                        + `<title>${subject}</title>`
                         + '</head><body>'
                         + '<p><a href="' + verificationLink + '">Dokončit registraci</a>.</p>'
                         + '<p>Pokud odkaz nejde otevřít, zkopírujte následující text a vložte jej do prohlížeče: ' + verificationLink + '</p>'

@@ -1,88 +1,69 @@
 const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
-var ses = new AWS.SES();
-
+const ses = new AWS.SES();
+const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
-const sendVerificationEmail = (email, token, fn) => {
-	const subject = "Reset your Between us Drivers password";
-	const resetLink = "https://mezinamiridici.cz/reset/" + token;
-
-	ses.sendEmail({
-		Source: "robot@mezinamiridici.cz",
-		Destination: {
-			ToAddresses: [
-				email
-			]
-		},
-		Message: {
-			Subject: {
-				Data: subject
-			},
-			Body: {
-				Html: {
-					Data: '<html><head>'
-					+ '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-					+ '<title>' + subject + '</title>'
-					+ '</head><body>'
-					+ 'Please <a href="' + resetLink + '">click here to reset your password</a> or copy & paste the following link in a browser:'
-					+ '<br><br>'
-					+ '<a href="' + resetLink + '">' + resetLink + '</a>'
-					+ '</body></html>'
-				}
-			}
-		}
-	}, fn);
-}
-
-exports.handler = (payload, context, callback) => {
+exports.handler = async (payload, context, callback) => {
+    console.log("handler starts");
     const { email } = JSON.parse(payload.body);
-    const passwordResetToken = uuidv4();
 
-    dynamodb.query({
-        "TableName": "BUDUserTable",
-        "IndexName": "PasswordFromEmailIndex",
-        "KeyConditionExpression": "#email = :email",
-        "ExpressionAttributeNames": {
-            "#email": "email"
-        },
-        "ExpressionAttributeValues": {
-            ":email": email
-        },
-        "ConsistentRead": false,
-    }, (err, data) => {
-        if (err) {
-            return api.sendInternalError(callback, err.Item);
+    // This freezes node event loop when callback is invoked
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    try {
+        const dbClient = await mongo.connectToDatabase();
+        console.log("Mongo connected");
+
+        const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1 }});
+        console.log("User checks");
+        if (!user) {
+            console.log("User not found " + email);
+            return api.sendErrorForbidden(callback, api.createError("User not found", "sign-in.auth-error"));
         }
 
-        const user = data.Items.find(item => item.email === email);
+        const resetToken = mongo.generateId(16);
+        const expiration = new Date(Date.now() + 6*60*60*1000); // six hours
+        const query = prepareSetTokenQuery(resetToken, expiration);
+        dbClient.db().collection("users").updateOne({_id: user._id}, query);
+        console.log("Token updated in User");
 
-        if (!user)
-            return api.sendInternalError(callback, {})
+        sendVerificationEmail(email, resetToken);
+        console.log("Email sent");
+        return api.sendRresponse(callback, api.createResponse({}));
+    } catch (err) {
+        console.log("Request failed", err);
+        return api.sendInternalError(callback, api.createError('Failed to reset the password', "sign-in.something-went-wrong"));
+    }
+};
 
-        dynamodb.update({
-            TableName: 'BUDUserTable',
-            Key: {
-                "userId": user.userId
-            },
-            UpdateExpression: "set passwordResetToken = :passwordResetToken",
-            ExpressionAttributeValues: {
-                ":passwordResetToken": passwordResetToken
-            },
-            ReturnValues: "UPDATED_NEW"
-        }, (err, data) => {
-            if (err) {
-                return api.sendInternalError(callback, err.Item);
-            }
+const prepareSetTokenQuery = (token, date) => {
+    let query = { $set: { } };
+    query.$set['auth.reset.token'] = token;
+    query.$set['auth.reset.expires'] = date;
+    return query;
+};
 
-            sendVerificationEmail(email, passwordResetToken, (err, emailData) => {
-                if (err) {
-                    return api.sendInternalError(callback, err.Item);
-                } else {
-                    return api.sendRresponse(callback, data.Item);
+const sendVerificationEmail = (email, token, fn) => {
+    const resetLink = "https://www.mezinamiridici.cz/reset/" + token;
+    const subject = 'Obnova hesla';
+    return ses.sendEmail({
+        Source: "robot@mezinamiridici.cz",
+        Destination: {ToAddresses: [email]},
+        Message: {
+            Subject: {Data: subject},
+            Body: {
+                Html: {
+                    Data: '<html><head>'
+                        + '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
+                        + `<title>${subject}</title>`
+                        + '</head>'
+                        + '<p>Pokud chcete změnit heslo, otevřete odkaz níže. Má platnost 6 hodin. '
+                        + 'Pokud jste o změnu hesla nežádali, někdo si hraje, ale má smůlu. S klidem email ignorujte.</p>'
+                        + `<p><a href="${resetLink}">Zadat nové heslo</a>.</p>`
+                        + '<p>Pokud odkaz nejde otevřít, zkopírujte následující text a vložte jej do prohlížeče: ' + resetLink + '</p>'
+                        + '</body></html>'
                 }
-            });
-        });
-    });
+            }
+        }
+    }, fn);
 };

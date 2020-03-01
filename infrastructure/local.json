@@ -14,6 +14,13 @@
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority",
     "JWT_SECRET": "SUPERTAJNEHESLO"
   },
+  "BUDForgotPasswordHandler": {
+    "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
+  },
+  "BUDResetPasswordHandler": {
+    "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority",
+    "JWT_SECRET": "SUPERTAJNEHESLO"
+  },
   "BUDUpdateUserHandler": {
     "MONGODB_URI": "mongodb://host.docker.internal:27017/bud?retryWrites=true&w=majority"
   },

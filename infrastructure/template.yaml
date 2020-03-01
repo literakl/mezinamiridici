@@ -775,6 +775,7 @@ Resources:
       Environment:
         Variables:
           MONGODB_URI: !Ref DatabaseUri
+          JWT_SECRET: !Ref JwtSecret
       Events:
         Api:
           Type: Api
