@@ -1,37 +1,5 @@
 <template>
   <div>
-      <Modal :show="forgottenPassword">
-          <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
-
-          <div v-if="!passwordReset">
-            <p>{{ $t('sign-in.email-reset-description') }}</p>
-            <div v-if="passwordReset === false">
-              <p class="signin__forgot-password-error">{{ $t('sign-in.reset-error') }}</p>
-            </div>
-
-            <TextInput
-              v-model="forgotPasswordEmail"
-              type="email"
-              identifier="resetEmail"
-              :placeholder="$t('sign-in.email-placeholder')"
-              class="signin__reset-text-input"/>
-
-            <Button
-              :value="$t('sign-in.reset-password-button')"
-              class="signin__forgotten-password-submit-button"
-              @clicked="forgotPassword" />
-          </div>
-
-          <div v-if="passwordReset === true">
-            <p class="signin__forgot-password-success">{{ $t('sign-in.reset-success') }}</p>
-          </div>
-
-          <Button
-            :value="$t('sign-in.modal-close-button')"
-            class="signin__forgotten-password-close-button"
-            @clicked="closeForgottenPassword"/>
-      </Modal>
-
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <form @submit.prevent="passes(signIn)">
           <div class="signin">
@@ -62,7 +30,9 @@
                       type="password"
                       />
 
-                    <div class="signin__forgot-password" v-on:click="openForgottenPassword">{{ $t('sign-in.forgot-password-link')}}</div>
+                    <div class="signin__forgot-password">
+                      <router-link :to="{ name: 'forgotten' }">{{ $t('sign-in.forgot-password-link')}}</router-link>
+                    </div>
 
                     <div v-if="error">
                       <strong class="sign-up-form__errors-heading">
@@ -104,7 +74,6 @@ import {
 } from 'vee-validate/dist/rules';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import Modal from '@/components/molecules/Modal.vue';
 import i18n from '../i18n';
 
 extend('email', email);
@@ -124,42 +93,20 @@ export default {
     ValidationObserver,
     Button,
     TextInput,
-    Modal,
   },
   props: {
     message: String,
   },
   data: () => ({
     page: 0,
-    forgottenPassword: false,
     email: null,
     password: null,
     signingIn: false,
-    forgotPasswordEmail: null,
-    passwordReset: null,
     error: null,
   }),
   methods: {
-    openForgottenPassword() {
-      this.forgottenPassword = true;
-    },
-    closeForgottenPassword() {
-      this.forgottenPassword = false;
-      this.passwordReset = null;
-    },
     redirectToSignUp() {
       this.$router.push({ name: 'sign-up' });
-    },
-    async forgotPassword() {
-      try {
-        const response = await this.$store.dispatch('FORGOT_PASSWORD', {
-          email: this.forgotPasswordEmail,
-        });
-
-        this.passwordReset = response.status === 200;
-      } catch (e) {
-        this.passwordReset = false;
-      }
     },
     async signIn() {
       this.signingIn = true;
@@ -260,27 +207,6 @@ h2 {
 .signin__forgot-password:hover {
     text-decoration: underline;
     cursor: pointer;
-}
-
-.signin__forgotten-password-close-button {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.signin__forgotten-password-submit-button {
-  width: 100%;
-}
-
-.signin__reset-text-input {
-    display: block;
-}
-
-.signin__forgot-password-success {
-  color: green;
-}
-
-.signin__forgot-password-error {
-  color: red
 }
 
 @media all and (min-width: 850px) {

@@ -46,6 +46,32 @@ export default new Router({
       beforeEnter: requireUnauth,
     },
     {
+      path: '/forgotten-password',
+      name: 'forgotten',
+      component: () => import('./views/ForgottenPassword'),
+      beforeEnter: requireUnauth,
+      props: true,
+    },
+    {
+      path: '/reset-password/:passwordResetToken',
+      name: 'reset',
+      component: () => import('./views/Reset.vue'),
+      beforeEnter: requireUnauth,
+      props: true,
+    },
+    {
+      path: '/update-password',
+      name: 'update-password',
+      component: () => import('./views/ChangePassword'),
+      beforeEnter: requireAuth,
+    },
+    {
+      path: '/profile/:id',
+      name: 'user-profile',
+      component: () => import('./views/Profile.vue'),
+      props: true,
+    },
+    {
       path: '/poll/:id/:text',
       name: 'poll',
       component: () => import('./views/Poll.vue'),
@@ -55,12 +81,6 @@ export default new Router({
       path: '/polls',
       name: 'polls',
       component: () => import('./views/Polls.vue'),
-    },
-    {
-      path: '/profile/:id',
-      name: 'user-profile',
-      component: () => import('./views/Profile.vue'),
-      props: true,
     },
     {
       path: '/analyze-votes/:id',
@@ -79,19 +99,6 @@ export default new Router({
       component: () => import('./views/Verify.vue'),
       beforeEnter: requireUnauth,
       props: true,
-    },
-    {
-      path: '/reset/:passwordResetToken',
-      name: 'reset',
-      component: () => import('./views/Reset.vue'),
-      beforeEnter: requireUnauth,
-      props: true,
-    },
-    {
-      path: '/update-password',
-      name: 'update-password',
-      component: () => import('./views/ChangePassword'),
-      beforeEnter: requireAuth,
     },
     {
       path: '/help',
