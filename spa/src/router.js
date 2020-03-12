@@ -53,9 +53,9 @@ export default new Router({
       props: true,
     },
     {
-      path: '/reset-password/:passwordResetToken',
+      path: '/reset-password/:resetPasswordToken',
       name: 'reset',
-      component: () => import('./views/Reset.vue'),
+      component: () => import('./views/ResetPassword.vue'),
       beforeEnter: requireUnauth,
       props: true,
     },

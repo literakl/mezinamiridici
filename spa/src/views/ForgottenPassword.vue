@@ -2,13 +2,13 @@
   <div class="forgot">
     <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
 
-    <p>{{ $t('sign-in.email-reset-description') }}</p>
+    <p v-if="passwordReset !== true">{{ $t('sign-in.email-reset-description') }}</p>
 
     <div v-if="!passwordReset">
       <ValidationObserver ref="form" v-slot="{ passes, invalid }">
         <form @submit.prevent="passes(signIn)">
           <div v-if="passwordReset === false">
-            <p class="signin__forgot-password-error">{{ $t('sign-in.reset-error') }}</p>
+            <p class="signin__forgot-password-error">{{ $t('sign-in.forget-error') }}</p>
           </div>
 
           <TextInput
@@ -28,7 +28,7 @@
     </div>
 
     <div v-if="passwordReset === true">
-      <p class="signin__forgot-password-success">{{ $t('sign-in.reset-success') }}</p>
+      <p class="signin__forgot-password-success">{{ $t('sign-in.forget-success') }}</p>
     </div>
   </div>
 </template>
@@ -75,6 +75,7 @@ export default {
 
         this.passwordReset = response.status === 200;
       } catch (e) {
+        console.log(e);
         this.passwordReset = false;
       }
     },
@@ -100,7 +101,6 @@ export default {
   }
 
   .signin__forgot-password-success {
-    color: green;
   }
 
   .signin__forgot-password-error {

@@ -4,7 +4,11 @@ const api = require('../../utils/api.js');
 
 exports.handler = async (payload, context, callback) => {
     console.log("handler starts");
-    const { passwordResetToken, password } = JSON.parse(payload.body);
+    const { resetPasswordToken, password } = JSON.parse(payload.body);
+
+    if (!resetPasswordToken) {
+        return api.sendBadRequest(callback, api.createError("Missing token", "sign-in.auth-error"));
+    }
 
     // This freezes node event loop when callback is invoked
     context.callbackWaitsForEmptyEventLoop = false;
@@ -13,11 +17,11 @@ exports.handler = async (payload, context, callback) => {
         const dbClient = await mongo.connectToDatabase();
         console.log("Mongo connected");
 
-        const user = await mongo.findUser(dbClient, {"auth.reset.token": passwordResetToken}, {projection: { auth: 1, "bio.nickname": 1}});
+        const user = await mongo.findUser(dbClient, {"resetPasswordToken": resetPasswordToken}, {projection: { auth: 1, "bio.nickname": 1}});
         console.log("User checks");
         if (!user) {
             console.log("User not found");
-            return api.sendErrorForbidden(callback, api.createError("Token not found", "sign-in.auth-error"));
+            return api.sendErrorForbidden(callback, api.createError("Token not found", "sign-in.invalid-reset"));
         }
         const now = new Date();
         if (user.auth.reset.expires < now) {

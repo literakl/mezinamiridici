@@ -30,17 +30,20 @@ function connectToDatabase() {
 }
 
 function findUser(dbClient, params, projection) {
-    console.log("findUser");
     const query = {};
-    if (params.token) {
-        query['auth.verifyToken'] = params.token;
-    }
     if (params.userId) {
         query._id = params.userId;
     }
     if (params.email) {
         query['auth.email'] = params.email;
     }
+    if (params.token) {
+        query['auth.verifyToken'] = params.token;
+    }
+    if (params.resetPasswordToken) {
+        query['auth.reset.token'] = params.resetPasswordToken;
+    }
+    console.log("findUser", query);
 
     return dbClient.db()
         .collection("users")

@@ -44,7 +44,7 @@ const prepareSetTokenQuery = (token, date) => {
 };
 
 const sendVerificationEmail = (email, token, fn) => {
-    const resetLink = "https://www.mezinamiridici.cz/reset/" + token;
+    const resetLink = "https://www.mezinamiridici.cz/reset-password/" + token;
     const subject = 'Obnova hesla';
     return ses.sendEmail({
         Source: "robot@mezinamiridici.cz",

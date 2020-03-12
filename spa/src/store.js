@@ -147,6 +147,7 @@ export default new Vuex.Store({
           },
         },
       );
+      await context.dispatch('SIGN_USER_OUT');
     },
     FORGOT_PASSWORD: async (context, payload) => {
       try {
@@ -162,7 +163,7 @@ export default new Vuex.Store({
     RESET_PASSWORD: async (context, payload) => {
       try {
         const request = await axios.post(`${API_ENDPOINT}/resetPassword`, JSON.stringify({
-          passwordResetToken: payload.passwordResetToken,
+          resetPasswordToken: payload.resetPasswordToken,
           password: payload.password,
         }));
 

@@ -1,50 +1,39 @@
 <template>
-  <div>
+  <div class="signin__wrapper">
+
+    <div class="sign-up__heading">
+      <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
+      <p>{{ $t('sign-in.reset-password-description') }}</p>
+    </div>
+
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <form @submit.prevent="passes(changePassword)">
-        <div class="signin">
-          <div class="signin__wrapper">
-            <h1>{{ $t('sign-in.change-password-heading') }}</h1>
-            <div>
-              <TextInput
-                v-model="email"
-                rules="email"
-                :label="$t('profile.email')"
-                name="email"
-                type="email"/>
+      <form @submit.prevent="passes(resetPassword)">
+        <TextInput
+          v-model="email"
+          :label="$t('profile.email')"
+          name="email"
+          type="email"/>
 
-              <TextInput
-                v-model="currentPassword"
-                rules="required"
-                :label="$t('sign-in.current-password')"
-                class="signin__text-input"
-                name="current-password"
-                type="password"
-              />
+        <TextInput
+          v-model="newPassword"
+          rules="required|min:6"
+          :label="$t('sign-in.new-password')"
+          class="signin__text-input"
+          name="new-password"
+          type="password"
+        />
 
-              <TextInput
-                v-model="newPassword"
-                rules="required|min:6"
-                :label="$t('sign-in.new-password')"
-                class="signin__text-input"
-                name="new-password"
-                type="password"
-              />
-
-              <div v-if="error">
-                <strong class="sign-up-form__errors-heading">
-                  {{ error }}
-                </strong>
-              </div>
-
-              <Button
-                :disabled="invalid"
-                class="signin__sign-in-button"
-                :value="$t('sign-in.change-password-button')"
-                @clicked="changePassword"/>
-            </div>
-          </div>
+        <div v-if="error">
+          <strong class="sign-up-form__errors-heading">
+            {{ error }}
+          </strong>
         </div>
+
+        <Button
+          :disabled="invalid"
+          class="signin__sign-in-button"
+          :value="$t('sign-in.change-password-button')"
+          @clicked="resetPassword"/>
       </form>
     </ValidationObserver>
   </div>
@@ -52,14 +41,13 @@
 
 <script>
 import { extend, ValidationObserver, configure } from 'vee-validate';
-import { required, min, email } from 'vee-validate/dist/rules';
+import { required, min } from 'vee-validate/dist/rules';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '../i18n';
 
 extend('required', required);
 extend('min', min);
-extend('email', email);
 configure({
   defaultMessage: (field, values) => {
     /* eslint no-underscore-dangle: 0 */
@@ -70,7 +58,7 @@ configure({
 });
 
 export default {
-  name: 'signin',
+  name: 'reset',
   components: {
     ValidationObserver,
     Button,
@@ -78,22 +66,24 @@ export default {
   },
   data: () => ({
     email: null,
-    currentPassword: null,
     newPassword: null,
     error: null,
   }),
+  props: {
+    resetPasswordToken: String,
+  },
   methods: {
-    async changePassword() {
+    async resetPassword() {
       try {
-        await this.$store.dispatch('CHANGE_PASSWORD', {
-          currentPassword: this.currentPassword,
-          newPassword: this.newPassword,
+        await this.$store.dispatch('RESET_PASSWORD', {
+          resetPasswordToken: this.resetPasswordToken,
+          password: this.newPassword,
         });
 
         await this.$router.push({
           name: 'sign-in',
           params: {
-            message: this.$t('sign-in.change-success'),
+            message: this.$t('sign-in.reset-success'),
           },
         });
       } catch (error) {
@@ -110,11 +100,6 @@ export default {
 </script>
 
 <style scoped>
-  .signin {
-    background: #f6f6f6;
-    padding: 30px 0 30px 0;
-  }
-
   input {
     width: 100%;
     padding: 0;
