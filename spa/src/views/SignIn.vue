@@ -119,6 +119,7 @@ export default {
 
         await this.$router.push('/');
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
         if (error.response && error.response.data && error.response.data.errors) {
           this.error = this.$t(error.response.data.errors[0].messageKey);

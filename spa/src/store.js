@@ -61,16 +61,11 @@ export default new Vuex.Store({
   },
   actions: {
     GET_POLLS: async (context, payload) => {
-      console.log('[GET_POLLS]');
-      console.log('payload');
-      console.log(payload);
       let pollData;
       if (payload !== undefined && payload.userId !== undefined) {
         const { userId } = payload;
-        console.log('[fetching user specific poll]');
         pollData = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`);
       } else {
-        console.log('[fetching all poll]');
         pollData = await axios.get(`${API_ENDPOINT}/polls`);
       }
       const polls = [];
@@ -81,7 +76,6 @@ export default new Vuex.Store({
       let latestPollId = null;
       const userData = {};
       pollData.data.forEach(async (poll) => {
-        console.log('[pollId]', poll.pollId, '[userId]', poll.userId);
         if (poll.created > latestPollTime) {
           latestPollTime = poll.created;
           latestPollId = poll.pollId;
@@ -103,7 +97,6 @@ export default new Vuex.Store({
         poll.userData = userData[poll.userId];
         polls.push(poll);
       });
-      console.log('[latestPollId] ', latestPollId);
       context.commit('SET_LATEST_POLL', latestPollId);
       // console.log(this.$store.getters.LATEST_POLL);
       context.commit('SET_POLLS', polls);
@@ -174,7 +167,6 @@ export default new Vuex.Store({
     },
     SIGN_USER_IN: async (context, payload) => {
       try {
-        console.log('SIGN_USER_IN');
         const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
           email: payload.email,
           password: payload.password,
@@ -215,7 +207,6 @@ export default new Vuex.Store({
       };
     },
     LOAD_USER: async (context) => {
-      console.log('LOAD_USER');
       let jwt = localStorage.getItem('jwt');
       let clean = false;
       if (jwt) {
@@ -233,6 +224,7 @@ export default new Vuex.Store({
             context.commit('SET_USER_TOKEN', jwt);
           }
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.log('Validate token failed', e);
           clean = true;
         }

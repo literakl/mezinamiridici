@@ -79,10 +79,7 @@ export default {
     },
   },
   created() {
-    // this.$store.dispatch('GET_USER_ID');
-    console.log(this.$store.getters.USER_ID);
     const endpoint = window.location.pathname.split('/')[1];
-    console.log(endpoint);
     if (endpoint === 'profile') {
       if (this.$store.getters.USER_ID !== undefined) {
         this.$store.dispatch('GET_POLLS', { userId: this.$store.getters.USER_ID });

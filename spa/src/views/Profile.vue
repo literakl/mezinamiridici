@@ -125,8 +125,8 @@ export default {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
-        console.log(this.userProfile);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
         if (err.response && err.response.data && err.response.data.errors) {
           this.error = this.$t(err.response.data.errors[0].messageKey);

@@ -271,6 +271,7 @@ export default {
         this.education = this.userProfile.bio.edu;
         this.share = this.userProfile.prefs.public ? 'public' : 'private';
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
         if (err.response && err.response.data && err.response.data.errors) {
           this.error = this.$t(err.response.data.errors[0].messageKey);
@@ -296,6 +297,8 @@ export default {
         });
         await this.$router.push(`/profile/${this.userProfile._id}`);
       } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
         this.success = false;
         if (error.response) {
           const veeErrors = convertErrors.call(this, error.response.data);

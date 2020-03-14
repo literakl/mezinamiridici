@@ -71,7 +71,7 @@ export default {
       this.downvoted = true;
     },
     upvote() {
-      console.log('[upvote] ', this.upvoted);
+      // console.log('[upvote] ', this.upvoted);
       if (this.upvoted) return;
       this.mutableUpvotes = (this.mutableUpvotes || 0) + 1;
       this.toggleUpvoted();
@@ -79,7 +79,7 @@ export default {
       this.$store.dispatch('COMMENT_VOTE', { vote: 1, pollId: this.pollId, commentId: this.commentId });
     },
     downvote() {
-      console.log('[downvote] ', this.downvoted);
+      // console.log('[downvote] ', this.downvoted);
       if (this.downvoted) return;
       this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
       this.toggleDownvoted();

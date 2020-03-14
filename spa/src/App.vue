@@ -51,8 +51,6 @@ export default {
     },
   },
   created() {
-    console.log('Created');
-    // this.$store.dispatch('GET_SIGNED_IN');
     this.$store.dispatch('LOAD_USER');
   },
   methods: {

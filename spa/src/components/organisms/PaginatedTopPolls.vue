@@ -21,7 +21,7 @@ export default {
   }),
   methods: {
     clicked() {
-      console.log('Loading more...');
+      // console.log('Loading more...');
       this.page += 1;
     },
   },

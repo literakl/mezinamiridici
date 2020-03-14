@@ -44,6 +44,7 @@ exports.handler = async (payload, context, callback) => {
         const token = api.createTokenFromUser(user);
         return api.sendRresponse(callback, api.createResponse(token));
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.log("Request failed", err);
         return api.sendInternalError(callback, api.createError('failed to update the user', "sign-up.something-went-wrong"));
     }
