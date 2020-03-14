@@ -704,8 +704,6 @@ Resources:
             Method: Post
             RestApiId:
               Ref: BUDAPI
-      Policies:
-        - Version: '2012-10-17'
   BUDVerifyUserHandler:
     Type: AWS::Serverless::Function
     Properties:
