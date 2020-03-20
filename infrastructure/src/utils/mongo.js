@@ -1,4 +1,5 @@
 const generate = require('nanoid/generate');
+const dotenv = require('dotenv');
 const MongoClient = require('mongodb').MongoClient;
 
 exports.connectToDatabase = connectToDatabase;
@@ -6,6 +7,7 @@ exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 
+dotenv.config();
 let MONGODB_URI = process.env.MONGODB_URI;
 let cachedDb = null;
 

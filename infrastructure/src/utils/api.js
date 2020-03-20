@@ -1,5 +1,18 @@
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
+const whitelist = ['http://localhost:8080', 'https://www.mezinamiridici.cz']
+const corsPerRoute = cors({
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+});
+
+module.exports.corsOptions = corsPerRoute;
 module.exports.sendRresponse = sendResponse;
 module.exports.sendErrorForbidden=sendErrorForbidden;
 module.exports.sendInternalError=sendInternalError;
@@ -13,45 +26,40 @@ module.exports.createResponse=createResponse;
 module.exports.createToken=createToken;
 module.exports.createTokenFromUser=createTokenFromUser;
 
-function sendResponse(callback, body, cacheControl = "private") {
-    response(callback, 200, body, cacheControl);
+function sendResponse(res, body, cacheControl = "private") {
+    response(res, 200, body, cacheControl);
 }
 
-function sendCreated(callback, body, cacheControl = "private") {
-    response(callback, 201, body, cacheControl);
+function sendCreated(res, body, cacheControl = "private") {
+    response(res, 201, body, cacheControl);
 }
 
-function sendBadRequest(callback, body) {
-    response(callback, 400, body, "private");
+function sendBadRequest(res, body) {
+    response(res, 400, body, "private");
 }
 
-function sendNotAuthorized(callback, body) {
-    response(callback, 401, body, "private");
+function sendNotAuthorized(res, body) {
+    response(res, 401, body, "private");
 }
 
-function sendErrorForbidden(callback, body) {
-    response(callback, 403, body, "private");
+function sendErrorForbidden(res, body) {
+    response(res, 403, body, "private");
 }
 
-function sendConflict(callback, body) {
-    response(callback, 409, body, "private");
+function sendConflict(res, body) {
+    response(res, 409, body, "private");
 }
 
-function sendInternalError(callback, body) {
-    response(callback, 500, body, "private");
+function sendInternalError(res, body) {
+    response(res, 500, body, "private");
 }
 
-function response(callback, status, body, cacheControl) {
-    callback(null,  {
-        "statusCode": status,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Cache-Control": cacheControl
-        },
-        "body": JSON.stringify(body),
-        "isBase64Encoded": false
-    });
+function response(res, status, body, cacheControl) {
+    res.status(status);
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Cache-Control", cacheControl);
+    res.send(body);
 }
 
 function createResponse(body) {

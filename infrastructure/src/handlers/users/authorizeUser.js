@@ -2,45 +2,47 @@ const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
-exports.handler = async (payload, context, callback) => {
-    console.log("handler starts");
-    const { email, password } = JSON.parse(payload.body);
-    let result = validateParameters(email, password);
-    if (! result.success) {
-        return api.sendBadRequest(callback, result);
-    }
+module.exports = (app) => {
+    app.options('/v1/authorizeUser', api.corsOptions, () => {});
 
-    // This freezes node event loop when callback is invoked
-    context.callbackWaitsForEmptyEventLoop = false;
+    app.post('/v1/authorizeUser', api.corsOptions, async (req, res) => {
+        console.log("authorizeUser handler starts");
+        const { email, password } = req.body;
 
-    try {
-        const dbClient = await mongo.connectToDatabase();
-        console.log("Mongo connected");
-
-        const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1, "bio.nickname": 1 }});
-        console.log("User checks");
-        if (!user) {
-            console.log("User not found " + email);
-            return api.sendErrorForbidden(callback, api.createError("Bad credentials", "sign-in.auth-error"));
+        let result = validateParameters(email, password);
+        if (! result.success) {
+            api.sendBadRequest(res, result);
         }
 
-        if (!user.auth.verified) {
-            return api.sendErrorForbidden(callback, api.createError("User not verified", "sign-in.auth-not-verified"));
-        }
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            console.log("Mongo connected");
 
-        // following part takes more than 1 second with 128 MB RAM!
-        if (bcrypt.compareSync(password, user.auth.pwdHash)) {
-            console.log("Password verified");
-            const token = api.createTokenFromUser(user);
-            return api.sendRresponse(callback, api.createResponse(token));
-        } else {
-            console.log("Password mismatch for user " + user._id);
-            return api.sendErrorForbidden(callback, api.createError("Bad credentials", "sign-in.auth-error"));
+            const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1, "bio.nickname": 1 }});
+            console.log("User checks");
+            if (!user) {
+                console.log("User not found " + email);
+                api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error"));
+            }
+
+            if (!user.auth.verified) {
+                api.sendErrorForbidden(res, api.createError("User not verified", "sign-in.auth-not-verified"));
+            }
+
+            // following part takes more than 1 second with 128 MB RAM!
+            if (bcrypt.compareSync(password, user.auth.pwdHash)) {
+                console.log("Password verified");
+                const token = api.createTokenFromUser(user);
+                api.sendRresponse(res, api.createResponse(token));
+            } else {
+                console.log("Password mismatch for user " + user._id);
+                api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error"));
+            }
+        } catch (err) {
+            console.log("Request failed", err);
+            api.sendInternalError(res, api.createError('Failed to authorize the user', "sign-in.something-went-wrong"));
         }
-    } catch (err) {
-        console.log("Request failed", err);
-        return api.sendInternalError(callback, api.createError('Failed to authorize the user', "sign-in.something-went-wrong"));
-    }
+    })
 };
 
 const validateParameters = (email, password) => {

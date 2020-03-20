@@ -1,11 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+const axios = require('axios').default;
 
 Vue.use(Vuex);
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
+const corsOptions = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
 export default new Vuex.Store({
   state: {
@@ -170,7 +175,7 @@ export default new Vuex.Store({
         const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
           email: payload.email,
           password: payload.password,
-        }));
+        }), corsOptions);
 
         const jwt = axiosResponse.data.data;
         const jwtData = jwtDecode(jwt);
