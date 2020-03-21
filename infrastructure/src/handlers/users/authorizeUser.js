@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/authorizeUser', api.corsOptions, () => {});
+    app.options('/v1/authorizeUser', auth.cors, () => {});
 
-    app.post('/v1/authorizeUser', api.corsOptions, async (req, res) => {
+    app.post('/v1/authorizeUser', auth.required, auth.cors, async (req, res) => {
         console.log("authorizeUser handler starts");
         const { email, password } = req.body;
         let result = validateParameters(email, password);
@@ -31,7 +32,7 @@ module.exports = (app) => {
             // following part takes more than 1 second with 128 MB RAM!
             if (bcrypt.compareSync(password, user.auth.pwdHash)) {
                 console.log("Password verified");
-                const token = api.createTokenFromUser(user);
+                const token = auth.createTokenFromUser(user);
                 return api.sendRresponse(res, api.createResponse(token));
             } else {
                 console.log("Password mismatch for user " + user._id);

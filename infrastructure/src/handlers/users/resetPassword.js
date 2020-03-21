@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
 exports.handler = async (payload, context, callback) => {
     console.log("handler starts");
@@ -33,7 +34,7 @@ exports.handler = async (payload, context, callback) => {
         console.log(`Password changed for user ${user.auth.email}`);
 
         user.auth.pwdTimestamp = now;
-        const token = api.createTokenFromUser(user);
+        const token = auth.createTokenFromUser(user);
         return api.sendRresponse(callback, api.createResponse(token));
     } catch (err) {
         console.log("Request failed", err);

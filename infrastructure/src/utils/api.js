@@ -1,31 +1,3 @@
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
-
-const whitelist = ['http://localhost:8080', 'https://www.mezinamiridici.cz']
-const corsPerRoute = cors({
-    origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    }
-});
-
-module.exports.corsOptions = corsPerRoute;
-module.exports.sendRresponse = sendResponse;
-module.exports.sendErrorForbidden=sendErrorForbidden;
-module.exports.sendInternalError=sendInternalError;
-module.exports.sendBadRequest=sendBadRequest;
-module.exports.sendCreated=sendCreated;
-module.exports.sendNotAuthorized=sendNotAuthorized;
-module.exports.sendConflict=sendConflict;
-module.exports.addValidationError=addValidationError;
-module.exports.createError=createError;
-module.exports.createResponse=createResponse;
-module.exports.createToken=createToken;
-module.exports.createTokenFromUser=createTokenFromUser;
-
 function sendResponse(res, body, cacheControl = "private") {
     return response(res, 200, body, cacheControl);
 }
@@ -95,15 +67,13 @@ function addValidationError(result, argument, message, messageKey) {
     result.errors.push(x);
 }
 
-function createTokenFromUser(user, expiration = '31d') {
-    return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, expiration);
-}
-
-function createToken(userId, nickname, pwdTimestamp, expiration = '31d') {
-    const jwtData = {
-        "userId": userId,
-        "nickname": nickname,
-        "pwdTimestamp": pwdTimestamp
-    };
-    return jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: expiration});
-}
+module.exports.sendRresponse = sendResponse;
+module.exports.sendErrorForbidden=sendErrorForbidden;
+module.exports.sendInternalError=sendInternalError;
+module.exports.sendBadRequest=sendBadRequest;
+module.exports.sendCreated=sendCreated;
+module.exports.sendNotAuthorized=sendNotAuthorized;
+module.exports.sendConflict=sendConflict;
+module.exports.addValidationError=addValidationError;
+module.exports.createError=createError;
+module.exports.createResponse=createResponse;

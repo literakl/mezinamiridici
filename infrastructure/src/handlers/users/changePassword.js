@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
 exports.handler = async (payload, context, callback) => {
     console.log("handler starts");
@@ -41,7 +42,7 @@ exports.handler = async (payload, context, callback) => {
         const query = prepareChangePasswordQuery(newPassword, date);
         await dbClient.db().collection("users").updateOne({_id: userId}, query);
         user.auth.pwdTimestamp = date;
-        const token = api.createTokenFromUser(user);
+        const token = auth.createTokenFromUser(user);
         return api.sendRresponse(callback, api.createResponse(token));
     } catch (err) {
         // eslint-disable-next-line no-console

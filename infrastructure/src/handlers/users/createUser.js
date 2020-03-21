@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
 exports.handler = async (payload, context, callback) => {
     console.log("handler starts");
@@ -49,7 +50,7 @@ exports.handler = async (payload, context, callback) => {
         return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
     }
 
-    const token = api.createToken(userId, nickname, new Date(), '1m');
+    const token = auth.createToken(userId, nickname, new Date(), '1m');
     return api.sendCreated(callback, api.createResponse(token));
 };
 

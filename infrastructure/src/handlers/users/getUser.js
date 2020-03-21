@@ -1,8 +1,11 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
 module.exports = app => {
-    app.get('/v1/users/:userId', async (req, res) => {
+    app.options('/v1/users/:userId', auth.cors, () => {});
+
+    app.get('/v1/users/:userId', auth.optional, async (req, res) => {
         console.log("getUser handler starts");
         const { userId } = req.params;
         if (! userId) {
@@ -19,7 +22,12 @@ module.exports = app => {
                 return api.sendErrorForbidden(res, api.createError("User not found", "profile.user-not-found"));
             }
 
-            // todo check user rights - signed user can see everything, other user cannot see email and profile data, unless profile is public
+            if ((!req.identity || req.identity.userId !== userId) && !user.prefs.public) {
+                console.log('not authorized');
+                user.bio = { nickname: user.bio.nickname };
+                delete user.driving;
+                delete user.prefs;
+            }
             return api.sendRresponse(res, api.createResponse(user));
             // return api.sendRresponse(callback, api.createResponse(user), "public, max-age=600");
         } catch (err) {

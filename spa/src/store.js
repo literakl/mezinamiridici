@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
+
 const axios = require('axios').default;
 
 Vue.use(Vuex);
@@ -271,7 +272,14 @@ export default new Vuex.Store({
     },
     // eslint-disable-next-line arrow-body-style
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
-      // const jwt = localStorage.getItem('jwt');
+      if (context.state.userId === payload.id) {
+        return axios.get(`${API_ENDPOINT}/users/${payload.id}`,
+          {
+            headers: {
+              Authorization: `bearer ${context.state.userToken}`,
+            },
+          });
+      }
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
     VERIFY_USER: async (context, payload) => {
