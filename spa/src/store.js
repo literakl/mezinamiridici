@@ -6,11 +6,6 @@ const axios = require('axios').default;
 Vue.use(Vuex);
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
-const corsOptions = {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
 
 export default new Vuex.Store({
   state: {
@@ -172,10 +167,10 @@ export default new Vuex.Store({
     },
     SIGN_USER_IN: async (context, payload) => {
       try {
-        const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, JSON.stringify({
+        const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, {
           email: payload.email,
           password: payload.password,
-        }), corsOptions);
+        });
 
         const jwt = axiosResponse.data.data;
         const jwtData = jwtDecode(jwt);

@@ -27,31 +27,31 @@ module.exports.createToken=createToken;
 module.exports.createTokenFromUser=createTokenFromUser;
 
 function sendResponse(res, body, cacheControl = "private") {
-    response(res, 200, body, cacheControl);
+    return response(res, 200, body, cacheControl);
 }
 
 function sendCreated(res, body, cacheControl = "private") {
-    response(res, 201, body, cacheControl);
+    return response(res, 201, body, cacheControl);
 }
 
 function sendBadRequest(res, body) {
-    response(res, 400, body, "private");
+    return response(res, 400, body, "private");
 }
 
 function sendNotAuthorized(res, body) {
-    response(res, 401, body, "private");
+    return response(res, 401, body, "private");
 }
 
 function sendErrorForbidden(res, body) {
-    response(res, 403, body, "private");
+    return response(res, 403, body, "private");
 }
 
 function sendConflict(res, body) {
-    response(res, 409, body, "private");
+    return response(res, 409, body, "private");
 }
 
 function sendInternalError(res, body) {
-    response(res, 500, body, "private");
+    return response(res, 500, body, "private");
 }
 
 function response(res, status, body, cacheControl) {
@@ -60,6 +60,7 @@ function response(res, status, body, cacheControl) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Cache-Control", cacheControl);
     res.send(body);
+    return res;
 }
 
 function createResponse(body) {

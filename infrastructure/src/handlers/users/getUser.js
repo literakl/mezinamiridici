@@ -1,34 +1,30 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 
-exports.handler = (payload, context, callback) => {
-    console.log("handler starts");
-    console.log(payload);
-    console.log(context);
-    const userId = payload.pathParameters.userId;
-    if (! userId) {
-        return api.sendBadRequest(callback, api.createError("Missing user id", "generic.internal-error"));
-    }
+module.exports = app => {
+    app.get('/v1/users/:userId', async (req, res) => {
+        console.log("getUser handler starts");
+        const { userId } = req.params;
+        if (! userId) {
+            return api.sendBadRequest(res, api.createError("Missing user id", "generic.internal-error"));
+        }
 
-    // This freezes node event loop when callback is invoked
-    context.callbackWaitsForEmptyEventLoop = false;
-
-    mongo.connectToDatabase()
-        .then(dbClient => {
+        try {
+            const dbClient = await mongo.connectToDatabase();
             console.log("Mongo connected");
-            return mongo.findUser(dbClient, {userId: userId}, {projection: { auth: 0, "prefs.email": 0, consent: 0 }});
-        })
-        .then(user => {
+
+            const user = await mongo.findUser(dbClient, {userId: userId}, {projection: {auth: 0, "prefs.email": 0, consent: 0}});
             console.log("User fetched");
             if (!user) {
-                return api.sendErrorForbidden(callback, api.createError("User not found", "profile.user-not-found"));
+                return api.sendErrorForbidden(res, api.createError("User not found", "profile.user-not-found"));
             }
+
             // todo check user rights - signed user can see everything, other user cannot see email and profile data, unless profile is public
-            return api.sendRresponse(callback, api.createResponse(user));
+            return api.sendRresponse(res, api.createResponse(user));
             // return api.sendRresponse(callback, api.createResponse(user), "public, max-age=600");
-        })
-        .catch(err => {
+        } catch (err) {
             console.log("Request failed", err);
-            return api.sendInternalError(callback, api.createError('Failed to load  the user', "generic.something-went-wrong"));
-        });
+            return api.sendInternalError(res, api.createError('Failed to load  the user', "generic.something-went-wrong"));
+        }
+    });
 };

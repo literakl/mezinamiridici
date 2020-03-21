@@ -11,6 +11,7 @@ dotenv.config();
 let MONGODB_URI = process.env.MONGODB_URI;
 let cachedDb = null;
 
+// TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
     console.log("Connect to mongo database " + MONGODB_URI);
 
