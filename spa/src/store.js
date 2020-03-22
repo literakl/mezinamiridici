@@ -3,10 +3,20 @@ import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 
 const axios = require('axios').default;
+axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
 
 Vue.use(Vuex);
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
+
+function getAuthHeader(context) {
+  return {
+    headers: {
+      Authorization: `bearer ${context.state.userToken}`,
+    },
+  };
+}
 
 export default new Vuex.Store({
   state: {
@@ -130,24 +140,18 @@ export default new Vuex.Store({
     },
     CHANGE_PASSWORD: async (context, payload) => {
       await axios.patch(
-        `${API_ENDPOINT}/users/${context.state.userId}/password`,
-        JSON.stringify({
+        `${API_ENDPOINT}/users/${context.state.userId}/password`, {
           currentPassword: payload.currentPassword,
           newPassword: payload.newPassword,
-        }),
-        {
-          headers: {
-            Authorization: `bearer ${context.state.USER_TOKEN}`,
-          },
-        },
+        }, getAuthHeader(context),
       );
       await context.dispatch('SIGN_USER_OUT');
     },
     FORGOT_PASSWORD: async (context, payload) => {
       try {
-        const request = await axios.post(`${API_ENDPOINT}/forgotPassword`, JSON.stringify({
+        const request = await axios.post(`${API_ENDPOINT}/forgotPassword`, {
           email: payload.email,
-        }));
+        });
 
         return request;
       } catch (err) {
@@ -156,10 +160,10 @@ export default new Vuex.Store({
     },
     RESET_PASSWORD: async (context, payload) => {
       try {
-        const request = await axios.post(`${API_ENDPOINT}/resetPassword`, JSON.stringify({
+        const request = await axios.post(`${API_ENDPOINT}/resetPassword`, {
           resetPasswordToken: payload.resetPasswordToken,
           password: payload.password,
-        }));
+        });
 
         return request;
       } catch (err) {
@@ -219,7 +223,9 @@ export default new Vuex.Store({
           context.commit('SET_USER_TOKEN', jwt);
 
           if (Date.now() > 1000 * (jwtData.iat + 24 * 3600)) {
-            const axiosResponse = await axios.post(`${API_ENDPOINT}/users/${jwtData.userId}/validateToken`, JSON.stringify({ jwtToken: jwt }));
+            const axiosResponse = await axios.post(`${API_ENDPOINT}/users/${jwtData.userId}/validateToken`,
+              { },
+              getAuthHeader(context));
             jwt = axiosResponse.data.data;
             localStorage.setItem('jwt', jwt);
             context.commit('SET_USER_TOKEN', jwt);
@@ -239,14 +245,14 @@ export default new Vuex.Store({
         context.commit('SET_USER_ID', null);
       }
     },
-    CREATE_USER_PROFILE: async (context, payload) => axios.post(`${API_ENDPOINT}/users`, JSON.stringify({
+    CREATE_USER_PROFILE: async (context, payload) => axios.post(`${API_ENDPOINT}/users`, {
       email: payload.email,
       password: payload.password,
       nickname: payload.nickname,
       termsAndConditions: payload.termsAndConditions,
       dataProcessing: payload.dataProcessing,
       marketing: payload.marketing,
-    })),
+    }),
     UPDATE_USER_PROFILE: async (context, payload) => {
       await axios.patch(
         `${API_ENDPOINT}/users/${payload.userId}`,
@@ -259,12 +265,11 @@ export default new Vuex.Store({
           education: payload.education,
           publicProfile: payload.publicProfile,
         }),
-        {
-          headers: {
-            Authorization: `bearer ${payload.jwt.token}`,
-          },
-        },
+        getAuthHeader(context),
       );
+    },
+    VERIFY_USER: async (context, payload) => {
+      await axios.post(`${API_ENDPOINT}/verify/${payload.token}`);
     },
     GET_USERS_VOTES: async (context, payload) => {
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.userId}/votes`);
@@ -281,9 +286,6 @@ export default new Vuex.Store({
           });
       }
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
-    },
-    VERIFY_USER: async (context, payload) => {
-      await axios.get(`${API_ENDPOINT}/verify/${payload.token}`);
     },
     VOTE: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
