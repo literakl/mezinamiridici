@@ -3,8 +3,14 @@ const nanoexpress = require('nanoexpress');
 const app = nanoexpress();
 
 require('./handlers/getStatus')(app);
-require('./handlers/users/getUser')(app);
 require('./handlers/users/authorizeUser')(app);
+require('./handlers/users/changePassword')(app);
+require('./handlers/users/createUser')(app);
+require('./handlers/users/forgotPassword')(app);
+require('./handlers/users/getUser')(app);
+require('./handlers/users/resetPassword')(app);
+require('./handlers/users/validateToken')(app);
+require('./handlers/users/verifyUser')(app);
 
 app.setErrorHandler(
     (err, req, res) => {

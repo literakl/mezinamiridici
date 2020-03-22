@@ -1,34 +1,34 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
-exports.handler = async (payload, context, callback) => {
-    console.log("handler starts");
-    if (payload.body === undefined || payload.body === null) {
-        return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
-    }
-    const userId = payload.pathParameters.userId;
+module.exports = (app) => {
+    app.options('/v1/users/:userId', auth.cors, () => {});
 
-    console.log(context);
-    //todo overit, zda funguje autorizace spravne. co se stane, kdyz chybi nebo je volana na jineho uzivatele?
+    app.patch('/v1/users/:userId', auth.required, auth.cors, async (req, res) => {
+        console.log("updateUser handler starts");
+        const { userId } = req.params;
+        if (req.identity.userId !== userId) {
+            console.log(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
+            return api.sendErrorForbidden(res, api.createError("JWT mismatch", "sign-in.auth-error"));
+        }
 
-    // This freezes node event loop when callback is invoked
-    context.callbackWaitsForEmptyEventLoop = false;
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            console.log("Mongo connected");
 
-    try {
-        const dbClient = await mongo.connectToDatabase();
-        console.log("Mongo connected");
-
-        const query = prepareUpdateProfileQuery(payload);
-        await dbClient.db().collection("users").updateOne({_id: userId}, query);
-        return api.sendRresponse(callback, api.createResponse());
-    } catch (err) {
-        console.log("Request failed", err);
-        return api.sendInternalError(callback, api.createError('failed update the user', "sign-up.something-went-wrong"));
-    }
+            const query = prepareUpdateProfileQuery(req);
+            await dbClient.db().collection("users").updateOne({_id: userId}, query);
+            return api.sendRresponse(res, api.createResponse());
+        } catch (err) {
+            console.log("Request failed", err);
+            return api.sendInternalError(res, api.createError('failed update the user', "sign-up.something-went-wrong"));
+        }
+    })
 };
 
-const prepareUpdateProfileQuery = (payload) => {
-    const { drivingSince, vehicles, sex, born, region, education, publicProfile } = JSON.parse(payload.body);
+const prepareUpdateProfileQuery = (req) => {
+    const { drivingSince, vehicles, sex, born, region, education, publicProfile } = req.body;
     let setters = {}, unsetters = {};
     if (sex) {
         setters['bio.sex'] = sex;

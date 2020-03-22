@@ -5,53 +5,50 @@ const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
-exports.handler = async (payload, context, callback) => {
-    console.log("handler starts");
-    if (payload.body === undefined || payload.body === null) {
-        return api.sendBadRequest(callback, api.createError('body is null', "sign-up.something-went-wrong"));
-    }
+module.exports = (app) => {
+    app.options('/v1/users', auth.cors, () => {});
 
-    const {email, password, nickname, termsAndConditions, dataProcessing, emails} = JSON.parse(payload.body);
-    let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
-    if (! result.success) {
-        console.log("validation failed" + result);
-        return api.sendBadRequest(callback, result);
-    }
-
-    // This freezes node event loop when callback is invoked
-    context.callbackWaitsForEmptyEventLoop = false;
-
-    const verificationToken = mongo.generateId(8);
-    const userId = mongo.generateTimeId();
-    const dbClient = await mongo.connectToDatabase();
-    console.log("Mongo connected");
-
-    try {
-        await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
-        console.log("User created",);
-    } catch (err) {
-        console.log("error", err);
-        if (err.code === 11000) {
-            if (!!err.keyValue["auth.email"]) {
-                api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
-            }
-            if (!!err.keyValue["auth.login"]) {
-                api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
-            }
-            return api.sendConflict(callback, result);
+    app.post('/v1/users', auth.cors, async (req, res) => {
+        console.log("createUser handler starts");
+        const { email, password, nickname, termsAndConditions, dataProcessing, emails } = req.body;
+        let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
+        if (! result.success) {
+            console.log("validation failed", result);
+            return api.sendBadRequest(res, result);
         }
-        return api.sendInternalError(callback, api.createError('failed to create new user', "sign-up.something-went-wrong"));
-    }
 
-    try {
-        sendVerificationEmail(email, verificationToken);
-        console.log("Email sent");
-    } catch (err) {
-        return api.sendInternalError(callback, api.createError("Error sending email", "sign-up.something-went-wrong"));
-    }
+        const verificationToken = mongo.generateId(8);
+        const userId = mongo.generateTimeId();
+        const dbClient = await mongo.connectToDatabase();
+        console.log("Mongo connected");
 
-    const token = auth.createToken(userId, nickname, new Date(), '1m');
-    return api.sendCreated(callback, api.createResponse(token));
+        try {
+            await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
+            console.log("User created",);
+        } catch (err) {
+            console.log("error", err);
+            if (err.code === 11000) {
+                if (!!err.keyValue["auth.email"]) {
+                    api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
+                }
+                if (!!err.keyValue["auth.login"]) {
+                    api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
+                }
+                return api.sendConflict(res, result);
+            }
+            return api.sendInternalError(res, api.createError('failed to create new user', "sign-up.something-went-wrong"));
+        }
+
+        try {
+            sendVerificationEmail(email, verificationToken);
+            console.log("Email sent");
+        } catch (err) {
+            return api.sendInternalError(res, api.createError("Error sending email", "sign-up.something-went-wrong"));
+        }
+
+        const token = auth.createToken(userId, nickname, new Date(), '1m');
+        return api.sendCreated(res, api.createResponse(token));
+    })
 };
 
 function insertUser(dbClient, id, email, password, nickname, emails, verificationToken) {
