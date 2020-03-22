@@ -1,0 +1,19 @@
+{
+  "_id" : "jwnldleme2e3e",
+  "type": "poll",
+  "info": {
+    "author": {
+      "nickname": "literakl",
+      "id": "kha4fd3rrwf1"
+    },
+    "caption": "Predjíždění bez blinkru",
+    "slug": "predjizdeni-bez-blinkru",
+    "published": "2020-03-22 16:46",
+    "picture":  "car75.png",
+    "tags": ["polls", "driving"]
+  },
+  "comments": {
+    "count": 12,
+    "last": "2020-03-22 16:49"
+  }
+}

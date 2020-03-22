@@ -49,7 +49,6 @@ function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d') 
     if (roles) {
         jwtData.roles = roles;
     }
-    console.log(jwtData);
     return jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: expiration});
 }
 

@@ -1,33 +1,67 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
-var shortid = require('shortid');
-const slug = require('limax');
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
+const slugify = require('slugify');
 
-const http = require('../../utils/api.js');
+module.exports = (app) => {
+    app.options('/v1/polls', auth.cors, () => {});
 
-exports.handler = (payload, context, callback) => {
-    const { text, userId } = JSON.parse(payload.body);
-    console.log('[creatingPoll]',text,userId)
-
-    dynamodb.put({
-        Item: {
-            "pollId": shortid.generate(),
-            "seoText":slug(text),
-            text,
-            userId,
-            "created": Date.now()
-        },
-        TableName: "BUDPollTable"
-    }, (err, data) => {
-        if(err)
-            console.log('[err]',err);
-        if(data)
-            console.log('[data]',data);
-        if (err) {
-             return http.sendInternalError(callback, err.Item);
-        } else {
-             return http.sendRresponse(callback, data.Item);
+    app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
+        console.log("createPoll handler starts");
+        const { text } = req.body;
+        if (!text) {
+            return api.sendBadRequest(res, api.createError("Missing parameter", "generic.internal-error"));
         }
-    });
+
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            console.log("Mongo connected");
+
+            const pollId = mongo.generateTimeId();
+            await insertPoll(dbClient, pollId);
+            await insertItem(dbClient, text, pollId, req.identity);
+
+            return api.sendCreated(res, api.createResponse({ "id" : pollId }));
+        } catch (err) {
+            console.log("Request failed", err);
+            return api.sendInternalError(res, api.createError('Failed to create poll', "sign-in.something-went-wrong"));
+        }
+    })
 };
+
+function insertPoll(dbClient, pollId) {
+    console.log("insertPoll");
+    const poll = {
+        "_id" : pollId,
+        "votes": {
+            "neutral": 0,
+            "trivial": 0,
+            "dislike": 0,
+            "hate": 0
+        }
+    };
+
+    return dbClient.db().collection("polls").insertOne(poll);
+}
+
+function insertItem(dbClient, text, pollId, identity) {
+    console.log("insertItem");
+    const slug = slugify(text, { lower: true, strict: true });
+    const item = {
+        "_id" : pollId,
+        "type": "poll",
+        "info": {
+            "author": {
+                "nickname": identity.nickname,
+                "id": identity.userId
+            },
+            "caption": text,
+            "slug": slug,
+            "published": new Date(),
+            // "picture":  "car75.png", TODO
+            "tags": ["polls"] // TODO
+        },
+    };
+
+    return dbClient.db().collection("items").insertOne(item);
+}

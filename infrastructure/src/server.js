@@ -12,6 +12,7 @@ require('./handlers/users/resetPassword')(app);
 require('./handlers/users/updateUser')(app);
 require('./handlers/users/validateToken')(app);
 require('./handlers/users/verifyUser')(app);
+require('./handlers/polls/createPoll')(app);
 
 app.setErrorHandler(
     (err, req, res) => {

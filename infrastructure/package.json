@@ -20,6 +20,7 @@
     "mongodb": "^3.5.5",
     "nanoexpress": "^1.1.18",
     "nanoid": "^2.1.11",
+    "slugify": "^1.4.0",
     "uuid": "^3.4.0"
   }
 }
