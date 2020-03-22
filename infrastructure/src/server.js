@@ -9,6 +9,7 @@ require('./handlers/users/createUser')(app);
 require('./handlers/users/forgotPassword')(app);
 require('./handlers/users/getUser')(app);
 require('./handlers/users/resetPassword')(app);
+require('./handlers/users/updateUser')(app);
 require('./handlers/users/validateToken')(app);
 require('./handlers/users/verifyUser')(app);
 
