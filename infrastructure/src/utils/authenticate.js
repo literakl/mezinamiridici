@@ -9,7 +9,7 @@ function authenticate(required) {
         if (authorization) {
             try {
                 const token = authorization.split(" ")[1];
-                req.identity = jwt.verify(token, process.env.JWT_SECRET); // todo test expiry / modified
+                req.identity = jwt.verify(token, process.env.JWT_SECRET);
             } catch (err) {
                 res.status(500);
                 res.end('JWT parsing error');
@@ -26,19 +26,30 @@ function authenticate(required) {
 }
 
 function withRole(role) {
-    // todo
+    return function(req, res, next) {
+        if (!req.identity.roles || !req.identity.roles.includes(role)) {
+            res.status(403);
+            res.end('Access denied');
+            return;
+        }
+        next();
+    }
 }
 
 function createTokenFromUser(user, expiration = '31d') {
-    return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, expiration);
+    return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, user.roles, expiration);
 }
 
-function createToken(userId, nickname, pwdTimestamp, expiration = '31d') {
+function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d') {
     const jwtData = {
         "userId": userId,
         "nickname": nickname,
         "pwdTimestamp": pwdTimestamp
     };
+    if (roles) {
+        jwtData.roles = roles;
+    }
+    console.log(jwtData);
     return jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: expiration});
 }
 
@@ -55,7 +66,7 @@ const corsPerRoute = corsMW({
 
 module.exports.optional = authenticate(false);
 module.exports.required = authenticate(true);
-module.exports.admin = withRole('admin');
+module.exports.poll_admin = withRole('admin:poll');
 module.exports.cors = corsPerRoute;
 module.exports.createToken=createToken;
 module.exports.createTokenFromUser=createTokenFromUser;

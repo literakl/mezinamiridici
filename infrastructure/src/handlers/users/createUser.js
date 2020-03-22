@@ -46,7 +46,7 @@ module.exports = (app) => {
             return api.sendInternalError(res, api.createError("Error sending email", "sign-up.something-went-wrong"));
         }
 
-        const token = auth.createToken(userId, nickname, new Date(), '1m');
+        const token = auth.createToken(userId, nickname, new Date(), null, '1m');
         return api.sendCreated(res, api.createResponse(token));
     })
 };

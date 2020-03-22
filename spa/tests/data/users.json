@@ -23,6 +23,7 @@
     "prefs" : {
       "public" : false
     },
+    "roles": ["admin:poll"],
     "consent" : {
       "terms" : "2020-03-22T11:10:49.486Z",
       "data" : "2020-03-22T11:10:49.486Z"

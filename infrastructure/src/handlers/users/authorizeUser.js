@@ -19,7 +19,7 @@ module.exports = (app) => {
             const dbClient = await mongo.connectToDatabase();
             console.log("Mongo connected");
 
-            const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1, "bio.nickname": 1 }});
+            const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1, "bio.nickname": 1, roles: 1 }});
             console.log("User checks");
             if (!user) {
                 console.log("User not found " + email);
