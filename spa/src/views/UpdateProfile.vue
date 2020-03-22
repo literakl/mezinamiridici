@@ -258,13 +258,17 @@ export default {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
-        this.drivingSince = this.userProfile.driving.since;
-        this.bike = this.userProfile.driving.vehicles.includes('bike');
-        this.car = this.userProfile.driving.vehicles.includes('car');
-        this.bus = this.userProfile.driving.vehicles.includes('bus');
-        this.van = this.userProfile.driving.vehicles.includes('van');
-        this.truck = this.userProfile.driving.vehicles.includes('truck');
-        this.tramway = this.userProfile.driving.vehicles.includes('tramway');
+        if (this.userProfile.driving) {
+          this.drivingSince = this.userProfile.driving.since;
+          if (this.userProfile.driving.vehicles) {
+            this.bike = this.userProfile.driving.vehicles.includes('bike');
+            this.car = this.userProfile.driving.vehicles.includes('car');
+            this.bus = this.userProfile.driving.vehicles.includes('bus');
+            this.van = this.userProfile.driving.vehicles.includes('van');
+            this.truck = this.userProfile.driving.vehicles.includes('truck');
+            this.tramway = this.userProfile.driving.vehicles.includes('tramway');
+          }
+        }
         this.sex = this.userProfile.bio.sex;
         this.bornInYear = this.userProfile.bio.born;
         this.region = this.userProfile.bio.region;
