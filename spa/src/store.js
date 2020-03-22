@@ -148,29 +148,13 @@ export default new Vuex.Store({
       );
       await context.dispatch('SIGN_USER_OUT');
     },
-    FORGOT_PASSWORD: async (context, payload) => {
-      try {
-        const request = await axios.post(`${API_ENDPOINT}/forgotPassword`, {
-          email: payload.email,
-        });
-
-        return request;
-      } catch (err) {
-        throw err;
-      }
-    },
-    RESET_PASSWORD: async (context, payload) => {
-      try {
-        const request = await axios.post(`${API_ENDPOINT}/resetPassword`, {
-          resetPasswordToken: payload.resetPasswordToken,
-          password: payload.password,
-        });
-
-        return request;
-      } catch (err) {
-        throw err;
-      }
-    },
+    FORGOT_PASSWORD: (context, payload) => axios.post(`${API_ENDPOINT}/forgotPassword`, {
+      email: payload.email,
+    }),
+    RESET_PASSWORD: (context, payload) => axios.post(`${API_ENDPOINT}/resetPassword`, {
+      resetPasswordToken: payload.resetPasswordToken,
+      password: payload.password,
+    }),
     SIGN_USER_IN: async (context, payload) => {
       try {
         const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, {
@@ -246,7 +230,7 @@ export default new Vuex.Store({
         context.commit('SET_USER_ID', null);
       }
     },
-    CREATE_USER_PROFILE: async (context, payload) => axios.post(`${API_ENDPOINT}/users`, {
+    CREATE_USER_PROFILE: (context, payload) => axios.post(`${API_ENDPOINT}/users`, {
       email: payload.email,
       password: payload.password,
       nickname: payload.nickname,
@@ -254,23 +238,16 @@ export default new Vuex.Store({
       dataProcessing: payload.dataProcessing,
       marketing: payload.marketing,
     }),
-    UPDATE_USER_PROFILE: async (context, payload) => {
-      await axios.patch(
-        `${API_ENDPOINT}/users/${payload.userId}`, {
-          drivingSince: payload.drivingSince,
-          vehicles: payload.vehicle,
-          sex: payload.sex,
-          born: payload.bornInYear,
-          region: payload.region,
-          education: payload.education,
-          publicProfile: payload.publicProfile,
-        },
-        getAuthHeader(context, payload.jwt),
-      );
-    },
-    VERIFY_USER: async (context, payload) => {
-      await axios.post(`${API_ENDPOINT}/verify/${payload.token}`);
-    },
+    UPDATE_USER_PROFILE: (context, payload) => axios.patch(`${API_ENDPOINT}/users/${payload.userId}`, {
+      drivingSince: payload.drivingSince,
+      vehicles: payload.vehicle,
+      sex: payload.sex,
+      born: payload.bornInYear,
+      region: payload.region,
+      education: payload.education,
+      publicProfile: payload.publicProfile,
+    }, getAuthHeader(context, payload.jwt)),
+    VERIFY_USER: (context, payload) => axios.post(`${API_ENDPOINT}/verify/${payload.token}`),
     GET_USERS_VOTES: async (context, payload) => {
       const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.userId}/votes`);
       return data.find(vote => vote.pollId === payload.pollId);
