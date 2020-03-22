@@ -56,7 +56,7 @@ const prepareUpdateProfileQuery = (req) => {
         unsetters['driving.since'] = '';
     }
     if (vehicles) {
-        unsetters['driving.vehicles'] = vehicles;
+        setters['driving.vehicles'] = vehicles;
     } else {
         unsetters['driving.vehicles'] = '';
     }
