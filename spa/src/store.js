@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 
 const axios = require('axios').default;
+
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
 axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
 
@@ -13,7 +14,7 @@ const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
 function getAuthHeader(context, jwt = undefined) {
   return {
     headers: {
-      Authorization: `bearer ${jwt ? jwt : context.state.userToken}`,
+      Authorization: `bearer ${jwt || context.state.userToken}`,
     },
   };
 }
