@@ -10,10 +10,10 @@ Vue.use(Vuex);
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
 
-function getAuthHeader(context) {
+function getAuthHeader(context, jwt = undefined) {
   return {
     headers: {
-      Authorization: `bearer ${context.state.userToken}`,
+      Authorization: `bearer ${jwt ? jwt : context.state.userToken}`,
     },
   };
 }
@@ -255,8 +255,7 @@ export default new Vuex.Store({
     }),
     UPDATE_USER_PROFILE: async (context, payload) => {
       await axios.patch(
-        `${API_ENDPOINT}/users/${payload.userId}`,
-        JSON.stringify({
+        `${API_ENDPOINT}/users/${payload.userId}`, {
           drivingSince: payload.drivingSince,
           vehicles: payload.vehicle,
           sex: payload.sex,
@@ -264,8 +263,8 @@ export default new Vuex.Store({
           region: payload.region,
           education: payload.education,
           publicProfile: payload.publicProfile,
-        }),
-        getAuthHeader(context),
+        },
+        getAuthHeader(context, payload.jwt),
       );
     },
     VERIFY_USER: async (context, payload) => {
