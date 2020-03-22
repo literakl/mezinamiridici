@@ -7,11 +7,19 @@ function authenticate(required) {
     return function(req, res, next) {
         const { authorization } = req.headers;
         if (authorization) {
-            const token = authorization.split(" ")[1];
-            req.identity = jwt.verify(token, process.env.JWT_SECRET); // todo test expiry / modified
+            try {
+                const token = authorization.split(" ")[1];
+                req.identity = jwt.verify(token, process.env.JWT_SECRET); // todo test expiry / modified
+            } catch (err) {
+                res.status(500);
+                res.end('JWT parsing error');
+                return;
+            }
         }
         if (required && !req.identity) {
-            stop();
+            res.status(401);
+            res.end('Authentication required');
+            return;
         }
         next();
     };
