@@ -1,20 +1,19 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
-const http = require('../../utils/api.js');
+module.exports = (app) => {
+    app.get('/v1/polls/:pollId', auth.optional, async (req, res) => {
+        console.log("getPoll handler starts");
 
-exports.handler = (payload, context, callback) => {
-    dynamodb.get({
-        "TableName": "BUDPollTable",
-        "Key": {
-            "pollId": payload.pathParameters.pollId
-        },
-        "ConsistentRead": false,
-    }, (err, data) => {
-        if (err) {
-            return http.sendInternalError(callback, err.Item);
-        } else {
-            return http.sendRresponse(callback, data.Item, "public, max-age=600");
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            console.log("Mongo connected");
+
+            return api.sendCreated(res, api.createResponse());
+        } catch (err) {
+            console.log("Request failed", err);
+            return api.sendInternalError(res, api.createError('Failed to get polls', "sign-in.something-went-wrong"));
         }
-    });
+    })
 };

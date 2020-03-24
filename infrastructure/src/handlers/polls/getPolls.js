@@ -1,64 +1,27 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
 
-const http = require('../../utils/api.js');
+module.exports = (app) => {
+    app.get('/v1/polls/', async (req, res) => {
+        console.log("getPolls handler starts");
 
-exports.handler = (payload, context, callback) => {
-    console.log('[getingPolls v1.5]');
-    //if userid is provided in the query string then fetch all the pollids from the commenttable
-    // console.log(payload);
-    var scanObject = {
-        "TableName": "BUDPollTable",
-    }
-    dynamodb.scan(scanObject, (err, data) => {
-        if(data != undefined) {
-            // console.log(data);
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            console.log("Mongo connected");
+
+            const list = await getItems(dbClient, req).toArray();
+            console.log("Items fetched");
+            return api.sendRresponse(res, api.createResponse(list));
+        } catch (err) {
+            console.log("Request failed", err);
+            return api.sendInternalError(res, api.createError('Failed to get poll', "sign-in.something-went-wrong"));
         }
-        var commentScanObject = {
-            "TableName": "BUDCommentTable",
-        }
-        if(payload.queryStringParameters != undefined && payload.queryStringParameters.userId) {
-            const userId = payload.queryStringParameters.userId;
-            // console.log('[userId] ',userId);
-            if(userId != undefined) {
-                commentScanObject.FilterExpression = "#userId = :userId"
-                commentScanObject.ExpressionAttributeNames = {
-                    "#userId": "userId",
-                }
-                commentScanObject.ExpressionAttributeValues = { ":userId": userId }
-            }
-            dynamodb.scan(commentScanObject,(err,commentList) => {
-                var uniquePollIdList = [];
-                if(commentList != undefined){
-                    // console.log(commentList);
-                    commentList.Items.forEach(comment => {
-                        if(uniquePollIdList.indexOf(comment.pollId) < 0){
-                            uniquePollIdList.push(comment.pollId);
-                        }
-                    });
-                }
-                // console.log('[uniquePollIdList] ',uniquePollIdList);
-                var filteredPollList = [];
-                data.Items.forEach(poll => {
-                    // console.log(poll.pollId);
-                    uniquePollIdList.forEach(pollId => {
-                        // console.log(poll.pollId,pollId)
-                        if(poll.pollId == pollId) {
-                            // console.log('[Match]')
-                            filteredPollList.push(poll);
-                        }
-                    });
-                });
-                console.log('[filteredPollList] ',filteredPollList);
-                // return responses.OK_200({polls:filteredPollList}, callback, response);
-                return callback(null, response(200, {Items:filteredPollList}))
-            })
-        } else {
-            if (err) {
-                return http.sendInternalError(callback, err.Item);
-            } else {
-                return http.sendRresponse(callback, data.Items, "public, max-age=600");
-            }
-        }
-    });
+    })
 };
+
+function getItems(dbClient, req) {
+    const listParams = api.parseListParams(req, 'published', -1, 10, 50);
+    console.log(listParams.order);
+    return dbClient.db().collection("items").
+        find({}).sort(listParams.order);
+}

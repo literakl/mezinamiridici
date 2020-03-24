@@ -1,74 +1,24 @@
-const AWS = require('aws-sdk');
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
-const jwt = require('jsonwebtoken');
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 
-const http = require('../../utils/api.js');
+module.exports = (app) => {
+    app.options('/v1/polls', auth.cors, () => {
+    });
 
-exports.handler = (payload, context, callback) => {
-    console.log(payload.body);
-    const { score } = JSON.parse(payload.body);
-    const token = payload.headers.Authorization.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const principalId = decoded.userId;
-    // const { requestContext: { authorizer: { principalId }} } = payload;
-    const { pollId } = payload.pathParameters;
+    app.post('/v1/polls/:pollId/vote', auth.required, auth.cors, async (req, res) => {
+        console.log("votePoll handler starts");
 
-    if (score === undefined || score === null)
-        return http.sendInternalError(callback, "score is required");
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            console.log("Mongo connected");
 
-    const voteId = uuidv4();
-    const userVoteId = uuidv4();
-
-    dynamodb.get({
-        "TableName": "BUDUserTable",
-        "Key": {
-            "userId": principalId
-        },
-        "ConsistentRead": false,
-    }, (err, userData) => {
-        if(err)
-            console.log('[err]',err)
-        if(err) {
-            return http.sendInternalError(callback, err.Item);
+            return api.sendCreated(res, api.createResponse());
+        } catch (err) {
+            console.log("Request failed", err);
+            return api.sendInternalError(res, api.createError('Failed to vote in polls', "sign-in.something-went-wrong"));
         }
-
-        dynamodb.put({
-            Item: {
-                "voteId": voteId,
-                "pollId": pollId,
-                "vote": score,
-                "age": userData.Item.born ? new Date().getFullYear() - parseInt(userData.Item.born) : null,
-                "drivingFor": userData.Item.drivingSince ? new Date().getFullYear() - parseInt(userData.Item.drivingSince) : null,
-                "education": userData.Item.education ? userData.Item.education : null,
-                "sex": userData.Item.sex ? userData.Item.sex : null,
-                "region": userData.Item.locationalRegion ? userData.Item.locationalRegion : null,
-                "vehicle": userData.Item.vehicle ? userData.Item.vehicle : null,
-                "created": Date.now()
-            },
-            TableName: "BUDVoteTable"
-        }, (err, voteData) => {
-            if(err) {
-                console.log('[err]',err)
-                return http.sendInternalError(callback, err.Item);
-            }
-
-            dynamodb.put({
-                Item: {
-                    "userVoteId": userVoteId,
-                    "voteId": voteId,
-                    "pollId": pollId,
-                    "userId": principalId
-                },
-                TableName: "BUDUserVoteTable"
-            }, (err, userVoteData) => {
-                if (err) {
-                    console.log('[err]',err)
-                    return http.sendInternalError(callback, err.Item);
-                } else {
-                    return http.sendRresponse(callback, userVoteData.Item);
-                }
-            })
-        });
     });
 };
+// "age": userData.Item.born ? new Date().getFullYear() - parseInt(userData.Item.born) : null,
+// "drivingFor": userData.Item.drivingSince ? new Date().getFullYear() - parseInt(userData.Item.drivingSince) : null,

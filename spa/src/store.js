@@ -72,73 +72,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    GET_POLLS: async (context, payload) => {
-      let pollData;
-      if (payload !== undefined && payload.userId !== undefined) {
-        const { userId } = payload;
-        pollData = await axios.get(`${API_ENDPOINT}/polls?userId=${userId}`);
-      } else {
-        pollData = await axios.get(`${API_ENDPOINT}/polls`);
-      }
-      const polls = [];
-
-      // console.log(JSON.stringify(pollData.data));
-      const uniqueUserId = [];
-      let latestPollTime = -1;
-      let latestPollId = null;
-      const userData = {};
-      pollData.data.forEach(async (poll) => {
-        if (poll.created > latestPollTime) {
-          latestPollTime = poll.created;
-          latestPollId = poll.pollId;
-        }
-        if (uniqueUserId.indexOf(poll.userId) < 0) {
-          uniqueUserId.push(poll.userId);
-          const user = await axios.get(`${API_ENDPOINT}/users/${poll.userId}`);
-          // console.log(JSON.stringify(user.data));
-          userData[poll.userId] = user.data;
-        }
-        const pollVotesData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/votes`);
-        const pollCommentsData = await axios.get(`${API_ENDPOINT}/polls/${poll.pollId}/comments`);
-
-        // eslint-disable-next-line no-param-reassign
-        poll.votes = pollVotesData.data.length;
-        // eslint-disable-next-line no-param-reassign
-        poll.comments = pollCommentsData.data.length;
-        // eslint-disable-next-line no-param-reassign
-        poll.userData = userData[poll.userId];
-        polls.push(poll);
-      });
-      context.commit('SET_LATEST_POLL', latestPollId);
-      // console.log(this.$store.getters.LATEST_POLL);
-      context.commit('SET_POLLS', polls);
-    },
-    GET_POLL: async (context, payload) => {
-      context.commit('SET_POLL', null);
-      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
-      const userData = await axios.get(`${API_ENDPOINT}/users/${pollData.data.userId}`);
-      pollData.data.userData = userData.data;
-      context.commit('SET_POLL', pollData.data);
-    },
-    GET_POLL_VOTES: async (context, payload) => {
-      context.commit('SET_POLL_VOTES', null);
-      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/votes`);
-      context.commit('SET_POLL_VOTES', pollData.data);
-    },
-    GET_POLL_COMMENTS: async (context, payload) => {
-      context.commit('SET_POLL_COMMENTS', null);
-      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comments`);
-      const comments = [];
-
-      pollData.data.forEach(async (comment) => {
-        const userData = await axios.get(`${API_ENDPOINT}/users/${comment.userId}`);
-        // eslint-disable-next-line no-param-reassign
-        comment.nickname = userData.data.nickname;
-        comments.push(comment);
-      });
-
-      context.commit('SET_POLL_COMMENTS', comments);
-    },
     CHANGE_PASSWORD: async (context, payload) => {
       await axios.patch(
         `${API_ENDPOINT}/users/${context.state.userId}/password`, {
@@ -255,14 +188,16 @@ export default new Vuex.Store({
     // eslint-disable-next-line arrow-body-style
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
       if (context.state.userId === payload.id) {
-        return axios.get(`${API_ENDPOINT}/users/${payload.id}`,
-          {
-            headers: {
-              Authorization: `bearer ${context.state.userToken}`,
-            },
-          });
+        return axios.get(`${API_ENDPOINT}/users/${payload.id}`, getAuthHeader(context));
       }
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
+    },
+    GET_POLL: async (context, payload) => {
+      context.commit('SET_POLL', null);
+      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
+      const userData = await axios.get(`${API_ENDPOINT}/users/${pollData.data.userId}`);
+      pollData.data.userData = userData.data;
+      context.commit('SET_POLL', pollData.data);
     },
     VOTE: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');

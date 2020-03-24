@@ -67,7 +67,30 @@ function addValidationError(result, argument, message, messageKey) {
     result.errors.push(x);
 }
 
-module.exports.sendRresponse = sendResponse;
+// todo either provide a schema or check values
+function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSize, maxPageSize) {
+    const { oba, obd, ps, of,lr } = req.query || {};
+    let result = {};
+    if (oba) {
+        result.order = { [oba] : 1 };
+    } else if (obd) {
+        result.order = { [obd] : -1 };
+    } else {
+        result.order = { [defaultSortField] : defaultSortOrder };
+    }
+    if (ps) {
+        result.pageSize = defaultPageSize;
+    } else if (ps > maxPageSize) {
+        result.pageSize = maxPageSize;
+    } else {
+        result.pageSize = ps;
+    }
+    result.offset = of;
+    result.lastResult = lr;
+    return result;
+}
+
+module.exports.sendRresponse = sendResponse; // todo fix typo
 module.exports.sendErrorForbidden=sendErrorForbidden;
 module.exports.sendInternalError=sendInternalError;
 module.exports.sendBadRequest=sendBadRequest;
@@ -77,3 +100,4 @@ module.exports.sendConflict=sendConflict;
 module.exports.addValidationError=addValidationError;
 module.exports.createError=createError;
 module.exports.createResponse=createResponse;
+module.exports.parseListParams=parseListParams;
