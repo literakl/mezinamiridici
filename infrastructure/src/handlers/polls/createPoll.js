@@ -57,7 +57,8 @@ function insertItem(dbClient, text, pollId, identity) {
             },
             "caption": text,
             "slug": slug,
-            "published": new Date(),
+            "published": true,
+            "date": new Date(),
             // "picture":  "car75.png", TODO
             "tags": ["polls"] // TODO
         },
