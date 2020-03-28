@@ -46,7 +46,6 @@ function findUser(dbClient, params, projection) {
     if (params.resetPasswordToken) {
         query['auth.reset.token'] = params.resetPasswordToken;
     }
-    console.log("findUser", query);
 
     return dbClient.db()
         .collection("users")

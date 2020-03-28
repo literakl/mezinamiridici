@@ -14,8 +14,6 @@ module.exports = app => {
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
-
             const user = await mongo.findUser(dbClient, {userId: userId}, {projection: {auth: 0, "prefs.email": 0, consent: 0}});
             console.log("User fetched");
             if (!user) {

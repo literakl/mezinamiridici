@@ -1,4 +1,4 @@
 db.users.createIndex( { "auth.email": 1 }, { collation: {locale: "cs", strength: 2}, unique: true } );
 db.users.createIndex( { "bio.nickname": 1 }, { collation: {locale: "cs", strength: 1}, unique: true } );
-
-// index for item - sort by published, lookup by slug?
+db.items.createIndex( { "info.date": 1 } );
+db.items.createIndex( { "info.slug": 1 }, { unique: true } );
