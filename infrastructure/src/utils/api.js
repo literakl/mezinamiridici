@@ -69,15 +69,20 @@ function addValidationError(result, argument, message, messageKey) {
 
 // todo either provide a schema or check values
 function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSize, maxPageSize) {
-    const { oba, obd, ps, of,lr } = req.query || {};
+    const { oba, obd, ps, lr } = req.query || {};
     let result = {};
+    let order;
     if (oba) {
-        result.order = { [oba] : 1 };
+        result.order = { [convertField(oba)] : 1 };
+        order = 1;
     } else if (obd) {
-        result.order = { [obd] : -1 };
+        result.order = { [convertField(obd)] : -1 };
+        order = -1;
     } else {
         result.order = { [defaultSortField] : defaultSortOrder };
+        order = defaultSortOrder;
     }
+
     if (ps) {
         result.pageSize = defaultPageSize;
     } else if (ps > maxPageSize) {
@@ -85,10 +90,33 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
     } else {
         result.pageSize = ps;
     }
-    result.offset = of;
-    result.lastResult = lr;
+
+    if (lr) {
+        const parts = lr.split(":");
+        result.lastResult = {};
+        result.lastResult.key = [convertField(parts[0])];
+        if (order === 1) {
+            result.lastResult.value = { $gt: parts[1] };
+        } else {
+            result.lastResult.value = { $lt: parts[1] };
+        }
+    }
     return result;
 }
+
+function convertField(key) {
+    const field = fieldMapping.get(key);
+    if (field) {
+        return field;
+    }
+    throw new Error(`Unsupported field ${key}`);
+}
+
+const fieldMapping = new Map([
+    ["id", "_id"],
+    ["type", "type"],
+    ["published", "info.published"]
+]);
 
 module.exports.sendRresponse = sendResponse; // todo fix typo
 module.exports.sendErrorForbidden=sendErrorForbidden;

@@ -21,7 +21,9 @@ module.exports = (app) => {
 
 function getItems(dbClient, req) {
     const listParams = api.parseListParams(req, 'published', -1, 10, 50);
-    console.log(listParams.order);
-    return dbClient.db().collection("items").
-        find({}).sort(listParams.order);
+    const query = {"type": "poll", "info.published": true};
+    if (listParams.lastResult) {
+        query[listParams.lastResult.key] = listParams.lastResult.value;
+    }
+    return dbClient.db().collection("items").find(query).sort(listParams.order).limit(listParams.pageSize);
 }
