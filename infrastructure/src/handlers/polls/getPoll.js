@@ -15,25 +15,29 @@ const lookupStage = {
 const lastPollPipeline = [{$match: {"info.published": true}}, sortStage, limitStage, lookupStage];
 
 module.exports = (app) => {
+    app.options('/bff/polls/last', auth.cors, () => {});
+    app.options('/bff/polls/:slug', auth.cors, () => {});
+
     app.get('/bff/polls/last', auth.optional, async (req, res) => {
         console.log("getLastPoll handler starts");
         try {
             const dbClient = await mongo.connectToDatabase();
             const cursor = dbClient.db().collection("items").aggregate(lastPollPipeline);
-            const poll = await cursor.next();
-            return api.sendCreated(res, api.createResponse(poll));
+            const item = await cursor.next();
+            item.poll = item.poll[0];
+            item.poll.votes.total = item.poll.votes.neutral + item.poll.votes.trivial + item.poll.votes.dislike + item.poll.votes.hate;
+            return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
             console.log("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to get polls', "sign-in.something-went-wrong"));
         }
-
     });
 
     app.get('/bff/polls/:slug', auth.optional, async (req, res) => {
         console.log("getPoll handler starts");
         const { slug } = req.params;
         if (! slug) {
-            return api.sendBadRequest(res, api.createError("Missing user id", "generic.internal-error"));
+            return api.sendBadRequest(res, api.createError("Missing slug id", "generic.internal-error"));
         }
 
         try {
