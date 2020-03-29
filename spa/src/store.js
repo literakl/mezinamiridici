@@ -175,7 +175,7 @@ export default new Vuex.Store({
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
     GET_POLL: async (context, payload) => {
-      console.log("GET_POLL");
+      console.log('GET_POLL');
       context.commit('SET_POLL', null);
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
       const item = pollData.data;
@@ -183,8 +183,8 @@ export default new Vuex.Store({
       console.log(item);
       context.commit('SET_POLL', item);
     },
-    GET_LATEST_POLL: async (context, payload) => {
-      console.log("GET_LATEST_POLL");
+    GET_LATEST_POLL: async (context) => {
+      console.log('GET_LATEST_POLL');
       context.commit('SET_LATEST_POLL', null);
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/last`, getAuthHeader(context));
       const item = pollData.data.data;

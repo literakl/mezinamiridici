@@ -5,8 +5,8 @@
     </div>
     <div id="home__content">
       <Poll
-        v-if="this.$store.getters.LATEST_POLL"
-        :item="this.$store.getters.LATEST_POLL" />
+        v-if="$store.getters.LATEST_POLL"
+        :item="$store.getters.LATEST_POLL" />
       <content-loader
         :height="200"
         :width="400"
@@ -14,7 +14,7 @@
         primaryColor="#f3f3f3"
         secondaryColor="#ecebeb"
         class="poll-voting__chart-wrapper-bar-chart"
-        v-if="! this.$store.getters.LATEST_POLL"
+        v-if="! $store.getters.LATEST_POLL"
       >
         <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
         <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />

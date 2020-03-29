@@ -1,9 +1,9 @@
 <template>
     <div>
         <hr />
-        <div v-if="poll.poll">
+        <div v-if="item.poll">
           <h2 id="home__heading-title">
-<!--              <router-link :to="{ name: 'poll', params: { id: poll.info.slug, text: poll.info.caption }}" class="home__heading-link">{{poll.info.caption}}</router-link>-->
+<!--             <router-link :to="{ name: 'poll', params: { id: poll.info.slug, text: poll.info.caption }}" class="home__heading-link">{{poll.info.caption}}</router-link>-->
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
@@ -21,7 +21,7 @@
             :speed="2"
             primaryColor="#f3f3f3"
             secondaryColor="#ecebeb"
-            v-if="!poll.poll"
+            v-if="!item.poll"
           >
             <rect x="0" y="8" rx="3" ry="3" width="350" height="6.4" />
             <rect x="0" y="28" rx="3" ry="3" width="380" height="6.4" />
@@ -48,7 +48,7 @@ export default {
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return `http://mezinamiridici.cz/poll/${this.poll.poll.pollId}/${this.poll.poll.slug}`;
+      return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
     },
   },
 };
