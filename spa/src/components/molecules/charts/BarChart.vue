@@ -2,29 +2,29 @@
     <div>
         <table id="barchart__table">
             <tbody>
-                <tr id="no-problem">
-                    <td class="sent bar" v-bind:style="(voted === 'No problem') ? 'height: ' + (parseInt(percentages.noProblem)/100)*300 + 'px; background-color: #ffd302' : 'height: ' +  (parseInt(percentages.noProblem)/100)*300 + 'px;'">
-                      <p>{{percentages.noProblem}}%</p>
+                <tr id="neutral">
+                    <td class="sent bar" v-bind:style="barStyle('neutral')">
+                      <p>{{data.neutral}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.no-problem') }}</th>
+                    <th scope="row">{{ $t('bar-chart.neutral') }}</th>
                 </tr>
-                <tr id="trivial-trouble">
-                    <td class="sent bar" v-bind:style="(voted === 'Trivial trouble') ? 'height: ' + (parseInt(percentages.trivialTrouble)/100)*300 + 'px; background-color: #ffd302' : 'height: ' +  (parseInt(percentages.trivialTrouble)/100)*300 + 'px;'">
-                      <p>{{percentages.trivialTrouble}}%</p>
+                <tr id="trivial">
+                    <td class="sent bar" v-bind:style="barStyle('trivial')">
+                      <p>{{data.trivial}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.trivial-trouble') }}</th>
+                    <th scope="row">{{ $t('bar-chart.trivial') }}</th>
                 </tr>
-                <tr id="i-dont-like-it">
-                    <td class="sent bar" v-bind:style="(voted === 'I don\'t like it') ? 'height: ' + (parseInt(percentages.iDontLikeIt)/100)*300 + 'px; background-color: #ffd302' : 'height: ' + (parseInt(percentages.iDontLikeIt)/100)*300 + 'px;'">
-                      <p>{{percentages.iDontLikeIt}}%</p>
+                <tr id="dislike">
+                    <td class="sent bar" v-bind:style="barStyle('dislike')">
+                      <p>{{data.dislike}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.i-dont-like-it') }}</th>
+                    <th scope="row">{{ $t('bar-chart.dislike') }}</th>
                 </tr>
-                <tr id="i-hate-it">
-                    <td class="sent bar" v-bind:style="(voted === 'I hate it') ? 'height: ' + (parseInt(percentages.iHateIt)/100)*300 + 'px; background-color: #ffd302' : 'height: ' + (parseInt(percentages.iHateIt)/100)*300 + 'px;'">
-                      <p>{{percentages.iHateIt}}%</p>
+                <tr id="hate">
+                    <td class="sent bar" v-bind:style="barStyle('hate')">
+                      <p>{{data.hate}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.i-hate-it') }}</th>
+                    <th scope="row">{{ $t('bar-chart.hate') }}</th>
                 </tr>
             </tbody>
         </table>
@@ -36,8 +36,49 @@ export default {
   name: 'BarChart',
   props: {
     voted: String,
-    percentages: Object,
+    data: Object,
   },
+  computed() {
+    return {
+      poll() {
+        const total = data.votes.neutral + data.votes.trivial + data.votes.dislike + data.votes.hate;
+        let items = [data.votes.neutral, data.votes.trivial, data.votes.dislike, data.votes.hate];
+        let result = [];
+        let sum = 0, biggestRound = 0, roundPointer;
+
+        items.forEach((votes, index) => {
+          let value = 100 * votes / total;
+          let rounded = Math.round(value);
+          let diff = value - rounded;
+          if (diff > biggestRound) {
+            biggestRound = diff;
+            roundPointer = index;
+          }
+          sum += rounded;
+          result.push(rounded);
+        });
+
+        if (sum === 99) {
+          result[roundPointer] += 1;
+        } else if (sum === 101) {
+          result[roundPointer] -= 1;
+        }
+
+        return {
+          neutral: result[0],
+          trivial: result[1],
+          dislike: result[2],
+          hate: result[3],
+          totalVotes: total,
+        };
+      },
+    }
+  },
+  methods: {
+    barStyle(vote) {
+      return `height: ${3 * poll[vote]} px${(this.voted === vote) ? ';background-color: #ffd302' : ''}`;
+    }
+  }
 };
 </script>
 
@@ -69,19 +110,19 @@ export default {
   width: 10px;
 }
 
-#no-problem {
+#neutral {
   left: 0;
 }
 
-#trivial-trouble {
+#trivial {
   left: 100px;
 }
 
-#i-dont-like-it {
+#dislike {
   left: 200px;
 }
 
-#i-hate-it {
+#hate {
   left: 300px;
   border-right: none;
 }
@@ -122,19 +163,19 @@ export default {
     margin-left:25px;
   }
 
-  #no-problem {
+  #neutral {
     left: 0;
   }
 
-  #trivial-trouble {
+  #trivial {
     left: 80px;
   }
 
-  #i-dont-like-it {
+  #dislike {
     left: 160px;
   }
 
-  #i-hate-it {
+  #hate {
     left: 240px;
     border-right: none;
   }
@@ -150,19 +191,19 @@ export default {
     width: 50px;
   }
 
-  #no-problem {
+  #neutral {
     left: 0;
   }
 
-  #trivial-trouble {
+  #trivial {
     left: 150px;
   }
 
-  #i-dont-like-it {
+  #dislike {
     left: 300px;
   }
 
-  #i-hate-it {
+  #hate {
     left: 450px;
     border-right: none;
   }
