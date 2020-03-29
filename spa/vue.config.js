@@ -1,4 +1,8 @@
 module.exports = {
+  productionSourceMap: true,
+  devServer: {
+    host: 'localhost'
+  },
   pluginOptions: {
     s3Deploy: {
       registry: undefined,
