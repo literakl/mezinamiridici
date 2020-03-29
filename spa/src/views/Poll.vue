@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import PollVoting from '@/components/organisms/PollVoting.vue';
+import PollVoting from '@/components/organisms/CompletePoll.vue';
 import Button from '@/components/atoms/Button.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import Comments from '@/components/organisms/Comments.vue';

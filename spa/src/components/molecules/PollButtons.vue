@@ -2,25 +2,25 @@
     <div id="opinion-poll">
         <h3>What is your opinion?</h3>
         <button
-            v-on:click="voted('No problem')"
+            v-on:click="voted('neutral')"
             class="opinion-poll__button opinion-poll__button__no-problem"
         >
             <img src="@/assets/happy.png" align="middle">{{ $t('bar-chart.no-problem') }}
         </button>
         <button
-            v-on:click="voted('Trivial trouble')"
+            v-on:click="voted('trivial')"
             class="opinion-poll__button opinion-poll__button-trivial"
         >
             <img src="@/assets/ok.png">{{ $t('bar-chart.trivial-trouble') }}
         </button>
         <button
-            v-on:click="voted('I don\'t like it')"
+            v-on:click="voted('dislike')"
             class="opinion-poll__button opinion-poll__button-dont-like"
         >
             <img src="@/assets/slanty.png">{{ $t('bar-chart.i-dont-like-it') }}
         </button>
         <button
-            v-on:click="voted('I hate it')"
+            v-on:click="voted('hate')"
             class="opinion-poll__button opinion-poll__button-hate"
         >
             <img src="@/assets/angry.png">{{ $t('bar-chart.i-hate-it') }}

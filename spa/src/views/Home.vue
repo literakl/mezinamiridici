@@ -4,34 +4,39 @@
       Ads
     </div>
     <div id="home__content">
-<!--      <PollVoting v-if="this.$store.getters.LATEST_POLL" :id="this.$store.getters.LATEST_POLL" />-->
-<!--      <TopPolls />-->
+      <Poll
+        v-if="this.$store.getters.LATEST_POLL"
+        :item="this.$store.getters.LATEST_POLL" />
+      <content-loader
+        :height="200"
+        :width="400"
+        :speed="22"
+        primaryColor="#f3f3f3"
+        secondaryColor="#ecebeb"
+        class="poll-voting__chart-wrapper-bar-chart"
+        v-if="! this.$store.getters.LATEST_POLL"
+      >
+        <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
+        <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
+        <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
+        <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
+      </content-loader>
     </div>
   </div>
 </template>
 
 <script>
-// import TopPolls from '@/components/molecules/TopPolls.vue';
-// import PollVoting from '@/components/organisms/PollVoting.vue';
-
-// const pollId = "30cc4cab-4fe7-4a9b-a5c2-eaa93811ef59"
+import { ContentLoader } from 'vue-content-loader';
+import Poll from '@/components/organisms/CompletePoll.vue';
 
 export default {
   name: 'home',
   components: {
-    // TopPolls,
-    // PollVoting,
+    ContentLoader,
+    Poll,
   },
-  // data() {
-  //   return {
-  //     pollId
-  //   }
-  // },
-  async created() {
-    // await this.$store.dispatch('GET_USER_ID');
-    // await this.$store.dispatch('GET_USER_NICKNAME');
-    // TODO:Warning
-    // await this.$store.dispatch('GET_POLLS');
+  created() {
+    this.$store.dispatch('GET_LATEST_POLL');
   },
 };
 </script>

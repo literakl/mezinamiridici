@@ -10,53 +10,36 @@ axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8'
 Vue.use(Vuex);
 
 const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
+const BFF_ENDPOINT = process.env.VUE_APP_BFF_ENDPOINT;
 
 function getAuthHeader(context, jwt = undefined) {
-  return {
-    headers: {
-      Authorization: `bearer ${jwt || context.state.userToken}`,
-    },
-  };
+  const config = { headers: { } };
+  if (jwt) {
+    config.headers.Authorization = `bearer ${jwt || context.state.userToken}`;
+  }
+  return config;
 }
 
 export default new Vuex.Store({
   state: {
-    polls: null,
-    poll: null,
-    latestPollId: null,
-    pollVotes: null,
-    pollComments: null,
     authorized: false,
     userToken: null,
     userId: null,
     userNickname: null,
+    poll: null,
+    latestPoll: null,
   },
   getters: {
-    POLLS: state => state.polls,
-    POLL: state => state.poll,
-    LATEST_POLL: state => state.latestPollId,
-    POLL_VOTES: state => state.pollVotes,
-    POLL_COMMENTS: state => state.pollComments,
     IS_AUTHORIZED: state => state.authorized,
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
+    POLL: state => state.poll,
+    LATEST_POLL: state => state.latestPoll,
   },
   mutations: {
-    SET_POLLS: (state, payload) => {
-      state.polls = payload;
-    },
-    SET_POLL: (state, payload) => {
-      state.poll = payload;
-    },
-    SET_LATEST_POLL: (state, payload) => {
-      state.latestPollId = payload;
-    },
-    SET_POLL_VOTES: (state, payload) => {
-      state.pollVotes = payload;
-    },
-    SET_POLL_COMMENTS: (state, payload) => {
-      state.pollComments = payload;
+    SET_AUTHORIZED: (state, payload) => {
+      state.authorized = payload;
     },
     SET_USER_TOKEN: (state, payload) => {
       state.userToken = payload;
@@ -67,8 +50,11 @@ export default new Vuex.Store({
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
     },
-    SET_AUTHORIZED: (state, payload) => {
-      state.authorized = payload;
+    SET_POLL: (state, payload) => {
+      state.poll = payload;
+    },
+    SET_LATEST_POLL: (state, payload) => {
+      state.latestPoll = payload;
     },
   },
   actions: {
@@ -181,10 +167,6 @@ export default new Vuex.Store({
       publicProfile: payload.publicProfile,
     }, getAuthHeader(context, payload.jwt)),
     VERIFY_USER: (context, payload) => axios.post(`${API_ENDPOINT}/verify/${payload.token}`),
-    GET_USERS_VOTES: async (context, payload) => {
-      const { data } = await axios.get(`${API_ENDPOINT}/users/${payload.userId}/votes`);
-      return data.find(vote => vote.pollId === payload.pollId);
-    },
     // eslint-disable-next-line arrow-body-style
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
       if (context.state.userId === payload.id) {
@@ -193,11 +175,21 @@ export default new Vuex.Store({
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
     GET_POLL: async (context, payload) => {
+      console.log("GET_POLL");
       context.commit('SET_POLL', null);
-      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}`);
-      const userData = await axios.get(`${API_ENDPOINT}/users/${pollData.data.userId}`);
-      pollData.data.userData = userData.data;
-      context.commit('SET_POLL', pollData.data);
+      const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
+      const item = pollData.data;
+      item.poll.votes.total = item.poll.votes.neutral + item.poll.votes.trivial + item.poll.votes.dislike + item.poll.votes.hate;
+      console.log(item);
+      context.commit('SET_POLL', item);
+    },
+    GET_LATEST_POLL: async (context, payload) => {
+      console.log("GET_LATEST_POLL");
+      context.commit('SET_LATEST_POLL', null);
+      const pollData = await axios.get(`${BFF_ENDPOINT}/polls/last`, getAuthHeader(context));
+      const item = pollData.data.data;
+      console.log(item);
+      context.commit('SET_LATEST_POLL', item);
     },
     VOTE: async (context, payload) => {
       const jwt = localStorage.getItem('jwt');
@@ -215,41 +207,6 @@ export default new Vuex.Store({
         `${API_ENDPOINT}/polls/${payload.id}/votes`,
         {
           score: voteToScore[payload.vote],
-        },
-        {
-          headers: {
-            Authorization: `bearer ${jwt}`,
-          },
-        },
-      );
-    },
-    COMMENT: async (context, payload) => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-
-      // eslint-disable-next-line consistent-return
-      return axios.post(
-        `${API_ENDPOINT}/polls/${payload.id}/comments`,
-        {
-          text: payload.text,
-          parent: payload.parent,
-        },
-        {
-          headers: {
-            Authorization: `bearer ${jwt}`,
-          },
-        },
-      );
-    },
-    COMMENT_VOTE: async (context, payload) => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-
-      // eslint-disable-next-line consistent-return
-      return axios.post(
-        `${API_ENDPOINT}/polls/${payload.pollId}/comment/${payload.commentId}/vote`,
-        {
-          vote: payload.vote,
         },
         {
           headers: {

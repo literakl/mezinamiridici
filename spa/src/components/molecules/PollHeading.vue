@@ -3,17 +3,15 @@
         <hr />
         <div v-if="poll.poll">
           <h2 id="home__heading-title">
-              <router-link :to="{ name: 'poll', params: { id: poll.poll.pollId, text: poll.seoText }}" class="home__heading-link">{{poll.poll.text}}</router-link>
+<!--              <router-link :to="{ name: 'poll', params: { id: poll.info.slug, text: poll.info.caption }}" class="home__heading-link">{{poll.info.caption}}</router-link>-->
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
                 <li>{{created}}</li>
-                <li><router-link :to="{ name: 'user-profile', params: { id: poll.poll.userId }}">{{poll.poll.userData.nickname}}</router-link></li>
-                <li>{{poll.pollVotes}} votes</li>
-                <li>{{poll.pollComments}} comments</li>
+                <li>{{item.poll.votes.total}} votes</li>
+<!--                <li>{{poll.pollComments}} comments</li>-->
               </ul>
               <ul id="home__heading-metadata-social">
-<!--                <li><iframe :src="'https://www.facebook.com/plugins/like.php?href=' + urlToShare + '&width=79&layout=button_count&action=like&size=small&show_faces=true&share=false&height=21&appId=2402472069835800'" width="61" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></li>-->
               </ul>
           </div>
         </div>
@@ -37,21 +35,21 @@
 import { ContentLoader } from 'vue-content-loader';
 
 export default {
-  name: 'Heading',
+  name: 'PollHeading',
+  components: {
+    ContentLoader,
+  },
   props: {
-    poll: Object,
+    item: Object,
   },
   computed: {
     created() {
-      const date = new Date(this.poll.poll.created);
+      const date = new Date(this.item.info.date);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     urlToShare() {
-      return `http://mezinamiridici.cz/poll/${this.poll.poll.pollId}/${this.poll.poll.seoText}`;
+      return `http://mezinamiridici.cz/poll/${this.poll.poll.pollId}/${this.poll.poll.slug}`;
     },
-  },
-  components: {
-    ContentLoader,
   },
 };
 </script>

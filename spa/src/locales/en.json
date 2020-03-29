@@ -85,7 +85,13 @@
     "analyze-votes": "Analyze votes",
     "discussion": "Discussion",
     "your-say": "What do you want to say about it",
-    "other-polls-button": "Other polls"
+    "other-polls-button": "Other polls",
+    "choices": {
+      "neutral": "No problem",
+      "trivial": "Trivial trouble",
+      "dislike": "I don't like it",
+      "hate": "I hate it"
+    }
   },
   "profile": {
     "email": "Email",
@@ -139,12 +145,6 @@
     "user-not-found": "We are sorry but this driver is unknown to us",
     "update-button": "Update my profile",
     "password-button": "Change my password"
-  },
-  "bar-chart": {
-    "no-problem": "No problem",
-    "trivial-trouble": "Trivial trouble",
-    "i-dont-like-it": "I don't like it",
-    "i-hate-it": "I hate it"
   },
   "comment": {
     "reply": "Reply",

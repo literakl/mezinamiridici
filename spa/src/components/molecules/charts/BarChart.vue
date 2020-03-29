@@ -4,25 +4,25 @@
             <tbody>
                 <tr id="neutral">
                     <td class="sent bar" v-bind:style="barStyle('neutral')">
-                      <p>{{data.neutral}}%</p>
+                      <p>{{votes.neutral}}%</p>
                     </td>
                     <th scope="row">{{ $t('bar-chart.neutral') }}</th>
                 </tr>
                 <tr id="trivial">
                     <td class="sent bar" v-bind:style="barStyle('trivial')">
-                      <p>{{data.trivial}}%</p>
+                      <p>{{votes.trivial}}%</p>
                     </td>
                     <th scope="row">{{ $t('bar-chart.trivial') }}</th>
                 </tr>
                 <tr id="dislike">
                     <td class="sent bar" v-bind:style="barStyle('dislike')">
-                      <p>{{data.dislike}}%</p>
+                      <p>{{votes.dislike}}%</p>
                     </td>
                     <th scope="row">{{ $t('bar-chart.dislike') }}</th>
                 </tr>
                 <tr id="hate">
                     <td class="sent bar" v-bind:style="barStyle('hate')">
-                      <p>{{data.hate}}%</p>
+                      <p>{{votes.hate}}%</p>
                     </td>
                     <th scope="row">{{ $t('bar-chart.hate') }}</th>
                 </tr>
@@ -36,18 +36,17 @@ export default {
   name: 'BarChart',
   props: {
     voted: String,
-    data: Object,
+    votes: Object,
   },
   computed() {
     return {
       poll() {
-        const total = data.votes.neutral + data.votes.trivial + data.votes.dislike + data.votes.hate;
-        let items = [data.votes.neutral, data.votes.trivial, data.votes.dislike, data.votes.hate];
+        let items = [this.votes.neutral, this.votes.trivial, this.votes.dislike, this.votes.hate];
         let result = [];
         let sum = 0, biggestRound = 0, roundPointer;
 
-        items.forEach((votes, index) => {
-          let value = 100 * votes / total;
+        items.forEach((count, index) => {
+          let value = 100 * count / this.votes.total;
           let rounded = Math.round(value);
           let diff = value - rounded;
           if (diff > biggestRound) {
@@ -69,7 +68,6 @@ export default {
           trivial: result[1],
           dislike: result[2],
           hate: result[3],
-          totalVotes: total,
         };
       },
     }

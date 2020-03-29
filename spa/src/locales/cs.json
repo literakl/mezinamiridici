@@ -86,7 +86,13 @@
         "analyze-votes": "Analyzuj hlasování",
         "discussion": "Diskuse",
         "your-say": "Co si o tom myslíte vy?",
-        "other-polls-button": "Další ankety"
+        "other-polls-button": "Další ankety",
+        "choices": {
+            "neutral": "Není problém",
+            "trivial": "Banalita",
+            "dislike": "Vadí mi to",
+            "hate": "Štve mě to"
+        }
     },
     "profile": {
         "email": "Email",
@@ -140,12 +146,6 @@
         "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
         "update-button": "Upravit profil",
         "password-button": "Změnit heslo"
-    },
-    "bar-chart": {
-        "no-problem": "Není problém",
-        "trivial-trouble": "Banalita",
-        "i-dont-like-it": "Vadí mi to",
-        "i-hate-it": "Štve mě to"
     },
     "comment": {
         "reply": "Odpověď",
