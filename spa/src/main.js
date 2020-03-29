@@ -7,16 +7,6 @@ import i18n from './i18n';
 
 Vue.config.productionTip = false;
 
-Vue.mixin({
-  data() {
-    return {
-      get apiEndpoint() {
-        return 'https://api2.mezinamiridici.cz/v1';
-      },
-    };
-  },
-});
-
 new Vue({
   router,
   store,
