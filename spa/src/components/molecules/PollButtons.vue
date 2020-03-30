@@ -1,29 +1,29 @@
 <template>
     <div id="opinion-poll">
-        <h3>What is your opinion?</h3>
+        <h3>{{ $t('poll.your-opinion') }}</h3>
         <button
             v-on:click="voted('neutral')"
             class="opinion-poll__button opinion-poll__button__no-problem"
         >
-            <img src="@/assets/happy.png" align="middle">{{ $t('bar-chart.no-problem') }}
+            <img src="@/assets/happy.png" align="middle">{{ $t('poll.choices.neutral') }}
         </button>
         <button
             v-on:click="voted('trivial')"
             class="opinion-poll__button opinion-poll__button-trivial"
         >
-            <img src="@/assets/ok.png">{{ $t('bar-chart.trivial-trouble') }}
+            <img src="@/assets/ok.png">{{ $t('poll.choices.trivial') }}
         </button>
         <button
             v-on:click="voted('dislike')"
             class="opinion-poll__button opinion-poll__button-dont-like"
         >
-            <img src="@/assets/slanty.png">{{ $t('bar-chart.i-dont-like-it') }}
+            <img src="@/assets/slanty.png">{{ $t('poll.choices.dislike') }}
         </button>
         <button
             v-on:click="voted('hate')"
             class="opinion-poll__button opinion-poll__button-hate"
         >
-            <img src="@/assets/angry.png">{{ $t('bar-chart.i-hate-it') }}
+            <img src="@/assets/angry.png">{{ $t('poll.choices.hate') }}
         </button>
     </div>
 </template>

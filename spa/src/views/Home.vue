@@ -4,7 +4,7 @@
       Ads
     </div>
     <div id="home__content">
-      <Poll
+      <CompletePoll
         v-if="$store.getters.LATEST_POLL"
         :item="$store.getters.LATEST_POLL" />
       <content-loader
@@ -27,13 +27,13 @@
 
 <script>
 import { ContentLoader } from 'vue-content-loader';
-import Poll from '@/components/organisms/CompletePoll.vue';
+import CompletePoll from '@/components/organisms/CompletePoll.vue';
 
 export default {
   name: 'home',
   components: {
     ContentLoader,
-    Poll,
+    CompletePoll,
   },
   created() {
     this.$store.dispatch('GET_LATEST_POLL');

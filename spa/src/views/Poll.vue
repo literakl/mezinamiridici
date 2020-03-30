@@ -5,7 +5,7 @@
         Ads
       </div>
 
-      <PollVoting class="poll__voting" :id="id" :vote="vote" />
+      <CompletePoll class="poll__voting" :id="id" :vote="vote" />
     </div>
 
     <div class="poll__discussion-break-out">
@@ -32,23 +32,25 @@
 </template>
 
 <script>
-import PollVoting from '@/components/organisms/CompletePoll.vue';
+import CompletePoll from '@/components/organisms/CompletePoll.vue';
 import Button from '@/components/atoms/Button.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
 import Comments from '@/components/organisms/Comments.vue';
 
 export default {
   name: 'poll',
+  components: {
+    Button,
+    Comments,
+    Textarea,
+    CompletePoll,
+  },
   props: {
-    id: String,
+    slug: String,
     vote: String,
   },
-  async created() {
-    // this.$store.dispatch('GET_USER_ID');
-    // TODO:WARNING commenting this because of duplicate network call
-    // await this.$store.dispatch('GET_POLL_COMMENTS', {
-    //   id: this.id
-    // });
+  created() {
+    this.$store.dispatch('GET_POLL', { slug: this.slug });
   },
   methods: {
     redirectToOtherPolls() {
@@ -104,12 +106,6 @@ export default {
 
       return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
     },
-  },
-  components: {
-    Button,
-    Comments,
-    Textarea,
-    PollVoting,
   },
 };
 </script>

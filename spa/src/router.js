@@ -72,7 +72,7 @@ export default new Router({
       props: true,
     },
     {
-      path: '/poll/:id/:text',
+      path: '/poll/:slug',
       name: 'poll',
       component: () => import('./views/Poll.vue'),
       props: true,

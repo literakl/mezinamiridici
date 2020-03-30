@@ -31,10 +31,9 @@
 <!--              <Button :value="$t('poll.analyze-votes')" @clicked="redirectToAnalyzeVotes" />-->
 <!--            </div>-->
         </div>
-      </div>
-
-      <div v-if="votedAlready === false">
-<!--          <PollButtons @voted="voted" />-->
+        <div v-if="!votedAlready">
+          <PollButtons @voted="voted" />
+        </div>
       </div>
     </div>
   </div>
@@ -43,7 +42,7 @@
 <script>
 import { ContentLoader } from 'vue-content-loader';
 import PollHeading from '@/components/molecules/PollHeading.vue';
-// import OpinionButtons from '@/components/molecules/PollButtons.vue';
+import PollButtons from '@/components/molecules/PollButtons.vue';
 import BarChart from '@/components/molecules/charts/BarChart.vue';
 // import Button from '@/components/atoms/Button.vue';
 
@@ -53,7 +52,7 @@ export default {
     ContentLoader,
     // Button,
     BarChart,
-    // OpinionButtons,
+    PollButtons,
     PollHeading,
   },
   props: {

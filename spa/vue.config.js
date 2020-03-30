@@ -1,4 +1,7 @@
 module.exports = {
+  configureWebpack: {
+    devtool: 'eval-source-map',
+  },
   productionSourceMap: true,
   devServer: {
     host: 'localhost'

@@ -41,14 +41,14 @@ export default {
   computed() {
     return {
       poll() {
-        let items = [this.votes.neutral, this.votes.trivial, this.votes.dislike, this.votes.hate];
-        let result = [];
+        const items = [this.votes.neutral, this.votes.trivial, this.votes.dislike, this.votes.hate];
+        const result = [];
         let sum = 0, biggestRound = 0, roundPointer;
 
         items.forEach((count, index) => {
-          let value = 100 * count / this.votes.total;
-          let rounded = Math.round(value);
-          let diff = value - rounded;
+          const value = 100 * count / this.votes.total;
+          const rounded = Math.round(value);
+          const diff = value - rounded;
           if (diff > biggestRound) {
             biggestRound = diff;
             roundPointer = index;
@@ -70,13 +70,13 @@ export default {
           hate: result[3],
         };
       },
-    }
+    };
   },
   methods: {
     barStyle(vote) {
-      return `height: ${3 * poll[vote]} px${(this.voted === vote) ? ';background-color: #ffd302' : ''}`;
-    }
-  }
+      return `height: ${3 * this.poll[vote]} px${(this.voted === vote) ? ';background-color: #ffd302' : ''}`;
+    },
+  },
 };
 </script>
 

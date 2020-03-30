@@ -3,7 +3,7 @@
         <hr />
         <div v-if="item.poll">
           <h2 id="home__heading-title">
-<!--             <router-link :to="{ name: 'poll', params: { id: poll.info.slug, text: poll.info.caption }}" class="home__heading-link">{{poll.info.caption}}</router-link>-->
+             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}" class="home__heading-link">{{item.info.caption}}</router-link>
           </h2>
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
@@ -47,9 +47,9 @@ export default {
       const date = new Date(this.item.info.date);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
-    urlToShare() {
-      return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
-    },
+    // urlToShare() {
+    //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
+    // },
   },
 };
 </script>
