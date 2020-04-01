@@ -1,0 +1,11 @@
+{
+  "_id": "klae44ee65e_LL",
+  "date": "2020-03-22 16:46",
+  "vote": "hate",
+  "sex": "man",
+  "age": 44,
+  "region": "PRG",
+  "edu": "university",
+  "driving": 13,
+  "vehicles": ["car"]
+}

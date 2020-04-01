@@ -18,6 +18,10 @@ function sendErrorForbidden(res, body) {
     return response(res, 403, body, "private");
 }
 
+function sendNotFound(res, body) {
+    return response(res, 404, body, "private");
+}
+
 function sendConflict(res, body) {
     return response(res, 409, body, "private");
 }
@@ -122,6 +126,7 @@ module.exports.sendRresponse = sendResponse; // todo fix typo
 module.exports.sendErrorForbidden=sendErrorForbidden;
 module.exports.sendInternalError=sendInternalError;
 module.exports.sendBadRequest=sendBadRequest;
+module.exports.sendNotFound=sendNotFound;
 module.exports.sendCreated=sendCreated;
 module.exports.sendNotAuthorized=sendNotAuthorized;
 module.exports.sendConflict=sendConflict;
