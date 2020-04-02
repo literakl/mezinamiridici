@@ -11,7 +11,7 @@ module.exports = (app) => {
         try {
             const dbClient = await mongo.connectToDatabase();
             const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1), mongo.stageLookupPoll];
-            const item = mongo.getPoll(dbClient, pipeline);
+            const item = await mongo.getPoll(dbClient, pipeline);
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
             console.log("Request failed", err);
@@ -29,7 +29,7 @@ module.exports = (app) => {
         try {
             const dbClient = await mongo.connectToDatabase();
             const pipeline = [mongo.stageSlug(slug), mongo.stageLookupPoll];
-            const item = mongo.getPoll(dbClient, pipeline);
+            const item = await mongo.getPoll(dbClient, pipeline);
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
             console.log("Request failed", err);

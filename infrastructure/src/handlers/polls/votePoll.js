@@ -3,12 +3,13 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/polls/:pollId/vote', auth.cors, () => {
+    app.options('/bff/polls/:pollId/vote', auth.cors, () => {
     });
 
-    app.post('/v1/polls/:pollId/vote', auth.required, auth.cors, async (req, res) => {
+    app.post('/bff/polls/:pollId/vote', auth.required, auth.cors, async (req, res) => {
         console.log("votePoll handler starts");
-        const { pollId, vote } = req.params;
+        const { pollId } = req.params;
+        const { vote } = req.query;
         if (! pollId) {
             return api.sendBadRequest(res, api.createError("Missing pollId", "generic.internal-error"));
         }
@@ -20,14 +21,12 @@ module.exports = (app) => {
             const dbClient = await mongo.connectToDatabase();
             console.log("Mongo connected");
 
-            let item = await dbClient.db().collection("items").find({_id: pollId}, {projection: {_id: 1}});
-            console.log(item);
+            let item = await dbClient.db().collection("items").findOne({_id: pollId}, {projection: {_id: 1}});
             if (!item) {
                 return api.sendNotFound(res, api.createError("Poll not found", "generic.internal-error"));
             }
 
             const user = await mongo.findUser(dbClient, {userId: req.identity.userId}, {projection: {bio: 1, driving: 1}});
-            console.log(user);
             if (!user) {
                 return api.sendNotFound(res, api.createError("User not found", "generic.internal-error"));
             }
@@ -36,7 +35,7 @@ module.exports = (app) => {
             insertPollVote(dbClient, pollId, vote, user);
             incrementPoll(dbClient, pollId, vote);
             const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll];
-            item = mongo.getPoll(dbClient, pipeline);
+            item = await mongo.getPoll(dbClient, pipeline);
 
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
@@ -73,5 +72,5 @@ function insertPollVote(dbClient, pollId, vote, user) {
 function incrementPoll(dbClient, pollId, vote) {
     const inc = { $inc: {} };
     inc.$inc[`votes.${vote}`] = 1;
-    return dbClient.db().collection("polls").updateOne({ _id: pollId, inc });
+    return dbClient.db().collection("polls").updateOne({ _id: pollId }, inc);
 }

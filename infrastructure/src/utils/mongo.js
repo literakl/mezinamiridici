@@ -60,7 +60,7 @@ function findUser(dbClient, params, projection) {
         .collection("users")
         .findOne(query, projection)
         .then(doc => {
-            console.log("findUser mongo responded: ", doc);
+            // console.log("findUser mongo responded: ", doc);
             return doc;
         });
 }
