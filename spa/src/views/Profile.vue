@@ -21,6 +21,18 @@
           <dl>{{userProfile.bio.nickname}}</dl>
 
           <template v-if="publicProfile">
+            <template v-if="userProfile.driving">
+              <template v-if="userProfile.driving.since">
+                <dt>{{ $t('profile.driving-since') }}</dt>
+                <dl>{{userProfile.driving.since}}</dl>
+              </template>
+
+              <template v-if="vehicles">
+                <dt>{{ $t('profile.vehicle') }}</dt>
+                <dl>{{vehicles}}</dl>
+              </template>
+            </template>
+
             <template v-if="userProfile.bio.sex">
               <dt>{{ $t('profile.sex') }}</dt>
               <dl>{{ $t('profile.sexes.' + userProfile.bio.sex) }}</dl>
@@ -29,16 +41,6 @@
             <template v-if="userProfile.bio.born">
               <dt>{{ $t('profile.born') }}</dt>
               <dl>{{userProfile.bio.born}}</dl>
-            </template>
-
-            <template v-if="userProfile.driving.since">
-              <dt>{{ $t('profile.driving-since') }}</dt>
-              <dl>{{userProfile.driving.since}}</dl>
-            </template>
-
-            <template v-if="vehicles">
-              <dt>{{ $t('profile.vehicle') }}</dt>
-              <dl>{{vehicles}}</dl>
             </template>
 
             <template v-if="userProfile.bio.region">
