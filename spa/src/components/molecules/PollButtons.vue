@@ -36,7 +36,7 @@ export default {
       if (!this.$store.getters.IS_AUTHORIZED) {
         this.$router.push({ name: 'sign-in' });
       } else {
-        this.$emit('performVote', vote);
+        this.$emit('do-vote', vote);
       }
     },
   },

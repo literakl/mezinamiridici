@@ -17,7 +17,7 @@
         </div>
 
         <div v-if="!votedAlready">
-          <PollButtons @voted="voted" />
+          <PollButtons @voted="voted" v-on:do-vote="onVote(onVote)"/>
         </div>
 
         <content-loader
@@ -68,8 +68,7 @@ export default {
     },
   },
   methods: {
-    async performVote(vote) {
-      console.log('performVote');
+    async onVote(vote) {
       this.voting = true;
       await this.$store.dispatch('POLL_VOTE', {
         id: this.item._id,
