@@ -14,7 +14,7 @@ const BFF_ENDPOINT = process.env.VUE_APP_BFF_ENDPOINT;
 
 function getAuthHeader(context, jwt = undefined) {
   const config = { headers: { } };
-  if (jwt) {
+  if (jwt || context.state.userToken) {
     config.headers.Authorization = `bearer ${jwt || context.state.userToken}`;
   }
   return config;
@@ -193,7 +193,8 @@ export default new Vuex.Store({
     },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
-      const item = axios.post(`${BFF_ENDPOINT}/polls/${payload.id}/votes`, { vote: payload.vote }, getAuthHeader(context));
+      const pollData = await axios.post(`${BFF_ENDPOINT}/polls/${payload.id}/votes`, { vote: payload.vote }, getAuthHeader(context));
+      const item = pollData.data.data;
       context.commit('SET_POLL', item);
     },
   },
