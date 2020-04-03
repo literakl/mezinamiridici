@@ -3,7 +3,7 @@
         <h3>{{ $t('poll.your-opinion') }}</h3>
         <button
             v-on:click="voted('neutral')"
-            class="opinion-poll__button opinion-poll__button__no-problem"
+            class="opinion-poll__button opinion-poll__button__neutral"
         >
             <img src="@/assets/happy.png" align="middle">{{ $t('poll.choices.neutral') }}
         </button>
@@ -15,7 +15,7 @@
         </button>
         <button
             v-on:click="voted('dislike')"
-            class="opinion-poll__button opinion-poll__button-dont-like"
+            class="opinion-poll__button opinion-poll__button-dislike"
         >
             <img src="@/assets/slanty.png">{{ $t('poll.choices.dislike') }}
         </button>
@@ -30,18 +30,13 @@
 
 <script>
 export default {
-  name: 'OpinionButtons',
-  computed: {
-    signedIn() {
-      return this.$store.getters.IS_AUTHORIZED;
-    },
-  },
+  name: 'PollButtons',
   methods: {
     voted(vote) {
-      if (!this.signedIn) {
+      if (!this.$store.getters.IS_AUTHORIZED) {
         this.$router.push({ name: 'sign-in' });
       } else {
-        this.$emit('voted', vote);
+        this.$emit('performVote', vote);
       }
     },
   },
@@ -76,7 +71,7 @@ export default {
   padding-right: 20px;
 }
 
-.opinion-poll__button__no-problem {
+.opinion-poll__button__neutral {
   background: #0b6e00;
 }
 
@@ -84,7 +79,7 @@ export default {
   background: #006ca2;
 }
 
-.opinion-poll__button-dont-like {
+.opinion-poll__button-dislike {
   background: #ff3333;
 }
 

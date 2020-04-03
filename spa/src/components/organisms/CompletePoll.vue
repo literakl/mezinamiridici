@@ -11,29 +11,29 @@
           <div class="poll-voting__chart-wrapper-bar-chart" v-if="voting === false || votedAlready === true">
             <BarChart :votes="item.votes" v-bind:voted="voted" />
           </div>
-
-          <content-loader
-            :height="200"
-            :width="400"
-            :speed="22"
-            primaryColor="#f3f3f3"
-            secondaryColor="#ecebeb"
-            class="poll-voting__chart-wrapper-bar-chart"
-            v-if="voting"
-          >
-            <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
-            <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
-            <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
-            <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
-          </content-loader>
-
 <!--            <div class="poll-voting__chart-wrapper-analyze-votes-button">-->
 <!--              <Button :value="$t('poll.analyze-votes')" @clicked="redirectToAnalyzeVotes" />-->
 <!--            </div>-->
         </div>
+
         <div v-if="!votedAlready">
           <PollButtons @voted="voted" />
         </div>
+
+        <content-loader
+          :height="200"
+          :width="400"
+          :speed="22"
+          primaryColor="#f3f3f3"
+          secondaryColor="#ecebeb"
+          class="poll-voting__chart-wrapper-bar-chart"
+          v-if="voting"
+        >
+          <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
+          <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
+          <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
+          <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
+        </content-loader>
       </div>
     </div>
   </div>
@@ -55,9 +55,6 @@ export default {
     PollButtons,
     PollHeading,
   },
-  props: {
-    item: Object,
-  },
   data() {
     return {
       voting: false,
@@ -66,15 +63,16 @@ export default {
     };
   },
   computed: {
-  },
-  async created() {
-    this.voting = false;
+    item() {
+      return this.$store.getters.POLL;
+    },
   },
   methods: {
     async performVote(vote) {
+      console.log('performVote');
       this.voting = true;
-      await this.$store.dispatch('VOTE', {
-        id: this.poll._id,
+      await this.$store.dispatch('POLL_VOTE', {
+        id: this.item._id,
         vote,
       });
       this.voting = false;

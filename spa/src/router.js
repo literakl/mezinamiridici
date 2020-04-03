@@ -78,11 +78,6 @@ export default new Router({
       props: true,
     },
     {
-      path: '/polls',
-      name: 'polls',
-      component: () => import('./views/Polls.vue'),
-    },
-    {
       path: '/analyze-votes/:id',
       name: 'analyze-votes',
       component: () => import('./views/AnalyzeVotes.vue'),

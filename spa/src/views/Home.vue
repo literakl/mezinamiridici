@@ -4,9 +4,8 @@
       Ads
     </div>
     <div id="home__content">
-      <CompletePoll
-        v-if="$store.getters.LATEST_POLL"
-        :item="$store.getters.LATEST_POLL" />
+      <CompletePoll v-if="poll" />
+
       <content-loader
         :height="200"
         :width="400"
@@ -14,7 +13,7 @@
         primaryColor="#f3f3f3"
         secondaryColor="#ecebeb"
         class="poll-voting__chart-wrapper-bar-chart"
-        v-if="! $store.getters.LATEST_POLL"
+        v-if="! poll"
       >
         <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
         <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
@@ -34,6 +33,11 @@ export default {
   components: {
     ContentLoader,
     CompletePoll,
+  },
+  computed: {
+    poll() {
+      return this.$store.getters.POLL;
+    },
   },
   created() {
     this.$store.dispatch('GET_LATEST_POLL');

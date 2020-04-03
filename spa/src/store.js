@@ -188,32 +188,13 @@ export default new Vuex.Store({
       context.commit('SET_LATEST_POLL', null);
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/last`, getAuthHeader(context));
       const item = pollData.data.data;
-      console.log(item);
       context.commit('SET_LATEST_POLL', item);
+      context.commit('SET_POLL', item);
     },
-    VOTE: async (context, payload) => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-
-      const voteToScore = {
-        'No problem': 1,
-        'Trivial trouble': 0,
-        'I don\'t like it': -1,
-        'I hate it': -2,
-      };
-
-      // eslint-disable-next-line consistent-return
-      return axios.post(
-        `${API_ENDPOINT}/polls/${payload.id}/votes`,
-        {
-          score: voteToScore[payload.vote],
-        },
-        {
-          headers: {
-            Authorization: `bearer ${jwt}`,
-          },
-        },
-      );
+    POLL_VOTE: async (context, payload) => {
+      console.log('POLL_VOTE');
+      const item = axios.post(`${BFF_ENDPOINT}/polls/${payload.id}/votes`, { vote: payload.vote }, getAuthHeader(context));
+      context.commit('SET_POLL', item);
     },
   },
 });

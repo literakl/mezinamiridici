@@ -8,7 +8,7 @@
           <div id="home__heading-metadata">
               <ul id="home__heading-metadata-details">
                 <li>{{created}}</li>
-                <li>{{itemz.poll.votes.total}} votes</li>
+                <li>{{item.poll.votes.total}} votes</li>
 <!--                <li>{{poll.pollComments}} comments</li>-->
               </ul>
               <ul id="home__heading-metadata-social">
@@ -39,10 +39,10 @@ export default {
   components: {
     ContentLoader,
   },
-  props: {
-    item: Object,
-  },
   computed: {
+    item() {
+      return this.$store.getters.POLL;
+    },
     created() {
       const date = new Date(this.item.info.date);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;

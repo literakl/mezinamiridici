@@ -1,11 +1,22 @@
 <template>
   <div>
     <div class="poll__wrapper">
-      <div class="poll__ads">
-        Ads
-      </div>
+      <CompletePoll v-if="poll" />
 
-      <CompletePoll class="poll__voting" :id="id" :vote="vote" />
+      <content-loader
+        :height="200"
+        :width="400"
+        :speed="22"
+        primaryColor="#f3f3f3"
+        secondaryColor="#ecebeb"
+        class="poll-voting__chart-wrapper-bar-chart"
+        v-if="! poll"
+      >
+        <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
+        <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
+        <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
+        <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
+      </content-loader>
     </div>
 
     <div class="poll__discussion-break-out">
@@ -17,7 +28,7 @@
           <Textarea :id="id" />
         </div>
 
-        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />
+<!--        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />-->
 
         <div class="poll__other-polls">
           <h2>
@@ -35,13 +46,13 @@
 import CompletePoll from '@/components/organisms/CompletePoll.vue';
 import Button from '@/components/atoms/Button.vue';
 import Textarea from '@/components/atoms/Textarea.vue';
-import Comments from '@/components/organisms/Comments.vue';
+// import Comments from '@/components/organisms/Comments.vue';
 
 export default {
   name: 'poll',
   components: {
     Button,
-    Comments,
+    // Comments,
     Textarea,
     CompletePoll,
   },
@@ -79,6 +90,7 @@ export default {
     signedIn() {
       return this.$store.getters.IS_AUTHORIZED;
     },
+    /*
     comments() {
       const comments = this.$store.getters.POLL_COMMENTS;
 
@@ -106,6 +118,7 @@ export default {
 
       return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
     },
+    */
   },
 };
 </script>
