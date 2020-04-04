@@ -17,7 +17,7 @@
         </div>
 
         <div v-if="!votedAlready">
-          <PollButtons @voted="voted" v-on:do-vote="onVote(onVote)"/>
+          <PollButtons v-on:do-vote="onVote"/>
         </div>
 
         <content-loader
@@ -59,12 +59,15 @@ export default {
     return {
       voting: false,
       votedAlready: null,
-      voted: 'trivial', // todo from db
     };
   },
   computed: {
     item() {
       return this.$store.getters.POLL;
+    },
+    voted() {
+      // return 'dislike';
+      return this.$store.getters.POLL.my_vote;
     },
   },
   methods: {
@@ -77,9 +80,9 @@ export default {
       this.voting = false;
       this.votedAlready = true;
     },
-    redirectToAnalyzeVotes() {
-      this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
-    },
+    // redirectToAnalyzeVotes() {
+    //   this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
+    // },
   },
 };
 </script>

@@ -38,42 +38,43 @@ export default {
     voted: String,
     votes: Object,
   },
-  computed() {
-    return {
-      poll() {
-        const items = [this.votes.neutral, this.votes.trivial, this.votes.dislike, this.votes.hate];
-        const result = [];
-        let sum = 0, biggestRound = 0, roundPointer;
+  computed: {
+    poll() {
+      console.log(this.votes);
+      const items = [this.votes.neutral, this.votes.trivial, this.votes.dislike, this.votes.hate];
+      const result = [];
+      let sum = 0, biggestRound = 0, roundPointer;
 
-        items.forEach((count, index) => {
-          const value = 100 * count / this.votes.total;
-          const rounded = Math.round(value);
-          const diff = value - rounded;
-          if (diff > biggestRound) {
-            biggestRound = diff;
-            roundPointer = index;
-          }
-          sum += rounded;
-          result.push(rounded);
-        });
-
-        if (sum === 99) {
-          result[roundPointer] += 1;
-        } else if (sum === 101) {
-          result[roundPointer] -= 1;
+      items.forEach((count, index) => {
+        const value = 100 * count / this.votes.total;
+        const rounded = Math.round(value);
+        const diff = value - rounded;
+        if (diff > biggestRound) {
+          biggestRound = diff;
+          roundPointer = index;
         }
+        sum += rounded;
+        result.push(rounded);
+      });
 
-        return {
-          neutral: result[0],
-          trivial: result[1],
-          dislike: result[2],
-          hate: result[3],
-        };
-      },
-    };
+      if (sum === 99) {
+        result[roundPointer] += 1;
+      } else if (sum === 101) {
+        result[roundPointer] -= 1;
+      }
+      console.log(result);
+
+      return {
+        neutral: result[0],
+        trivial: result[1],
+        dislike: result[2],
+        hate: result[3],
+      };
+    },
   },
   methods: {
     barStyle(vote) {
+      console.log(this.poll);
       return `height: ${3 * this.poll[vote]} px${(this.voted === vote) ? ';background-color: #ffd302' : ''}`;
     },
   },

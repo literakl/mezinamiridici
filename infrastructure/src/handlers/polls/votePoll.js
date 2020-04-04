@@ -15,6 +15,7 @@ module.exports = (app) => {
         if (! vote) {
             return api.sendBadRequest(res, api.createError("Missing vote", "generic.internal-error"));
         }
+        setTimeout(() => { /* artificial delay to slow down brute force attacks */  }, 2000);
 
         try {
             const dbClient = await mongo.connectToDatabase();
@@ -33,8 +34,11 @@ module.exports = (app) => {
             // todo transaction, replicas required
             insertPollVote(dbClient, pollId, vote, user);
             incrementPoll(dbClient, pollId, vote);
-            const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll];
+            console.log("Vote recorded");
+
+            const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll, mongo.stageMyVote(pollId, user._id)];
             item = await mongo.getPoll(dbClient, pipeline);
+            console.log("Updated poll fetched");
 
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {

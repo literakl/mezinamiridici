@@ -29,6 +29,9 @@ module.exports = (app) => {
         try {
             const dbClient = await mongo.connectToDatabase();
             const pipeline = [mongo.stageSlug(slug), mongo.stageLookupPoll];
+            // if (req.identity) {
+            //     pipeline.push(mongo.stageMyVote(pollId, req.identity.userId));
+            // }
             const item = await mongo.getPoll(dbClient, pipeline);
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {

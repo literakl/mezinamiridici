@@ -7,6 +7,7 @@ let MONGODB_URI = process.env.MONGODB_URI;
 let cachedDb = null;
 
 const stageSortByDateDesc = {$sort: {"info.date": -1}};
+const stagePublished = {$match: {"info.published": true}};
 function stageLimit (n) { return { $limit: n } }
 function stageId (id) { return {$match: {_id: id}} }
 function stageSlug (slug) { return {$match: {"info.slug": slug}} }
@@ -18,7 +19,15 @@ const stageLookupPoll = {
         as: 'poll'
     }
 };
-const stagePublished = {$match: {"info.published": true}};
+function stageMyVote(pollId, userId) {
+    return { $lookup: {from: 'poll_votes', pipeline: [
+                { $match: { _id: `${pollId}_${userId}` } },
+                { $project: { _id: 0, vote: "$vote" } },
+            ],
+            as: "me"
+        }
+    }
+}
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
@@ -68,8 +77,13 @@ function findUser(dbClient, params, projection) {
 async function getPoll(dbClient, pipeline) {
     const cursor = dbClient.db().collection("items").aggregate(pipeline);
     const item = await cursor.next();
-    item.poll = item.poll[0];
-    item.poll.votes.total = item.poll.votes.neutral + item.poll.votes.trivial + item.poll.votes.dislike + item.poll.votes.hate;
+    item.votes = item.poll[0].votes;
+    item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
+    delete item.poll;
+    if (item.me) {
+        item.my_vote = item.me[0].vote;
+        delete item.me;
+    }
     return item;
 }
 
@@ -90,6 +104,7 @@ exports.getPoll = getPoll;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
 exports.stageLookupPoll = stageLookupPoll;
+exports.stageMyVote = stageMyVote;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
