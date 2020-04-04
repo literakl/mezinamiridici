@@ -3,13 +3,12 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/bff/polls/:pollId/votes', auth.cors, () => {
-    });
+    app.options('/bff/polls/:pollId/votes', auth.cors, () => {});
 
     app.post('/bff/polls/:pollId/votes', auth.required, auth.cors, async (req, res) => {
         console.log("votePoll handler starts");
         const { pollId } = req.params;
-        const { vote } = req.query;
+        const { vote } = req.body;
         if (! pollId) {
             return api.sendBadRequest(res, api.createError("Missing pollId", "generic.internal-error"));
         }
@@ -31,7 +30,7 @@ module.exports = (app) => {
                 return api.sendNotFound(res, api.createError("User not found", "generic.internal-error"));
             }
 
-            // todo transaction
+            // todo transaction, replicas required
             insertPollVote(dbClient, pollId, vote, user);
             incrementPoll(dbClient, pollId, vote);
             const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll];
