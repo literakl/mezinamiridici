@@ -6,7 +6,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/users', auth.cors, () => {});
+    app.options('/v1/users', auth.cors);
 
     app.post('/v1/users', auth.cors, async (req, res) => {
         console.log("createUser handler starts");

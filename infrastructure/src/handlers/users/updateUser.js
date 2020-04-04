@@ -3,7 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/users/:userId', auth.cors, () => {});
+    app.options('/v1/users/:userId', auth.cors);
 
     app.patch('/v1/users/:userId', auth.required, auth.cors, async (req, res) => {
         console.log("updateUser handler starts");

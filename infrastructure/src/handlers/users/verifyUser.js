@@ -3,7 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/verify/:token', auth.cors, () => {});
+    app.options('/v1/verify/:token', auth.cors);
 
     app.post('/v1/verify/:token', auth.cors, async (req, res) => {
         console.log("verifyUser handler starts");

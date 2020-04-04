@@ -3,7 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/bff/polls/:pollId/votes', auth.cors, () => {});
+    app.options('/bff/polls/:pollId/votes', auth.cors);
 
     app.post('/bff/polls/:pollId/votes', auth.required, auth.cors, async (req, res) => {
         console.log("votePoll handler starts");

@@ -3,8 +3,8 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/bff/polls/last', auth.cors, () => {});
-    app.options('/bff/polls/:slug', auth.cors, () => {});
+    app.options('/bff/polls/last', auth.cors);
+    app.options('/bff/polls/:slug', auth.cors);
 
     app.get('/bff/polls/last', auth.optional, async (req, res) => {
         console.log("getLastPoll handler starts");

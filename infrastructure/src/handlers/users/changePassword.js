@@ -4,7 +4,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/users/:userId/password', auth.cors, () => {});
+    app.options('/v1/users/:userId/password');
 
     app.patch('/v1/users/:userId/password', auth.required, auth.cors, async (req, res) => {
         console.log("changePassword handler starts");

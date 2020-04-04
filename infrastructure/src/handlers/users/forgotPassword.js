@@ -5,7 +5,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/forgotPassword', auth.cors, () => {});
+    app.options('/v1/forgotPassword', auth.cors);
 
     app.post('/v1/forgotPassword', auth.cors, async (req, res) => {
         console.log("forgotPassword handler starts");

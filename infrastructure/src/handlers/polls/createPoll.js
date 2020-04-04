@@ -4,7 +4,7 @@ const auth = require('../../utils/authenticate');
 const slugify = require('slugify');
 
 module.exports = (app) => {
-    app.options('/v1/polls', auth.cors, () => {});
+    app.options('/v1/polls', auth.cors);
 
     app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
         console.log("createPoll handler starts");

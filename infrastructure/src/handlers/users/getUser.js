@@ -3,7 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = app => {
-    app.options('/v1/users/:userId', auth.cors, () => {});
+    app.options('/v1/users/:userId', auth.cors);
 
     app.get('/v1/users/:userId', auth.optional, async (req, res) => {
         console.log("getUser handler starts");

@@ -4,7 +4,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/resetPassword', auth.cors, () => {});
+    app.options('/v1/resetPassword', auth.cors);
 
     app.post('/v1/resetPassword', auth.cors, async (req, res) => {
         console.log("resetPassword handler starts");

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const corsMW = require('cors');
+const corsMiddleware = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -52,15 +52,11 @@ function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d') 
     return jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: expiration});
 }
 
-const whitelist = ['http://localhost:8080', 'https://www.mezinamiridici.cz']
-const corsPerRoute = corsMW({
-    origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    }
+const corsPerRoute = corsMiddleware({
+    origin: ['http://localhost:8080', 'https://www.mezinamiridici.cz'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    // preflightContinue: false,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 });
 
 module.exports.optional = authenticate(false);
