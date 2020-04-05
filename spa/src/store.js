@@ -75,28 +75,27 @@ export default new Vuex.Store({
       password: payload.password,
     }),
     SIGN_USER_IN: async (context, payload) => {
-      try {
-        const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, {
-          email: payload.email,
-          password: payload.password,
-        });
+      context.commit('SET_POLL', null);
+      context.commit('SET_LATEST_POLL', null);
+      context.commit('SET_USER_TOKEN', null);
+      context.commit('SET_AUTHORIZED', false);
+      context.commit('SET_USER_ID', null);
+      context.commit('SET_USER_NICKNAME', null);
 
-        const jwt = axiosResponse.data.data;
-        const jwtData = jwtDecode(jwt);
-        localStorage.setItem('jwt', jwt);
+      const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, {
+        email: payload.email,
+        password: payload.password,
+      });
 
-        context.commit('SET_USER_TOKEN', jwt);
-        context.commit('SET_AUTHORIZED', true);
-        context.commit('SET_USER_ID', jwtData.userId);
-        context.commit('SET_USER_NICKNAME', jwtData.nickname);
-        return true;
-      } catch (e) {
-        context.commit('SET_USER_TOKEN', null);
-        context.commit('SET_AUTHORIZED', false);
-        context.commit('SET_USER_ID', null);
-        context.commit('SET_USER_NICKNAME', null);
-        throw e;
-      }
+      const jwt = axiosResponse.data.data;
+      const jwtData = jwtDecode(jwt);
+      localStorage.setItem('jwt', jwt);
+
+      context.commit('SET_USER_TOKEN', jwt);
+      context.commit('SET_AUTHORIZED', true);
+      context.commit('SET_USER_ID', jwtData.userId);
+      context.commit('SET_USER_NICKNAME', jwtData.nickname);
+      return true;
     },
     SIGN_USER_OUT: (context) => {
       localStorage.removeItem('jwt');
