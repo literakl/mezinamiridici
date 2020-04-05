@@ -4,11 +4,11 @@
       <div class="poll-voting__content">
         <PollHeading :item="item"/>
 
-        <div v-if="votedAlready === true" class="poll-voting__chart-wrapper">
+        <div v-if="voted" class="poll-voting__chart-wrapper">
           <h2 class="poll-voting__chart-wrapper-vote">
             {{ $t('poll.your-vote') }} <span class="vote-text">{{ $t('poll.choices.'+voted) }}</span>
           </h2>
-          <div class="poll-voting__chart-wrapper-bar-chart" v-if="voting === false || votedAlready === true">
+          <div class="poll-voting__chart-wrapper-bar-chart">
             <BarChart :votes="item.votes" v-bind:voted="voted" />
           </div>
 <!--            <div class="poll-voting__chart-wrapper-analyze-votes-button">-->
@@ -16,7 +16,7 @@
 <!--            </div>-->
         </div>
 
-        <div v-if="!votedAlready">
+        <div v-if="!voted">
           <PollButtons v-on:do-vote="onVote"/>
         </div>
 
@@ -58,7 +58,6 @@ export default {
   data() {
     return {
       voting: false,
-      votedAlready: null,
     };
   },
   computed: {
@@ -66,7 +65,7 @@ export default {
       return this.$store.getters.POLL;
     },
     voted() {
-      // return 'dislike';
+      console.log(this.$store.getters.POLL.my_vote);
       return this.$store.getters.POLL.my_vote;
     },
   },
@@ -78,7 +77,6 @@ export default {
         vote,
       });
       this.voting = false;
-      this.votedAlready = true;
     },
     // redirectToAnalyzeVotes() {
     //   this.$router.push({ name: 'analyze-votes', params: { id: this.id } });

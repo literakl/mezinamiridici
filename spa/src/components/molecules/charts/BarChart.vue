@@ -4,27 +4,27 @@
             <tbody>
                 <tr id="neutral">
                     <td class="sent bar" v-bind:style="barStyle('neutral')">
-                      <p>{{votes.neutral}}%</p>
+                      <p>{{poll.neutral}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.neutral') }}</th>
+                    <th scope="row">{{ $t('poll.choices.neutral') }}</th>
                 </tr>
                 <tr id="trivial">
                     <td class="sent bar" v-bind:style="barStyle('trivial')">
-                      <p>{{votes.trivial}}%</p>
+                      <p>{{poll.trivial}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.trivial') }}</th>
+                    <th scope="row">{{ $t('poll.choices.trivial') }}</th>
                 </tr>
                 <tr id="dislike">
                     <td class="sent bar" v-bind:style="barStyle('dislike')">
-                      <p>{{votes.dislike}}%</p>
+                      <p>{{poll.dislike}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.dislike') }}</th>
+                    <th scope="row">{{ $t('poll.choices.dislike') }}</th>
                 </tr>
                 <tr id="hate">
                     <td class="sent bar" v-bind:style="barStyle('hate')">
-                      <p>{{votes.hate}}%</p>
+                      <p>{{poll.hate}}%</p>
                     </td>
-                    <th scope="row">{{ $t('bar-chart.hate') }}</th>
+                    <th scope="row">{{ $t('poll.choices.hate') }}</th>
                 </tr>
             </tbody>
         </table>
@@ -40,7 +40,6 @@ export default {
   },
   computed: {
     poll() {
-      console.log(this.votes);
       const items = [this.votes.neutral, this.votes.trivial, this.votes.dislike, this.votes.hate];
       const result = [];
       let sum = 0, biggestRound = 0, roundPointer;
@@ -74,7 +73,6 @@ export default {
   },
   methods: {
     barStyle(vote) {
-      console.log(this.poll);
       return `height: ${3 * this.poll[vote]} px${(this.voted === vote) ? ';background-color: #ffd302' : ''}`;
     },
   },

@@ -1,8 +1,6 @@
 <template>
   <div id="home__wrapper">
-    <div id="home__ads">
-      Ads
-    </div>
+    <div id="home__ads"></div>
     <div id="home__content">
       <CompletePoll v-if="poll" />
 
@@ -62,8 +60,6 @@ export default {
 }
 
 #home__ads {
-  height: 100%;
-  background: grey;
   order: 1;
 }
 
