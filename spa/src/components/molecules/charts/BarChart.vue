@@ -73,7 +73,12 @@ export default {
   },
   methods: {
     barStyle(vote) {
-      return `height: ${3 * this.poll[vote]} px${(this.voted === vote) ? ';background-color: #ffd302' : ''}`;
+      const style = { height: `${3 * this.poll[vote]}px` };
+      if (this.voted === vote) {
+        style['background-color'] = '#ffd302';
+      }
+      console.log(style);
+      return style;
     },
   },
 };
