@@ -95,10 +95,11 @@ async function getPoll(dbClient, pipeline) {
     item.votes = item.poll[0].votes;
     item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
     delete item.poll;
-    if (item.me) {
+    console.log(item);
+    if (item.me[0]) {
         item.my_vote = item.me[0].vote;
-        delete item.me;
     }
+    delete item.me;
     return item;
 }
 
