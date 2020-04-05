@@ -3,12 +3,13 @@ const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
+const bruteForceDelay = 1000;
+
 module.exports = (app) => {
     app.options('/v1/authorizeUser', auth.cors);
 
     app.post('/v1/authorizeUser', auth.cors, async (req, res) => {
         console.log("authorizeUser handler starts");
-        setTimeout(() => { /* artificial delay to slow down brute force attacks */  }, 1000);
         const { email, password } = req.body;
         let result = validateParameters(email, password);
         if (! result.success) {
@@ -23,11 +24,13 @@ module.exports = (app) => {
             console.log("User checks");
             if (!user) {
                 console.log("User not found " + email);
-                return api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error"));
+                setTimeout(() => api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error")), bruteForceDelay);
+                return res;
             }
 
             if (!user.auth.verified) {
-                return api.sendErrorForbidden(res, api.createError("User not verified", "sign-in.auth-not-verified"));
+                setTimeout(() => api.sendErrorForbidden(res, api.createError("User not verified", "sign-in.auth-not-verified")), bruteForceDelay);
+                return res;
             }
 
             // following part takes more than 1 second with 128 MB RAM!
@@ -37,7 +40,8 @@ module.exports = (app) => {
                 return api.sendRresponse(res, api.createResponse(token));
             } else {
                 console.log("Password mismatch for user " + user._id);
-                return api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error"));
+                setTimeout(() => api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error")), bruteForceDelay);
+                return res;
             }
         } catch (err) {
             console.log("Request failed", err);
