@@ -7,18 +7,20 @@
       <CompletePoll v-if="poll" />
 
       <content-loader
-        :height="200"
+        :height="160"
         :width="400"
-        :speed="22"
+        :speed="60"
         primaryColor="#f3f3f3"
         secondaryColor="#ecebeb"
         class="poll-voting__chart-wrapper-bar-chart"
         v-if="! poll"
       >
-        <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
-        <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
-        <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
-        <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
+        <rect x="0" y="0" width="400" height="40"/>
+        <rect x="0" y="60" width="200" height="20"/>
+        <rect x="0" y="100" width="50" height="40"/>
+        <rect x="80" y="100" width="50" height="40"/>
+        <rect x="160" y="100" width="50" height="40"/>
+        <rect x="240" y="100" width="50" height="40"/>
       </content-loader>
     </div>
   </div>
