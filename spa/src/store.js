@@ -195,6 +195,9 @@ export default new Vuex.Store({
       const pollData = await axios.post(`${BFF_ENDPOINT}/polls/${payload.id}/votes`, { vote: payload.vote }, getAuthHeader(context));
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
+      if (context.state.latestPoll && context.state.latestPoll._id === item._id) {
+        context.commit('SET_LATEST_POLL', item);
+      }
     },
   },
 });
