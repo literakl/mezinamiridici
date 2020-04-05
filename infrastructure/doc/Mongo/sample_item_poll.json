@@ -1,6 +1,7 @@
 {
   "_id" : "jwnldleme2e3e",
   "type": "poll",
+  "votes_count": 3,
   "info": {
     "author": {
       "nickname": "literakl",

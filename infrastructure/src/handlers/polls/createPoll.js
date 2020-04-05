@@ -50,6 +50,7 @@ function insertItem(dbClient, text, pollId, identity) {
     const item = {
         "_id" : pollId,
         "type": "poll",
+        "votes_count": 0,
         "info": {
             "author": {
                 "nickname": identity.nickname,

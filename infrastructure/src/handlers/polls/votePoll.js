@@ -15,7 +15,6 @@ module.exports = (app) => {
         if (! vote) {
             return api.sendBadRequest(res, api.createError("Missing vote", "generic.internal-error"));
         }
-        setTimeout(() => { /* artificial delay to slow down brute force attacks */  }, 2000);
 
         try {
             const dbClient = await mongo.connectToDatabase();
@@ -75,5 +74,8 @@ function insertPollVote(dbClient, pollId, vote, user) {
 function incrementPoll(dbClient, pollId, vote) {
     const inc = { $inc: {} };
     inc.$inc[`votes.${vote}`] = 1;
-    return dbClient.db().collection("polls").updateOne({ _id: pollId }, inc);
+    dbClient.db().collection("polls").updateOne({ _id: pollId }, inc);
+    delete inc.$inc[`votes.${vote}`];
+    inc.$inc[`votes_count`] = 1;
+    dbClient.db().collection("items").updateOne({ _id: pollId }, inc);
 }
