@@ -36,7 +36,7 @@ module.exports = (app) => {
             incrementPoll(dbClient, pollId, vote);
             console.log("Vote recorded");
 
-            const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll, mongo.stageMyVote(pollId, user._id)];
+            const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll, mongo.stageMyVote(user._id, pollId)];
             item = await mongo.getPoll(dbClient, pipeline);
             console.log("Updated poll fetched");
 

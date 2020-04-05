@@ -19,10 +19,25 @@ const stageLookupPoll = {
         as: 'poll'
     }
 };
-function stageMyVote(pollId, userId) {
-    return { $lookup: {from: 'poll_votes', pipeline: [
-                { $match: { _id: `${pollId}_${userId}` } },
-                { $project: { _id: 0, vote: "$vote" } },
+function stageMyVote(userId, pollId) {
+    if (pollId) {
+        return {
+            $lookup: {
+                from: 'poll_votes', pipeline: [
+                    {$match: {_id: `${pollId}_${userId}`}},
+                    {$project: {_id: 0, vote: "$vote"}},
+                ],
+                as: "me"
+            }
+        }
+    }
+    return {
+        $lookup: {
+            from: 'poll_votes',
+            let: {poll_id: "$_id"},
+            pipeline: [
+                {$match: {$expr: {$eq: [ "$_id", {$concat: ["$$poll_id", "_", userId]} ]}}},
+                {$project: {_id: 0, vote: "$vote"}},
             ],
             as: "me"
         }

@@ -11,6 +11,9 @@ module.exports = (app) => {
         try {
             const dbClient = await mongo.connectToDatabase();
             const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1), mongo.stageLookupPoll];
+            if (req.identity) {
+                pipeline.push(mongo.stageMyVote(req.identity.userId));
+            }
             const item = await mongo.getPoll(dbClient, pipeline);
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
@@ -29,9 +32,10 @@ module.exports = (app) => {
         try {
             const dbClient = await mongo.connectToDatabase();
             const pipeline = [mongo.stageSlug(slug), mongo.stageLookupPoll];
-            // if (req.identity) {
-            //     pipeline.push(mongo.stageMyVote(pollId, req.identity.userId));
-            // }
+            if (req.identity) {
+                // noinspection JSCheckFunctionSignatures
+                pipeline.push(mongo.stageMyVote(req.identity.userId));
+            }
             const item = await mongo.getPoll(dbClient, pipeline);
             return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
