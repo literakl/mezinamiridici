@@ -4,9 +4,9 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 
 module.exports = (app) => {
-    app.options('/v1/validateToken', auth.cors);
+    app.options('/v1/users/:userId/validateToken', auth.cors);
 
-    app.post('/v1/validateToken', auth.required, auth.cors, async (req, res) => {
+    app.post('/v1/users/:userId/validateToken', auth.required, auth.cors, async (req, res) => {
         console.log("validateToken handler starts");
 
         try {
