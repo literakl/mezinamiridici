@@ -9,7 +9,7 @@
         <div id="home__heading-metadata">
           <ul id="home__heading-metadata-details">
             <li>{{created}}</li>
-            <li>{{item.votes.total}} votes</li>
+            <li>{{ $t('poll.votes') }}: {{item.votes.total}}</li>
             <!--                <li>{{poll.pollComments}} comments</li>-->
           </ul>
 

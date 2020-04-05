@@ -8,6 +8,7 @@
           <h2 class="poll-voting__chart-wrapper-vote">
             {{ $t('poll.your-vote') }} <span class="vote-text">{{ $t('poll.choices.'+voted) }}</span>
           </h2>
+
           <div class="poll-voting__chart-wrapper-bar-chart">
             <BarChart :votes="item.votes" v-bind:voted="voted" />
           </div>
