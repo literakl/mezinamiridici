@@ -61,7 +61,6 @@ export default {
       } else if (sum === 101) {
         result[roundPointer] -= 1;
       }
-      console.log(result);
 
       return {
         neutral: result[0],
@@ -77,7 +76,6 @@ export default {
       if (this.voted === vote) {
         style['background-color'] = '#ffd302';
       }
-      console.log(style);
       return style;
     },
   },

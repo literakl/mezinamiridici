@@ -65,7 +65,6 @@ export default {
       return this.$store.getters.POLL;
     },
     voted() {
-      console.log(this.$store.getters.POLL.my_vote);
       return this.$store.getters.POLL.my_vote;
     },
   },
