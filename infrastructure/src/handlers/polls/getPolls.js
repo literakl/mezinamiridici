@@ -14,14 +14,13 @@ module.exports = (app) => {
             return api.sendRresponse(res, api.createResponse(list));
         } catch (err) {
             console.log("Request failed", err);
-            return api.sendInternalError(res, api.createError('Failed to get poll', "sign-in.something-went-wrong"));
+            return api.sendInternalError(res, api.createError('Failed to get poll', "generic.internal-error"));
         }
     })
 };
 
 function getItems(dbClient, req) {
     const listParams = api.parseListParams(req, 'published', -1, 10, 50);
-    console.log(listParams);
     const query = {"type": "poll", "info.published": true};
     if (listParams.lastResult) {
         query[listParams.lastResult.key] = listParams.lastResult.value;
