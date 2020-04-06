@@ -92,7 +92,7 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
     } else if (ps > maxPageSize) {
         result.pageSize = maxPageSize;
     } else {
-        result.pageSize = ps;
+        result.pageSize = Number(ps);
     }
 
     if (lr) {
@@ -119,7 +119,7 @@ function convertField(key) {
 const fieldMapping = new Map([
     ["id", "_id"],
     ["type", "type"],
-    ["published", "info.published"]
+    ["date", "info.date"]
 ]);
 
 module.exports.sendRresponse = sendResponse; // todo fix typo
