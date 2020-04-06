@@ -21,6 +21,7 @@ module.exports = (app) => {
 
 function getItems(dbClient, req) {
     const listParams = api.parseListParams(req, 'published', -1, 10, 50);
+    console.log(listParams);
     const query = {"type": "poll", "info.published": true};
     if (listParams.lastResult) {
         query[listParams.lastResult.key] = listParams.lastResult.value;
