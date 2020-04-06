@@ -87,7 +87,7 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
         order = defaultSortOrder;
     }
 
-    if (ps) {
+    if (! ps) {
         result.pageSize = defaultPageSize;
     } else if (ps > maxPageSize) {
         result.pageSize = maxPageSize;
