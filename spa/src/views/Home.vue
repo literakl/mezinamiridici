@@ -20,6 +20,13 @@
         <rect x="160" y="100" width="50" height="40"/>
         <rect x="240" y="100" width="50" height="40"/>
       </content-loader>
+
+      <ul>
+        <li v-for="item in stream" :key="item._id">
+          <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">{{item.info.caption}}</router-link>
+          {{ $t('poll.votes') }}: {{item.votes_count}}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -38,9 +45,12 @@ export default {
     poll() {
       return this.$store.getters.POLL;
     },
+    stream() {
+      return this.$store.getters.STREAM;
+    },
   },
   created() {
-    this.$store.dispatch('GET_LATEST_POLL');
+    this.$store.dispatch('INIT_STREAM');
   },
 };
 </script>

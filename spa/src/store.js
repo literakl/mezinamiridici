@@ -28,6 +28,7 @@ export default new Vuex.Store({
     userNickname: null,
     poll: null,
     latestPoll: null,
+    stream: null,
   },
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -36,6 +37,7 @@ export default new Vuex.Store({
     USER_NICKNAME: state => state.userNickname,
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
+    STREAM: state => state.stream,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -56,6 +58,12 @@ export default new Vuex.Store({
     SET_LATEST_POLL: (state, payload) => {
       state.latestPoll = payload;
     },
+    SET_STREAM: (state, payload) => {
+      state.stream = payload;
+    },
+    // APPEND_STREAM: (state, payload) => {
+    //   state.stream = payload;
+    // },
   },
   actions: {
     CHANGE_PASSWORD: async (context, payload) => {
@@ -182,14 +190,6 @@ export default new Vuex.Store({
       console.log(item);
       context.commit('SET_POLL', item);
     },
-    GET_LATEST_POLL: async (context) => {
-      console.log('GET_LATEST_POLL');
-      context.commit('SET_LATEST_POLL', null);
-      const pollData = await axios.get(`${BFF_ENDPOINT}/polls/last`, getAuthHeader(context));
-      const item = pollData.data.data;
-      context.commit('SET_LATEST_POLL', item);
-      context.commit('SET_POLL', item);
-    },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
       const pollData = await axios.post(`${BFF_ENDPOINT}/polls/${payload.id}/votes`, { vote: payload.vote }, getAuthHeader(context));
@@ -198,6 +198,20 @@ export default new Vuex.Store({
       if (context.state.latestPoll && context.state.latestPoll._id === item._id) {
         context.commit('SET_LATEST_POLL', item);
       }
+    },
+    INIT_STREAM: async (context) => {
+      console.log('INIT_STREAM');
+      const pollRequest = axios.get(`${BFF_ENDPOINT}/polls/last`, getAuthHeader(context));
+      const streamRequest = axios.get(`${API_ENDPOINT}/polls/?obd=date`, getAuthHeader(context));
+      Promise.all([pollRequest, streamRequest])
+        .then(([pollData, streamData]) => {
+          const poll = pollData.data.data;
+          context.commit('SET_LATEST_POLL', poll);
+          context.commit('SET_POLL', poll);
+          let items = streamData.data.data;
+          items = items.filter(item => item._id !== poll._id);
+          context.commit('SET_STREAM', items);
+        });
     },
   },
 });
