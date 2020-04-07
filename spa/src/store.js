@@ -185,9 +185,7 @@ export default new Vuex.Store({
       console.log('GET_POLL');
       context.commit('SET_POLL', null);
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
-      const item = pollData.data;
-      item.poll.votes.total = item.poll.votes.neutral + item.poll.votes.trivial + item.poll.votes.dislike + item.poll.votes.hate;
-      console.log(item);
+      const item = pollData.data.data;
       context.commit('SET_POLL', item);
     },
     POLL_VOTE: async (context, payload) => {

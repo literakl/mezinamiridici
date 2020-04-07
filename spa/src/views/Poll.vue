@@ -2,93 +2,83 @@
   <div>
     <div class="poll__wrapper">
       <CompletePoll v-if="poll" />
-
-      <content-loader
-        :height="200"
-        :width="400"
-        :speed="22"
-        primaryColor="#f3f3f3"
-        secondaryColor="#ecebeb"
-        class="poll-voting__chart-wrapper-bar-chart"
-        v-if="! poll"
-      >
-        <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
-        <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
-        <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
-        <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
-      </content-loader>
+      <ContentLoading v-if="! poll" type="poll" />
     </div>
 
-    <div class="poll__discussion-break-out">
-      <div class="poll__discussion-wrapper">
-        <h2>{{ $t('poll.discussion') }} ({{comments ? comments.length : 0}})</h2>
+<!--    <div class="poll__discussion-break-out">-->
+<!--      <div class="poll__discussion-wrapper">-->
+<!--        <h2>{{ $t('poll.discussion') }} ({{comments ? comments.length : 0}})</h2>-->
 
-        <div v-if="signedIn">
-          <h3>{{ $t('poll.your-say') }}</h3>
-          <Textarea :id="id" />
-        </div>
+<!--        <div v-if="signedIn">-->
+<!--          <h3>{{ $t('poll.your-say') }}</h3>-->
+<!--          <Textarea :id="id" />-->
+<!--        </div>-->
 
 <!--        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />-->
 
-        <div class="poll__other-polls">
-          <h2>
-            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
-            <hr class="poll__double-line" />
-            <hr class="poll__double-line" />
-          </h2>
-        </div>
-      </div>
-      </div>
+<!--        <div class="poll__other-polls">-->
+<!--          <h2>-->
+<!--            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />-->
+<!--            <hr class="poll__double-line" />-->
+<!--            <hr class="poll__double-line" />-->
+<!--          </h2>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
 import CompletePoll from '@/components/organisms/CompletePoll.vue';
-import Button from '@/components/atoms/Button.vue';
-import Textarea from '@/components/atoms/Textarea.vue';
+import ContentLoading from '@/components/molecules/ContentLoading.vue';
+// import Button from '@/components/atoms/Button.vue';
+// import Textarea from '@/components/atoms/Textarea.vue';
 // import Comments from '@/components/organisms/Comments.vue';
 
 export default {
   name: 'poll',
   components: {
-    Button,
+    // Button,
     // Comments,
-    Textarea,
+    // Textarea,
     CompletePoll,
+    ContentLoading,
   },
   props: {
     slug: String,
-    vote: String,
   },
   created() {
     this.$store.dispatch('GET_POLL', { slug: this.slug });
   },
   methods: {
-    redirectToOtherPolls() {
-      this.$router.push({ name: 'polls' });
-    },
-    redirectToAnalyzeVotes() {
-      this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
-    },
-    recursivelyBuildComments(allComments, commentsToSearchThrough) {
-      allComments.forEach((comment) => {
-        if (comment.parent) {
-          commentsToSearchThrough.forEach((x) => {
-            if (!x.comments) return;
-            const found = x.comments.find(y => y.commentId === comment.parent);
-
-            if (found) {
-              found.comments = [comment];
-              this.recursivelyBuildComments(allComments, x.comments);
-            }
-          });
-        }
-      });
-    },
+    // redirectToOtherPolls() {
+    //   this.$router.push({ name: 'polls' });
+    // },
+    // redirectToAnalyzeVotes() {
+    //   this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
+    // },
+    // recursivelyBuildComments(allComments, commentsToSearchThrough) {
+    //   allComments.forEach((comment) => {
+    //     if (comment.parent) {
+    //       commentsToSearchThrough.forEach((x) => {
+    //         if (!x.comments) return;
+    //         const found = x.comments.find(y => y.commentId === comment.parent);
+    //
+    //         if (found) {
+    //           found.comments = [comment];
+    //           this.recursivelyBuildComments(allComments, x.comments);
+    //         }
+    //       });
+    //     }
+    //   });
+    // },
   },
   computed: {
     signedIn() {
       return this.$store.getters.IS_AUTHORIZED;
+    },
+    poll() {
+      return this.$store.getters.POLL;
     },
     /*
     comments() {
