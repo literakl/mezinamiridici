@@ -1,33 +1,6 @@
 <template>
     <div>
-        <table id="barchart__table">
-            <tbody>
-                <tr id="neutral">
-                    <td class="sent bar" v-bind:style="barStyle('neutral')">
-                      <p>{{poll.neutral}}%</p>
-                    </td>
-                    <th scope="row">{{ $t('poll.choices.neutral') }}</th>
-                </tr>
-                <tr id="trivial">
-                    <td class="sent bar" v-bind:style="barStyle('trivial')">
-                      <p>{{poll.trivial}}%</p>
-                    </td>
-                    <th scope="row">{{ $t('poll.choices.trivial') }}</th>
-                </tr>
-                <tr id="dislike">
-                    <td class="sent bar" v-bind:style="barStyle('dislike')">
-                      <p>{{poll.dislike}}%</p>
-                    </td>
-                    <th scope="row">{{ $t('poll.choices.dislike') }}</th>
-                </tr>
-                <tr id="hate">
-                    <td class="sent bar" v-bind:style="barStyle('hate')">
-                      <p>{{poll.hate}}%</p>
-                    </td>
-                    <th scope="row">{{ $t('poll.choices.hate') }}</th>
-                </tr>
-            </tbody>
-        </table>
+      <column-chart :data="chartData" width="800px" :colors="['#0b6e00', '#006ca2', '#ff3333', '#d60001']"></column-chart>
     </div>
 </template>
 
@@ -69,143 +42,14 @@ export default {
         hate: result[3],
       };
     },
-  },
-  methods: {
-    barStyle(vote) {
-      const style = { height: `${3 * this.poll[vote]}px` };
-      if (this.voted === vote) {
-        style['background-color'] = '#ffd302';
-      }
-      return style;
+    chartData() {
+      return [
+        [this.$t('poll.choices.neutral'), this.poll.neutral],
+        [this.$t('poll.choices.trivial'), this.poll.trivial],
+        [this.$t('poll.choices.dislike'), this.poll.dislike],
+        [this.$t('poll.choices.hate'), this.poll.hate],
+      ];
     },
   },
 };
 </script>
-
-<style scoped lang="scss">
-#barchart__table {
-  display: block; /* fixes layout wonkiness in FF1.5 */
-  position: relative;
-  width: 500px;
-  height: 300px;
-  margin: 0 0 30px 0;
-  padding: 0;
-  font-size: 10px;
-}
-
-#barchart__table th {
-  border-top: 1px solid black;
-  width: 20px;
-}
-
-#barchart__table tr,
-#barchart__table td,
-#barchart__table th {
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-}
-
-#barchart__table th {
-  width: 10px;
-}
-
-#neutral {
-  left: 0;
-}
-
-#trivial {
-  left: 100px;
-}
-
-#dislike {
-  left: 200px;
-}
-
-#hate {
-  left: 300px;
-  border-right: none;
-}
-
-#barchart__table th {
-  bottom: -1.75em;
-  width: 150px;
-}
-
-#barchart__table .bar {
-  width: 30px;
-  margin-left:45px;
-}
-
-#barchart__table .bar p {
-  margin: -25px 0 0;
-}
-
-#barchart__table .sent {
-  background-color: black;
-  border-color: transparent;
-  border-radius: 5px;
-}
-
-/* Small Mobiles */
-@media all and (max-width: 700px) {
-  #barchart__table {
-    width: 320px;
-    margin-left: -30px;
-  }
-
-  #barchart__table th {
-    width: 78px;
-  }
-
-  #barchart__table .bar {
-    width: 20px;
-    margin-left:25px;
-  }
-
-  #neutral {
-    left: 0;
-  }
-
-  #trivial {
-    left: 80px;
-  }
-
-  #dislike {
-    left: 160px;
-  }
-
-  #hate {
-    left: 240px;
-    border-right: none;
-  }
-}
-
-/* Desktop */
-@media all and (min-width: 970px) {
-  #barchart__table {
-    width: 600px
-  }
-
-  #barchart__table .bar {
-    width: 50px;
-  }
-
-  #neutral {
-    left: 0;
-  }
-
-  #trivial {
-    left: 150px;
-  }
-
-  #dislike {
-    left: 300px;
-  }
-
-  #hate {
-    left: 450px;
-    border-right: none;
-  }
-}
-</style>
