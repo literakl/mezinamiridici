@@ -26,7 +26,7 @@ module.exports = (app) => {
         console.log("getPoll handler starts");
         const { slug } = req.params;
         if (! slug) {
-            return api.sendBadRequest(res, api.createError("Missing slug id", "generic.internal-error"));
+            return api.sendBadRequest(res, api.createError("Missing poll slug", "generic.internal-error"));
         }
 
         try {

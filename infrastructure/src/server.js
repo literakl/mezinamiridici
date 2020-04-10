@@ -16,6 +16,7 @@ require('./handlers/polls/createPoll')(app);
 require('./handlers/polls/getPoll')(app);
 require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/votePoll')(app);
+require('./handlers/polls/getVotes')(app);
 
 app.setErrorHandler(
     (err, req, res) => {

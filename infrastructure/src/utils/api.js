@@ -108,6 +108,18 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
     return result;
 }
 
+function parsePollFilterParams(req) {
+    const result = {};
+    for (const key in req.query) {
+        if (req.query.hasOwnProperty(key)) {
+            const field = convertField(key);
+            const value = req.query[key]; // todo injection check
+            result[field] = value;
+        }
+    }
+    return result;
+}
+
 function convertField(key) {
     const field = fieldMapping.get(key);
     if (field) {
@@ -119,7 +131,13 @@ function convertField(key) {
 const fieldMapping = new Map([
     ["id", "_id"],
     ["type", "type"],
-    ["date", "info.date"]
+    ["date", "info.date"],
+    ["sex", "sex"],
+    ["age", "age"],
+    ["region", "region"],
+    ["edu", "edu"],
+    ["driving", "driving"],
+    ["vehicles", "vehicles"],
 ]);
 
 module.exports.sendRresponse = sendResponse; // todo fix typo
@@ -134,3 +152,4 @@ module.exports.addValidationError=addValidationError;
 module.exports.createError=createError;
 module.exports.createResponse=createResponse;
 module.exports.parseListParams=parseListParams;
+module.exports.parsePollFilterParams=parsePollFilterParams;
