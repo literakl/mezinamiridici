@@ -24,7 +24,7 @@ function stageMyVote(userId, pollId) {
         return {
             $lookup: {
                 from: 'poll_votes', pipeline: [
-                    {$match: {_id: `${pollId}_${userId}`}},
+                    {$match: {poll: pollId, user: userId}},
                     {$project: {_id: 0, vote: "$vote"}},
                 ],
                 as: "me"
