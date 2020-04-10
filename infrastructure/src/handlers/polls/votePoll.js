@@ -31,8 +31,8 @@ module.exports = (app) => {
             }
 
             // todo transaction, replicas required
-            insertPollVote(dbClient, pollId, vote, user);
-            incrementPoll(dbClient, pollId, vote);
+            await insertPollVote(dbClient, pollId, vote, user);
+            await incrementPoll(dbClient, pollId, vote);
             console.log("Vote recorded");
 
             const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll, mongo.stageMyVote(user._id, pollId)];
@@ -48,7 +48,7 @@ module.exports = (app) => {
 };
 
 function insertPollVote(dbClient, pollId, vote, user) {
-    const pollVote = { _id: `${pollId}_${user._id}`, "date": new Date(), vote: vote };
+    const pollVote = { _id: mongo.generateId(), poll: pollId, user: user._id, "date": new Date(), vote: vote };
     const currentYear = new Date().getFullYear();
     if (user.bio.sex) {
         pollVote.sex = user.bio.sex;
