@@ -80,7 +80,7 @@ export default {
 }
 
 .opinion-poll__button-dislike {
-  background: #ff3333;
+  background: #fd6a02;
 }
 
 .opinion-poll__button-hate {

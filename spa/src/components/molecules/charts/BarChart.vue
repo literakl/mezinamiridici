@@ -1,6 +1,6 @@
 <template>
     <div>
-      <column-chart :data="chartData" width="800px" suffix="%"></column-chart>
+      <column-chart :data="chartData" width="800px" suffix="%" :colors="[['#0b6e00', '#006ca2', '#fd6a02', '#d60001']]"></column-chart>
     </div>
 </template>
 
