@@ -36,7 +36,7 @@ function stageMyVote(userId, pollId) {
             from: 'poll_votes',
             let: {poll_id: "$_id"},
             pipeline: [
-                {$match: {$expr: {$eq: [ "$_id", {$concat: ["$$poll_id", "_", userId]} ]}}},
+                {$match: {poll: "$$poll_id", user: userId}},
                 {$project: {_id: 0, vote: "$vote"}},
             ],
             as: "me"
