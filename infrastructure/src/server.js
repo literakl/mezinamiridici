@@ -33,5 +33,4 @@ app.setNotFoundHandler((res, req) => {
     return res.send({ code: 404, message: 'You entered wrong url' });
 });
 
-app.listen(3000, '0.0.0.0')
-    .then(r => console.log("Server started"));
+module.exports = app;
