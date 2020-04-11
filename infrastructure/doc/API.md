@@ -4,13 +4,14 @@ HTTPS, result codes: https://developer.amazon.com/docs/amazon-drive/ad-restful-a
 
 #Request
 
-VERB /v1/collection?&oba=id&ps=10&lr=id:ak5e2do
+VERB /v1/collection?&oba=id&ps=10&lr=id:ak5e2do&key=value
 VERB /v1/collection/:id
 
-* obd = order by descending; values: id, published
-* oba = order by ascending; values: id, published
-* ps = page size
-* lr = field:value (seek pagination)
+* obd - order by descending; values: id, published
+* oba - order by ascending; values: id, published
+* ps - page size
+* lr - field:value (seek pagination)
+* key=value - filter condition, AND betwen multiple filters
 
 #Response 
 
