@@ -26,7 +26,12 @@ module.exports = (app) => {
 function getItems(dbClient, pollId, req) {
     const conditions = {$match: {poll: pollId}};
     const filters = api.parsePollFilterParams(req);
+    handleRange(conditions, filters, "age");
+    handleRange(conditions, filters, "driving");
     Object.assign(conditions.$match, filters);
+    if (Array.isArray(conditions.$match.vehicles)) {
+        conditions.$match.vehicles = { $in : conditions.$match.vehicles};
+    }
     return dbClient.db().collection("poll_votes").aggregate([
         conditions,
         {
@@ -36,4 +41,12 @@ function getItems(dbClient, pollId, req) {
             }
         },
     ]);
+}
+
+function handleRange(conditions, filters, param) {
+    if (!filters[param])
+        return;
+    const values = filters[param].split(":");
+    conditions.$match[param] = { $gte: Number(values[0]), $lt: Number(values[1]) };
+    delete filters[param];
 }

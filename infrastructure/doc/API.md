@@ -11,7 +11,12 @@ VERB /v1/collection/:id
 * oba - order by ascending; values: id, published
 * ps - page size
 * lr - field:value (seek pagination)
-* key=value - filter condition, AND betwen multiple filters
+* key=value - filter condition
+
+##Filters
+* AND betwen multiple filters, e.g. sex=man&region=PRG
+* array is converted to IN operand, e.g. vehicles=bus&vehicles=car 
+* numeric fields can have range operator, e.g. age=0:25, which converts to age>=0 & age<25
 
 #Response 
 
