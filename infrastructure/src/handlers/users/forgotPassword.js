@@ -3,6 +3,7 @@ const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
+const logger = require("../../utils/logging");
 
 module.exports = (app) => {
     app.options('/v1/forgotPassword', auth.cors);

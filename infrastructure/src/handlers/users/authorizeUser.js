@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
+const logger = require("../../utils/logging");
 
 const bruteForceDelay = 1000;
 
