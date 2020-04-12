@@ -5,6 +5,7 @@ const logger = require("./logging");
 
 dotenv.config();
 let MONGODB_URI = process.env.MONGODB_URI;
+logger.info("Mongo is configured to connect " + MONGODB_URI);
 let cachedDb = null;
 
 const stageSortByDateDesc = {$sort: {"info.date": -1}};
@@ -47,7 +48,7 @@ function stageMyVote(userId, pollId) {
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
-    logger.debug("Connect to mongo database " + MONGODB_URI);
+    logger.debug("Connect to mongo database");
 
     if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
         logger.debug("Using cached database instance");
