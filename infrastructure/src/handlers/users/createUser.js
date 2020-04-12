@@ -9,24 +9,24 @@ module.exports = (app) => {
     app.options('/v1/users', auth.cors);
 
     app.post('/v1/users', auth.cors, async (req, res) => {
-        console.log("createUser handler starts");
+        logger.verbose("createUser handler starts");
         const { email, password, nickname, termsAndConditions, dataProcessing, emails } = req.body;
         let result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
         if (! result.success) {
-            console.log("validation failed", result);
+            logger.debug("validation failed", result);
             return api.sendBadRequest(res, result);
         }
 
         const verificationToken = mongo.generateId(8);
         const userId = mongo.generateTimeId();
         const dbClient = await mongo.connectToDatabase();
-        console.log("Mongo connected");
+        logger.debug("Mongo connected");
 
         try {
             await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
-            console.log("User created",);
+            logger.debug("User created",);
         } catch (err) {
-            console.log("error", err);
+            logger.error("Request failed", err);
             if (err.code === 11000) {
                 if (!!err.keyValue["auth.email"]) {
                     api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
@@ -41,7 +41,7 @@ module.exports = (app) => {
 
         try {
             sendVerificationEmail(email, verificationToken);
-            console.log("Email sent");
+            logger.debug("Email sent");
         } catch (err) {
             return api.sendInternalError(res, api.createError("Error sending email", "sign-up.something-went-wrong"));
         }
@@ -52,7 +52,6 @@ module.exports = (app) => {
 };
 
 function insertUser(dbClient, id, email, password, nickname, emails, verificationToken) {
-    console.log("insertUser");
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
     const now = new Date();

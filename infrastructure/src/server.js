@@ -2,6 +2,8 @@ const nanoexpress = require('nanoexpress');
 
 const app = nanoexpress();
 
+const logger = require("./utils/logging");
+
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
 require('./handlers/users/changePassword')(app);
@@ -20,7 +22,7 @@ require('./handlers/polls/getVotes')(app);
 
 app.setErrorHandler(
     (err, req, res) => {
-        console.log("ERROR", err);
+        logger.error("ERROR", err);
         return res.send({
             status: 'error',
             status_code: 500,

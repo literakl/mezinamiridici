@@ -9,7 +9,7 @@ module.exports = (app) => {
     app.options('/v1/authorizeUser', auth.cors);
 
     app.post('/v1/authorizeUser', auth.cors, async (req, res) => {
-        console.log("authorizeUser handler starts");
+        logger.verbose("authorizeUser handler starts");
         const { email, password } = req.body;
         let result = validateParameters(email, password);
         if (! result.success) {
@@ -18,12 +18,12 @@ module.exports = (app) => {
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1, "bio.nickname": 1, roles: 1 }});
-            console.log("User checks");
+            logger.debug("User fetched");
             if (!user) {
-                console.log("User not found " + email);
+                logger.debug("User not found " + email);
                 setTimeout(() => api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error")), bruteForceDelay);
                 return res;
             }
@@ -35,16 +35,16 @@ module.exports = (app) => {
 
             // following part takes more than 1 second with 128 MB RAM!
             if (bcrypt.compareSync(password, user.auth.pwdHash)) {
-                console.log("Password verified");
+                logger.debug("Password verified");
                 const token = auth.createTokenFromUser(user);
                 return api.sendRresponse(res, api.createResponse(token));
             } else {
-                console.log("Password mismatch for user " + user._id);
+                logger.verbose("Password mismatch for user " + user._id);
                 setTimeout(() => api.sendErrorForbidden(res, api.createError("Bad credentials", "sign-in.auth-error")), bruteForceDelay);
                 return res;
             }
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to authorize the user', "sign-in.something-went-wrong"));
         }
     })

@@ -7,17 +7,16 @@ module.exports = (app) => {
     app.options('/v1/users/:userId/validateToken', auth.cors);
 
     app.post('/v1/users/:userId/validateToken', auth.required, auth.cors, async (req, res) => {
-        console.log("validateToken handler starts");
-
+        logger.verbose("validateToken handler starts");
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const jwtData = req.identity;
             const user = await mongo.findUser(dbClient, { _id: jwtData.userId }, {projection: { auth: 1 }});
-            console.log("User checks");
+            logger.debug("User fetched");
             if (!user) {
-                console.log("User not found " + jwtData.userId);
+                logger.debug("User not found " + jwtData.userId);
                 return api.sendErrorForbidden(res, api.createError("User does not exist", "sign-in.auth-error"));
             }
 
@@ -29,7 +28,7 @@ module.exports = (app) => {
             const token = jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: '31d'});
             return api.sendRresponse(res, api.createResponse(token));
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to verify token', "generic.something-went-wrong"));
         }
     })

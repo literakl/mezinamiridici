@@ -7,7 +7,7 @@ module.exports = (app) => {
     app.options('/v1/resetPassword', auth.cors);
 
     app.post('/v1/resetPassword', auth.cors, async (req, res) => {
-        console.log("resetPassword handler starts");
+        logger.verbose("resetPassword handler starts");
         const { resetPasswordToken, password } = req.body;
         if (!resetPasswordToken) {
             return api.sendBadRequest(res, api.createError("Missing token", "sign-in.auth-error"));
@@ -15,12 +15,12 @@ module.exports = (app) => {
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const user = await mongo.findUser(dbClient, {"resetPasswordToken": resetPasswordToken}, {projection: { auth: 1, "bio.nickname": 1}});
-            console.log("User checks");
+            logger.debug("User fetched");
             if (!user) {
-                console.log("User not found");
+                logger.debug("User not found");
                 return api.sendErrorForbidden(res, api.createError("Token not found", "sign-in.invalid-reset"));
             }
 
@@ -31,13 +31,13 @@ module.exports = (app) => {
 
             const query = prepareChangePasswordQuery(password, now);
             dbClient.db().collection("users").updateOne({_id: user._id}, query);
-            console.log(`Password changed for user ${user.auth.email}`);
+            logger.debug(`Password changed for user ${user._id}`);
 
             user.auth.pwdTimestamp = now;
             const token = auth.createTokenFromUser(user);
             return api.sendRresponse(res, api.createResponse(token));
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to reset the password', "sign-in.something-went-wrong"));
         }
     })

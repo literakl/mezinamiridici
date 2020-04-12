@@ -6,14 +6,15 @@ module.exports = (app) => {
     app.options('/v1/verify/:token', auth.cors);
 
     app.post('/v1/verify/:token', auth.cors, async (req, res) => {
-        console.log("verifyUser handler starts");
+        logger.verbose("verifyUser handler starts");
         const { token } = req.params;
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const user = await mongo.findUser(dbClient, {token: token}, {projection: { auth: 1 }});
+            logger.debug("User fetched");
             if (!user) {
                 return api.sendErrorForbidden(res, api.createError('user has already been verified', "sign-up.already-verified"));
             }
@@ -21,7 +22,7 @@ module.exports = (app) => {
             await verifyUser(dbClient, user);
             return api.sendRresponse(res, api.createResponse("OK"));
         } catch (err) {
-            console.log("error", err);
+            logger.error("Request failed", err);
             if (err.success === false) {
                 return api.sendErrorForbidden(res, err);
             } else {

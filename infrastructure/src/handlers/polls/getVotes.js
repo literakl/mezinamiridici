@@ -1,9 +1,10 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const logger = require("../../utils/logging");
 
 module.exports = (app) => {
     app.get('/bff/polls/:pollId/votes', async (req, res) => {
-        console.log("getVotes handler starts");
+        logger.verbose("getVotes handler starts");
         const { pollId } = req.params;
         if (! pollId) {
             return api.sendBadRequest(res, api.createError("Missing poll id", "generic.internal-error"));
@@ -11,13 +12,14 @@ module.exports = (app) => {
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const list = await getItems(dbClient, pollId, req).toArray();
-            console.log("Items fetched");
+            logger.debug("Items fetched");
+
             return api.sendRresponse(res, api.createResponse(list));
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to get poll votes', "generic.internal-error"));
         }
     })

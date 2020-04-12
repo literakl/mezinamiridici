@@ -1,19 +1,20 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const logger = require("../../utils/logging");
 
 module.exports = (app) => {
     app.get('/v1/polls/', async (req, res) => {
-        console.log("getPolls handler starts");
-
+        logger.verbose("getPolls handler starts");
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const list = await getItems(dbClient, req).toArray();
-            console.log("Items fetched");
+            logger.debug("Items fetched");
+
             return api.sendRresponse(res, api.createResponse(list));
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to get poll', "generic.internal-error"));
         }
     })

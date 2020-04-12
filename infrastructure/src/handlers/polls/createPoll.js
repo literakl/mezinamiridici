@@ -1,13 +1,14 @@
+const slugify = require('slugify');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const slugify = require('slugify');
+const logger = require("../../utils/logging");
 
 module.exports = (app) => {
     app.options('/v1/polls', auth.cors);
 
     app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-        console.log("createPoll handler starts");
+        logger.verbose("createPoll handler starts");
         const { text } = req.body;
         if (!text) {
             return api.sendBadRequest(res, api.createError("Missing parameter", "generic.internal-error"));
@@ -15,22 +16,22 @@ module.exports = (app) => {
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const pollId = mongo.generateTimeId();
             await insertPoll(dbClient, pollId);
             await insertItem(dbClient, text, pollId, req.identity);
+            logger.debug("Item inserted");
 
             return api.sendCreated(res, api.createResponse({ "id" : pollId }));
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to create poll', "sign-in.something-went-wrong"));
         }
     })
 };
 
 function insertPoll(dbClient, pollId) {
-    console.log("insertPoll");
     const poll = {
         "_id" : pollId,
         "votes": {
@@ -45,7 +46,6 @@ function insertPoll(dbClient, pollId) {
 }
 
 function insertItem(dbClient, text, pollId, identity) {
-    console.log("insertItem");
     const slug = slugify(text, { lower: true, strict: true });
     const item = {
         "_id" : pollId,

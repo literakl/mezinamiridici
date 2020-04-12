@@ -6,22 +6,22 @@ module.exports = (app) => {
     app.options('/v1/users/:userId', auth.cors);
 
     app.patch('/v1/users/:userId', auth.required, auth.cors, async (req, res) => {
-        console.log("updateUser handler starts");
+        logger.verbose("updateUser handler starts");
         const { userId } = req.params;
         if (req.identity.userId !== userId) {
-            console.log(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
+            logger.error(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
             return api.sendErrorForbidden(res, api.createError("JWT mismatch", "sign-in.auth-error"));
         }
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const query = prepareUpdateProfileQuery(req);
             await dbClient.db().collection("users").updateOne({_id: userId}, query);
             return api.sendRresponse(res, api.createResponse());
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('failed update the user', "sign-up.something-went-wrong"));
         }
     })

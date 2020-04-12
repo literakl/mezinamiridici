@@ -8,17 +8,16 @@ module.exports = (app) => {
     app.options('/v1/forgotPassword', auth.cors);
 
     app.post('/v1/forgotPassword', auth.cors, async (req, res) => {
-        console.log("forgotPassword handler starts");
+        logger.verbose("forgotPassword handler starts");
         const { email } = req.body;
 
         try {
             const dbClient = await mongo.connectToDatabase();
-            console.log("Mongo connected");
+            logger.debug("Mongo connected");
 
             const user = await mongo.findUser(dbClient, {email: email}, {projection: { auth: 1 }});
-            console.log("User checks");
             if (!user) {
-                console.log("User not found " + email);
+                logger.error("User not found " + email);
                 return api.sendErrorForbidden(res, api.createError("User not found", "sign-in.auth-error"));
             }
 
@@ -26,13 +25,13 @@ module.exports = (app) => {
             const expiration = new Date(Date.now() + 6*60*60*1000); // six hours
             const query = prepareSetTokenQuery(resetToken, expiration);
             dbClient.db().collection("users").updateOne({_id: user._id}, query);
-            console.log("Token updated in User");
+            logger.debug("Token updated in User");
 
             sendVerificationEmail(email, resetToken);
-            console.log("Email sent");
+            logger.debug("Email sent");
             return api.sendRresponse(res, api.createResponse({}));
         } catch (err) {
-            console.log("Request failed", err);
+            logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to reset the password', "sign-in.something-went-wrong"));
         }
     })

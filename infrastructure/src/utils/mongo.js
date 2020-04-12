@@ -1,6 +1,7 @@
 const generate = require('nanoid/generate');
 const dotenv = require('dotenv');
 const MongoClient = require('mongodb').MongoClient;
+const logger = require("./logging");
 
 dotenv.config();
 let MONGODB_URI = process.env.MONGODB_URI;
@@ -46,21 +47,21 @@ function stageMyVote(userId, pollId) {
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
-    console.log("Connect to mongo database " + MONGODB_URI);
+    logger.debug("Connect to mongo database " + MONGODB_URI);
 
     if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
-        console.log("Using cached database instance");
+        logger.debug("Using cached database instance");
         return Promise.resolve(cachedDb);
     }
 
     return MongoClient.connect(MONGODB_URI)
         .then(db => {
-            console.log("Successful connect");
+            logger.debug("Successful connect");
             cachedDb = db;
             return cachedDb;
         })
         .catch(err => {
-            console.log("Connection error occurred: ", err);
+            logger.error("Connection error occurred: ", err);
             throw err;
         });
 }
@@ -84,7 +85,6 @@ function findUser(dbClient, params, projection) {
         .collection("users")
         .findOne(query, projection)
         .then(doc => {
-            // console.log("findUser mongo responded: ", doc);
             return doc;
         });
 }
