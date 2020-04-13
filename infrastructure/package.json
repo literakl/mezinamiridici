@@ -27,9 +27,9 @@
     "winston-transport": "^4.3.0"
   },
   "devDependencies": {
+    "got": "^10.7.0",
     "jest": "^25.3.0",
-    "nodemon": "^2.0.2",
-    "axios": "^0.19.2"
+    "nodemon": "^2.0.2"
   },
   "nodemonConfig": {
     "ignore": [

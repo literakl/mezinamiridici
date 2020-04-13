@@ -1,46 +1,60 @@
-const axios = require('axios').default;
-axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
-axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
+const got = require('got');
+const api = got.extend({
+    prefixUrl: 'http://localhost:3000/v1/',
+    headers: {
+        "content-type": "application/json"
+    },
+});
+const bff = got.extend({
+    prefixUrl: 'http://localhost:3000/bff/',
+    headers: {
+        "content-type": "application/json"
+    },
+});
+// const axios = require('axios').default;
+// axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+// axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
 const dotenv = require('dotenv');
 dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
-const jsonwebtoken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const mongo = require('../src/utils/mongo.js');
 const logger = require("../src/utils/logging");
 const app = require('../src/server.js');
-const API = "http://192.168.157.241:3000/v1", BFF = "http://192.168.157.241:3000/bff";
+// const API = "http://192.168.157.241:3000/v1", BFF = "http://192.168.157.241:3000/bff";
 // const API = "http://localhost:3000/v1", BFF = "http://localhost:3000/bff";
 
 describe("user accounts", () => {
-    test('create user', async () => {
-        let response = await axios.post(`${API}/users`, {
+    test("create user", async () => {
+        let body = {
             email: "leos@email.bud",
             password: "StupidPassword",
             nickname: "leos",
             termsAndConditions: true,
             dataProcessing: true,
             marketing: true,
-        })
-        expect(response.data.success).toBeTruthy();
-        expect(response.data.data).toBeDefined();
-        let jwt = response.data.data;
-        let jwtData = jsonwebtoken.decode(jwt);
-        expect(jwtData.nickname).toMatch("leos");
-        console.log(jwt);
-        console.log(jwtData);
+        };
+        let response = await api(`users`, { method: "POST",body: JSON.stringify(body) }).json();
 
-        // response = await axios.get(`${API}/users/${jwtData.userId}`);
-        response = await axios.get(`${API}/users/${jwtData.userId}`, getAuthHeader(jwt)); // TODO error with Authorization header
-        expect(response.data.success).toBeTruthy();
-        expect(response.data.data).toBeDefined();
-        let profile = response.data.data;
+        expect(response.success).toBeTruthy();
+        expect(response.data).toBeDefined();
+        let jwtData = response.data;
+        let jwtDecoded = jwt.decode(jwtData);
+        expect(jwtDecoded.nickname).toMatch("leos");
+
+        response = await api(`users/${jwtDecoded.userId}`, getAuthHeader(jwtData)).json();
+        expect(response.success).toBeTruthy();
+        expect(response.data).toBeDefined();
+        let profile = response.data;
+        console.log(profile);
         expect(profile.bio.nickname).toMatch("leos");
-        expect(profile.auth.email).toMatch("leos@email.bud");
 
-        response = await axios.get(`${API}/users/${jwtData.userId}`);
-        expect(response.data.success).toBeTruthy();
-        expect(response.data.data).toBeDefined();
-        profile = response.data.data;
-        expect(profile.auth.email).toBeUndefined();
+        /*
+                response = await axios.get(`${API}/users/${jwtDecoded.userId}`);
+                expect(response.data.success).toBeTruthy();
+                expect(response.data.data).toBeDefined();
+                profile = response.data.data;
+                expect(profile.auth.email).toBeUndefined();
+        */
 
 /*
         response = await axios.patch(`${API}/users/${jwtData.userId}`, {
