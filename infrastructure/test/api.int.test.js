@@ -3,7 +3,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
 axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
 const dotenv = require('dotenv');
 dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
-const jwtDecode = require('jwt-decode');
+const jsonwebtoken = require('jsonwebtoken');
 const mongo = require('../src/utils/mongo.js');
 const logger = require("../src/utils/logging");
 const app = require('../src/server.js');
@@ -23,7 +23,7 @@ describe("user accounts", () => {
         expect(response.data.success).toBeTruthy();
         expect(response.data.data).toBeDefined();
         let jwt = response.data.data;
-        let jwtData = jwtDecode(jwt);
+        let jwtData = jsonwebtoken.decode(jwt);
         expect(jwtData.nickname).toMatch("leos");
         console.log(jwt);
         console.log(jwtData);
