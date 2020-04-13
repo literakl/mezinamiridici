@@ -1,5 +1,33 @@
+// const util = require('util');
+const { stringify } = require('flatted/cjs');
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, label, prettyPrint } = format;
+const { combine, printf } = format;
+
+const myFormat = printf(info => {
+    return `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`
+    // return `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? JSON.stringify(util.inspect(info.message)) : info.message}`
+});
+
+function myTimestamp() {
+    let currentDate = new Date();
+    let day = currentDate.getDate();
+    let month = currentDate.getMonth() + 1;
+    let year = currentDate.getFullYear();
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+    let seconds = currentDate.getSeconds();
+    let ms = currentDate.getMilliseconds();
+    if (ms < 10) {
+        ms = "00" + ms;
+    } else if (ms < 100) {
+        ms = "0" + ms;
+    }
+    return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day} ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}:${ms}`;
+}
+const appendTimestamp = format((info, opts) => {
+    info.timestamp = myTimestamp();
+    return info;
+});
 
 let logger;
 
@@ -7,8 +35,8 @@ if (process.env.NODE_ENV === 'test') {
     logger = createLogger({
         level: 'debug',
         format: combine(
-            timestamp(),
-            prettyPrint()
+            appendTimestamp(),
+            myFormat
         ),
         transports: [
             new transports.File({ filename: 'test.log' }),
@@ -18,8 +46,8 @@ if (process.env.NODE_ENV === 'test') {
     logger = createLogger({
         level: 'debug',
         format: combine(
-            timestamp(),
-            prettyPrint()
+            appendTimestamp(),
+            myFormat
         ),
         // defaultMeta: { service: 'user-service' },
         transports: [

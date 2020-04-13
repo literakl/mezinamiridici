@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "fast-json-stringify": "^1.17.0",
+    "flatted": "^2.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
     "nanoexpress": "^1.1.18",
