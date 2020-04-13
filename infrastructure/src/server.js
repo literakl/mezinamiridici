@@ -4,11 +4,12 @@ const app = nanoexpress();
 const logger = require("./utils/logging");
 
 function logRequest(req, res, cb) {
-    logger.debug(req);
-    logger.debug(res);
+    // console.log(req);
+    // logger.debug(req);
+    // logger.debug(res);
     cb();
 }
-app.use(logRequest);
+// app.use(logRequest);
 
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);

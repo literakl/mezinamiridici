@@ -27,7 +27,7 @@ module.exports = app => {
                 logger.debug('not authorized');
                 user.bio = { nickname: user.bio.nickname };
                 user.prefs = { public: user.prefs.public };
-                delete user.driving;
+                user.driving = {};
             }
             return api.sendRresponse(res, api.createResponse(user));
             // return api.sendRresponse(callback, api.createResponse(user), "public, max-age=600");

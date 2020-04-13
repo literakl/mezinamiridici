@@ -20,6 +20,7 @@ module.exports = (app) => {
 
             const query = prepareUpdateProfileQuery(req);
             await dbClient.db().collection("users").updateOne({_id: userId}, query);
+            logger.debug("User updated");
             return api.sendRresponse(res, api.createResponse());
         } catch (err) {
             logger.error("Request failed", err);
@@ -61,8 +62,8 @@ const prepareUpdateProfileQuery = (req) => {
     } else {
         unsetters['driving.vehicles'] = '';
     }
-    if (publicProfile) {
-        setters['prefs.public'] = !'public';
+    if (publicProfile === true || publicProfile === false) {
+        setters['prefs.public'] = publicProfile;
     }
     let query = { };
     if (Object.keys(setters).length !== 0) {
