@@ -21,7 +21,8 @@ module.exports = (app) => {
             }
 
             await verifyUser(dbClient, user);
-            return api.sendRresponse(res, api.createResponse("OK"));
+            logger.debug("User verified");
+            return api.sendRresponse(res, api.createResponse());
         } catch (err) {
             logger.error("Request failed", err);
             if (err.success === false) {

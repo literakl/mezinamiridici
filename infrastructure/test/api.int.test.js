@@ -1,25 +1,28 @@
-const got = require('got');
+const got = require("got");
 const api = got.extend({
-    prefixUrl: 'http://localhost:3000/v1/',
+    prefixUrl: "http://localhost:3000/v1/",
     headers: {
         "content-type": "application/json; charset=utf-8'"
     },
 });
 const bff = got.extend({
-    prefixUrl: 'http://localhost:3000/bff/',
+    prefixUrl: "http://localhost:3000/bff/",
     headers: {
         "content-type": "application/json; charset=utf-8'"
     },
 });
-const dotenv = require('dotenv');
-dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
-const jwt = require('jsonwebtoken');
-const mongo = require('../src/utils/mongo.js');
+const dotenv = require("dotenv");
+dotenv.config({ path: "C:\\dev\\mezinamiridici\\infrastructure\\.test.env" });
+const jwt = require("jsonwebtoken");
+const mongo = require("../src/utils/mongo.js");
 const logger = require("../src/utils/logging");
-const app = require('../src/server.js');
+const app = require("../src/server.js");
+let dbClient;
 
 describe("user accounts", () => {
-    test("create user", async () => {
+    test("User API", async () => {
+        jest.setTimeout(20000);
+
         // create user
         let body = {
             email: "leos@email.bud",
@@ -34,6 +37,7 @@ describe("user accounts", () => {
         expect(response.data).toBeDefined();
         let jwtData = response.data;
         let jwtDecoded = jwt.decode(jwtData);
+        let userId = jwtDecoded.userId;
         expect(jwtDecoded.nickname).toBe("leos");
 
         // update user with data, private profile
@@ -46,11 +50,11 @@ describe("user accounts", () => {
             education: "university",
             publicProfile: false,
         };
-        response = await api(`users/${jwtDecoded.userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
+        response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
         expect(response.success).toBeTruthy();
 
         // get the user profile as anonymous user
-        response = await api(`users/${jwtDecoded.userId}`).json();
+        response = await api(`users/${userId}`).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
         let profile = response.data;
@@ -63,7 +67,7 @@ describe("user accounts", () => {
         expect(profile.driving.vehicles).toBeUndefined();
 
         // get my user profile as logged user
-        response = await api(`users/${jwtDecoded.userId}`, { headers: getAuthHeader(jwtData) }).json();
+        response = await api(`users/${userId}`, { headers: getAuthHeader(jwtData) }).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
         profile = response.data;
@@ -81,11 +85,11 @@ describe("user accounts", () => {
             region: "MS",
             publicProfile: true,
         };
-        response = await api(`users/${jwtDecoded.userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
+        response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
         expect(response.success).toBeTruthy();
 
         // get the user profile as anonymous user
-        response = await api(`users/${jwtDecoded.userId}`).json();
+        response = await api(`users/${userId}`).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
         profile = response.data;
@@ -95,10 +99,68 @@ describe("user accounts", () => {
         expect(profile.bio.edu).toBeUndefined();
         expect(profile.driving.since).toBeUndefined();
         expect(profile.driving.vehicles).toStrictEqual(["car", "bike"]);
+
+        // verify account
+        profile = await mongo.findUser(dbClient, {userId: userId});
+        response = await api(`verify/${profile.auth.verifyToken}`, { method: 'POST' }).json();
+        expect(response.success).toBeTruthy();
+
+        // token is not valid anymore
+        expect(api(`verify/${profile.auth.verifyToken}`, {method: 'POST'})).rejects.toThrow();
+
+        // reset password
+        body = {
+            email: "leos@email.bud",
+        };
+        response = await api(`forgotPassword`, { method: 'POST', json: body }).json();
+        expect(response.success).toBeTruthy();
+        profile = await mongo.findUser(dbClient, {userId: userId});
+        body = {
+            resetPasswordToken: profile.auth.reset.token,
+            // resetPasswordToken: profile.auth.reset.token,
+            password: "BadPassword",
+        }
+        response = await api(`resetPassword`, { method: 'POST', json: body }).json();
+        expect(response.success).toBeTruthy();
+
+        // sign in
+        body = {
+            email: "leos@email.bud",
+            password: "BadPassword",
+        };
+        response = await api(`authorizeUser`, { method: 'POST', json: body }).json();
+        expect(response.success).toBeTruthy();
+        expect(response.data).toBeDefined();
+        jwtData = response.data;
+        expect(jwt.decode(jwtData).nickname).toBe("leos");
+
+        // change password
+        body = {
+            currentPassword: "BadPassword",
+            newPassword: "UglyPassword",
+        };
+        response = await api(`users/${userId}/password`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
+        expect(response.success).toBeTruthy();
+        expect(response.data).toBeDefined();
+
+        // sign in with old password
+        body = {
+            email: "leos@email.bud",
+            password: "BadPassword",
+        };
+        expect(api(`authorizeUser`, { method: 'POST', json: body })).rejects.toThrow();
+
+        // sign in with new password
+        body = {
+            email: "leos@email.bud",
+            password: "UglyPassword",
+        };
+        response = await api(`authorizeUser`, { method: 'POST', json: body }).json();
+        expect(response.success).toBeTruthy();
+        expect(response.data).toBeDefined();
     });
 
     beforeEach(async () => {
-        const dbClient = await mongo.connectToDatabase();
         await dbClient.db().collection("users").deleteMany({});
     });
 });
@@ -111,7 +173,8 @@ function getAuthHeader(jwt) {
     return headers;
 }
 
-beforeAll(() => {
+beforeAll(async () => {
+    dbClient = await mongo.connectToDatabase();
     app.listen(3000, '0.0.0.0')
         .then(r => logger.info("Server started"));
 });

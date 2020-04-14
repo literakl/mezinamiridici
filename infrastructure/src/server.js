@@ -4,7 +4,7 @@ const app = nanoexpress();
 const logger = require("./utils/logging");
 
 function logRequest(req, res, cb) {
-    // console.log(req);
+    console.log(req);
     // logger.debug(req);
     // logger.debug(res);
     cb();
