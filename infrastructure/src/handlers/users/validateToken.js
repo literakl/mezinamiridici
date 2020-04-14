@@ -27,6 +27,7 @@ module.exports = (app) => {
 
             delete jwtData.exp;
             const token = jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: '31d'});
+            logger.debug("Token validated");
             return api.sendRresponse(res, api.createResponse(token));
         } catch (err) {
             logger.error("Request failed", err);

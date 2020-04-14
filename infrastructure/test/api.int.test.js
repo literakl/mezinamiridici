@@ -158,6 +158,15 @@ describe("user accounts", () => {
         response = await api(`authorizeUser`, { method: 'POST', json: body }).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
+        const newJwtData = response.data;
+
+        // validate obsolete token
+        expect(api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(jwtData) })).rejects.toThrow();
+
+        // validate token
+        response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(newJwtData) }).json();
+        expect(response.success).toBeTruthy();
+        expect(response.data).toBeDefined();
     });
 
     beforeEach(async () => {
