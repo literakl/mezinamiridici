@@ -1,12 +1,14 @@
 const got = require("got");
 const api = got.extend({
     prefixUrl: "http://localhost:3000/v1/",
+    throwHttpErrors: false,
     headers: {
         "content-type": "application/json; charset=utf-8'"
     },
 });
 const bff = got.extend({
     prefixUrl: "http://localhost:3000/bff/",
+    throwHttpErrors: false,
     headers: {
         "content-type": "application/json; charset=utf-8'"
     },
@@ -16,6 +18,7 @@ dotenv.config({ path: "C:\\dev\\mezinamiridici\\infrastructure\\.test.env" });
 const jwt = require("jsonwebtoken");
 const mongo = require("../src/utils/mongo.js");
 const logger = require("../src/utils/logging");
+const auth = require('../src/utils/authenticate');
 const app = require("../src/server.js");
 let dbClient;
 
@@ -39,6 +42,10 @@ describe("user accounts", () => {
         let jwtDecoded = jwt.decode(jwtData);
         let userId = jwtDecoded.userId;
         expect(jwtDecoded.nickname).toBe("leos");
+
+        // create duplicate user
+        response = await api("users", { method: "POST", json: body });
+        expect(response.statusCode).toBe(409);
 
         // update user with data, private profile
         body = {
@@ -106,7 +113,8 @@ describe("user accounts", () => {
         expect(response.success).toBeTruthy();
 
         // token is not valid anymore
-        expect(api(`verify/${profile.auth.verifyToken}`, {method: 'POST'})).rejects.toThrow();
+        response = await api(`verify/${profile.auth.verifyToken}`, {method: 'POST'});
+        expect(response.statusCode).toBe(403);
 
         // reset password
         body = {
@@ -117,7 +125,6 @@ describe("user accounts", () => {
         profile = await mongo.findUser(dbClient, {userId: userId});
         body = {
             resetPasswordToken: profile.auth.reset.token,
-            // resetPasswordToken: profile.auth.reset.token,
             password: "BadPassword",
         }
         response = await api(`resetPassword`, { method: 'POST', json: body }).json();
@@ -134,11 +141,16 @@ describe("user accounts", () => {
         jwtData = response.data;
         expect(jwt.decode(jwtData).nickname).toBe("leos");
 
-        // change password
+        // change password, wrong current password
         body = {
-            currentPassword: "BadPassword",
+            currentPassword: "WrongPassword",
             newPassword: "UglyPassword",
         };
+        response = await api(`users/${userId}/password`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) });
+        expect(response.statusCode).toBe(403);
+
+        // change password
+        body.currentPassword = "BadPassword";
         response = await api(`users/${userId}/password`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
@@ -148,23 +160,29 @@ describe("user accounts", () => {
             email: "leos@email.bud",
             password: "BadPassword",
         };
-        expect(api(`authorizeUser`, { method: 'POST', json: body })).rejects.toThrow();
+        response = await api(`authorizeUser`, { method: 'POST', json: body });
+        expect(response.statusCode).toBe(403);
+
+        // sign in with wrong user
+        body.email = "leos@email.bus";
+        response = await api(`authorizeUser`, { method: 'POST', json: body });
+        expect(response.statusCode).toBe(403);
 
         // sign in with new password
-        body = {
-            email: "leos@email.bud",
-            password: "UglyPassword",
-        };
+        body.email = "leos@email.bud";
+        body.password = "UglyPassword";
         response = await api(`authorizeUser`, { method: 'POST', json: body }).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
-        const newJwtData = response.data;
+        jwtData = response.data;
 
         // validate obsolete token
-        expect(api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(jwtData) })).rejects.toThrow();
+        const token = auth.createToken(userId, "leos", new Date(2019), null, '1m');
+        response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(token) });
+        expect(response.statusCode).toBe(403);
 
         // validate token
-        response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(newJwtData) }).json();
+        response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(jwtData) }).json();
         expect(response.success).toBeTruthy();
         expect(response.data).toBeDefined();
     });
