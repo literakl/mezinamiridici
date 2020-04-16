@@ -1,18 +1,3 @@
-const got = require("got");
-const api = got.extend({
-    prefixUrl: "http://localhost:3000/v1/",
-    throwHttpErrors: false,
-    headers: {
-        "content-type": "application/json; charset=utf-8'"
-    },
-});
-const bff = got.extend({
-    prefixUrl: "http://localhost:3000/bff/",
-    throwHttpErrors: false,
-    headers: {
-        "content-type": "application/json; charset=utf-8'"
-    },
-});
 const dotenv = require("dotenv");
 dotenv.config({ path: "C:\\dev\\mezinamiridici\\infrastructure\\.test.env" });
 const jwt = require("jsonwebtoken");
@@ -20,6 +5,7 @@ const mongo = require("../src/utils/mongo.js");
 const logger = require("../src/utils/logging");
 const auth = require('../src/utils/authenticate');
 const app = require("../src/server.js");
+const { api, getAuthHeader } = require("./testUtils");
 let dbClient;
 
 test("User API", async () => {
@@ -119,14 +105,14 @@ test("User API", async () => {
     body = {
         email: "leos@email.bud",
     };
-    response = await api(`forgotPassword`, { method: 'POST', json: body }).json();
+    response = await api("forgotPassword", { method: 'POST', json: body }).json();
     expect(response.success).toBeTruthy();
     profile = await mongo.findUser(dbClient, {userId: userId});
     body = {
         resetPasswordToken: profile.auth.reset.token,
         password: "BadPassword",
     }
-    response = await api(`resetPassword`, { method: 'POST', json: body }).json();
+    response = await api("resetPassword", { method: 'POST', json: body }).json();
     expect(response.success).toBeTruthy();
 
     // sign in
@@ -134,7 +120,7 @@ test("User API", async () => {
         email: "leos@email.bud",
         password: "BadPassword",
     };
-    response = await api(`authorizeUser`, { method: 'POST', json: body }).json();
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
     jwtData = response.data;
@@ -159,18 +145,18 @@ test("User API", async () => {
         email: "leos@email.bud",
         password: "BadPassword",
     };
-    response = await api(`authorizeUser`, { method: 'POST', json: body });
+    response = await api("authorizeUser", { method: 'POST', json: body });
     expect(response.statusCode).toBe(403);
 
     // sign in with wrong user
     body.email = "leos@email.bus";
-    response = await api(`authorizeUser`, { method: 'POST', json: body });
+    response = await api("authorizeUser", { method: 'POST', json: body });
     expect(response.statusCode).toBe(403);
 
     // sign in with new password
     body.email = "leos@email.bud";
     body.password = "UglyPassword";
-    response = await api(`authorizeUser`, { method: 'POST', json: body }).json();
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
     jwtData = response.data;
@@ -189,14 +175,6 @@ test("User API", async () => {
 beforeEach(async () => {
     await dbClient.db().collection("users").deleteMany({});
 });
-
-function getAuthHeader(jwt) {
-    const headers = { };
-    if (jwt) {
-        headers.Authorization = `bearer ${jwt}`;
-    }
-    return headers;
-}
 
 beforeAll(async () => {
     dbClient = await mongo.connectToDatabase();
