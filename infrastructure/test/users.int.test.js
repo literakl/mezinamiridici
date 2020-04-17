@@ -166,6 +166,10 @@ test("User API", async () => {
     response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(token) });
     expect(response.statusCode).toBe(403);
 
+    // validate invalid token
+    response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader("Invalid") });
+    expect(response.statusCode).toBe(500);
+
     // validate token
     response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(jwtData) }).json();
     expect(response.success).toBeTruthy();
