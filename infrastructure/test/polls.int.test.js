@@ -5,6 +5,7 @@ const logger = require("../src/utils/logging");
 const app = require("../src/server.js");
 const { api, bff, getAuthHeader, deepCopy } = require("./testUtils");
 const { leos, jiri, lukas, vita, jana, bara } = require("./prepareUsers");
+let jwtVita, jwtLeos, jwtJiri, jwtLukas, jwtJana, jwtBara;
 let dbClient;
 
 test("Poll API", async () => {
@@ -18,29 +19,13 @@ test("Poll API", async () => {
     expect(response.success).toBeFalsy();
     expect(response.statusCode).toBe(401);
 
-    // sign in ordinary user
-    body = {
-        email: "vita@email.bud",
-        password: "BadPassword",
-    };
-    response = await api("authorizeUser", { method: 'POST', json: body }).json();
-    let jwtData = response.data;
-
     // create poll, insufficient privilleges
     body = {
         text: "First question",
     };
-    response = await api("polls", {method: "POST", json: body, headers: getAuthHeader(jwtData) });
+    response = await api("polls", {method: "POST", json: body, headers: getAuthHeader(jwtVita) });
     expect(response.success).toBeFalsy();
     expect(response.statusCode).toBe(403);
-
-    // sign in admin user
-    body = {
-        email: "leos@email.bud",
-        password: "BadPassword",
-    };
-    response = await api("authorizeUser", { method: 'POST', json: body }).json();
-    const jwtLeos = response.data;
 
     // create poll, admin privilleges
     const firstPoll = {
@@ -92,11 +77,17 @@ test("Poll API", async () => {
     expect(response.data.votes.dislike).toBe(0);
     expect(response.data.votes.hate).toBe(0);
 
+    // get poll, anonymous user
     let getResponse = await bff(`polls/${response.data.info.slug}`).json();
     let copy = deepCopy(response);
     delete copy.data.my_vote;
     expect(getResponse).toStrictEqual(copy);
 
+    // get poll, other user that has not voted
+    getResponse = await bff(`polls/${response.data.info.slug}`, { headers: getAuthHeader(jwtJiri) }).json();
+    expect(getResponse).toStrictEqual(copy);
+
+    // get poll, user that has voted
     getResponse = await bff(`polls/${response.data.info.slug}`, { headers: getAuthHeader(jwtLeos) }).json();
     expect(getResponse).toStrictEqual(response);
 
@@ -109,12 +100,39 @@ beforeEach(async () => {
 });
 
 beforeAll(async () => {
-    dbClient = await mongo.connectToDatabase();
-    await dbClient.db().collection("users").deleteMany({});
-    const re = await dbClient.db().collection("users").insertMany([leos, jiri, lukas, vita, jana, bara]);
-
     app.listen(3000, '0.0.0.0')
         .then(r => logger.info("Server started"));
+
+    dbClient = await mongo.connectToDatabase();
+    await dbClient.db().collection("users").deleteMany({});
+    await dbClient.db().collection("users").insertMany([leos, jiri, lukas, vita, jana, bara]);
+
+    let body = {
+        email: "vita@email.bud",
+        password: "BadPassword",
+    };
+    let response = await api("authorizeUser", { method: 'POST', json: body }).json();
+    jwtVita = response.data;
+
+    body.email = "leos@email.bud";
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
+    jwtLeos = response.data;
+
+    body.email = "jiri@email.bud";
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
+    jwtJiri = response.data;
+
+    body.email = "lukas@email.bud";
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
+    jwtLukas = response.data;
+
+    body.email = "jana@email.bud";
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
+    jwtJana = response.data;
+
+    body.email = "bara@email.bud";
+    response = await api("authorizeUser", { method: 'POST', json: body }).json();
+    jwtBara = response.data;
 });
 
 afterAll(() => {

@@ -9,7 +9,7 @@ const { api, getAuthHeader } = require("./testUtils");
 let dbClient;
 
 test("User API", async () => {
-    jest.setTimeout(20000);
+    jest.setTimeout(10000);
 
     // create user
     let body = {

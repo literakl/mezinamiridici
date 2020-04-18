@@ -26,7 +26,10 @@ function stageMyVote(userId, pollId) {
         return {
             $lookup: {
                 from: 'poll_votes', pipeline: [
-                    {$match: {poll: pollId, user: userId}},
+                    {$match: {$and: [
+                        {poll: pollId},
+                        {user: userId}
+                    ]}},
                     {$project: {_id: 0, vote: "$vote"}},
                 ],
                 as: "me"
@@ -38,7 +41,10 @@ function stageMyVote(userId, pollId) {
             from: 'poll_votes',
             let: {poll_id: "$_id"},
             pipeline: [
-                {$match: {poll: "$$poll_id", user: userId}},
+                {$match: {$and: [
+                    {$expr: {$eq: ["$poll","$$poll_id"]}},
+                    {user: userId}
+                ]}},
                 {$project: {_id: 0, vote: "$vote"}},
             ],
             as: "me"
@@ -93,6 +99,7 @@ function findUser(dbClient, params, projection) {
 async function getPoll(dbClient, pipeline) {
     const cursor = dbClient.db().collection("items").aggregate(pipeline);
     const item = await cursor.next();
+    // noinspection TypeScriptValidateTypes
     item.votes = item.poll[0].votes;
     item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
     delete item.poll;
