@@ -155,9 +155,9 @@ test("Poll API", async (done) => {
     response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
     expect(response.success).toBeTruthy();
     // Bara's votes
-    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtBara) }).json();
     expect(response.success).toBeTruthy();
-    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtBara) }).json();
     expect(response.success).toBeTruthy();
 
     // Invalid votes
@@ -242,6 +242,22 @@ test("Poll API", async (done) => {
     expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
     expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
     expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+
+    // get first poll votes, filter by car
+    response = await bff(`polls/${firstPoll.id}/votes?vehicles=car`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+
+    // get first poll votes, filter by bike or truck
+    response = await bff(`polls/${firstPoll.id}/votes?vehicles=bike&vehicles=truck`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
 
     done();
 });

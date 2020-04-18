@@ -6,9 +6,6 @@ module.exports = (app) => {
     app.get('/bff/polls/:pollId/votes', async (req, res) => {
         logger.verbose("getVotes handler starts");
         const { pollId } = req.params;
-        if (! pollId) {
-            return api.sendBadRequest(res, api.createError("Missing poll id", "generic.internal-error"));
-        }
 
         try {
             const dbClient = await mongo.connectToDatabase();
