@@ -32,7 +32,7 @@ module.exports = (app) => {
                 if (!!err.keyValue["auth.email"]) {
                     api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
                 }
-                if (!!err.keyValue["auth.login"]) {
+                if (!!err.keyValue["bio.nickname"]) {
                     api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
                 }
                 return api.sendConflict(res, result);
