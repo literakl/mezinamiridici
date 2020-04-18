@@ -90,9 +90,9 @@ test("Poll API", async () => {
     expect(getResponse).toStrictEqual(response);
 
     // get non-existent poll
-    response = await bff("polls/abc");
+    response = await bff("polls/abc", { responseType: 'json' });
     expect(response.statusCode).toBe(404);
-    expect(JSON.parse(response.body).success).toBeFalsy();
+    expect(response.body.success).toBeFalsy();
 
 });
 
