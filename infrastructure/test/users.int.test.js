@@ -47,6 +47,19 @@ test("User API", async (done) => {
     response = await api("users", { method: "POST", json: body });
     expect(response.statusCode).toBe(400);
 
+    // sign in before verification
+    body = {
+        email: "leos@email.bud",
+        password: "StupidPassword",
+    };
+    response = await api("authorizeUser", { method: 'POST', json: body });
+    expect(response.statusCode).toBe(403);
+
+    // sign in without email
+    delete body.email;
+    response = await api("authorizeUser", { method: 'POST', json: body });
+    expect(response.statusCode).toBe(400);
+
     // update user with data, private profile
     body = {
         drivingSince: 2007,
