@@ -32,8 +32,9 @@ test("Poll API", async (done) => {
     response = await api("polls", { method: "POST", json: firstPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
-    expect(response.data.id).toBeDefined();
-    const firstPollId = response.data.id;
+    expect(response.data._id).toBeDefined();
+    firstPoll.id = response.data._id;
+    firstPoll.slug = response.data.info.slug;
 
     // create second poll
     const secondPoll = {
@@ -41,7 +42,8 @@ test("Poll API", async (done) => {
     };
     response = await api("polls", { method: "POST", json: secondPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
-    const secondPollId = response.data.id;
+    secondPoll.id = response.data._id;
+    secondPoll.slug = response.data.info.slug;
 
     // create third poll
     const thirdPoll = {
@@ -49,7 +51,8 @@ test("Poll API", async (done) => {
     };
     response = await api("polls", { method: "POST", json: thirdPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
-    const thirdPollId = response.data.id;
+    thirdPoll.id = response.data._id;
+    thirdPoll.slug = response.data.info.slug;
 
     // create fourth poll
     const fourthPoll = {
@@ -57,14 +60,15 @@ test("Poll API", async (done) => {
     };
     response = await api("polls", { method: "POST", json: fourthPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
-    const fourthPollId = response.data.id;
+    fourthPoll.id = response.data._id;
+    fourthPoll.slug = response.data.info.slug;
 
     // vote
     body = { vote: "neutral" };
-    response = await bff(`polls/${firstPollId}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLeos) }).json();
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
-    expect(response.data._id).toBe(firstPollId);
+    expect(response.data._id).toBe(firstPoll.id);
     expect(response.data.info.caption).toBe(firstPoll.text);
     expect(response.data.info.slug).toBe("first-question");
     expect(response.data.info.published).toBe(true);
@@ -93,6 +97,105 @@ test("Poll API", async (done) => {
     response = await bff("polls/abc", { responseType: 'json' });
     expect(response.statusCode).toBe(404);
     expect(response.body.success).toBeFalsy();
+
+    // Leos' votes
+    body = { vote: "neutral" };
+    response = await bff(`polls/${secondPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLeos) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${thirdPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLeos) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLeos) }).json();
+    expect(response.success).toBeTruthy();
+    // Jiri's votes
+    body.vote = "trivial";
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJiri) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${secondPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJiri) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${thirdPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJiri) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJiri) }).json();
+    expect(response.success).toBeTruthy();
+    // Lukas's votes
+    body.vote = "neutral";
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLukas) }).json();
+    expect(response.success).toBeTruthy();
+    body.vote = "trivial";
+    response = await bff(`polls/${secondPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLukas) }).json();
+    expect(response.success).toBeTruthy();
+    body.vote = "dislike";
+    response = await bff(`polls/${thirdPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLukas) }).json();
+    expect(response.success).toBeTruthy();
+    body.vote = "hate";
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtLukas) }).json();
+    expect(response.success).toBeTruthy();
+    // Vita's votes
+    body.vote = "dislike";
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtVita) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${secondPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtVita) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${thirdPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtVita) }).json();
+    expect(response.success).toBeTruthy();
+    body.vote = "hate";
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtVita) }).json();
+    expect(response.success).toBeTruthy();
+    // Jana's votes
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${secondPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    expect(response.success).toBeTruthy();
+    body.vote = "trivial";
+    response = await bff(`polls/${thirdPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    expect(response.success).toBeTruthy();
+    body.vote = "hate";
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    expect(response.success).toBeTruthy();
+    // Bara's votes
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    expect(response.success).toBeTruthy();
+    response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
+    expect(response.success).toBeTruthy();
+
+    // check first poll as Leos
+    response = await bff(`polls/${firstPoll.slug}`, { headers: getAuthHeader(jwtLeos) }).json();
+    expect(response.data._id).toBe(firstPoll.id);
+    expect(response.data.my_vote).toBe("neutral");
+    expect(response.data.votes_count).toBe(6);
+    expect(response.data.votes.neutral).toBe(2);
+    expect(response.data.votes.trivial).toBe(1);
+    expect(response.data.votes.dislike).toBe(1);
+    expect(response.data.votes.hate).toBe(2);
+
+    // check second poll as Jiri
+    response = await bff(`polls/${secondPoll.slug}`, { headers: getAuthHeader(jwtJiri) }).json();
+    expect(response.data._id).toBe(secondPoll.id);
+    expect(response.data.my_vote).toBe("trivial");
+    expect(response.data.votes_count).toBe(5);
+    expect(response.data.votes.neutral).toBe(1);
+    expect(response.data.votes.trivial).toBe(2);
+    expect(response.data.votes.dislike).toBe(1);
+    expect(response.data.votes.hate).toBe(1);
+
+    // check third as Bara
+    response = await bff(`polls/${thirdPoll.slug}`, { headers: getAuthHeader(jwtBara) }).json();
+    expect(response.data._id).toBe(thirdPoll.id);
+    expect(response.data.my_vote).toBeUndefined();
+    expect(response.data.votes_count).toBe(5);
+    expect(response.data.votes.neutral).toBe(1);
+    expect(response.data.votes.trivial).toBe(2);
+    expect(response.data.votes.dislike).toBe(2);
+    expect(response.data.votes.hate).toBe(0);
+
+    // check the last poll as anonymous user
+    response = await bff("polls/last").json();
+    expect(response.data._id).toBe(fourthPoll.id);
+    expect(response.data.my_vote).toBeUndefined();
+    expect(response.data.votes_count).toBe(6);
+    expect(response.data.votes.neutral).toBe(1);
+    expect(response.data.votes.trivial).toBe(1);
+    expect(response.data.votes.dislike).toBe(0);
+    expect(response.data.votes.hate).toBe(4);
 
     done();
 });

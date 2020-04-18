@@ -23,7 +23,11 @@ module.exports = (app) => {
             await insertItem(dbClient, text, pollId, req.identity);
             logger.debug("Item inserted");
 
-            return api.sendCreated(res, api.createResponse({ "id" : pollId }));
+            const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll];
+            const item = await mongo.getPoll(dbClient, pipeline);
+            logger.debug("Poll fetched");
+
+            return api.sendCreated(res, api.createResponse(item));
         } catch (err) {
             logger.error("Request failed", err);
             return api.sendInternalError(res, api.createError('Failed to create poll', "sign-in.something-went-wrong"));
