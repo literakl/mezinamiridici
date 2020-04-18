@@ -14,8 +14,8 @@ module.exports = (app) => {
             const dbClient = await mongo.connectToDatabase();
             logger.debug("Mongo connected");
 
-            const list = await getItems(dbClient, pollId, req).toArray();
-            logger.debug("Items fetched");
+            const list = await getVotes(dbClient, pollId, req).toArray();
+            logger.debug("Votes fetched");
 
             return api.sendRresponse(res, api.createResponse(list));
         } catch (err) {
@@ -25,7 +25,7 @@ module.exports = (app) => {
     })
 };
 
-function getItems(dbClient, pollId, req) {
+function getVotes(dbClient, pollId, req) {
     const conditions = {$match: {poll: pollId}};
     const filters = api.parsePollFilterParams(req);
     handleRange(conditions, filters, "age");
