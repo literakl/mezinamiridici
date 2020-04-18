@@ -99,6 +99,9 @@ function findUser(dbClient, params, projection) {
 async function getPoll(dbClient, pipeline) {
     const cursor = dbClient.db().collection("items").aggregate(pipeline);
     const item = await cursor.next();
+    if (item == null) {
+        return null;
+    }
     // noinspection TypeScriptValidateTypes
     item.votes = item.poll[0].votes;
     item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;

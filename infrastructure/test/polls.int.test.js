@@ -91,6 +91,11 @@ test("Poll API", async () => {
     getResponse = await bff(`polls/${response.data.info.slug}`, { headers: getAuthHeader(jwtLeos) }).json();
     expect(getResponse).toStrictEqual(response);
 
+    // get non-existent poll
+    response = await bff("polls/abc");
+    expect(response.statusCode).toBe(404);
+    expect(JSON.parse(response.body).success).toBeFalsy();
+
 });
 
 beforeEach(async () => {
