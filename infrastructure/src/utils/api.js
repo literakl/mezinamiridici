@@ -83,7 +83,7 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
         result.order = { [convertField(obd)] : -1 };
         order = -1;
     } else {
-        result.order = { [defaultSortField] : defaultSortOrder };
+        result.order = { [convertField(defaultSortField)] : defaultSortOrder };
         order = defaultSortOrder;
     }
 
