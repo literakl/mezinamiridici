@@ -30,9 +30,6 @@ module.exports = (app) => {
     app.get('/bff/polls/:slug', auth.optional, async (req, res) => {
         logger.verbose("getPoll handler starts");
         const { slug } = req.params;
-        if (! slug) {
-            return api.sendBadRequest(res, api.createError("Missing poll slug", "generic.internal-error"));
-        }
 
         try {
             const dbClient = await mongo.connectToDatabase();

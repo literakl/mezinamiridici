@@ -3,7 +3,7 @@ dotenv.config({ path: "C:\\dev\\mezinamiridici\\infrastructure\\.test.env" });
 const mongo = require("../src/utils/mongo.js");
 const logger = require("../src/utils/logging");
 const app = require("../src/server.js");
-const { api, bff, getAuthHeader, deepCopy } = require("./testUtils");
+const { api, bff, getAuthHeader, deepCopy, sleep } = require("./testUtils");
 const { leos, jiri, lukas, vita, jana, bara } = require("./prepareUsers");
 let jwtVita, jwtLeos, jwtJiri, jwtLukas, jwtJana, jwtBara;
 let dbClient;
@@ -40,6 +40,7 @@ test("Poll API", async (done) => {
     const secondPoll = {
         text: "Second question",
     };
+    await sleep(100);
     response = await api("polls", { method: "POST", json: secondPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
     secondPoll.id = response.data._id;
@@ -49,6 +50,7 @@ test("Poll API", async (done) => {
     const thirdPoll = {
         text: "Third question",
     };
+    await sleep(100);
     response = await api("polls", { method: "POST", json: thirdPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
     thirdPoll.id = response.data._id;
@@ -58,6 +60,7 @@ test("Poll API", async (done) => {
     const fourthPoll = {
         text: "Fourth question",
     };
+    await sleep(100);
     response = await api("polls", { method: "POST", json: fourthPoll, headers: getAuthHeader(jwtLeos) }).json();
     expect(response.success).toBeTruthy();
     fourthPoll.id = response.data._id;
@@ -157,6 +160,12 @@ test("Poll API", async (done) => {
     response = await bff(`polls/${fourthPoll.id}/votes`, { method: "POST", json: body, headers: getAuthHeader(jwtJana) }).json();
     expect(response.success).toBeTruthy();
 
+    // Invalid votes
+    response = await bff(`polls/${firstPoll.id}/votes`, { method: "POST", json: {}, responseType: 'json', headers: getAuthHeader(jwtJana) });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.success).toBe(false);
+
+
     // check first poll as Leos
     response = await bff(`polls/${firstPoll.slug}`, { headers: getAuthHeader(jwtLeos) }).json();
     expect(response.data._id).toBe(firstPoll.id);
@@ -196,6 +205,11 @@ test("Poll API", async (done) => {
     expect(response.data.votes.trivial).toBe(1);
     expect(response.data.votes.dislike).toBe(0);
     expect(response.data.votes.hate).toBe(4);
+
+    // check the last poll as Vita
+    response = await bff("polls/last", { headers: getAuthHeader(jwtVita) }).json();
+    expect(response.data._id).toBe(fourthPoll.id);
+    expect(response.data.my_vote).toBe("hate");
 
     done();
 });

@@ -46,7 +46,12 @@ function deepCopy(obj) {
     }
 }
 
+function sleep(time) {
+    return new Promise(res => setTimeout(() => { res(); }, time));
+}
+
 module.exports.api = api;
 module.exports.bff = bff;
 module.exports.getAuthHeader = getAuthHeader;
 module.exports.deepCopy = deepCopy;
+module.exports.sleep = sleep;
