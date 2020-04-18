@@ -122,6 +122,13 @@ function generateId (idLength = 10) {
     return generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', idLength);
 }
 
+function close() {
+    if (cachedDb) {
+        logger.info("Closing the cached mongo client");
+        cachedDb.close();
+    }
+}
+
 exports.connectToDatabase = connectToDatabase;
 exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
@@ -134,3 +141,4 @@ exports.stageMyVote = stageMyVote;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
+exports.close = close;

@@ -189,6 +189,7 @@ beforeAll(async () => {
 });
 
 afterAll(() => {
+    mongo.close();
     if (app.close())
         logger.info("Server stopped");
 });
