@@ -16,7 +16,6 @@ test("Poll API", async () => {
         text: "First question",
     };
     let response = await api("polls", { method: "POST", json: body });
-    expect(response.success).toBeFalsy();
     expect(response.statusCode).toBe(401);
 
     // create poll, insufficient privilleges
@@ -24,7 +23,6 @@ test("Poll API", async () => {
         text: "First question",
     };
     response = await api("polls", {method: "POST", json: body, headers: getAuthHeader(jwtVita) });
-    expect(response.success).toBeFalsy();
     expect(response.statusCode).toBe(403);
 
     // create poll, admin privilleges
