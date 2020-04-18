@@ -162,7 +162,7 @@ export default new Vuex.Store({
       nickname: payload.nickname,
       termsAndConditions: payload.termsAndConditions,
       dataProcessing: payload.dataProcessing,
-      marketing: payload.marketing,
+      emails: payload.marketing,
     }),
     UPDATE_USER_PROFILE: (context, payload) => axios.patch(`${API_ENDPOINT}/users/${payload.userId}`, {
       drivingSince: payload.drivingSince,

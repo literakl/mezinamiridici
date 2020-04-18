@@ -18,7 +18,7 @@ test("User API", async (done) => {
         nickname: "leos",
         termsAndConditions: true,
         dataProcessing: true,
-        marketing: true,
+        emails : true,
     };
     let response = await api("users", { method: "POST", json: body }).json();
     expect(response.success).toBeTruthy();
@@ -31,6 +31,21 @@ test("User API", async (done) => {
     // create duplicate user
     response = await api("users", { method: "POST", json: body });
     expect(response.statusCode).toBe(409);
+
+    // create duplicate user
+    body.email = "no@email.bud";
+    response = await api("users", { method: "POST", json: body });
+    expect(response.statusCode).toBe(409);
+
+    // missing T&C
+    delete body.termsAndConditions;
+    response = await api("users", { method: "POST", json: body });
+    expect(response.statusCode).toBe(400);
+
+    // missing email
+    delete body.email;
+    response = await api("users", { method: "POST", json: body });
+    expect(response.statusCode).toBe(400);
 
     // update user with data, private profile
     body = {

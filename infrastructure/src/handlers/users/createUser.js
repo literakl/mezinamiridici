@@ -79,8 +79,7 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
     };
     if (emails) {
         userDoc.consent.email = now;
-        userDoc.prefs.email.newsletter = true;
-        userDoc.prefs.email.summary = "daily";
+        userDoc.prefs.email = {newsletter: true, summary: "daily"};
     }
 
     return dbClient.db().collection("users").insertOne(userDoc);
