@@ -8,7 +8,7 @@ const { leos, jiri, lukas, vita, jana, bara } = require("./prepareUsers");
 let jwtVita, jwtLeos, jwtJiri, jwtLukas, jwtJana, jwtBara;
 let dbClient;
 
-test("Poll API", async () => {
+test("Poll API", async (done) => {
     jest.setTimeout(60000);
 
     // create poll, anonymous user
@@ -94,6 +94,7 @@ test("Poll API", async () => {
     expect(response.statusCode).toBe(404);
     expect(response.body.success).toBeFalsy();
 
+    done();
 });
 
 beforeEach(async () => {

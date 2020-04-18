@@ -8,7 +8,7 @@ const app = require("../src/server.js");
 const { api, getAuthHeader } = require("./testUtils");
 let dbClient;
 
-test("User API", async () => {
+test("User API", async (done) => {
     jest.setTimeout(10000);
 
     // create user
@@ -174,6 +174,8 @@ test("User API", async () => {
     response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(jwtData) }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
+
+    done();
 });
 
 beforeEach(async () => {
