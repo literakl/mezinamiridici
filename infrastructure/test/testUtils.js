@@ -3,14 +3,14 @@ const api = got.extend({
     prefixUrl: "http://localhost:3000/v1/",
     throwHttpErrors: false,
     headers: {
-        "content-type": "application/json; charset=utf-8'"
+        "content-type": "application/json; charset=utf-8"
     },
 });
 const bff = got.extend({
     prefixUrl: "http://localhost:3000/bff/",
     throwHttpErrors: false,
     headers: {
-        "content-type": "application/json; charset=utf-8'"
+        "content-type": "application/json; charset=utf-8"
     },
 });
 
