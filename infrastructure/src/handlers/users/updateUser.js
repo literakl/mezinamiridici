@@ -4,8 +4,6 @@ const auth = require('../../utils/authenticate');
 const logger = require("../../utils/logging");
 
 module.exports = (app) => {
-    app.options('/v1/users/:userId', auth.cors);
-
     app.patch('/v1/users/:userId', auth.required, auth.cors, async (req, res) => {
         logger.verbose("updateUser handler starts");
         const { userId } = req.params;
