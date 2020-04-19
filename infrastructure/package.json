@@ -20,7 +20,7 @@
     "flatted": "^2.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
-    "nanoexpress": "^1.1.18",
+    "nanoexpress": "^2.0.1",
     "nanoid": "^2.1.11",
     "slugify": "^1.4.0",
     "uuid": "^3.4.0",

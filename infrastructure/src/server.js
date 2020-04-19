@@ -38,7 +38,7 @@ app.setErrorHandler(
     }
 );
 
-app.setNotFoundHandler((res, req) => {
+app.setNotFoundHandler((req, res) => {
     return res.send({ code: 404, message: 'You entered wrong url' });
 });
 
