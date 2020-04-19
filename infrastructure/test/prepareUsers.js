@@ -1,3 +1,7 @@
+const baseYear = 2020, currentYear = new Date().getFullYear(), diff = currentYear - baseYear;
+
+function fix(year) {return year + diff}
+
 const leos = {"_id": "1e40v0b1j5",
     "auth": {
         "email": "leos@email.bud",
@@ -5,8 +9,8 @@ const leos = {"_id": "1e40v0b1j5",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "literakl", "born": "1975", "edu": "university", "region": "PRG", "sex": "man"},
-    "driving": {"since": "2007", "vehicles": ["car"]},
+    "bio": {"nickname": "literakl", "born": fix(1975), "edu": "university", "region": "PRG", "sex": "man"},
+    "driving": {"since": fix(2007), "vehicles": ["car"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()},
     "roles": ["admin:poll"]
@@ -18,8 +22,8 @@ const jiri = {"_id": "1e416vocls",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "jirka", "born": "1978", "edu": "primary", "region": "MS", "sex": "man"},
-    "driving": {"since": "1996", "vehicles": ["bike", "car"]},
+    "bio": {"nickname": "jirka", "born": fix(1978), "edu": "primary", "region": "MS", "sex": "man"},
+    "driving": {"since": fix(1996), "vehicles": ["bike", "car"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()}
 };
@@ -42,8 +46,8 @@ const vita = {"_id": "1e41795qjw",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "Víťa", "born": "1980", "edu": "university", "region": "JM", "sex": "man"},
-    "driving": {"since": "2000", "vehicles": ["bike", "car", "van"]},
+    "bio": {"nickname": "Víťa", "born": fix(1980), "edu": "university", "region": "JM", "sex": "man"},
+    "driving": {"since": fix(2000), "vehicles": ["bike", "car", "van"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()}
 };
@@ -54,8 +58,8 @@ const jana = {"_id": "1e417bgivc",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "Jana", "born": "1982", "edu": "secondary", "region": "SC", "sex": "woman"},
-    "driving": {"since": "2017", "vehicles": ["car"]},
+    "bio": {"nickname": "Jana", "born": fix(1982), "edu": "secondary", "region": "SC", "sex": "woman"},
+    "driving": {"since": fix(2017), "vehicles": ["car"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()}
 };
@@ -66,8 +70,8 @@ const bara = {"_id": "1e417edlqb",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "Barbora", "born": "1985", "edu": "university", "region": "PRG", "sex": "woman"},
-    "driving": {"since": "2019", "vehicles": ["bus", "truck", "tramway"]},
+    "bio": {"nickname": "Barbora", "born": fix(1985), "edu": "university", "region": "PRG", "sex": "woman"},
+    "driving": {"since": fix(2019), "vehicles": ["bus", "truck", "tramway"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()}
 };
