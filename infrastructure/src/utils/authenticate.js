@@ -1,7 +1,8 @@
-const jwt = require('jsonwebtoken');
-const corsMiddleware = require('cors');
-const dotenv = require('dotenv');
+const jwt = require("jsonwebtoken");
+const corsMiddleware = require("cors");
+const dotenv = require("dotenv");
 dotenv.config();
+const api = require("./api");
 
 function authenticate(required) {
     return function(req, res, next) {
@@ -11,14 +12,14 @@ function authenticate(required) {
                 const token = authorization.split(" ")[1];
                 req.identity = jwt.verify(token, process.env.JWT_SECRET);
             } catch (err) {
-                res.status(500);
-                res.end('JWT parsing error');
+                api.sendInternalError(res, api.createError("JWT parsing error"));
+                res.end();
                 return;
             }
         }
         if (required && !req.identity) {
-            res.status(401);
-            res.end('Authentication required');
+            api.sendNotAuthorized(res, api.createError("Authentication required"));
+            res.end();
             return;
         }
         next();
@@ -28,8 +29,8 @@ function authenticate(required) {
 function withRole(role) {
     return function(req, res, next) {
         if (!req.identity.roles || !req.identity.roles.includes(role)) {
-            res.status(403);
-            res.end('Access denied');
+            api.sendErrorForbidden(res, api.createError("Access denied"));
+            res.end();
             return;
         }
         next();

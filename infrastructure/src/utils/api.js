@@ -49,10 +49,10 @@ function createError(message, messageKey) {
     };
 
     if (message !== undefined) {
-        let x = {
-            "message": message,
-            "messageKey": messageKey,
-        };
+        let x = { "message": message };
+        if (messageKey) {
+            x.messageKey = messageKey;
+        }
         result.errors = [];
         result.errors.push(x);
     }
