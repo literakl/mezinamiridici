@@ -2,8 +2,12 @@ const {api} = require("./testUtils");
 const app = require("../src/server.js");
 const logger = require("../src/utils/logging");
 
-test("Status API", async () => {
-    expect(api("status").json()).toBeDefined();
+test("Status API", () => {
+    return api("status").json().then(
+        data => {
+            expect(data).toBeDefined();
+        }
+    );
 });
 
 beforeAll(async () => {
