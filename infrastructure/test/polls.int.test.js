@@ -323,6 +323,13 @@ test("Poll API", async (done) => {
     expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
     expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
 
+    // get first poll votes, filter by car or bike, driving >= 10 years, region PRG or MS, university degree
+    response = await bff(`polls/${firstPoll.id}/votes?vehicles=bike&vehicles=car&driving=10:99&region=PRG&region=MS&edu=university`).json();
+    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
+    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
+
     done();
 });
 
