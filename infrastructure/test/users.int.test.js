@@ -20,7 +20,7 @@ test("User API", async (done) => {
         dataProcessing: true,
         emails : true,
     };
-    let response = await api("users", { method: "POST", json: body }).json();
+    response = await api("users", { method: "POST", json: body }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
     let jwtData = response.data;
@@ -70,7 +70,7 @@ test("User API", async (done) => {
         education: "university",
         publicProfile: false,
     };
-    response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
+    response = await api(`users/${userId}`, { method: 'PATCH', headers: getAuthHeader(jwtData) }).json();
     expect(response.success).toBeTruthy();
 
     // get the user profile as anonymous user
@@ -204,6 +204,33 @@ test("User API", async (done) => {
     expect(response.data).toBeDefined();
 
     done();
+});
+
+test.skip("CORS", async (done) => {
+    console.log("authorizeUser");
+    let response = await api("authorizeUser", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("resetPassword");
+    response = await api("resetPassword", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("forgotPassword");
+    response = await api("forgotPassword", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("verify/:token");
+    response = await api("verify/:token", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("users");
+    response = await api("users", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("users/XXX");
+    response = await api("users/XXX", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("users/XXX/password");
+    response = await api("users/XXX/password", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
+    console.log("users/XXX/validateToken");
+    response = await api("users/XXX/validateToken", { method: "OPTIONS" });
+    expect(response.statusCode).toBe(200);
 });
 
 beforeEach(async () => {
