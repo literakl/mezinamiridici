@@ -291,6 +291,38 @@ test("Poll API", async (done) => {
     expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
     expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
 
+    // get first poll votes, filter by PRG region
+    response = await bff(`polls/${firstPoll.id}/votes?region=PRG`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
+    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+
+    // get first poll votes, filter by age under 30
+    response = await bff(`polls/${firstPoll.id}/votes?age=0:30`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+
+    // get first poll votes, filter by age 40-42
+    response = await bff(`polls/${firstPoll.id}/votes?age=40:43`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
+    expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
+
+    // get first poll votes, filter by driving 10-20 years
+    response = await bff(`polls/${firstPoll.id}/votes?driving=10:21`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
+    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
+    expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
+
     done();
 });
 

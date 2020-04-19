@@ -28,9 +28,6 @@ function getVotes(dbClient, pollId, req) {
     handleRange(conditions, filters, "age");
     handleRange(conditions, filters, "driving");
     Object.assign(conditions.$match, filters);
-    if (Array.isArray(conditions.$match.vehicles)) {
-        conditions.$match.vehicles = { $in : conditions.$match.vehicles};
-    }
     return dbClient.db().collection("poll_votes").aggregate([
         conditions,
         {

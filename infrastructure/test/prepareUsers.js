@@ -58,8 +58,8 @@ const jana = {"_id": "1e417bgivc",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "Jana", "born": fix(1982), "edu": "secondary", "region": "SC", "sex": "woman"},
-    "driving": {"since": fix(2017), "vehicles": ["car"]},
+    "bio": {"nickname": "Jana", "born": fix(2000), "edu": "secondary", "region": "SC", "sex": "woman"},
+    "driving": {"since": fix(2018), "vehicles": ["car"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()}
 };
@@ -70,7 +70,7 @@ const bara = {"_id": "1e417edlqb",
         "pwdTimestamp": new Date(),
         "verified": true
     },
-    "bio": {"nickname": "Barbora", "born": fix(1985), "edu": "university", "region": "PRG", "sex": "woman"},
+    "bio": {"nickname": "Barbora", "born": fix(1995), "edu": "university", "region": "PRG", "sex": "woman"},
     "driving": {"since": fix(2019), "vehicles": ["bus", "truck", "tramway"]},
     "prefs": {"public": false},
     "consent": {"terms": new Date(), "data": new Date()}
