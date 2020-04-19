@@ -1,7 +1,11 @@
-const nanoexpress = require('nanoexpress');
-const app = nanoexpress();
-
-const logger = require("./utils/logging");
+const express = require('express');
+const errorhandler = require('errorhandler');
+const morgan = require('morgan');
+const app = express();
+app.use(express.json());
+app.use(morgan('combined'));
+// TODO only use in development
+app.use(errorhandler())
 
 function logRequest(req, res, cb) {
     console.log(req);
@@ -26,20 +30,5 @@ require('./handlers/polls/getPoll')(app);
 require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
-
-app.setErrorHandler(
-    (err, req, res) => {
-        logger.error("ERROR", err);
-        return res.send({
-            status: 'error',
-            status_code: 500,
-            message: 'oops'
-        })
-    }
-);
-
-app.setNotFoundHandler((req, res) => {
-    return res.send({ code: 404, message: 'You entered wrong url' });
-});
 
 module.exports = app;

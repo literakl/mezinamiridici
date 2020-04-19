@@ -6,6 +6,7 @@ const app = require("../src/server.js");
 const { api, bff, getAuthHeader, deepCopy, sleep } = require("./testUtils");
 const { leos, jiri, lukas, vita, jana, bara } = require("./prepareUsers");
 let jwtVita, jwtLeos, jwtJiri, jwtLukas, jwtJana, jwtBara;
+let server;
 let dbClient;
 
 test("Poll API", async (done) => {
@@ -340,8 +341,7 @@ beforeEach(async () => {
 });
 
 beforeAll(async () => {
-    app.listen(3000, '0.0.0.0')
-        .then(r => logger.info("Server started"));
+    server = app.listen(3000, () => logger.info("Server started"));
 
     dbClient = await mongo.connectToDatabase();
     await dbClient.db().collection("users").deleteMany({});
@@ -377,6 +377,6 @@ beforeAll(async () => {
 
 afterAll(() => {
     mongo.close();
-    if (app.close())
-        logger.info("Server stopped");
+    server.close();
+    logger.info("Server stopped");
 });

@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'test') {
         ]
     });
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production') { // todo check condition
         logger.add(new transports.Console({
             format: format.simple()
         }));

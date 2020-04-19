@@ -7,9 +7,10 @@ const auth = require('../src/utils/authenticate');
 const app = require("../src/server.js");
 const { api, getAuthHeader } = require("./testUtils");
 let dbClient;
+let server;
 
 test("User API", async (done) => {
-    jest.setTimeout(10000);
+    jest.setTimeout(60000);
 
     // create user
     let body = {
@@ -20,7 +21,7 @@ test("User API", async (done) => {
         dataProcessing: true,
         emails : true,
     };
-    response = await api("users", { method: "POST", json: body }).json();
+    let response = await api("users", { method: "POST", json: body }).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toBeDefined();
     let jwtData = response.data;
@@ -70,7 +71,7 @@ test("User API", async (done) => {
         education: "university",
         publicProfile: false,
     };
-    response = await api(`users/${userId}`, { method: 'PATCH', headers: getAuthHeader(jwtData) }).json();
+    response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
     expect(response.success).toBeTruthy();
 
     // get the user profile as anonymous user
@@ -206,7 +207,7 @@ test("User API", async (done) => {
     done();
 });
 
-test.skip("CORS", async (done) => {
+test("CORS", async (done) => {
     console.log("authorizeUser");
     let response = await api("authorizeUser", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
@@ -231,6 +232,8 @@ test.skip("CORS", async (done) => {
     console.log("users/XXX/validateToken");
     response = await api("users/XXX/validateToken", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
+
+    done();
 });
 
 beforeEach(async () => {
@@ -239,12 +242,11 @@ beforeEach(async () => {
 
 beforeAll(async () => {
     dbClient = await mongo.connectToDatabase();
-    app.listen(3000, '0.0.0.0')
-        .then(r => logger.info("Server started"));
+    server = app.listen(3000, () => logger.info("Server started"));
 });
 
 afterAll(() => {
     mongo.close();
-    if (app.close())
-        logger.info("Server stopped");
+    server.close();
+    logger.info("Server stopped");
 });
