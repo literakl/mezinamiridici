@@ -259,6 +259,38 @@ test("Poll API", async (done) => {
     expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
     expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
 
+    // get first poll votes, filter by woman
+    response = await bff(`polls/${firstPoll.id}/votes?sex=woman`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
+    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+
+    // get first poll votes, filter by man or woman
+    response = await bff(`polls/${firstPoll.id}/votes?sex=man&sex=woman`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+
+    // get first poll votes, filter by primary or secondary education
+    response = await bff(`polls/${firstPoll.id}/votes?edu=primary&edu=secondary`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
+    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
+    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+
+    // get first poll votes, filter by primary, secondary or university education
+    response = await bff(`polls/${firstPoll.id}/votes?edu=primary&edu=secondary&edu=university`).json();
+    expect(response.success).toBeTruthy();
+    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
+    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+
     done();
 });
 

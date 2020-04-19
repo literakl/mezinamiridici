@@ -114,7 +114,11 @@ function parsePollFilterParams(req) {
         if (req.query.hasOwnProperty(key)) {
             const field = convertField(key);
             const value = req.query[key]; // todo injection check
-            result[field] = value;
+            if (Array.isArray(value)) {
+                result[field] = {$in: value};
+            } else {
+                result[field] = value;
+            }
         }
     }
     return result;
