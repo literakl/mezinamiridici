@@ -208,28 +208,20 @@ test("User API", async (done) => {
 });
 
 test("CORS", async (done) => {
-    console.log("authorizeUser");
     let response = await api("authorizeUser", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("resetPassword");
     response = await api("resetPassword", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("forgotPassword");
     response = await api("forgotPassword", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("verify/:token");
     response = await api("verify/:token", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("users");
     response = await api("users", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("users/XXX");
     response = await api("users/XXX", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("users/XXX/password");
     response = await api("users/XXX/password", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
-    console.log("users/XXX/validateToken");
     response = await api("users/XXX/validateToken", { method: "OPTIONS" });
     expect(response.statusCode).toBe(200);
 
