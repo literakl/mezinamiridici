@@ -1,19 +1,11 @@
 const express = require('express');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
+const {createLogger, format, transports} = require('winston');
 const app = express();
 app.use(express.json());
-app.use(morgan('combined'));
 // TODO only use in development
 app.use(errorhandler())
-
-function logRequest(req, res, cb) {
-    console.log(req);
-    // logger.debug(req);
-    // logger.debug(res);
-    cb();
-}
-// app.use(logRequest);
 
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
@@ -30,5 +22,32 @@ require('./handlers/polls/getPoll')(app);
 require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
+
+const myFormat = format.printf(info => {
+    return `${info.message}`;
+});
+
+const logger = createLogger({
+    format: myFormat,
+    level: "info",
+    transports: [
+        new transports.File({
+            filename: "access.log",
+            handleExceptions: true,
+            maxsize: 5242880, //5MB
+            maxFiles: 5,
+            colorize: false
+        }),
+    ],
+    exitOnError: false
+});
+
+logger.stream = {
+    write: function(message) {
+        logger.info(message.replace(/\n$/, ''));
+    }
+};
+
+app.use(morgan("combined", { "stream": logger.stream }));
 
 module.exports = app;
