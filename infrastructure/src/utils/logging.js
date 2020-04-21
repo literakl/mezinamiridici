@@ -5,7 +5,6 @@ const { combine, printf } = format;
 
 const myFormat = printf(info => {
     return `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`
-    // return `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? JSON.stringify(util.inspect(info.message)) : info.message}`
 });
 
 function myTimestamp() {
