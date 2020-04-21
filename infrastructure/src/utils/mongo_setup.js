@@ -1,5 +1,5 @@
 conn = new Mongo();
-db = conn.getDB("rm");
+db = conn.getDB("bud");
 
 db.users.createIndex( { "auth.email": 1 }, { collation: {locale: "cs", strength: 2}, unique: true } );
 db.users.createIndex( { "bio.nickname": 1 }, { collation: {locale: "cs", strength: 1}, unique: true } );
