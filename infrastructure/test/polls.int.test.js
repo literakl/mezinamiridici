@@ -236,7 +236,7 @@ test("Poll API", async (done) => {
     expect(response.data.length).toBe(1);
     expect(response.data[0]._id).toBe(firstPoll.id);
 
-    // get first poll votes
+    // get the first poll votes
     response = await bff(`polls/${firstPoll.id}/votes`).json();
     expect(response.success).toBeTruthy();
     expect(response.data).toContainEqual({ _id: 'neutral', count: 2 });
