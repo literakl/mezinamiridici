@@ -3,7 +3,7 @@ const corsMiddleware = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 const api = require("./api");
-
+console.log(process.env.NODE_ENV);
 function authenticate(required) {
     return function(req, res, next) {
         const { authorization } = req.headers;
@@ -53,16 +53,22 @@ function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d') 
     return jwt.sign(jwtData, process.env.JWT_SECRET, {expiresIn: expiration});
 }
 
-const corsPerRoute = corsMiddleware({
-    origin: ['http://localhost', 'https://www.mezinamiridici.cz'],
+const corsOptions = {
+    origin: 'http://localhost:8080',
     allowedHeaders: ['Content-Type', 'Authorization'],
     // preflightContinue: false,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-});
+};
+const environment = process.env.NODE_ENV || 'development';
+if (environment === "development") {
+    corsOptions.origin = 'http://localhost:8080';
+} else {
+    corsOptions.origin = 'https://www.mezinamiridici.cz';
+}
 
 module.exports.optional = authenticate(false);
 module.exports.required = authenticate(true);
 module.exports.poll_admin = withRole('admin:poll');
-module.exports.cors = corsPerRoute;
+module.exports.cors = corsMiddleware(corsOptions);
 module.exports.createToken=createToken;
 module.exports.createTokenFromUser=createTokenFromUser;
