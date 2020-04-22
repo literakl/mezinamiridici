@@ -1,44 +1,37 @@
+![CI](https://github.com/literakl/mezinamiridici/workflows/CI/badge.svg?branch=master)
+
 # Between us Drivers
 
 This is a monorepo for mezinamiridici.cz
 
 ### Repository contents
 
-* `/spa` is the single page Vue.js application that delivers the website experience.
-* `/infrastructure` is the serverless SAM architecture that powers the backend
+* `/spa` is the single page Vue.js application that delivers the website experience
+* `/infrastructure` is the NodeJS backend
 
 ### Local run
 
 ```
 $ cd infrastructure
-$ sam local start-api  --env-vars env.json
+$ npm run dev
 $ cd spa
-$ npm run serve
+$ npm run dev
 ```
-
-### Deploying
-
-This will commit to GitHub and deploy the latest change of the website to S3.
-
-```
-$ cd infrastructure
-$ sam package --output-template-file output.yaml --region eu-central-1 --s3-bucket mezinamiridicipackage
-$ sam deploy --template-file output.yaml --stack-name mezinamiridiciapi --capabilities CAPABILITY_IAM  --parameter-overrides 'ParameterKey=DatabaseUri,ParameterValue=MONGOURL'
-$ cd spa
-$ npm run build
-```
-Upload dist folder content to S3 interface, select all and make public
 
 ### Configuration
 
-##### infrastructure
+#### infrastructure/.env
 
 ```
-{
-  "BUDAuthorizeUserHandler": {
-    "MONGODB_URI": "mongodb://localhost/bud?retryWrites=true&w=majority",
-    "JTW_SECRET": "SECRET"
-  }
-}
+MONGODB_URI=mongodb://localhost:27017/bud?retryWrites=true&w=majority
+JWT_SECRET=STUPIDSECRET
 ```
 
+#### spa/.env
+
+```
+VUE_APP_I18N_LOCALE=en
+VUE_APP_I18N_FALLBACK_LOCALE=en
+VUE_APP_API_ENDPOINT=http://127.0.0.1:3000/v1
+VUE_APP_BFF_ENDPOINT=http://127.0.0.1:3000/bff
+```
