@@ -12,11 +12,11 @@
           <h2>{{ $t('app.slogan') }}</h2>
         </div>
         <div class="app__header-sign-in" v-if="!authorized">
-          <router-link to="/sign-up">{{ $t('app.sign-up') }}</router-link> /
-          <router-link to="/sign-in">{{ $t('app.sign-in') }}</router-link>
+          <router-link :to="{ name: 'sign-up'}">{{ $t('app.sign-up') }}</router-link> /
+          <router-link :to="{ name: 'sign-in'}">{{ $t('app.sign-in') }}</router-link>
         </div>
         <div class="app__header-sign-in" v-if="authorized">
-          <router-link :to="'/profile/' + userId">{{nickname}}</router-link> /
+          <router-link :to="{ name: 'user-profile', params: { id: userId } }">{{nickname}}</router-link> /
           <a v-on:click="signMeOut()" href="#0">{{ $t('app.sign-out') }}</a>
         </div>
       </div>
@@ -26,11 +26,11 @@
     </main>
     <footer class="app__footer">
       <ul class="app__footer-link-list">
-        <li class="app__footer-link-list-item"><router-link to="/help">{{ $t('app.help') }}</router-link></li>
-        <li class="app__footer-link-list-item"><router-link to="/mission">{{ $t('app.our-mission') }}</router-link></li>
-        <li class="app__footer-link-list-item"><router-link to="/contact">{{ $t('app.contact') }}</router-link></li>
-        <li class="app__footer-link-list-item"><router-link to="/advertisement">{{ $t('app.advertisement') }}</router-link></li>
-        <li class="app__footer-link-list-item"><router-link to="/archive">{{ $t('app.archive') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link :to="{ name: 'help'}">{{ $t('app.help') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link :to="{ name: 'contact'}">{{ $t('app.contact') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link :to="{ name: 'advertisement'}">{{ $t('app.advertisement') }}</router-link></li>
+        <li class="app__footer-link-list-item"><router-link :to="{ name: 'archive'}">{{ $t('app.archive') }}</router-link></li>
       </ul>
     </footer>
   </div>
@@ -44,6 +44,7 @@ export default {
       return this.$store.getters.IS_AUTHORIZED;
     },
     userId() {
+      console.log(this.$store.getters.USER_ID);
       return this.$store.getters.USER_ID;
     },
     nickname() {

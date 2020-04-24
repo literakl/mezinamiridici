@@ -14,6 +14,7 @@
           </div>
 <!--            <div class="poll-voting__chart-wrapper-analyze-votes-button">-->
 <!--              <Button :value="$t('poll.analyze-votes')" @clicked="redirectToAnalyzeVotes" />-->
+<!--              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">{{item.info.caption}}</router-link>-->
 <!--            </div>-->
         </div>
 
@@ -78,9 +79,6 @@ export default {
       });
       this.voting = false;
     },
-    // redirectToAnalyzeVotes() {
-    //   this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
-    // },
   },
 };
 </script>

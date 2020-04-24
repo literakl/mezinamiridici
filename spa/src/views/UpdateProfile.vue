@@ -299,7 +299,7 @@ export default {
           education: this.education,
           publicProfile: this.share,
         });
-        await this.$router.push(`/profile/${this.userProfile._id}`);
+        await this.$router.push({ name: 'user-profile', params: { id: this.userProfile._id } });
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
