@@ -12,10 +12,15 @@
           <div class="poll-voting__chart-wrapper-bar-chart">
             <BarChart :votes="item.votes" v-bind:voted="voted" />
           </div>
-<!--            <div class="poll-voting__chart-wrapper-analyze-votes-button">-->
-<!--              <Button :value="$t('poll.analyze-votes')" @clicked="redirectToAnalyzeVotes" />-->
-<!--              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">{{item.info.caption}}</router-link>-->
-<!--            </div>-->
+            <div class="poll-voting__chart-wrapper-analyze-votes-button">
+              {{ $t('poll.comparison') }}
+              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'muzi_zeny' }}">{{ $t('poll.men_women') }}</router-link>,
+              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'auto_kamion' }}">{{ $t('poll.car_truck') }}</router-link>,
+              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'auto_motorka' }}">{{ $t('poll.car_bike') }}</router-link>,
+              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'zajic_zkuseny' }}">{{ $t('poll.unseasoned_veteran') }}</router-link>,
+              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'praha_brno' }}">{{ $t('poll.praha_brno') }}</router-link>,
+              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'vlastni' }}">{{ $t('poll.custom') }}</router-link>
+            </div>
         </div>
 
         <div v-if="!voted">

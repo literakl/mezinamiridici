@@ -78,6 +78,12 @@ export default new Router({
       props: true,
     },
     {
+      path: '/anketa/:slug/grafy/:type',
+      name: 'analyse-poll',
+      component: () => import('./views/AnalyzeVotes'),
+      props: true,
+    },
+    {
       path: '/analyze-votes/:id',
       name: 'analyze-votes',
       component: () => import('./views/AnalyzeVotes.vue'),

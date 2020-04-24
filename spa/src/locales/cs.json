@@ -88,6 +88,13 @@
         "discussion": "Diskuse",
         "your-opinion": "Co si o tom myslíte vy?",
         "other-polls-button": "Další ankety",
+        "comparison": "Srovnání:",
+        "custom": "vlastní",
+        "men_women": "muži × ženy",
+        "car_truck": "auto × kamion",
+        "car_bike": "auto × motorka",
+        "unseasoned_veteran": "muži × ženy",
+        "praha_brno": "Praha × Brno",
         "choices": {
             "neutral": "Není problém",
             "trivial": "Banalita",

@@ -87,6 +87,13 @@
     "discussion": "Discussion",
     "your-opinion": "What do you want to say about it",
     "other-polls-button": "Other polls",
+    "comparison": "Comparison:",
+    "custom": "custom",
+    "men_women": "men × women",
+    "car_truck": "car × truck",
+    "car_bike": "car × bike",
+    "unseasoned_veteran": "unseasoned × veteran",
+    "praha_brno": "Praha × Brno",
     "choices": {
       "neutral": "No problem",
       "trivial": "Trivial trouble",
