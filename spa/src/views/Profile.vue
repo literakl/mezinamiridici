@@ -116,7 +116,6 @@ export default {
     this.getProfile(this.id);
   },
   beforeRouteUpdate(to, from, next) {
-    console.log('beforeRouteUpdate');
     this.userProfile = null;
     this.error = null;
     const { params: { id } } = to;

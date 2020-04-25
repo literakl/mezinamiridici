@@ -46,12 +46,21 @@ export default {
     error: null,
   }),
   created() {
-    const queries = this.parseType();
+    const queries = this.parseType(this.type);
     if (queries) {
       this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
         this.runQueries(this.item._id, queries);
       });
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    const queries = this.parseType(to.params.type);
+    if (queries) {
+      this.runQueries(this.item._id, queries);
+    } else {
+      this.groups = [{}, {}];
+    }
+    next();
   },
   computed: {
     item() {
@@ -83,8 +92,8 @@ export default {
         this.inProgress = false;
       }
     },
-    parseType() {
-      switch (this.type) {
+    parseType(type) {
+      switch (type) {
         case 'muzi_zeny':
           return ['sex=man', 'sex=woman'];
         case 'auto_kamion':
