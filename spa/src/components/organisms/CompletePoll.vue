@@ -50,7 +50,7 @@
 import { ContentLoader } from 'vue-content-loader';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import PollButtons from '@/components/molecules/PollButtons.vue';
-import BarChart from '@/components/molecules/charts/BarChart.vue';
+import BarChart from '@/components/molecules/BarChart.vue';
 // import Button from '@/components/atoms/Button.vue';
 
 export default {
