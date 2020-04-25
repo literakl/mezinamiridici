@@ -239,97 +239,97 @@ test("Poll API", async (done) => {
     // get the first poll votes
     response = await bff(`polls/${firstPoll.id}/votes`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 2 });
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+    expect(response.data.neutral).toBe(2);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(2);
 
     // get first poll votes, filter by car
     response = await bff(`polls/${firstPoll.id}/votes?vehicles=car`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+    expect(response.data.neutral).toBe(1);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(1);
 
     // get first poll votes, filter by bike or truck
     response = await bff(`polls/${firstPoll.id}/votes?vehicles=bike&vehicles=truck`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+    expect(response.data.neutral).toBe(0);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(1);
 
     // get first poll votes, filter by woman
     response = await bff(`polls/${firstPoll.id}/votes?sex=woman`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+    expect(response.data.neutral).toBe(0);
+    expect(response.data.trivial).toBe(0);
+    expect(response.data.dislike).toBe(0);
+    expect(response.data.hate).toBe(2);
 
     // get first poll votes, filter by man or woman
     response = await bff(`polls/${firstPoll.id}/votes?sex=man&sex=woman`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+    expect(response.data.neutral).toBe(1);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(2);
 
     // get first poll votes, filter by primary or secondary education
     response = await bff(`polls/${firstPoll.id}/votes?edu=primary&edu=secondary`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+    expect(response.data.neutral).toBe(0);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(0);
+    expect(response.data.hate).toBe(1);
 
     // get first poll votes, filter by primary, secondary or university education
     response = await bff(`polls/${firstPoll.id}/votes?edu=primary&edu=secondary&edu=university`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+    expect(response.data.neutral).toBe(1);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(2);
 
     // get first poll votes, filter by PRG region
     response = await bff(`polls/${firstPoll.id}/votes?region=PRG`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
-    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'hate', count: 1 });
+    expect(response.data.neutral).toBe(1);
+    expect(response.data.trivial).toBe(0);
+    expect(response.data.dislike).toBe(0);
+    expect(response.data.hate).toBe(1);
 
     // get first poll votes, filter by age under 30
     response = await bff(`polls/${firstPoll.id}/votes?age=0:30`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'hate', count: 2 });
+    expect(response.data.neutral).toBe(0);
+    expect(response.data.trivial).toBe(0);
+    expect(response.data.dislike).toBe(0);
+    expect(response.data.hate).toBe(2);
 
     // get first poll votes, filter by age 40-42
     response = await bff(`polls/${firstPoll.id}/votes?age=40:43`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data.some(({_id}) => _id === "neutral")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'trivial', count: 1 });
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
+    expect(response.data.neutral).toBe(0);
+    expect(response.data.trivial).toBe(1);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(0);
 
     // get first poll votes, filter by driving 10-20 years
     response = await bff(`polls/${firstPoll.id}/votes?driving=10:21`).json();
     expect(response.success).toBeTruthy();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
-    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
-    expect(response.data).toContainEqual({ _id: 'dislike', count: 1 });
-    expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
+    expect(response.data.neutral).toBe(1);
+    expect(response.data.trivial).toBe(0);
+    expect(response.data.dislike).toBe(1);
+    expect(response.data.hate).toBe(0);
 
     // get first poll votes, filter by car or bike, driving >= 10 years, region PRG or MS, university degree
     response = await bff(`polls/${firstPoll.id}/votes?vehicles=bike&vehicles=car&driving=10:99&region=PRG&region=MS&edu=university`).json();
-    expect(response.data).toContainEqual({ _id: 'neutral', count: 1 });
-    expect(response.data.some(({_id}) => _id === "trivial")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "dislike")).toBe(false);
-    expect(response.data.some(({_id}) => _id === "hate")).toBe(false);
+    expect(response.data.neutral).toBe(1);
+    expect(response.data.trivial).toBe(0);
+    expect(response.data.dislike).toBe(0);
+    expect(response.data.hate).toBe(0);
 
     done();
 });
