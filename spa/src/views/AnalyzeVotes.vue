@@ -38,7 +38,7 @@ export default {
     type: String,
   },
   data: () => ({
-    series: [{}, {}],
+    groups: [{}, {}],
     inProgress: true,
     error: null,
   }),
@@ -51,9 +51,6 @@ export default {
     item() {
       return this.$store.getters.POLL;
     },
-    groups() {
-      return this.series;
-    },
   },
   methods: {
     async runQueries(id, queries) {
@@ -65,10 +62,10 @@ export default {
         }
         Promise.all(promises).then((values) => {
           for (let i = 0; i < values.length; i += 1) {
-            this.series[i] = values[i].data.data;
+            this.groups[i] = values[i].data.data;
           }
+          this.inProgress = false;
         });
-        this.inProgress = false;
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
