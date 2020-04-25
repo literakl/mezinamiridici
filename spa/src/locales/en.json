@@ -75,11 +75,6 @@
     "heading": "Update your profile",
     "body": "Enter statistical information you want to share. Your votes are anonymous in each poll."
   },
-  "analyze-votes": {
-    "first-group": "First group",
-    "second-group": "Second group",
-    "button": "Analyze Votes"
-  },
   "poll": {
     "your-vote": "Your vote",
     "votes": "Votes",
@@ -99,6 +94,11 @@
       "trivial": "Trivial trouble",
       "dislike": "I don't like it",
       "hate": "I hate it"
+    },
+    "analysis": {
+      "first-group": "First group",
+      "second-group": "Second group",
+      "button": "Analyze Votes"
     }
   },
   "profile": {

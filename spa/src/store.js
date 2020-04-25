@@ -182,7 +182,10 @@ export default new Vuex.Store({
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
     GET_POLL: async (context, payload) => {
-      console.log('GET_POLL');
+      console.log(`GET_POLL ${payload.slug}`);
+      if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
+        return; // cached value recycled
+      }
       context.commit('SET_POLL', null);
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
       const item = pollData.data.data;
@@ -196,6 +199,10 @@ export default new Vuex.Store({
       if (context.state.latestPoll && context.state.latestPoll._id === item._id) {
         context.commit('SET_LATEST_POLL', item);
       }
+    },
+    GET_POLL_VOTES: async (context, payload) => {
+      console.log(`GET_POLL_VOTES ${payload.id} ${payload.query}`);
+      return axios.get(`${BFF_ENDPOINT}/polls/${payload.id}/votes?${payload.query}`);
     },
     INIT_STREAM: async (context) => {
       console.log('INIT_STREAM');

@@ -76,11 +76,6 @@
         "heading": "Aktualizace profilu",
         "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě."
     },
-    "analyze-votes": {
-        "first-group": "První skupina",
-        "second-group": "Druhá skupina",
-        "button": "Analyzuj hlasy"
-    },
     "poll": {
         "your-vote": "Váš hlas",
         "votes": "Hlasů",
@@ -100,6 +95,11 @@
             "trivial": "Banalita",
             "dislike": "Vadí mi to",
             "hate": "Štve mě to"
+        },
+        "analysis": {
+            "first-group": "První skupina",
+            "second-group": "Druhá skupina",
+            "button": "Analyzuj hlasy"
         }
     },
     "profile": {
