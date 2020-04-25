@@ -3,11 +3,11 @@
     <div class="analyze-votes_header">
       <PollHeading v-if="item" :item="item"/>
       <ContentLoading v-if="! item" type="poll" />
-      <SeriesBarChart v-if="! inProgress" :series="groups" />
+      <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"/>
     </div>
     <div class="analyze-votes__wrapper">
-        <h2 class="first-group__heading">{{ $t('poll.analysis.first-group') }}</h2>
-        <h2 class="second-group__heading">{{ $t('poll.analysis.second-group') }}</h2>
+        <h2 class="first-group__heading">1. {{ $t('poll.analysis.group') }}</h2>
+        <h2 class="second-group__heading">2. {{ $t('poll.analysis.group') }}</h2>
 <!--        <AnalyzeVotesGroup group="1" />-->
 <!--        <AnalyzeVotesGroup group="2" />-->
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <column-chart :data="chartData" width="800px" suffix="%" :colors="[['#0b6e00', '#006ca2', '#fd6a02', '#d60001']]"></column-chart>
+    <column-chart :data="chartData" width="800px" suffix="%" :colors="colors"></column-chart>
   </div>
 </template>
 
@@ -11,18 +11,22 @@ export default {
   name: 'SeriesBarChart',
   props: {
     series: Array,
+    colors: Array,
   },
   computed: {
     chartData() {
-      console.log(this.series[0]);
-      const votes = normalizeVotes(this.series[0]);
-      console.log(votes);
-      return [
-        [this.$t('poll.choices.neutral'), votes.neutral],
-        [this.$t('poll.choices.trivial'), votes.trivial],
-        [this.$t('poll.choices.dislike'), votes.dislike],
-        [this.$t('poll.choices.hate'), votes.hate],
-      ];
+      const groups = [];
+      for (let i = 0; i < this.series.length; i += 1) {
+        const votes = normalizeVotes(this.series[i]);
+        const group = {};
+        group[this.$t('poll.choices.neutral')] = votes.neutral;
+        group[this.$t('poll.choices.trivial')] = votes.trivial;
+        group[this.$t('poll.choices.dislike')] = votes.dislike;
+        group[this.$t('poll.choices.hate')] = votes.hate;
+        const data = { name: `${i + 1}. ${this.$t('poll.analysis.group')}`, data: group };
+        groups.push(data);
+      }
+      return groups;
     },
   },
 };
