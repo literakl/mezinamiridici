@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="analyze-votes__wrapper">
+    <div class="analyze-votes_header">
       <PollHeading v-if="item" :item="item"/>
       <ContentLoading v-if="! item" type="poll" />
-<!--      <GroupedBarChart />-->
+      <SeriesBarChart v-if="! inProgress" :series="groups" />
     </div>
     <div class="analyze-votes__wrapper">
         <h2 class="first-group__heading">{{ $t('poll.analysis.first-group') }}</h2>
@@ -20,6 +20,7 @@
 <script>
 import Button from '@/components/atoms/Button.vue';
 import PollHeading from '@/components/molecules/PollHeading.vue';
+import SeriesBarChart from '@/components/molecules/SeriesBarChart.vue';
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
 // import AnalyzeVotesGroup from '@/components/molecules/AnalyzeVotesGroup.vue';
 
@@ -28,6 +29,7 @@ export default {
   components: {
     // AnalyzeVotesGroup,
     PollHeading,
+    SeriesBarChart,
     ContentLoading,
     Button,
   },
@@ -36,8 +38,8 @@ export default {
     type: String,
   },
   data: () => ({
-    groups: [{}, {}],
-    inProgress: false,
+    series: [{}, {}],
+    inProgress: true,
     error: null,
   }),
   created() {
@@ -48,6 +50,9 @@ export default {
   computed: {
     item() {
       return this.$store.getters.POLL;
+    },
+    groups() {
+      return this.series;
     },
   },
   methods: {
@@ -60,10 +65,9 @@ export default {
         }
         Promise.all(promises).then((values) => {
           for (let i = 0; i < values.length; i += 1) {
-            this.groups[i] = values[i].data.data;
+            this.series[i] = values[i].data.data;
           }
         });
-        console.log(this.groups);
         this.inProgress = false;
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -73,6 +77,7 @@ export default {
         } else {
           this.error = this.$t('generic.internal-error');
         }
+        this.inProgress = false;
       }
     },
   },
@@ -80,6 +85,12 @@ export default {
 </script>
 
 <style>
+  .analyze-votes_header {
+      margin: 0 auto;
+      max-width: 80%;
+      padding: 1em 0;
+  }
+
   .analyze-votes__wrapper {
       display: grid;
       margin: 0 auto;
@@ -94,12 +105,12 @@ export default {
     margin-bottom: 20px;
   }
 
-  .first-group__heading{
+  .first-group__heading {
     background-color: #ffd200;
     padding: 5px;
   }
 
-  .second-group__heading{
+  .second-group__heading {
     background-color: #f5a522;
     padding: 5px;
     grid-row: 3;
@@ -109,7 +120,7 @@ export default {
   .analyze-votes__wrapper {
       grid-template-columns: 1fr 1fr;
   }
-   .second-group__heading{
+   .second-group__heading {
     background-color: #f5a522;
     padding: 5px;
     grid-row: auto;
