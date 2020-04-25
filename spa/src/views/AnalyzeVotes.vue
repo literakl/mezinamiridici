@@ -4,6 +4,7 @@
       <PollHeading v-if="item" :item="item"/>
       <ContentLoading v-if="! item" type="poll" />
       <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"/>
+      <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
     </div>
     <div class="analyze-votes__wrapper">
         <h2 class="first-group__heading">1. {{ $t('poll.analysis.group') }}</h2>
@@ -23,6 +24,7 @@ import PollHeading from '@/components/molecules/PollHeading.vue';
 import SeriesBarChart from '@/components/molecules/SeriesBarChart.vue';
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
 // import AnalyzeVotesGroup from '@/components/molecules/AnalyzeVotesGroup.vue';
+import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
 
 export default {
   name: 'analyze-votes',
@@ -30,6 +32,7 @@ export default {
     // AnalyzeVotesGroup,
     PollHeading,
     SeriesBarChart,
+    PredefinedComparisons,
     ContentLoading,
     Button,
   },
@@ -43,9 +46,12 @@ export default {
     error: null,
   }),
   created() {
-    this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
-      this.runQueries(this.item._id, ['vehicles=car&vehicles=bike', 'region=PRG']);
-    });
+    const queries = this.parseType();
+    if (queries) {
+      this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
+        this.runQueries(this.item._id, queries);
+      });
+    }
   },
   computed: {
     item() {
@@ -75,6 +81,22 @@ export default {
           this.error = this.$t('generic.internal-error');
         }
         this.inProgress = false;
+      }
+    },
+    parseType() {
+      switch (this.type) {
+        case 'muzi_zeny':
+          return ['sex=man', 'sex=woman'];
+        case 'auto_kamion':
+          return ['vehicles=car', 'vehicles=truck'];
+        case 'auto_motorka':
+          return ['vehicles=car', 'vehicles=bike'];
+        case 'zajic_zkuseny':
+          return ['age=0:25&driving=0-3', 'age=26:110&driving=3:99'];
+        case 'praha_brno':
+          return ['region=PRG', 'region=JM'];
+        default:
+          return null;
       }
     },
   },

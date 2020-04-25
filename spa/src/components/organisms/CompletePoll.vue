@@ -13,13 +13,7 @@
             <BarChart :votes="item.votes" v-bind:voted="voted" />
           </div>
             <div class="poll-voting__chart-wrapper-analyze-votes-button">
-              {{ $t('poll.comparison') }}
-              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'muzi_zeny' }}">{{ $t('poll.men_women') }}</router-link>,
-              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'auto_kamion' }}">{{ $t('poll.car_truck') }}</router-link>,
-              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'auto_motorka' }}">{{ $t('poll.car_bike') }}</router-link>,
-              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'zajic_zkuseny' }}">{{ $t('poll.unseasoned_veteran') }}</router-link>,
-              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'praha_brno' }}">{{ $t('poll.praha_brno') }}</router-link>,
-              <router-link :to="{ name: 'analyse-poll', params: { slug: item.info.slug, type: 'vlastni' }}">{{ $t('poll.custom') }}</router-link>
+              <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
             </div>
         </div>
 
@@ -51,16 +45,16 @@ import { ContentLoader } from 'vue-content-loader';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import BarChart from '@/components/molecules/BarChart.vue';
-// import Button from '@/components/atoms/Button.vue';
+import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
 
 export default {
   name: 'CompletePoll',
   components: {
     ContentLoader,
-    // Button,
     BarChart,
     PollButtons,
     PollHeading,
+    PredefinedComparisons,
   },
   data() {
     return {
