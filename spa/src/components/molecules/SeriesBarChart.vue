@@ -1,12 +1,10 @@
 <template>
   <div>
-    <column-chart :data="chartData" width="800px" suffix="%" :colors="colors"></column-chart>
+    <column-chart :data="chartData" width="800px" :colors="colors"></column-chart>
   </div>
 </template>
 
 <script>
-import normalizeVotes from '@/components/utils/chartUtils';
-
 export default {
   name: 'SeriesBarChart',
   props: {
@@ -17,7 +15,7 @@ export default {
     chartData() {
       const groups = [];
       for (let i = 0; i < this.series.length; i += 1) {
-        const votes = normalizeVotes(this.series[i]);
+        const votes = this.series[i];
         const group = {};
         group[this.$t('poll.choices.neutral')] = votes.neutral;
         group[this.$t('poll.choices.trivial')] = votes.trivial;
