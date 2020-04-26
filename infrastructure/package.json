@@ -31,7 +31,8 @@
   "devDependencies": {
     "got": "^10.7.0",
     "jest": "^25.3.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "random": "^2.2.0"
   },
   "nodemonConfig": {
     "ignore": [

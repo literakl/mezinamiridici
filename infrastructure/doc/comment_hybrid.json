@@ -1,0 +1,42 @@
+{
+  "_id": "1e6opc7mdi",
+  "item":"1e6opc7fb4",
+  "count": 26,
+  "comments": [
+    {
+      "id": "7bnt",
+      "path": "7bnt",
+      "date": "202004261651",
+      "author": { "nickname": "literakl", "id": "kha4fd3rrwf1" },
+      "text": "Ano máme na silnicích závodníky a tak chudáci policajti musí stát s radarem před koncem obce aby někdo náhodou 50m před koncovou tabulí nejel o trošku rychleji. "
+    },
+    {
+      "id": "ddb",
+      "path": "ddb",
+      "date": "202004261652",
+      "author": { "nickname": "sklenar", "id": "kjkllsedke" },
+      "text": "Nápad vyhlasit nebudeme zastavovat řidiče řekl kdo!"
+    },
+    {
+      "id": "KFFs",
+      "path": "7bnt/KFFs",
+      "date": "202004261655",
+      "author": { "nickname": "zelenkova", "id": "lkdld" },
+      "text": "Že spousta řidičů jezdí a parkují jako prasata, se nelze divit."
+    },
+    {
+      "id": "adgt",
+      "path": "adgt",
+      "date": "202004261656",
+      "author": { "nickname": "kavkova", "id": "anmdode" },
+      "text": "Policie je tolerantnější ke kontrolám, stačí, že takový \"řidič\" má roušku."
+    },
+    {
+      "id": "leth",
+      "path": "adgt/leth",
+      "date": "202004261656",
+      "author": { "nickname": "matula", "id": "njehensoe" },
+      "text": "Ona to předtím řešila? Tak jak je možné, že tu byly články o někom, kdo má těch zákazů 10?"
+    }
+  ]
+}
