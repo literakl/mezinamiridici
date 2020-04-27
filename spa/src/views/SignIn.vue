@@ -1,67 +1,58 @@
 <template>
   <div>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <form @submit.prevent="passes(signIn)">
-          <div class="signin">
-              <div class="signin__wrapper">
+      <b-form  @submit.prevent="passes(signIn)">
+          <b-container fluid>
+            <b-row class="w-75 m-auto pt-5 pb-5">
+              <b-col md="6">
+                <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+                <div>{{ message }}</div>
+                <TextInput
+                  v-model="email"
+                  rules="required|email"
+                  :placeholder="$t('sign-in.email-placeholder')"
+                  name="email"
+                  type="email"
+                  />
+
+                <TextInput
+                  v-model="password"
+                  rules="required"
+                  :placeholder="$t('sign-in.password-placeholder')"
+                  name="password"
+                  type="password"
+                  />
+
                 <div>
-                  <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
-                  <div>{{ message }}</div>
+                  <router-link :to="{ name: 'forgotten' }">{{ $t('sign-in.forgot-password-link')}}</router-link>
                 </div>
-                <div>
-                    <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
+
+                <div v-if="error">
+                  <strong>
+                    {{ error }}
+                  </strong>
                 </div>
-                <div>
-                    <TextInput
-                      v-model="email"
-                      rules="required|email"
-                      :placeholder="$t('sign-in.email-placeholder')"
-                      class="signin__text-input"
-                      name="email"
-                      type="email"
-                      />
 
-                    <TextInput
-                      v-model="password"
-                      rules="required"
-                      :placeholder="$t('sign-in.password-placeholder')"
-                      class="signin__text-input"
-                      name="password"
-                      type="password"
-                      />
+                <Button
+                  class="w-75"
+                  :disabled="invalid"
+                  :value="$t('sign-in.sign-in-button')"
+                  @clicked="signIn"/>
+              </b-col>
+              <b-col md="6" class="mt-auto">
+                <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
+                  {{ $t('sign-in.sign-up-create-account-message') }}
 
-                    <div class="signin__forgot-password">
-                      <router-link :to="{ name: 'forgotten' }">{{ $t('sign-in.forgot-password-link')}}</router-link>
-                    </div>
+                <Button
+                  class="w-75"
+                  :value="$t('sign-in.sign-up-button')"
+                  id="signin__sign-up-button"
+                  @clicked="redirectToSignUp" />
+              </b-col>
+            </b-row>
+          </b-container>
+      </b-form>
 
-                    <div v-if="error">
-                      <strong class="sign-up-form__errors-heading">
-                        {{ error }}
-                      </strong>
-                    </div>
-
-                    <Button
-                      :disabled="invalid"
-                      class="signin__sign-in-button"
-                      :value="$t('sign-in.sign-in-button')"
-                      @clicked="signIn"/>
-                </div>
-                <div>
-                    {{ $t('sign-in.sign-up-create-account-message') }}
-
-                    <Button
-                      :value="$t('sign-in.sign-up-button')"
-                      id="signin__sign-up-button"
-                      @clicked="redirectToSignUp" />
-                  <!--
-                                      <div class="signin__or">{{ $t('sign-in.or') }}</div>
-                                      <p>Facebook login button will go here</p>
-                                      <p>Google login button will go here</p>
-                  -->
-                </div>
-              </div>
-          </div>
-      </form>
     </ValidationObserver>
   </div>
 </template>
@@ -132,88 +123,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.signin {
-    background: #f6f6f6;
-    padding: 30px 0 30px 0;
-}
-
-.signin__or {
-    text-align: center;
-    padding-top: 20px;
-    font-weight: bolder;
-}
-
-input {
-    width: 100%;
-    padding: 0;
-}
-
-h1 {
-    padding: 0 0 20px 0;
-    margin: 0;
-}
-
-h2 {
-    padding: 0 0 20px 0;
-    margin: 0;
-    font-size: 14px;
-    font-weight: normal;
-    text-align: center;
-}
-
-.signin__login-error {
-    text-align: center;
-    color: #d13131;
-}
-
-.signin__text-input {
-    width: 100%;
-}
-
-.signin__wrapper {
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-    grid-column-gap: 50px;
-}
-
-.signin__sign-in-button {
-    width: 100%;
-}
-
-#signin__sign-up-button {
-    background: #9b9b9b;
-    box-shadow: 0 4px #868686;
-    color: #FFF;
-    font-size: 14px;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.signin__facebook-button {
-    background: #9b9b9b;
-    box-shadow: 0 4px #868686;
-    color: #FFF;
-    font-size: 14px;
-    width: 100%;
-}
-
-.signin__forgot-password {
-    margin-bottom: 10px;
-}
-
-.signin__forgot-password:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-@media all and (min-width: 850px) {
-    .signin__wrapper {
-        grid-template-columns: 0.4fr 0.4fr;
-        align-items: end;
-    }
-}
-</style>

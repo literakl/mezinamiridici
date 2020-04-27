@@ -1,13 +1,11 @@
 <template>
-  <div class="signin__wrapper">
+  <b-container fluid class="w-75 m-auto pt-5 pb-5">
 
-    <div class="sign-up__heading">
-      <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
-      <p>{{ $t('sign-in.reset-password-description') }}</p>
-    </div>
+    <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
+    <p>{{ $t('sign-in.reset-password-description') }}</p>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <form @submit.prevent="passes(resetPassword)">
+      <b-form @submit.prevent="passes(resetPassword)">
         <TextInput
           v-model="email"
           :label="$t('profile.email')"
@@ -18,25 +16,27 @@
           v-model="newPassword"
           rules="required|min:6"
           :label="$t('sign-in.new-password')"
-          class="signin__text-input"
           name="new-password"
           type="password"
         />
 
         <div v-if="error">
-          <strong class="sign-up-form__errors-heading">
+          <strong class="text-danger">
             {{ error }}
           </strong>
         </div>
-
-        <Button
-          :disabled="invalid"
-          class="signin__sign-in-button"
-          :value="$t('sign-in.change-password-button')"
-          @clicked="resetPassword"/>
-      </form>
+        <b-row>
+          <b-col md="4" sm="12">
+            <Button
+              class="w-100"
+              :disabled="invalid"
+              :value="$t('sign-in.change-password-button')"
+              @clicked="resetPassword"/>
+          </b-col>
+        </b-row>
+      </b-form>
     </ValidationObserver>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -99,52 +99,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  input {
-    width: 100%;
-    padding: 0;
-  }
-
-  h1 {
-    padding: 0 0 20px 0;
-    margin: 0;
-  }
-
-  h2 {
-    padding: 0 0 20px 0;
-    margin: 0;
-    font-size: 14px;
-    font-weight: normal;
-    text-align: center;
-  }
-
-  .sign-up-form__errors-heading {
-    color: rgb(209, 49, 49);
-    font-size: 150%;
-    clear: both;
-  }
-
-  .signin__text-input {
-    width: 100%;
-  }
-
-  .signin__wrapper {
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-    grid-column-gap: 50px;
-  }
-
-  .signin__sign-in-button {
-    width: 100%;
-  }
-
-  @media all and (min-width: 850px) {
-    .signin__wrapper {
-      grid-template-columns: 1fr;
-      align-items: end;
-    }
-  }
-</style>

@@ -18,6 +18,17 @@
     <label :for="identifier" class="atoms__checkbox-label">
       <span>{{label}}</span>
     </label>
+    <!-- <b-form-checkbox
+      @change="onChange($event)"
+      :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
+      :id="identifier"
+      :checked="value"
+      :value="value"
+      type="checkbox"
+      ref="input"
+    >
+      {{label}}
+    </b-form-checkbox> -->
   </ValidationProvider>
 </template>
 
@@ -25,6 +36,9 @@
 import { ValidationProvider } from 'vee-validate';
 
 export default {
+  mounted() {
+    this.change(this.localChecked);
+  },
   props: {
     vid: {
       type: String,

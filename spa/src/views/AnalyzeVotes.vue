@@ -1,20 +1,28 @@
 <template>
   <div>
-    <div class="analyze-votes_header">
-      <PollHeading v-if="item" :item="item"/>
-      <ContentLoading v-if="! item" type="poll" />
-      <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"/>
-      <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
-    </div>
-    <div class="analyze-votes__wrapper">
-        <h2 class="first-group__heading">1. {{ $t('poll.analysis.group') }}</h2>
-        <h2 class="second-group__heading">2. {{ $t('poll.analysis.group') }}</h2>
-<!--        <AnalyzeVotesGroup group="1" />-->
-<!--        <AnalyzeVotesGroup group="2" />-->
-    </div>
-    <div class="analyze-votes__button-wrapper">
-      <Button :value="$t('poll.analysis.button')" />
-    </div>
+    <b-container fluid class="pt-5">
+      <b-row>
+        <b-col>
+          <PollHeading v-if="item" :item="item"/>
+          <ContentLoading v-if="! item" type="poll" />
+          <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"/>
+          <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md="6">
+          <h2 class="bg-warning p-2">1. {{ $t('poll.analysis.group') }}</h2>
+        </b-col>
+        <b-col md="6">
+          <h2 class="bg-warning p-2">2. {{ $t('poll.analysis.group') }}</h2>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col class="text-center p-4">
+          <Button :value="$t('poll.analysis.button')" />
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -111,47 +119,3 @@ export default {
   },
 };
 </script>
-
-<style>
-  .analyze-votes_header {
-      margin: 0 auto;
-      max-width: 80%;
-      padding: 1em 0;
-  }
-
-  .analyze-votes__wrapper {
-      display: grid;
-      margin: 0 auto;
-      max-width: 80%;
-      padding: 1em 0;
-      grid-gap: 20px;
-      overflow: hidden;
-  }
-
-  .analyze-votes__button-wrapper {
-    text-align:center;
-    margin-bottom: 20px;
-  }
-
-  .first-group__heading {
-    background-color: #ffd200;
-    padding: 5px;
-  }
-
-  .second-group__heading {
-    background-color: #f5a522;
-    padding: 5px;
-    grid-row: 3;
-  }
-
-  @media all and (min-width: 850px) {
-  .analyze-votes__wrapper {
-      grid-template-columns: 1fr 1fr;
-  }
-   .second-group__heading {
-    background-color: #f5a522;
-    padding: 5px;
-    grid-row: auto;
-  }
-}
-</style>

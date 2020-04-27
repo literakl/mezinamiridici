@@ -1,53 +1,50 @@
 <template>
-  <div>
+  <b-container fluid class="w-75 m-auto pt-5 pb-5">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <form @submit.prevent="passes(changePassword)">
-        <div class="signin">
-          <div class="signin__wrapper">
-            <h1>{{ $t('sign-in.change-password-heading') }}</h1>
-            <div>
-              <TextInput
-                v-model="email"
-                rules="email"
-                :label="$t('profile.email')"
-                name="email"
-                type="email"/>
+      <b-form @submit.prevent="passes(changePassword)">
+        <h1>{{ $t('sign-in.change-password-heading') }}</h1>
+        <div>
+          <TextInput
+            v-model="email"
+            rules="email"
+            :label="$t('profile.email')"
+            name="email"
+            type="email"/>
 
-              <TextInput
-                v-model="currentPassword"
-                rules="required"
-                :label="$t('sign-in.current-password')"
-                class="signin__text-input"
-                name="current-password"
-                type="password"
-              />
+          <TextInput
+            v-model="currentPassword"
+            rules="required"
+            :label="$t('sign-in.current-password')"
+            name="current-password"
+            type="password"
+          />
 
-              <TextInput
-                v-model="newPassword"
-                rules="required|min:6"
-                :label="$t('sign-in.new-password')"
-                class="signin__text-input"
-                name="new-password"
-                type="password"
-              />
+          <TextInput
+            v-model="newPassword"
+            rules="required|min:6"
+            :label="$t('sign-in.new-password')"
+            name="new-password"
+            type="password"
+          />
 
-              <div v-if="error">
-                <strong class="sign-up-form__errors-heading">
-                  {{ error }}
-                </strong>
-              </div>
-
+          <div v-if="error">
+            <strong class="text-error">
+              {{ error }}
+            </strong>
+          </div>
+          <b-row>
+            <b-col md="4" sm=12>
               <Button
+                class="w-100"
                 :disabled="invalid"
-                class="signin__sign-in-button"
                 :value="$t('sign-in.change-password-button')"
                 @clicked="changePassword"/>
-            </div>
-          </div>
+            </b-col>
+          </b-row>
         </div>
-      </form>
+      </b-form>
     </ValidationObserver>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -109,57 +106,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  .signin {
-    background: #f6f6f6;
-    padding: 30px 0 30px 0;
-  }
-
-  input {
-    width: 100%;
-    padding: 0;
-  }
-
-  h1 {
-    padding: 0 0 20px 0;
-    margin: 0;
-  }
-
-  h2 {
-    padding: 0 0 20px 0;
-    margin: 0;
-    font-size: 14px;
-    font-weight: normal;
-    text-align: center;
-  }
-
-  .sign-up-form__errors-heading {
-    color: rgb(209, 49, 49);
-    font-size: 150%;
-    clear: both;
-  }
-
-  .signin__text-input {
-    width: 100%;
-  }
-
-  .signin__wrapper {
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-    grid-column-gap: 50px;
-  }
-
-  .signin__sign-in-button {
-    width: 100%;
-  }
-
-  @media all and (min-width: 850px) {
-    .signin__wrapper {
-      grid-template-columns: 1fr;
-      align-items: end;
-    }
-  }
-</style>

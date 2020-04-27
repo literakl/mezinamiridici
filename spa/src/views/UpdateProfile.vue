@@ -1,10 +1,8 @@
 <template>
-  <div class="sign-up-wrapper">
+  <b-container fluid class="w-75 m-auto pt-5 pb-5">
 
-    <div class="sign-up__heading">
-      <h2>{{ $t('edit-profile.heading') }}</h2>
-      <p>{{ $t('edit-profile.body') }}</p>
-    </div>
+    <h2>{{ $t('edit-profile.heading') }}</h2>
+    <p>{{ $t('edit-profile.body') }}</p>
 
     <content-loader
       :height="100"
@@ -31,7 +29,7 @@
     </content-loader>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
-      <form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
+      <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
         <div class="sign-up-form__label">
           <label for="share-profile">{{ $t('profile.share-profile') }}</label>
         </div>
@@ -158,7 +156,7 @@
             identifier="university" />
         </div>
 
-        <div v-if="error" class="sign-up-form__errors-heading">
+        <div v-if="error" class="text-danger">
           {{ error }}
         </div>
 
@@ -167,13 +165,13 @@
           :value="$t('sign-up.finished-button-label')"
           @clicked="submitForm()"
           class="sign-up-form__button"/>
-      </form>
+      </b-form>
     </ValidationObserver>
 
     <div id="sign-up-form-success" v-if="success === true">
       <p>{{ $t('sign-up.success-message') }}</p>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>

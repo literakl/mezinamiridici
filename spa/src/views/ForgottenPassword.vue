@@ -1,5 +1,5 @@
 <template>
-  <div class="forgot">
+  <b-container fluid class="w-75 m-auto pt-5 pb-5">
     <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
 
     <p v-if="passwordReset !== true">{{ $t('sign-in.email-reset-description') }}</p>
@@ -8,7 +8,7 @@
       <ValidationObserver ref="form" v-slot="{ passes, invalid }">
         <form @submit.prevent="passes(signIn)">
           <div v-if="passwordReset === false">
-            <p class="signin__forgot-password-error">{{ $t('sign-in.forget-error') }}</p>
+            <p class="text-danger">{{ $t('sign-in.forget-error') }}</p>
           </div>
 
           <TextInput
@@ -16,21 +16,23 @@
             type="email"
             identifier="resetEmail"
             :label="$t('profile.email')"
-            :placeholder="$t('sign-in.forgot-email-placeholder')"
-            class="signin__reset-text-input"/>
-
-          <Button
-            :value="$t('sign-in.reset-password-button')"
-            class="signin__forgotten-password-submit-button"
-            @clicked="forgotPassword" />
+            :placeholder="$t('sign-in.forgot-email-placeholder')"/>
+          <b-row>
+            <b-col md="4" sm="12">
+              <Button
+                class="w-100"
+                :value="$t('sign-in.reset-password-button')"
+                @clicked="forgotPassword" />
+            </b-col>
+          </b-row>
         </form>
       </ValidationObserver>
     </div>
 
     <div v-if="passwordReset === true">
-      <p class="signin__forgot-password-success">{{ $t('sign-in.forget-success') }}</p>
+      <p class="text-success">{{ $t('sign-in.forget-success') }}</p>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -83,43 +85,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  .forgot {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-  }
-
-  .signin__forgotten-password-submit-button {
-    width: 100%;
-  }
-
-  .signin__reset-text-input {
-    display: block;
-  }
-
-  .signin__forgot-password-success {
-  }
-
-  .signin__forgot-password-error {
-    color: red
-  }
-
-  @media all and (min-width: 850px) {
-    .forgot {
-      grid-template-columns: 1fr;
-      max-width: 80%;
-    }
-
-    .signin__forgotten-password-submit-button {
-      width: 30%;
-    }
-
-    .signin__reset-text-input {
-      /*width: 70%;*/
-    }
-  }
-</style>

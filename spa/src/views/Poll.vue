@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <div class="poll__wrapper">
-      <CompletePoll v-if="poll" />
-      <ContentLoading v-if="! poll" type="poll" />
-    </div>
+  <b-container fluid class="w-75 m-auto pt-5 pb-5">
+    <CompletePoll v-if="poll" />
+    <ContentLoading v-if="! poll" type="poll" />
 
 <!--    <div class="poll__discussion-break-out">-->
 <!--      <div class="poll__discussion-wrapper">-->
@@ -25,7 +23,7 @@
 <!--        </div>-->
 <!--      </div>-->
 <!--    </div>-->
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -112,67 +110,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.poll__wrapper {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-    grid-gap: 20px;
-}
-
-.poll__discussion-break-out {
-  background: #f6f6f6;
-}
-
-.poll__discussion-wrapper {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-}
-
-.poll__ads {
-  height: 100%;
-  background: grey;
-  order: 1;
-}
-
-.poll__voting  {
-  order: 2;
-}
-
-.poll__other-polls {
-  grid-template-columns: 1fr;
-  display: grid;
-  text-align:center;
-}
-
-.poll__other-polls-button {
-  width: 30%;
-}
-
-.poll__double-line {
-  margin-top: -20px;
-}
-
-@media all and (min-width: 850px) {
-  .poll__wrapper {
-    grid-template-columns: 1fr 0.2fr;
-  }
-  .poll__voting  {
-    order: 1;
-  }
-
-  .poll__ads {
-    order: 2;
-  }
-
-  .poll__other-polls {
-    width: 50%;
-  }
-}
-</style>

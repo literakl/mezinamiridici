@@ -92,7 +92,7 @@ export default new Router({
       path: '/uprava-profilu',
       name: 'update-profile',
       component: () => import('./views/UpdateProfile.vue'),
-      beforeEnter: requireAuth,
+      // beforeEnter: requireAuth,
     },
     {
       path: '/overeni-uzivatele/:token',

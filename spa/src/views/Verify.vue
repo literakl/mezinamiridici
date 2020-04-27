@@ -1,9 +1,9 @@
 <template>
-    <div class="verify">
+    <b-container fluid class="w-75 m-auto pt-5 pb-5">
       <h1>{{ $t(('sign-up.verify-heading')) }}</h1>
-      <p v-if="verified === null" class="verifying">{{ $t(('sign-up.verify-running')) }}</p>
-      <p v-if="verified === false" class="failed">{{ $t(('sign-up.verify-error')) }}</p>
-    </div>
+      <p class="text-success" v-if="verified === null">{{ $t(('sign-up.verify-running')) }}</p>
+      <p class="text-danger" v-if="verified === false">{{ $t(('sign-up.verify-error')) }}</p>
+    </b-container>
 </template>
 
 <script>
@@ -33,22 +33,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.verify {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-    height: 100%;
-}
-
-.verifying {
-  color: blue;
-}
-
-.failed {
-  color: red;
-}
-</style>
