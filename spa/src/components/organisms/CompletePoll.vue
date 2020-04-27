@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="poll-voting__wrapper">
-      <div class="poll-voting__content">
+    <div>
+      <div>
         <PollHeading :item="item"/>
 
-        <div v-if="voted" class="poll-voting__chart-wrapper">
-          <h2 class="poll-voting__chart-wrapper-vote">
+        <div v-if="voted" class="pt-4 pb-4">
+          <h2 class="pb-5">
             {{ $t('poll.your-vote') }} <span class="vote-text">{{ $t('poll.choices.'+voted) }}</span>
           </h2>
 
-          <div class="poll-voting__chart-wrapper-bar-chart">
+          <div class="w-75 m-auto pb-5">
             <BarChart :votes="item.votes" v-bind:voted="voted" />
           </div>
-            <div class="poll-voting__chart-wrapper-analyze-votes-button">
+            <div class="pb-3">
               <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
             </div>
         </div>
@@ -27,7 +27,6 @@
           :speed="22"
           primaryColor="#f3f3f3"
           secondaryColor="#ecebeb"
-          class="poll-voting__chart-wrapper-bar-chart"
           v-if="voting"
         >
           <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
@@ -81,89 +80,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.poll-voting__wrapper {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    padding: 1em 0;
-    grid-gap: 20px;
-}
-
-.poll-voting__chart-wrapper {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  display: grid;
-  padding: 1em 0;
-  grid-gap: 20px;
-}
-
-.poll-voting__discussion-break-out {
-  background: #f6f6f6;
-}
-
-.poll-voting__discussion-wrapper {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-}
-
-.poll-voting__chart-wrapper-vote {
-  grid-column: 1 / span 4
-}
-
-.poll-voting__chart-wrapper-bar-chart {
-  grid-column: 1 / span 4;
-  margin: 0 auto;
-  max-width: 80%;
-}
-
-.poll-voting__chart-wrapper-analyze-votes-button {
-  grid-column: 1 / span 4;
-  margin: 0 auto;
-}
-
-.poll-voting__content {
-  order: 2;
-}
-
-.poll-voting__ads {
-  height: 100%;
-  background: grey;
-  order: 1;
-}
-
-.vote-text {
-  color: red;
-}
-
-.poll-voting__other-polls {
-  grid-template-columns: 1fr;
-  display: grid;
-  text-align:center;
-}
-
-.poll-voting__other-polls-button {
-  width: 30%;
-}
-
-.poll-voting__double-line {
-  margin-top: -20px;
-}
-
-@media all and (min-width: 850px) {
-  .poll-voting__content {
-    order: 1;
-  }
-
-  .poll-voting__ads {
-    order: 2;
-  }
-
-  .poll-voting__other-polls {
-    width: 50%;
-  }
-}
-</style>

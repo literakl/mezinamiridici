@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div class="profile">
-      <div class="profile__wrapper">
+  <b-container fluid class="w-75 m-auto pt-5 pb-5">
+    <div>
+      <div>
         <div v-if="error">
-          <strong class="profile__errors-heading">
+          <strong class="text-danger">
             {{ error }}
           </strong>
         </div>
@@ -17,9 +17,10 @@
         </p>
 
         <dl v-if="userProfile && !error">
-          <dt>{{ $t('profile.nickname') }}</dt>
-          <dl>{{userProfile.bio.nickname}}</dl>
-
+          <b-row>
+            <dt class="pl-3">{{ $t('profile.nickname') }}</dt>
+            <dl class="pl-5">{{userProfile.bio.nickname}}</dl>
+          </b-row>
           <template v-if="publicProfile">
             <template v-if="userProfile.driving">
               <template v-if="userProfile.driving.since">
@@ -80,7 +81,7 @@
         </content-loader>
       </div>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -141,39 +142,3 @@ export default {
 };
 
 </script>
-
-<style>
-.profile {
-    background: #f6f6f6;
-    margin-top: -16px;
-    padding-top: 30px;
-    height: 100%;
-}
-
-.profile__wrapper {
-    grid-template-columns: 1fr;
-    display: grid;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 1em 0;
-    grid-gap: 20px;
-    height: 100%;
-}
-
-dl {
-  display: grid;
-  grid-template-columns: max-content auto;
-  margin: 0px;
-}
-
-dt {
-  grid-column-start: 1;
-  font-weight: bolder;
-  padding-right: 50px;
-  padding-bottom: 20px;
-}
-
-dd {
-  grid-column-start: 2;
-}
-</style>

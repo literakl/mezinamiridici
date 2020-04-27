@@ -36,9 +36,6 @@
 import { ValidationProvider } from 'vee-validate';
 
 export default {
-  mounted() {
-    this.change(this.localChecked);
-  },
   props: {
     vid: {
       type: String,

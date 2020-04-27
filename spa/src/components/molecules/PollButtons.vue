@@ -1,5 +1,5 @@
 <template>
-    <div id="opinion-poll">
+    <div>
         <h3>{{ $t('poll.your-opinion') }}</h3>
         <button
             v-on:click="voted('neutral')"
@@ -42,58 +42,3 @@ export default {
   },
 };
 </script>
-
-
-<style lang="scss">
-
-#opinion-poll {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-.opinion-poll__button {
-  color: #FFF;
-  height: 55px;
-  border-radius: 20px;
-  font-size: 20px;
-  margin: 0 10px 0 10px;
-  grid-column: 1 / span 4;
-  cursor: pointer;
-}
-
-.opinion-poll__button:hover {
-  text-decoration: underline;
-}
-
-.opinion-poll__button img {
-  width: 25px;
-  vertical-align: middle;
-  padding-right: 20px;
-}
-
-.opinion-poll__button__neutral {
-  background: #0b6e00;
-}
-
-.opinion-poll__button-trivial {
-  background: #006ca2;
-}
-
-.opinion-poll__button-dislike {
-  background: #fd6a02;
-}
-
-.opinion-poll__button-hate {
-  background: #d60001;
-}
-
-#opinion-poll h3 {
-  grid-column: 1 / span 4
-}
-
-@media all and (min-width: 850px) {
-  .opinion-poll__button {
-    grid-column: auto;
-  }
-}
-</style>

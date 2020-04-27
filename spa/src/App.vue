@@ -32,11 +32,11 @@
         <b-row class="pt-4 pb-4 w-75 m-auto">
           <b-col>
             <b-nav>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'help'}">{{ $t('app.help') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'contact'}">{{ $t('app.contact') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'advertisement'}">{{ $t('app.advertisement') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'archive'}">{{ $t('app.archive') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'help' }">{{ $t('app.help') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'mission' }">{{ $t('app.our-mission') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'contact' }">{{ $t('app.contact') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'advertisement' }">{{ $t('app.advertisement') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'archive' }">{{ $t('app.archive') }}</router-link></b-nav-item>
             </b-nav>
           </b-col>
         </b-row>

@@ -30,10 +30,8 @@
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-        <div class="sign-up-form__label">
-          <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-        </div>
-        <div class="sign-up-form__input">
+        <label for="share-profile">{{ $t('profile.share-profile') }}</label>
+        <div>
           <Radio
             v-model="share"
             identifier="public"
@@ -53,10 +51,8 @@
           name="driving-since"
           type="number" />
 
-        <div class="sign-up-form__label">
-          <label for="vehicle">{{ $t('profile.vehicle') }}</label>
-        </div>
-        <div class="sign-up-form__input">
+        <label for="vehicle">{{ $t('profile.vehicle') }}</label>
+        <div>
           <Checkbox
             v-model="bike"
             :label="$t('profile.vehicles.bike')"
@@ -89,10 +85,8 @@
             identifier="tramway" />
         </div>
 
-        <div class="sign-up-form__label">
-          <label for="sex">{{ $t('profile.sex') }}</label>
-        </div>
-        <div class="sign-up-form__input">
+        <label for="sex">{{ $t('profile.sex') }}</label>
+        <div>
           <Radio
             v-model="sex"
             :label="$t('profile.sexes.man')"
@@ -112,10 +106,8 @@
           name="born"
           type="number" />
 
-        <div class="sign-up-form__label">
-          <label for="region">{{ $t('profile.region') }}</label>
-        </div>
-        <div class="sign-up-form__input">
+        <label for="region">{{ $t('profile.region') }}</label>
+        <div>
           <select id="region" v-model="region">
             <option value="">{{ $t('sign-up.region-options') }}</option>
             <option value="PRG">{{ $t('profile.regions.PRG') }}</option>
@@ -135,10 +127,8 @@
           </select>
         </div>
 
-        <div class="sign-up-form__label">
-          <label for="education">{{ $t('profile.education') }}</label>
-        </div>
-        <div class="sign-up-form__input">
+        <label for="education">{{ $t('profile.education') }}</label>
+        <div class="pb-5 mb-5">
           <Radio
             v-model="education"
             :label="$t('profile.educations.primary')"
@@ -159,12 +149,15 @@
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
-
-        <Button
-          :disabled="invalid"
-          :value="$t('sign-up.finished-button-label')"
-          @clicked="submitForm()"
-          class="sign-up-form__button"/>
+        <b-row class="pt-5 mt-5">
+          <b-col md="4" sm="12">
+            <Button
+              class="w-100"
+              :disabled="invalid"
+              :value="$t('sign-up.finished-button-label')"
+              @clicked="submitForm()"/>
+          </b-col>
+        </b-row>
       </b-form>
     </ValidationObserver>
 
@@ -313,63 +306,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.sign-up-wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
-  margin: 0 auto;
-  max-width: 80%;
-  padding: 1em 0;
-}
-
-#sign-up-form-success {
-  color: green;
-}
-
-.sign-up-form__label {
-  font-size: 25px;
-  clear: both;
-  margin-bottom: 0.6rem;
-  font-weight: normal;
-}
-
-.sign-up-form__errors-heading {
-  color: rgb(209, 49, 49);
-  font-size: 150%;
-  clear: both;
-}
-
-.sign-up-form__input {
-  width: 100%;
-  font-size: 20px;
-  margin-bottom: 1rem;
-}
-
-select {
-  font-size: 20px;
-  padding: 8px;
-  margin-bottom: 1rem;
-}
-
-.sign-up-form__button {
-  display: block;
-  clear: left;
-  width: 100%;
-}
-
-@media all and (min-width: 850px) {
-  .sign-up-wrapper {
-    grid-template-columns: 1fr;
-    max-width: 80%;
-  }
-
-  .sign-up-form__button {
-    width: 30%;
-  }
-
-  .sign-up-form__input {
-    /*width: 70%;*/
-  }
-}
-</style>

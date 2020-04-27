@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container fluid class="pt-5">
+    <b-container fluid class="pt-5 w-75 m-auto pb-5">
       <b-row>
         <b-col>
           <PollHeading v-if="item" :item="item"/>
