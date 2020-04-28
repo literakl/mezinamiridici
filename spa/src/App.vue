@@ -16,9 +16,13 @@
               </b-col>
             </b-row>
           </b-col>
-          <b-col md="3" class="mt-auto mb-auto text-white">
+          <b-col md="3" class="mt-auto mb-auto text-white" v-if="!authorized">
             <router-link class="text-warning" :to="{ name: 'sign-up'}">{{ $t('app.sign-up') }}</router-link> /
             <router-link class="text-warning" :to="{ name: 'sign-in'}">{{ $t('app.sign-in') }}</router-link>
+          </b-col>
+          <b-col md="3" class="mt-auto mb-auto text-white" v-if="authorized">
+            <router-link class="text-warning" :to="{ name: 'user-profile', params: { id: userId } }">{{nickname}}</router-link> /
+            <a class="text-warning" v-on:click="signMeOut()" href="#0">{{ $t('app.sign-out') }}</a>
           </b-col>
         </b-row>
       </b-container>
@@ -32,11 +36,11 @@
         <b-row class="pt-4 pb-4 w-75 m-auto">
           <b-col>
             <b-nav>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'help' }">{{ $t('app.help') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'mission' }">{{ $t('app.our-mission') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'contact' }">{{ $t('app.contact') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'advertisement' }">{{ $t('app.advertisement') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'archive' }">{{ $t('app.archive') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'help'}">{{ $t('app.help') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'contact'}">{{ $t('app.contact') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'advertisement'}">{{ $t('app.advertisement') }}</router-link></b-nav-item>
+              <b-nav-item><router-link class="text-warning" :to="{ name: 'archive'}">{{ $t('app.archive') }}</router-link></b-nav-item>
             </b-nav>
           </b-col>
         </b-row>

@@ -1,9 +1,5 @@
 <template>
-    <input
-        type="submit"
-        v-bind:value="value"
-        class="atom__submit-button"
-    >
+    <b-form-input class="bg-warning" type="submit" v-bind:value="value"></b-form-input>
 </template>
 
 <script>
@@ -14,20 +10,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.atom__submit-button {
-    background-color: #ffd200;
-    height: 53px;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 700;
-    border: 0px;
-    box-shadow: 0px 4px #f5a522;
-}
-
-.atom__submit-button:hover {
-    box-shadow: none;
-    cursor: pointer;
-}
-</style>

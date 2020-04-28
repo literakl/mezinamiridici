@@ -1,7 +1,7 @@
 <template>
-    <div class="atom__textarea-wrapper">
-        <textarea class="atom__textarea-textarea" v-model="text" />
-        <Button :disabled="sending" class="atom__textarea-send-button" value="Send" @clicked="send"/>
+    <div>
+        <b-form-textarea v-model="text" ></b-form-textarea>
+        <Button :disabled="sending" class="mt-3" value="Send" @clicked="send"/>
     </div>
 </template>
 
@@ -46,34 +46,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.atom__textarea-wrapper {
-  grid-template-columns: 1fr;
-  display: grid;
-}
-
-.atom__textarea-textarea {
-  height: 100px;
-  border: 1px solid black;
-  resize: none;
-}
-
-.atom__textarea-send-button {
-  margin-top: 20px;
-}
-
-@media all and (min-width: 850px) {
-  .atom__textarea-wrapper {
-    grid-template-columns: 1fr 0.4fr;
-    width: 50%;
-  }
-  .atom__textarea-textarea {
-    grid-column: 1 / span 2
-  }
-
-  .atom__textarea-send-button {
-    grid-column: 2 / span 2;
-  }
-}
-</style>

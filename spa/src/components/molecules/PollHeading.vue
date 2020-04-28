@@ -12,6 +12,7 @@
             <li>{{ $t('poll.votes') }}: {{item.votes.total}}</li>
             <!--                <li>{{poll.pollComments}} comments</li>-->
           </ul>
+
         </div>
 
         <hr />

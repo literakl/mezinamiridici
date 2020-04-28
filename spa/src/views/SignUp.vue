@@ -34,22 +34,24 @@
             name="personal-data"
             identifier="personalData" />
 
-          <div v-if="personalData" class="pb-3">
+          <div v-if="personalData">
             <div>
               <label for="share-profile">{{ $t('profile.share-profile') }}</label>
             </div>
-            <div>
+            <b-row>
               <Radio
+                class="pl-3"
                 v-model="share"
                 identifier="public"
                 :label="$t('profile.public')"
                 name="share-profile"/>
               <Radio
+                class="pl-3"
                 v-model="share"
                 identifier="private"
                 :label="$t('profile.private')"
                 name="share-profile"/>
-            </div>
+            </b-row><br>
 
             <TextInput
               v-model="drivingSince"
@@ -61,54 +63,62 @@
             <div>
               <label for="vehicle">{{ $t('profile.vehicle') }}</label>
             </div>
-            <div>
+            <b-row>
               <Checkbox
+                class="pl-3"
                 v-model="bike"
                 :label="$t('profile.vehicles.bike')"
                 name="vehicle"
                 identifier="bike" />
               <Checkbox
+                class="pl-3"
                 v-model="car"
                 :label="$t('profile.vehicles.car')"
                 name="vehicle"
                 identifier="car" />
               <Checkbox
+                class="pl-3"
                 v-model="bus"
                 :label="$t('profile.vehicles.bus')"
                 name="vehicle"
                 identifier="bus" />
               <Checkbox
+                class="pl-3"
                 v-model="van"
                 :label="$t('profile.vehicles.van')"
                 name="vehicle"
                 identifier="van" />
               <Checkbox
+                class="pl-3"
                 v-model="truck"
                 :label="$t('profile.vehicles.truck')"
                 name="vehicle"
                 identifier="truck" />
               <Checkbox
+                class="pl-3"
                 v-model="tramway"
                 :label="$t('profile.vehicles.tramway')"
                 name="vehicle"
                 identifier="tramway" />
-            </div>
+            </b-row>
 
             <div>
               <label for="sex">{{ $t('profile.sex') }}</label>
             </div>
-            <div>
+            <b-row>
               <Radio
+                class="pl-3"
                 v-model="sex"
                 :label="$t('profile.sexes.man')"
                 name="sex"
                 identifier="man" />
               <Radio
+                class="pl-3"
                 v-model="sex"
                 :label="$t('profile.sexes.woman')"
                 name="sex"
                 identifier="woman" />
-            </div>
+            </b-row><br>
 
             <TextInput
               v-model="bornInYear"
@@ -143,26 +153,29 @@
             <div>
               <label for="education">{{ $t('profile.education') }}</label>
             </div>
-            <div>
+            <b-row>
               <Radio
+                class="pl-3"
                 v-model="education"
                 :label="$t('profile.educations.primary')"
                 name="education"
                 identifier="primary" />
               <Radio
+                class="pl-3"
                 v-model="education"
                 :label="$t('profile.educations.secondary')"
                 name="education"
                 identifier="secondary" />
               <Radio
+                class="pl-3"
                 v-model="education"
                 :label="$t('profile.educations.university')"
                 name="education"
                 identifier="university" />
-            </div>
+            </b-row>
           </div>
 
-          <h2 class="pt-5">{{ $t('sign-up.consents') }}</h2>
+          <h2>{{ $t('sign-up.consents') }}</h2>
 
           <div>
             <Checkbox

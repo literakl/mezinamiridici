@@ -1,15 +1,14 @@
 <template>
   <ValidationProvider
     mode="eager"
-    class="relative appearance-none w-full TextInput"
+    class="w-50"
     tag="div"
     :vid="vid"
     :rules="rules"
     :name="name || label"
     v-slot="{ errors, required, ariaInput, ariaMsg }">
-    <div class="form-group">
+    <div>
       <label
-        class="absolute block inset-0 w-full px-2 py-2 leading-normal"
         @click="$refs.input.focus()"
         :for="name">
         <div v-if="label">
@@ -17,8 +16,7 @@
           <span>{{ required ? ' *' : '' }}</span>
         </div>
       </label>
-      <input
-        class="form-control"
+      <b-form-input
         :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
         :id="name"
         :type="type"
@@ -26,8 +24,9 @@
         ref="input"
         v-model="innerValue"
         v-bind="ariaInput">
+      </b-form-input>
       <div
-        class="display-error"
+        class="p-1 text-danger"
         v-bind="ariaMsg"
         v-if="errors[0]">
         {{ errors[0] }}
@@ -113,43 +112,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.TextInput {
-  .form-group {
-    font-size: 25px;
-    margin-bottom: 1rem;
-    clear: both;
-    input {
-      position: relative;
-      padding: 0.4rem;
-      margin-top: 1rem;
-      width: 60%;
-      font-size: 20px;
-      border-radius: 4px;
-      &.has-value,
-      &:focus {
-        outline: none;
-      }
-    }
-    label {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      user-select: none;
-    }
-    .is-invalid {
-      border-color: #dc3545;
-    }
-    input.has-value ~ label,
-    input:focus ~ label {
-      font-size: 0.6rem;
-      margin-top: 0;
-      transition: all 0.2s ease-in-out;
-    }
-    .display-error {
-      padding: 10px;
-      color: firebrick;
-    }
-  }
-}
-</style>
