@@ -9,11 +9,13 @@
     <b-form-checkbox
       :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
       :id="identifier"
-      value="false"
+      v-model="checked"
       ref="input"
       @click.native="selectfunction($event)"
     >
-      {{label}}
+    <label :for="identifier" class="atoms__checkbox-label">
+      <span>{{label}}</span>
+    </label>
     </b-form-checkbox>
   </ValidationProvider>
 </template>
@@ -22,6 +24,12 @@
 import { ValidationProvider } from 'vee-validate';
 
 export default {
+  data: () => ({
+    checked: null,
+  }),
+  created() {
+    this.checked = this.value;
+  },
   props: {
     vid: {
       type: String,
@@ -45,7 +53,7 @@ export default {
     },
     value: {
       type: null,
-      default: '',
+      default: null,
     },
   },
   components: {
@@ -53,6 +61,9 @@ export default {
   },
   methods: {
     selectfunction(event) {
+      if (event.target.checked) {
+        this.checked = !this.checked;
+      }
       this.$emit('input', event.target.checked);
     },
   },

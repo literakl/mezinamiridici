@@ -7,7 +7,7 @@
       :name="name"
       ref="radio"
       @click.native="updateRadio()"
-      :checked="value === identifier">
+      v-model="selected">
         {{label}}
     </b-form-radio>
   </span>
@@ -15,6 +15,14 @@
 
 <script>
 export default {
+  data: () => ({
+    selected: null,
+  }),
+  created() {
+    if (this.value) {
+      this.selected = this.value;
+    }
+  },
   props: ['value', 'name', 'identifier', 'label', 'checked'],
 
   methods: {
