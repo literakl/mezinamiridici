@@ -3,7 +3,7 @@
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form  @submit.prevent="passes(signIn)">
           <b-container fluid>
-            <b-row class="w-75 m-auto pt-5 pb-5">
+            <b-row class="w-75 m-auto pt-5">
               <b-col md="6">
                 <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
                 <div>{{ message }}</div>
@@ -32,17 +32,21 @@
                     {{ error }}
                   </strong>
                 </div>
-
+              </b-col>
+              <b-col md="6">
+                <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
+                  {{ $t('sign-in.sign-up-create-account-message') }}
+              </b-col>
+            </b-row>
+            <b-row class="w-75 m-auto pb-5">
+              <b-col md="6">
                 <Button
                   class="w-75"
                   :disabled="invalid"
                   :value="$t('sign-in.sign-in-button')"
                   @clicked="signIn"/>
               </b-col>
-              <b-col md="6" class="mt-auto">
-                <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
-                  {{ $t('sign-in.sign-up-create-account-message') }}
-
+              <b-col md="6">
                 <Button
                   class="w-75"
                   :value="$t('sign-in.sign-up-button')"
