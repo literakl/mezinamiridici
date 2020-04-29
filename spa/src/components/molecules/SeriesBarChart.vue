@@ -9,6 +9,7 @@ export default {
   name: 'SeriesBarChart',
   props: {
     series: Array,
+    captions: Array,
     colors: Array,
   },
   computed: {
@@ -21,7 +22,7 @@ export default {
         group[this.$t('poll.choices.trivial')] = votes.trivial;
         group[this.$t('poll.choices.dislike')] = votes.dislike;
         group[this.$t('poll.choices.hate')] = votes.hate;
-        const data = { name: `${i + 1}. ${this.$t('poll.analysis.group')}`, data: group };
+        const data = { name: this.captions[i], data: group };
         groups.push(data);
       }
       return groups;

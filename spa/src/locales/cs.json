@@ -82,13 +82,6 @@
         "discussion": "Diskuse",
         "your-opinion": "Co si o tom myslíte vy?",
         "other-polls-button": "Další ankety",
-        "comparison": "Srovnání:",
-        "custom": "vlastní",
-        "men_women": "muži × ženy",
-        "car_truck": "auto × kamion",
-        "car_bike": "auto × motorka",
-        "unseasoned_veteran": "zajíc × zkušený",
-        "praha_brno": "Praha × Brno",
         "choices": {
             "neutral": "Není problém",
             "trivial": "Banalita",
@@ -96,6 +89,22 @@
             "hate": "Štve mě to"
         },
         "analysis": {
+            "comparison": "Srovnání:",
+            "custom": "vlastní",
+            "men_women": "muži × ženy",
+            "car_truck": "auto × kamion",
+            "car_bike": "auto × motorka",
+            "unseasoned_veteran": "zajíc × zkušený",
+            "praha_brno": "Praha × Brno",
+            "men": "Muži",
+            "women": "Ženy",
+            "car": "Auto",
+            "truck": "Kamion",
+            "bike": "Motorka",
+            "unseasoned": "Zajíc",
+            "veteran": "Zkušený",
+            "praha": "Praha",
+            "brno": "Brno",
             "group": "skupina",
             "button": "Porovnej"
         }
