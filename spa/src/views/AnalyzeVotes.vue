@@ -9,7 +9,7 @@
           <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row v-if="this.type === 'vlastni'">
         <b-col md="6">
           <h2 class="bg-warning p-2">1. {{ $t('poll.analysis.group') }}</h2>
         </b-col>
@@ -17,7 +17,7 @@
           <h2 class="bg-warning p-2">2. {{ $t('poll.analysis.group') }}</h2>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row v-if="this.type === 'vlastni'">
         <b-col class="text-center p-4">
           <Button :value="$t('poll.analysis.button')" />
         </b-col>
@@ -64,7 +64,7 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.parseType(this.type);
+    this.parseType(to.params.type);
     if (this.queries) {
       this.runQueries(this.item._id, this.queries);
     } else {
@@ -118,13 +118,14 @@ export default {
           break;
         case 'zajic_zkuseny':
           this.queries = ['age=0:25&driving=0-3', 'age=26:110&driving=3:99'];
-          this.captions = [this.$t('poll.analysis.zajic'), this.$t('poll.analysis.zkuseny')];
+          this.captions = [this.$t('poll.analysis.unseasoned'), this.$t('poll.analysis.veteran')];
           break;
         case 'praha_brno':
           this.queries = ['region=PRG', 'region=JM'];
           this.captions = [this.$t('poll.analysis.praha'), this.$t('poll.analysis.brno')];
           break;
         default:
+          this.queries = null;
           this.captions = [`1. ${this.$t('poll.analysis.group')}`, `2. ${this.$t('poll.analysis.group')}`];
       }
     },
