@@ -1,22 +1,25 @@
 <template>
   <div>
-    <column-chart :data="chartData" width="800px" :colors="colors"></column-chart>
+    <column-chart :data="chartData" width="800px" :colors="colors" :suffix="suffix"></column-chart>
   </div>
 </template>
 
 <script>
+import normalizeVotes from '@/components/utils/chartUtils';
+
 export default {
   name: 'SeriesBarChart',
   props: {
     series: Array,
     captions: Array,
     colors: Array,
+    absoluteValues: Boolean,
   },
   computed: {
     chartData() {
       const groups = [];
       for (let i = 0; i < this.series.length; i += 1) {
-        const votes = this.series[i];
+        const votes = (this.absoluteValues) ? this.series[i] : normalizeVotes(this.series[i]);
         const group = {};
         group[this.$t('poll.choices.neutral')] = votes.neutral;
         group[this.$t('poll.choices.trivial')] = votes.trivial;
@@ -26,6 +29,9 @@ export default {
         groups.push(data);
       }
       return groups;
+    },
+    suffix() {
+      return (this.absoluteValues) ? '' : '%';
     },
   },
 };

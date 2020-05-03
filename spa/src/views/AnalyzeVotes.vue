@@ -5,8 +5,15 @@
         <b-col>
           <PollHeading v-if="item" :item="item"/>
           <ContentLoading v-if="! item" type="poll" />
-          <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']" :captions="captions"/>
+          <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']" :captions="captions" :absolute-values="absoluteValues"/>
           <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
+          <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="1">
+            <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2" >
+              <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
+              <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
+            </b-form-radio-group>
+          </b-form-group>
+          {{ absoluteValues }}
         </b-col>
       </b-row>
       <b-row v-if="this.type === 'vlastni'">
@@ -52,6 +59,7 @@ export default {
     groups: [{}, {}],
     captions: null,
     queries: null,
+    absoluteValues: false,
     inProgress: true,
     error: null,
   }),

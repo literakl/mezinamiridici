@@ -106,7 +106,10 @@
             "praha": "Praha",
             "brno": "Brno",
             "group": "skupina",
-            "button": "Porovnej"
+            "button": "Porovnej",
+            "display_label": "Zobrazit",
+            "values": "hodnoty",
+            "percents": "procenta"
         }
     },
     "profile": {

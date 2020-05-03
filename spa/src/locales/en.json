@@ -105,7 +105,10 @@
       "praha": "Prague",
       "brno": "Brno",
       "group": "group",
-      "button": "Compare"
+      "button": "Compare",
+      "display_label": "Show",
+      "values": "values",
+      "percents": "percents"
     }
   },
   "profile": {
