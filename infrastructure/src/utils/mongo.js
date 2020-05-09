@@ -1,132 +1,139 @@
 const generate = require('nanoid/generate');
 const dotenv = require('dotenv');
-const MongoClient = require('mongodb').MongoClient;
-const logger = require("./logging");
+const { MongoClient } = require('mongodb');
+const logger = require('./logging');
 
 dotenv.config();
-let MONGODB_URI = process.env.MONGODB_URI;
-logger.info("Mongo is configured to connect " + MONGODB_URI);
+const { MONGODB_URI } = process.env;
+logger.info(`Mongo is configured to connect ${MONGODB_URI}`);
 let cachedDb = null;
 
-const stageSortByDateDesc = {$sort: {"info.date": -1}};
-const stagePublished = {$match: {"info.published": true}};
-function stageLimit (n) { return { $limit: n } }
-function stageId (id) { return {$match: {_id: id}} }
-function stageSlug (slug) { return {$match: {"info.slug": slug}} }
+const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
+const stagePublished = { $match: { 'info.published': true } };
+function stageLimit(n) { return { $limit: n }; }
+function stageId(id) { return { $match: { _id: id } }; }
+function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
 const stageLookupPoll = {
-    $lookup: {
-        from: 'polls',
-        localField: '_id',
-        foreignField: '_id',
-        as: 'poll'
-    }
+  $lookup: {
+    from: 'polls',
+    localField: '_id',
+    foreignField: '_id',
+    as: 'poll',
+  },
 };
 function stageMyVote(userId, pollId) {
-    if (pollId) {
-        return {
-            $lookup: {
-                from: 'poll_votes', pipeline: [
-                    {$match: {$and: [
-                        {poll: pollId},
-                        {user: userId}
-                    ]}},
-                    {$project: {_id: 0, vote: "$vote"}},
-                ],
-                as: "me"
-            }
-        }
-    }
+  if (pollId) {
     return {
-        $lookup: {
-            from: 'poll_votes',
-            let: {poll_id: "$_id"},
-            pipeline: [
-                {$match: {$and: [
-                    {$expr: {$eq: ["$poll","$$poll_id"]}},
-                    {user: userId}
-                ]}},
-                {$project: {_id: 0, vote: "$vote"}},
+      $lookup: {
+        from: 'poll_votes',
+        pipeline: [
+          {
+            $match: {
+              $and: [
+                { poll: pollId },
+                { user: userId },
+              ],
+            },
+          },
+          { $project: { _id: 0, vote: '$vote' } },
+        ],
+        as: 'me',
+      },
+    };
+  }
+  return {
+    $lookup: {
+      from: 'poll_votes',
+      let: { poll_id: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $and: [
+              { $expr: { $eq: ['$poll', '$$poll_id'] } },
+              { user: userId },
             ],
-            as: "me"
-        }
-    }
+          },
+        },
+        { $project: { _id: 0, vote: '$vote' } },
+      ],
+      as: 'me',
+    },
+  };
 }
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
-    logger.debug("Connect to mongo database");
+  logger.debug('Connect to mongo database');
 
-    if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
-        logger.debug("Using cached database instance");
-        return Promise.resolve(cachedDb);
-    }
+  if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
+    logger.debug('Using cached database instance');
+    return Promise.resolve(cachedDb);
+  }
 
-    return MongoClient.connect(MONGODB_URI)
-        .then(db => {
-            logger.debug("Successful connect");
-            cachedDb = db;
-            return cachedDb;
-        })
-        .catch(err => {
-            logger.error("Connection error occurred: ", err);
-            throw err;
-        });
+  return MongoClient.connect(MONGODB_URI)
+    .then((db) => {
+      logger.debug('Successful connect');
+      cachedDb = db;
+      return cachedDb;
+    })
+    .catch((err) => {
+      logger.error('Connection error occurred: ', err);
+      throw err;
+    });
 }
 
 function findUser(dbClient, params, projection) {
-    const query = {};
-    if (params.userId) {
-        query._id = params.userId;
-    }
-    if (params.email) {
-        query['auth.email'] = params.email;
-    }
-    if (params.token) {
-        query['auth.verifyToken'] = params.token;
-    }
-    if (params.resetPasswordToken) {
-        query['auth.reset.token'] = params.resetPasswordToken;
-    }
+  const query = {};
+  if (params.userId) {
+    query._id = params.userId;
+  }
+  if (params.email) {
+    query['auth.email'] = params.email;
+  }
+  if (params.token) {
+    query['auth.verifyToken'] = params.token;
+  }
+  if (params.resetPasswordToken) {
+    query['auth.reset.token'] = params.resetPasswordToken;
+  }
 
-    return dbClient.db()
-        .collection("users")
-        .findOne(query, projection)
-        .then(doc => {
-            return doc;
-        });
+  return dbClient.db()
+    .collection('users')
+    .findOne(query, projection)
+    .then(doc => doc);
 }
 
 async function getPoll(dbClient, pipeline) {
-    const cursor = dbClient.db().collection("items").aggregate(pipeline);
-    const item = await cursor.next();
-    if (item == null) {
-        return null;
-    }
-    // noinspection TypeScriptValidateTypes
-    item.votes = item.poll[0].votes;
-    item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
-    delete item.poll;
-    if (item.me && item.me[0]) {
-        item.my_vote = item.me[0].vote;
-    }
-    delete item.me;
-    return item;
+  const cursor = dbClient.db().collection('items').aggregate(pipeline);
+  const item = await cursor.next();
+  if (item == null) {
+    return null;
+  }
+  // noinspection TypeScriptValidateTypes
+  item.votes = item.poll[0].votes;
+  item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
+  delete item.poll;
+  if (item.me && item.me[0]) {
+    item.my_vote = item.me[0].vote;
+  }
+  delete item.me;
+  return item;
 }
 
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
 function generateTimeId() {
-    return Date.now().toString(32) + Math.round(Math.random() * 35).toString(36);
+  return Date.now().toString(32) + Math.round(Math.random() * 35).toString(36);
 }
 
-function generateId (idLength = 10) {
-    return generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', idLength);
+function generateId(idLength = 10) {
+  return generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', idLength);
 }
 
 function close() {
-    if (cachedDb) {
-        logger.info("Closing the cached mongo client");
-        cachedDb.close();
-    }
+  if (cachedDb) {
+    logger.info('Closing the cached mongo client');
+    cachedDb.close();
+  }
 }
 
 exports.connectToDatabase = connectToDatabase;

@@ -1,11 +1,12 @@
 const express = require('express');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
-const {createLogger, format, transports} = require('winston');
+const { createLogger, format, transports } = require('winston');
+
 const app = express();
 app.use(express.json());
 // TODO only use in development
-app.use(errorhandler())
+app.use(errorhandler());
 
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
@@ -23,31 +24,29 @@ require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
 
-const myFormat = format.printf(info => {
-    return `${info.message}`;
-});
+const myFormat = format.printf(info => `${info.message}`);
 
 const logger = createLogger({
-    format: myFormat,
-    level: "info",
-    transports: [
-        new transports.File({
-            filename: "access.log",
-            handleExceptions: true,
-            maxsize: 5242880, //5MB
-            maxFiles: 5,
-            colorize: false
-        }),
-    ],
-    exitOnError: false
+  format: myFormat,
+  level: 'info',
+  transports: [
+    new transports.File({
+      filename: 'access.log',
+      handleExceptions: true,
+      maxsize: 5242880, // 5MB
+      maxFiles: 5,
+      colorize: false,
+    }),
+  ],
+  exitOnError: false,
 });
 
 logger.stream = {
-    write: function(message) {
-        logger.info(message.replace(/\n$/, ''));
-    }
+  write(message) {
+    logger.info(message.replace(/\n$/, ''));
+  },
 };
 
-app.use(morgan("combined", { "stream": logger.stream }));
+app.use(morgan('combined', { stream: logger.stream }));
 
 module.exports = app;
