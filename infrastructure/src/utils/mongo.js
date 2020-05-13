@@ -13,14 +13,6 @@ const stagePublished = { $match: { 'info.published': true } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
-const stageLookupPoll = {
-  $lookup: {
-    from: 'polls',
-    localField: '_id',
-    foreignField: '_id',
-    as: 'poll',
-  },
-};
 function stageMyVote(userId, pollId) {
   if (pollId) {
     return {
@@ -30,7 +22,7 @@ function stageMyVote(userId, pollId) {
           {
             $match: {
               $and: [
-                { poll: pollId },
+                { item: pollId },
                 { user: userId },
               ],
             },
@@ -49,7 +41,7 @@ function stageMyVote(userId, pollId) {
         {
           $match: {
             $and: [
-              { $expr: { $eq: ['$poll', '$$poll_id'] } },
+              { $expr: { $eq: ['$item', '$$poll_id'] } },
               { user: userId },
             ],
           },
@@ -109,10 +101,8 @@ async function getPoll(dbClient, pipeline) {
   if (item == null) {
     return null;
   }
-  // noinspection TypeScriptValidateTypes
-  item.votes = item.poll[0].votes;
+  item.votes = item.data.votes;
   item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
-  delete item.poll;
   if (item.me && item.me[0]) {
     item.my_vote = item.me[0].vote;
   }
@@ -143,7 +133,6 @@ exports.findUser = findUser;
 exports.getPoll = getPoll;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
-exports.stageLookupPoll = stageLookupPoll;
 exports.stageMyVote = stageMyVote;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;

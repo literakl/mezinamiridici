@@ -13,6 +13,9 @@
 * nickname: user nickname
 * id: user id
 
+## Data section
+* depends on type of object
+
 ## Comments section
 * count: count of all comments
 * last: timestamp of the last comment

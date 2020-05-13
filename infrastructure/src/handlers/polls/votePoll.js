@@ -38,7 +38,7 @@ module.exports = (app) => {
       await incrementPoll(dbClient, pollId, vote);
       logger.debug('Vote recorded');
 
-      const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll, mongo.stageMyVote(user._id, pollId)];
+      const pipeline = [mongo.stageId(pollId), mongo.stageMyVote(user._id, pollId)];
       item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Updated poll fetched');
 
@@ -52,7 +52,7 @@ module.exports = (app) => {
 
 function insertPollVote(dbClient, pollId, vote, user) {
   const pollVote = {
-    _id: mongo.generateId(), poll: pollId, user: user._id, date: new Date(), vote,
+    _id: mongo.generateId(), item: pollId, user: user._id, date: new Date(), vote,
   };
   const currentYear = new Date().getFullYear();
   if (user.bio.sex) {
@@ -78,9 +78,7 @@ function insertPollVote(dbClient, pollId, vote, user) {
 
 function incrementPoll(dbClient, pollId, vote) {
   const inc = { $inc: {} };
-  inc.$inc[`votes.${vote}`] = 1;
-  dbClient.db().collection('polls').updateOne({ _id: pollId }, inc);
-  delete inc.$inc[`votes.${vote}`];
+  inc.$inc[`data.votes.${vote}`] = 1;
   inc.$inc.votes_count = 1;
   dbClient.db().collection('items').updateOne({ _id: pollId }, inc);
 }

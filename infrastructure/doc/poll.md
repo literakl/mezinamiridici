@@ -14,21 +14,20 @@
 * nickname: user nickname
 * id: user id
 
-## Comments section
-* count: count of all comments
-* last: timestamp of the last comment
+## Data section
 
-# Poll object
-* _id: copied from associated Item
-
-## Votes section
+### Votes section
 * neutral: sum of all neutral poll_votes, required
 * trivial: sum of all trivial poll_votes, required
 * dislike: sum of all dislike poll_votes, required
 * hate: sum of all hate poll_votes, required
 
+## Comments section
+* count: count of all comments
+* last: timestamp of the last comment
+
 # Poll vote object
-* poll: id of associated poll object, required, indexed
+* poll: id of associated item object, required, indexed
 * user: id of user, required, indexed 
 * date: timestampe of the vote, required
 * vote: values: neutral, trivial, dislike, hate; required

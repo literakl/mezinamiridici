@@ -19,11 +19,10 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const pollId = mongo.generateTimeId();
-      await insertPoll(dbClient, pollId);
       await insertItem(dbClient, text, pollId, req.identity);
       logger.debug('Item inserted');
 
-      const pipeline = [mongo.stageId(pollId), mongo.stageLookupPoll];
+      const pipeline = [mongo.stageId(pollId)];
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Poll fetched');
 
@@ -34,20 +33,6 @@ module.exports = (app) => {
     }
   });
 };
-
-function insertPoll(dbClient, pollId) {
-  const poll = {
-    _id: pollId,
-    votes: {
-      neutral: 0,
-      trivial: 0,
-      dislike: 0,
-      hate: 0,
-    },
-  };
-
-  return dbClient.db().collection('polls').insertOne(poll);
-}
 
 function insertItem(dbClient, text, pollId, identity) {
   const slug = slugify(text, { lower: true, strict: true });
@@ -65,7 +50,15 @@ function insertItem(dbClient, text, pollId, identity) {
       published: true,
       date: new Date(),
       // "picture":  "car75.png", TODO
-      tags: ['polls'], // TODO
+      // tags: ['polls'], // TODO
+    },
+    data: {
+      votes: {
+        neutral: 0,
+        trivial: 0,
+        dislike: 0,
+        hate: 0,
+      },
     },
   };
 

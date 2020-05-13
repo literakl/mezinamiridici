@@ -13,7 +13,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1), mongo.stageLookupPoll];
+      const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
         pipeline.push(mongo.stageMyVote(req.identity.userId));
       }
@@ -35,7 +35,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const pipeline = [mongo.stageSlug(slug), mongo.stageLookupPoll];
+      const pipeline = [mongo.stageSlug(slug)];
       if (req.identity) {
         // noinspection JSCheckFunctionSignatures
         pipeline.push(mongo.stageMyVote(req.identity.userId));
