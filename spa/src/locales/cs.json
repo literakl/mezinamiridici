@@ -13,7 +13,10 @@
         "archive": "Archiv"
     },
     "generic": {
-        "internal-error": "Jejda, chybička se vloudila. Omlouváme se."
+        "internal-error": "Jejda, chybička se vloudila. Omlouváme se.",
+        "not-found-caption": "Stránka nenalezena",
+        "not-found-message": "Omlouváme se, tato stránka byla odtáhnuta pryč.",
+        "we-must-fix": "Musíme to opravit"
     },
     "sign-in": {
         "email-placeholder": "Email",

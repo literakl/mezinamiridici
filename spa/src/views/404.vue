@@ -1,12 +1,13 @@
 <template>
-    <b-container fluid>
-        <b-row>
-            <b-col offset="1">
-                <h1>404 - Page not found</h1>
-                <p>This page may have been deleted, <router-link :to="{ name: 'home' }">go back to the homepage</router-link>.</p>
-            </b-col>
-        </b-row>
-    </b-container>
+  <b-container fluid>
+    <b-row>
+      <b-col offset="1">
+        <h1>{{ $t('generic.not-found-caption') }}</h1>
+        <p>{{ $t('generic.not-found-message') }}</p>
+        <img src="/img/opravit.jpg" :alt="$t('generic.we-must-fix')" width="800">
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>

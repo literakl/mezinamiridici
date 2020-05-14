@@ -13,7 +13,10 @@
     "archive": "Archive"
   },
   "generic": {
-    "internal-error": "Oops, this is an error. We are sorry."
+    "internal-error": "Oops, this is an error. We are sorry.",
+    "not-found-caption": "Page not found",
+    "not-found-message": "Sorry, this page has been towed away.",
+    "we-must-fix": "We must fix it"
   },
   "sign-in": {
     "email-placeholder": "Email",
