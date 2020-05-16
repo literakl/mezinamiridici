@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <b-navbar toggleable="lg" type="dark" variant="dark">
+      <b-navbar toggleable="sm" type="dark" variant="dark">
         <b-navbar-brand href="/">
           <img src="./assets/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top">
         </b-navbar-brand>
