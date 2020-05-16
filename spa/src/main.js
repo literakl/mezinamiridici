@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  BootstrapVue, BIcon, BIconPeopleCircle, BIconInfoCircle,
+  BootstrapVue, BIcon, BIconPersonFill, BIconInfo,
 } from 'bootstrap-vue';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
@@ -16,8 +16,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.component('BIcon', BIcon);
-Vue.component('BIconPeopleCircle', BIconPeopleCircle);
-Vue.component('BIconInfoCircle', BIconInfoCircle);
+Vue.component('BIconPersonFill', BIconPersonFill);
+Vue.component('BIconInfo', BIconInfo);
 
 new Vue({
   router,

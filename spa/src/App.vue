@@ -22,7 +22,7 @@
             </template>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
-                <b-icon-people-circle font-scale="2"></b-icon-people-circle>
+                <b-icon-person-fill font-scale="2"></b-icon-person-fill>
               </template>
               <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'update-password'}">{{ $t('app.change-password') }}</b-dropdown-item>
@@ -30,7 +30,7 @@
             </b-nav-item-dropdown>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
-                <b-icon-info-circle font-scale="2"></b-icon-info-circle>
+                <b-icon-info font-scale="2"></b-icon-info>
               </template>
               <b-dropdown-item :to="{ name: 'help'}">{{ $t('app.help') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</b-dropdown-item>
