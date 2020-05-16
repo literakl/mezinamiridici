@@ -6,6 +6,8 @@
         "sign-in": "Přihlásit se",
         "sign-up": "Založit účet",
         "sign-out": "Odhlásit se",
+        "my-profile": "Můj profil",
+        "change-password": "Změnit heslo",
         "help": "Nápověda",
         "our-mission": "Naše mise",
         "contact": "Kontakt",
@@ -165,8 +167,7 @@
         "terms": "Souhlasím s podmínkami užití",
         "processing": "Souhlasím se zpracováním osobních údajů",
         "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
-        "update-button": "Upravit profil",
-        "password-button": "Změnit heslo"
+        "update-button": "Upravit profil"
     },
     "comment": {
         "reply": "Odpověď",

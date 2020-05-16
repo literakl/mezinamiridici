@@ -6,6 +6,8 @@
     "sign-in": "Sign in",
     "sign-up": "Sign up",
     "sign-out": "Sign out",
+    "my-profile": "My profile",
+    "change-password": "Change my password",
     "help": "Help",
     "our-mission": "Our mission",
     "contact": "Contact",
@@ -164,8 +166,7 @@
     "terms": "I agree with terms and conditions",
     "processing": "I agree with processing of my personal data",
     "user-not-found": "We are sorry but this driver is unknown to us",
-    "update-button": "Update my profile",
-    "password-button": "Change my password"
+    "update-button": "Update my profile"
   },
   "comment": {
     "reply": "Reply",

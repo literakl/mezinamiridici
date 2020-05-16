@@ -9,11 +9,7 @@
         </div>
 
         <p v-if="myProfile && !error">
-          <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}
-          </router-link>
-          &middot;
-          <router-link :to="{ name: 'update-password'}">{{ $t('profile.password-button') }}
-          </router-link>
+          <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}</router-link>
         </p>
 
         <dl v-if="userProfile && !error">

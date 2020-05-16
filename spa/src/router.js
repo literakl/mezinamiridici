@@ -122,11 +122,6 @@ export default new Router({
       component: () => import('./views/Advertisement.vue'),
     },
     {
-      path: '/archiv',
-      name: 'archive',
-      component: () => import('./views/Archive.vue'),
-    },
-    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/404.vue'),

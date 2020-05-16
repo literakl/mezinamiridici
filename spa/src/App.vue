@@ -1,51 +1,49 @@
 <template>
   <div>
     <header>
-      <b-container fluid class="bg-dark">
-        <b-row class="pt-4 pb-4 w-75 m-auto">
-          <b-col md="9">
-            <b-row>
-              <b-col md="3">
-                <router-link to="/">
-                  <img :alt="$t('app.logo-alt')" src="./assets/logo.png" >
-                </router-link>
-              </b-col>
-              <b-col md="9" class="mt-auto">
-                  <h1 class="text-white">{{ $t('app.name') }}</h1>
-                  <h2 class="text-white">{{ $t('app.slogan') }}</h2>
-              </b-col>
-            </b-row>
-          </b-col>
-          <b-col md="3" class="mt-auto mb-auto text-white" v-if="!authorized">
-            <router-link class="text-warning" :to="{ name: 'sign-up'}">{{ $t('app.sign-up') }}</router-link> /
-            <router-link class="text-warning" :to="{ name: 'sign-in'}">{{ $t('app.sign-in') }}</router-link>
-          </b-col>
-          <b-col md="3" class="mt-auto mb-auto text-white" v-if="authorized">
-            <router-link class="text-warning" :to="{ name: 'user-profile', params: { id: userId } }">{{nickname}}</router-link> /
-            <a class="text-warning" v-on:click="signMeOut()" href="#0">{{ $t('app.sign-out') }}</a>
-          </b-col>
-        </b-row>
-      </b-container>
-      <div class="bg-warning pt-2"></div>
+      <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar-brand href="/">
+          <img src="./assets/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top">
+        </b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav class="d-inline-flex flex-column">
+            <h2><b-nav-text class="text-white">{{ $t('app.name') }}</b-nav-text></h2>
+            <b-nav-text class="text-white">{{ $t('app.slogan') }}</b-nav-text>
+          </b-navbar-nav>
+
+          <b-navbar-nav class="ml-auto">
+            <template v-if="!authorized">
+              <b-nav-item class="text-warning" :to="{ name: 'sign-up'}">{{ $t('app.sign-up') }}</b-nav-item>
+              <b-nav-text class="text-warning"> / </b-nav-text>
+              <b-nav-item class="text-warning" :to="{ name: 'sign-in'}">{{ $t('app.sign-in') }}</b-nav-item>
+            </template>
+            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
+              <template v-slot:button-content>
+                <b-icon-people-circle font-scale="2"></b-icon-people-circle>
+              </template>
+              <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'update-password'}">{{ $t('app.change-password') }}</b-dropdown-item>
+              <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
+            </b-nav-item-dropdown>
+            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
+              <template v-slot:button-content>
+                <b-icon-info-circle font-scale="2"></b-icon-info-circle>
+              </template>
+              <b-dropdown-item :to="{ name: 'help'}">{{ $t('app.help') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'contact'}">{{ $t('app.contact') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'advertisement'}">{{ $t('app.advertisement') }}</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </header>
     <main>
       <router-view/>
     </main>
-    <footer>
-      <b-container fluid class="bg-dark footer">
-        <b-row class="pt-4 pb-4 w-75 m-auto">
-          <b-col>
-            <b-nav>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'help'}">{{ $t('app.help') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'contact'}">{{ $t('app.contact') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'advertisement'}">{{ $t('app.advertisement') }}</router-link></b-nav-item>
-              <b-nav-item><router-link class="text-warning" :to="{ name: 'archive'}">{{ $t('app.archive') }}</router-link></b-nav-item>
-            </b-nav>
-          </b-col>
-        </b-row>
-      </b-container>
-    </footer>
   </div>
 </template>
 
