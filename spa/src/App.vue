@@ -9,9 +9,11 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="d-inline-flex flex-column">
-            <h2><b-nav-text class="text-white">{{ $t('app.name') }}</b-nav-text></h2>
-            <b-nav-text class="text-white">{{ $t('app.slogan') }}</b-nav-text>
+          <b-navbar-nav class="d-none d-sm-block">
+            <div class="d-inline-flex flex-column">
+              <h2><b-nav-text class="text-white">{{ $t('app.name') }}</b-nav-text></h2>
+              <b-nav-text class="text-white">{{ $t('app.slogan') }}</b-nav-text>
+            </div>
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
