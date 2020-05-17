@@ -82,8 +82,8 @@
         "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě."
     },
     "poll": {
-        "your-vote": "Váš hlas",
-        "votes": "Hlasů",
+        "your-vote": "Váš hlas:",
+        "votes": "hlasů",
         "discussion": "Diskuse",
         "your-opinion": "Co si o tom myslíte vy?",
         "other-polls-button": "Další ankety",

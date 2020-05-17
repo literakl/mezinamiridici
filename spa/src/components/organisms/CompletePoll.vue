@@ -4,17 +4,18 @@
       <div>
         <PollHeading :item="item"/>
 
-        <div v-if="voted" class="pt-4 pb-4">
-          <h2 class="pb-5">
-            {{ $t('poll.your-vote') }} <span class="vote-text">{{ $t('poll.choices.'+voted) }}</span>
-          </h2>
-
-          <div class="w-75 m-auto pb-5">
-            <BarChart :votes="item.votes" v-bind:voted="voted" />
+        <div v-if="voted" class="pt-2 pb-2">
+          <div class="pb-3">
+            {{ $t('poll.your-vote') }}
+            <b-button class="ml-3" :variant="this.votedVariant" size="sm">
+<!--              <img src="@/assets/happy.png" class="pr-2" align="middle">-->
+<!--              <img :src="require(this.votedPicture)" class="pr-2" align="middle">-->
+              {{ $t('poll.choices.'+voted) }}
+            </b-button>
           </div>
-            <div class="pb-3">
-              <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
-            </div>
+
+          <BarChart :votes="item.votes" v-bind:voted="voted" />
+          <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
         </div>
 
         <div v-if="!voted">
@@ -66,6 +67,30 @@ export default {
     },
     voted() {
       return this.$store.getters.POLL.my_vote;
+    },
+    votedVariant() {
+      switch (this.$store.getters.POLL.my_vote) {
+        case 'neutral':
+          return 'success';
+        case 'trivial':
+          return 'primary';
+        case 'dislike':
+          return 'warning';
+        default:
+          return 'danger';
+      }
+    },
+    votedPicture() {
+      switch (this.$store.getters.POLL.my_vote) {
+        case 'neutral':
+          return '@/assets/happy.png';
+        case 'trivial':
+          return '@/assets/ok.png';
+        case 'dislike':
+          return '@/assets/slanty.png';
+        default:
+          return '@/assets/angry.png';
+      }
     },
   },
   methods: {

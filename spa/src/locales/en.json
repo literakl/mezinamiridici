@@ -81,8 +81,8 @@
     "body": "Enter statistical information you want to share. Your votes are anonymous in each poll."
   },
   "poll": {
-    "your-vote": "Your vote",
-    "votes": "Votes",
+    "your-vote": "Your vote:",
+    "votes": "votes",
     "discussion": "Discussion",
     "your-opinion": "What do you want to say about it",
     "other-polls-button": "Other polls",
