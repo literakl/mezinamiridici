@@ -6,15 +6,15 @@
           {{ $t('poll.choices.neutral') }}
         </b-button>
         <b-button class="mr-5" variant="primary" size="lg" v-on:click="voted('trivial')">
-          <img src="@/assets/ok.png">
+          <img src="@/assets/ok.png" class="pr-2" align="middle">
           {{ $t('poll.choices.trivial') }}
         </b-button>
         <b-button class="mr-5" variant="warning" size="lg" v-on:click="voted('dislike')">
-          <img src="@/assets/slanty.png">
+          <img src="@/assets/slanty.png" class="pr-2" align="middle">
           {{ $t('poll.choices.dislike') }}
         </b-button>
         <b-button class="mr-5" variant="danger" size="lg" v-on:click="voted('hate')">
-          <img src="@/assets/angry.png">
+          <img src="@/assets/angry.png" class="pr-2" align="middle">
           {{ $t('poll.choices.hate') }}
         </b-button>
     </b-container>

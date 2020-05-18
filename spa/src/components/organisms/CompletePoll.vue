@@ -7,9 +7,8 @@
         <div v-if="voted" class="pt-2 pb-2">
           <div class="pb-3">
             {{ $t('poll.your-vote') }}
-            <b-button class="ml-3" :variant="this.votedVariant" size="sm">
-<!--              <img src="@/assets/happy.png" class="pr-2" align="middle">-->
-<!--              <img :src="require(this.votedPicture)" class="pr-2" align="middle">-->
+            <b-button class="ml-3" :variant="votedVariant" size="md" :pressed="false" aria-pressed="false" style="cursor: default">
+              <img :src="votedPicture" class="pr-2" align="middle">
               {{ $t('poll.choices.'+voted) }}
             </b-button>
           </div>
@@ -83,13 +82,17 @@ export default {
     votedPicture() {
       switch (this.$store.getters.POLL.my_vote) {
         case 'neutral':
-          return '@/assets/happy.png';
+          // eslint-disable-next-line global-require
+          return require('@/assets/happy.png');
         case 'trivial':
-          return '@/assets/ok.png';
+          // eslint-disable-next-line global-require
+          return require('@/assets/ok.png');
         case 'dislike':
-          return '@/assets/slanty.png';
+          // eslint-disable-next-line global-require
+          return require('@/assets/slanty.png');
         default:
-          return '@/assets/angry.png';
+          // eslint-disable-next-line global-require
+          return require('@/assets/angry.png');
       }
     },
   },
@@ -105,3 +108,22 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+  .btn.btn-primary:active:hover,.btn.btn-primary:hover {
+    border-color: var(--primary);
+    background-color: var(--primary);
+  }
+  .btn.btn-success:active:hover,.btn.btn-success:hover {
+    border-color: var(--success);
+    background-color: var(--success);
+  }
+  .btn.btn-warning:active:hover,.btn.btn-warning:hover {
+    border-color: var(--warning);
+    background-color: var(--warning);
+  }
+  .btn.btn-danger:active:hover,.btn.btn-danger:hover {
+    border-color: var(--danger);
+    background-color: var(--danger);
+  }
+</style>
