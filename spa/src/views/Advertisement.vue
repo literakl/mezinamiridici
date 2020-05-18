@@ -1,12 +1,8 @@
 <template>
-    <b-container fluid>
-        <b-row>
-            <b-col offset="1">
-                <h1>Advertisement</h1>
-                <p>Advertisement page here.</p>
-            </b-col>
-        </b-row>
-    </b-container>
+  <div class="pt-3 w-75 m-auto">
+    <h1>Advertisement</h1>
+    <p>Advertisement page here.</p>
+  </div>
 </template>
 
 <script>

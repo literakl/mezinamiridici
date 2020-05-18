@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="w-75 m-auto pt-5 pb-5">
+  <b-container fluid class="pt-3 w-75 m-auto">
 
     <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
     <p>{{ $t('sign-in.reset-password-description') }}</p>

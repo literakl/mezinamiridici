@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid class="w-75 m-auto pt-5 pb-5">
+    <b-container fluid class="pt-3 w-75 m-auto">
       <h1>{{ $t(('sign-up.verify-heading')) }}</h1>
       <p class="text-success" v-if="verified === null">{{ $t(('sign-up.verify-running')) }}</p>
       <p class="text-danger" v-if="verified === false">{{ $t(('sign-up.verify-error')) }}</p>

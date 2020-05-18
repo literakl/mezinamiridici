@@ -1,36 +1,34 @@
 <template>
-  <div>
-    <b-container fluid class="pt-5 w-75 m-auto pb-5">
-      <b-row>
-        <b-col>
-          <PollHeading v-if="item" :item="item"/>
-          <ContentLoading v-if="! item" type="poll" />
-          <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']" :captions="captions" :absolute-values="absoluteValues"/>
-          <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
-          <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="1">
-            <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2" >
-              <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
-              <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
-            </b-form-radio-group>
-          </b-form-group>
-          {{ absoluteValues }}
-        </b-col>
-      </b-row>
-      <b-row v-if="this.type === 'vlastni'">
-        <b-col md="6">
-          <h2 class="bg-warning p-2">1. {{ $t('poll.analysis.group') }}</h2>
-        </b-col>
-        <b-col md="6">
-          <h2 class="bg-warning p-2">2. {{ $t('poll.analysis.group') }}</h2>
-        </b-col>
-      </b-row>
-      <b-row v-if="this.type === 'vlastni'">
-        <b-col class="text-center p-4">
-          <Button :value="$t('poll.analysis.button')" />
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+  <b-container fluid class="pt-3 w-75 m-auto">
+    <b-row>
+      <b-col>
+        <PollHeading v-if="item" :item="item"/>
+        <ContentLoading v-if="! item" type="poll" />
+        <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']" :captions="captions" :absolute-values="absoluteValues"/>
+        <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
+        <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="1">
+          <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2" >
+            <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
+            <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
+        {{ absoluteValues }}
+      </b-col>
+    </b-row>
+    <b-row v-if="this.type === 'vlastni'">
+      <b-col md="6">
+        <h2 class="bg-warning p-2">1. {{ $t('poll.analysis.group') }}</h2>
+      </b-col>
+      <b-col md="6">
+        <h2 class="bg-warning p-2">2. {{ $t('poll.analysis.group') }}</h2>
+      </b-col>
+    </b-row>
+    <b-row v-if="this.type === 'vlastni'">
+      <b-col class="text-center p-4">
+        <Button :value="$t('poll.analysis.button')" />
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>

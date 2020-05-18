@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-3 w-75 m-auto">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form  @submit.prevent="passes(signIn)">
           <b-container fluid>

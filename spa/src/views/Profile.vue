@@ -1,83 +1,79 @@
 <template>
-  <b-container fluid class="w-75 m-auto pt-5 pb-5">
-    <div>
-      <div>
-        <div v-if="error">
-          <strong class="text-danger">
-            {{ error }}
-          </strong>
-        </div>
-
-        <p v-if="myProfile && !error">
-          <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}</router-link>
-        </p>
-
-        <dl v-if="userProfile && !error">
-          <b-row>
-            <dt class="pl-3">{{ $t('profile.nickname') }}</dt>
-            <dl class="pl-5">{{userProfile.bio.nickname}}</dl>
-          </b-row>
-          <template v-if="publicProfile">
-            <template v-if="userProfile.driving">
-              <template v-if="userProfile.driving.since">
-                <dt>{{ $t('profile.driving-since') }}</dt>
-                <dl>{{userProfile.driving.since}}</dl>
-              </template>
-
-              <template v-if="vehicles">
-                <dt>{{ $t('profile.vehicle') }}</dt>
-                <dl>{{vehicles}}</dl>
-              </template>
-            </template>
-
-            <template v-if="userProfile.bio.sex">
-              <dt>{{ $t('profile.sex') }}</dt>
-              <dl>{{ $t('profile.sexes.' + userProfile.bio.sex) }}</dl>
-            </template>
-
-            <template v-if="userProfile.bio.born">
-              <dt>{{ $t('profile.born') }}</dt>
-              <dl>{{userProfile.bio.born}}</dl>
-            </template>
-
-            <template v-if="userProfile.bio.region">
-              <dt>{{ $t('profile.region') }}</dt>
-              <dl>{{ $t('profile.regions.' + userProfile.bio.region) }}</dl>
-            </template>
-
-            <template v-if="userProfile.bio.edu">
-              <dt>{{ $t('profile.education') }}</dt>
-              <dl>{{ $t('profile.educations.' + userProfile.bio.edu) }}</dl>
-            </template>
-          </template>
-        </dl>
-
-        <content-loader
-          :height="100"
-          :width="400"
-          :speed="2"
-          primaryColor="#949494"
-          secondaryColor="#606060"
-          v-if="!userProfile && !error"
-        >
-          <rect x="9" y="12" rx="3" ry="3" width="50" height="5"/>
-          <rect x="70" y="12" rx="3" ry="3" width="100" height="5"/>
-
-          <rect x="9" y="31" rx="3" ry="3" width="50" height="5"/>
-          <rect x="70" y="31" rx="3" ry="3" width="100" height="5"/>
-
-          <rect x="9" y="51" rx="3" ry="3" width="50" height="5"/>
-          <rect x="70" y="51" rx="3" ry="3" width="100" height="5"/>
-
-          <rect x="9" y="71" rx="3" ry="3" width="50" height="5"/>
-          <rect x="70" y="71" rx="3" ry="3" width="100" height="5"/>
-
-          <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
-          <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
-        </content-loader>
-      </div>
+  <div class="pt-3 w-75 m-auto">
+    <div v-if="error">
+      <strong class="text-danger">
+        {{ error }}
+      </strong>
     </div>
-  </b-container>
+
+    <p v-if="myProfile && !error">
+      <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}</router-link>
+    </p>
+
+    <h1 v-if="userProfile">
+      {{ userProfile.bio.nickname }}
+    </h1>
+
+    <dl v-if="userProfile && !error">
+      <template v-if="publicProfile">
+        <template v-if="userProfile.driving">
+          <template v-if="userProfile.driving.since">
+            <dt>{{ $t('profile.driving-since') }}</dt>
+            <dl>{{userProfile.driving.since}}</dl>
+          </template>
+
+          <template v-if="vehicles">
+            <dt>{{ $t('profile.vehicle') }}</dt>
+            <dl>{{vehicles}}</dl>
+          </template>
+        </template>
+
+        <template v-if="userProfile.bio.sex">
+          <dt>{{ $t('profile.sex') }}</dt>
+          <dl>{{ $t('profile.sexes.' + userProfile.bio.sex) }}</dl>
+        </template>
+
+        <template v-if="userProfile.bio.born">
+          <dt>{{ $t('profile.born') }}</dt>
+          <dl>{{userProfile.bio.born}}</dl>
+        </template>
+
+        <template v-if="userProfile.bio.region">
+          <dt>{{ $t('profile.region') }}</dt>
+          <dl>{{ $t('profile.regions.' + userProfile.bio.region) }}</dl>
+        </template>
+
+        <template v-if="userProfile.bio.edu">
+          <dt>{{ $t('profile.education') }}</dt>
+          <dl>{{ $t('profile.educations.' + userProfile.bio.edu) }}</dl>
+        </template>
+      </template>
+    </dl>
+
+    <content-loader
+      :height="100"
+      :width="400"
+      :speed="2"
+      primaryColor="#949494"
+      secondaryColor="#606060"
+      v-if="!userProfile && !error"
+    >
+      <rect x="9" y="12" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="12" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="31" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="31" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="51" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="51" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="71" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="71" rx="3" ry="3" width="100" height="5"/>
+
+      <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
+      <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
+    </content-loader>
+  </div>
 </template>
 
 <script>

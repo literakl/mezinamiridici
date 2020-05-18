@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="w-75 m-auto pt-5 pb-5">
+  <b-container fluid class="pt-3 w-75 m-auto">
 
     <h2>{{ $t('edit-profile.heading') }}</h2>
     <p>{{ $t('edit-profile.body') }}</p>
