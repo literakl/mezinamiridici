@@ -111,6 +111,8 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
       context.commit('SET_USER_NICKNAME', null);
+      context.commit('SET_LATEST_POLL', null);
+      context.commit('SET_POLL', null);
     },
     GET_DECODED_JWT: () => {
       const jwt = localStorage.getItem('jwt');
