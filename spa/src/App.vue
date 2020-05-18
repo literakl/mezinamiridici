@@ -17,20 +17,17 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
-            <template v-if="!authorized">
-              <b-nav-item class="text-warning" :to="{ name: 'sign-up'}">{{ $t('app.sign-up') }}</b-nav-item>
-              <b-nav-text class="text-warning"> / </b-nav-text>
-              <b-nav-item class="text-warning" :to="{ name: 'sign-in'}">{{ $t('app.sign-in') }}</b-nav-item>
-            </template>
-            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
+            <b-nav-item-dropdown toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <b-icon-person-fill font-scale="2"></b-icon-person-fill>
               </template>
-              <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'update-password'}">{{ $t('app.change-password') }}</b-dropdown-item>
-              <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'sign-up'}" v-if="!authorized">{{ $t('app.sign-up') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }" v-if="authorized">{{ $t('app.my-profile') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'update-password'}" v-if="authorized">{{ $t('app.change-password') }}</b-dropdown-item>
+              <b-dropdown-item href="#0" v-on:click="signMeOut()" v-if="authorized">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
+            <b-nav-item-dropdown toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <b-icon-info font-scale="2"></b-icon-info>
               </template>
