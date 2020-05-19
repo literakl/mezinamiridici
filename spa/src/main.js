@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  BootstrapVue, BIcon, BIconPersonFill, BIconInfo,
+  BootstrapVue, BIcon, BIconPersonFill, BIconInfo, BIconPencil,
 } from 'bootstrap-vue';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
@@ -18,6 +18,7 @@ Vue.use(BootstrapVue);
 Vue.component('BIcon', BIcon);
 Vue.component('BIconPersonFill', BIconPersonFill);
 Vue.component('BIconInfo', BIconInfo);
+Vue.component('BIconPencil', BIconPencil);
 
 new Vue({
   router,

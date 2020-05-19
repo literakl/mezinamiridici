@@ -7,7 +7,10 @@
     </div>
 
     <p v-if="myProfile && !error">
-      <router-link :to="{ name: 'update-profile'}">{{ $t('profile.update-button') }}</router-link>
+      <b-button variant="secondary" :to="{ name: 'update-profile'}">
+        <b-icon icon="BIconPencil" aria-hidden="true"></b-icon>
+        {{ $t('profile.update-button') }}
+      </b-button>
     </p>
 
     <h1 v-if="userProfile">
