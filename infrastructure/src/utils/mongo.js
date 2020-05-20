@@ -110,6 +110,13 @@ async function getPoll(dbClient, pipeline) {
   return item;
 }
 
+function getNeighbourhItem(dbClient, published, type, direction) {
+  console.log(published);
+  return dbClient.db().collection('items').find({ type, 'info.date': { $gt: published } }, { info: 1 })
+    .sort({ 'info.date': direction })
+    .limit(1);
+}
+
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
 function generateTimeId() {
   return Date.now().toString(32) + Math.round(Math.random() * 35).toString(36);
@@ -131,6 +138,7 @@ exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 exports.getPoll = getPoll;
+exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
 exports.stageMyVote = stageMyVote;

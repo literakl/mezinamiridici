@@ -10,7 +10,7 @@ VERB /v1/collection/:id
 * obd - order by descending; values: id, published
 * oba - order by ascending; values: id, published
 * ps - page size
-* lr - field:value (seek pagination)
+* lr - field:value (seek pagination), field shall be the same as obd/oba.
 * key=value - filter condition
 
 ##Filters

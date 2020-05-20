@@ -93,14 +93,17 @@ test('Poll API', async (done) => {
   let getResponse = await bff(`polls/${response.data.info.slug}`).json();
   const copy = deepCopy(response);
   delete copy.data.my_vote;
+  delete getResponse.data.siblings;
   expect(getResponse).toStrictEqual(copy);
 
   // get poll, other user that has not voted
   getResponse = await bff(`polls/${response.data.info.slug}`, { headers: getAuthHeader(jwtJiri) }).json();
+  delete getResponse.data.siblings;
   expect(getResponse).toStrictEqual(copy);
 
   // get poll, user that has voted
   getResponse = await bff(`polls/${response.data.info.slug}`, { headers: getAuthHeader(jwtLeos) }).json();
+  delete getResponse.data.siblings;
   expect(getResponse).toStrictEqual(response);
 
   // get non-existent poll
@@ -183,6 +186,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(1);
   expect(response.data.votes.dislike).toBe(1);
   expect(response.data.votes.hate).toBe(2);
+  expect(response.data.siblings.older).toBeUndefined();
+  expect(response.data.siblings.newer._id).toBe(secondPoll.id);
 
   // check second poll as Jiri
   response = await bff(`polls/${secondPoll.slug}`, { headers: getAuthHeader(jwtJiri) }).json();
@@ -193,6 +198,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(2);
   expect(response.data.votes.dislike).toBe(1);
   expect(response.data.votes.hate).toBe(1);
+  expect(response.data.siblings.older._id).toBe(firstPoll.id);
+  expect(response.data.siblings.newer._id).toBe(thirdPoll.id);
 
   // check third as Bara
   response = await bff(`polls/${thirdPoll.slug}`, { headers: getAuthHeader(jwtBara) }).json();
@@ -203,6 +210,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(2);
   expect(response.data.votes.dislike).toBe(2);
   expect(response.data.votes.hate).toBe(0);
+  expect(response.data.siblings.older._id).toBe(secondPoll.id);
+  expect(response.data.siblings.newer._id).toBe(fourthPoll.id);
 
   // check the last poll as anonymous user
   response = await bff('polls/last').json();
@@ -213,6 +222,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(1);
   expect(response.data.votes.dislike).toBe(0);
   expect(response.data.votes.hate).toBe(4);
+  expect(response.data.siblings.newer).toBeUndefined();
+  expect(response.data.siblings.older._id).toBe(thirdPoll.id);
 
   // check the last poll as Vita
   response = await bff('polls/last', { headers: getAuthHeader(jwtVita) }).json();

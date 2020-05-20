@@ -43,7 +43,17 @@ module.exports = (app) => {
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Items fetched');
 
-      return (item) ? api.sendCreated(res, api.createResponse(item)) : api.sendNotFound(res, api.createError());
+      if (!item) {
+        return api.sendNotFound(res, api.createError());
+      }
+
+      const older = mongo.getNeighbourhItem(dbClient, item.info.date, 'poll', -1).next();
+      const newer = mongo.getNeighbourhItem(dbClient, item.info.date, 'poll', 1).next();
+      await Promise.all([newer, older]).then((values) => {
+        logger.debug('Neighbours fetched');
+        item.siblings = { newer: values[0], older: values[1] };
+      });
+      return api.sendCreated(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get polls', 'sign-in.something-went-wrong'));

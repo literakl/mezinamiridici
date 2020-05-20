@@ -1,10 +1,11 @@
 # Item object
+* _id: time based generated id 
 * type: type of the object; required
 
 ## Info section
 * caption: object title, required
 * slug: normalized caption for URL, required, unique, indexed
-* date: published timestamp, required, indexed
+* date: published timestamp, required, indexed. Order of _id and info.date may not be aligned.
 * published: published flag, required
 * picture: stream picture identifier
 * tags: array of tags
