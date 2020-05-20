@@ -1,7 +1,5 @@
 import Vue from 'vue';
-import {
-  BootstrapVue, BIcon, BIconPersonFill, BIconInfo, BIconPencil,
-} from 'bootstrap-vue';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
 import App from './App.vue';
@@ -15,10 +13,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
-Vue.component('BIcon', BIcon);
-Vue.component('BIconPersonFill', BIconPersonFill);
-Vue.component('BIconInfo', BIconInfo);
-Vue.component('BIconPencil', BIconPencil);
+Vue.use(IconsPlugin);
 
 new Vue({
   router,
