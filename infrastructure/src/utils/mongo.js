@@ -110,10 +110,18 @@ async function getPoll(dbClient, pipeline) {
   return item;
 }
 
-function getNeighbourhItem(dbClient, published, type, direction) {
-  console.log(published);
-  return dbClient.db().collection('items').find({ type, 'info.date': { $gt: published } }, { info: 1 })
-    .sort({ 'info.date': direction })
+function getNeighbourhItem(dbClient, type, published, older) {
+  let dateExpression, sortExpression;
+  if (older) {
+    dateExpression = { $lt: published };
+    sortExpression = { 'info.date': -1 };
+  } else {
+    dateExpression = { $gt: published };
+    sortExpression = { 'info.date': 1 };
+  }
+  return dbClient.db().collection('items')
+    .find({ type, 'info.date': dateExpression }, { info: 1 })
+    .sort(sortExpression)
     .limit(1);
 }
 

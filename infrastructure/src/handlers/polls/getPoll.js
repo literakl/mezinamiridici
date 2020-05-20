@@ -47,8 +47,8 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError());
       }
 
-      const older = mongo.getNeighbourhItem(dbClient, item.info.date, 'poll', -1).next();
-      const newer = mongo.getNeighbourhItem(dbClient, item.info.date, 'poll', 1).next();
+      const older = mongo.getNeighbourhItem(dbClient, 'poll', item.info.date, true).next();
+      const newer = mongo.getNeighbourhItem(dbClient, 'poll', item.info.date, false).next();
       await Promise.all([newer, older]).then((values) => {
         logger.debug('Neighbours fetched');
         item.siblings = { newer: values[0], older: values[1] };

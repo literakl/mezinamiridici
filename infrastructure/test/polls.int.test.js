@@ -186,7 +186,7 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(1);
   expect(response.data.votes.dislike).toBe(1);
   expect(response.data.votes.hate).toBe(2);
-  expect(response.data.siblings.older).toBeUndefined();
+  expect(response.data.siblings.older).toBe(null);
   expect(response.data.siblings.newer._id).toBe(secondPoll.id);
 
   // check second poll as Jiri
@@ -214,6 +214,12 @@ test('Poll API', async (done) => {
   expect(response.data.siblings.newer._id).toBe(fourthPoll.id);
 
   // check the last poll as anonymous user
+  response = await bff(`polls/${fourthPoll.slug}`, { headers: getAuthHeader(jwtBara) }).json();
+  expect(response.data._id).toBe(fourthPoll.id);
+  expect(response.data.siblings.newer).toBe(null);
+  expect(response.data.siblings.older._id).toBe(thirdPoll.id);
+
+  // check the last poll as anonymous user
   response = await bff('polls/last').json();
   expect(response.data._id).toBe(fourthPoll.id);
   expect(response.data.my_vote).toBeUndefined();
@@ -222,8 +228,6 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(1);
   expect(response.data.votes.dislike).toBe(0);
   expect(response.data.votes.hate).toBe(4);
-  expect(response.data.siblings.newer).toBeUndefined();
-  expect(response.data.siblings.older._id).toBe(thirdPoll.id);
 
   // check the last poll as Vita
   response = await bff('polls/last', { headers: getAuthHeader(jwtVita) }).json();
