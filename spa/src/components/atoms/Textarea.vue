@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <b-form-textarea v-model="text" ></b-form-textarea>
-        <Button :disabled="sending" class="mt-3" value="Send" @clicked="send"/>
-    </div>
+  <div>
+    <b-form-textarea v-model="text"></b-form-textarea>
+    <Button :disabled="sending" class="mt-3" value="Send" @clicked="send"/>
+  </div>
 </template>
 
 <script>

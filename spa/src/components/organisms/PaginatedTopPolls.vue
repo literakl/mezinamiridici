@@ -1,9 +1,9 @@
 <template>
-    <div id="polls">
-        <TopPolls />
-        <Button value="Load next" @clicked="clicked" class="polls__load-next-button" />
-        Page: {{page}}
-    </div>
+  <div id="polls">
+    <TopPolls/>
+    <Button value="Load next" @clicked="clicked" class="polls__load-next-button"/>
+    Page: {{page}}
+  </div>
 </template>
 
 <script>
@@ -29,16 +29,16 @@ export default {
 </script>
 
 <style>
-#polls {
+  #polls {
     grid-template-columns: 1fr;
     display: grid;
     margin: 0 auto;
     max-width: 80%;
     padding: 1em 0;
     grid-gap: 20px;
-}
+  }
 
-.polls__load-next-button {
-    width:20%;
-}
+  .polls__load-next-button {
+    width: 20%;
+  }
 </style>

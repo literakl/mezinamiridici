@@ -13,9 +13,9 @@
       ref="input"
       @click.native="selectfunction($event)"
     >
-    <label :for="identifier" class="atoms__checkbox-label">
-      <span>{{label}}</span>
-    </label>
+      <label :for="identifier" class="atoms__checkbox-label">
+        <span>{{label}}</span>
+      </label>
     </b-form-checkbox>
   </ValidationProvider>
 </template>

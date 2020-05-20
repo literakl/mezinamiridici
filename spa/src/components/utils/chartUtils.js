@@ -1,4 +1,3 @@
-
 function normalizeVotes(votes) {
   const items = [votes.neutral, votes.trivial, votes.dislike, votes.hate];
   const result = [];

@@ -1,12 +1,12 @@
 <template>
-    <b-button
-        size="lg"
-        type="submit"
-        :class="disabled ? 'atom__button--disabled' : 'atom__button'"
-        v-on:click="clicked"
-        :disabled="disabled"
-        variant="warning">{{value}}
-    </b-button>
+  <b-button
+    size="lg"
+    type="submit"
+    :class="disabled ? 'atom__button--disabled' : 'atom__button'"
+    v-on:click="clicked"
+    :disabled="disabled"
+    variant="warning">{{value}}
+  </b-button>
 </template>
 
 <script>

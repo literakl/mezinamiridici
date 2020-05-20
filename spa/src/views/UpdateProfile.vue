@@ -52,7 +52,7 @@
           rules="min_value:1935"
           :label="$t('profile.driving-since')"
           name="driving-since"
-          type="number" />
+          type="number"/>
         <div>
           <label for="vehicle">{{ $t('profile.vehicle') }}</label>
         </div>
@@ -62,37 +62,37 @@
             v-model="bike"
             :label="$t('profile.vehicles.bike')"
             name="vehicle"
-            identifier="bike" />
+            identifier="bike"/>
           <Checkbox
             class="pl-3"
             v-model="car"
             :label="$t('profile.vehicles.car')"
             name="vehicle"
-            identifier="car" />
+            identifier="car"/>
           <Checkbox
             class="pl-3"
             v-model="bus"
             :label="$t('profile.vehicles.bus')"
             name="vehicle"
-            identifier="bus" />
+            identifier="bus"/>
           <Checkbox
             class="pl-3"
             v-model="van"
             :label="$t('profile.vehicles.van')"
             name="vehicle"
-            identifier="van" />
+            identifier="van"/>
           <Checkbox
             class="pl-3"
             v-model="truck"
             :label="$t('profile.vehicles.truck')"
             name="vehicle"
-            identifier="truck" />
+            identifier="truck"/>
           <Checkbox
             class="pl-3"
             v-model="tramway"
             :label="$t('profile.vehicles.tramway')"
             name="vehicle"
-            identifier="tramway" />
+            identifier="tramway"/>
         </b-row>
 
         <label class="pt-3" for="sex">{{ $t('profile.sex') }}</label>
@@ -102,13 +102,13 @@
             v-model="sex"
             :label="$t('profile.sexes.man')"
             name="sex"
-            identifier="man" />
+            identifier="man"/>
           <Radio
             class="pl-3"
             v-model="sex"
             :label="$t('profile.sexes.woman')"
             name="sex"
-            identifier="woman" />
+            identifier="woman"/>
         </b-row>
 
         <TextInput
@@ -117,7 +117,7 @@
           rules="min_value:1915"
           :label="$t('profile.born')"
           name="born"
-          type="number" />
+          type="number"/>
 
         <label for="region">{{ $t('profile.region') }}</label>
         <div>
@@ -147,19 +147,19 @@
             v-model="education"
             :label="$t('profile.educations.primary')"
             name="education"
-            identifier="primary" />
+            identifier="primary"/>
           <Radio
             class="pl-3"
             v-model="education"
             :label="$t('profile.educations.secondary')"
             name="education"
-            identifier="secondary" />
+            identifier="secondary"/>
           <Radio
             class="pl-3"
             v-model="education"
             :label="$t('profile.educations.university')"
             name="education"
-            identifier="university" />
+            identifier="university"/>
         </b-row>
 
         <div v-if="error" class="text-danger">

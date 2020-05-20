@@ -1,28 +1,28 @@
 <template>
   <b-container fluid class="pt-3 w-75 m-auto">
-    <CompletePoll v-if="poll" />
-    <ContentLoading v-if="! poll" type="poll" />
+    <CompletePoll v-if="poll"/>
+    <ContentLoading v-if="! poll" type="poll"/>
 
-<!--    <div class="poll__discussion-break-out">-->
-<!--      <div class="poll__discussion-wrapper">-->
-<!--        <h2>{{ $t('poll.discussion') }} ({{comments ? comments.length : 0}})</h2>-->
+    <!--    <div class="poll__discussion-break-out">-->
+    <!--      <div class="poll__discussion-wrapper">-->
+    <!--        <h2>{{ $t('poll.discussion') }} ({{comments ? comments.length : 0}})</h2>-->
 
-<!--        <div v-if="signedIn">-->
-<!--          <h3>{{ $t('poll.your-say') }}</h3>-->
-<!--          <Textarea :id="id" />-->
-<!--        </div>-->
+    <!--        <div v-if="signedIn">-->
+    <!--          <h3>{{ $t('poll.your-say') }}</h3>-->
+    <!--          <Textarea :id="id" />-->
+    <!--        </div>-->
 
-<!--        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />-->
+    <!--        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />-->
 
-<!--        <div class="poll__other-polls">-->
-<!--          <h2>-->
-<!--            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />-->
-<!--            <hr class="poll__double-line" />-->
-<!--            <hr class="poll__double-line" />-->
-<!--          </h2>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--        <div class="poll__other-polls">-->
+    <!--          <h2>-->
+    <!--            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />-->
+    <!--            <hr class="poll__double-line" />-->
+    <!--            <hr class="poll__double-line" />-->
+    <!--          </h2>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </b-container>
 </template>
 
@@ -79,34 +79,34 @@ export default {
       return this.$store.getters.POLL;
     },
     /*
-    comments() {
-      const comments = this.$store.getters.POLL_COMMENTS;
+      comments() {
+        const comments = this.$store.getters.POLL_COMMENTS;
 
-      if (!comments) return [];
+        if (!comments) return [];
 
-      const commentsTree = [];
+        const commentsTree = [];
 
-      comments.forEach((comment) => {
-        if (!comment.parent) {
-          commentsTree.push(comment);
-        }
-      });
-
-      comments.forEach((comment) => {
-        if (comment.parent) {
-          const found = commentsTree.find(x => x.commentId === comment.parent);
-
-          if (found) {
-            found.comments = [comment];
+        comments.forEach((comment) => {
+          if (!comment.parent) {
+            commentsTree.push(comment);
           }
-        }
-      });
+        });
 
-      this.recursivelyBuildComments(comments, commentsTree);
+        comments.forEach((comment) => {
+          if (comment.parent) {
+            const found = commentsTree.find(x => x.commentId === comment.parent);
 
-      return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
-    },
-    */
+            if (found) {
+              found.comments = [comment];
+            }
+          }
+        });
+
+        this.recursivelyBuildComments(comments, commentsTree);
+
+        return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
+      },
+      */
   },
 };
 </script>

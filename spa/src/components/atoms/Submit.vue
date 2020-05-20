@@ -1,5 +1,5 @@
 <template>
-    <b-form-input class="bg-warning" type="submit" v-bind:value="value"></b-form-input>
+  <b-form-input class="bg-warning" type="submit" v-bind:value="value"></b-form-input>
 </template>
 
 <script>

@@ -1,41 +1,38 @@
 <template>
   <div>
-    <div>
-      <div>
-        <PollHeading :item="item"/>
+    <PollHeading :item="item"/>
 
-        <div v-if="voted" class="pt-2 pb-2">
-          <div class="pb-3">
-            {{ $t('poll.your-vote') }}
-            <b-button class="ml-3" :variant="votedVariant" size="md" :pressed="false" aria-pressed="false" style="cursor: default">
-              <img :src="votedPicture" class="pr-2" align="middle">
-              {{ $t('poll.choices.'+voted) }}
-            </b-button>
-          </div>
-
-          <BarChart :votes="item.votes" v-bind:voted="voted" />
-          <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
-        </div>
-
-        <div v-if="!voted">
-          <PollButtons v-on:do-vote="onVote"/>
-        </div>
-
-        <content-loader
-          :height="200"
-          :width="400"
-          :speed="22"
-          primaryColor="#f3f3f3"
-          secondaryColor="#ecebeb"
-          v-if="voting"
-        >
-          <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200" />
-          <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200" />
-          <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200" />
-          <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200" />
-        </content-loader>
+    <div v-if="voted" class="pt-2 pb-2">
+      <div class="pb-3">
+        {{ $t('poll.your-vote') }}
+        <b-button class="ml-3" :variant="votedVariant" size="md" :pressed="false"
+                  aria-pressed="false" style="cursor: default">
+          <img :src="votedPicture" class="pr-2" align="middle">
+          {{ $t('poll.choices.'+voted) }}
+        </b-button>
       </div>
+
+      <BarChart :votes="item.votes" v-bind:voted="voted"/>
+      <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
     </div>
+
+    <div v-if="!voted" class="m-auto pt-3 pb-3">
+      <PollButtons v-on:do-vote="onVote"/>
+    </div>
+
+    <content-loader
+      :height="200"
+      :width="400"
+      :speed="22"
+      primaryColor="#f3f3f3"
+      secondaryColor="#ecebeb"
+      v-if="voting"
+    >
+      <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200"/>
+      <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200"/>
+      <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200"/>
+      <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200"/>
+    </content-loader>
   </div>
 </template>
 
@@ -110,19 +107,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .btn.btn-primary:active:hover,.btn.btn-primary:hover {
+  .btn.btn-primary:active:hover, .btn.btn-primary:hover {
     border-color: var(--primary);
     background-color: var(--primary);
   }
-  .btn.btn-success:active:hover,.btn.btn-success:hover {
+
+  .btn.btn-success:active:hover, .btn.btn-success:hover {
     border-color: var(--success);
     background-color: var(--success);
   }
-  .btn.btn-warning:active:hover,.btn.btn-warning:hover {
+
+  .btn.btn-warning:active:hover, .btn.btn-warning:hover {
     border-color: var(--warning);
     background-color: var(--warning);
   }
-  .btn.btn-danger:active:hover,.btn.btn-danger:hover {
+
+  .btn.btn-danger:active:hover, .btn.btn-danger:hover {
     border-color: var(--danger);
     background-color: var(--danger);
   }

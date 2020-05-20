@@ -22,7 +22,7 @@
               <Button
                 class="w-100"
                 :value="$t('sign-in.reset-password-button')"
-                @clicked="forgotPassword" />
+                @clicked="forgotPassword"/>
             </b-col>
           </b-row>
         </form>
