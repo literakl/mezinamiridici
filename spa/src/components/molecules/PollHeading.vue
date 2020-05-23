@@ -1,11 +1,10 @@
 <template>
-  <div>
+  <b-container size="md">
     <b-card
       img-src="../../assets/unsplash/cameron-earl-zatacka.jpg"
       img-alt="Image"
       img-top
       tag="article"
-      style="max-width: 800px"
       class="mb-2"
     >
       <b-card-title>
@@ -22,7 +21,7 @@
             <!--                <li>{{poll.pollComments}} comments</li>-->
       </b-card-text>
     </b-card>
-  </div>
+  </b-container>
 </template>
 
 <script>
