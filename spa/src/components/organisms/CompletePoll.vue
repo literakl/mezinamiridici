@@ -86,7 +86,7 @@ export default {
           return require('@/assets/ok.png');
         case 'dislike':
           // eslint-disable-next-line global-require
-          return require('@/assets/slanty.png');
+          return require('@/assets/dislike.png');
         default:
           // eslint-disable-next-line global-require
           return require('@/assets/angry.png');
