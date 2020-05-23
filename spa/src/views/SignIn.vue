@@ -1,65 +1,62 @@
 <template>
-  <div class="pt-3 w-75 m-auto">
-    <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <b-form @submit.prevent="passes(signIn)">
-        <b-container fluid>
-          <b-row class="w-75 m-auto pt-5">
-            <b-col md="6">
-              <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
-              <div>{{ message }}</div>
-              <TextInput
-                v-model="email"
-                rules="required|email"
-                :placeholder="$t('sign-in.email-placeholder')"
-                name="email"
-                type="email"
-              />
+  <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+    <b-form @submit.prevent="passes(signIn)">
+      <b-container fluid="true" class="pt-3 w-75 m-auto">
+        <b-row class="w-75 m-auto pt-5">
+          <b-col md="6">
+            <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+            <div>{{ message }}</div>
+            <TextInput
+              v-model="email"
+              rules="required|email"
+              :placeholder="$t('sign-in.email-placeholder')"
+              name="email"
+              type="email"
+            />
 
-              <TextInput
-                v-model="password"
-                rules="required"
-                :placeholder="$t('sign-in.password-placeholder')"
-                name="password"
-                type="password"
-              />
+            <TextInput
+              v-model="password"
+              rules="required"
+              :placeholder="$t('sign-in.password-placeholder')"
+              name="password"
+              type="password"
+            />
 
-              <div>
-                <router-link :to="{ name: 'forgotten' }">{{ $t('sign-in.forgot-password-link')}}
-                </router-link>
-              </div>
+            <div>
+              <router-link :to="{ name: 'forgotten' }">{{ $t('sign-in.forgot-password-link')}}
+              </router-link>
+            </div>
 
-              <div v-if="error">
-                <strong>
-                  {{ error }}
-                </strong>
-              </div>
-            </b-col>
-            <b-col md="6">
-              <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
-              {{ $t('sign-in.sign-up-create-account-message') }}
-            </b-col>
-          </b-row>
-          <b-row class="w-75 m-auto pb-5">
-            <b-col md="6">
-              <Button
-                class="w-75"
-                :disabled="invalid"
-                :value="$t('sign-in.sign-in-button')"
-                @clicked="signIn"/>
-            </b-col>
-            <b-col md="6">
-              <Button
-                class="w-75"
-                :value="$t('sign-in.sign-up-button')"
-                id="signin__sign-up-button"
-                @clicked="redirectToSignUp"/>
-            </b-col>
-          </b-row>
-        </b-container>
-      </b-form>
-
-    </ValidationObserver>
-  </div>
+            <div v-if="error">
+              <strong>
+                {{ error }}
+              </strong>
+            </div>
+          </b-col>
+          <b-col md="6">
+            <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
+            {{ $t('sign-in.sign-up-create-account-message') }}
+          </b-col>
+        </b-row>
+        <b-row class="w-75 m-auto pb-5">
+          <b-col md="6">
+            <Button
+              class="w-75"
+              :disabled="invalid"
+              :value="$t('sign-in.sign-in-button')"
+              @clicked="signIn"/>
+          </b-col>
+          <b-col md="6">
+            <Button
+              class="w-75"
+              :value="$t('sign-in.sign-up-button')"
+              id="signin__sign-up-button"
+              @clicked="redirectToSignUp"/>
+          </b-col>
+        </b-row>
+      </b-container>
+    </b-form>
+  </ValidationObserver>
 </template>
 
 <script>

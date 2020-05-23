@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="pt-3 w-75 m-auto">
+  <b-container fluid="true" class="pt-3 w-75 m-auto">
     <CompletePoll v-if="poll"/>
     <ContentLoading v-if="! poll" type="poll"/>
 

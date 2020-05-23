@@ -1,8 +1,20 @@
 <template>
-  <b-container fluid class="pt-3 w-75 m-auto">
-    <h1>{{ $t(('sign-up.verify-heading')) }}</h1>
-    <p class="text-success" v-if="verified === null">{{ $t(('sign-up.verify-running')) }}</p>
-    <p class="text-danger" v-if="verified === false">{{ $t(('sign-up.verify-error')) }}</p>
+  <b-container fluid="true" class="pt-3 w-75 m-auto">
+    <b-row>
+      <b-col>
+        <h1>{{ $t(('sign-up.verify-heading')) }}</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col v-if="verified === null">
+        <p class="text-success">{{ $t(('sign-up.verify-running')) }}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col v-if="verified === false">
+        <p class="text-danger">{{ $t(('sign-up.verify-error')) }}</p>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 

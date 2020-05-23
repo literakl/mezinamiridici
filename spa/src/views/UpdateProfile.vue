@@ -1,8 +1,15 @@
 <template>
-  <b-container fluid class="pt-3 w-75 m-auto">
-
-    <h2>{{ $t('edit-profile.heading') }}</h2>
-    <p>{{ $t('edit-profile.body') }}</p>
+  <b-container fluid="true" class="pt-3 w-75 m-auto">
+    <b-row>
+      <b-col>
+        <h2>{{ $t('edit-profile.heading') }}</h2>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <p>{{ $t('edit-profile.body') }}</p>
+      </b-col>
+    </b-row>
 
     <content-loader
       :height="100"

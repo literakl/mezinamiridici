@@ -1,7 +1,15 @@
 <template>
-  <b-container fluid class="pt-3 w-75 m-auto">
-    <h1>{{ $t('sign-up.heading') }}</h1>
-    <p>{{ $t('sign-up.body') }}</p>
+  <b-container fluid="true" class="pt-3 w-75 m-auto">
+    <b-row>
+      <b-col>
+        <h1>{{ $t('sign-up.heading') }}</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <p>{{ $t('sign-up.body') }}</p>
+      </b-col>
+    </b-row>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
 
@@ -224,9 +232,11 @@
       </b-form>
     </ValidationObserver>
 
-    <div v-if="success === true">
-      <p>{{ $t('sign-up.success-message') }}</p>
-    </div>
+    <b-row v-if="success === true">
+      <b-col>
+        <p>{{ $t('sign-up.success-message') }}</p>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 

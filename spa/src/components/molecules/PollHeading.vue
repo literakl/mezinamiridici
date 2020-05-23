@@ -1,26 +1,30 @@
 <template>
   <b-container size="md">
-    <b-card
-      img-src="../../assets/unsplash/cameron-earl-zatacka.jpg"
-      img-alt="Image"
-      img-top
-      tag="article"
-      class="mb-2"
-    >
-      <b-card-title>
-        <h1>
-          <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}"
-                     class="poll-heading-link">{{item.info.caption}}
-          </router-link>
-        </h1>
-      </b-card-title>
-      <b-card-text>
-        {{created}} &bull;
-        <ProfileLink :profile="this.item.info.author"/> &bull;
-        {{ $t('poll.votes') }}: {{item.votes.total}}
+    <b-row>
+      <b-col>
+        <b-card
+          img-src="../../assets/unsplash/cameron-earl-zatacka.jpg"
+          img-alt="Image"
+          img-top
+          tag="article"
+          class="mb-2"
+        >
+          <b-card-title>
+            <h1>
+              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}" class="poll-heading-link">
+                {{item.info.caption}}
+              </router-link>
+            </h1>
+          </b-card-title>
+          <b-card-text>
+            {{created}} &bull;
+            <ProfileLink :profile="this.item.info.author"/> &bull;
+            {{ $t('poll.votes') }}: {{item.votes.total}}
             <!--                <li>{{poll.pollComments}} comments</li>-->
-      </b-card-text>
-    </b-card>
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 

@@ -1,8 +1,15 @@
 <template>
-  <b-container fluid class="pt-3 w-75 m-auto">
-
-    <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
-    <p>{{ $t('sign-in.reset-password-description') }}</p>
+  <b-container fluid="true" class="pt-3 w-75 m-auto">
+    <b-row>
+      <b-col>
+        <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <p>{{ $t('sign-in.reset-password-description') }}</p>
+      </b-col>
+    </b-row>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(resetPassword)">
