@@ -120,7 +120,7 @@ function getNeighbourhItem(dbClient, type, published, older) {
     sortExpression = { 'info.date': 1 };
   }
   return dbClient.db().collection('items')
-    .find({ type, 'info.date': dateExpression }, { info: 1 })
+    .find({ type, 'info.date': dateExpression }, { projection: { info: 1 } })
     .sort(sortExpression)
     .limit(1);
 }
