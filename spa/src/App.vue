@@ -16,16 +16,15 @@
             </div>
           </b-navbar-nav>
 
-          <b-navbar-nav class="ml-auto">
-            <b-nav-item-dropdown toggle-class="text-warning" right>
+        <b-navbar-nav class="ml-auto" align-v="center">
+          <b-nav-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in-up') }}</b-nav-item>
+            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
-                <b-icon-person-fill font-scale="2"></b-icon-person-fill>
+                <b-icon-person-fill font-scale="2"></b-icon-person-fill> {{ nickname }}
               </template>
-              <b-dropdown-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'sign-up'}" v-if="!authorized">{{ $t('app.sign-up') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }" v-if="authorized">{{ $t('app.my-profile') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'update-password'}" v-if="authorized">{{ $t('app.change-password') }}</b-dropdown-item>
-              <b-dropdown-item href="#0" v-on:click="signMeOut()" v-if="authorized">{{ $t('app.sign-out') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'update-password'}">{{ $t('app.change-password') }}</b-dropdown-item>
+              <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown toggle-class="text-warning" right>
               <template v-slot:button-content>
@@ -47,8 +46,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: 'App',
   computed: {
@@ -68,6 +65,12 @@ export default {
   methods: {
     signMeOut() {
       this.$store.dispatch('SIGN_USER_OUT');
+      if (this.$route.path === '/') {
+        // console.log('emit');
+        // this.$root.$emit('sign-out');
+      } else {
+        this.$router.push({ name: 'home' });
+      }
     },
   },
 };
