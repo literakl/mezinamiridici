@@ -37,6 +37,12 @@ export default {
   },
   created() {
     this.$store.dispatch('INIT_STREAM');
+    this.$root.$once('sign-out', this.logoutEventHandler);
+  },
+  methods: {
+    logoutEventHandler() {
+      this.$store.dispatch('INIT_STREAM');
+    },
   },
 };
 </script>

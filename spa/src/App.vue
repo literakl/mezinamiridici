@@ -66,8 +66,7 @@ export default {
     signMeOut() {
       this.$store.dispatch('SIGN_USER_OUT');
       if (this.$route.path === '/') {
-        // console.log('emit');
-        // this.$root.$emit('sign-out');
+        this.$root.$emit('sign-out');
       } else {
         this.$router.push({ name: 'home' });
       }
