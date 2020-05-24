@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <b-container fluid="true" class="pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
     <b-row>
       <b-col>
         <PollHeading v-if="item" :item="item"/>
@@ -69,10 +69,13 @@ export default {
       });
     }
   },
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
+    if (from.params.slug !== to.params.slug) {
+      await this.$store.dispatch('GET_POLL', { slug: to.params.slug });
+    }
     this.parseType(to.params.type);
     if (this.queries) {
-      this.runQueries(this.item._id, this.queries);
+      await this.runQueries(this.item._id, this.queries);
     } else {
       this.groups = [{}, {}];
     }

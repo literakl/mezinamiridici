@@ -1,7 +1,12 @@
 <template>
-  <b-container size="md">
-    <b-row>
-      <b-col>
+  <b-container>
+    <b-row align-v="center" align-h="center">
+      <b-col sm="1" v-if="item.siblings">
+        <b-button v-if="item.siblings.older" :to="link(item.siblings.older)" variant="secondary">
+          <b-icon icon="chevron-double-left" font-scale="2"></b-icon>
+        </b-button>
+      </b-col>
+      <b-col sm="auto">
         <b-card
           img-src="../../assets/unsplash/cameron-earl-zatacka.jpg"
           img-alt="Image"
@@ -23,6 +28,11 @@
             <!--                <li>{{poll.pollComments}} comments</li>-->
           </b-card-text>
         </b-card>
+      </b-col>
+      <b-col sm="1" v-if="item.siblings">
+        <b-button v-if="item.siblings.newer" :to="link(item.siblings.newer)" variant="secondary">
+          <b-icon icon="chevron-double-right" font-scale="2"></b-icon>
+        </b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -47,6 +57,17 @@ export default {
     // urlToShare() {
     //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
     // },
+  },
+  methods: {
+    link(poll) {
+      const currentPath = this.$route.fullPath;
+      const i = currentPath.indexOf('/', 1), j = currentPath.indexOf('/', i + 1);
+      let nextPath = currentPath.substring(0, i + 1) + poll.info.slug;
+      if (j > 0) {
+        nextPath += currentPath.substring(j);
+      }
+      return nextPath;
+    },
   },
 };
 </script>
