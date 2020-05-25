@@ -1,55 +1,47 @@
 <template>
   <div>
     <b-form>
-      <b-form-group
-        id="fieldset-horizontal"
-        label-cols-sm="2"
-        label="Driving"
-        label-for="input-horizontal"
-      >
-        <b-input-group class="mb-2">
-          <b-form-input aria-label="Minimum" type="number" v-model="group.drivingMin" min="0"></b-form-input>
-          <b-form-input aria-label="Maximum" type="number" v-model="group.drivingMax" max="90"></b-form-input>
+      <b-form-group id="drivingYears-group" label="Driving:" label-cols-sm="2">
+        <b-input-group class="mb-1">
+          <b-form-input aria-label="Minimum" placeholder="From" v-model="group.drivingMin" type="number" min="0"></b-form-input>
+          <b-form-input aria-label="Maximum" placeholder="To" v-model="group.drivingMax" type="number" max="90"></b-form-input>
           <b-input-group-append>
             <b-input-group-text>years</b-input-group-text>
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
+      <b-form-group id="age-group" label="Age:" label-cols-sm="2">
+        <b-input-group class="mb-1">
+          <b-form-input aria-label="Minimum" placeholder="From" v-model="group.ageMin" type="number" min="0"></b-form-input>
+          <b-form-input aria-label="Maximum" placeholder="To" v-model="group.ageMax" type="number" max="105"></b-form-input>
+          <b-input-group-append>
+            <b-input-group-text>years</b-input-group-text>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
+      <b-form-group id="sex-group" label="Sex:" label-cols-sm="2">
+        <b-form-checkbox-group id="sex" v-model="group.sex" name="sex">
+          <b-form-checkbox value="men">Men</b-form-checkbox>
+          <b-form-checkbox value="women">Women</b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-form-group>
+      <b-form-group id="edu-group" label="Education:" label-cols-sm="2">
+        <b-form-checkbox-group id="edu" v-model="group.education" name="edu">
+          <b-form-checkbox value="primary">Primary</b-form-checkbox>
+          <b-form-checkbox value="secondary">Secondary</b-form-checkbox>
+          <b-form-checkbox value="university">University</b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-form-group>
+      <b-form-group id="vehicle-group" label="Vehicles:" label-cols-sm="2">
+        <b-form-checkbox-group id="vehicle" v-model="group.vehicles" name="vehicle">
+          <b-form-checkbox value="bike">Bike</b-form-checkbox>
+          <b-form-checkbox value="bus">Bus</b-form-checkbox>
+          <b-form-checkbox value="car">Car</b-form-checkbox>
+          <b-form-checkbox value="truck">Truck</b-form-checkbox>
+          <b-form-checkbox value="van">Van</b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-form-group>
 <!--      <div>
-        <label :for="'sex' + group">Sex</label>
-      </div>
-      <div>
-        <Radio v-model="group.sex" :name="'sex' + group" :identifier="'male' + group" text="Male"/>
-        <Radio v-model="group.sex" :name="'sex' + group" :identifier="'female' + group" text="Female"/>
-      </div>
-      <div>
-        <label :for="'age' + group">Age</label>
-      </div>
-      <div>
-        <Checkbox v-model="ageLessThan25" :name="'age' + group" :identifier="'<25' + group"
-                  text="<25"/>
-        <Checkbox v-model="age26To35" :name="'age' + group" :identifier="'26-35' + group"
-                  text="26-35"/>
-        <Checkbox v-model="age36To50" :name="'age' + group" :identifier="'36-50' + group"
-                  text="36-50"/>
-        <Checkbox v-model="age51To60" :name="'age' + group" :identifier="'51-60' + group"
-                  text="51-60"/>
-        <Checkbox v-model="age61Plus" :name="'age' + group" :identifier="'61+' + group" text="61+"/>
-      </div>
-
-      <div>
-        <label :for="'driving-for-years' + group">Driving for years</label>
-      </div>
-      <div>
-        <Checkbox v-model="drivingFor0To2" :name="'driving-for-years' + group"
-                  :identifier="'0-2' + group" text="0-2"/>
-        <Checkbox v-model="drivingFor2To5" :name="'driving-for-years' + group"
-                  :identifier="'2-5' + group" text="2-5"/>
-        <Checkbox v-model="drivingFor6To10" :name="'driving-for-years' + group"
-                  :identifier="'6-10' + group" text="6-10"/>
-        <Checkbox v-model="drivingFor11Plus" :name="'driving-for-years' + group"
-                  :identifier="'11+' + group" text="11+"/>
-      </div>
 
       <div>
         <label :for="'region' + group">Region</label>
@@ -76,36 +68,6 @@
           <option value="zlinsky">Zlinsky</option>
           <option value="moravskoslezsky">Moravskoslezsky</option>
         </select>
-      </div>
-
-      <div>
-        <label :for="'education' + group">Education</label>
-      </div>
-      <div>
-        <select
-          :id="'education' + group"
-          v-model="education"
-        >
-          <option value="">Please select</option>
-          <option value="primary">Primary</option>
-          <option value="secondary">Secondary</option>
-          <option value="university">University</option>
-        </select>
-      </div>
-
-      <div>
-        <label :for="'vehicle' + group">Vehicle</label>
-      </div>
-      <div>
-        <Checkbox v-model="bike" :name="'vehicle' + group" :identifier="'bike' + group"
-                  text="Bike"/>
-        <Checkbox v-model="car" :name="'vehicle' + group" :identifier="'car' + group" text="Car"/>
-        <Checkbox v-model="bus" :name="'vehicle' + group" :identifier="'bus' + group" text="Bus"/>
-        <Checkbox v-model="van" :name="'vehicle' + group" :identifier="'van' + group" text="Van"/>
-        <Checkbox v-model="truck" :name="'vehicle' + group" :identifier="'truck' + group"
-                  text="Truck"/>
-        <Checkbox v-model="tramway" :name="'vehicle' + group" :identifier="'tramway' + group"
-                  text="Tramway"/>
       </div>
  -->   </b-form>
   </div>
