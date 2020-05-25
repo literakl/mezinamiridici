@@ -17,37 +17,39 @@
     </b-row>
     <b-row v-if="this.type === 'vlastni'">
       <b-col md="6">
-        <h2 class="bg-warning p-2">1. {{ $t('poll.analysis.group') }}</h2>
+        <b-card :header="groupHeader(1)">
+          <SeriesForm :group="groups[0]" />
+        </b-card>
       </b-col>
       <b-col md="6">
-        <h2 class="bg-warning p-2">2. {{ $t('poll.analysis.group') }}</h2>
+        <b-card :header="groupHeader(2)">
+          <SeriesForm :group="groups[1]" />
+        </b-card>
       </b-col>
     </b-row>
     <b-row v-if="this.type === 'vlastni'">
       <b-col class="text-center p-4">
-        <Button :value="$t('poll.analysis.button')"/>
+        <b-button v-on:click="handleCustom">{{ $t('poll.analysis.button') }}</b-button>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import Button from '@/components/atoms/Button.vue';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import SeriesBarChart from '@/components/molecules/SeriesBarChart.vue';
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
-// import AnalyzeVotesGroup from '@/components/molecules/AnalyzeVotesGroup.vue';
+import SeriesForm from '@/components/molecules/SeriesForm.vue';
 import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
 
 export default {
   name: 'analyze-votes',
   components: {
-    // AnalyzeVotesGroup,
+    SeriesForm,
     PollHeading,
     SeriesBarChart,
     PredefinedComparisons,
     ContentLoading,
-    Button,
   },
   props: {
     slug: String,
@@ -63,11 +65,11 @@ export default {
   }),
   created() {
     this.parseType(this.type);
-    if (this.queries) {
-      this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
+    this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
+      if (this.queries) {
         this.runQueries(this.item._id, this.queries);
-      });
-    }
+      }
+    });
   },
   async beforeRouteUpdate(to, from, next) {
     if (from.params.slug !== to.params.slug) {
@@ -87,6 +89,13 @@ export default {
     },
   },
   methods: {
+    groupHeader(i) {
+      return `${i}. ${this.$t('poll.analysis.group')}`;
+    },
+    handleCustom() {
+      console.log(this.groups[0]);
+      console.log(this.groups[1]);
+    },
     async runQueries(id, queries) {
       try {
         this.inProgress = true;

@@ -1,14 +1,27 @@
 <template>
   <div>
-    <div class="analyze-votes-group__wrapper">
-      <div>
+    <b-form>
+      <b-form-group
+        id="fieldset-horizontal"
+        label-cols-sm="2"
+        label="Driving"
+        label-for="input-horizontal"
+      >
+        <b-input-group class="mb-2">
+          <b-form-input aria-label="Minimum" type="number" v-model="group.drivingMin" min="0"></b-form-input>
+          <b-form-input aria-label="Maximum" type="number" v-model="group.drivingMax" max="90"></b-form-input>
+          <b-input-group-append>
+            <b-input-group-text>years</b-input-group-text>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
+<!--      <div>
         <label :for="'sex' + group">Sex</label>
       </div>
       <div>
-        <Radio v-model="sex" :name="'sex' + group" :identifier="'male' + group" text="Male"/>
-        <Radio v-model="sex" :name="'sex' + group" :identifier="'female' + group" text="Female"/>
+        <Radio v-model="group.sex" :name="'sex' + group" :identifier="'male' + group" text="Male"/>
+        <Radio v-model="group.sex" :name="'sex' + group" :identifier="'female' + group" text="Female"/>
       </div>
-
       <div>
         <label :for="'age' + group">Age</label>
       </div>
@@ -94,32 +107,16 @@
         <Checkbox v-model="tramway" :name="'vehicle' + group" :identifier="'tramway' + group"
                   text="Tramway"/>
       </div>
-    </div>
+ -->   </b-form>
   </div>
 </template>
 
 <script>
-import Radio from '@/components/atoms/Radio.vue';
-import Checkbox from '@/components/atoms/Checkbox.vue';
-
 export default {
-  name: 'analyze-votes-group',
+  name: 'SeriesForm',
   props: {
-    group: String,
-  },
-  components: {
-    Radio,
-    Checkbox,
+    group: Object,
   },
   methods: {},
 };
 </script>
-
-<style>
-  .analyze-votes-group__wrapper {
-    display: grid;
-    grid-template-columns: 0.3fr 1fr;
-    margin-bottom: 20px;
-    grid-gap: 20px;
-  }
-</style>
