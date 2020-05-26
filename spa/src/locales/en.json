@@ -110,7 +110,7 @@
       "brno": "Brno",
       "group": "group",
       "button": "Compare",
-      "display_label": "Show",
+      "display_label": "Show:",
       "values": "votes",
       "percents": "percents"
     }
