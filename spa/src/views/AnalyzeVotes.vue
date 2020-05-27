@@ -18,12 +18,12 @@
     <b-row v-if="this.type === 'vlastni'">
       <b-col>
         <b-card :header="captions[0]">
-          <SeriesForm :group="groups[0]" />
+          <SeriesForm :group="forms[0]" />
         </b-card>
       </b-col>
       <b-col>
         <b-card :header="captions[1]">
-          <SeriesForm :group="groups[1]" />
+          <SeriesForm :group="forms[1]" />
         </b-card>
       </b-col>
     </b-row>
@@ -57,6 +57,7 @@ export default {
   },
   data: () => ({
     groups: [{}, {}],
+    forms: [{}, {}],
     captions: null,
     queries: null,
     absoluteValues: false,
@@ -107,15 +108,35 @@ export default {
         query += `age=${ageMin}:${ageMax}`;
         appendAnd = true;
       }
+
+      (group.sex || []).forEach((x) => {
+        if (appendAnd) query += '&';
+        query += `sex=${x}`;
+        appendAnd = true;
+      });
+
+      (group.edu || []).forEach((x) => {
+        if (appendAnd) query += '&';
+        query += `edu=${x}`;
+        appendAnd = true;
+      });
+
+      (group.region || []).forEach((x) => {
+        if (appendAnd) query += '&';
+        query += `region=${x}`;
+        appendAnd = true;
+      });
+
+      (group.vehicles || []).forEach((x) => {
+        if (appendAnd) query += '&';
+        query += `vehicles=${x}`;
+        appendAnd = true;
+      });
       return query;
     },
     handleCustom() {
-      console.log(this.groups[0]);
-      const query1 = this.parseGroup(this.groups[0]);
-      console.log(query1);
-      console.log(this.groups[1]);
-      const query2 = this.parseGroup(this.groups[1]);
-      console.log(query2);
+      const query1 = this.parseGroup(this.forms[0]);
+      const query2 = this.parseGroup(this.forms[1]);
       this.queries = [query1, query2];
       this.runQueries(this.item._id, this.queries);
     },
