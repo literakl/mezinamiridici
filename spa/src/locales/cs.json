@@ -100,8 +100,10 @@
             "car_bike": "auto × motorka",
             "unseasoned_veteran": "zajíc × zkušený",
             "praha_brno": "Praha × Brno",
-            "men": "Muži",
-            "women": "Ženy",
+            "Men": "Muži",
+            "Women": "Ženy",
+            "men": "muži",
+            "women": "ženy",
             "car": "Auto",
             "truck": "Kamion",
             "bike": "Motorka",
@@ -113,7 +115,16 @@
             "button": "Porovnej",
             "display_label": "Zobrazit:",
             "values": "hlasy",
-            "percents": "procenta"
+            "percents": "procenta",
+            "driving_time": "Řidičem:",
+            "age": "Věk:",
+            "sex": "Pohlaví:",
+            "education": "Vzdělání:",
+            "vehicles": "Vozidla:",
+            "regions": "Regiony:",
+            "from": "Od",
+            "to": "Do",
+            "years": "roků"
         }
     },
     "profile": {

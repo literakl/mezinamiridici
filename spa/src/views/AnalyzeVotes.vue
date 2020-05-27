@@ -168,7 +168,7 @@ export default {
       switch (type) {
         case 'muzi_zeny':
           this.queries = ['sex=man', 'sex=woman'];
-          this.captions = [this.$t('poll.analysis.men'), this.$t('poll.analysis.women')];
+          this.captions = [this.$t('poll.analysis.Men'), this.$t('poll.analysis.Women')];
           break;
         case 'auto_kamion':
           this.queries = ['vehicles=car', 'vehicles=truck'];

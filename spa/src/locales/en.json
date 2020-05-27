@@ -99,8 +99,10 @@
       "car_bike": "car × bike",
       "unseasoned_veteran": "unseasoned × veteran",
       "praha_brno": "Praha × Brno",
-      "men": "Men",
-      "women": "Women",
+      "Men": "Men",
+      "Women": "Women",
+      "men": "men",
+      "women": "women",
       "car": "Car",
       "truck": "Truck",
       "bike": "Bike",
@@ -112,7 +114,16 @@
       "button": "Compare",
       "display_label": "Show:",
       "values": "votes",
-      "percents": "percents"
+      "percents": "percents",
+      "driving_time": "Driving time:",
+      "age": "Age:",
+      "sex": "Sex:",
+      "education": "Education:",
+      "vehicles": "Vehicles:",
+      "regions": "Regions:",
+      "from": "From",
+      "to": "To",
+      "years": "years"
     }
   },
   "profile": {
