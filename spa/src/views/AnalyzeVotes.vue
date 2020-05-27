@@ -16,13 +16,13 @@
       </b-col>
     </b-row>
     <b-row v-if="this.type === 'vlastni'">
-      <b-col md="6">
-        <b-card :header="groupHeader(1)">
+      <b-col>
+        <b-card :header="captions[0]">
           <SeriesForm :group="groups[0]" />
         </b-card>
       </b-col>
-      <b-col md="6">
-        <b-card :header="groupHeader(2)">
+      <b-col>
+        <b-card :header="captions[1]">
           <SeriesForm :group="groups[1]" />
         </b-card>
       </b-col>
@@ -89,12 +89,35 @@ export default {
     },
   },
   methods: {
-    groupHeader(i) {
-      return `${i}. ${this.$t('poll.analysis.group')}`;
+    parseGroup(group) {
+      let query = '', appendAnd = false;
+      const drivingMin = group.drivingMin || 0;
+      let drivingMax = group.drivingMax || 0;
+      if (drivingMin + drivingMax > 0) {
+        if (drivingMax === 0) drivingMax = 99;
+        query = `driving=${drivingMin}:${drivingMax}`;
+        appendAnd = true;
+      }
+
+      const ageMin = group.ageMin || 0;
+      let ageMax = group.ageMax || 0;
+      if (ageMin + ageMax > 0) {
+        if (ageMax === 0) ageMax = 99;
+        if (appendAnd) query += '&';
+        query += `age=${ageMin}:${ageMax}`;
+        appendAnd = true;
+      }
+      return query;
     },
     handleCustom() {
       console.log(this.groups[0]);
+      const query1 = this.parseGroup(this.groups[0]);
+      console.log(query1);
       console.log(this.groups[1]);
+      const query2 = this.parseGroup(this.groups[1]);
+      console.log(query2);
+      this.queries = [query1, query2];
+      this.runQueries(this.item._id, this.queries);
     },
     async runQueries(id, queries) {
       try {
@@ -135,7 +158,7 @@ export default {
           this.captions = [this.$t('poll.analysis.car'), this.$t('poll.analysis.bike')];
           break;
         case 'zajic_zkuseny':
-          this.queries = ['age=0:25&driving=0-3', 'age=26:110&driving=3:99'];
+          this.queries = ['age=0:25&driving=0:3', 'age=26:110&driving=3:99'];
           this.captions = [this.$t('poll.analysis.unseasoned'), this.$t('poll.analysis.veteran')];
           break;
         case 'praha_brno':

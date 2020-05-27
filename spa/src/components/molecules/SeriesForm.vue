@@ -3,8 +3,12 @@
     <b-form>
       <b-form-group label="Driving:" label-cols-sm="2">
         <b-input-group class="mb-1">
-          <b-form-input aria-label="Minimum" placeholder="From" v-model="group.drivingMin" type="number" min="0"></b-form-input>
-          <b-form-input aria-label="Maximum" placeholder="To" v-model="group.drivingMax" type="number" max="90"></b-form-input>
+          <b-form-input aria-label="Minimum" placeholder="From"
+                        v-model="group.drivingMin" type="number" min="0">
+          </b-form-input>
+          <b-form-input aria-label="Maximum" placeholder="To"
+                        v-model="group.drivingMax" type="number" min="0">
+          </b-form-input>
           <b-input-group-append>
             <b-input-group-text>years</b-input-group-text>
           </b-input-group-append>
@@ -12,8 +16,12 @@
       </b-form-group>
       <b-form-group label="Age:" label-cols-sm="2">
         <b-input-group class="mb-1">
-          <b-form-input aria-label="Minimum" placeholder="From" v-model="group.ageMin" type="number" min="0"></b-form-input>
-          <b-form-input aria-label="Maximum" placeholder="To" v-model="group.ageMax" type="number" max="105"></b-form-input>
+          <b-form-input aria-label="Minimum" placeholder="From"
+                        v-model="group.ageMin" type="number" min="0">
+          </b-form-input>
+          <b-form-input aria-label="Maximum" placeholder="To"
+                        v-model="group.ageMax" type="number" min="0">
+          </b-form-input>
           <b-input-group-append>
             <b-input-group-text>years</b-input-group-text>
           </b-input-group-append>
