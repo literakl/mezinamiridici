@@ -11,8 +11,8 @@
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="d-none d-sm-block">
             <div class="d-inline-flex flex-column">
-              <h2><b-nav-text class="text-white">{{ $t('app.name') }}</b-nav-text></h2>
-              <b-nav-text class="text-white">{{ $t('app.slogan') }}</b-nav-text>
+              <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
+              <span class="text-white">{{ $t('app.slogan') }}</span>
             </div>
           </b-navbar-nav>
 
