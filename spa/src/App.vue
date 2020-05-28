@@ -16,8 +16,8 @@
             </div>
           </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto align-items-center">
-          <b-nav-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in-up') }}</b-nav-item>
+          <b-navbar-nav class="ml-auto align-items-center">
+            <b-nav-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in-up') }}</b-nav-item>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <b-icon-person-fill scale="2"></b-icon-person-fill>
