@@ -1,7 +1,7 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
-    <b-row>
-      <b-col>
+  <div class="container pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
+    <div class="row" v-if="false">
+      <div class="col">
         <PollHeading v-if="item" :item="item"/>
         <ContentLoading v-if="! item" type="poll"/>
         <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"
@@ -13,26 +13,26 @@
             <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
-      </b-col>
-    </b-row>
-    <b-row v-if="this.type === 'vlastni'">
-      <b-col>
+      </div>
+    </div>
+    <div class="row" v-if="this.type === 'vlastni'">
+      <div class="col">
         <b-card :header="captions[0]">
           <SeriesForm :group="forms[0]" />
         </b-card>
-      </b-col>
-      <b-col>
+      </div>
+      <div class="col">
         <b-card :header="captions[1]">
           <SeriesForm :group="forms[1]" />
         </b-card>
-      </b-col>
-    </b-row>
-    <b-row v-if="this.type === 'vlastni'">
-      <b-col class="text-center p-4">
+      </div>
+    </div>
+    <div class="row" v-if="this.type === 'vlastni'">
+      <div class="col text-center p-4">
         <b-button v-on:click="handleCustom">{{ $t('poll.analysis.button') }}</b-button>
-      </b-col>
-    </b-row>
-  </b-container>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <b-form>
       <b-form-group :label="$t('poll.analysis.driving_time')" label-cols-sm="2">
         <b-input-group class="mb-1">
@@ -86,6 +86,6 @@ export default {
     display: grid;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   }
 </style>
