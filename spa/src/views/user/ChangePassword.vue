@@ -52,7 +52,7 @@ import { extend, ValidationObserver, configure } from 'vee-validate';
 import { required, min, email } from 'vee-validate/dist/rules';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import i18n from '../i18n';
+import i18n from '../../i18n';
 
 extend('required', required);
 extend('min', min);
