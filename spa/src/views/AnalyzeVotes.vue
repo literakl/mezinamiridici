@@ -1,13 +1,13 @@
 <template>
-  <div class="container pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
-    <div class="row" v-if="false">
+  <div class="container flex-wrap pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
+    <div class="row">
       <div class="col">
         <PollHeading v-if="item" :item="item"/>
         <ContentLoading v-if="! item" type="poll"/>
         <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"
                         :captions="captions" :absolute-values="absoluteValues"/>
         <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
-        <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="1">
+        <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1">
           <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2">
             <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
             <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
@@ -16,14 +16,14 @@
       </div>
     </div>
     <div class="row" v-if="this.type === 'vlastni'">
-      <div class="col">
+      <div class="col-sm-6">
         <b-card :header="captions[0]">
-          <SeriesForm :group="forms[0]" />
+          <SeriesForm :group="forms[0]" id="1" />
         </b-card>
       </div>
-      <div class="col">
+      <div class="col-sm-6">
         <b-card :header="captions[1]">
-          <SeriesForm :group="forms[1]" />
+          <SeriesForm :group="forms[1]" id="2" />
         </b-card>
       </div>
     </div>
@@ -57,7 +57,7 @@ export default {
   },
   data: () => ({
     groups: [{}, {}],
-    forms: [{}, {}],
+    forms: [{ region: [], vehicles: [] }, { region: [], vehicles: [] }],
     captions: null,
     queries: null,
     absoluteValues: false,
