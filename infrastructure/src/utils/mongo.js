@@ -95,6 +95,14 @@ function findUser(dbClient, params, projection) {
     .then(doc => doc);
 }
 
+function getIdentity(dbClient, userId) {
+  const query = { _id: userId };
+  return dbClient.db()
+    .collection('users')
+    .findOne(query, { projection: { 'bio.nickname': 1 } })
+    .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
+}
+
 async function getPoll(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   const item = await cursor.next();
@@ -120,7 +128,7 @@ function getNeighbourhItem(dbClient, type, published, older) {
     sortExpression = { 'info.date': 1 };
   }
   return dbClient.db().collection('items')
-    .find({ type, 'info.date': dateExpression }, { projection: { info: 1 } })
+    .find({ type, 'info.published': true, 'info.date': dateExpression }, { projection: { info: 1 } })
     .sort(sortExpression)
     .limit(1);
 }
@@ -145,6 +153,7 @@ exports.connectToDatabase = connectToDatabase;
 exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
+exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;

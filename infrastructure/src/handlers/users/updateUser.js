@@ -27,7 +27,7 @@ module.exports = (app) => {
   });
 };
 
-const prepareUpdateProfileQuery = (req) => {
+function prepareUpdateProfileQuery(req) {
   const {
     drivingSince, vehicles, sex, born, region, education, publicProfile,
   } = req.body;
@@ -73,4 +73,4 @@ const prepareUpdateProfileQuery = (req) => {
     query.$unset = unsetters;
   }
   return query;
-};
+}

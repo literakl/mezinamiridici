@@ -78,6 +78,12 @@ export default new Router({
       props: true,
     },
     {
+      path: '/nova-anketa/',
+      name: 'create-poll',
+      component: () => import('./views/poll/CreatePoll'),
+      props: true,
+    },
+    {
       path: '/anketa/:slug/grafy/:type',
       name: 'analyse-poll',
       component: () => import('./views/poll/AnalyzeVotes'),

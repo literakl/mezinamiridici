@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 
 dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
 const mongo = require('../src/utils/mongo.js');
@@ -12,50 +13,54 @@ const {
 } = require('./prepareUsers');
 
 let jwtVita, jwtLeos, jwtJiri, jwtLukas, jwtJana, jwtBara;
+// eslint-disable-next-line no-unused-vars
+let userVita, userLeos, userJiri, userLukas, userJana, userBara;
 let server;
 let dbClient;
 
 test('Poll API', async (done) => {
-  jest.setTimeout(60000);
+  jest.setTimeout(180000);
 
   // create poll, anonymous user
   let body = {
     text: 'First question',
+    picture: 'picture.png',
   };
   let response = await api('polls', { method: 'POST', json: body });
   expect(response.statusCode).toBe(401);
 
   // create poll, insufficient privilleges
-  body = {
-    text: 'First question',
-  };
   response = await api('polls', { method: 'POST', json: body, headers: getAuthHeader(jwtVita) });
   expect(response.statusCode).toBe(403);
 
   // create poll, admin privilleges
-  const firstPoll = {
-    text: 'First question',
-  };
+  const firstPoll = body;
   response = await api('polls', { method: 'POST', json: firstPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
   expect(response.data._id).toBeDefined();
+  expect(response.data.info.picture).toBe(firstPoll.picture);
+  expect(response.data.info.author.nickname).toBe(userLeos.nickname);
   firstPoll.id = response.data._id;
   firstPoll.slug = response.data.info.slug;
 
   // create second poll
   const secondPoll = {
     text: 'Second question',
+    picture: 'picture.png',
+    author: userJana.userId,
   };
   await sleep(100);
   response = await api('polls', { method: 'POST', json: secondPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
+  expect(response.data.info.author.nickname).toBe(userJana.nickname);
   secondPoll.id = response.data._id;
   secondPoll.slug = response.data.info.slug;
 
   // create third poll
   const thirdPoll = {
     text: 'Third question',
+    picture: 'picture.png',
   };
   await sleep(100);
   response = await api('polls', { method: 'POST', json: thirdPoll, headers: getAuthHeader(jwtLeos) }).json();
@@ -66,6 +71,7 @@ test('Poll API', async (done) => {
   // create fourth poll
   const fourthPoll = {
     text: 'Fourth question',
+    picture: 'picture.png',
   };
   await sleep(100);
   response = await api('polls', { method: 'POST', json: fourthPoll, headers: getAuthHeader(jwtLeos) }).json();
@@ -81,7 +87,7 @@ test('Poll API', async (done) => {
   expect(response.data._id).toBe(firstPoll.id);
   expect(response.data.info.caption).toBe(firstPoll.text);
   expect(response.data.info.slug).toBe('first-question');
-  expect(response.data.info.published).toBe(true);
+  expect(response.data.info.published).toBe(false);
   expect(response.data.my_vote).toBe('neutral');
   expect(response.data.votes_count).toBe(1);
   expect(response.data.votes.neutral).toBe(1);
@@ -187,11 +193,44 @@ test('Poll API', async (done) => {
   expect(response.data.votes.dislike).toBe(1);
   expect(response.data.votes.hate).toBe(2);
   expect(response.data.siblings.older).toBe(null);
+  expect(response.data.siblings.newer).toBe(null);
+
+  // publish the fist poll
+  firstPoll.published = true;
+  response = await api(`polls/${firstPoll.id}`, { method: 'PATCH', json: firstPoll, headers: getAuthHeader(jwtLeos) }).json();
+  expect(response.success).toBeTruthy();
+
+  // update and publish the second poll
+  secondPoll.text = 'The second question';
+  secondPoll.picture = 'photo.png';
+  secondPoll.published = true;
+  secondPoll.author = userBara.userId;
+  response = await api(`polls/${secondPoll.id}`, { method: 'PATCH', json: secondPoll, headers: getAuthHeader(jwtLeos) }).json();
+  expect(response.success).toBeTruthy();
+
+  // check first poll as Leos again
+  response = await bff(`polls/${firstPoll.slug}`, { headers: getAuthHeader(jwtLeos) }).json();
+  expect(response.data._id).toBe(firstPoll.id);
+  expect(response.data.siblings.older).toBe(null);
   expect(response.data.siblings.newer._id).toBe(secondPoll.id);
 
+  // publish the third poll
+  thirdPoll.published = true;
+  response = await api(`polls/${thirdPoll.id}`, { method: 'PATCH', json: thirdPoll, headers: getAuthHeader(jwtLeos) }).json();
+  expect(response.success).toBeTruthy();
+
+  // publish the fourth poll
+  fourthPoll.published = true;
+  response = await api(`polls/${fourthPoll.id}`, { method: 'PATCH', json: fourthPoll, headers: getAuthHeader(jwtLeos) }).json();
+  expect(response.success).toBeTruthy();
+
   // check second poll as Jiri
-  response = await bff(`polls/${secondPoll.slug}`, { headers: getAuthHeader(jwtJiri) }).json();
+  response = await bff('polls/the-second-question', { headers: getAuthHeader(jwtJiri) }).json();
   expect(response.data._id).toBe(secondPoll.id);
+  expect(response.data.info.caption).toBe(secondPoll.text);
+  expect(response.data.info.picture).toBe(secondPoll.picture);
+  expect(response.data.info.author.nickname).toBe(userBara.nickname);
+  expect(response.data.info.published).toBeTruthy();
   expect(response.data.my_vote).toBe('trivial');
   expect(response.data.votes_count).toBe(5);
   expect(response.data.votes.neutral).toBe(1);
@@ -376,26 +415,32 @@ beforeAll(async () => {
   };
   let response = await api('authorizeUser', { method: 'POST', json: body }).json();
   jwtVita = response.data;
+  userVita = jwt.decode(response.data);
 
   body.email = 'leos@email.bud';
   response = await api('authorizeUser', { method: 'POST', json: body }).json();
   jwtLeos = response.data;
+  userLeos = jwt.decode(response.data);
 
   body.email = 'jiri@email.bud';
   response = await api('authorizeUser', { method: 'POST', json: body }).json();
   jwtJiri = response.data;
+  userJiri = jwt.decode(response.data);
 
   body.email = 'lukas@email.bud';
   response = await api('authorizeUser', { method: 'POST', json: body }).json();
   jwtLukas = response.data;
+  userLukas = jwt.decode(response.data);
 
   body.email = 'jana@email.bud';
   response = await api('authorizeUser', { method: 'POST', json: body }).json();
   jwtJana = response.data;
+  userJana = jwt.decode(response.data);
 
   body.email = 'bara@email.bud';
   response = await api('authorizeUser', { method: 'POST', json: body }).json();
   jwtBara = response.data;
+  userBara = jwt.decode(response.data);
 });
 
 afterAll(() => {

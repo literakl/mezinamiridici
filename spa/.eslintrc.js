@@ -16,6 +16,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'one-var-declaration-per-line': 'off',
     'one-var': 'off',
+    "no-use-before-define": ["error", { "functions": false }]
   },
   parserOptions: {
     parser: 'babel-eslint',

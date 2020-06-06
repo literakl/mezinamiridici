@@ -61,6 +61,7 @@ function createError(message, messageKey) {
 
 function addValidationError(result, argument, message, messageKey) {
   if (result.errors === undefined) {
+    // eslint-disable-next-line no-param-reassign
     result.errors = [];
   }
   const x = {
@@ -112,7 +113,9 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
 
 function parsePollFilterParams(req) {
   const result = {};
+  // eslint-disable-next-line no-restricted-syntax
   for (const key in req.query) {
+    // eslint-disable-next-line no-prototype-builtins
     if (req.query.hasOwnProperty(key)) {
       const field = convertField(key);
       const value = req.query[key]; // todo injection check
@@ -126,14 +129,6 @@ function parsePollFilterParams(req) {
   return result;
 }
 
-function convertField(key) {
-  const field = fieldMapping.get(key);
-  if (field) {
-    return field;
-  }
-  throw new Error(`Unsupported field ${key}`);
-}
-
 const fieldMapping = new Map([
   ['id', '_id'],
   ['type', 'type'],
@@ -145,6 +140,14 @@ const fieldMapping = new Map([
   ['driving', 'driving'],
   ['vehicles', 'vehicles'],
 ]);
+
+function convertField(key) {
+  const field = fieldMapping.get(key);
+  if (field) {
+    return field;
+  }
+  throw new Error(`Unsupported field ${key}`);
+}
 
 module.exports.sendRresponse = sendResponse; // todo fix typo
 module.exports.sendErrorForbidden = sendErrorForbidden;

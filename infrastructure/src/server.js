@@ -19,6 +19,7 @@ require('./handlers/users/updateUser')(app);
 require('./handlers/users/validateToken')(app);
 require('./handlers/users/verifyUser')(app);
 require('./handlers/polls/createPoll')(app);
+require('./handlers/polls/updatePoll')(app);
 require('./handlers/polls/getPoll')(app);
 require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/votePoll')(app);

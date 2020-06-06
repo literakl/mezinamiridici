@@ -10,17 +10,19 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/polls', auth.cors);
-
-  app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.verbose('createPoll handler starts');
+  app.patch('/v1/polls/:pollId', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
+    logger.verbose('updatePoll handler starts');
+    const { pollId } = req.params;
+    if (!pollId) {
+      return api.sendBadRequest(res, api.createError('Missing parameter pollId', 'generic.internal-error'));
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
       const {
-        text, author, date, picture,
+        text, author, date, picture, published,
       } = req.body;
 
       if (!text) {
@@ -45,18 +47,12 @@ module.exports = (app) => {
         console.log(dday.constructor.name);
         console.log(dday);
         publishDate = dday;
-        // publishDate = new Date(date);
       }
 
-      const pollId = mongo.generateTimeId();
-      await insertItem(dbClient, pollId, text, user, picture, publishDate);
-      logger.debug('Item inserted');
-
-      const pipeline = [mongo.stageId(pollId)];
-      const item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Poll fetched');
-
-      return api.sendCreated(res, api.createResponse(item));
+      const query = prepareUpdateQuery(text, user, picture, publishDate, published);
+      await dbClient.db().collection('items').updateOne({ _id: pollId }, query);
+      logger.debug('Item updated');
+      return api.sendRresponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
@@ -64,33 +60,15 @@ module.exports = (app) => {
   });
 };
 
-function insertItem(dbClient, pollId, text, author, picture, publishDate) {
-  const slug = slugify(text, { lower: true, strict: true });
-  const item = {
-    _id: pollId,
-    type: 'poll',
-    votes_count: 0,
-    info: {
-      author: {
-        nickname: author.nickname,
-        id: author.userId,
-      },
-      caption: text,
-      slug,
-      published: false,
-      date: publishDate,
-      picture,
-      // tags: ['polls'], // TODO
-    },
-    data: {
-      votes: {
-        neutral: 0,
-        trivial: 0,
-        dislike: 0,
-        hate: 0,
-      },
-    },
-  };
-
-  return dbClient.db().collection('items').insertOne(item);
+function prepareUpdateQuery(text, author, picture, date, published) {
+  const setters = {};
+  setters['info.caption'] = text;
+  setters['info.slug'] = slugify(text, { lower: true, strict: true });
+  setters['info.picture'] = picture;
+  setters['info.author'] = author;
+  setters['info.date'] = date;
+  setters['info.published'] = published;
+  const query = { };
+  query.$set = setters;
+  return query;
 }
