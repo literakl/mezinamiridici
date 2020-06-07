@@ -47,17 +47,13 @@
 </template>
 
 <script>
-import { extend, ValidationObserver, configure } from 'vee-validate';
-import { required, min } from 'vee-validate/dist/rules';
+import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '../../i18n';
 
-extend('required', required);
-extend('min', min);
 configure({
   defaultMessage: (field, values) => {
-    /* eslint no-underscore-dangle: 0 */
     /* eslint no-param-reassign: ["error", { "props": false }] */
     values._field_ = i18n.t(`sign-in.${field}`);
     return i18n.t(`validation.${values._rule_}`, values);
@@ -67,7 +63,6 @@ configure({
 export default {
   name: 'reset',
   components: {
-    ValidationObserver,
     Button,
     TextInput,
   },

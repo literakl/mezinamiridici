@@ -242,24 +242,15 @@
 
 <script>
 import jwtDecode from 'jwt-decode';
-import { extend, ValidationObserver, configure } from 'vee-validate';
-import {
-// eslint-disable-next-line camelcase
-  required, email, min, min_value,
-} from 'vee-validate/dist/rules';
+import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '@/i18n';
 
-extend('email', email);
-extend('required', required);
-extend('min', min);
-extend('min_value', min_value);
 configure({
   defaultMessage: (field, values) => {
-    /* eslint no-underscore-dangle: 0 */
     /* eslint no-param-reassign: ["error", { "props": false }] */
     values._field_ = i18n.t(`profile.${field}`);
     return i18n.t(`validation.${values._rule_}`, values);
@@ -291,7 +282,6 @@ function convertErrors(jsonErrors) {
 export default {
   name: 'sign-up',
   components: {
-    ValidationObserver,
     Checkbox,
     TextInput,
     Button,

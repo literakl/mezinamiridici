@@ -36,20 +36,13 @@
 </template>
 
 <script>
-import { extend, ValidationObserver, configure } from 'vee-validate';
-import {
-// eslint-disable-next-line camelcase
-  required, email,
-} from 'vee-validate/dist/rules';
+import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '../../i18n';
 
-extend('email', email);
-extend('required', required);
 configure({
   defaultMessage: (field, values) => {
-    /* eslint no-underscore-dangle: 0 */
     /* eslint no-param-reassign: ["error", { "props": false }] */
     values._field_ = i18n.t(`profile.${field}`);
     return i18n.t(`validation.${values._rule_}`, values);
@@ -59,7 +52,6 @@ configure({
 export default {
   name: 'ForgottenPassword',
   components: {
-    ValidationObserver,
     Button,
     TextInput,
   },

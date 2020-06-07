@@ -191,11 +191,7 @@
 </template>
 
 <script>
-import { extend, ValidationObserver, configure } from 'vee-validate';
-import {
-// eslint-disable-next-line camelcase
-  required, min, min_value,
-} from 'vee-validate/dist/rules';
+import { configure } from 'vee-validate';
 import { ContentLoader } from 'vue-content-loader';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
@@ -203,12 +199,8 @@ import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '@/i18n';
 
-extend('required', required);
-extend('min', min);
-extend('min_value', min_value);
 configure({
   defaultMessage: (field, values) => {
-    /* eslint no-underscore-dangle: 0 */
     /* eslint no-param-reassign: ["error", { "props": false }] */
     values._field_ = i18n.t(`profile.${field}`);
     return i18n.t(`validation.${values._rule_}`, values);
@@ -241,7 +233,6 @@ export default {
   name: 'sign-up',
   components: {
     ContentLoader,
-    ValidationObserver,
     Checkbox,
     TextInput,
     Button,

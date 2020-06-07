@@ -19,7 +19,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Verify',
   data: () => ({
