@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate';
-
 export default {
   data: () => ({
     checked: null,
@@ -55,9 +53,6 @@ export default {
       type: null,
       default: null,
     },
-  },
-  components: {
-    ValidationProvider,
   },
   methods: {
     selectfunction(event) {
