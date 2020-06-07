@@ -1,6 +1,6 @@
 const slugify = require('slugify');
 const dayjs = require('dayjs');
-const customParseFormat = require('dayjs/plugin/customParseFormat')
+const customParseFormat = require('dayjs/plugin/customParseFormat');
 
 dayjs.extend(customParseFormat);
 
@@ -44,9 +44,7 @@ module.exports = (app) => {
       let publishDate = new Date();
       if (date) {
         const dday = dayjs(date, 'YYYY-MM-DD');
-        console.log(dday.constructor.name);
-        console.log(dday);
-        publishDate = dday;
+        publishDate = new Date(1000 * dday.unix());
       }
 
       const query = prepareUpdateQuery(text, user, picture, publishDate, published);

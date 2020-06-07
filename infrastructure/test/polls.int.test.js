@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
+const dayjs = require('dayjs');
 
 dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
 const mongo = require('../src/utils/mongo.js');
@@ -197,6 +198,7 @@ test('Poll API', async (done) => {
 
   // publish the fist poll
   firstPoll.published = true;
+  firstPoll.date = dayjs().subtract(7, 'day').format('YYYY-MM-DD');
   response = await api(`polls/${firstPoll.id}`, { method: 'PATCH', json: firstPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
 
@@ -205,6 +207,7 @@ test('Poll API', async (done) => {
   secondPoll.picture = 'photo.png';
   secondPoll.published = true;
   secondPoll.author = userBara.userId;
+  secondPoll.date = dayjs().subtract(5, 'day').format('YYYY-MM-DD');
   response = await api(`polls/${secondPoll.id}`, { method: 'PATCH', json: secondPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
 
@@ -216,11 +219,13 @@ test('Poll API', async (done) => {
 
   // publish the third poll
   thirdPoll.published = true;
+  thirdPoll.date = dayjs().subtract(3, 'day').format('YYYY-MM-DD');
   response = await api(`polls/${thirdPoll.id}`, { method: 'PATCH', json: thirdPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
 
   // publish the fourth poll
   fourthPoll.published = true;
+  fourthPoll.date = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
   response = await api(`polls/${fourthPoll.id}`, { method: 'PATCH', json: fourthPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
 
