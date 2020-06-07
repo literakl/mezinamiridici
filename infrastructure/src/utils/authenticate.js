@@ -55,6 +55,10 @@ function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d') 
   return jwt.sign(jwtData, process.env.JWT_SECRET, { expiresIn: expiration });
 }
 
+function getIdentity(identity) {
+  return { userId: identity.userId, nickname: identity.nickname };
+}
+
 const corsPerRoute = corsMiddleware({
   origin: ['http://localhost:8080', 'https://www.mezinamiridici.cz'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -68,3 +72,4 @@ module.exports.poll_admin = withRole('admin:poll');
 module.exports.cors = corsPerRoute;
 module.exports.createToken = createToken;
 module.exports.createTokenFromUser = createTokenFromUser;
+module.exports.getIdentity = getIdentity;
