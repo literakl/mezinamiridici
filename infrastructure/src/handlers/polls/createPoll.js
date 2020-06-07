@@ -42,7 +42,10 @@ module.exports = (app) => {
       let publishDate = new Date();
       if (date) {
         const dday = dayjs(date, 'YYYY-MM-DD');
-        publishDate = new Date(1000 * dday.unix());
+        if (!dday.isValid()) {
+          return api.sendBadRequest(res, api.createError(`Date ${publishDate} is invalid`, 'generic.internal-error'));
+        }
+        publishDate = dday.toDate();
       }
 
       const pollId = mongo.generateTimeId();
