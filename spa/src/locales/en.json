@@ -77,6 +77,8 @@
   },
   "poll": {
     "your-vote": "Your vote",
+    "your-say": "comment on poll",
+    "load-more":"Load More",
     "votes": "Votes",
     "discussion": "Discussion",
     "your-opinion": "What do you want to say about it",

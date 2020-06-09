@@ -78,6 +78,8 @@
     },
     "poll": {
         "your-vote": "Váš hlas",
+        "your-say": "komentovat hlasování",
+        "load-more":"Načíst další",
         "votes": "Hlasů",
         "discussion": "Diskuse",
         "your-opinion": "Co si o tom myslíte vy?",
