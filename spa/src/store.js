@@ -9,8 +9,11 @@ axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8'
 
 Vue.use(Vuex);
 
-const API_ENDPOINT = process.env.VUE_APP_API_ENDPOINT;
-const BFF_ENDPOINT = process.env.VUE_APP_BFF_ENDPOINT;
+const {
+  VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT, DEFAULT_POLL_COMMENT_LIMIT, DEFAULT_POLL_COMMENT_PAGE,
+} = process.env;
+const API_ENDPOINT = VUE_APP_API_ENDPOINT;
+const BFF_ENDPOINT = VUE_APP_BFF_ENDPOINT;
 
 function getAuthHeader(context, jwt = undefined) {
   const config = { headers: { } };
@@ -29,6 +32,7 @@ export default new Vuex.Store({
     poll: null,
     latestPoll: null,
     stream: null,
+    pollComments: null,
   },
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -38,6 +42,7 @@ export default new Vuex.Store({
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
+    POLL_COMMENTS: state => state.pollComments,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -64,6 +69,9 @@ export default new Vuex.Store({
     // APPEND_STREAM: (state, payload) => {
     //   state.stream = payload;
     // },
+    SET_POLL_COMMENTS: (state, payload) => {
+      state.pollComments = payload;
+    },
   },
   actions: {
     CHANGE_PASSWORD: async (context, payload) => {
@@ -181,6 +189,17 @@ export default new Vuex.Store({
       }
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
+    GET_POLL_COMMENTS: async (context, payload) => {
+      if (payload.reset) {
+        context.commit('SET_POLL_COMMENTS', null);
+      }
+      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comment?page=${payload.page}&limit=${payload.limit}`, getAuthHeader(context));
+      if (context.getters.POLL_COMMENTS !== null && context.getters.POLL_COMMENTS.rootComments !== undefined) {
+        console.log(context.getters.POLL_COMMENTS.rootComments);
+        pollData.data.data.rootComments = context.getters.POLL_COMMENTS.rootComments.concat(pollData.data.data.rootComments);
+      }
+      context.commit('SET_POLL_COMMENTS', pollData.data.data);
+    },
     GET_POLL: async (context, payload) => {
       console.log(`GET_POLL ${payload.slug}`);
       if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
@@ -190,6 +209,7 @@ export default new Vuex.Store({
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
+      await context.dispatch('GET_POLL_COMMENTS', { id: item._id, page: DEFAULT_POLL_COMMENT_PAGE, limit: DEFAULT_POLL_COMMENT_LIMIT });
     },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
@@ -217,6 +237,16 @@ export default new Vuex.Store({
           items = items.filter(item => item._id !== poll._id);
           context.commit('SET_STREAM', items);
         });
+    },
+    COMMENT: async (context, payload) => {
+      console.log('test', context, payload);
+      return axios.post(`${API_ENDPOINT}/polls/${payload.id}/comment`,
+        { commentText: payload.text, parentCommentId: payload.parent }, getAuthHeader(context));
+    },
+    COMMENT_VOTE: async (context, payload) => {
+      console.log('test', context, payload);
+      return axios.post(`${API_ENDPOINT}/comment/${payload.commentId}/vote`,
+        { pollId: payload.pollId, vote: payload.vote }, getAuthHeader(context));
     },
   },
 });

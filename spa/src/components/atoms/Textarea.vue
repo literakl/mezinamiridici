@@ -35,11 +35,7 @@ export default {
       }
 
       await this.$store.dispatch('COMMENT', payload);
-
-      this.$store.dispatch('GET_POLL_COMMENTS', {
-        id: this.id,
-      });
-
+      this.$store.dispatch('GET_POLL_COMMENTS', { id: this.id, reset: true });
       this.sending = false;
       this.text = '';
     },
