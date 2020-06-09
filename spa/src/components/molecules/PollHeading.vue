@@ -8,7 +8,7 @@
       </b-col>
       <b-col sm="auto">
         <b-card
-          img-src="../../assets/unsplash/cameron-earl-zatacka.jpg"
+          img-src="/img/poll/unsplash/cameron-earl-zatacka.jpg"
           img-alt="Image"
           img-top
           tag="article"
