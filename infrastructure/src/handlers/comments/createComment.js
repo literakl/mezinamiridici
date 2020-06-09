@@ -1,37 +1,59 @@
-const AWS = require('aws-sdk');
+const slugify = require('slugify');
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
+const logger = require("../../utils/logging");
 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const uuidv4 = require('uuid/v4');
-const jwt = require('jsonwebtoken');
+module.exports = (app) => {
+    app.options('/v1/polls/:pollId/comment', auth.cors);
 
-const http = require('../../utils/api.js');
+    app.post('/v1/polls/:pollId/comment', auth.required, auth.cors, async (req, res) => {
+        logger.verbose("createComment handler starts");
+        const { commentText, parentCommentId } = req.body;
+        const { pollId } = req.params;
+        if (!pollId || !commentText) {
+            return api.sendBadRequest(res, api.createError("Missing parameter", "generic.internal-error"));
+        }
 
-exports.handler = (payload, context, callback) => {
-  console.log('[createPollComment]');
-  console.log(payload.body);
-  const { parent, text } = JSON.parse(payload.body);
-  const token = payload.headers.Authorization.split(' ')[1];
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const principalId = decoded.userId;
-  // const { requestContext: { authorizer: { principalId } } } = payload;
-  const { pollId } = payload.pathParameters;
+        try {
+            const dbClient = await mongo.connectToDatabase();
+            logger.debug("Mongo connected");
 
-  const commentId = uuidv4();
+            let item = await dbClient.db().collection("items").findOne({ _id: pollId }, { projection: { _id: 1 } });
+            if (!item) {
+                return api.sendNotFound(res, api.createError("Poll not found", "generic.internal-error"));
+            }
+            logger.debug("Item fetched");
+            const commentId = mongo.generateId();
+            await insertComment(dbClient, pollId, commentId, commentText, req.identity, parentCommentId);
+            logger.debug("Item inserted");
 
-  dynamodb.put({
-    Item: {
-      commentId,
-      pollId,
-      userId: principalId,
-      parent,
-      text,
-      created: Date.now(),
-    },
-    TableName: 'BUDCommentTable',
-  }, (err, data) => {
-    if (err) {
-      return http.sendInternalError(callback, err.Item);
-    }
-    return http.sendRresponse(callback, data.Item);
-  });
+            let comment = await dbClient.db().collection("comments").findOne({ _id: commentId });
+
+            return api.sendCreated(res, api.createResponse(comment));
+        } catch (err) {
+            logger.error("Request failed", err);
+            return api.sendInternalError(res, api.createError('Failed to create poll', "sign-in.something-went-wrong"));
+        }
+    })
 };
+
+function insertComment(dbClient, pollId, commentId, commentText, user, parentCommentId) {
+    var commentSlug = slugify(commentText, { lower: true, strict: true });
+    var comment = {
+        _id: commentId,
+        pollId: pollId,
+        userId: user.userId,
+        commentText: commentText,
+        commentSlug: commentSlug,
+        created: new Date(),
+        upvotes: 0,
+        downvotes: 0,
+        nickname: user.nickname,
+        userId: user.userId
+    }
+    if (parentCommentId)
+        comment.parentCommentId = parentCommentId;
+
+    return dbClient.db().collection("comments").insertOne(comment);
+}

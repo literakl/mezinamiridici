@@ -41,6 +41,7 @@ export default {
     downvotes: Number,
     depth: Number,
     userId: String,
+    childCommentCount: Number,
   },
   components: {
     Textarea,

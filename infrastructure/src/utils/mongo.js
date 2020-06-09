@@ -1,11 +1,13 @@
+const path = require('path');
 const generate = require('nanoid/generate');
 const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
 const logger = require('./logging');
 
-dotenv.config();
-const { MONGODB_URI } = process.env;
-logger.info(`Mongo is configured to connect ${MONGODB_URI}`);
+var envPath = path.join(__dirname,'../..','.env')
+dotenv.config({ path:envPath });
+let MONGODB_URI = process.env.MONGODB_URI;
+logger.info("Mongo is configured to connect " + MONGODB_URI);
 let cachedDb = null;
 
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
