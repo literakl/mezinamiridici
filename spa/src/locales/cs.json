@@ -128,6 +128,11 @@
       "from": "Od",
       "to": "Do",
       "years": "roků"
+    },
+    "forms": {
+      "new-poll-heading": "Nová anketa",
+      "text-label": "Otázka *",
+      "picture-label": "Obrázek *"
     }
   },
   "profile": {
