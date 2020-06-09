@@ -29,11 +29,22 @@ module.exports = (app) => {
         } catch (err) {
             logger.error("Request failed", err);
             if (err.code === 11000) {
-                if (!!err.keyValue["auth.email"]) {
-                    api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
-                }
-                if (!!err.keyValue["bio.nickname"]) {
-                    api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
+                if(err.keyValue) {
+                    if (!!err.keyValue["auth.email"]) {
+                        api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
+                    }
+                    if (!!err.keyValue["bio.nickname"]) {
+                        api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
+                    }
+                } else {
+                    var keyValue = err.errmsg.split("index:")[1].split("dup key")[0].split("_")[0].trim();
+                    if (keyValue == "auth.email") {
+                        api.addValidationError(result, "email", "email is already registered", "sign-up.email-exists");
+                    }
+                    if (keyValue == "bio.nickname") {
+                        api.addValidationError(result, "nickname", "nickname has been already taken", "sign-up.nickname-exists");
+                    }
+
                 }
                 return api.sendConflict(res, result);
             }
