@@ -3,42 +3,42 @@
     <CompletePoll v-if="poll" />
     <ContentLoading v-if="! poll" type="poll" />
 
-<!--    <div class="poll__discussion-break-out">-->
-<!--      <div class="poll__discussion-wrapper">-->
-<!--        <h2>{{ $t('poll.discussion') }} ({{comments ? comments.length : 0}})</h2>-->
+   <div class="poll__discussion-break-out" v-if="poll">
+     <div class="poll__discussion-wrapper">
+       <h2>{{ $t('poll.discussion') }} ({{commentslist ? commentslist.length : 0}})</h2>
 
-<!--        <div v-if="signedIn">-->
-<!--          <h3>{{ $t('poll.your-say') }}</h3>-->
-<!--          <Textarea :id="id" />-->
-<!--        </div>-->
+       <div v-if="signedIn">
+         <h3>{{ $t('poll.your-say') }}</h3>
+         <Textarea :id="poll._id" />
+       </div>
+       <Comments :pollId="poll._id" :commentslist="commentslist" :depth="parseInt(0)" v-if="commentslist" />
 
-<!--        <Comments :pollId="id" :comments="comments" :depth="parseInt(0)" v-if="comments" />-->
-
-<!--        <div class="poll__other-polls">-->
-<!--          <h2>-->
-<!--            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />-->
-<!--            <hr class="poll__double-line" />-->
-<!--            <hr class="poll__double-line" />-->
-<!--          </h2>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+       <div class="poll__other-polls">
+         <h2>
+           <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
+           <hr class="poll__double-line" />
+           <hr class="poll__double-line" />
+         </h2>
+       </div>
+       <Button :value="$t('poll.load-more')" class="poll__other-polls-button" @clicked="loadMorePoll(poll._id)" v-if="loadMore"/>
+     </div>
+   </div>
   </b-container>
 </template>
 
 <script>
 import CompletePoll from '@/components/organisms/CompletePoll.vue';
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
-// import Button from '@/components/atoms/Button.vue';
-// import Textarea from '@/components/atoms/Textarea.vue';
-// import Comments from '@/components/organisms/Comments.vue';
+import Button from '@/components/atoms/Button.vue';
+import Textarea from '@/components/atoms/Textarea.vue';
+import Comments from '@/components/organisms/Comments.vue';
 
 export default {
   name: 'poll',
   components: {
-    // Button,
-    // Comments,
-    // Textarea,
+    Button,
+    Comments,
+    Textarea,
     CompletePoll,
     ContentLoading,
   },
@@ -49,27 +49,18 @@ export default {
     this.$store.dispatch('GET_POLL', { slug: this.slug });
   },
   methods: {
-    // redirectToOtherPolls() {
-    //   this.$router.push({ name: 'polls' });
-    // },
-    // redirectToAnalyzeVotes() {
-    //   this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
-    // },
-    // recursivelyBuildComments(allComments, commentsToSearchThrough) {
-    //   allComments.forEach((comment) => {
-    //     if (comment.parent) {
-    //       commentsToSearchThrough.forEach((x) => {
-    //         if (!x.comments) return;
-    //         const found = x.comments.find(y => y.commentId === comment.parent);
-    //
-    //         if (found) {
-    //           found.comments = [comment];
-    //           this.recursivelyBuildComments(allComments, x.comments);
-    //         }
-    //       });
-    //     }
-    //   });
-    // },
+    redirectToOtherPolls() {
+      this.$router.push({ name: 'polls' });
+    },
+    loadMorePoll(pollId) {
+      const { page, limit, rootCommentsCount } = this.$store.getters.POLL_COMMENTS;
+      if (page * limit < rootCommentsCount) {
+        this.$store.dispatch('GET_POLL_COMMENTS', { id: pollId, page: page + 1, limit });
+      }
+    },
+    redirectToAnalyzeVotes() {
+      this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
+    },
   },
   computed: {
     signedIn() {
@@ -78,35 +69,17 @@ export default {
     poll() {
       return this.$store.getters.POLL;
     },
-    /*
-    comments() {
+    commentslist() {
       const comments = this.$store.getters.POLL_COMMENTS;
-
       if (!comments) return [];
-
-      const commentsTree = [];
-
-      comments.forEach((comment) => {
-        if (!comment.parent) {
-          commentsTree.push(comment);
-        }
-      });
-
-      comments.forEach((comment) => {
-        if (comment.parent) {
-          const found = commentsTree.find(x => x.commentId === comment.parent);
-
-          if (found) {
-            found.comments = [comment];
-          }
-        }
-      });
-
-      this.recursivelyBuildComments(comments, commentsTree);
-
-      return commentsTree.sort((a, b) => ((a.created < b.created) ? 1 : -1));
+      return comments.rootComments;
     },
-    */
+    loadMore() {
+      if (this.$store.getters.POLL_COMMENTS != null) {
+        return this.$store.getters.POLL_COMMENTS.page * this.$store.getters.POLL_COMMENTS.limit < this.$store.getters.POLL_COMMENTS.rootCommentsCount;
+      }
+      return true;
+    },
   },
 };
 </script>

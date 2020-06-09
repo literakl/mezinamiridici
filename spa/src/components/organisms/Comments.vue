@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <div v-for="comment in comments" v-bind:key="comment.id">
+    <div v-if="commentslist.length">
+
+        <div v-for="(comment, index) in commentslist" v-bind:key="comment.id">
             <div
                 v-bind:class="(
                     parseInt(depth) === 0  || parseInt(depth) > 5) ?
@@ -10,20 +11,24 @@
                 <Comment
                     :pollId="pollId"
                     :comment="comment"
-                    :commentId="comment.commentId"
+                    :commentId="comment._id"
                     :userId="comment.userId"
                     :name="comment.nickname"
-                    :title="comment.text"
+                    :title="comment.commentText"
                     :upvotes="comment.upvotes"
                     :downvotes="comment.downvotes"
                     :date="comment.created.toString()"
                     :depth="parseInt(depth)"
+                    :childCommentCount="comment.childCommentCount"
                 />
-                <Comments
+                <ChildComments
                     :pollId="pollId"
                     v-if="comment.comments !== undefined"
-                    :comments="comment.comments"
+                    :childCommentsList="comment.comments"
+                    :paginations="paginations[index]"
                     :depth="parseInt(depth) + 1"
+                    :rootIndex="index"
+                    @paginate="paginate"
                 />
             </div>
         </div>
@@ -32,16 +37,39 @@
 
 <script>
 import Comment from '@/components/molecules/Comment.vue';
+import ChildComments from '@/components/organisms/ChildComments.vue';
 
 export default {
   name: 'Comments',
+  data() {
+    return {
+      paginations: [],
+    };
+  },
   props: {
     pollId: String,
-    comments: Array,
     depth: Number,
+    commentslist: Array,
   },
   components: {
     Comment,
+    ChildComments,
+  },
+  methods: {
+    paginate(event) {
+      this.$set(this.paginations, event.rootIndex, this.paginations[event.rootIndex] + 1);
+    },
+    changeData() {
+      for (let index = 0; index < this.commentslist.length; index += 1) {
+        this.$set(this.paginations, index, 2);
+      }
+      return this.paginations;
+    },
+  },
+  watch: {
+    commentslist() {
+      this.changeData();
+    },
   },
 };
 </script>
