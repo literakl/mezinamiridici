@@ -111,7 +111,7 @@ async function getPoll(dbClient, pipeline) {
   if (item == null) {
     return null;
   }
-  item.votes = item.data !== undefined && item.data.votes != undefined ? item.data.votes : { neutral: 0, trivial: 0, dislike: 0, hate: 0 };
+  item.votes = item.data.votes;
   item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
   if (item.me && item.me[0]) {
     item.my_vote = item.me[0].vote;
