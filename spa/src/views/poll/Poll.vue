@@ -47,17 +47,11 @@ export default {
     next();
   },
   methods: {
-    redirectToOtherPolls() {
-      this.$router.push({ name: 'polls' });
-    },
     loadMorePoll(pollId) {
       const { page, limit, rootCommentsCount } = this.$store.getters.POLL_COMMENTS;
       if (page * limit < rootCommentsCount) {
         this.$store.dispatch('GET_POLL_COMMENTS', { id: pollId, page: page + 1, limit });
       }
-    },
-    redirectToAnalyzeVotes() {
-      this.$router.push({ name: 'analyze-votes', params: { id: this.id } });
     },
   },
   computed: {
