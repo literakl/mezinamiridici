@@ -13,13 +13,6 @@
        </div>
        <Comments :pollId="poll._id" :commentslist="commentslist" :depth="parseInt(0)" v-if="commentslist" />
        <Button v-if="loadMore" :value="$t('poll.load-more')" class="poll__other-polls-button" @clicked="loadMorePoll(poll._id)"/>
-       <div class="poll__other-polls">
-         <h2>
-           <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
-           <hr class="poll__double-line" />
-           <hr class="poll__double-line" />
-         </h2>
-       </div>
      </div>
    </div>
   </b-container>
