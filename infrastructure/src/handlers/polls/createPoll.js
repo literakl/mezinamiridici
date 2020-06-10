@@ -43,7 +43,7 @@ module.exports = (app) => {
       if (date) {
         const dday = dayjs(date, 'YYYY-MM-DD');
         if (!dday.isValid()) {
-          return api.sendBadRequest(res, api.createError(`Date ${publishDate} is invalid`, 'generic.internal-error'));
+          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
         }
         publishDate = dday.toDate();
       }

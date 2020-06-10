@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -27,16 +28,24 @@ module.exports = (app) => {
       }
 
       const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, pollId: 1, author: 1 } });
+      logger.debug('Item fetched');
       if (!comment && !comment._id && !comment.pollId) {
         return api.sendNotFound(res, api.createError('Comment not found', 'generic.internal-error'));
       }
       if (comment.author !== undefined && comment.author.userId === req.identity.userId) {
         return api.sendResponse(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
-      logger.debug('Item fetched');
 
+      let publishDate = new Date();
+      if (date) {
+        const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
+        if (!dday.isValid()) {
+          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
+        }
+        publishDate = dday.toDate();
+      }
       const commentVoteId = mongo.generateId();
-      await insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, date, req.identity);
+      await insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, publishDate, req.identity);
       const updatedRecord = await incrementVote(dbClient, pollId, commentId, vote, comment);
 
       logger.debug('Item inserted');
@@ -54,7 +63,7 @@ function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, dat
     pollId,
     commentId,
     vote,
-    created: date || new Date(),
+    created: date,
     author: {
       nickname: user.nickname,
       id: user.userId,

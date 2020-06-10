@@ -1,4 +1,4 @@
-const slugify = require('slugify');
+const dayjs = require('dayjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -24,8 +24,17 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Poll not found', 'generic.internal-error'));
       }
       logger.debug('Item fetched');
+
+      let publishDate = new Date();
+      if (date) {
+        const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
+        if (!dday.isValid()) {
+          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
+        }
+        publishDate = dday.toDate();
+      }
       const commentId = mongo.generateId();
-      await insertComment(dbClient, pollId, commentId, commentText, req.identity, parentId, date);
+      await insertComment(dbClient, pollId, commentId, commentText, req.identity, parentId, publishDate);
       logger.debug('Item inserted');
 
       const comment = await dbClient.db().collection('comments').findOne({ _id: commentId });
@@ -43,7 +52,7 @@ function insertComment(dbClient, pollId, commentId, commentText, user, parentId,
     _id: commentId,
     pollId,
     commentText,
-    created: date || new Date(),
+    created: date,
     upvotes: 0,
     downvotes: 0,
     author: {
