@@ -6,8 +6,8 @@ const logger = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/comment/:commentId/vote', auth.cors);
   app.post('/v1/comment/:commentId/vote', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('createCommentVote handler starts');
-    const { pollId, vote } = req.body;
+    logger.verbose('voteComment handler starts');
+    const { pollId, vote, date } = req.body;
     const { commentId } = req.params;
     if (!pollId || !commentId || !vote || (vote !== -1 && vote !== 1)) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
@@ -36,8 +36,8 @@ module.exports = (app) => {
       logger.debug('Item fetched');
 
       const commentVoteId = mongo.generateId();
-      await insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, req.identity);
-      const updatedRecord = await increaseCommentVoteCount(dbClient, pollId, commentId, vote, comment);
+      await insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, date, req.identity);
+      const updatedRecord = await incrementVote(dbClient, pollId, commentId, vote, comment);
 
       logger.debug('Item inserted');
       return api.sendCreated(res, api.createResponse(updatedRecord.value));
@@ -48,13 +48,13 @@ module.exports = (app) => {
   });
 };
 
-function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, user) {
+function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, date, user) {
   const commentVote = {
     _id: commentVoteId,
     pollId,
     commentId,
     vote,
-    created: new Date(),
+    created: date || new Date(),
     author: {
       nickname: user.nickname,
       id: user.userId,
@@ -63,11 +63,11 @@ function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, use
   return dbClient.db().collection('comment_votes').insertOne(commentVote);
 }
 
-function increaseCommentVoteCount(dbClient, pollId, commentId, vote, comment) {
-  let update = {};
+function incrementVote(dbClient, pollId, commentId, vote) {
+  let update;
   if (vote === 1) {
     update = { $inc: { upvotes: 1 } };
-  } else if (vote === -1) {
+  } else {
     update = { $inc: { downvotes: 1 } };
   }
 
