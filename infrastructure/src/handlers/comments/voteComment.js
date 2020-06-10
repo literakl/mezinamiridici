@@ -32,6 +32,6 @@ exports.handler = (payload, context, callback) => {
     if (err) {
       return http.sendInternalError(callback, err.Item);
     }
-    return http.sendRresponse(callback, data.Item);
+    return http.sendResponse(callback, data.Item);
   });
 };

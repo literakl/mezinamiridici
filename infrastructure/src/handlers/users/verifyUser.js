@@ -22,7 +22,7 @@ module.exports = (app) => {
 
       await verifyUser(dbClient, user);
       logger.debug('User verified');
-      return api.sendRresponse(res, api.createResponse());
+      return api.sendResponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
       if (err.success === false) {

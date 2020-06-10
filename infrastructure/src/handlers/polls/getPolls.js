@@ -12,7 +12,7 @@ module.exports = (app) => {
       const list = await getItems(dbClient, req).toArray();
       logger.debug('Items fetched');
 
-      return api.sendRresponse(res, api.createResponse(list));
+      return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get poll', 'generic.internal-error'));

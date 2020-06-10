@@ -23,7 +23,7 @@ module.exports = (app) => {
             // }
             let commentVote = await dbClient.db().collection("comment_votes").findOne({ pollId: pollId, commentId: commentId, 'author.userId': req.identity.userId });
             if (commentVote && commentVote.vote != undefined) {
-            return api.sendRresponse(res, api.createError("You have already voted.", "generic.internal-error"));
+            return api.sendResponse(res, api.createError("You have already voted.", "generic.internal-error"));
             }
 
             let comment = await dbClient.db().collection("comments").findOne({ _id: commentId }, { projection: { _id: 1, pollId: 1, author: 1 } });
@@ -31,7 +31,7 @@ module.exports = (app) => {
                 return api.sendNotFound(res, api.createError("Comment not found", "generic.internal-error"));
             }
             if (comment.author !== undefined && comment.author.userId === req.identity.userId) {
-                return api.sendRresponse(res, api.createError("You can not vote your own comment.", "generic.internal-error"));
+                return api.sendResponse(res, api.createError("You can not vote your own comment.", "generic.internal-error"));
             }
             logger.debug("Item fetched");
 

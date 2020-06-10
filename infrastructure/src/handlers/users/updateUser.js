@@ -19,7 +19,7 @@ module.exports = (app) => {
       const query = prepareUpdateProfileQuery(req);
       await dbClient.db().collection('users').updateOne({ _id: userId }, query);
       logger.debug('User updated');
-      return api.sendRresponse(res, api.createResponse());
+      return api.sendResponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('failed update the user', 'sign-up.something-went-wrong'));

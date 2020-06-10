@@ -44,7 +44,7 @@ module.exports = (app) => {
 
       user.auth.pwdTimestamp = date;
       const token = auth.createTokenFromUser(user);
-      return api.sendRresponse(res, api.createResponse(token));
+      return api.sendResponse(res, api.createResponse(token));
     } catch (err) {
       // eslint-disable-next-line no-console
       logger.error('Request failed', err);

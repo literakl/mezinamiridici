@@ -149,7 +149,7 @@ function convertField(key) {
   throw new Error(`Unsupported field ${key}`);
 }
 
-module.exports.sendRresponse = sendResponse; // todo fix typo
+module.exports.sendResponse = sendResponse;
 module.exports.sendErrorForbidden = sendErrorForbidden;
 module.exports.sendInternalError = sendInternalError;
 module.exports.sendBadRequest = sendBadRequest;
