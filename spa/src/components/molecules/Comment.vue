@@ -1,24 +1,16 @@
 <template>
   <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
-    <h4>
-      <router-link :to="{ name: 'user-profile', params: { id: userId }}">{{name}}</router-link>
-      , {{epochToTime(date)}}
-    </h4>
+    <ProfileLink :profile="author"/> &bull; {{epochToTime(date)}}
     <p>
       {{title}}
     </p>
     <div>
       +{{mutableUpvotes}} / -{{mutableDownvotes}}
-      <button v-if="userId !== applicationUserId" v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+
-      </button>
-      <button v-if="userId !== applicationUserId" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">
-        -
-      </button>
-      <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply"
-            v-if="!replying">{{ $t('comment.reply') }}</span>
+      <button v-if="differentUser" v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+</button>
+      <button v-if="differentUser" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">-</button>
+      <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
       <!-- <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span> -->
-      <div v-show="replying"
-           v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
+      <div v-show="replying" v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
         <Textarea :id="pollId" :parent="commentId"/>
       </div>
     </div>
@@ -27,24 +19,25 @@
 
 <script>
 import Textarea from '@/components/atoms/Textarea.vue';
+import ProfileLink from '@/components/atoms/ProfileLink.vue';
 
 export default {
   name: 'Comment',
+  components: {
+    Textarea,
+    ProfileLink,
+  },
   props: {
     pollId: String,
     commentId: String,
     comment: Object,
-    name: String,
+    author: Object,
     title: String,
     date: String,
     upvotes: Number,
     downvotes: Number,
     depth: Number,
-    userId: String,
     childCommentCount: Number,
-  },
-  components: {
-    Textarea,
   },
   data() {
     if (this.comment !== undefined && this.comment.votedUserList !== undefined
@@ -63,6 +56,11 @@ export default {
       downvoted: this.downvoted || false,
       replying: false,
     };
+  },
+  computed: {
+    differentUser() {
+      return this.author.userId !== this.$store.getters.USER_ID;
+    },
   },
   methods: {
     epochToTime(epoch) {
@@ -114,12 +112,6 @@ export default {
         this.replying = !this.replying;
       }
       this.showByIndex = null;
-    },
-
-  },
-  computed: {
-    applicationUserId() {
-      return this.$store.getters.USER_ID;
     },
   },
 };

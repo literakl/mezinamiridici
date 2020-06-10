@@ -26,7 +26,7 @@ require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
 require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComment')(app);
-require('./handlers/comments/createCommentVote')(app);
+require('./handlers/comments/voteComment')(app);
 
 const myFormat = format.printf(info => `${info.message}`);
 
