@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     epochToTime(epoch) {
-      const date = new Date(parseInt(epoch, 10));
+      const date = new Date(epoch);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     toggleUpvoted() {
