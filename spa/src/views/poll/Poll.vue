@@ -12,7 +12,7 @@
          <Textarea :id="poll._id" />
        </div>
        <Comments :pollId="poll._id" :commentslist="commentslist" :depth="parseInt(0)" v-if="commentslist" />
-
+       <Button v-if="loadMore" :value="$t('poll.load-more')" class="poll__other-polls-button" @clicked="loadMorePoll(poll._id)"/>
        <div class="poll__other-polls">
          <h2>
            <Button :value="$t('poll.other-polls-button')" class="poll__other-polls-button" @clicked="redirectToOtherPolls" />
@@ -20,7 +20,6 @@
            <hr class="poll__double-line" />
          </h2>
        </div>
-       <Button :value="$t('poll.load-more')" class="poll__other-polls-button" @clicked="loadMorePoll(poll._id)" v-if="loadMore"/>
      </div>
    </div>
   </b-container>
@@ -84,7 +83,7 @@ export default {
       if (this.$store.getters.POLL_COMMENTS != null) {
         return this.$store.getters.POLL_COMMENTS.page * this.$store.getters.POLL_COMMENTS.limit < this.$store.getters.POLL_COMMENTS.rootCommentsCount;
       }
-      return true;
+      return false;
     },
   },
 };
