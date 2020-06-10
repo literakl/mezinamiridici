@@ -19,21 +19,21 @@ module.exports = (app) => {
         try {
             const dbClient = await mongo.connectToDatabase();
             logger.debug("Mongo connected");
-            let rootCommentsCount = await dbClient.db().collection("comments").count({ pollId: pollId, parentCommentId: { "$exists": false } });
+            let rootCommentsCount = await dbClient.db().collection("comments").count({ pollId: pollId, parentId: { "$exists": false } });
             let rootComments = await dbClient.db().collection("comments")
-                .find({ pollId: pollId, parentCommentId: { "$exists": false } })
+                .find({ pollId: pollId, parentId: { "$exists": false } })
                 .limit(rootElementLimit)
                 .skip((rootElementPageNumber - 1) * rootElementLimit)
                 .toArray();
-            const parentCommentIdList = [];
+            const parentIdList = [];
             rootComments.forEach(comment => {
-                parentCommentIdList.push(comment._id);
+                parentIdList.push(comment._id);
             });
             var childComments = await dbClient.db().collection("comments").aggregate([
                 {
                     $match: {
-                        parentCommentId: { "$exists": true },
-                        parentCommentId: { $in: parentCommentIdList }
+                        parentId: { "$exists": true },
+                        parentId: { $in: parentIdList }
                     }
                 },
                 {
@@ -43,7 +43,7 @@ module.exports = (app) => {
                 },
                 {
                     $group: {
-                        _id: "$parentCommentId",
+                        _id: "$parentId",
                         "comments": { "$push": "$$ROOT" },
                         "childCommentCount": { $sum: 1 }
                     }
@@ -55,7 +55,7 @@ module.exports = (app) => {
             ], { allowDiskUse: true }).toArray()
             /*
             this this generic query
-            let childComments = await dbClient.db().collection("comments").find({ pollId: pollId, parentCommentId: { $in: parentCommentIdList } }).limit(10).toArray();
+            let childComments = await dbClient.db().collection("comments").find({ pollId: pollId, parentId: { $in: parentIdList } }).limit(10).toArray();
             */
             rootComments.forEach(root => {
                 childComments.forEach(child => {

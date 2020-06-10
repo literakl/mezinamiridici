@@ -21,10 +21,17 @@ module.exports = (app) => {
             // if (!poll) {
             //     return api.sendNotFound(res, api.createError("Poll not found", "generic.internal-error"));
             // }
+            let commentVote = await dbClient.db().collection("comment_votes").findOne({ pollId: pollId, commentId: commentId, 'author.userId': req.identity.userId });
+            if (commentVote && commentVote.vote != undefined) {
+            return api.sendRresponse(res, api.createError("You have already voted.", "generic.internal-error"));
+            }
 
-            let comment = await dbClient.db().collection("comments").findOne({ _id: commentId }, { projection: { _id: 1, pollId: 1 } });
+            let comment = await dbClient.db().collection("comments").findOne({ _id: commentId }, { projection: { _id: 1, pollId: 1, author: 1 } });
             if (!comment && !comment._id && !comment.pollId) {
                 return api.sendNotFound(res, api.createError("Comment not found", "generic.internal-error"));
+            }
+            if (comment.author !== undefined && comment.author.userId === req.identity.userId) {
+                return api.sendRresponse(res, api.createError("You can not vote your own comment.", "generic.internal-error"));
             }
             logger.debug("Item fetched");
 
@@ -47,13 +54,14 @@ function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, use
         _id: commentVoteId,
         pollId: pollId,
         commentId: commentId,
-        userId: user.userId,
         vote: vote,
         created: new Date(),
-        nickname: user.nickname,
-        userId: user.userId
+        author: {
+            nickname: user.nickname,
+            userId: user.userId
+        }
     }
-    return dbClient.db().collection("votes").insertOne(commentVote);
+    return dbClient.db().collection("comment_votes").insertOne(commentVote);
 }
 
 function increaseCommentVoteCount(dbClient, pollId, commentId, vote, comment) {
@@ -61,7 +69,7 @@ function increaseCommentVoteCount(dbClient, pollId, commentId, vote, comment) {
     if (vote == 1) {
         update = { '$inc': { upvotes: 1 } }
     } else if (vote == -1) {
-        update = { '$inc': { downvotes: -1 } }
+        update = { '$inc': { downvotes: 1 } }
     }
 
     return dbClient.db().collection("comments")

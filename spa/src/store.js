@@ -243,7 +243,7 @@ export default new Vuex.Store({
     COMMENT: async (context, payload) => {
       console.log('test', context, payload);
       return axios.post(`${API_ENDPOINT}/polls/${payload.id}/comment`,
-        { commentText: payload.text, parentCommentId: payload.parent }, getAuthHeader(context));
+        { commentText: payload.text, parentId: payload.parent }, getAuthHeader(context));
     },
     COMMENT_VOTE: async (context, payload) => {
       console.log('test', context, payload);

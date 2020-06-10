@@ -9,7 +9,7 @@ module.exports = (app) => {
 
     app.post('/v1/polls/:pollId/comment', auth.required, auth.cors, async (req, res) => {
         logger.verbose("createComment handler starts");
-        const { commentText, parentCommentId } = req.body;
+        const { commentText, parentId } = req.body;
         const { pollId } = req.params;
         if (!pollId || !commentText) {
             return api.sendBadRequest(res, api.createError("Missing parameter", "generic.internal-error"));
@@ -25,7 +25,7 @@ module.exports = (app) => {
             }
             logger.debug("Item fetched");
             const commentId = mongo.generateId();
-            await insertComment(dbClient, pollId, commentId, commentText, req.identity, parentCommentId);
+            await insertComment(dbClient, pollId, commentId, commentText, req.identity, parentId);
             logger.debug("Item inserted");
 
             let comment = await dbClient.db().collection("comments").findOne({ _id: commentId });
@@ -38,22 +38,21 @@ module.exports = (app) => {
     })
 };
 
-function insertComment(dbClient, pollId, commentId, commentText, user, parentCommentId) {
-    var commentSlug = slugify(commentText, { lower: true, strict: true });
+function insertComment(dbClient, pollId, commentId, commentText, user, parentId) {
     var comment = {
         _id: commentId,
         pollId: pollId,
-        userId: user.userId,
         commentText: commentText,
-        commentSlug: commentSlug,
         created: new Date(),
         upvotes: 0,
         downvotes: 0,
-        nickname: user.nickname,
-        userId: user.userId
+        author: {
+            userId: user.userId,
+            nickname: user.nickname,
+        }
     }
-    if (parentCommentId)
-        comment.parentCommentId = parentCommentId;
+    if (parentId)
+        comment.parentId = parentId;
 
     return dbClient.db().collection("comments").insertOne(comment);
 }

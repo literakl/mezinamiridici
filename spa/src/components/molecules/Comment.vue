@@ -9,9 +9,9 @@
     </p>
     <div>
       +{{mutableUpvotes}} / -{{mutableDownvotes}}
-      <button v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+
+      <button v-if="userId !== applicationUserId" v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+
       </button>
-      <button v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">
+      <button v-if="userId !== applicationUserId" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">
         -
       </button>
       <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply"
@@ -116,6 +116,11 @@ export default {
       this.showByIndex = null;
     },
 
+  },
+  computed: {
+    applicationUserId() {
+      return this.$store.getters.USER_ID;
+    },
   },
 };
 </script>
