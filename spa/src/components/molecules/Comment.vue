@@ -1,6 +1,6 @@
 <template>
   <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
-    <ProfileLink :profile="author"/> &bull; {{epochToTime(date)}}
+    <ProfileLink :profile="user"/> &bull; {{epochToTime(date)}}
     <p>
       {{text}}
     </p>
@@ -31,7 +31,7 @@ export default {
     pollId: String,
     commentId: String,
     comment: Object,
-    author: Object,
+    user: Object,
     text: String,
     date: String,
     upvotes: Number,

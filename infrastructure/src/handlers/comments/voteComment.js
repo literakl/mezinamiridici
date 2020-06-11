@@ -62,9 +62,9 @@ function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, dat
     _id: commentVoteId,
     pollId,
     commentId,
+    date,
     vote,
-    created: date,
-    author: {
+    user: {
       nickname: user.nickname,
       id: user.userId,
     },
@@ -75,9 +75,9 @@ function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, dat
 function incrementVote(dbClient, pollId, commentId, vote) {
   let update;
   if (vote === 1) {
-    update = { $inc: { upvotes: 1 } };
+    update = { $inc: { up: 1 } };
   } else {
-    update = { $inc: { downvotes: 1 } };
+    update = { $inc: { down: 1 } };
   }
 
   return dbClient.db().collection('comments')
