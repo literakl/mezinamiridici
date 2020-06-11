@@ -2,7 +2,7 @@
   <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
     <ProfileLink :profile="author"/> &bull; {{epochToTime(date)}}
     <p>
-      {{title}}
+      {{text}}
     </p>
     <div>
       +{{mutableUpvotes}} / -{{mutableDownvotes}}
@@ -32,7 +32,7 @@ export default {
     commentId: String,
     comment: Object,
     author: Object,
-    title: String,
+    text: String,
     date: String,
     upvotes: Number,
     downvotes: Number,

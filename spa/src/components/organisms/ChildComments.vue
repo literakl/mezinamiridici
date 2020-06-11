@@ -13,7 +13,7 @@
                     :commentId="comment._id"
                     :userId="comment.author.userId"
                     :name="comment.author.nickname"
-                    :title="comment.commentText"
+                    :text="comment.text"
                     :upvotes="comment.upvotes"
                     :downvotes="comment.downvotes"
                     :date="comment.created"

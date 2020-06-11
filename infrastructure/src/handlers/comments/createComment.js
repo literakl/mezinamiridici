@@ -51,8 +51,8 @@ function insertComment(dbClient, pollId, commentId, commentText, user, parentId,
   const comment = {
     _id: commentId,
     pollId,
-    commentText,
     created: date,
+    text: commentText,
     upvotes: 0,
     downvotes: 0,
     author: {
