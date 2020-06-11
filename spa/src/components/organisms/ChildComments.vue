@@ -1,14 +1,9 @@
 <template>
     <div>
         <div v-for="(comment, index) in childCommentsList.slice(0, paginations)" v-bind:key="comment.id">
-            <div
-                v-bind:class="(
-                    parseInt(depth) === 0  || parseInt(depth) > 5) ?
-                    'comment__parent' :
-                    'comment__child'"
-            >
+            <div v-bind:class="(parseInt(depth) === 0  || parseInt(depth) > 5) ? 'comment__parent' : 'comment__child'">
                 <Comment
-                    :pollId="pollId"
+                    :itemId="itemId"
                     :comment="comment"
                     :commentId="comment._id"
                     :user="comment.user"
@@ -38,7 +33,7 @@ export default {
     };
   },
   props: {
-    pollId: String,
+    itemId: String,
     childCommentsList: Array,
     depth: Number,
     rootIndex: Number,

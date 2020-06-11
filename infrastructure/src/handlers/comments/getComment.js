@@ -6,23 +6,24 @@ const logger = require('../../utils/logging');
 const defaultElementLimit = 5;
 const defaultPageNumber = 1;
 module.exports = (app) => {
-  app.options('/v1/polls/:pollId/comment', auth.cors);
+  app.options('/v1/items/:itemId/comments', auth.cors);
 
-  app.get('/v1/polls/:pollId/comment', auth.required, auth.cors, async (req, res) => {
+  app.get('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
-    const { pollId } = req.params;
-    const rootElementPageNumber = parseInt(req.query.page || defaultPageNumber) || defaultPageNumber;
-    const rootElementLimit = parseInt(req.query.limit || defaultElementLimit) || defaultElementLimit;
-    if (!pollId) {
+    const { itemId } = req.params;
+    const rootElementPageNumber = parseInt(req.query.page || defaultPageNumber, 10) || defaultPageNumber;
+    const rootElementLimit = parseInt(req.query.limit || defaultElementLimit, 10) || defaultElementLimit;
+    if (!itemId) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-      const rootCommentsCount = await dbClient.db().collection('comments').count({ pollId, parentId: { $exists: false } });
+
+      const rootCommentsCount = await dbClient.db().collection('comments').count({ itemId, parentId: { $exists: false } });
       const rootComments = await dbClient.db().collection('comments')
-        .find({ pollId, parentId: { $exists: false } })
+        .find({ itemId, parentId: { $exists: false } })
         .limit(rootElementLimit)
         .skip((rootElementPageNumber - 1) * rootElementLimit)
         .toArray();
@@ -30,6 +31,7 @@ module.exports = (app) => {
       rootComments.forEach((comment) => {
         parentIdList.push(comment._id);
       });
+
       const childComments = await dbClient.db().collection('comments').aggregate([
         {
           $match: {
@@ -54,9 +56,10 @@ module.exports = (app) => {
         // }
 
       ], { allowDiskUse: true }).toArray();
+
       /*
             this this generic query
-            let childComments = await dbClient.db().collection("comments").find({ pollId: pollId, parentId: { $in: parentIdList } }).limit(10).toArray();
+            let childComments = await dbClient.db().collection("comments").find({ itemId: itemId, parentId: { $in: parentIdList } }).limit(10).toArray();
             */
       rootComments.forEach((root) => {
         childComments.forEach((child) => {
@@ -74,7 +77,6 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Comments not found', 'generic.internal-error'));
       }
       logger.debug('Comments fetched');
-
 
       return api.sendCreated(res, api.createResponse({
         rootComments,

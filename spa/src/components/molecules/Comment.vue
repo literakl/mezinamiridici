@@ -11,7 +11,7 @@
       <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
       <!-- <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span> -->
       <div v-show="replying" v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
-        <Textarea :id="pollId" :parent="commentId"/>
+        <Textarea :id="itemId" :parent="commentId"/>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@ export default {
     ProfileLink,
   },
   props: {
-    pollId: String,
+    itemId: String,
     commentId: String,
     comment: Object,
     user: Object,
@@ -83,7 +83,7 @@ export default {
       // call post webservices here
       this.$store.dispatch('COMMENT_VOTE', {
         vote: 1,
-        pollId: this.pollId,
+        itemId: this.itemId,
         commentId: this.commentId,
       });
     },
@@ -95,7 +95,7 @@ export default {
       // call post webservices here
       this.$store.dispatch('COMMENT_VOTE', {
         vote: -1,
-        pollId: this.pollId,
+        itemId: this.itemId,
         commentId: this.commentId,
       });
     },

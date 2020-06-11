@@ -9,7 +9,7 @@
                     'comment__child'"
             >
                 <Comment
-                    :pollId="pollId"
+                    :itemId="itemId"
                     :comment="comment"
                     :commentId="comment._id"
                     :user="comment.user"
@@ -21,7 +21,7 @@
                     :childCommentCount="comment.childCommentCount"
                 />
                 <ChildComments
-                    :pollId="pollId"
+                    :itemId="itemId"
                     v-if="comment.comments !== undefined"
                     :childCommentsList="comment.comments"
                     :paginations="paginations[index]"
@@ -46,7 +46,7 @@ export default {
     };
   },
   props: {
-    pollId: String,
+    itemId: String,
     depth: Number,
     commentslist: Array,
   },

@@ -5,13 +5,13 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/polls/:pollId/comment', auth.cors);
+  app.options('/v1/items/:itemId/comments', auth.cors);
 
-  app.post('/v1/polls/:pollId/comment', auth.required, auth.cors, async (req, res) => {
+  app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
     const { commentText, parentId, date } = req.body;
-    const { pollId } = req.params;
-    if (!pollId || !commentText) {
+    const { itemId } = req.params;
+    if (!itemId || !commentText) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
 
@@ -19,7 +19,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const item = await dbClient.db().collection('items').findOne({ _id: pollId }, { projection: { _id: 1 } });
+      const item = await dbClient.db().collection('items').findOne({ _id: itemId }, { projection: { _id: 1 } });
       if (!item) {
         return api.sendNotFound(res, api.createError('Poll not found', 'generic.internal-error'));
       }
@@ -34,7 +34,7 @@ module.exports = (app) => {
         publishDate = dday.toDate();
       }
       const commentId = mongo.generateId();
-      await insertComment(dbClient, pollId, commentId, commentText, req.identity, parentId, publishDate);
+      await insertComment(dbClient, itemId, commentId, commentText, req.identity, parentId, publishDate);
       logger.debug('Item inserted');
 
       const comment = await dbClient.db().collection('comments').findOne({ _id: commentId });
@@ -47,10 +47,11 @@ module.exports = (app) => {
   });
 };
 
-function insertComment(dbClient, pollId, commentId, commentText, user, parentId, date) {
+function insertComment(dbClient, itemId, commentId, commentText, user, parentId, date) {
   const comment = {
     _id: commentId,
-    pollId,
+    itemId,
+    parentId: parentId || undefined,
     date,
     text: commentText,
     up: 0,
@@ -60,7 +61,10 @@ function insertComment(dbClient, pollId, commentId, commentText, user, parentId,
       nickname: user.nickname,
     },
   };
-  if (parentId) comment.parentId = parentId;
+
+  if (comment.parentId === undefined) {
+    delete comment.parentId;
+  }
 
   return dbClient.db().collection('comments').insertOne(comment);
 }

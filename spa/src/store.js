@@ -242,13 +242,13 @@ export default new Vuex.Store({
     },
     COMMENT: async (context, payload) => {
       console.log('test', context, payload);
-      return axios.post(`${API_ENDPOINT}/polls/${payload.id}/comment`,
-        { commentText: payload.text, parentId: payload.parent }, getAuthHeader(context));
+      return axios.post(`${API_ENDPOINT}/items/${payload.id}/comments`,
+        { text: payload.text, parentId: payload.parent }, getAuthHeader(context));
     },
     COMMENT_VOTE: async (context, payload) => {
       console.log('test', context, payload);
-      return axios.post(`${API_ENDPOINT}/comment/${payload.commentId}/vote`,
-        { pollId: payload.pollId, vote: payload.vote }, getAuthHeader(context));
+      return axios.post(`${API_ENDPOINT}/comments/${payload.commentId}/votes`,
+        { itemId: payload.itemId, vote: payload.vote }, getAuthHeader(context));
     },
   },
 });

@@ -11,7 +11,7 @@
          <h3>{{ $t('poll.your-say') }}</h3>
          <Textarea :id="poll._id" />
        </div>
-       <Comments :pollId="poll._id" :commentslist="commentslist" :depth="parseInt(0)" v-if="commentslist" />
+       <Comments :itemId="poll._id" :commentslist="commentslist" :depth="parseInt(0)" v-if="commentslist" />
        <Button v-if="loadMore" :value="$t('poll.load-more')" class="poll__other-polls-button" @clicked="loadMorePoll(poll._id)"/>
      </div>
    </div>

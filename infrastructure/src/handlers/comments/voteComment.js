@@ -5,12 +5,13 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/comment/:commentId/vote', auth.cors);
-  app.post('/v1/comment/:commentId/vote', auth.required, auth.cors, async (req, res) => {
+  app.options('/v1/comments/:commentId/votes', auth.cors);
+
+  app.post('/v1/comments/:commentId/votes', auth.required, auth.cors, async (req, res) => {
     logger.verbose('voteComment handler starts');
-    const { pollId, vote, date } = req.body;
+    const { itemId, vote, date } = req.body;
     const { commentId } = req.params;
-    if (!pollId || !commentId || !vote || (vote !== -1 && vote !== 1)) {
+    if (!itemId || !commentId || !vote || (vote !== -1 && vote !== 1)) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
 
@@ -18,18 +19,18 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      // let poll = await dbClient.db().collection("polls").findOne({ _id: pollId }, { projection: { _id: 1 } });
+      // let poll = await dbClient.db().collection("polls").findOne({ _id: itemId }, { projection: { _id: 1 } });
       // if (!poll) {
       //     return api.sendNotFound(res, api.createError("Poll not found", "generic.internal-error"));
       // }
-      const commentVote = await dbClient.db().collection('comment_votes').findOne({ pollId, commentId, 'author.userId': req.identity.userId });
+      const commentVote = await dbClient.db().collection('comment_votes').findOne({ itemId, commentId, 'author.userId': req.identity.userId });
       if (commentVote && commentVote.vote !== undefined) {
         return api.sendResponse(res, api.createError('You have already voted.', 'generic.internal-error'));
       }
 
-      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, pollId: 1, author: 1 } });
+      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, itemId: 1, author: 1 } });
       logger.debug('Item fetched');
-      if (!comment && !comment._id && !comment.pollId) {
+      if (!comment && !comment._id && !comment.itemId) {
         return api.sendNotFound(res, api.createError('Comment not found', 'generic.internal-error'));
       }
       if (comment.author !== undefined && comment.author.userId === req.identity.userId) {
@@ -45,8 +46,8 @@ module.exports = (app) => {
         publishDate = dday.toDate();
       }
       const commentVoteId = mongo.generateId();
-      await insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, publishDate, req.identity);
-      const updatedRecord = await incrementVote(dbClient, pollId, commentId, vote, comment);
+      await insertCommentVote(dbClient, commentVoteId, itemId, commentId, vote, publishDate, req.identity);
+      const updatedRecord = await incrementVote(dbClient, itemId, commentId, vote, comment);
 
       logger.debug('Item inserted');
       return api.sendCreated(res, api.createResponse(updatedRecord.value));
@@ -57,10 +58,10 @@ module.exports = (app) => {
   });
 };
 
-function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, date, user) {
+function insertCommentVote(dbClient, commentVoteId, itemId, commentId, vote, date, user) {
   const commentVote = {
     _id: commentVoteId,
-    pollId,
+    itemId,
     commentId,
     date,
     vote,
@@ -72,7 +73,7 @@ function insertCommentVote(dbClient, commentVoteId, pollId, commentId, vote, dat
   return dbClient.db().collection('comment_votes').insertOne(commentVote);
 }
 
-function incrementVote(dbClient, pollId, commentId, vote) {
+function incrementVote(dbClient, itemId, commentId, vote) {
   let update;
   if (vote === 1) {
     update = { $inc: { up: 1 } };
@@ -81,5 +82,5 @@ function incrementVote(dbClient, pollId, commentId, vote) {
   }
 
   return dbClient.db().collection('comments')
-    .findOneAndUpdate({ _id: commentId, pollId }, update, { returnOriginal: false });
+    .findOneAndUpdate({ _id: commentId, itemId }, update, { returnOriginal: false });
 }
