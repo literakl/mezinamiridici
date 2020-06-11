@@ -27,42 +27,168 @@ test('Comments test', async (done) => {
   const pollBody = {
     text: 'First question',
     picture: 'picture.png',
-    date: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+    date: dayjs().subtract(7, 'hour').format('YYYY-MM-DD'),
   };
-  const firstPoll = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(jwtLeos) }).json();
-  expect(firstPoll.success).toBeTruthy();
+  const poll = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(jwtLeos) }).json();
+  expect(poll.success).toBeTruthy();
 
   const commentBody = {
     commentText: 'Comment 1',
-    date: dayjs(firstPoll.data.info.published).add(10, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs(poll.data.info.date).add(10, 'minute').format('YYYY-MM-DD HH:mm:ss'),
   };
-  const firstPollComment1 = await api(`polls/${firstPoll.id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
-  expect(firstPollComment1.success).toBeTruthy();
+  const pollComment1 = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
+  expect(pollComment1.success).toBeTruthy();
 
   commentBody.commentText = 'Comment 2';
-  commentBody.date = dayjs(firstPoll.data.info.published).add(20, 'minute').format('YYYY-MM-DD HH:mm:ss');
-  const firstPollComment2 = await api(`polls/${firstPoll.id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLukas) }).json();
-  expect(firstPollComment2.success).toBeTruthy();
+  commentBody.date = dayjs(poll.data.info.date).add(20, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment2 = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLukas) }).json();
+  expect(pollComment2.success).toBeTruthy();
 
   commentBody.commentText = 'Comment 3';
-  commentBody.date = dayjs(firstPoll.data.info.published).add(30, 'minute').format('YYYY-MM-DD HH:mm:ss');
-  const firstPollComment3 = await api(`polls/${firstPoll.id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
-  expect(firstPollComment3.success).toBeTruthy();
+  commentBody.date = dayjs(poll.data.info.date).add(30, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment3 = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment3.success).toBeTruthy();
 
   commentBody.commentText = 'Comment 4';
-  commentBody.date = dayjs(firstPoll.data.info.published).add(40, 'minute').format('YYYY-MM-DD HH:mm:ss');
-  const firstPollComment4 = await api(`polls/${firstPoll.id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
-  expect(firstPollComment4.success).toBeTruthy();
+  commentBody.date = dayjs(poll.data.info.date).add(40, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4 = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment4.success).toBeTruthy();
 
   commentBody.commentText = 'Comment 5';
-  commentBody.date = dayjs(firstPoll.data.info.published).add(50, 'minute').format('YYYY-MM-DD HH:mm:ss');
-  const firstPollComment5 = await api(`polls/${firstPoll.id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJiri) }).json();
-  expect(firstPollComment5.success).toBeTruthy();
+  commentBody.date = dayjs(poll.data.info.date).add(50, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment5 = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJiri) }).json();
+  expect(pollComment5.success).toBeTruthy();
 
   commentBody.commentText = 'Comment 6';
-  commentBody.date = dayjs(firstPoll.data.info.published).add(60, 'minute').format('YYYY-MM-DD HH:mm:ss');
-  const firstPollComment6 = await api(`polls/${firstPoll.id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtVita) }).json();
-  expect(firstPollComment6.success).toBeTruthy();
+  commentBody.date = dayjs(poll.data.info.date).add(60, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment6 = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtVita) }).json();
+  expect(pollComment6.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 1a';
+  commentBody.parentId = pollComment1.data._id;
+  commentBody.date = dayjs(pollComment1.data.created).add(1, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment1a = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLukas) }).json();
+  expect(pollComment1a.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 1b';
+  commentBody.parentId = pollComment1.data._id;
+  commentBody.date = dayjs(pollComment1.data.created).add(2, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment1b = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtVita) }).json();
+  expect(pollComment1b.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 1c';
+  commentBody.parentId = pollComment1.data._id;
+  commentBody.date = dayjs(pollComment1.data.created).add(3, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment1c = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLukas) }).json();
+  expect(pollComment1c.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 1d';
+  commentBody.parentId = pollComment1.data._id;
+  commentBody.date = dayjs(pollComment1.data.created).add(4, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment1d = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJiri) }).json();
+  expect(pollComment1d.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 1e';
+  commentBody.parentId = pollComment1.data._id;
+  commentBody.date = dayjs(pollComment1.data.created).add(5, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment1e = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment1e.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 1f';
+  commentBody.parentId = pollComment1.data._id;
+  commentBody.date = dayjs(pollComment1.data.created).add(6, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment1f = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment1f.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 2a';
+  commentBody.parentId = pollComment2.data._id;
+  commentBody.date = dayjs(pollComment2.data.created).add(1, 'hour').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment2a = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
+  expect(pollComment2a.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 2b';
+  commentBody.parentId = pollComment2.data._id;
+  commentBody.date = dayjs(pollComment2.data.created).add(2, 'hour').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment2b = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtVita) }).json();
+  expect(pollComment2b.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 2c';
+  commentBody.parentId = pollComment2.data._id;
+  commentBody.date = dayjs(pollComment2.data.created).add(3, 'hour').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment2c = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJiri) }).json();
+  expect(pollComment2c.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 2d';
+  commentBody.parentId = pollComment2.data._id;
+  commentBody.date = dayjs(pollComment2.data.created).add(4, 'hour').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment2d = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment2d.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4a';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(5, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4a = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment4a.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4b';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(10, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4b = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment4b.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4c';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(15, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4c = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment4c.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4d';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(20, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4d = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment4d.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4e';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(25, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4e = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment4e.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4f';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(40, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4f = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment4f.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4g';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(40, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4g = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment4g.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4h';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(45, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4h = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
+  expect(pollComment4h.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 4i';
+  commentBody.parentId = pollComment4.data._id;
+  commentBody.date = dayjs(pollComment4.data.created).add(40, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment4i = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJana) }).json();
+  expect(pollComment4i.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 6a';
+  commentBody.parentId = pollComment6.data._id;
+  commentBody.date = dayjs(pollComment6.data.created).add(3, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment6a = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtJiri) }).json();
+  expect(pollComment6a.success).toBeTruthy();
+
+  commentBody.commentText = 'Comment 6b';
+  commentBody.parentId = pollComment6.data._id;
+  commentBody.date = dayjs(pollComment6.data.created).add(6, 'minute').format('YYYY-MM-DD HH:mm:ss');
+  const pollComment6b = await api(`polls/${poll.data._id}/comment`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
+  expect(pollComment6b.success).toBeTruthy();
 
   done();
 });
