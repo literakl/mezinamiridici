@@ -57,7 +57,7 @@ function insertComment(dbClient, itemId, commentId, commentText, user, parentId,
     up: 0,
     down: 0,
     user: {
-      id: user.userId,
+      userId: user.userId,
       nickname: user.nickname,
     },
   };
