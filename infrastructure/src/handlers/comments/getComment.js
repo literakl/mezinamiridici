@@ -35,8 +35,10 @@ module.exports = (app) => {
       const childComments = await dbClient.db().collection('comments').aggregate([
         {
           $match: {
-            parentId: { $exists: true },
-            parentId: { $in: parentIdList },
+            $and: [ 
+              {parentId: { $exists: true }},
+              {parentId: { $in: parentIdList }}
+            ],
           },
         },
         {
@@ -64,7 +66,6 @@ module.exports = (app) => {
       rootComments.forEach((root) => {
         childComments.forEach((child) => {
           if (root._id === child._id) {
-            root.comments = root.comments || [];
             root.comments = child.comments;
             // use below line if you want to limit the child explicitly
             // root.comments = child.comments.slice(0, 5);
