@@ -41,7 +41,7 @@ module.exports = (app) => {
         },
         {
           $sort: {
-            created: 1,
+            date: 1,
           },
         },
         {
