@@ -39,6 +39,12 @@ test('Comments test', async (done) => {
   const pollComment1 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
   expect(pollComment1.success).toBeTruthy();
 
+  const voteBody = {
+    vote: 1,
+  };
+  const voteResponse = await api(`comments/${pollComment1.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(jwtLeos) }).json();
+  expect(voteResponse.success).toBeTruthy();
+
   commentBody.commentText = 'Comment 2';
   commentBody.date = dayjs(poll.data.info.date).add(20, 'minute').format('YYYY-MM-DD HH:mm:ss');
   const pollComment2 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLukas) }).json();
