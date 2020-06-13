@@ -35,9 +35,9 @@ module.exports = (app) => {
       const childComments = await dbClient.db().collection('comments').aggregate([
         {
           $match: {
-            $and: [ 
-              {parentId: { $exists: true }},
-              {parentId: { $in: parentIdList }}
+            $and: [
+              { parentId: { $exists: true } },
+              { parentId: { $in: parentIdList } }
             ],
           },
         },
