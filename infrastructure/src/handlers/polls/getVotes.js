@@ -17,7 +17,9 @@ module.exports = (app) => {
       const votes = {
         neutral: 0, trivial: 0, dislike: 0, hate: 0,
       };
-      list.forEach(x => votes[x._id] = x.count);
+      list.forEach((x) => {
+        votes[x._id] = x.count;
+      });
       votes.total = votes.neutral + votes.trivial + votes.dislike + votes.hate;
       return api.sendResponse(res, api.createResponse(votes));
     } catch (err) {
