@@ -8,10 +8,11 @@ const logger = require('../../utils/logging');
 const defaultElementLimit = 5;
 const defaultPageNumber = 1;
 module.exports = (app) => {
-  app.options('/v1/items/:itemId/comments', auth.cors);
+  app.options('/bff/items/:itemId/comments', auth.cors);
+  app.options('/bff/items/:itemId/comments/:commentId/replies', auth.cors);
 
-  app.get('/v1/items/:itemId/comments', auth.optional, auth.cors, async (req, res) => {
-    logger.verbose('createComment handler starts');
+  app.get('/bff/items/:itemId/comments', auth.cors, async (req, res) => {
+    logger.verbose('getComments handler starts');
     const { itemId } = req.params;
     const rootElementPageNumber = parseInt(req.query.page || defaultPageNumber, 10) || defaultPageNumber;
     const rootElementLimit = parseInt(req.query.limit || defaultElementLimit, 10) || defaultElementLimit;

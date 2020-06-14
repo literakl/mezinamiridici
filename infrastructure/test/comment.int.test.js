@@ -68,6 +68,14 @@ test('Comments API', async (done) => {
   expect(pollResponse.data.comments.count).toBe(1);
   expect(dayjs.utc(pollResponse.data.comments.last, DATE_FORMAT).local().format(DATE_FORMAT)).toBe(commentBody.date);
 
+  let comments = await bff(`items/${poll.data._id}/comments`).json();
+  expect(comments.success).toBeTruthy();
+  console.log(comments.data);
+
+  voteResponse = await bff(`comments/${pollComment1.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(5);
+
   commentBody.commentText = 'Comment 2';
   commentBody.date = dayjs(poll.data.info.date).add(20, 'minute').format(DATE_FORMAT);
   const pollComment2 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLukas) }).json();
@@ -88,6 +96,10 @@ test('Comments API', async (done) => {
   voteResponse = await api(`comments/${pollComment2.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(jwtJana) }).json();
   expect(voteResponse.success).toBeTruthy();
 
+  voteResponse = await bff(`comments/${pollComment2.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(4);
+
   commentBody.commentText = 'Comment 3';
   commentBody.date = dayjs(poll.data.info.date).add(30, 'minute').format(DATE_FORMAT);
   const pollComment3 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtBara) }).json();
@@ -97,6 +109,10 @@ test('Comments API', async (done) => {
   expect(voteResponse.success).toBeTruthy();
   voteResponse = await api(`comments/${pollComment3.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(jwtJana) }).json();
   expect(voteResponse.success).toBeTruthy();
+
+  voteResponse = await bff(`comments/${pollComment3.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(2);
 
   commentBody.commentText = 'Comment 4';
   commentBody.date = dayjs(poll.data.info.date).add(40, 'minute').format(DATE_FORMAT);
@@ -114,10 +130,18 @@ test('Comments API', async (done) => {
   voteResponse = await api(`comments/${pollComment5.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(jwtLeos) }).json();
   expect(voteResponse.success).toBeTruthy();
 
+  voteResponse = await bff(`comments/${pollComment5.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(2);
+
   commentBody.commentText = 'Comment 6';
   commentBody.date = dayjs(poll.data.info.date).add(60, 'minute').format(DATE_FORMAT);
   const pollComment6 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtVita) }).json();
   expect(pollComment6.success).toBeTruthy();
+
+  voteResponse = await bff(`comments/${pollComment6.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(0);
 
   commentBody.commentText = 'Comment 1a';
   commentBody.parentId = pollComment1.data._id;
@@ -132,6 +156,10 @@ test('Comments API', async (done) => {
   voteResponse = await api(`comments/${pollComment1a.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(jwtVita) }).json();
   expect(voteResponse.success).toBeTruthy();
 
+  voteResponse = await bff(`comments/${pollComment1a.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(2);
+
   commentBody.commentText = 'Comment 1b';
   commentBody.parentId = pollComment1.data._id;
   commentBody.date = dayjs(pollComment1.data.created).add(2, 'minute').format(DATE_FORMAT);
@@ -141,6 +169,10 @@ test('Comments API', async (done) => {
   voteBody.vote = 1;
   voteResponse = await api(`comments/${pollComment1b.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(jwtLukas) }).json();
   expect(voteResponse.success).toBeTruthy();
+
+  voteResponse = await bff(`comments/${pollComment1b.data._id}/votes`).json();
+  expect(voteResponse.success).toBeTruthy();
+  expect(voteResponse.data.length).toBe(1);
 
   commentBody.commentText = 'Comment 1c';
   commentBody.parentId = pollComment1.data._id;
@@ -275,7 +307,8 @@ test('Comments API', async (done) => {
   const pollComment6b = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
   expect(pollComment6b.success).toBeTruthy();
 
-  const comments = await api(`items/${poll.data._id}/comments`).json();
+  comments = await bff(`items/${poll.data._id}/comments`).json();
+  expect(comments.success).toBeTruthy();
   console.log(comments);
 
   done();
