@@ -52,7 +52,7 @@ module.exports = (app) => {
 
 function insertPollVote(dbClient, pollId, vote, user) {
   const pollVote = {
-    _id: mongo.generateId(), item: pollId, user: user._id, date: new Date(), vote,
+    item: pollId, user: user._id, vote,
   };
   const currentYear = new Date().getFullYear();
   if (user.bio.sex) {

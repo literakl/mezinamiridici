@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -9,7 +8,7 @@ module.exports = (app) => {
 
   app.post('/v1/comments/:commentId/votes', auth.required, auth.cors, async (req, res) => {
     logger.verbose('voteComment handler starts');
-    const { vote, date } = req.body;
+    const { vote } = req.body;
     const { commentId } = req.params;
     if (!commentId || !vote || (vote !== -1 && vote !== 1)) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
@@ -33,17 +32,7 @@ module.exports = (app) => {
         return api.sendResponse(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
 
-      let publishDate = new Date();
-      if (date) {
-        const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
-        if (!dday.isValid()) {
-          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
-        }
-        publishDate = dday.toDate();
-      }
-
-      const commentVoteId = mongo.generateId();
-      await insertCommentVote(dbClient, commentVoteId, commentId, vote, publishDate, req.identity);
+      await insertCommentVote(dbClient, commentId, vote, req.identity);
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);
 
       logger.debug('Item inserted');
@@ -55,11 +44,9 @@ module.exports = (app) => {
   });
 };
 
-function insertCommentVote(dbClient, commentVoteId, commentId, vote, date, user) {
+function insertCommentVote(dbClient, commentId, vote, user) {
   const commentVote = {
-    _id: commentVoteId,
     commentId,
-    date,
     vote,
     user: {
       userId: user.userId,
