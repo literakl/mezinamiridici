@@ -1,8 +1,9 @@
-const path = require('path');
 const dotenv = require('dotenv');
+const path = require('path');
 
-const envPath = path.join(__dirname, '../..', 'test.env');
+const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
+
 const jwt = require('jsonwebtoken');
 const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');

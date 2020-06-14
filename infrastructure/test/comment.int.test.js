@@ -1,9 +1,11 @@
 const dotenv = require('dotenv');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
 
-dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
-const random = require('random');
+const envPath = path.join(__dirname, '..', '.test.env');
+dotenv.config({ path: envPath });
+
 const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const app = require('../src/server.js');
@@ -22,7 +24,6 @@ let dbClient;
 
 test('Comments API', async (done) => {
   jest.setTimeout(180 * 60000);
-  random.use();
 
   const pollBody = {
     text: 'First question',

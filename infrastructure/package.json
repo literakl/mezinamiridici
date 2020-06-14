@@ -33,6 +33,7 @@
     "got": "^10.7.0",
     "jest": "^25.3.0",
     "nodemon": "^2.0.2",
+    "path": "^0.12.7",
     "random": "^2.2.0"
   },
   "nodemonConfig": {

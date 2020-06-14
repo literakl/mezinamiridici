@@ -3,6 +3,8 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
+// const PAGE_SIZE_COMMENTS = process.env.PAGE_SIZE_COMMENTS || 10;
+// const PAGE_SIZE_REPLIES = process.env.PAGE_SIZE_COMMENTS || 5;
 const defaultElementLimit = 5;
 const defaultPageNumber = 1;
 module.exports = (app) => {
@@ -37,7 +39,7 @@ module.exports = (app) => {
           $match: {
             $and: [
               { parentId: { $exists: true } },
-              { parentId: { $in: parentIdList } }
+              { parentId: { $in: parentIdList } },
             ],
           },
         },
