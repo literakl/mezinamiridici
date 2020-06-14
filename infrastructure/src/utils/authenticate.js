@@ -59,6 +59,11 @@ function getIdentity(identity) {
   return { userId: identity.userId, nickname: identity.nickname };
 }
 
+function checkRole(req, role) {
+  const user = req.identity;
+  return user && user.roles && user.roles.includes(role);
+}
+
 const corsPerRoute = corsMiddleware({
   origin: ['http://localhost:8080', 'https://www.mezinamiridici.cz'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -73,3 +78,4 @@ module.exports.cors = corsPerRoute;
 module.exports.createToken = createToken;
 module.exports.createTokenFromUser = createTokenFromUser;
 module.exports.getIdentity = getIdentity;
+module.exports.checkRole = checkRole;

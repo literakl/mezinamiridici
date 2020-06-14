@@ -1,5 +1,6 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
@@ -23,6 +24,9 @@ module.exports = (app) => {
 function getItems(dbClient, req) {
   const listParams = api.parseListParams(req, 'date', -1, 10, 50);
   const query = { type: 'poll', 'info.published': true };
+  if (auth.checkRole(req, auth.poll_admin)) {
+    delete query.info.published;
+  }
   if (listParams.lastResult) {
     query[listParams.lastResult.key] = listParams.lastResult.value;
   }
