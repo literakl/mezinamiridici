@@ -28,10 +28,10 @@ module.exports = (app) => {
         publishDate = dday.toDate();
       }
 
-      const response = dbClient.db()
+      const response = await dbClient.db()
         .collection('items')
         .update({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
-      if (!response) {
+      if (response.modifiedCount !== 1) {
         return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
       }
 
