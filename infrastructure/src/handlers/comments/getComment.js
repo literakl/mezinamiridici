@@ -10,7 +10,7 @@ const defaultPageNumber = 1;
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
 
-  app.get('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
+  app.get('/v1/items/:itemId/comments', auth.optional, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
     const { itemId } = req.params;
     const rootElementPageNumber = parseInt(req.query.page || defaultPageNumber, 10) || defaultPageNumber;

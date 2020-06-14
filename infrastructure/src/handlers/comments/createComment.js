@@ -19,12 +19,6 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const item = await dbClient.db().collection('items').findOne({ _id: itemId }, { projection: { _id: 1 } });
-      if (!item) {
-        return api.sendNotFound(res, api.createError('Poll not found', 'generic.internal-error'));
-      }
-      logger.debug('Item fetched');
-
       let publishDate = new Date();
       if (date) {
         const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
@@ -33,9 +27,19 @@ module.exports = (app) => {
         }
         publishDate = dday.toDate();
       }
+
+      const response = dbClient.db()
+        .collection('items')
+        .update({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
+      if (!response) {
+        return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
+      }
+
       const comment = createComment(itemId, commentText, req.identity, parentId, publishDate);
-      await dbClient.db().collection('comments').insertOne(comment);
-      logger.debug('Item inserted');
+      await dbClient.db()
+        .collection('comments')
+        .insertOne(comment);
+      logger.debug('Comment inserted');
 
       return api.sendCreated(res, api.createResponse(comment));
     } catch (err) {
