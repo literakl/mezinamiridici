@@ -1,13 +1,15 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
+const path = require('path');
 
-dotenv.config({ path: 'C:\\dev\\mezinamiridici\\infrastructure\\.test.env' });
+const envPath = path.join(__dirname, '../..', 'test.env');
+dotenv.config({ path: envPath });
 const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader, deepCopy, sleep,
+  api, bff, getAuthHeader, deepCopy,
 } = require('./testUtils');
 const {
   leos, jiri, lukas, vita, jana, bara,
@@ -51,7 +53,6 @@ test('Poll API', async (done) => {
     picture: 'picture.png',
     author: userJana.userId,
   };
-  await sleep(100);
   response = await api('polls', { method: 'POST', json: secondPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
   expect(response.data.info.author.nickname).toBe(userJana.nickname);
@@ -63,7 +64,6 @@ test('Poll API', async (done) => {
     text: 'Third question',
     picture: 'picture.png',
   };
-  await sleep(100);
   response = await api('polls', { method: 'POST', json: thirdPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
   thirdPoll.id = response.data._id;
@@ -74,7 +74,6 @@ test('Poll API', async (done) => {
     text: 'Fourth question',
     picture: 'picture.png',
   };
-  await sleep(100);
   response = await api('polls', { method: 'POST', json: fourthPoll, headers: getAuthHeader(jwtLeos) }).json();
   expect(response.success).toBeTruthy();
   fourthPoll.id = response.data._id;

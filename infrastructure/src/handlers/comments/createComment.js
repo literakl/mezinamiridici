@@ -33,11 +33,9 @@ module.exports = (app) => {
         }
         publishDate = dday.toDate();
       }
-      const commentId = mongo.generateId();
-      await insertComment(dbClient, itemId, commentId, commentText, req.identity, parentId, publishDate);
+      const comment = createComment(itemId, commentText, req.identity, parentId, publishDate);
+      await dbClient.db().collection('comments').insertOne(comment);
       logger.debug('Item inserted');
-
-      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId });
 
       return api.sendCreated(res, api.createResponse(comment));
     } catch (err) {
@@ -47,9 +45,9 @@ module.exports = (app) => {
   });
 };
 
-function insertComment(dbClient, itemId, commentId, commentText, user, parentId, date) {
+function createComment(itemId, commentText, user, parentId, date) {
   const comment = {
-    _id: commentId,
+    _id: mongo.generateTimeId(),
     itemId,
     parentId: parentId || undefined,
     date,
@@ -66,5 +64,5 @@ function insertComment(dbClient, itemId, commentId, commentText, user, parentId,
     delete comment.parentId;
   }
 
-  return dbClient.db().collection('comments').insertOne(comment);
+  return comment;
 }

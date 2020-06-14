@@ -25,7 +25,7 @@ module.exports = (app) => {
 
       const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, user: 1 } });
       logger.debug('Item fetched');
-      if (!comment && !comment._id) {
+      if (!comment || !comment._id) {
         return api.sendNotFound(res, api.createError('Comment not found', 'generic.internal-error'));
       }
       if (comment.user !== undefined && comment.user.userId === req.identity.userId) {
@@ -46,6 +46,7 @@ module.exports = (app) => {
 
 function insertCommentVote(dbClient, commentId, vote, user) {
   const commentVote = {
+    _id: mongo.generateTimeId(),
     commentId,
     vote,
     user: {

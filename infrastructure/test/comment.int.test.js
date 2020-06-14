@@ -20,7 +20,7 @@ let userVita, userLeos, userJiri, userLukas, userJana, userBara;
 let server;
 let dbClient;
 
-test('Comments test', async (done) => {
+test('Comments API', async (done) => {
   jest.setTimeout(180 * 60000);
   random.use();
 
