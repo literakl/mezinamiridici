@@ -2,7 +2,7 @@ const baseYear = 2020, currentYear = new Date().getFullYear(), diff = currentYea
 
 function fix(year) { return year + diff; }
 
-const leos = {
+const Leos = {
   _id: '1e40v0b1j5',
   auth: {
     email: 'leos@email.bud',
@@ -18,7 +18,7 @@ const leos = {
   consent: { terms: new Date(), data: new Date() },
   roles: ['admin:poll'],
 };
-const jiri = {
+const Jiri = {
   _id: '1e416vocls',
   auth: {
     email: 'jiri@email.bud',
@@ -33,7 +33,7 @@ const jiri = {
   prefs: { public: false },
   consent: { terms: new Date(), data: new Date() },
 };
-const lukas = {
+const Lukas = {
   _id: '1e4176ttr8',
   auth: {
     email: 'lukas@email.bud',
@@ -46,7 +46,7 @@ const lukas = {
   prefs: { public: false },
   consent: { terms: new Date(), data: new Date() },
 };
-const vita = {
+const Vita = {
   _id: '1e41795qjw',
   auth: {
     email: 'vita@email.bud',
@@ -61,7 +61,7 @@ const vita = {
   prefs: { public: false },
   consent: { terms: new Date(), data: new Date() },
 };
-const jana = {
+const Jana = {
   _id: '1e417bgivc',
   auth: {
     email: 'jana@email.bud',
@@ -76,7 +76,7 @@ const jana = {
   prefs: { public: false },
   consent: { terms: new Date(), data: new Date() },
 };
-const bara = {
+const Bara = {
   _id: '1e417edlqb',
   auth: {
     email: 'bara@email.bud',
@@ -92,9 +92,39 @@ const bara = {
   consent: { terms: new Date(), data: new Date() },
 };
 
-module.exports.leos = leos;
-module.exports.jiri = jiri;
-module.exports.lukas = lukas;
-module.exports.vita = vita;
-module.exports.jana = jana;
-module.exports.bara = bara;
+async function setup(dbClient, api) {
+  await dbClient.db().collection('users').deleteMany({});
+  await dbClient.db().collection('users').insertMany([Leos, Jiri, Lukas, Vita, Jana, Bara]);
+
+  const body = {
+    email: 'vita@email.bud',
+    password: 'BadPassword',
+  };
+
+  let response = await api('authorizeUser', { method: 'POST', json: body }).json();
+  Vita.jwt = response.data;
+
+  body.email = 'leos@email.bud';
+  response = await api('authorizeUser', { method: 'POST', json: body }).json();
+  Leos.jwt = response.data;
+
+  body.email = 'jiri@email.bud';
+  response = await api('authorizeUser', { method: 'POST', json: body }).json();
+  Jiri.jwt = response.data;
+
+  body.email = 'lukas@email.bud';
+  response = await api('authorizeUser', { method: 'POST', json: body }).json();
+  Lukas.jwt = response.data;
+
+  body.email = 'jana@email.bud';
+  response = await api('authorizeUser', { method: 'POST', json: body }).json();
+  Jana.jwt = response.data;
+
+  body.email = 'bara@email.bud';
+  response = await api('authorizeUser', { method: 'POST', json: body }).json();
+  Bara.jwt = response.data;
+}
+
+module.exports = {
+  setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
+};
