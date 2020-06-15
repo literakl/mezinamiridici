@@ -82,6 +82,8 @@
   "poll": {
     "your-vote": "Your vote:",
     "votes": "votes",
+    "your-say": "comment on poll",
+    "load-more":"Load More",
     "discussion": "Discussion",
     "your-opinion": "What do you want to say about it",
     "other-polls-button": "Other polls",

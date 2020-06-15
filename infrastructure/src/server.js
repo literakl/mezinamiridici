@@ -24,6 +24,10 @@ require('./handlers/polls/getPoll')(app);
 require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
+require('./handlers/comments/createComment')(app);
+require('./handlers/comments/getComments')(app);
+require('./handlers/comments/voteComment')(app);
+require('./handlers/comments/getVotes')(app);
 
 const myFormat = format.printf(info => `${info.message}`);
 

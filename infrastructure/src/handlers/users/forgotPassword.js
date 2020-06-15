@@ -31,7 +31,7 @@ module.exports = (app) => {
 
       sendVerificationEmail(email, resetToken);
       logger.debug('Email sent');
-      return api.sendRresponse(res, api.createResponse({}));
+      return api.sendResponse(res, api.createResponse({}));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to reset the password', 'sign-in.something-went-wrong'));

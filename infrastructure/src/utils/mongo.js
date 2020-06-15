@@ -1,10 +1,13 @@
+const path = require('path');
 const generate = require('nanoid/generate');
 const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
 const logger = require('./logging');
 
-dotenv.config();
-const { MONGODB_URI } = process.env;
+const envPath = path.join(__dirname, '../..', '.env');
+dotenv.config({ path: envPath });
+const { MONGODB_URI, TIME_ID_CHARS } = process.env;
+const TIME_ID_CHARS_INT = parseInt(TIME_ID_CHARS || '1', 10);
 logger.info(`Mongo is configured to connect ${MONGODB_URI}`);
 let cachedDb = null;
 
@@ -134,8 +137,13 @@ function getNeighbourhItem(dbClient, type, published, older) {
 }
 
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
+// Use TIME_ID_CHARS to fine tune number of random characters
 function generateTimeId() {
-  return Date.now().toString(32) + Math.round(Math.random() * 35).toString(36);
+  let id = Date.now().toString(32);
+  for (let i = 0; i < TIME_ID_CHARS_INT; i += 1) {
+    id += Math.round(Math.random() * 35).toString(36);
+  }
+  return id;
 }
 
 function generateId(idLength = 10) {

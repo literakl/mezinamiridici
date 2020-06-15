@@ -26,22 +26,32 @@ module.exports = (app) => {
     const dbClient = await mongo.connectToDatabase();
     logger.debug('Mongo connected');
 
-    try {
-      await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
-      logger.debug('User created');
-    } catch (err) {
-      logger.error('Request failed', err);
-      if (err.code === 11000) {
-        if (err.keyValue['auth.email']) {
-          api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
+        try {
+            await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
+            logger.debug('User created',);
+        } catch (err) {
+            logger.error('Request failed', err);
+            if (err.code === 11000) {
+                if(err.keyValue) {
+                    if (!!err.keyValue['auth.email']) {
+                        api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
+                    }
+                    if (!!err.keyValue['bio.nickname']) {
+                        api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
+                    }
+                } else {
+                    var keyValue = err.errmsg.split('index:')[1].split('dup key')[0].split('_')[0].trim();
+                    if (keyValue == 'auth.email') {
+                        api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
+                    }
+                    if (keyValue == 'bio.nickname') {
+                        api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
+                    }
+                }
+                return api.sendConflict(res, result);
+            }
+            return api.sendInternalError(res, api.createError('failed to create new user', 'sign-up.something-went-wrong'));
         }
-        if (err.keyValue['bio.nickname']) {
-          api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
-        }
-        return api.sendConflict(res, result);
-      }
-      return api.sendInternalError(res, api.createError('failed to create new user', 'sign-up.something-went-wrong'));
-    }
 
     try {
       sendVerificationEmail(email, verificationToken);

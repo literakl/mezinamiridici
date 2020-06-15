@@ -1,57 +1,80 @@
-const AWS = require('aws-sdk');
+const path = require('path');
+const dotenv = require('dotenv');
 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const envPath = path.join(__dirname, '../..', '.env');
+dotenv.config({ path: envPath });
 
-const http = require('../../utils/api.js');
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
+const logger = require('../../utils/logging');
 
-exports.handler = (payload, context, callback) => {
-  const { pollId } = payload.pathParameters;
+const PAGE_SIZE_COMMENTS = parseInt(process.env.PAGE_SIZE_COMMENTS || '10', 10);
+const MAXIMUM_PAGE_SIZE = parseInt(process.env.MAXIMUM_PAGE_SIZE || '50', 10);
 
-  dynamodb.query({
-    TableName: 'BUDCommentTable',
-    IndexName: 'CommentsFromPollIdIndex',
-    KeyConditionExpression: '#pollId = :pollId',
-    ExpressionAttributeNames: {
-      '#pollId': 'pollId',
-    },
-    ExpressionAttributeValues: {
-      ':pollId': pollId,
-    },
-    ConsistentRead: false,
-  }, (err, data) => {
-    if (err) {
-      return http.sendInternalError(callback, err.Item);
+module.exports = (app) => {
+  app.options('/bff/items/:itemId/comments', auth.cors);
+  app.options('/bff/items/:itemId/comments/:commentId/replies', auth.cors);
+
+  app.get('/bff/items/:itemId/comments', auth.cors, async (req, res) => {
+    logger.verbose('getComments handler starts');
+    const { itemId } = req.params;
+    if (!itemId) {
+      return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
-    console.log(pollId);
-    dynamodb.scan({
-      TableName: 'BUDCommentVoteTable',
-      FilterExpression: '#pollId = :pollId',
-      ExpressionAttributeNames: {
-        '#pollId': 'pollId',
-      },
-      ExpressionAttributeValues: {
-        ':pollId': pollId,
-      },
-      ConsistentRead: false,
-    }, (err, commentVoteList) => {
-      if (err) {
-        console.log(err);
-        return http.sendInternalError(callback, err.Item);
+    const listParams = api.parseListParams(req, 'id', -1, PAGE_SIZE_COMMENTS, MAXIMUM_PAGE_SIZE);
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      logger.debug('Mongo connected');
+
+      const query = { itemId, parentId: { $exists: false } };
+      if (listParams.lastResult) {
+        query._id = listParams.lastResult.value;
       }
-      data.Items.forEach((comment) => {
-        commentVoteList.Items.forEach((commentVote) => {
-          if (comment.commentId == commentVote.commentId) {
-            if (commentVote.vote == 1) {
-              comment.upvotes = (comment.upvotes || 0) + 1;
-            } else {
-              comment.downvotes = (comment.downvotes || 0) + 1;
-            }
+
+      const comments = await dbClient.db().collection('comments')
+        .find(query, { projection: { itemId: 0 } })
+        .sort({ _id: 1 })
+        .limit(listParams.pageSize)
+        .toArray();
+      logger.debug('Comments fetched');
+
+      const parentIdList = [];
+      comments.forEach((comment) => {
+        parentIdList.push(comment._id);
+      });
+
+      if (parentIdList.length === 0) {
+        return api.sendCreated(res, api.createResponse({ comments: [], limit: listParams.pageSize }));
+      }
+
+      const childComments = await dbClient.db().collection('comments').aggregate([
+        { $match: { parentId: { $in: parentIdList } } },
+        { $project: { 'comments.itemId': 0 } },
+        { $sort: { _id: 1 } },
+        {
+          $group: {
+            _id: '$parentId',
+            replies: { $push: '$$ROOT' },
+          },
+        },
+      ], { allowDiskUse: true }).toArray();
+      logger.debug('Replies fetched');
+
+      comments.forEach((root) => {
+        childComments.forEach((child) => {
+          if (root._id === child._id) {
+            root.replies = child.replies;
           }
         });
       });
-      console.log(data.Items);
-      console.log(commentVoteList);
-      return http.sendRresponse(callback, data.Items, 'public, max-age=600');
-    });
+
+      return api.sendCreated(res, api.createResponse({ comments, limit: listParams.pageSize }));
+    } catch (err) {
+      logger.error('Request failed');
+      logger.error(err);
+      return api.sendInternalError(res, api.createError('Failed to get comments', 'sign-in.something-went-wrong'));
+    }
   });
 };

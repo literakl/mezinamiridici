@@ -1,47 +1,74 @@
 <template>
-  <div>
-    <div v-for="comment in comments" v-bind:key="comment.id">
-      <div
-        v-bind:class="(
+    <div v-if="commentslist.length">
+
+        <div v-for="(comment, index) in commentslist" v-bind:key="comment.id">
+            <div
+                v-bind:class="(
                     parseInt(depth) === 0  || parseInt(depth) > 5) ?
                     'comment__parent' :
                     'comment__child'"
-      >
-        <Comment
-          :pollId="pollId"
-          :comment="comment"
-          :commentId="comment.commentId"
-          :userId="comment.userId"
-          :name="comment.nickname"
-          :title="comment.text"
-          :upvotes="comment.upvotes"
-          :downvotes="comment.downvotes"
-          :date="comment.created.toString()"
-          :depth="parseInt(depth)"
-        />
-        <Comments
-          :pollId="pollId"
-          v-if="comment.comments !== undefined"
-          :comments="comment.comments"
-          :depth="parseInt(depth) + 1"
-        />
-      </div>
+            >
+                <Comment
+                    :itemId="itemId"
+                    :comment="comment"
+                    :commentId="comment._id"
+                    :user="comment.user"
+                    :text="comment.text"
+                    :upvotes="comment.up"
+                    :downvotes="comment.down"
+                    :date="comment.date.toString()"
+                    :depth="parseInt(depth)"
+                    :childCommentCount="comment.childCommentCount"
+                />
+                <ChildComments
+                    :itemId="itemId"
+                    v-if="comment.comments !== undefined"
+                    :childCommentsList="comment.comments"
+                    :paginations="paginations[index]"
+                    :depth="parseInt(depth) + 1"
+                    :rootIndex="index"
+                    @paginate="paginate"
+                />
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import Comment from '@/components/molecules/Comment.vue';
+import ChildComments from '@/components/organisms/ChildComments.vue';
 
 export default {
   name: 'Comments',
+  data() {
+    return {
+      paginations: [],
+    };
+  },
   props: {
-    pollId: String,
-    comments: Array,
+    itemId: String,
     depth: Number,
+    commentslist: Array,
   },
   components: {
     Comment,
+    ChildComments,
+  },
+  methods: {
+    paginate(event) {
+      this.$set(this.paginations, event.rootIndex, this.paginations[event.rootIndex] + 1);
+    },
+    changeData() {
+      for (let index = 0; index < this.commentslist.length; index += 1) {
+        this.$set(this.paginations, index, 2);
+      }
+      return this.paginations;
+    },
+  },
+  watch: {
+    commentslist() {
+      this.changeData();
+    },
   },
 };
 </script>

@@ -36,7 +36,7 @@ module.exports = (app) => {
 
       user.auth.pwdTimestamp = now;
       const token = auth.createTokenFromUser(user);
-      return api.sendRresponse(res, api.createResponse(token));
+      return api.sendResponse(res, api.createResponse(token));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to reset the password', 'sign-in.something-went-wrong'));

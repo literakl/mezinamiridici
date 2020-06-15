@@ -83,6 +83,8 @@
   "poll": {
     "your-vote": "Váš hlas:",
     "votes": "hlasů",
+    "your-say": "komentovat hlasování",
+    "load-more":"Načíst další",
     "discussion": "Diskuse",
     "your-opinion": "Co si o tom myslíte vy?",
     "other-polls-button": "Další ankety",

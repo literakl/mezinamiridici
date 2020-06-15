@@ -29,8 +29,8 @@ module.exports = (app) => {
         user.prefs = { public: user.prefs.public };
         user.driving = {};
       }
-      return api.sendRresponse(res, api.createResponse(user));
-      // return api.sendRresponse(callback, api.createResponse(user), "public, max-age=600");
+      return api.sendResponse(res, api.createResponse(user));
+      // return api.sendResponse(callback, api.createResponse(user), "public, max-age=600");
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to load  the user', 'generic.something-went-wrong'));

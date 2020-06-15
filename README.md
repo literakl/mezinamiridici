@@ -13,8 +13,10 @@ This is a monorepo for mezinamiridici.cz
 
 ```
 $ cd infrastructure
+$ npm install
 $ npm run dev
 $ cd spa
+$ npm install
 $ npm run dev
 ```
 
@@ -35,3 +37,5 @@ VUE_APP_I18N_FALLBACK_LOCALE=en
 VUE_APP_API_ENDPOINT=http://127.0.0.1:3000/v1
 VUE_APP_BFF_ENDPOINT=http://127.0.0.1:3000/bff
 ```
+
+##### Note: before running testcases make sure you create all the index mentioned at mongo_setup.js

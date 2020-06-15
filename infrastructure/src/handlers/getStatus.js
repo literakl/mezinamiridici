@@ -8,6 +8,6 @@ module.exports = (app) => {
       api: '1.0',
       status: 'OK',
     };
-    return api.sendRresponse(res, api.createResponse(response));
+    return api.sendResponse(res, api.createResponse(response));
   });
 };

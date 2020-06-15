@@ -53,7 +53,7 @@ module.exports = (app) => {
       const query = prepareUpdateQuery(text, user, picture, publishDate, published);
       await dbClient.db().collection('items').updateOne({ _id: pollId }, query);
       logger.debug('Item updated');
-      return api.sendRresponse(res, api.createResponse());
+      return api.sendResponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
