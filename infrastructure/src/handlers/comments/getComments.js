@@ -35,8 +35,8 @@ module.exports = (app) => {
 
       const comments = await dbClient.db().collection('comments')
         .find(query, { projection: { itemId: 0 } })
-        .sort({ _id: 1 })
-        .limit(listParams.pageSize)
+        .sort({ _id: -1 })
+        .limit(listParams.pageSize + 1)
         .toArray();
       logger.debug('Comments fetched');
 
@@ -45,8 +45,14 @@ module.exports = (app) => {
         parentIdList.push(comment._id);
       });
 
+      const incomplete = parentIdList.length > listParams.pageSize;
+      if (incomplete) {
+        comments.pop();
+        parentIdList.pop();
+      }
+
       if (parentIdList.length === 0) {
-        return api.sendCreated(res, api.createResponse({ comments: [], limit: listParams.pageSize }));
+        return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments: [] }));
       }
 
       const childComments = await dbClient.db().collection('comments').aggregate([
@@ -70,7 +76,7 @@ module.exports = (app) => {
         });
       });
 
-      return api.sendCreated(res, api.createResponse({ comments, limit: listParams.pageSize }));
+      return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments }));
     } catch (err) {
       logger.error('Request failed');
       logger.error(err);

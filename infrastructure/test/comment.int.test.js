@@ -34,6 +34,11 @@ test('Comments API', async (done) => {
   const poll = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(poll.success).toBeTruthy();
 
+  let comments = await bff(`items/${poll.data._id}/comments`).json();
+  expect(comments.success).toBeTruthy();
+  expect(comments.data.comments.length).toBe(0);
+  expect(comments.data.incomplete).toBeFalsy();
+
   const commentBody = {
     commentText: 'Comment 1',
     date: dayjs(poll.data.info.date).add(10, 'minute').format(DATE_FORMAT),
@@ -299,14 +304,22 @@ test('Comments API', async (done) => {
   const pollComment6b = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(pollComment6b.success).toBeTruthy();
 
-  const comments = await bff(`items/${poll.data._id}/comments`).json();
+  comments = await bff(`items/${poll.data._id}/comments`).json();
   console.log(JSON.stringify(comments, null, 2));
   expect(comments.success).toBeTruthy();
+  expect(comments.data.incomplete).toBeTruthy();
   expect(comments.data.comments.length).toBe(3);
-  expect(comments.data.comments[0].text).toBe(pollComment1.data.text);
-  expect(comments.data.comments[0].up).toBe(3);
-  expect(comments.data.comments[0].down).toBe(2);
-  expect(comments.data.comments[0].replies.length).toBe(6);
+  expect(comments.data.comments[0].text).toBe(pollComment6.data.text);
+  expect(comments.data.comments[0].up).toBe(0);
+  expect(comments.data.comments[0].down).toBe(0);
+  expect(comments.data.comments[0].replies.length).toBe(2);
+  expect(comments.data.comments[0].replies[0].text).toBe(pollComment6a.data.text);
+  expect(comments.data.comments[0].replies[1].text).toBe(pollComment6b.data.text);
+
+  // expect(comments.data.comments[0].text).toBe(pollComment1.data.text);
+  // expect(comments.data.comments[0].up).toBe(3);
+  // expect(comments.data.comments[0].down).toBe(2);
+  // expect(comments.data.comments[0].replies.length).toBe(6);
 
   done();
 });
