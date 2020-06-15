@@ -68,10 +68,6 @@ test('Comments API', async (done) => {
   expect(pollResponse.data.comments.count).toBe(1);
   expect(dayjs.utc(pollResponse.data.comments.last, DATE_FORMAT).local().format(DATE_FORMAT)).toBe(commentBody.date);
 
-  let comments = await bff(`items/${poll.data._id}/comments`).json();
-  expect(comments.success).toBeTruthy();
-  console.log(comments.data);
-
   voteResponse = await bff(`comments/${pollComment1.data._id}/votes`).json();
   expect(voteResponse.success).toBeTruthy();
   expect(voteResponse.data.length).toBe(5);
@@ -307,9 +303,14 @@ test('Comments API', async (done) => {
   const pollComment6b = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(jwtLeos) }).json();
   expect(pollComment6b.success).toBeTruthy();
 
-  comments = await bff(`items/${poll.data._id}/comments`).json();
+  const comments = await bff(`items/${poll.data._id}/comments`).json();
+  console.log(JSON.stringify(comments, null, 2));
   expect(comments.success).toBeTruthy();
-  console.log(comments);
+  expect(comments.data.comments.length).toBe(3);
+  expect(comments.data.comments[0].text).toBe(pollComment1.data.text);
+  expect(comments.data.comments[0].up).toBe(3);
+  expect(comments.data.comments[0].down).toBe(2);
+  expect(comments.data.comments[0].replies.length).toBe(6);
 
   done();
 });

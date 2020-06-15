@@ -1,7 +1,15 @@
+const path = require('path');
+const dotenv = require('dotenv');
+
+const envPath = path.join(__dirname, '../..', '.env');
+dotenv.config({ path: envPath });
+
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
+
+const MAXIMUM_PAGE_SIZE = process.env.MAXIMUM_PAGE_SIZE || 50;
 
 module.exports = (app) => {
   app.get('/v1/polls/', async (req, res) => {
@@ -22,7 +30,7 @@ module.exports = (app) => {
 };
 
 function getItems(dbClient, req) {
-  const listParams = api.parseListParams(req, 'date', -1, 10, 50);
+  const listParams = api.parseListParams(req, 'date', -1, 10, MAXIMUM_PAGE_SIZE);
   const query = { type: 'poll', 'info.published': true };
   if (auth.checkRole(req, auth.poll_admin)) {
     delete query.info.published;

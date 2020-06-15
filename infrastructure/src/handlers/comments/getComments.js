@@ -1,12 +1,17 @@
+const path = require('path');
+const dotenv = require('dotenv');
+
+const envPath = path.join(__dirname, '../..', '.env');
+dotenv.config({ path: envPath });
+
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
-// const PAGE_SIZE_COMMENTS = process.env.PAGE_SIZE_COMMENTS || 10;
-// const PAGE_SIZE_REPLIES = process.env.PAGE_SIZE_COMMENTS || 5;
-const defaultElementLimit = 5;
-const defaultPageNumber = 1;
+const PAGE_SIZE_COMMENTS = parseInt(process.env.PAGE_SIZE_COMMENTS || '10', 10);
+const MAXIMUM_PAGE_SIZE = parseInt(process.env.MAXIMUM_PAGE_SIZE || '50', 10);
+
 module.exports = (app) => {
   app.options('/bff/items/:itemId/comments', auth.cors);
   app.options('/bff/items/:itemId/comments/:commentId/replies', auth.cors);
@@ -14,83 +19,62 @@ module.exports = (app) => {
   app.get('/bff/items/:itemId/comments', auth.cors, async (req, res) => {
     logger.verbose('getComments handler starts');
     const { itemId } = req.params;
-    const rootElementPageNumber = parseInt(req.query.page || defaultPageNumber, 10) || defaultPageNumber;
-    const rootElementLimit = parseInt(req.query.limit || defaultElementLimit, 10) || defaultElementLimit;
     if (!itemId) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
+    const listParams = api.parseListParams(req, 'id', -1, PAGE_SIZE_COMMENTS, MAXIMUM_PAGE_SIZE);
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const rootCommentsCount = await dbClient.db().collection('comments').count({ itemId, parentId: { $exists: false } });
-      const rootComments = await dbClient.db().collection('comments')
-        .find({ itemId, parentId: { $exists: false } })
-        .limit(rootElementLimit)
-        .skip((rootElementPageNumber - 1) * rootElementLimit)
+      const query = { itemId, parentId: { $exists: false } };
+      if (listParams.lastResult) {
+        query._id = listParams.lastResult.value;
+      }
+
+      const comments = await dbClient.db().collection('comments')
+        .find(query, { projection: { itemId: 0 } })
+        .sort({ _id: 1 })
+        .limit(listParams.pageSize)
         .toArray();
+      logger.debug('Comments fetched');
+
       const parentIdList = [];
-      rootComments.forEach((comment) => {
+      comments.forEach((comment) => {
         parentIdList.push(comment._id);
       });
 
+      if (parentIdList.length === 0) {
+        return api.sendCreated(res, api.createResponse({ comments: [], limit: listParams.pageSize }));
+      }
+
       const childComments = await dbClient.db().collection('comments').aggregate([
-        {
-          $match: {
-            $and: [
-              { parentId: { $exists: true } },
-              { parentId: { $in: parentIdList } },
-            ],
-          },
-        },
-        {
-          $sort: {
-            date: 1,
-          },
-        },
+        { $match: { parentId: { $in: parentIdList } } },
+        { $project: { 'comments.itemId': 0 } },
+        { $sort: { _id: 1 } },
         {
           $group: {
             _id: '$parentId',
-            comments: { $push: '$$ROOT' },
-            childCommentCount: { $sum: 1 },
+            replies: { $push: '$$ROOT' },
           },
         },
-        // {
-        //     $limit:5//limits the root comments
-        // }
-
       ], { allowDiskUse: true }).toArray();
+      logger.debug('Replies fetched');
 
-      /*
-            this this generic query
-            let childComments = await dbClient.db().collection("comments").find({ itemId: itemId, parentId: { $in: parentIdList } }).limit(10).toArray();
-            */
-      rootComments.forEach((root) => {
+      comments.forEach((root) => {
         childComments.forEach((child) => {
           if (root._id === child._id) {
-            root.comments = child.comments;
-            // use below line if you want to limit the child explicitly
-            // root.comments = child.comments.slice(0, 5);
-            root.childCommentCount = child.childCommentCount;
+            root.replies = child.replies;
           }
         });
       });
 
-      if (!rootComments) {
-        return api.sendNotFound(res, api.createError('Comments not found', 'generic.internal-error'));
-      }
-      logger.debug('Comments fetched');
-
-      return api.sendCreated(res, api.createResponse({
-        rootComments,
-        rootCommentsCount,
-        page: rootElementPageNumber,
-        limit: rootElementLimit,
-      }));
+      return api.sendCreated(res, api.createResponse({ comments, limit: listParams.pageSize }));
     } catch (err) {
-      logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to create comment', 'sign-in.something-went-wrong'));
+      logger.error('Request failed');
+      logger.error(err);
+      return api.sendInternalError(res, api.createError('Failed to get comments', 'sign-in.something-went-wrong'));
     }
   });
 };
