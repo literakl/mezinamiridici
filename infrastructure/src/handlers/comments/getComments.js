@@ -57,7 +57,7 @@ module.exports = (app) => {
 
       const childComments = await dbClient.db().collection('comments').aggregate([
         { $match: { parentId: { $in: parentIdList } } },
-        { $project: { 'comments.itemId': 0 } },
+        { $project: { itemId: 0 } },
         { $sort: { _id: 1 } },
         {
           $group: {
