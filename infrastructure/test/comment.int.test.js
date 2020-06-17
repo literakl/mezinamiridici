@@ -349,6 +349,25 @@ test('Comments API', async (done) => {
   expect(comments.data.comments[2].down).toBe(2);
   expect(comments.data.comments[2].replies.length).toBe(6);
 
+  comments = await bff(`items/${poll.data._id}/comments/${pollComment4.data._id}/replies`).json();
+  expect(comments.success).toBeTruthy();
+  expect(comments.data.replies.length).toBe(9);
+  expect(comments.data.replies[0].text).toBe(pollComment4a.data.text);
+  expect(comments.data.replies[1].text).toBe(pollComment4b.data.text);
+  expect(comments.data.replies[2].text).toBe(pollComment4c.data.text);
+  expect(comments.data.replies[3].text).toBe(pollComment4d.data.text);
+  expect(comments.data.replies[4].text).toBe(pollComment4e.data.text);
+  expect(comments.data.replies[5].text).toBe(pollComment4f.data.text);
+  expect(comments.data.replies[6].text).toBe(pollComment4g.data.text);
+  expect(comments.data.replies[7].text).toBe(pollComment4h.data.text);
+  expect(comments.data.replies[8].text).toBe(pollComment4i.data.text);
+
+  comments = await bff(`items/${poll.data._id}/comments/${pollComment4.data._id}/replies?lr=id:${pollComment4g.data._id}`).json();
+  expect(comments.success).toBeTruthy();
+  expect(comments.data.replies.length).toBe(2);
+  expect(comments.data.replies[0].text).toBe(pollComment4h.data.text);
+  expect(comments.data.replies[1].text).toBe(pollComment4i.data.text);
+
   done();
 });
 

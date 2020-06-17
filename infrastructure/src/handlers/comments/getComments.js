@@ -20,7 +20,7 @@ module.exports = (app) => {
     logger.verbose('getComments handler starts');
     const { itemId } = req.params;
     if (!itemId) {
-      return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
+      return api.sendBadRequest(res, api.createError('Missing parameter itemId', 'generic.internal-error'));
     }
     const listParams = api.parseListParams(req, 'id', -1, PAGE_SIZE_COMMENTS, MAXIMUM_PAGE_SIZE);
 
@@ -77,6 +77,37 @@ module.exports = (app) => {
       });
 
       return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments }));
+    } catch (err) {
+      logger.error('Request failed');
+      logger.error(err);
+      return api.sendInternalError(res, api.createError('Failed to get comments', 'sign-in.something-went-wrong'));
+    }
+  });
+
+  app.get('/bff/items/:itemId/comments/:commentId/replies', auth.cors, async (req, res) => {
+    logger.verbose('getReplies handler starts');
+    const { commentId } = req.params;
+    if (!commentId) {
+      return api.sendBadRequest(res, api.createError('Missing parameter commentId', 'generic.internal-error'));
+    }
+    const listParams = api.parseListParams(req, 'id', 1, PAGE_SIZE_COMMENTS, MAXIMUM_PAGE_SIZE);
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      logger.debug('Mongo connected');
+
+      const query = { parentId: commentId };
+      if (listParams.lastResult) {
+        query._id = listParams.lastResult.value;
+      }
+
+      const replies = await dbClient.db().collection('comments')
+        .find(query, { projection: { itemId: 0 } })
+        .sort({ _id: 1 })
+        .toArray();
+      logger.debug('Replies fetched');
+
+      return api.sendCreated(res, api.createResponse({ replies }));
     } catch (err) {
       logger.error('Request failed');
       logger.error(err);
