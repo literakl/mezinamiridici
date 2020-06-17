@@ -90,7 +90,7 @@ module.exports = (app) => {
     if (!commentId) {
       return api.sendBadRequest(res, api.createError('Missing parameter commentId', 'generic.internal-error'));
     }
-    const listParams = api.parseListParams(req, 'id', 1, PAGE_SIZE_COMMENTS, MAXIMUM_PAGE_SIZE);
+    const listParams = api.parseListParams(req, 'id', 1, 0, 0);
 
     try {
       const dbClient = await mongo.connectToDatabase();
