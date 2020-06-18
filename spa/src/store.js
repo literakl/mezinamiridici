@@ -10,7 +10,8 @@ axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8'
 Vue.use(Vuex);
 
 const {
-  VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT, VUE_APP_DEFAULT_POLL_COMMENT_LIMIT, VUE_APP_DEFAULT_POLL_COMMENT_PAGE,
+  VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT,
+  REPLY_LIMIT,
 } = process.env;
 const API_ENDPOINT = VUE_APP_API_ENDPOINT;
 const BFF_ENDPOINT = VUE_APP_BFF_ENDPOINT;
@@ -32,7 +33,9 @@ export default new Vuex.Store({
     poll: null,
     latestPoll: null,
     stream: null,
-    pollComments: null,
+    comments: null,
+    // replies: null; https://forum.vuejs.org/t/vuex-best-practices-for-complex-objects/10143/51
+    // users: null, https://github.com/paularmstrong/normalizr
   },
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -42,7 +45,7 @@ export default new Vuex.Store({
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
-    POLL_COMMENTS: state => state.pollComments,
+    COMMENTS: state => state.comments,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -69,8 +72,18 @@ export default new Vuex.Store({
     // APPEND_STREAM: (state, payload) => {
     //   state.stream = payload;
     // },
-    SET_POLL_COMMENTS: (state, payload) => {
+    SET_COMMENTS: (state, payload) => {
       state.pollComments = payload;
+    },
+    SET_COMMENT_REPLIES: (state, commentId, replies) => {
+      const comment = state.comments.find(x => x._id === commentId);
+      if (comment !== undefined) {
+        comment.allReplies = comment.allReplies.concat(replies);
+        comment.showAll = true;
+        comment.replies = comment.allReplies;
+      } else {
+        console.log(`Comment ${commentId} not found`);
+      }
     },
   },
   actions: {
@@ -191,17 +204,6 @@ export default new Vuex.Store({
       }
       return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
     },
-    GET_POLL_COMMENTS: async (context, payload) => {
-      if (payload.reset) {
-        context.commit('SET_POLL_COMMENTS', null);
-      }
-      const pollData = await axios.get(`${API_ENDPOINT}/polls/${payload.id}/comment?page=${payload.page}&limit=${payload.limit}`, getAuthHeader(context));
-      if (context.getters.POLL_COMMENTS !== null && context.getters.POLL_COMMENTS.rootComments !== undefined) {
-        console.log(context.getters.POLL_COMMENTS.rootComments);
-        pollData.data.data.rootComments = context.getters.POLL_COMMENTS.rootComments.concat(pollData.data.data.rootComments);
-      }
-      context.commit('SET_POLL_COMMENTS', pollData.data.data);
-    },
     GET_POLL: async (context, payload) => {
       console.log(`GET_POLL ${payload.slug}`);
       if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
@@ -240,7 +242,33 @@ export default new Vuex.Store({
           context.commit('SET_STREAM', items);
         });
     },
-    COMMENT: async (context, payload) => {
+    GET_COMMENTS: async (context, payload) => {
+      if (payload.reset) {
+        context.commit('SET_POLL_COMMENTS', null);
+      }
+      let url = `${BFF_ENDPOINT}/polls/${payload.itemId}/comments`;
+      if (payload.lastSeen) {
+        url += `?lr=id:${payload.lastSeen}`;
+      }
+      const response = await axios.get(url);
+      console.log(response.data); // todo remove
+      if (context.getters.COMMENTS !== null && context.getters.POLL_COMMENTS.comments !== undefined) {
+        response.data.data.comments = context.getters.COMMENTS.comments.concat(response.data.data.comments);
+      }
+      context.commit('SET_POLL_COMMENTS', response.data.data);
+    },
+    GET_REPLIES: async (context, payload) => {
+      let url = `${BFF_ENDPOINT}/polls/${payload.itemId}/comments/${payload.commentId}/replies`;
+      if (payload.lastSeen) {
+        url += `?lr=id:${payload.lastSeen}`;
+      }
+      const response = await axios.get(url);
+      console.log(response.data); // todo remove
+      if (response.data.success) {
+        context.commit('SET_COMMENT_REPLIES', payload.commentId, response.data.data.replies);
+      }
+    },
+    ADD_COMMENT: async (context, payload) => {
       console.log('test', context, payload);
       return axios.post(`${API_ENDPOINT}/items/${payload.id}/comments`,
         { text: payload.text, parentId: payload.parent }, getAuthHeader(context));
