@@ -7,7 +7,8 @@
       <b-col>
         <ul>
           <li v-for="item in stream" :key="item._id">
-            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">{{item.info.caption}}
+            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
+              {{item.info.caption}}
             </router-link>
             {{ $t('poll.votes') }}: {{item.votes_count}}
           </li>

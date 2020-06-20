@@ -7,26 +7,20 @@
         </b-button>
       </b-col>
       <b-col sm="auto">
-        <b-card
-          img-src="../../../public/img/poll/unsplash/cameron-earl-zatacka.jpg"
-          img-alt="Image"
-          img-top
-          tag="article"
-          class="mb-2"
-        >
-          <b-card-title>
+        <b-card tag="article">
+          <b-card-body>
             <h1>
-              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}" class="poll-heading-link">
+              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
                 {{item.info.caption}}
               </router-link>
             </h1>
-          </b-card-title>
-          <b-card-text>
+          </b-card-body>
+          <b-card-footer>
             {{created}} &bull;
             <ProfileLink :profile="this.item.info.author"/> &bull;
-            {{ $t('poll.votes') }}: {{item.votes.total}}
-            <!--                <li>{{poll.pollComments}} comments</li>-->
-          </b-card-text>
+            {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
+            <a href="#comments">{{item.comments.count}} comments</a>
+          </b-card-footer>
         </b-card>
       </b-col>
       <b-col sm="1" v-if="item.siblings">
@@ -71,15 +65,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .poll-heading-link {
-    color: #000;
-    text-decoration: none;
-  }
-
-  .poll-heading-link:hover {
-    color: #000;
-    text-decoration: underline;
-  }
-</style>
