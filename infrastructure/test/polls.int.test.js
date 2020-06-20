@@ -24,7 +24,6 @@ test('Poll API', async (done) => {
   // create poll, anonymous user
   let body = {
     text: 'First question',
-    picture: 'picture.png',
   };
   let response = await api('polls', { method: 'POST', json: body });
   expect(response.statusCode).toBe(401);
@@ -39,7 +38,6 @@ test('Poll API', async (done) => {
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
   expect(response.data._id).toBeDefined();
-  expect(response.data.info.picture).toBe(firstPoll.picture);
   expect(response.data.info.author.nickname).toBe(Leos.bio.nickname);
   firstPoll.id = response.data._id;
   firstPoll.slug = response.data.info.slug;
@@ -53,6 +51,7 @@ test('Poll API', async (done) => {
   response = await api('polls', { method: 'POST', json: secondPoll, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
   expect(response.data.info.author.nickname).toBe(Jana.bio.nickname);
+  expect(response.data.info.picture).toBe(secondPoll.picture);
   secondPoll.id = response.data._id;
   secondPoll.slug = response.data.info.slug;
 

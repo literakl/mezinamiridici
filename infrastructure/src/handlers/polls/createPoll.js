@@ -27,10 +27,6 @@ module.exports = (app) => {
         return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
       }
 
-      if (!picture) {
-        return api.sendBadRequest(res, api.createError('Missing parameter picture', 'generic.internal-error'));
-      }
-
       let user = auth.getIdentity(req.identity);
       if (author !== undefined) {
         user = await mongo.getIdentity(dbClient, author);
