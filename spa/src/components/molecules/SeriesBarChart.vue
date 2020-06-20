@@ -1,6 +1,6 @@
 <template>
   <div>
-    <column-chart :data="chartData" :colors="colors" :suffix="suffix"></column-chart>
+    <column-chart :data="chartData" :colors="colors" :suffix="suffix" height="200px"></column-chart>
   </div>
 </template>
 
