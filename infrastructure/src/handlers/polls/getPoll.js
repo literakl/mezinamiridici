@@ -15,7 +15,7 @@ module.exports = (app) => {
 
       const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
-        pipeline.push(mongo.stageMyVote(req.identity.userId));
+        pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Item fetched');
@@ -38,7 +38,7 @@ module.exports = (app) => {
       const pipeline = [mongo.stageSlug(slug)];
       if (req.identity) {
         // noinspection JSCheckFunctionSignatures
-        pipeline.push(mongo.stageMyVote(req.identity.userId));
+        pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Items fetched');

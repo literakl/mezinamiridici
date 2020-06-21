@@ -318,6 +318,7 @@ test('Comments API', async (done) => {
   expect(comments.data.comments[0].down).toBe(0);
   expect(comments.data.comments[0].replies.length).toBe(2);
   expect(comments.data.comments[0].replies[0].text).toBe(comment6a.data.comment.text);
+  expect(comments.data.comments[0].replies[0].votes.length).toBe(0);
   expect(comments.data.comments[0].replies[1].text).toBe(comment6b.data.comment.text);
   expect(comments.data.comments[1].text).toBe(comment5.data.comment.text);
   expect(comments.data.comments[1].up).toBe(0);
@@ -344,15 +345,20 @@ test('Comments API', async (done) => {
   expect(comments.data.comments[0].text).toBe(comment3.data.comment.text);
   expect(comments.data.comments[0].up).toBe(2);
   expect(comments.data.comments[0].down).toBe(0);
+  expect(comments.data.comments[0].votes.length).toBe(2);
   expect(comments.data.comments[0].replies).toBeUndefined();
   expect(comments.data.comments[1].text).toBe(comment2.data.comment.text);
   expect(comments.data.comments[1].up).toBe(2);
   expect(comments.data.comments[1].down).toBe(2);
+  expect(comments.data.comments[1].votes.length).toBe(4);
   expect(comments.data.comments[1].replies.length).toBe(4);
   expect(comments.data.comments[2].text).toBe(comment1.data.comment.text);
   expect(comments.data.comments[2].up).toBe(3);
   expect(comments.data.comments[2].down).toBe(2);
+  expect(comments.data.comments[2].votes.length).toBe(5);
   expect(comments.data.comments[2].replies.length).toBe(6);
+  expect(comments.data.comments[2].replies[0].text).toBe(comment1a.data.comment.text);
+  expect(comments.data.comments[2].replies[0].votes.length).toBe(2);
 
   comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}/replies`).json();
   expect(comments.success).toBeTruthy();

@@ -16,7 +16,7 @@ const stagePublished = { $match: { 'info.published': true } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
-function stageMyVote(userId, pollId) {
+function stageMyPollVote(userId, pollId) {
   if (pollId) {
     return {
       $lookup: {
@@ -52,6 +52,16 @@ function stageMyVote(userId, pollId) {
         { $project: { _id: 0, vote: '$vote' } },
       ],
       as: 'me',
+    },
+  };
+}
+function stageCommentVotes() {
+  return {
+    $lookup: {
+      from: 'comment_votes',
+      localField: '_id',
+      foreignField: 'commentId',
+      as: 'votes',
     },
   };
 }
@@ -166,7 +176,8 @@ exports.getPoll = getPoll;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
-exports.stageMyVote = stageMyVote;
+exports.stageMyPollVote = stageMyPollVote;
+exports.stageCommentVotes = stageCommentVotes;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;

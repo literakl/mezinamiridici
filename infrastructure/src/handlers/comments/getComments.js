@@ -16,7 +16,7 @@ module.exports = (app) => {
   app.options('/bff/items/:itemId/comments', auth.cors);
   app.options('/bff/items/:itemId/comments/:commentId/replies', auth.cors);
 
-  app.get('/bff/items/:itemId/comments', auth.cors, async (req, res) => {
+  app.get('/bff/items/:itemId/comments', auth.cors, auth.optional, async (req, res) => {
     logger.verbose('getComments handler starts');
     const { itemId } = req.params;
     if (!itemId) {
@@ -33,11 +33,14 @@ module.exports = (app) => {
         query._id = listParams.lastResult.value;
       }
 
-      const comments = await dbClient.db().collection('comments')
-        .find(query, { projection: { itemId: 0 } })
-        .sort({ _id: -1 })
-        .limit(listParams.pageSize + 1)
-        .toArray();
+      let pipeline = [
+        { $match: query },
+        { $sort: { _id: -1 } },
+        { $limit: listParams.pageSize + 1 },
+        mongo.stageCommentVotes(),
+        { $project: { itemId: 0, 'votes._id': 0, 'votes.commentId': 0 } },
+      ];
+      const comments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Comments fetched');
 
       const parentIdList = [];
@@ -55,9 +58,10 @@ module.exports = (app) => {
         return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments: [] }));
       }
 
-      const childComments = await dbClient.db().collection('comments').aggregate([
+      pipeline = [
         { $match: { parentId: { $in: parentIdList } } },
-        { $project: { itemId: 0 } },
+        mongo.stageCommentVotes(),
+        { $project: { itemId: 0, 'votes._id': 0, 'votes.commentId': 0 } },
         { $sort: { _id: 1 } },
         {
           $group: {
@@ -65,7 +69,8 @@ module.exports = (app) => {
             replies: { $push: '$$ROOT' },
           },
         },
-      ], { allowDiskUse: true }).toArray();
+      ];
+      const childComments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Replies fetched');
 
       comments.forEach((root) => {
@@ -84,7 +89,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/bff/items/:itemId/comments/:commentId/replies', auth.cors, async (req, res) => {
+  app.get('/bff/items/:itemId/comments/:commentId/replies', auth.cors, auth.optional, async (req, res) => {
     logger.verbose('getReplies handler starts');
     const { commentId } = req.params;
     if (!commentId) {
@@ -101,10 +106,13 @@ module.exports = (app) => {
         query._id = listParams.lastResult.value;
       }
 
-      const replies = await dbClient.db().collection('comments')
-        .find(query, { projection: { itemId: 0 } })
-        .sort({ _id: 1 })
-        .toArray();
+      const pipeline = [
+        { $match: query },
+        { $sort: { _id: 1 } },
+        mongo.stageCommentVotes(),
+        { $project: { itemId: 0, 'votes._id': 0, 'votes.commentId': 0 } },
+      ];
+      const replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Replies fetched');
 
       return api.sendCreated(res, api.createResponse({ replies }));
