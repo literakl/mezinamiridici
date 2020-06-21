@@ -26,6 +26,31 @@ function getAuthHeader(context, jwt = undefined) {
 
 export default new Vuex.Store({
   state: {
+    dizcussion: {
+      incomplete: true,
+      comments: [
+        {
+          commentId: 'abcd',
+          text: 'ahoj lidi',
+          author: {},
+          up: 1,
+          down: 0,
+          votes: [],
+          showAllReplies: true,
+          replies: [
+            {
+              commentId: 'cdef',
+              parentId: 'abcd',
+              text: 'ahoj lidi',
+              author: {},
+              up: 1,
+              down: 0,
+              votes: [],
+            },
+          ],
+        },
+      ],
+    },
     authorized: false,
     userToken: null,
     userId: null,
@@ -33,7 +58,7 @@ export default new Vuex.Store({
     poll: null,
     latestPoll: null,
     stream: null,
-    comments: null,
+    discussion: null,
     // replies: null; https://forum.vuejs.org/t/vuex-best-practices-for-complex-objects/10143/51
     // users: null, https://github.com/paularmstrong/normalizr
   },
@@ -45,7 +70,8 @@ export default new Vuex.Store({
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
-    COMMENTS: state => state.comments,
+    DISCUSSION: state => state.discussion,
+    GET_REPLIES: state => id => state.discussion.comments.find(thread => thread.commentId === id),
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -73,14 +99,35 @@ export default new Vuex.Store({
     //   state.stream = payload;
     // },
     SET_COMMENTS: (state, payload) => {
-      state.pollComments = payload;
+      const { comments, incomplete, append } = payload;
+      comments.forEach((comment) => {
+        comment.showAllReplies = (comment.replies) ? (comment.replies.length < REPLY_LIMIT) : false;
+      });
+      if (state.discussion === null) {
+        state.discussion = { incomplete, comments: [] };
+      } else {
+        state.discussion.incomplete = incomplete;
+      }
+      const currentComments = state.discussion.comments;
+      if (append) {
+        state.discussion.comments = currentComments.concat(comments);
+      } else {
+        state.discussion.comments = comments.concat(currentComments);
+      }
     },
-    SET_COMMENT_REPLIES: (state, commentId, replies) => {
-      const comment = state.comments.find(x => x._id === commentId);
-      if (comment !== undefined) {
-        comment.allReplies = comment.allReplies.concat(replies);
+    SET_COMMENT_REPLIES: (state, payload) => {
+      const { commentId, replies } = payload;
+      const comment = state.discussion.comments.find(x => x._id === commentId);
+      if (comment) {
+        if (!comment.replies || comment.replies.length === 0) {
+          console.log('setting replies');
+          comment.replies = replies;
+        } else {
+          console.log('appending replies');
+          comment.replies = comment.replies.concat(replies);
+        }
+        comment.size = comment.replies.length;
         comment.showAll = true;
-        comment.replies = comment.allReplies;
       } else {
         console.log(`Comment ${commentId} not found`);
       }
@@ -197,7 +244,6 @@ export default new Vuex.Store({
       publicProfile: payload.publicProfile,
     }, getAuthHeader(context, payload.jwt)),
     VERIFY_USER: (context, payload) => axios.post(`${API_ENDPOINT}/verify/${payload.token}`),
-    // eslint-disable-next-line arrow-body-style
     GET_USER_PROFILE_BY_ID: async (context, payload) => {
       if (context.state.userId === payload.id) {
         return axios.get(`${API_ENDPOINT}/users/${payload.id}`, getAuthHeader(context));
@@ -213,7 +259,6 @@ export default new Vuex.Store({
       const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
-      await context.dispatch('GET_POLL_COMMENTS', { id: item._id, page: VUE_APP_DEFAULT_POLL_COMMENT_PAGE, limit: VUE_APP_DEFAULT_POLL_COMMENT_LIMIT });
     },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
@@ -242,30 +287,33 @@ export default new Vuex.Store({
           context.commit('SET_STREAM', items);
         });
     },
-    GET_COMMENTS: async (context, payload) => {
+    // pokryt stavy: nacteni nove diskuse, dalsi stranka, nacist nove komentare
+    FETCH_COMMENTS: async (context, payload) => {
+      console.log(`FETCH_COMMENTS ${payload}`);
       if (payload.reset) {
-        context.commit('SET_POLL_COMMENTS', null);
+        // asi v created
+        context.commit('SET_COMMENTS', null);
       }
-      let url = `${BFF_ENDPOINT}/polls/${payload.itemId}/comments`;
+      let url = `${BFF_ENDPOINT}/items/${payload.itemId}/comments`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
       }
-      const response = await axios.get(url);
+      const response = await axios.get(url, getAuthHeader(context));
       console.log(response.data); // todo remove
-      if (context.getters.COMMENTS !== null && context.getters.POLL_COMMENTS.comments !== undefined) {
-        response.data.data.comments = context.getters.COMMENTS.comments.concat(response.data.data.comments);
-      }
-      context.commit('SET_POLL_COMMENTS', response.data.data);
+      const body = { comments: response.data.data.comments, incomplete: response.data.data.incomplete, append: true };
+      context.commit('SET_COMMENTS', body);
     },
-    GET_REPLIES: async (context, payload) => {
-      let url = `${BFF_ENDPOINT}/polls/${payload.itemId}/comments/${payload.commentId}/replies`;
+    FETCH_REPLIES: async (context, payload) => {
+      console.log(`FETCH_REPLIES ${payload}`);
+      let url = `${BFF_ENDPOINT}/items/${payload.itemId}/comments/${payload.commentId}/replies`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
       }
-      const response = await axios.get(url);
+      const response = await axios.get(url, getAuthHeader(context));
       console.log(response.data); // todo remove
       if (response.data.success) {
-        context.commit('SET_COMMENT_REPLIES', payload.commentId, response.data.data.replies);
+        const body = { commentId: payload.commentId, replies: response.data.data.replies };
+        context.commit('SET_COMMENT_REPLIES', body);
       }
     },
     ADD_COMMENT: async (context, payload) => {

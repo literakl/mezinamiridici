@@ -1,17 +1,16 @@
 <template>
   <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
-    <ProfileLink :profile="user"/> &bull; {{epochToTime(date)}}
+    <ProfileLink :profile="comment.user"/> &bull; {{epochToTime(comment.date)}}
     <p>
-      {{text}}
+      {{comment.text}}
     </p>
     <div>
       +{{mutableUpvotes}} / -{{mutableDownvotes}}
-      <button v-if="differentUser" v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+</button>
-      <button v-if="differentUser" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">-</button>
+      <button v-if="canVote" v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+</button>
+      <button v-if="canVote" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">-</button>
       <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
-      <!-- <span class="comment__reply-link" v-on:click="reply" v-if="replying">{{ $t('comment.close') }}</span> -->
       <div v-show="replying" v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
-        <Textarea :id="itemId" :parent="commentId"/>
+        <Textarea :id="itemId" :parent="comment._id"/>
       </div>
     </div>
   </div>
@@ -29,37 +28,20 @@ export default {
   },
   props: {
     itemId: String,
-    commentId: String,
     comment: Object,
-    user: Object,
-    text: String,
-    date: String,
-    upvotes: Number,
-    downvotes: Number,
-    depth: Number,
-    childCommentCount: Number,
   },
   data() {
-    if (this.comment !== undefined && this.comment.votedUserList !== undefined
-        && this.comment.votedUserList.length > 0 && this.comment.votedUserList.indexOf(this.$store.getters.USER_ID) > -1
-        && ((this.comment.upvotes !== undefined && this.comment.upvotes > 0)
-          || (this.comment.downvotes !== undefined && this.comment.downvotes > 0))) {
-      this.fetched = true;
-      this.upvoted = true;
-      this.downvoted = true;
-    }
     return {
-      mutableUpvotes: this.upvotes,
-      mutableDownvotes: this.downvotes,
+      mutableUpvotes: this.comment.up,
+      mutableDownvotes: this.comment.down,
       showByIndex: null,
-      upvoted: this.upvoted || false,
-      downvoted: this.downvoted || false,
+      voted: this.comment.voted || false, // TODO in backend
       replying: false,
     };
   },
   computed: {
-    differentUser() {
-      return this.author.userId !== this.$store.getters.USER_ID;
+    canVote() {
+      return !this.voted && this.comment.user.userId !== this.$store.getters.USER_ID;
     },
   },
   methods: {
@@ -67,40 +49,27 @@ export default {
       const date = new Date(epoch);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
-    toggleUpvoted() {
-      this.upvoted = true;
-      this.downvoted = true;// false;
-    },
-    toggleDownvoted() {
-      this.upvoted = true;// false;
-      this.downvoted = true;
-    },
     upvote() {
-      // console.log('[upvote] ', this.upvoted);
-      if (this.upvoted) return;
+      if (this.voted) return;
       this.mutableUpvotes = (this.mutableUpvotes || 0) + 1;
-      this.toggleUpvoted();
-      // call post webservices here
+      this.voted = true;
       this.$store.dispatch('COMMENT_VOTE', {
         vote: 1,
         itemId: this.itemId,
-        commentId: this.commentId,
+        commentId: this.comment._id,
       });
     },
     downvote() {
-      // console.log('[downvote] ', this.downvoted);
-      if (this.downvoted) return;
+      if (this.voted) return;
       this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
-      this.toggleDownvoted();
-      // call post webservices here
+      this.voted = true;
       this.$store.dispatch('COMMENT_VOTE', {
         vote: -1,
         itemId: this.itemId,
-        commentId: this.commentId,
+        commentId: this.comment._id,
       });
     },
     reply() {
-      // this.showByIndex = null
       this.replying = !this.replying;
       this.showByIndex = 1;
     },
@@ -147,8 +116,7 @@ export default {
     border: 0px;
     line-height: 1px;
     margin: 0 0 0 10px;
-    padding: 0;
-    padding-bottom: 3px;
+    padding: 0 0 3px;
     cursor: pointer;
   }
 
