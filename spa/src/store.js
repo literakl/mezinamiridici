@@ -103,6 +103,16 @@ export default new Vuex.Store({
       resetPasswordToken: payload.resetPasswordToken,
       password: payload.password,
     }),
+    SET_SOCIAL: async (context, payload) => {
+      const jwt = payload.access_token;
+      const jwtData = jwtDecode(jwt);
+      localStorage.setItem('jwt', jwt);
+
+      context.commit('SET_USER_TOKEN', jwt);
+      context.commit('SET_AUTHORIZED', true);
+      context.commit('SET_USER_ID', jwtData.userId);
+      context.commit('SET_USER_NICKNAME', jwtData.nickname);
+    },
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_POLL', null);
       context.commit('SET_LATEST_POLL', null);
