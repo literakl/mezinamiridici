@@ -17,7 +17,8 @@ module.exports = {
     'one-var-declaration-per-line': 'off',
     'one-var': 'off',
     'no-use-before-define': ['error', { "functions": false }],
-    'no-param-reassign': ['error', { "props": false }]
+    'no-param-reassign': ['error', { "props": false }],
+    "import/no-named-as-default": 0
   },
   parserOptions: {
     parser: 'babel-eslint',
