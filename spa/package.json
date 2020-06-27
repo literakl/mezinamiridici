@@ -6,6 +6,7 @@
     "dev": "vue-cli-service serve",
     "prod": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
+    "buildDev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "deploy": "vue-cli-service s3-deploy",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
