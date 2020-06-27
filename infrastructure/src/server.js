@@ -5,7 +5,7 @@ const { createLogger, format, transports } = require('winston');
 const path = require('path');
 
 const app = express();
-app.use('/', express.static(__dirname +'/dist/'));
+app.use('/', express.static(`${__dirname}/dist/`));
 
 app.use(express.json());
 // TODO only use in development
@@ -33,11 +33,11 @@ require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
 require('./handlers/auth/facebookLink')(app);
 
-app.all("*", (_req, res) => {
+app.all('*', (req, res) => {
   try {
-    res.sendFile(__dirname + '/dist/index.html');
+    res.sendFile(`${__dirname}/dist/index.html`);
   } catch (error) {
-    res.json({ success: false, message: "Something went wrong" });
+    res.json({ success: false, message: 'Something went wrong' });
   }
 });
 const myFormat = format.printf(info => `${info.message}`);
