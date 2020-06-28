@@ -38,7 +38,7 @@ Vue.use(VueAuthenticate, {
   storageType: 'localStorage',
   providers: {
     facebook: {
-      clientId: '262227181532658',
+      clientId: '860316561127732',
       redirectUri: 'http://localhost:3000/auth/fb',
     },
   },
