@@ -34,12 +34,12 @@ Vue.use(Chartkick.use(Chart));
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'http://localhost/api',
   storageType: 'localStorage',
   providers: {
     facebook: {
       clientId: '860316561127732',
-      redirectUri: 'http://localhost:3000/auth/fb',
+      redirectUri: 'http://localhost/api/auth/facebook',
     },
   },
 });
