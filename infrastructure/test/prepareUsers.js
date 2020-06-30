@@ -14,7 +14,7 @@ const Leos = {
     nickname: 'literakl', born: fix(1975), edu: 'university', region: 'PRG', sex: 'man',
   },
   driving: { since: fix(2007), vehicles: ['car'] },
-  prefs: { public: false },
+  prefs: { public: true },
   consent: { terms: new Date(), data: new Date() },
   roles: ['admin:poll'],
 };
@@ -30,7 +30,7 @@ const Jiri = {
     nickname: 'jirka', born: fix(1978), edu: 'primary', region: 'MS', sex: 'man',
   },
   driving: { since: fix(1996), vehicles: ['bike', 'car'] },
-  prefs: { public: false },
+  prefs: { public: true },
   consent: { terms: new Date(), data: new Date() },
 };
 const Lukas = {
@@ -58,7 +58,7 @@ const Vita = {
     nickname: 'Víťa', born: fix(1980), edu: 'university', region: 'JM', sex: 'man',
   },
   driving: { since: fix(2000), vehicles: ['bike', 'car', 'van'] },
-  prefs: { public: false },
+  prefs: { public: true },
   consent: { terms: new Date(), data: new Date() },
 };
 const Jana = {
@@ -73,7 +73,7 @@ const Jana = {
     nickname: 'Jana', born: fix(2000), edu: 'secondary', region: 'SC', sex: 'woman',
   },
   driving: { since: fix(2018), vehicles: ['car'] },
-  prefs: { public: false },
+  prefs: { public: true },
   consent: { terms: new Date(), data: new Date() },
 };
 const Bara = {
@@ -88,7 +88,7 @@ const Bara = {
     nickname: 'Barbora', born: fix(1995), edu: 'university', region: 'PRG', sex: 'woman',
   },
   driving: { since: fix(2019), vehicles: ['bus', 'truck', 'tramway'] },
-  prefs: { public: false },
+  prefs: { public: true },
   consent: { terms: new Date(), data: new Date() },
 };
 
