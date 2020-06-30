@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'user-profile', params: { id: profile.id }}">
+  <router-link :to="{ name: 'user-profile', params: { id: profile.userId }}">
     {{profile.nickname}}
   </router-link>
 </template>
