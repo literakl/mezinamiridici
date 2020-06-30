@@ -13,7 +13,7 @@ import Comment from '@/components/organisms/Comment.vue';
 import Button from '@/components/atoms/Button.vue';
 
 export default {
-  name: 'Comments',
+  name: 'Replies',
   components: {
     Comment,
     Button,

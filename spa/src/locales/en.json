@@ -83,9 +83,10 @@
     "your-vote": "Your vote:",
     "votes": "votes",
     "comments": "comments",
-    "your-say": "comment on poll",
-    "load-more":"Load More",
     "discussion": "Discussion",
+    "your-say": "What's your opinion?",
+    "send-button": "Send",
+    "load-more":"Load More",
     "your-opinion": "What do you want to say about it",
     "other-polls-button": "Other polls",
     "choices": {

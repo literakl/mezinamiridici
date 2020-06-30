@@ -1,11 +1,11 @@
 <template>
   <div class="" id="comments">
-    <h2>{{ $t('poll.discussion') }}</h2>
+    <h3>{{ $t('poll.discussion') }}</h3>
 
     <div v-if="signedIn">
-      <h3>{{ $t('poll.your-say') }}</h3>
+      <div>{{ $t('poll.your-say') }}</div>
 
-      <Textarea :id="itemId" />
+      <CommentForm :itemId="itemId" />
     </div>
 
     <!-- Novejsi reload button -->
@@ -37,7 +37,7 @@
 import Comment from '@/components/organisms/Comment.vue';
 import Replies from '@/components/organisms/Replies.vue';
 import Button from '@/components/atoms/Button.vue';
-import Textarea from '@/components/atoms/Textarea.vue';
+import CommentForm from '@/components/molecules/CommentForm.vue';
 
 export default {
   name: 'Comments',
@@ -45,7 +45,7 @@ export default {
     Comment,
     Replies,
     Button,
-    Textarea,
+    CommentForm,
   },
   props: {
     itemId: String,
@@ -65,7 +65,7 @@ export default {
     console.log('Starting to fetch comments');
     this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId }).then(() => {
       console.log('fetched comments in Comments.vue');
-      this.comments = this.$store.getters.DISCUSSION;
+      // this.comments = this.$store.getters.DISCUSSION;
     });
   },
   methods: {

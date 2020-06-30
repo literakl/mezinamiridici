@@ -10,20 +10,20 @@
       <button v-if="canVote" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">-</button>
       <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
       <div v-show="replying" v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
-        <Textarea :id="itemId" :parent="comment._id"/>
+        <CommentForm :itemId="itemId" :parent="comment._id"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Textarea from '@/components/atoms/Textarea.vue';
+import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
 
 export default {
   name: 'Comment',
   components: {
-    Textarea,
+    CommentForm,
     ProfileLink,
   },
   props: {
