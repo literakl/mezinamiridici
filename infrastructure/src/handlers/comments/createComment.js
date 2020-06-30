@@ -79,7 +79,7 @@ function createComment(itemId, text, user, parentId, date) {
     up: 0,
     down: 0,
     user: {
-      userId: user.userId,
+      id: user.userId,
       nickname: user.nickname,
     },
   };
