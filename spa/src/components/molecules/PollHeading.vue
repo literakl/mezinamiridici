@@ -19,7 +19,7 @@
             {{created}} &bull;
             <ProfileLink :profile="this.item.info.author"/> &bull;
             {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
-            <a href="#comments">{{item.comments.count}} comments</a>
+            {{ $t('poll.comments') }}: {{item.comments.count}}
           </b-card-footer>
         </b-card>
       </b-col>
