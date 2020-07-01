@@ -1,17 +1,29 @@
 <template>
   <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
-    <ProfileLink :profile="comment.user"/> &bull; {{epochToTime(comment.date)}}
-    <p>
+    <div>
+      <b>
+        <ProfileLink :profile="comment.user"/>
+      </b>
+      <span v-show="hovered">
+        &bull;
+        {{epochToTime(comment.date)}}
+        </span>
+    </div>
+
+    <div class="pt-1 pb-1">
       {{comment.text}}
-    </p>
+    </div>
+
     <div>
       +{{mutableUpvotes}} / -{{mutableDownvotes}}
-      <button v-if="canVote" v-show="showByIndex === 1" v-on:click="upvote" class="comment__reply-vote-button">+</button>
-      <button v-if="canVote" v-show="showByIndex === 1" v-on:click="downvote" class="comment__reply-vote-button">-</button>
-      <span v-show="showByIndex === 1" class="comment__reply-link" v-on:click="reply" v-if="!replying">{{ $t('comment.reply') }}</span>
-      <div v-show="replying" v-bind:class="(replying ? 'comment__reply-wrapper' : 'comment__reply-wrapper--hidden')">
-        <CommentForm :itemId="itemId" :parent="comment._id"/>
-      </div>
+      <button v-if="canVote" v-show="hovered" v-on:click="upvote" class="comment__reply-vote-button">+</button>
+      <button v-if="canVote" v-show="hovered" v-on:click="downvote" class="comment__reply-vote-button">-</button>
+
+      <span v-if="!replying" v-show="hovered" class="comment__reply-link" v-on:click="reply">{{ $t('comment.reply') }}</span>
+    </div>
+
+    <div v-show="replying">
+      <CommentForm :itemId="itemId" :parent="comment._id" @dismiss="dismiss"/>
     </div>
   </div>
 </template>
@@ -34,7 +46,7 @@ export default {
     return {
       mutableUpvotes: this.comment.up,
       mutableDownvotes: this.comment.down,
-      showByIndex: null,
+      hovered: false,
       voted: this.comment.voted || false, // TODO in backend
       replying: false,
     };
@@ -45,6 +57,9 @@ export default {
     },
   },
   methods: {
+    dismiss() {
+      this.replying = false;
+    },
     epochToTime(epoch) {
       const date = new Date(epoch);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
@@ -61,7 +76,7 @@ export default {
     },
     downvote() {
       if (this.voted) return;
-      this.mutableDownvotes = (this.mutableDownvotes || 0) - 1;
+      this.mutableDownvotes = (this.mutableDownvotes || 0) + 1;
       this.voted = true;
       this.$store.dispatch('COMMENT_VOTE', {
         vote: -1,
@@ -70,17 +85,14 @@ export default {
       });
     },
     reply() {
-      this.replying = !this.replying;
+      this.replying = true;
       this.showByIndex = 1;
     },
     hoverIn() {
-      this.showByIndex = 1;
+      this.hovered = true;
     },
     hoverOut() {
-      if (this.replying) {
-        this.replying = !this.replying;
-      }
-      this.showByIndex = null;
+      this.hovered = false;
     },
   },
 };
@@ -95,14 +107,6 @@ export default {
   .comment__reply-link:hover {
     text-decoration: underline;
     cursor: pointer;
-  }
-
-  .comment__reply-wrapper {
-    margin-top: 20px;
-  }
-
-  .comment__reply-wrapper--hidden {
-    display: none;
   }
 
   .comment__reply-vote-button {

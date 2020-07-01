@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div v-for="comment in replies" v-bind:key="comment._id" class="comment__child">
+  <div class="comment__child">
+    <div v-for="comment in replies" v-bind:key="comment._id">
       <Comment :itemId="itemId" :comment="comment" />
     </div>
     <!-- nacist novejsi -->
-    <Button :value="$t('poll.load-more')" @clicked="loadChild()"/>
+    <Button :value="$t('poll.load-more')" size="sm" @clicked="loadChild()"/>
   </div>
 </template>
 

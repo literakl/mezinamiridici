@@ -105,7 +105,7 @@ export default new Vuex.Store({
       });
       if (state.discussion === null) {
         state.discussion = { incomplete, comments: [] };
-      } else {
+      } else if (incomplete !== null) {
         state.discussion.incomplete = incomplete;
       }
       const currentComments = state.discussion.comments;
@@ -116,10 +116,10 @@ export default new Vuex.Store({
       }
     },
     SET_COMMENT_REPLIES: (state, payload) => {
-      const { commentId, replies } = payload;
+      const { commentId, replies, replace } = payload;
       const comment = state.discussion.comments.find(x => x._id === commentId);
       if (comment) {
-        if (!comment.replies || comment.replies.length === 0) {
+        if (!comment.replies || comment.replies.length === 0 || replace) {
           console.log('setting replies');
           comment.replies = replies;
         } else {
@@ -317,12 +317,29 @@ export default new Vuex.Store({
       }
     },
     ADD_COMMENT: async (context, payload) => {
-      console.log('test', context, payload);
-      return axios.post(`${API_ENDPOINT}/items/${payload.itemId}/comments`,
+      console.log('ADD_COMMENT', payload);
+      const response = await axios.post(`${API_ENDPOINT}/items/${payload.itemId}/comments`,
         { text: payload.text, parentId: payload.parent }, getAuthHeader(context));
+      console.log(response.data); // todo remove
+      if (response.data.success) {
+        let body = {
+          comments: [response.data.data.comment],
+          incomplete: null,
+          append: false,
+        };
+        context.commit('SET_COMMENTS', body);
+        if (payload.parent) {
+          body = {
+            commentId: payload.parent,
+            replies: response.data.data.replies,
+            replace: true,
+          };
+          context.commit('SET_COMMENT_REPLIES', body);
+        }
+      }
     },
     COMMENT_VOTE: async (context, payload) => {
-      console.log('test', context, payload);
+      console.log('COMMENT_VOTE', payload);
       return axios.post(`${API_ENDPOINT}/comments/${payload.commentId}/votes`,
         { itemId: payload.itemId, vote: payload.vote }, getAuthHeader(context));
     },
