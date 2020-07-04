@@ -1,5 +1,5 @@
 <template>
-  <b-card class="mb-2">
+  <div class="border border-secondary rounded mb-2 p-1">
     <div>
       <ProfileLink :profile="comment.user"/>
     </div>
@@ -30,7 +30,7 @@
     <div v-show="replying">
       <CommentForm :itemId="itemId" :parent="comment._id" @dismiss="dismiss"/>
     </div>
-  </b-card>
+  </div>
 </template>
 
 <script>
