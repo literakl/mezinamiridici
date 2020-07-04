@@ -93,47 +93,6 @@ export default {
       this.replying = true;
       this.showByIndex = 1;
     },
-    hoverIn() {
-      this.hovered = true;
-    },
-    hoverOut() {
-      this.hovered = false;
-    },
   },
 };
 </script>
-
-<style>
-  .comment__reply-link {
-    font-weight: bolder;
-    padding-left: 10px;
-  }
-
-  .comment__reply-link:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  .comment__reply-vote-button {
-    background-color: black;
-    color: white;
-    height: 20px;
-    width: 20px;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 700;
-    border: 0px;
-    line-height: 1px;
-    margin: 0 0 0 10px;
-    padding: 0 0 3px;
-    cursor: pointer;
-  }
-
-  .comment__reply-vote-button:hover {
-    background: #333333;
-  }
-
-  .comment_outer:hover {
-    background: #CFD8DC
-  }
-</style>

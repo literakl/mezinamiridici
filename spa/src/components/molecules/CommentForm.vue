@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2">
-    <b-btn-close @click="dismiss"></b-btn-close>
+    <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
     <b-form-textarea v-model="text" :placeholder="$t('comment.write-comment-placeholder')" rows="2">
     </b-form-textarea>
     <b-alert v-model="error" variant="danger" dismissible>
@@ -18,6 +18,10 @@ export default {
   props: {
     itemId: String,
     parent: String,
+    dismissable: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     Button,
