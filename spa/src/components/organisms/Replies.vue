@@ -4,7 +4,7 @@
       <Comment :itemId="itemId" :comment="comment" />
     </div>
     <!-- nacist novejsi -->
-    <Button :value="$t('poll.load-more')" size="sm" @clicked="loadChild()"/>
+    <Button :value="$t('comment.load-more')" size="sm" @clicked="loadChild()"/>
   </div>
 </template>
 

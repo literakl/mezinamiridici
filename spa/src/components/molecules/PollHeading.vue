@@ -34,6 +34,7 @@
 
 <script>
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import { showDate } from '@/components/utils/dateUtils';
 
 export default {
   name: 'PollHeading',
@@ -45,8 +46,7 @@ export default {
       return this.$store.getters.POLL;
     },
     created() {
-      const date = new Date(this.item.info.date);
-      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+      return showDate(this.item.info.date);
     },
     // urlToShare() {
     //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;

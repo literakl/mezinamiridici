@@ -17,7 +17,9 @@
     "internal-error": "Jejda, chybička se vloudila. Omlouváme se.",
     "not-found-caption": "Stránka nenalezena",
     "not-found-message": "Omlouváme se, tato stránka byla odtáhnuta pryč.",
-    "we-must-fix": "Musíme to opravit"
+    "we-must-fix": "Musíme to opravit",
+    "today": "dnes",
+    "yesterday": "včera"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -84,10 +86,6 @@
     "your-vote": "Váš hlas:",
     "votes": "hlasů",
     "comments": "komentářů",
-    "discussion": "Diskuse",
-    "your-say": "Co si o tom myslíte vy?",
-    "send-button": "Odeslat",
-    "load-more":"Načíst další",
     "your-opinion": "Co si o tom myslíte vy?",
     "other-polls-button": "Další ankety",
     "choices": {
@@ -192,7 +190,11 @@
     "update-button": "Upravit profil"
   },
   "comment": {
-    "reply": "Odpověď",
+    "discussion": "Diskuse",
+    "write-comment-placeholder": "Napište komentář",
+    "send-button": "Odeslat",
+    "load-more":"Načíst další",
+    "reply": "Komentovat",
     "close": "Zavřít"
   }
 }

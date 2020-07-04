@@ -1,11 +1,12 @@
 <template>
   <div class="mb-2">
     <b-btn-close @click="dismiss"></b-btn-close>
-    <b-form-textarea v-model="text"></b-form-textarea>
+    <b-form-textarea v-model="text" :placeholder="$t('comment.write-comment-placeholder')" rows="2">
+    </b-form-textarea>
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
-    <Button :disabled="sending" class="mt-2" size="sm" :value="$t('poll.send-button')" @clicked="send"/>
+    <Button :disabled="sending" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
   </div>
 </template>
 

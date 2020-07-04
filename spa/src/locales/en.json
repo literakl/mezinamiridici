@@ -17,7 +17,9 @@
     "internal-error": "Oops, this is an error. We are sorry.",
     "not-found-caption": "Page not found",
     "not-found-message": "Sorry, this page has been towed away.",
-    "we-must-fix": "We must fix it"
+    "we-must-fix": "We must fix it",
+    "today": "today",
+    "yesterday": "yesterday"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -83,10 +85,6 @@
     "your-vote": "Your vote:",
     "votes": "votes",
     "comments": "comments",
-    "discussion": "Discussion",
-    "your-say": "What's your opinion?",
-    "send-button": "Send",
-    "load-more":"Load More",
     "your-opinion": "What do you want to say about it",
     "other-polls-button": "Other polls",
     "choices": {
@@ -186,6 +184,10 @@
     "update-button": "Update my profile"
   },
   "comment": {
+    "discussion": "Discussion",
+    "write-comment-placeholder": "Write your comment",
+    "send-button": "Send",
+    "load-more":"Load More",
     "reply": "Reply",
     "close": "Close"
   }

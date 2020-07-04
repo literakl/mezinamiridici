@@ -1,10 +1,8 @@
 <template>
   <div class="" id="comments">
-    <h3>{{ $t('poll.discussion') }}</h3>
+    <h3>{{ $t('comment.discussion') }}</h3>
 
     <div v-if="signedIn">
-      <div>{{ $t('poll.your-say') }}</div>
-
       <CommentForm :itemId="itemId" />
     </div>
 
@@ -29,7 +27,7 @@
         </div>
       </div>
 <!--    </div>-->
-    <Button v-if="incomplete" :value="$t('poll.load-more')" @clicked="loadMoreComments(itemId)" />
+    <Button v-if="incomplete" :value="$t('comment.load-more')" @clicked="loadMoreComments(itemId)" />
   </div>
 </template>
 

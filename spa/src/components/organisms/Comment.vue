@@ -1,13 +1,7 @@
 <template>
-  <div class="comment_outer" @mouseenter="hoverIn" @mouseleave="hoverOut">
+  <b-card class="mb-2">
     <div>
-      <b>
-        <ProfileLink :profile="comment.user"/>
-      </b>
-      <span v-show="hovered">
-        &bull;
-        {{epochToTime(comment.date)}}
-        </span>
+      <ProfileLink :profile="comment.user"/>
     </div>
 
     <div class="pt-1 pb-1">
@@ -15,22 +9,34 @@
     </div>
 
     <div>
-      +{{mutableUpvotes}} / -{{mutableDownvotes}}
-      <button v-if="canVote" v-show="hovered" v-on:click="upvote" class="comment__reply-vote-button">+</button>
-      <button v-if="canVote" v-show="hovered" v-on:click="downvote" class="comment__reply-vote-button">-</button>
+      <b-button v-on:click="reply" class="mr-1" variant="outline-secondary" size="sm">
+        <b-icon icon="chat" aria-hidden="true"></b-icon>
+        {{ $t('comment.reply') }}
+      </b-button>
 
-      <span v-if="!replying" v-show="hovered" class="comment__reply-link" v-on:click="reply">{{ $t('comment.reply') }}</span>
+      <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
+        <b-icon icon="hand-thumbs-up" aria-hidden="true"></b-icon>
+        {{ mutableUpvotes }}
+      </b-button>
+
+      <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
+        {{ mutableDownvotes }}
+        <b-icon icon="hand-thumbs-down" aria-hidden="true"></b-icon>
+      </b-button>
+
+      <small class="text-muted">{{created}}</small>
     </div>
 
     <div v-show="replying">
       <CommentForm :itemId="itemId" :parent="comment._id" @dismiss="dismiss"/>
     </div>
-  </div>
+  </b-card>
 </template>
 
 <script>
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import { showDateTime } from '@/components/utils/dateUtils';
 
 export default {
   name: 'Comment',
@@ -55,14 +61,13 @@ export default {
     canVote() {
       return !this.voted && this.comment.user.userId !== this.$store.getters.USER_ID;
     },
+    created() {
+      return showDateTime(this.comment.date);
+    },
   },
   methods: {
     dismiss() {
       this.replying = false;
-    },
-    epochToTime(epoch) {
-      const date = new Date(epoch);
-      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     },
     upvote() {
       if (this.voted) return;
