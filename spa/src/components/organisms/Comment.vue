@@ -28,7 +28,7 @@
     </div>
 
     <div v-show="replying">
-      <CommentForm :itemId="itemId" :parent="comment._id" @dismiss="dismiss"/>
+      <CommentForm :itemId="itemId" :parent="replyId" @dismiss="dismiss"/>
     </div>
   </div>
 </template>
@@ -63,6 +63,9 @@ export default {
     },
     created() {
       return showDateTime(this.comment.date);
+    },
+    replyId() {
+      return (this.comment.parentId) ? this.comment.parentId : this.comment._id;
     },
   },
   methods: {

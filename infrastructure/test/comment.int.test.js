@@ -146,6 +146,12 @@ test('Comments API', async (done) => {
   const comment1a = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment1a.success).toBeTruthy();
 
+  // only discussion with two levels are allowed
+  commentBody.text = 'Comment 1aa';
+  commentBody.parentId = comment1a.data.comment._id;
+  const comment1aa = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(comment1aa.success).toBeFalsy();
+
   voteBody.vote = 1;
   voteResponse = await api(`comments/${comment1a.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();

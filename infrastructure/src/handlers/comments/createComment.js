@@ -30,8 +30,14 @@ module.exports = (app) => {
         publishDate = dday.toDate();
       }
 
-      const response = await dbClient.db()
-        .collection('items')
+      if (parentId) {
+        const response = await dbClient.db().collection('comments').findOne({ _id: parentId, parentId: null });
+        if (!response) {
+          return api.sendBadRequest(res, api.createError(`Comment ${parentId} is already reply`, 'generic.internal-error'));
+        }
+      }
+
+      const response = await dbClient.db().collection('items')
         .updateOne({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
       if (response.modifiedCount !== 1) {
         return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
