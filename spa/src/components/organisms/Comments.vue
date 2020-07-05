@@ -16,7 +16,7 @@
         <!-- nacist odpovedi v-if="comment.replies === undefined" -->
       </div>
 <!--    </div>-->
-    <Button v-if="incomplete" :value="$t('comment.load-more')" @clicked="loadMoreComments(itemId)" />
+    <Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" />
   </div>
 </template>
 
@@ -60,7 +60,11 @@ export default {
   },
   methods: {
     loadMoreComments(itemId) {
-      this.$store.dispatch('FETCH_COMMENTS', { itemId });
+      const payload = { itemId };
+      if (this.comments.length > 0) {
+        payload.lastSeen = this.comments[this.comments.length - 1]._id;
+      }
+      this.$store.dispatch('FETCH_COMMENTS', payload);
     },
   },
 };
