@@ -34,7 +34,7 @@
 
 <script>
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
-import { showDate } from '@/components/utils/dateUtils';
+import { showDate } from '@/utils/dateUtils';
 
 export default {
   name: 'PollHeading',

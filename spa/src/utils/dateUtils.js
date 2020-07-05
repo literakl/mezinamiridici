@@ -1,4 +1,4 @@
-import i18n from '../../i18n';
+import i18n from '../i18n';
 
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import normalizeVotes from '@/components/utils/chartUtils';
+import normalizeVotes from '@/utils/chartUtils';
 
 export default {
   name: 'BarChart',

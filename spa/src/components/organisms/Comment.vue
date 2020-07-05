@@ -36,7 +36,7 @@
 <script>
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
-import { showDateTime } from '@/components/utils/dateUtils';
+import { showDateTime } from '@/utils/dateUtils';
 
 export default {
   name: 'Comment',
