@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     canVote() {
-      return !this.voted && this.comment.user.userId !== this.$store.getters.USER_ID;
+      return !this.voted && this.comment.user.id !== this.$store.getters.USER_ID;
     },
     created() {
       return showDateTime(this.comment.date);
