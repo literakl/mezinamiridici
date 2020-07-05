@@ -10,21 +10,10 @@
 
 <!--    <div v-if="comments.length">-->
       <div v-for="comment in comments" v-bind:key="comment._id">
-        <div class="comment__parent">
-          <Comment
-            :itemId="itemId"
-            :comment="comment"
-          />
+        <Comment :itemId="itemId" :comment="comment" />
+        <Replies v-if="comment.replies.length > 0" :itemId="itemId" :comment="comment" />
 
-          <Replies
-            v-if="comment.replies !== undefined"
-            :itemId="itemId"
-            :commentId="comment._id"
-            :replies="comment.replies"
-          />
-
-          <!-- nacist odpovedi v-if="comment.replies === undefined" -->
-        </div>
+        <!-- nacist odpovedi v-if="comment.replies === undefined" -->
       </div>
 <!--    </div>-->
     <Button v-if="incomplete" :value="$t('comment.load-more')" @clicked="loadMoreComments(itemId)" />
@@ -53,10 +42,10 @@ export default {
       return this.$store.getters.IS_AUTHORIZED;
     },
     incomplete() {
-      return (this.$store.getters.DISCUSSION) ? this.$store.getters.DISCUSSION.incomplete : false;
+      return this.$store.getters.DISCUSSION.incomplete;
     },
     comments() {
-      return (this.$store.getters.DISCUSSION) ? this.$store.getters.DISCUSSION.comments : [];
+      return this.$store.getters.DISCUSSION.comments.map(id => this.$store.getters.GET_COMMENT(id));
     },
   },
   created() {
@@ -66,27 +55,13 @@ export default {
       // this.comments = this.$store.getters.DISCUSSION;
     });
   },
+  beforeDestroy() {
+    this.$store.commit('DESTROY_COMMENTS');
+  },
   methods: {
     loadMoreComments(itemId) {
       this.$store.dispatch('FETCH_COMMENTS', { itemId });
     },
-    // changeData() {
-    //   for (let index = 0; index < this.comments.length; index += 1) {
-    //     this.$set(this.paginations, index, 2);
-    //   }
-    //   return this.paginations;
-    // },
   },
-  // watch: {
-  //   comments() {
-  //     this.changeData();
-  //   },
-  // },
 };
 </script>
-
-<style>
-  .comment__child {
-    margin-left: 30px;
-  }
-</style>
