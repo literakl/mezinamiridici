@@ -26,16 +26,16 @@ export default {
       state.discussion.comments = [];
     },
     APPEND_COMMENTS: (state, payload) => {
-      const { comments, incomplete } = payload;
+      const { comments, incomplete, userId } = payload;
       state.discussion.incomplete = incomplete;
       const commentIds = [];
-      comments.forEach(comment => processComment(state, comment, commentIds));
+      comments.forEach(comment => processComment(state, comment, commentIds, userId));
       state.discussion.comments = state.discussion.comments.concat(commentIds);
     },
     PREPEND_COMMENTS: (state, payload) => {
-      const { comments } = payload;
+      const { comments, userId } = payload;
       const commentIds = [];
-      comments.forEach(comment => processComment(state, comment, commentIds));
+      comments.forEach(comment => processComment(state, comment, commentIds, userId));
       state.discussion.comments = commentIds.concat(state.discussion.comments);
     },
     SET_COMMENT_REPLIES: (state, payload) => {
@@ -55,6 +55,20 @@ export default {
         console.log(`Comment ${commentId} not found`);
       }
     },
+    SET_VOTE: (state, payload) => {
+      const { commentId, vote, userId, nickname } = payload;
+      const comment = state.comments[commentId];
+      if (!comment.votes) {
+        comment.votes = [];
+      }
+      comment.votes.push({ vote, user: { nickname, id: userId } });
+
+      if (vote === 1) {
+        comment.up += 1;
+      } else {
+        comment.down += 1;
+      }
+    },
   },
 
   actions: {
@@ -67,7 +81,11 @@ export default {
       }
       const response = await get('BFF', url, context);
       console.log(response.data); // todo remove
-      const body = { comments: response.data.data.comments, incomplete: response.data.data.incomplete };
+      const body = {
+        comments: response.data.data.comments,
+        incomplete: response.data.data.incomplete,
+        userId: context.rootState.userId,
+      };
       context.commit('APPEND_COMMENTS', body);
     },
     FETCH_REPLIES: async (context, payload) => {
@@ -106,16 +124,24 @@ export default {
     },
     COMMENT_VOTE: async (context, payload) => {
       console.log('COMMENT_VOTE', payload);
-      return post('API', `/comments/${payload.commentId}/votes`,
-        { itemId: payload.itemId, vote: payload.vote }, context);
+      const body = { itemId: payload.itemId, vote: payload.vote };
+      await post('API', `/comments/${payload.commentId}/votes`, body, context);
+      const mutation = {
+        commentId: payload.commentId,
+        vote: payload.vote,
+        userId: context.rootState.userId,
+        nickname: context.rootState.userNickname,
+      };
+      context.commit('SET_VOTE', mutation);
     },
   },
 };
 
-function processComment(state, comment, commentIds) {
+function processComment(state, comment, commentIds, userId) {
   if (comment.replies) {
     const repliesIds = [];
     comment.replies.forEach((reply) => {
+      reply.voted = hasVoted(reply.votes, userId);
       state.comments[reply._id] = reply;
       repliesIds.push(reply._id);
     });
@@ -125,8 +151,16 @@ function processComment(state, comment, commentIds) {
     comment.replies = [];
     comment.allShown = false;
   }
+  comment.voted = hasVoted(comment.votes, userId);
   state.comments[comment._id] = comment;
   commentIds.push(comment._id);
+}
+
+function hasVoted(votes, userId) {
+  if (!userId || !votes || votes.length === 0) {
+    return false;
+  }
+  return votes.some(vote => vote.user.id === userId);
 }
 
 /*
@@ -141,7 +175,8 @@ function processComment(state, comment, commentIds) {
       author: {},
       up: 1,
       down: 0,
-      votes: [],
+      votes: [{vote: 1, user: {nickname: "jirka", id: "1e416vocls"}}],
+      voted: true,
       allShown: true,
       replies: ['xyz'],
     },
@@ -150,9 +185,10 @@ function processComment(state, comment, commentIds) {
       parentId: 'abcd',
       text: 'dlrow elloH',
       author: {},
-      up: 1,
-      down: 1,
+      up: 0,
+      down: 0,
       votes: [],
+      voted: false,
     },
   },
 */
