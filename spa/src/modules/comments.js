@@ -1,4 +1,4 @@
-import { get, post } from '../utils/api';
+import { get, post } from '@/utils/api';
 
 const {
   REPLY_LIMIT,

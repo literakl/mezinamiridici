@@ -90,8 +90,7 @@ export default {
       });
     },
     reply() {
-      this.replying = true;
-      this.showByIndex = 1;
+      this.replying = !this.replying;
     },
   },
 };
