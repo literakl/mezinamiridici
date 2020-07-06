@@ -1,6 +1,8 @@
+// import Vue from 'vue';
 import { get, post } from '@/utils/api';
 
-const { REPLY_LIMIT } = process.env;
+const { VUE_APP_REPLY_LIMIT } = process.env;
+const REPLY_LIMIT = Number.parseInt(VUE_APP_REPLY_LIMIT || '5', 10);
 
 export default {
   state: () => ({
@@ -16,6 +18,13 @@ export default {
   getters: {
     DISCUSSION: state => state.discussion,
     GET_COMMENT: state => id => state.comments[id],
+    // eslint-disable-next-line no-unused-vars
+    GET_REPLIES: state => (comment) => {
+      if (comment.allShown) {
+        return comment.replies;
+      }
+      return comment.replies.slice(0, REPLY_LIMIT);
+    },
   },
 
   mutations: {
@@ -38,21 +47,25 @@ export default {
       comments.forEach(comment => processComment(state, comment, commentIds, userId));
       state.discussion.comments = commentIds.concat(state.discussion.comments);
     },
-    SET_COMMENT_REPLIES: (state, payload) => {
-      const { commentId, replies, replace } = payload;
-      const comment = state.discussion.comments.find(x => x._id === commentId);
-      if (comment) {
-        if (!comment.replies || comment.replies.length === 0 || replace) {
-          console.log('setting replies');
-          comment.replies = replies;
-        } else {
-          console.log('appending replies');
-          comment.replies = comment.replies.concat(replies);
-        }
-        comment.size = comment.replies.length;
-        comment.showAll = true;
-      } else {
+    SET_REPLIES: (state, payload) => {
+      console.log('SET_REPLIES');
+      const { commentId, replies, userId, replace } = payload;
+      const comment = state.comments[commentId];
+      if (!comment) {
         console.log(`Comment ${commentId} not found`);
+        return;
+      }
+
+      // comment.size = comment.replies.length;
+      state.comments[commentId].showAll = true;
+      const commentIds = [];
+      replies.forEach(reply => processComment(state, reply, commentIds, userId));
+      if (!comment.replies || comment.replies.length === 0 || replace) {
+        console.log('setting replies');
+        state.comments[commentId].replies = commentIds;
+      } else {
+        console.log('appending replies');
+        state.comments[commentId].replies = comment.replies.concat(commentIds);
       }
     },
     SET_VOTE: (state, payload) => {
@@ -80,13 +93,12 @@ export default {
         url += `?lr=id:${payload.lastSeen}`;
       }
       const response = await get('BFF', url, context);
-      console.log(response.data); // todo remove
-      const body = {
+      const mutation = {
         comments: response.data.data.comments,
         incomplete: response.data.data.incomplete,
         userId: context.rootState.userId,
       };
-      context.commit('APPEND_COMMENTS', body);
+      context.commit('APPEND_COMMENTS', mutation);
     },
     FETCH_REPLIES: async (context, payload) => {
       console.log(`FETCH_REPLIES ${payload}`);
@@ -97,8 +109,13 @@ export default {
       const response = await get('BFF', url, context);
       console.log(response.data); // todo remove
       if (response.data.success) {
-        const body = { commentId: payload.commentId, replies: response.data.data.replies };
-        context.commit('SET_COMMENT_REPLIES', body);
+        const mutation = {
+          commentId: payload.commentId,
+          replies: response.data.data.replies,
+          userId: context.rootState.userId,
+          replace: false,
+        };
+        context.commit('SET_REPLIES', mutation);
       }
     },
     ADD_COMMENT: async (context, payload) => {

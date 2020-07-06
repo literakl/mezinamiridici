@@ -48,14 +48,10 @@ export default {
       return this.$store.getters.DISCUSSION.comments.map(id => this.$store.getters.GET_COMMENT(id));
     },
   },
-  created() {
-    console.log('Starting to fetch comments');
-    this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId }).then(() => {
-      console.log('fetched comments in Comments.vue');
-      // this.comments = this.$store.getters.DISCUSSION;
-    });
+  async created() {
+    await this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
   },
-  beforeDestroy() {
+  destroyed() {
     this.$store.commit('DESTROY_COMMENTS');
   },
   methods: {

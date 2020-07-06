@@ -1,10 +1,11 @@
 <template>
   <div class="comment__child">
-    <div v-for="replyId in comment.replies" v-bind:key="replyId">
-      <Comment :itemId="itemId" :comment="getComment(replyId)" />
+    <div v-for="reply in replies" v-bind:key="reply._id">
+      <Comment :itemId="itemId" :comment="reply" />
     </div>
-    <!-- nacist novejsi -->
-    <Button v-if="!comment.allShown" :value="$t('comment.load-more')" size="sm" @clicked="loadChild()"/>
+    <Button v-if="!comment.allShown" :value="$t('comment.load-more')" @clicked="loadChild()"
+            size="sm" class="mb-2"
+    />
   </div>
 </template>
 
@@ -23,23 +24,24 @@ export default {
     comment: Object,
   },
   computed: {
+    replies() {
+      const pole = this.$store.getters.GET_REPLIES(this.comment).map(id => this.$store.getters.GET_COMMENT(id));
+      console.log('computed');
+      console.log(pole);
+      return pole;
+    },
   },
   methods: {
     getComment(commentId) {
       return this.$store.getters.GET_COMMENT(commentId);
     },
-    loadChild() {
-      console.log('loadChild pred');
+    async loadChild() {
       const payload = {
         itemId: this.itemId,
-        commentId: this.commentId,
-        lastSeen: this.replies[this.replies.length - 1]._id,
+        commentId: this.comment._id,
+        // lastSeen: this.replies[this.replies.length - 1]._id,
       };
-      this.$store.dispatch('FETCH_REPLIES', payload).then(() => {
-        this.replies = this.$store.getters.DISCUSSION;
-      });
-      console.log('loadChild po');
-      // this.$emit('paginate', {  });
+      await this.$store.dispatch('FETCH_REPLIES', payload);
     },
   },
 };
