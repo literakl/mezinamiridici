@@ -72,25 +72,25 @@ export default {
     dismiss() {
       this.replying = false;
     },
-    upvote() {
+    async upvote() {
       if (this.voted) return;
-      this.mutableUpvotes = (this.mutableUpvotes || 0) + 1;
-      this.voted = true;
-      this.$store.dispatch('COMMENT_VOTE', {
+      await this.$store.dispatch('COMMENT_VOTE', {
         vote: 1,
         itemId: this.itemId,
         commentId: this.comment._id,
       });
-    },
-    downvote() {
-      if (this.voted) return;
-      this.mutableDownvotes = (this.mutableDownvotes || 0) + 1;
+      this.mutableUpvotes = (this.mutableUpvotes || 0) + 1;
       this.voted = true;
-      this.$store.dispatch('COMMENT_VOTE', {
+    },
+    async downvote() {
+      if (this.voted) return;
+      await this.$store.dispatch('COMMENT_VOTE', {
         vote: -1,
         itemId: this.itemId,
         commentId: this.comment._id,
       });
+      this.mutableDownvotes = (this.mutableDownvotes || 0) + 1;
+      this.voted = true;
     },
     reply() {
       this.replying = !this.replying;
