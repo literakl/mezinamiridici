@@ -3,7 +3,7 @@
     <div v-for="reply in replies" v-bind:key="reply._id">
       <Comment :itemId="itemId" :comment="reply" />
     </div>
-    <Button v-if="!comment.allShown" :value="$t('comment.load-more')" @clicked="loadChild()"
+    <Button v-if="!comment.allShown" :value="$t('comment.load-more')" @clicked="showAll()"
             size="sm" class="mb-2"
     />
   </div>
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     replies() {
-      const pole = this.$store.getters.GET_REPLIES(this.comment).map(id => this.$store.getters.GET_COMMENT(id));
+      const pole = this.$store.getters.GET_REPLIES(this.comment._id).map(id => this.$store.getters.GET_COMMENT(id));
       console.log('computed');
       console.log(pole);
       return pole;
@@ -35,7 +35,10 @@ export default {
     getComment(commentId) {
       return this.$store.getters.GET_COMMENT(commentId);
     },
-    async loadChild() {
+    async showAll() {
+      this.$store.commit('SHOW_ALL_REPLIES', { commentId: this.comment._id });
+    },
+    async refreshReplies() {
       const payload = {
         itemId: this.itemId,
         commentId: this.comment._id,

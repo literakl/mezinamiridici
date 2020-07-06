@@ -1,4 +1,4 @@
-// import Vue from 'vue';
+import Vue from 'vue';
 import { get, post } from '@/utils/api';
 
 const { VUE_APP_REPLY_LIMIT } = process.env;
@@ -19,7 +19,9 @@ export default {
     DISCUSSION: state => state.discussion,
     GET_COMMENT: state => id => state.comments[id],
     // eslint-disable-next-line no-unused-vars
-    GET_REPLIES: state => (comment) => {
+    GET_REPLIES: state => (commentId) => {
+      const comment = state.comments[commentId];
+      console.log(comment);
       if (comment.allShown) {
         return comment.replies;
       }
@@ -47,6 +49,12 @@ export default {
       comments.forEach(comment => processComment(state, comment, commentIds, userId));
       state.discussion.comments = commentIds.concat(state.discussion.comments);
     },
+    SHOW_ALL_REPLIES: (state, payload) => {
+      console.log('SHOW_ALL_REPLIES');
+      const { commentId } = payload;
+      const comment = state.comments[commentId];
+      comment.allShown = true;
+    },
     SET_REPLIES: (state, payload) => {
       console.log('SET_REPLIES');
       const { commentId, replies, userId, replace } = payload;
@@ -56,8 +64,7 @@ export default {
         return;
       }
 
-      // comment.size = comment.replies.length;
-      state.comments[commentId].showAll = true;
+      state.comments[commentId].allShown = true;
       const commentIds = [];
       replies.forEach(reply => processComment(state, reply, commentIds, userId));
       if (!comment.replies || comment.replies.length === 0 || replace) {
@@ -67,6 +74,7 @@ export default {
         console.log('appending replies');
         state.comments[commentId].replies = comment.replies.concat(commentIds);
       }
+      console.log(state.comments[commentId]);
     },
     SET_VOTE: (state, payload) => {
       const { commentId, vote, userId, nickname } = payload;
@@ -163,13 +171,13 @@ function processComment(state, comment, commentIds, userId) {
       repliesIds.push(reply._id);
     });
     comment.replies = repliesIds;
-    comment.allShown = comment.replies.length < REPLY_LIMIT;
+    comment.allShown = comment.replies.length <= REPLY_LIMIT;
   } else if (!comment.parentId) {
     comment.replies = [];
     comment.allShown = false;
   }
   comment.voted = hasVoted(comment.votes, userId);
-  state.comments[comment._id] = comment;
+  Vue.set(state.comments, comment._id, comment);
   commentIds.push(comment._id);
 }
 
