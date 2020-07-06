@@ -25,6 +25,10 @@
       </b-button>
 
       <small class="text-muted">{{created}}</small>
+      <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
+        <b-icon v-if="collapsed"  icon="arrows-expand" aria-hidden="true"></b-icon>
+        <b-icon v-if="!collapsed"  icon="arrows-collapse" aria-hidden="true"></b-icon>
+      </b-button>
     </div>
 
     <div v-show="replying">
@@ -47,11 +51,13 @@ export default {
   props: {
     itemId: String,
     comment: Object,
+    collapseId: String,
   },
   data() {
     return {
       voted: this.comment.voted || false,
       replying: false,
+      collapsed: false,
     };
   },
   computed: {
@@ -68,6 +74,10 @@ export default {
   methods: {
     dismiss() {
       this.replying = false;
+    },
+    collapse() {
+      this.collapsed = !this.collapsed;
+      this.$root.$emit('bv::toggle::collapse', this.collapseId);
     },
     async upvote() {
       if (this.voted) return;

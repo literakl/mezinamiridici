@@ -10,8 +10,10 @@
 
 <!--    <div v-if="comments.length">-->
       <div v-for="comment in comments" v-bind:key="comment._id">
-        <Comment :itemId="itemId" :comment="comment" />
-        <Replies v-if="comment.replies.length > 0" :itemId="itemId" :comment="comment" />
+        <Comment :itemId="itemId" :comment="comment" :collapseId="getCollapseId(comment)" />
+        <b-collapse :id="`replies_${comment._id}`" visible>
+          <Replies v-if="comment.replies.length > 0" :itemId="itemId" :comment="comment" />
+        </b-collapse>
 
         <!-- nacist odpovedi v-if="comment.replies === undefined" -->
       </div>
@@ -55,6 +57,9 @@ export default {
     this.$store.commit('DESTROY_COMMENTS');
   },
   methods: {
+    getCollapseId(comment) {
+      return (comment.replies.length > 0) ? `replies_${comment._id}` : undefined;
+    },
     loadMoreComments(itemId) {
       const payload = { itemId };
       if (this.comments.length > 0) {
