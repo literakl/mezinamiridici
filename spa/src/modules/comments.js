@@ -21,7 +21,6 @@ export default {
     // eslint-disable-next-line no-unused-vars
     GET_REPLIES: state => (commentId) => {
       const comment = state.comments[commentId];
-      console.log(comment);
       if (comment.allShown) {
         return comment.replies;
       }
@@ -31,7 +30,7 @@ export default {
 
   mutations: {
     DESTROY_COMMENTS: (state) => {
-      console.log('Destroying comments');
+      console.log('DESTROY_COMMENTS');
       state.comments = {};
       state.discussion.incomplete = true;
       state.discussion.comments = [];
@@ -68,13 +67,10 @@ export default {
       const commentIds = [];
       replies.forEach(reply => processComment(state, reply, commentIds, userId));
       if (!comment.replies || comment.replies.length === 0 || replace) {
-        console.log('setting replies');
         state.comments[commentId].replies = commentIds;
       } else {
-        console.log('appending replies');
         state.comments[commentId].replies = comment.replies.concat(commentIds);
       }
-      console.log(state.comments[commentId]);
     },
     SET_VOTE: (state, payload) => {
       const { commentId, vote, userId, nickname } = payload;

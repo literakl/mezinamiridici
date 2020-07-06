@@ -16,11 +16,11 @@
 
       <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
         <b-icon icon="hand-thumbs-up" aria-hidden="true"></b-icon>
-        {{ mutableUpvotes }}
+        {{ comment.up }}
       </b-button>
 
       <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
-        {{ mutableDownvotes }}
+        {{ comment.down }}
         <b-icon icon="hand-thumbs-down" aria-hidden="true"></b-icon>
       </b-button>
 
@@ -50,10 +50,7 @@ export default {
   },
   data() {
     return {
-      mutableUpvotes: this.comment.up,
-      mutableDownvotes: this.comment.down,
-      hovered: false,
-      voted: this.comment.voted || false, // TODO in backend
+      voted: this.comment.voted || false,
       replying: false,
     };
   },
@@ -79,7 +76,6 @@ export default {
         itemId: this.itemId,
         commentId: this.comment._id,
       });
-      this.mutableUpvotes = (this.mutableUpvotes || 0) + 1;
       this.voted = true;
     },
     async downvote() {
@@ -89,7 +85,6 @@ export default {
         itemId: this.itemId,
         commentId: this.comment._id,
       });
-      this.mutableDownvotes = (this.mutableDownvotes || 0) + 1;
       this.voted = true;
     },
     reply() {
