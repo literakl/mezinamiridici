@@ -3,7 +3,7 @@
     <div v-for="reply in replies" v-bind:key="reply._id">
       <Comment :itemId="itemId" :comment="reply" />
     </div>
-    <Button v-if="!comment.allShown" :value="$t('comment.load-more')" @clicked="showAll()"
+    <Button v-if="!comment.allShown" :value="$t('comment.show-all')" @clicked="showAll()"
             size="sm" class="mb-2"
     />
   </div>
