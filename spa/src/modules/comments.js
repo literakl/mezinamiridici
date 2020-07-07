@@ -56,7 +56,7 @@ export default {
     },
     SET_REPLIES: (state, payload) => {
       console.log('SET_REPLIES');
-      const { commentId, replies, userId, replace } = payload;
+      const { commentId, replies, userId } = payload;
       const comment = state.comments[commentId];
       if (!comment) {
         console.log(`Comment ${commentId} not found`);
@@ -66,11 +66,7 @@ export default {
       state.comments[commentId].allShown = true;
       const commentIds = [];
       replies.forEach(reply => processComment(state, reply, commentIds, userId));
-      if (!comment.replies || comment.replies.length === 0 || replace) {
-        state.comments[commentId].replies = commentIds;
-      } else {
-        state.comments[commentId].replies = comment.replies.concat(commentIds);
-      }
+      state.comments[commentId].replies = commentIds;
     },
     SET_VOTE: (state, payload) => {
       const { commentId, vote, userId, nickname } = payload;
@@ -106,10 +102,7 @@ export default {
     },
     FETCH_REPLIES: async (context, payload) => {
       console.log(`FETCH_REPLIES ${payload}`);
-      let url = `/items/${payload.itemId}/comments/${payload.commentId}/replies`;
-      if (payload.lastSeen) {
-        url += `?lr=id:${payload.lastSeen}`;
-      }
+      const url = `/items/${payload.itemId}/comments/${payload.commentId}/replies`;
       const response = await get('BFF', url, context);
       console.log(response.data); // todo remove
       if (response.data.success) {
@@ -117,7 +110,6 @@ export default {
           commentId: payload.commentId,
           replies: response.data.data.replies,
           userId: context.rootState.userId,
-          replace: false,
         };
         context.commit('SET_REPLIES', mutation);
       }
@@ -128,19 +120,20 @@ export default {
       const response = await post('API', `/items/${payload.itemId}/comments`, body, context);
       console.log(response.data); // todo remove
       if (response.data.success) {
-        const mutation = {
-          comments: [response.data.data.comment],
-        };
-        context.commit('PREPEND_COMMENTS', mutation);
-
-        // if (payload.parent) {
-        //   mutation = {
-        //     commentId: payload.parent,
-        //     replies: response.data.data.replies,
-        //     replace: true,
-        //   };
-        //   context.commit('SET_COMMENT_REPLIES', mutation);
-        // }
+        if (!payload.parent) {
+          const mutation = {
+            comments: [response.data.data.comment],
+          };
+          context.commit('PREPEND_COMMENTS', mutation);
+        }
+        if (response.data.data.replies.length > 0) {
+          const mutation = {
+            commentId: payload.parent,
+            replies: response.data.data.replies,
+            userId: context.rootState.userId,
+          };
+          context.commit('SET_REPLIES', mutation);
+        }
       }
     },
     COMMENT_VOTE: async (context, payload) => {

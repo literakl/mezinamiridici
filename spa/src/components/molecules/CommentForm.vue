@@ -51,6 +51,7 @@ export default {
       try {
         await this.$store.dispatch('ADD_COMMENT', payload);
         this.text = '';
+        this.$emit('dismiss');
       } catch (e) {
         console.log(e);
         this.error = true;

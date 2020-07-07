@@ -294,17 +294,21 @@ test('Comments API', async (done) => {
 
   commentBody.text = 'Comment 4i';
   commentBody.parentId = comment4.data.comment._id;
-  commentBody.lastReplyId = comment4f.data.comment._id;
   commentBody.date = dayjs(comment4.data.comment.created).add(40, 'minute').format(DATE_FORMAT);
   const comment4i = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jana.jwt) }).json();
   expect(comment4i.success).toBeTruthy();
-  expect(comment4i.data.replies[0].text).toBe(comment4g.data.comment.text);
-  expect(comment4i.data.replies[1].text).toBe(comment4h.data.comment.text);
-  expect(comment4i.data.replies[2].text).toBe(comment4i.data.comment.text);
+  expect(comment4i.data.replies[0].text).toBe(comment4a.data.comment.text);
+  expect(comment4i.data.replies[1].text).toBe(comment4b.data.comment.text);
+  expect(comment4i.data.replies[2].text).toBe(comment4c.data.comment.text);
+  expect(comment4i.data.replies[3].text).toBe(comment4d.data.comment.text);
+  expect(comment4i.data.replies[4].text).toBe(comment4e.data.comment.text);
+  expect(comment4i.data.replies[5].text).toBe(comment4f.data.comment.text);
+  expect(comment4i.data.replies[6].text).toBe(comment4g.data.comment.text);
+  expect(comment4i.data.replies[7].text).toBe(comment4h.data.comment.text);
+  expect(comment4i.data.replies[8].text).toBe(comment4i.data.comment.text);
 
   commentBody.text = 'Comment 6a';
   commentBody.parentId = comment6.data.comment._id;
-  delete commentBody.lastReplyId;
   commentBody.date = dayjs(comment6.data.comment.created).add(3, 'minute').format(DATE_FORMAT);
   const comment6a = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(comment6a.success).toBeTruthy();

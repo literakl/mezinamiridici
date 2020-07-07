@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
     const {
-      text, parentId, date, lastReplyId,
+      text, parentId, date,
     } = req.body;
     const { itemId } = req.params;
     if (!itemId || !text) {
@@ -49,24 +49,19 @@ module.exports = (app) => {
         .insertOne(comment);
       logger.debug('Comment inserted');
 
-      let replies;
+      let replies = [];
       if (parentId) {
-        const query = { parentId };
-        if (lastReplyId) {
-          query._id = { $gt: lastReplyId };
-        }
-
-        replies = await dbClient.db().collection('comments')
-          .find(query, { projection: { itemId: 0 } })
-          .sort({ _id: 1 })
-          .toArray();
+        const pipeline = [
+          { $match: { parentId } },
+          { $sort: { _id: 1 } },
+          mongo.stageCommentVotes(),
+          mongo.stageHideIdsinComment(),
+        ];
+        replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
         logger.debug('Replies fetched');
       }
 
-      const body = { comment };
-      if (replies) {
-        body.replies = replies;
-      }
+      const body = { comment, replies };
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {
       logger.error('Request failed', err);

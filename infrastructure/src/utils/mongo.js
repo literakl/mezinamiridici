@@ -65,6 +65,15 @@ function stageCommentVotes() {
     },
   };
 }
+function stageHideIdsinComment() {
+  return {
+    $project: {
+      itemId: 0,
+      'votes._id': 0,
+      'votes.commentId': 0,
+    },
+  };
+}
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
@@ -177,6 +186,7 @@ exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
 exports.stageMyPollVote = stageMyPollVote;
+exports.stageHideIdsinComment = stageHideIdsinComment;
 exports.stageCommentVotes = stageCommentVotes;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
