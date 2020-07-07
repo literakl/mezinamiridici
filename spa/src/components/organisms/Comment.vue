@@ -14,15 +14,27 @@
         {{ $t('comment.reply') }}
       </b-button>
 
-      <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
-        <b-icon icon="hand-thumbs-up" aria-hidden="true"></b-icon>
-        {{ comment.up }}
-      </b-button>
+      <span :id="`upvotes_${comment._id}`">
+        <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
+          <b-icon icon="hand-thumbs-up" aria-hidden="true"></b-icon>
+          {{ comment.up }}
+        </b-button>
+      </span>
 
-      <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
-        {{ comment.down }}
-        <b-icon icon="hand-thumbs-down" aria-hidden="true"></b-icon>
-      </b-button>
+      <span :id="`downvotes_${comment._id}`">
+        <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
+          {{ comment.down }}
+          <b-icon icon="hand-thumbs-down" aria-hidden="true"></b-icon>
+        </b-button>
+      </span>
+
+      <b-popover :target="`upvotes_${comment._id}`" triggers="hover" placement="top">
+        <div v-for="vote in upvotes" v-bind:key="vote._id"><ProfileLink :profile="vote.user"/></div>
+      </b-popover>
+
+      <b-popover :target="`downvotes_${comment._id}`" triggers="hover" placement="top">
+        <div v-for="vote in downvotes" v-bind:key="vote._id"><ProfileLink :profile="vote.user"/></div>
+      </b-popover>
 
       <small class="text-muted">{{created}}</small>
       <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
@@ -70,6 +82,12 @@ export default {
     replyId() {
       return (this.comment.parentId) ? this.comment.parentId : this.comment._id;
     },
+    upvotes() {
+      return this.comment.votes.filter(vote => vote.vote === 1);
+    },
+    downvotes() {
+      return this.comment.votes.filter(vote => vote.vote === -1);
+    },
   },
   methods: {
     dismiss() {
@@ -103,3 +121,11 @@ export default {
   },
 };
 </script>
+
+<style>
+  .popover-body {
+    max-height: 250px;
+    overflow-y: auto;
+    white-space:pre-wrap;
+  }
+</style>

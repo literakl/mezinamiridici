@@ -25,10 +25,7 @@ export default {
   },
   computed: {
     replies() {
-      const pole = this.$store.getters.GET_REPLIES(this.comment._id).map(id => this.$store.getters.GET_COMMENT(id));
-      console.log('computed');
-      console.log(pole);
-      return pole;
+      return this.$store.getters.GET_REPLIES(this.comment._id).map(id => this.$store.getters.GET_COMMENT(id));
     },
   },
   methods: {
