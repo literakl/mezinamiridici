@@ -1,10 +1,12 @@
 <template>
   <div class="border border-secondary rounded mb-2 p-1">
-    <div>
+    <div class="font-weight-light border-bottom">
+      {{created}}
+      &bull;
       <ProfileLink :profile="comment.user"/>
     </div>
 
-    <div class="pt-1 pb-1">
+    <div class="pt-2 pb-2">
       {{comment.text}}
     </div>
 
@@ -36,7 +38,6 @@
         <div v-for="vote in downvotes" v-bind:key="vote._id"><ProfileLink :profile="vote.user"/></div>
       </b-popover>
 
-      <small class="text-muted">{{created}}</small>
       <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
         <b-icon v-if="collapsed"  icon="arrows-expand" aria-hidden="true"></b-icon>
         <b-icon v-if="!collapsed"  icon="arrows-collapse" aria-hidden="true"></b-icon>
