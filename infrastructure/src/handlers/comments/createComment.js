@@ -47,6 +47,7 @@ module.exports = (app) => {
       await dbClient.db()
         .collection('comments')
         .insertOne(comment);
+      comment.votes = [];
       logger.debug('Comment inserted');
 
       let replies = [];
