@@ -38,6 +38,10 @@
         <div v-for="vote in downvotes" v-bind:key="vote._id"><ProfileLink :profile="vote.user"/></div>
       </b-popover>
 
+      <b-button v-if="!comment.parentId"  v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
+        <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon>
+      </b-button>
+
       <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
         <b-icon v-if="collapsed"  icon="arrows-expand" aria-hidden="true"></b-icon>
         <b-icon v-if="!collapsed"  icon="arrows-collapse" aria-hidden="true"></b-icon>
@@ -97,6 +101,12 @@ export default {
     collapse() {
       this.collapsed = !this.collapsed;
       this.$root.$emit('bv::toggle::collapse', this.collapseId);
+    },
+    async reload() {
+      await this.$store.dispatch('FETCH_REPLIES', {
+        itemId: this.itemId,
+        commentId: this.comment._id,
+      });
     },
     async upvote() {
       if (this.voted) return;
