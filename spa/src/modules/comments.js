@@ -48,6 +48,12 @@ export default {
       comments.forEach(comment => processComment(state, comment, commentIds, userId));
       state.discussion.comments = commentIds.concat(state.discussion.comments);
     },
+    UPDATE_COMMENT: (state, payload) => {
+      const { comment, userId } = payload;
+      const commentIds = [];
+      processComment(state, comment, commentIds, userId);
+      state.comments[comment._id].allShown = true;
+    },
     SHOW_ALL_REPLIES: (state, payload) => {
       console.log('SHOW_ALL_REPLIES');
       const { commentId } = payload;
@@ -100,18 +106,17 @@ export default {
       };
       context.commit('APPEND_COMMENTS', mutation);
     },
-    FETCH_REPLIES: async (context, payload) => {
+    RELOAD_COMMENT: async (context, payload) => {
       console.log(`FETCH_REPLIES ${payload}`);
-      const url = `/items/${payload.itemId}/comments/${payload.commentId}/replies`;
+      const url = `/items/${payload.itemId}/comments/${payload.commentId}`;
       const response = await get('BFF', url, context);
       console.log(response.data); // todo remove
       if (response.data.success) {
         const mutation = {
-          commentId: payload.commentId,
-          replies: response.data.data.replies,
+          comment: response.data.data.comment,
           userId: context.rootState.userId,
         };
-        context.commit('SET_REPLIES', mutation);
+        context.commit('UPDATE_COMMENT', mutation);
       }
     },
     ADD_COMMENT: async (context, payload) => {

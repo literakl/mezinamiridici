@@ -33,9 +33,9 @@ module.exports = (app) => {
       }
 
       await insertCommentVote(dbClient, commentId, vote, req.identity);
+      logger.debug('Vote inserted');
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);
-
-      logger.debug('Item inserted');
+      logger.debug('Item updated');
       return api.sendCreated(res, api.createResponse(updatedRecord.value));
     } catch (err) {
       logger.error('Request failed', err);

@@ -103,7 +103,7 @@ export default {
       this.$root.$emit('bv::toggle::collapse', this.collapseId);
     },
     async reload() {
-      await this.$store.dispatch('FETCH_REPLIES', {
+      await this.$store.dispatch('RELOAD_COMMENT', {
         itemId: this.itemId,
         commentId: this.comment._id,
       });
