@@ -370,7 +370,7 @@ test('Comments API', async (done) => {
   expect(comments.data.comments[2].replies[0].text).toBe(comment1a.data.comment.text);
   expect(comments.data.comments[2].replies[0].votes.length).toBe(2);
 
-  comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}/replies`).json();
+  comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}`).json();
   expect(comments.success).toBeTruthy();
   expect(comments.data.replies.length).toBe(9);
   expect(comments.data.replies[0].text).toBe(comment4a.data.comment.text);
