@@ -49,7 +49,7 @@ jobs:
 
     - run: npm install
 
-    - run: mongo "$MONGODB_URI" src/utils/mongo_setup.js
+    - run: mongo "$MONGODB_URI" mongo/mongo_setup.js
       
     - run: npm test
       env:
