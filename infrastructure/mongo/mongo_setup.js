@@ -1,6 +1,3 @@
-conn = new Mongo();
-db = conn.getDB('bud');
-
 db.users.createIndex({ 'auth.email': 1 }, { unique: true });
 db.users.createIndex({ 'bio.nickname': 1 }, { unique: true });
 db.items.createIndex({ 'info.type': 1 });

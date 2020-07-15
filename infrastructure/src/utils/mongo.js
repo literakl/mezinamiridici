@@ -155,6 +155,18 @@ function getNeighbourhItem(dbClient, type, published, older) {
     .limit(1);
 }
 
+function setupIndexes(dbClient) {
+  dbClient.db().collection('users').createIndex({ 'auth.email': 1 }, { unique: true });
+  dbClient.db().collection('users').createIndex({ 'bio.nickname': 1 }, { unique: true });
+  dbClient.db().collection('items').createIndex({ 'info.type': 1 });
+  dbClient.db().collection('items').createIndex({ 'info.date': 1 });
+  dbClient.db().collection('items').createIndex({ 'info.slug': 1 }, { unique: true });
+  dbClient.db().collection('poll_votes').createIndex({ item: 1, user: 1 }, { unique: true });
+  dbClient.db().collection('comments').createIndex({ itemId: 1 });
+  dbClient.db().collection('comments').createIndex({ parentId: 1 });
+  dbClient.db().collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
+}
+
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
 // Use TIME_ID_CHARS to fine tune number of random characters
 function generateTimeId() {
@@ -192,3 +204,4 @@ exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
 exports.close = close;
+exports.setupIndexes = setupIndexes;

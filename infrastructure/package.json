@@ -34,7 +34,8 @@
     "jest": "^25.3.0",
     "nodemon": "^2.0.2",
     "path": "^0.12.7",
-    "random": "^2.2.0"
+    "random": "^2.2.0",
+    "lorem-ipsum": "^2.0.3"
   },
   "nodemonConfig": {
     "ignore": [
