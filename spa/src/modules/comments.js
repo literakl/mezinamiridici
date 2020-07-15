@@ -141,7 +141,7 @@ export default {
         }
       }
     },
-    COMMENT_VOTE: async (context, payload) => {
+    VOTE_COMMENT: async (context, payload) => {
       console.log('COMMENT_VOTE', payload);
       const body = { itemId: payload.itemId, vote: payload.vote };
       await post('API', `/comments/${payload.commentId}/votes`, body, context);

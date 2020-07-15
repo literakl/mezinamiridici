@@ -110,7 +110,7 @@ export default {
     },
     async upvote() {
       if (this.voted) return;
-      await this.$store.dispatch('COMMENT_VOTE', {
+      await this.$store.dispatch('VOTE_COMMENT', {
         vote: 1,
         itemId: this.itemId,
         commentId: this.comment._id,
@@ -119,7 +119,7 @@ export default {
     },
     async downvote() {
       if (this.voted) return;
-      await this.$store.dispatch('COMMENT_VOTE', {
+      await this.$store.dispatch('VOTE_COMMENT', {
         vote: -1,
         itemId: this.itemId,
         commentId: this.comment._id,
