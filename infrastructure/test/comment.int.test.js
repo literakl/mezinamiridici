@@ -372,22 +372,16 @@ test('Comments API', async (done) => {
 
   comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}`).json();
   expect(comments.success).toBeTruthy();
-  expect(comments.data.replies.length).toBe(9);
-  expect(comments.data.replies[0].text).toBe(comment4a.data.comment.text);
-  expect(comments.data.replies[1].text).toBe(comment4b.data.comment.text);
-  expect(comments.data.replies[2].text).toBe(comment4c.data.comment.text);
-  expect(comments.data.replies[3].text).toBe(comment4d.data.comment.text);
-  expect(comments.data.replies[4].text).toBe(comment4e.data.comment.text);
-  expect(comments.data.replies[5].text).toBe(comment4f.data.comment.text);
-  expect(comments.data.replies[6].text).toBe(comment4g.data.comment.text);
-  expect(comments.data.replies[7].text).toBe(comment4h.data.comment.text);
-  expect(comments.data.replies[8].text).toBe(comment4i.data.comment.text);
-
-  comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}/replies?lr=id:${comment4g.data.comment._id}`).json();
-  expect(comments.success).toBeTruthy();
-  expect(comments.data.replies.length).toBe(2);
-  expect(comments.data.replies[0].text).toBe(comment4h.data.comment.text);
-  expect(comments.data.replies[1].text).toBe(comment4i.data.comment.text);
+  expect(comments.data.comment.replies.length).toBe(9);
+  expect(comments.data.comment.replies[0].text).toBe(comment4a.data.comment.text);
+  expect(comments.data.comment.replies[1].text).toBe(comment4b.data.comment.text);
+  expect(comments.data.comment.replies[2].text).toBe(comment4c.data.comment.text);
+  expect(comments.data.comment.replies[3].text).toBe(comment4d.data.comment.text);
+  expect(comments.data.comment.replies[4].text).toBe(comment4e.data.comment.text);
+  expect(comments.data.comment.replies[5].text).toBe(comment4f.data.comment.text);
+  expect(comments.data.comment.replies[6].text).toBe(comment4g.data.comment.text);
+  expect(comments.data.comment.replies[7].text).toBe(comment4h.data.comment.text);
+  expect(comments.data.comment.replies[8].text).toBe(comment4i.data.comment.text);
 
   done();
 });
