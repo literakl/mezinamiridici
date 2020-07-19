@@ -1,7 +1,9 @@
 {
-  "_id": "snker65f1ea",
-  "item": "1e6opc7fb4",
-  "comment": "7bnt",
-  "user": "LL",
-  "vote": "plus"
+  "_id": "1edhoubh3ev9",
+  "commentId": "1edhoubg0tzm",
+  "vote": -1,
+  "user": {
+    "id": "1e417edlqb",
+    "nickname": "Barbora"
+  }
 }
