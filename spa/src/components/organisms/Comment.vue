@@ -7,7 +7,7 @@
     </div>
 
     <div class="pt-2 pb-2">
-      {{comment.text}}
+      <span v-html="comment.text"></span>
     </div>
 
     <div>

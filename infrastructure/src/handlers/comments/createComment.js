@@ -3,6 +3,10 @@ const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
+const MarkdownIt = require('markdown-it');
+const emoji = require('markdown-it-emoji');
+const twemoji = require('twemoji');
+const mark = require('markdown-it-mark');
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
@@ -77,7 +81,7 @@ function createComment(itemId, text, user, parentId, date) {
     itemId,
     parentId: parentId || undefined,
     date,
-    text,
+    text:useCommonMark(text),
     up: 0,
     down: 0,
     user: {
@@ -91,4 +95,25 @@ function createComment(itemId, text, user, parentId, date) {
   }
 
   return comment;
+}
+
+function useCommonMark(textString){
+  const md = new MarkdownIt({
+    html:false,
+    breaks :true,
+    linkify :true,
+    typographer:  true,
+    quotes: '“”‘’',
+  });
+  md.use(emoji);
+  md.use(mark);
+  md.renderer.rules.emoji = function(token, idx) {
+    return twemoji.parse(token[idx].content);
+  };
+  return md.render(escapeHTML(textString));
+}
+
+function escapeHTML(value) {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g, '&#x2F;');
 }
