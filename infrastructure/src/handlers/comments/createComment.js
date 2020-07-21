@@ -1,28 +1,22 @@
 const dayjs = require('dayjs');
+const MarkdownIt = require('markdown-it');
+const emoji = require('markdown-it-emoji/light');
+const mark = require('markdown-it-mark');
+const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
-const MarkdownIt = require('markdown-it');
-const emoji = require('markdown-it-emoji');
-const twemoji = require('twemoji');
-const mark = require('markdown-it-mark');
-const sanitizeHtml = require('sanitize-html');
-
 
 const md = new MarkdownIt({
-  html:false,
-  breaks :true,
-  linkify :true,
-  typographer:  true,
+  html: false,
+  breaks: true,
+  linkify: true,
+  typographer: true,
   quotes: '“”‘’',
 });
 md.use(emoji);
 md.use(mark);
-md.renderer.rules.emoji = function(token, idx) {
-  return twemoji.parse(token[idx].content);
-};
-
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
@@ -97,7 +91,7 @@ function createComment(itemId, text, user, parentId, date) {
     itemId,
     parentId: parentId || undefined,
     date,
-    text:md.render(sanitizeHtml(text)),
+    text: md.render(sanitizeHtml(text)),
     up: 0,
     down: 0,
     user: {
@@ -112,5 +106,3 @@ function createComment(itemId, text, user, parentId, date) {
 
   return comment;
 }
-
-

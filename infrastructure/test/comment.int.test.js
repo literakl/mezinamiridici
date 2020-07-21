@@ -383,6 +383,13 @@ test('Comments API', async (done) => {
   expect(comments.data.comment.replies[7].text).toBe(comment4h.data.comment.text);
   expect(comments.data.comment.replies[8].text).toBe(comment4i.data.comment.text);
 
+  commentBody.text = 'Comment 7 :-)\n\nNew paragraph :-D\n\nThird paragraph :-(';
+  commentBody.date = dayjs(poll.data.info.date).add(70, 'minute').format(DATE_FORMAT);
+  const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(comment7.success).toBeTruthy();
+  console.log(comment7.data.comment.text);
+  expect(comment7.data.comment.text).toBe('<p>Comment 7 😃</p>\n<p>New paragraph 😄</p>\n<p>Third paragraph 😦</p>\n');
+
   done();
 });
 
