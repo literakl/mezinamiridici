@@ -27,6 +27,7 @@
     "mongodb": "^3.5.5",
     "morgan": "^1.10.0",
     "nanoid": "^2.1.11",
+    "sanitize-html": "^1.27.1",
     "slugify": "^1.4.0",
     "twemoji": "^13.0.1",
     "uuid": "^3.4.0",

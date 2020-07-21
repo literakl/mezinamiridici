@@ -75,6 +75,7 @@ export default {
       voted: this.comment.voted || false,
       replying: false,
       collapsed: false,
+      commentVotes: this.comment.votes,
     };
   },
   computed: {
@@ -88,10 +89,10 @@ export default {
       return (this.comment.parentId) ? this.comment.parentId : this.comment._id;
     },
     upvotes() {
-      return this.comment.votes.filter(vote => vote.vote === 1);
+      return this.commentVotes.filter(vote => vote.vote === 1);
     },
     downvotes() {
-      return this.comment.votes.filter(vote => vote.vote === -1);
+      return this.commentVotes.filter(vote => vote.vote === -1);
     },
   },
   methods: {
