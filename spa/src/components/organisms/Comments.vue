@@ -53,6 +53,12 @@ export default {
   async created() {
     await this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
   },
+  mounted() {
+    const { hash } = this.$route;
+    if (this.$route.hash) {
+      setTimeout(() => { window.location.href = hash; }, 1000);
+    }
+  },
   destroyed() {
     this.$store.commit('DESTROY_COMMENTS');
   },
