@@ -19,7 +19,9 @@
             {{created}} &bull;
             <ProfileLink :profile="this.item.info.author"/> &bull;
             {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
-            {{ $t('poll.comments') }}: {{item.comments.count}}
+            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
+              {{ $t('poll.comments') }}: {{item.comments.count}}
+            </router-link>
           </b-card-footer>
         </b-card>
       </b-col>
