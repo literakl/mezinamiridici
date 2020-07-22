@@ -6,7 +6,18 @@
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
+
     <Button :disabled="sending" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
+
+    <b-button :id="`emoji-list_${commentId}`" class="mt-2" variant="outline" size="sm">
+      &#x1f600;
+    </b-button>
+
+    <b-popover :target="`emoji-list_${commentId}`" triggers="hover" placement="bottom">
+      <b-button v-for="(emoji,index) in emojiArray" v-bind:key="index" variant="outline" size="sm"
+       @click="insertEmoji(index)">{{emoji}}</b-button>
+    </b-popover>
+
   </div>
 </template>
 
@@ -17,6 +28,7 @@ export default {
   name: 'CommentForm',
   props: {
     itemId: String,
+    commentId: String,
     parent: String,
     dismissable: {
       type: Boolean,
@@ -27,9 +39,15 @@ export default {
     Button,
   },
   data: () => ({
-    text: null,
+    text: '',
     sending: null,
     error: null,
+    emojiArray: ['\u{1F600}', '\u{1F603}', '\u{1F604}', '\u{1F601}',
+      '\u{1F970}', '\u{1F60D}', '\u{1F929}', '\u{1F60B}',
+      '\u{1F61B}', '\u{1F917}', '\u{1F92D}', '\u{1F910}',
+      '\u{1F928}', '\u{1F637}', '\u{1F60E}', '\u{1F615}',
+      '\u{1F61F}', '\u{1F633}', '\u{1F629}', '\u{1F621}',
+      '\u{1F608}', '\u{1F47F}', '\u{1F620}', '\u{1F92C}'],
   }),
   methods: {
     dismiss() {
@@ -57,6 +75,9 @@ export default {
         this.error = true;
       }
       this.sending = false;
+    },
+    insertEmoji(idx) {
+      this.text += this.emojiArray[idx];
     },
   },
 };
