@@ -49,7 +49,7 @@
     </div>
 
     <div v-show="replying">
-      <CommentForm :itemId="itemId" :parent="replyId" @dismiss="dismiss"/>
+      <CommentForm :itemId="itemId" :parent="replyId" :commentId="comment._id" @dismiss="dismiss"/>
     </div>
   </div>
 </template>
