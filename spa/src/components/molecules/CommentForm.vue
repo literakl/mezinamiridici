@@ -1,5 +1,15 @@
 <template>
   <div class="mb-2">
+    <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
+      &#x1F600;
+    </b-button>
+    <b-popover :target="`emoji_list_${commentId}`" triggers="hover" placement="bottom">
+      <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index"
+                v-on:click="addEmoji(index)"
+                variant="outline" size="sm">
+        {{emoji}}
+      </b-button>
+    </b-popover>
     <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
     <b-form-textarea v-model="text" :placeholder="$t('comment.write-comment-placeholder')" rows="2">
     </b-form-textarea>
@@ -7,16 +17,6 @@
       {{ $t('generic.internal-error') }}
     </b-alert>
     <Button :disabled="sending" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
-
-      <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
-        &#x1F600;
-      </b-button>
-
-      <b-popover :target="`emoji_list_${commentId}`" triggers="hover" placement="bottom">
-        <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index" v-on:click="addEmoji(index)"
-        variant="outline" size="sm">{{emoji}}</b-button>
-      </b-popover>
-
   </div>
 </template>
 
