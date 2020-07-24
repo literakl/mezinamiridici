@@ -51,7 +51,6 @@
           id="checkbox-published"
           v-model="form.published"
           name="published"
-          unchecked-value="not_accepted"
         >
           {{$t('poll.forms.published-label')}}
         </b-form-checkbox>
@@ -86,7 +85,11 @@ export default {
     },
   }),
   mounted() {
-    if (!this.isCreate) this.form.text = this.poll.info.caption;
+    if (!this.isCreate) {
+      this.form.text = this.poll.info.caption;
+      this.form.published = this.poll.info.published;
+      this.form.authorId = this.poll.info.author.id;
+    }
   },
   methods: {
     getValidationState({ dirty, validated, valid = null }) {
@@ -94,6 +97,7 @@ export default {
     },
 
     async onSubmit() {
+      const msgTitle = this.$t('poll.forms.poll-confirm-message-title');
       if (this.isCreate) {
         //  create poll
         try {
@@ -104,7 +108,7 @@ export default {
               author: this.form.authorId,
             },
           });
-          this.showResultMsg(result.statusText, true);
+          this.showResultMsg(result.statusText, msgTitle, true);
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(error);
@@ -124,9 +128,12 @@ export default {
               text: this.form.text,
               date: new Date(this.form.date),
               author: this.form.authorId,
+              published: this.form.published,
             },
           });
-          this.showResultMsg(result.statusText, true);
+          await this.$store.dispatch('GET_POLL_BY_ID', { pollId: this.poll._id });
+          const newSlug = this.$store.getters.POLL.info.slug;
+          this.showResultMsg(result.statusText, msgTitle, true, newSlug);
         } catch (error) {
           // eslint-disable-next-line no-console
           console.log(error);
@@ -144,16 +151,28 @@ export default {
       // console.log(this.form.date);
     },
 
-    showResultMsg(msg, type) {
+    showResultMsg(msg, title, type, slug) {
       this.$bvModal.msgBoxOk(msg, {
-        title: this.$t('poll.forms.poll-confirm-message-title'),
+        title,
         size: 'sm',
         buttonSize: 'sm',
         okVariant: (type) ? 'success' : 'danger',
         headerClass: 'p-2 border-bottom-0',
         footerClass: 'p-2 border-top-0',
         centered: true,
-      });
+      })
+        .then((value) => {
+          if (value) {
+            if (slug) {
+              this.$router.push(`/anketa/${slug}`);
+            } else {
+              this.$router.go();
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

@@ -196,6 +196,15 @@ export default new Vuex.Store({
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
     },
+    GET_POLL_BY_ID: async (context, payload) => {
+      // if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
+      //   return; // cached value recycled
+      // }
+      context.commit('SET_POLL', null);
+      const pollData = await get('BFF', `/polls/id/${payload.pollId}`, context);
+      const item = pollData.data.data;
+      context.commit('SET_POLL', item);
+    },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
       const body = { vote: payload.vote };
@@ -231,9 +240,6 @@ export default new Vuex.Store({
       if (!body.author) {
         body.author = context.getters.userId;
       }
-      if (!body.published) {
-        body.published = payload.poll.info.published;
-      }
       if (!body.picture) {
         body.picture = payload.poll.info.picture;
       }
@@ -256,6 +262,9 @@ export default new Vuex.Store({
       const { pollId } = payload;
       const result = await deleteApi('API', `/polls/${pollId}/`, {}, context);
       return result;
+    },
+    VERIFY_MAIL_NICKNAME: async (context, payload) => {
+      console.log(payload);
     },
   },
 });
