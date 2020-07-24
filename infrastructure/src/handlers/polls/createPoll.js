@@ -86,6 +86,10 @@ function insertItem(dbClient, pollId, text, author, picture, publishDate) {
         hate: 0,
       },
     },
+    comments:{
+      count:0,
+      last:publishDate,
+    }
   };
 
   return dbClient.db().collection('items').insertOne(item);

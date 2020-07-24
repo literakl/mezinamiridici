@@ -78,6 +78,12 @@ export default new Router({
       props: true,
     },
     {
+      path: '/uprava-ankety/:slug',
+      name: 'edit-poll',
+      component: () => import('./views/poll/EditPoll.vue'),
+      props: true,
+    },
+    {
       path: '/nova-anketa/',
       name: 'create-poll',
       component: () => import('./views/poll/CreatePoll'),

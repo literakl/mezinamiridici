@@ -50,7 +50,7 @@
     "current-password": "Current password",
     "new-password": "New password",
     "change-password-button": "Change password",
-    "change-success": "Your password has been changed successfuly. Please log in again."
+    "change-success": "Your password has been changed successfully. Please log in again."
   },
   "sign-up": {
     "heading": "Sign up",
@@ -129,6 +129,20 @@
       "from": "From",
       "to": "To",
       "years": "years"
+    },
+    "forms": {
+      "new-poll-heading": "New poll",
+      "text-label": "Text *",
+      "picture-label": "Picture *",
+      "date-label": "Date *",
+      "author-id-label": "Author id",
+      "delete-poll": "Delete poll",
+      "edit-poll": "Edit poll",
+      "delete-message": "Are you sure to delete this poll?",
+      "published-label":"Published",
+      "poll-create-error":"Create error !",
+      "poll-update-error":"Update error !",
+      "poll-confirm-message-title":"Confirmation"
     }
   },
   "profile": {

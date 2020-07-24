@@ -22,6 +22,7 @@ require('./handlers/polls/createPoll')(app);
 require('./handlers/polls/updatePoll')(app);
 require('./handlers/polls/getPoll')(app);
 require('./handlers/polls/getPolls')(app);
+require('./handlers/polls/deletePoll')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
 require('./handlers/comments/createComment')(app);

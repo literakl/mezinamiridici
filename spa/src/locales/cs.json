@@ -134,7 +134,16 @@
     "forms": {
       "new-poll-heading": "Nová anketa",
       "text-label": "Otázka *",
-      "picture-label": "Obrázek *"
+      "picture-label": "Obrázek *",
+      "date-label": "Datum *",
+      "author-id-label": "ID autora",
+      "delete-poll": "Smazat anketu",
+      "edit-poll": "Upravit anketu",
+      "delete-message": "Opravdu chcete smazat tuto anketu?",      
+      "published-label":"Publikováno",
+      "poll-create-error":"Vytvořit chybu !",
+      "poll-update-error":"Chyba aktualizace !",
+      "poll-confirm-message-title":"potvrzení"
     }
   },
   "profile": {
