@@ -3,15 +3,24 @@
     <ContentLoading v-if="! poll" type="poll" />
     <CompletePoll v-if="poll" />
 
-    <b-button v-if="role" :to="`/uprava-ankety/${slug}`" variant="outline-primary">
-      {{ $t('poll.forms.edit-poll') }}
-    </b-button>
-    <b-button v-if="role"  @click="showVerifyMsg" variant="outline-primary">
-      {{ $t('poll.forms.delete-poll') }}
-    </b-button>
-    <b-button v-if="role" :to="`/nova-anketa/`" variant="outline-primary">
-      {{ $t('poll.forms.new-poll-heading') }}
-    </b-button>
+    <b-row class="text-center">
+      <b-col></b-col>
+      <b-col cols="8">
+         <b-button-group>
+          <b-button v-if="role" :to="`/uprava-ankety/${slug}`" variant="outline-primary">
+            {{ $t('poll.forms.edit-poll') }}
+          </b-button>
+          <b-button v-if="role"  @click="showVerifyMsg" variant="outline-primary">
+            {{ $t('poll.forms.delete-poll') }}
+          </b-button>
+          <b-button v-if="role" :to="`/nova-anketa/`" variant="outline-primary">
+            {{ $t('poll.forms.new-poll-heading') }}
+        </b-button>
+         </b-button-group>
+      </b-col>
+      <b-col></b-col>
+    </b-row>
+
 
     <Comments v-if="poll" :itemId="poll._id" />
   </b-container>
