@@ -114,7 +114,11 @@ export default {
 
       try {
         const item = await this.$store.dispatch(message, body);
-        await this.$router.push({ name: 'poll', params: { slug: item.info.slug } });
+        if (this.isCreate) {
+          this.$router.go();
+        } else {
+          await this.$router.push({ name: 'poll', params: { slug: item.info.slug } });
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
