@@ -122,7 +122,7 @@ function getIdentity(dbClient, userId) {
   return dbClient.db()
     .collection('users')
     .findOne(query, { projection: { 'bio.nickname': 1 } })
-    .then(user => ((user === null) ? null : { id: user._id, nickname: user.bio.nickname }));
+    .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
 }
 
 async function getPoll(dbClient, pipeline) {

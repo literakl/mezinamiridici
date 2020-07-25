@@ -11,7 +11,7 @@ const logger = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/polls/:pollId', auth.cors);
-  
+
   app.patch('/v1/polls/:pollId', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
     logger.verbose('updatePoll handler starts');
     const { pollId } = req.params;
@@ -64,7 +64,7 @@ function prepareUpdateQuery(text, author, picture, date, published) {
   setters['info.caption'] = text;
   setters['info.slug'] = slugify(text, { lower: true, strict: true });
   setters['info.picture'] = picture;
-  setters['info.author'] = author;
+  setters['info.author'] = { nickname: author.nickname, id: author.userId };
   setters['info.date'] = date;
   setters['info.published'] = published;
   const query = { };

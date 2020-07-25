@@ -69,7 +69,7 @@ function insertItem(dbClient, pollId, text, author, picture, publishDate) {
     info: {
       author: {
         nickname: author.nickname,
-        id: author.id,
+        id: author.userId,
       },
       caption: text,
       slug,

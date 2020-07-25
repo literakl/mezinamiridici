@@ -182,6 +182,8 @@ test('Poll API', async (done) => {
   // check first poll as Leos
   response = await bff(`polls/${firstPoll.slug}`, { headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.data._id).toBe(firstPoll.id);
+  expect(response.data.info.author.id).toBe(Leos._id);
+  expect(response.data.info.author.nickname).toBe(Leos.bio.nickname);
   expect(response.data.my_vote).toBe('neutral');
   expect(response.data.votes_count).toBe(6);
   expect(response.data.votes.neutral).toBe(2);
@@ -229,6 +231,7 @@ test('Poll API', async (done) => {
   expect(response.data._id).toBe(secondPoll.id);
   expect(response.data.info.caption).toBe(secondPoll.text);
   expect(response.data.info.picture).toBe(secondPoll.picture);
+  expect(response.data.info.author.id).toBe(Bara._id);
   expect(response.data.info.author.nickname).toBe(Bara.bio.nickname);
   expect(response.data.info.published).toBeTruthy();
   expect(response.data.my_vote).toBe('trivial');
