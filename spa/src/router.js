@@ -72,6 +72,11 @@ export default new Router({
       props: true,
     },
     {
+      path: '/ankety/',
+      name: 'polls',
+      component: () => import('./views/poll/Polls.vue'),
+    },
+    {
       path: '/anketa/:slug',
       name: 'poll',
       component: () => import('./views/poll/Poll.vue'),

@@ -87,7 +87,6 @@
     "votes": "hlasů",
     "comments": "komentářů",
     "your-opinion": "Co si o tom myslíte vy?",
-    "other-polls-button": "Další ankety",
     "choices": {
       "neutral": "Není problém",
       "trivial": "Banalita",
@@ -133,9 +132,8 @@
     },
     "forms": {
       "new-poll-heading": "Nová anketa",
-      "text-label": "Otázka *",
-      "picture-label": "Obrázek *",
-      "date-label": "Datum *",
+      "text-label": "Otázka",
+      "date-label": "Datum",
       "author-id-label": "ID autora",
       "delete-poll": "Smazat anketu",
       "edit-poll": "Upravit anketu",

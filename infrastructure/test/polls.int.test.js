@@ -277,7 +277,7 @@ test('Poll API', async (done) => {
   expect(response.data.my_vote).toBe('hate');
 
   // get all polls with default params
-  response = await api('polls/').json();
+  response = await bff('polls/').json();
   expect(response.data.length).toBe(4);
   expect(response.data[0]._id).toBe(fourthPoll.id);
   expect(response.data[1]._id).toBe(thirdPoll.id);
@@ -285,19 +285,19 @@ test('Poll API', async (done) => {
   expect(response.data[3]._id).toBe(firstPoll.id);
 
   // get last two polls
-  response = await api('polls?obd=date&ps=2').json();
+  response = await bff('polls?obd=date&ps=2').json();
   expect(response.data.length).toBe(2);
   expect(response.data[0]._id).toBe(fourthPoll.id);
   expect(response.data[1]._id).toBe(thirdPoll.id);
 
   // get second and third poll
-  response = await api(`polls?oba=date&ps=2&lr=id:${firstPoll.id}`).json();
+  response = await bff(`polls?oba=date&ps=2&lr=id:${firstPoll.id}`).json();
   expect(response.data.length).toBe(2);
   expect(response.data[0]._id).toBe(secondPoll.id);
   expect(response.data[1]._id).toBe(thirdPoll.id);
 
   // get fourth poll
-  response = await api(`polls?obd=date&lr=id:${secondPoll.id}`).json();
+  response = await bff(`polls?obd=date&lr=id:${secondPoll.id}`).json();
   expect(response.data.length).toBe(1);
   expect(response.data[0]._id).toBe(firstPoll.id);
 

@@ -1,7 +1,6 @@
 <template>
   <div class="mb-2">
 
-
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
@@ -60,7 +59,6 @@
       </b-form>
     </ValidationObserver>
 
-
   </div>
 </template>
 
@@ -114,6 +112,7 @@ export default {
 
       try {
         const item = await this.$store.dispatch(message, body);
+        console.log(item);
         await this.$router.push({ name: 'poll', params: { slug: item.info.slug } });
       } catch (error) {
         // eslint-disable-next-line no-console

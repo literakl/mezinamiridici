@@ -131,7 +131,12 @@ async function getPoll(dbClient, pipeline) {
   if (item == null) {
     return null;
   }
+  return processPoll(item);
+}
+
+function processPoll(item) {
   item.votes = item.data.votes;
+  delete item.data.votes;
   item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
   if (item.me && item.me[0]) {
     item.my_vote = item.me[0].vote;
@@ -194,6 +199,7 @@ exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
+exports.processPoll = processPoll;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;

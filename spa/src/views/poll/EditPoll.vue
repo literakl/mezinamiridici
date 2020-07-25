@@ -9,7 +9,7 @@
 
 <script>
 
-import PollForm from '@/views/poll/PollForm.vue';
+import PollForm from '@/components/organisms/PollForm.vue';
 
 export default {
   components: {
