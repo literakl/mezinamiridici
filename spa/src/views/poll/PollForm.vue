@@ -20,14 +20,10 @@
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
 
           <b-form-group id="date-group" :label="$t('poll.forms.date-label')" label-for="date">
-            <!-- <b-form-input
-              id="date" name="date" aria-describedby="date-errors"
-              v-model="form.date" :state="getValidationState(validationContext)">
-            </b-form-input> -->
-
             <b-form-datepicker v-model="form.date" @context="onContext"
-            :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-             locale="en-US" aria-describedby="date-errors" :state="getValidationState(validationContext)"></b-form-datepicker>
+            :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }" locale="cs"
+            aria-describedby="date-errors" :state="getValidationState(validationContext)">
+            </b-form-datepicker>
 
             <b-form-invalid-feedback id="date-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-form-group>
@@ -51,9 +47,14 @@
           id="checkbox-published"
           v-model="form.published"
           name="published"
+          class="mb-3"
         >
           {{$t('poll.forms.published-label')}}
         </b-form-checkbox>
+
+        <div v-if="error" class="text-danger">
+          {{ error }}
+        </div>
 
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-// import Button from '@/components/atoms/Button.vue';
+import { getISO } from '@/utils/dateUtils';
 
 export default {
   name: 'PollForm',
@@ -72,22 +73,21 @@ export default {
     isCreate: Boolean,
     poll: Object,
   },
-  components: {
-    // Button,
-  },
   data: () => ({
     form: {
       text: '',
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+      date: '',
       context: null,
       authorId: '',
       published: false,
     },
+    error: null,
   }),
   mounted() {
     if (!this.isCreate) {
       this.form.text = this.poll.info.caption;
       this.form.published = this.poll.info.published;
+      this.form.date = getISO(this.poll.info.date);
       this.form.authorId = this.poll.info.author.id;
     }
   },
@@ -97,82 +97,37 @@ export default {
     },
 
     async onSubmit() {
-      const msgTitle = this.$t('poll.forms.poll-confirm-message-title');
+      let message;
+      const body = {
+        text: this.form.text,
+        date: new Date(this.form.date),
+        author: this.form.authorId,
+      };
+
       if (this.isCreate) {
-        //  create poll
-        try {
-          const result = await this.$store.dispatch('POST_POLL', {
-            content: {
-              text: this.form.text,
-              date: new Date(this.form.date),
-              author: this.form.authorId,
-            },
-          });
-          this.showResultMsg(result.statusText, msgTitle, true);
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(error);
-          if (error.response && error.response.data && error.response.data.errors) {
-            this.error = this.$t(error.response.data.errors[0].messageKey);
-          } else {
-            this.error = this.$t('poll.forms.poll-create-error');
-          }
-          this.showResultMsg(this.error, false);
-        }
+        message = 'CREATE_POLL';
       } else {
-        //  update poll
-        try {
-          const result = await this.$store.dispatch('PUT_POLL', {
-            poll: this.poll,
-            content: {
-              text: this.form.text,
-              date: new Date(this.form.date),
-              author: this.form.authorId,
-              published: this.form.published,
-            },
-          });
-          await this.$store.dispatch('GET_POLL_BY_ID', { pollId: this.poll._id });
-          const newSlug = this.$store.getters.POLL.info.slug;
-          this.showResultMsg(result.statusText, msgTitle, true, newSlug);
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(error);
-          if (error.response && error.response.data && error.response.data.errors) {
-            this.error = this.$t(error.response.data.errors[0].messageKey);
-          } else {
-            this.error = this.$t('poll.forms.poll-update-error');
-          }
-          this.showResultMsg(this.error, false);
+        message = 'UPDATE_POLL';
+        body.pollId = this.poll._id;
+        body.published = this.form.published;
+      }
+
+      try {
+        const item = await this.$store.dispatch(message, body);
+        await this.$router.push({ name: 'poll', params: { slug: item.info.slug } });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        if (error.response && error.response.data && error.response.data.errors) {
+          this.error = this.$t(error.response.data.errors[0].messageKey);
+        } else {
+          this.error = this.$t('generic.internal-error');
         }
       }
     },
 
     onContext() {
       // console.log(this.form.date);
-    },
-
-    showResultMsg(msg, title, type, slug) {
-      this.$bvModal.msgBoxOk(msg, {
-        title,
-        size: 'sm',
-        buttonSize: 'sm',
-        okVariant: (type) ? 'success' : 'danger',
-        headerClass: 'p-2 border-bottom-0',
-        footerClass: 'p-2 border-top-0',
-        centered: true,
-      })
-        .then((value) => {
-          if (value) {
-            if (slug) {
-              this.$router.push(`/anketa/${slug}`);
-            } else {
-              this.$router.go();
-            }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
   },
 };

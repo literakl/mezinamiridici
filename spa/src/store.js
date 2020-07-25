@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 
-import { get, post, patch, deleteApi } from './utils/api';
+import { deleteApi, get, patch, post } from './utils/api';
 import comments from './modules/comments';
 
 Vue.use(Vuex);
@@ -196,14 +196,23 @@ export default new Vuex.Store({
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
     },
-    GET_POLL_BY_ID: async (context, payload) => {
-      // if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
-      //   return; // cached value recycled
-      // }
-      context.commit('SET_POLL', null);
-      const pollData = await get('BFF', `/polls/id/${payload.pollId}`, context);
+    CREATE_POLL: async (context, payload) => {
+      console.log('CREATE_POLL');
+      return post('API', '/polls', payload, context);
+    },
+    UPDATE_POLL: async (context, payload) => {
+      console.log('UPDATE_POLL');
+      const { pollId } = payload;
+      const pollData = await patch('API', `/polls/${pollId}/`, payload, context);
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
+      return pollData.data.data;
+    },
+    DELETE_POLL: async (context, payload) => {
+      console.log('DELETE_POLL');
+      const { pollId } = payload;
+      const result = await deleteApi('API', `/polls/${pollId}/`, {}, context);
+      return result;
     },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
@@ -232,36 +241,6 @@ export default new Vuex.Store({
           items = items.filter(item => item._id !== poll._id);
           context.commit('SET_STREAM', items);
         });
-    },
-    PUT_POLL: async (context, payload) => {
-      const body = payload.content;
-      const pollId = payload.poll._id;
-
-      if (!body.author) {
-        body.author = context.getters.userId;
-      }
-      if (!body.picture) {
-        body.picture = payload.poll.info.picture;
-      }
-      const result = await patch('API', `/polls/${pollId}/`, body, context);
-      return result;
-    },
-    POST_POLL: async (context, payload) => {
-      const body = payload.content;
-
-      if (!body.author) {
-        body.author = context.getters.userId;
-      }
-      if (!body.picture) {
-        body.picture = 'picture.png';
-      }
-      const result = await post('API', '/polls', body, context);
-      return result;
-    },
-    DELETE_POLL: async (context, payload) => {
-      const { pollId } = payload;
-      const result = await deleteApi('API', `/polls/${pollId}/`, {}, context);
-      return result;
     },
     VERIFY_MAIL_NICKNAME: async (context, payload) => {
       console.log(payload);

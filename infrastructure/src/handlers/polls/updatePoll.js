@@ -32,7 +32,7 @@ module.exports = (app) => {
       }
 
       let user = auth.getIdentity(req.identity);
-      if (author !== undefined) {
+      if (author !== undefined && author.length > 0) {
         user = await mongo.getIdentity(dbClient, author);
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
@@ -51,7 +51,11 @@ module.exports = (app) => {
       const query = prepareUpdateQuery(text, user, picture, publishDate, published);
       await dbClient.db().collection('items').updateOne({ _id: pollId }, query);
       logger.debug('Item updated');
-      return api.sendResponse(res, api.createResponse());
+
+      const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(req.identity.userId)];
+      const item = await mongo.getPoll(dbClient, pipeline);
+      logger.debug('Updated item fetched');
+      return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
@@ -60,14 +64,21 @@ module.exports = (app) => {
 };
 
 function prepareUpdateQuery(text, author, picture, date, published) {
-  const setters = {};
+  const setters = {}, unsetters = {};
   setters['info.caption'] = text;
   setters['info.slug'] = slugify(text, { lower: true, strict: true });
-  setters['info.picture'] = picture;
   setters['info.author'] = { nickname: author.nickname, id: author.userId };
   setters['info.date'] = date;
   setters['info.published'] = published;
+  if (picture) {
+    setters['info.picture'] = picture;
+  } else {
+    unsetters['info.picture'] = true;
+  }
   const query = { };
   query.$set = setters;
+  if (Object.keys(unsetters).length !== 0) {
+    query.$unset = unsetters;
+  }
   return query;
 }

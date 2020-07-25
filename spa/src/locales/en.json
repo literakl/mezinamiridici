@@ -139,9 +139,7 @@
       "delete-poll": "Delete poll",
       "edit-poll": "Edit poll",
       "delete-message": "Are you sure to delete this poll?",
-      "published-label":"Published",
-      "poll-create-error":"Create error !",
-      "poll-update-error":"Update error !",
+      "published-label":"Publish",
       "poll-confirm-message-title":"Confirmation"
     }
   },
