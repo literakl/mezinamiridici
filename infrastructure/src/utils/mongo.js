@@ -102,7 +102,10 @@ function findUser(dbClient, params, projection) {
     query._id = params.userId;
   }
   if (params.email) {
-    query['auth.email'] = params.email;
+    query['auth.email'] = new RegExp("^" + params.email + "$", "i");
+  }
+  if (params.nickname) {
+    query['bio.nickname'] = new RegExp("^" + params.nickname + "$", "i");
   }
   if (params.token) {
     query['auth.verifyToken'] = params.token;

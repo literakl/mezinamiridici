@@ -79,7 +79,9 @@
     "verify-heading": "Ověření vašeho účtu",
     "verify-running": "Momentíček, právě kontrolujeme naše záznamy v registru ..",
     "verify-success": "Ověření proběhlo úspěšně. Nyní se můžete přihlásit a začít využívat portál naplno.",
-    "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu."
+    "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu.",
+    "verify-email":"Tento email je již v naši databázi. Zkuste se přihlásit, nebo si resetujte heslo.",
+    "verify-nickname":"Litujeme, ale tuto přezdívku si zvolil někdo před vámi."
   },
   "edit-profile": {
     "heading": "Aktualizace profilu",
@@ -140,8 +142,10 @@
       "author-id-label": "ID autora",
       "delete-poll": "Smazat anketu",
       "edit-poll": "Upravit anketu",
-      "delete-message": "Opravdu chcete smazat tuto anketu?",
-      "published-label":"Zveřejnit",
+      "delete-message": "Opravdu chcete smazat tuto anketu?",      
+      "published-label":"Publikováno",
+      "poll-create-error":"Vytvořit chybu !",
+      "poll-update-error":"Chyba aktualizace !",
       "poll-confirm-message-title":"potvrzení"
     }
   },

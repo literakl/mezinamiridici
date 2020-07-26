@@ -252,8 +252,19 @@ export default new Vuex.Store({
           context.commit('SET_STREAM', items);
         });
     },
-    VERIFY_MAIL_NICKNAME: async (context, payload) => {
-      console.log(payload);
+    VERIFY_MAIL: async (context, payload) => {
+      const body = {
+        email: payload.email,
+      };
+      const response = await post('API', '/check/email', body);
+      return response;
+    },
+    VERIFY_NICKNAME: async (context, payload) => {
+      const body = {
+        nickname: payload.nickname,
+      };
+      const response = await post('API', '/check/nickname', body);
+      return response;
     },
   },
 });
