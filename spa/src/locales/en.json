@@ -20,7 +20,9 @@
     "we-must-fix": "We must fix it",
     "today": "today",
     "yesterday": "yesterday",
-    "not-published": "not published"
+    "not-published": "not published",
+    "ok-button": "OK",
+    "cancel-button": "Cancel"
   },
   "sign-in": {
     "email-placeholder": "Email",

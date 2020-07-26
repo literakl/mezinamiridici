@@ -20,7 +20,9 @@
     "we-must-fix": "Musíme to opravit",
     "today": "dnes",
     "yesterday": "včera",
-    "not-published": "nezveřejněno"
+    "not-published": "nezveřejněno",
+    "ok-button": "OK",
+    "cancel-button": "Storno"
   },
   "sign-in": {
     "email-placeholder": "Email",

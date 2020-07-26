@@ -31,7 +31,7 @@
             <b-button v-if="role" :to="{ name: 'edit-poll', params: { slug: item.info.slug }}" variant="outline-primary">
               {{ $t('poll.forms.edit-poll') }}
             </b-button>
-            <b-button v-if="role"  @click="showVerifyMsg" variant="outline-primary">
+            <b-button v-if="role" @click="confirmDelete(item)" variant="outline-primary">
               {{ $t('poll.forms.delete-poll') }}
             </b-button>
           </b-button-group>
@@ -63,21 +63,21 @@ export default {
     this.polls = await this.$store.dispatch('GET_POLLS', {});
   },
   methods: {
-    showVerifyMsg() {
+    confirmDelete(item) {
       this.$bvModal.msgBoxConfirm(this.$t('poll.forms.delete-message'), {
         title: this.$t('poll.forms.poll-confirm-message-title'),
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',
-        okTitle: 'YES',
-        cancelTitle: 'NO',
+        okTitle: this.$t('generic.ok-button'),
+        cancelTitle: this.$t('generic.cancel-button'),
         footerClass: 'p-2',
         hideHeaderClose: false,
         centered: true,
       })
         .then((value) => {
           if (value) {
-            this.deletePoll();
+            this.deletePoll(item);
           }
         })
         .catch((err) => {
@@ -85,21 +85,11 @@ export default {
         });
     },
 
-    async deletePoll() {
-      try {
-        await this.$store.dispatch('DELETE_POLL', {
-          pollId: this.poll._id,
-        });
-        await this.$router.push('/');
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-        if (error.response && error.response.data && error.response.data.errors) {
-          this.error = this.$t(error.response.data.errors[0].messageKey);
-        } else {
-          this.error = this.$t('poll.forms.poll-delete-error');
-        }
-      }
+    async deletePoll(item) {
+      await this.$store.dispatch('DELETE_POLL', {
+        pollId: item._id,
+      });
+      this.polls = await this.$store.dispatch('GET_POLLS', {});
     },
   },
 };
