@@ -15,13 +15,15 @@
             </router-link>
           </h3>
         </b-card-body>
-        <b-card-footer>
-          <Date :date="item.info.date" format="dynamicDate" /> &bull;
-          <ProfileLink :profile="item.info.author"/> &bull;
-          {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
-          <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
-            {{ $t('poll.comments') }}: {{item.comments.count}}
-          </router-link>
+        <b-card-footer class="d-flex justify-content-between">
+          <div>
+            <Date :date="item.info.date" format="dynamicDate" /> &bull;
+            <ProfileLink :profile="item.info.author"/> &bull;
+            {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
+            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
+              {{ $t('poll.comments') }}: {{item.comments.count}}
+            </router-link>
+          </div>
           <b-button-group>
             <b-button v-if="role" :to="{ name: 'edit-poll', params: { slug: item.info.slug }}" variant="outline-primary">
               {{ $t('poll.forms.edit-poll') }}
