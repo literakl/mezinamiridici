@@ -29,7 +29,13 @@
     "morgan": "^1.10.0",
     "nanoid": "^2.1.11",
     "sanitize-html": "^1.27.1",
+    "oauth": "^0.9.15",
+    "oauth-signature": "^1.5.0",
+    "qs": "^6.9.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "slugify": "^1.4.0",
+    "unix-timestamp": "^0.2.0",
     "uuid": "^3.4.0",
     "winston": "^3.2.1",
     "winston-transport": "^4.3.0"

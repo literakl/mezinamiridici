@@ -28,6 +28,9 @@
     "email-placeholder": "Email",
     "password-placeholder": "Password",
     "sign-in-heading": "Sign in",
+    "sign-in-facebook": "Sign in with Facebook",
+    "sign-in-twitter": "Sign in with Twitter",
+    "sign-in-google": "Sign in with Google",
     "sign-up-create-account-heading": "Driver registration",
     "sign-up-create-account-message": "Are you using this web without a driving license? You cannot use full potential of this web.",
     "sign-in-button": "Sign in",
@@ -81,6 +84,13 @@
     "verify-error": "Sorry, we couldn't verify that account, please try again or contact support.",
     "verify-email":"This email is already registered. Try to login instead or reset your password.",
     "verify-nickname":"Sorry, this nickname has been already taken."
+  },
+  "confirm": {
+    "heading": "Activate your Account",
+    "body": "please confirm your account by accepting consents.",
+    "success-message": "success messange",
+    "finished-button-label": "Activate Account",
+    "nickname-already-present":"nickname already present, please select different nickname"
   },
   "edit-profile": {
     "heading": "Update your profile",

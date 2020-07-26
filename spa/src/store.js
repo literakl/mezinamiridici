@@ -20,6 +20,7 @@ export default new Vuex.Store({
     poll: null,
     latestPoll: null,
     stream: null,
+    userEmail: null,
   },
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
     USER_ROLE: state => state.userRole,
+    USER_EMAIL: state => state.userEmail,
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
@@ -46,6 +48,9 @@ export default new Vuex.Store({
     },
     SET_USER_ROLE: (state, payload) => {
       state.userRole = payload;
+    },
+    SET_USER_EMAIL: (state, payload) => {
+      state.userEmail = payload;
     },
     SET_POLL: (state, payload) => {
       state.poll = payload;
@@ -91,6 +96,7 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', true);
       context.commit('SET_USER_ID', jwtData.userId);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
+      context.commit('SET_USER_EMAIL', payload.email);
     },
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_POLL', null);

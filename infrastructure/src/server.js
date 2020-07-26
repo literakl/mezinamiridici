@@ -21,6 +21,7 @@ require('./handlers/users/resetPassword')(app);
 require('./handlers/users/updateUser')(app);
 require('./handlers/users/validateToken')(app);
 require('./handlers/users/verifyUser')(app);
+require('./handlers/users/activateUser')(app);
 require('./handlers/polls/createPoll')(app);
 require('./handlers/polls/updatePoll')(app);
 require('./handlers/polls/getPoll')(app);
@@ -32,7 +33,7 @@ require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
-require('./handlers/auth/facebookLink')(app);
+require('./handlers/auth/socialLink')(app);
 
 app.all('*', (req, res) => {
   try {
