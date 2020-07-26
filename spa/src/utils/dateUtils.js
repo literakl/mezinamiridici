@@ -6,10 +6,26 @@ const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
 const DATETIME_FORMAT_FULL = 'D.M.YYYY HH:mm';
-const DATETIME_FORMAT_NO_YEAR = 'DD.MM. HH:mm';
+const DATETIME_FORMAT_NO_YEAR = 'D.M. HH:mm';
 const TIME_FORMAT = 'HH:mm';
 const DATE_FORMAT_FULL = 'D.M.YYYY';
-const DATE_FORMAT_NO_YEAR = 'DD.MM.';
+const DATE_FORMAT_NO_YEAR = 'D.M.';
+const ISO_DATE_FORMAT_FULL = 'YYYY-MM-DD';
+
+// Mongo returns UTC time, this helper converts it to local time
+
+function show(timeUTC, format) {
+  switch (format) {
+    case 'dynamicDate':
+      return showDate(timeUTC);
+    case 'dynamicDateTime':
+      return showDateTime(timeUTC);
+    case 'ISO':
+      return getISO(timeUTC);
+    default:
+      return timeUTC;
+  }
+}
 
 function showDate(epochMS) {
   const instant = dayjs.utc(epochMS).local();
@@ -45,6 +61,11 @@ function sameDay(a, b) {
   return a.year() === b.year() && a.month() === b.month() && a.day() === b.day();
 }
 
+function getISO(epochMS) {
+  const instant = dayjs.utc(epochMS).local();
+  return instant.format(ISO_DATE_FORMAT_FULL);
+}
+
 export {
-  showDate, showDateTime,
+  show, getISO,
 };

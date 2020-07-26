@@ -1,8 +1,7 @@
 <template>
   <div class="border border-secondary rounded mb-2 p-1">
     <div class="font-weight-light border-bottom">
-      {{created}}
-      &bull;
+      <Date :date="this.comment.date" format="dynamicDate" /> &bull;
       <ProfileLink :profile="comment.user"/>
     </div>
 
@@ -57,13 +56,14 @@
 <script>
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
-import { showDateTime } from '@/utils/dateUtils';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'Comment',
   components: {
     CommentForm,
     ProfileLink,
+    Date,
   },
   props: {
     itemId: String,
@@ -81,9 +81,6 @@ export default {
   computed: {
     canVote() {
       return !this.voted && this.comment.user.id !== this.$store.getters.USER_ID;
-    },
-    created() {
-      return showDateTime(this.comment.date);
     },
     replyId() {
       return (this.comment.parentId) ? this.comment.parentId : this.comment._id;

@@ -25,6 +25,9 @@ export default {
     poll() {
       return this.$store.getters.POLL;
     },
+    role() {
+      return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[0] === 'admin:poll' : false;
+    },
   },
   created() {
     this.$store.dispatch('GET_POLL', { slug: this.slug });

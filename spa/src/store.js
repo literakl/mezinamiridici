@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 
-import { get, post, patch } from './utils/api';
+import { deleteApi, get, patch, post } from './utils/api';
 import comments from './modules/comments';
 
 Vue.use(Vuex);
@@ -16,6 +16,7 @@ export default new Vuex.Store({
     userToken: null,
     userId: null,
     userNickname: null,
+    userRole: null,
     poll: null,
     latestPoll: null,
     stream: null,
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
+    USER_ROLE: state => state.userRole,
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
@@ -41,6 +43,9 @@ export default new Vuex.Store({
     },
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
+    },
+    SET_USER_ROLE: (state, payload) => {
+      state.userRole = payload;
     },
     SET_POLL: (state, payload) => {
       state.poll = payload;
@@ -83,6 +88,7 @@ export default new Vuex.Store({
       context.commit('SET_USER_TOKEN', null);
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
+      context.commit('SET_USER_ROLE', null);
       context.commit('SET_USER_NICKNAME', null);
 
       const body = {
@@ -99,6 +105,7 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', true);
       context.commit('SET_USER_ID', jwtData.userId);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
+      context.commit('SET_USER_ROLE', jwtData.roles);
       return true;
     },
     SIGN_USER_OUT: (context) => {
@@ -107,6 +114,7 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
       context.commit('SET_USER_NICKNAME', null);
+      context.commit('SET_USER_ROLE', null);
       context.commit('SET_LATEST_POLL', null);
       context.commit('SET_POLL', null);
     },
@@ -130,6 +138,7 @@ export default new Vuex.Store({
           context.commit('SET_USER_NICKNAME', jwtData.nickname);
           context.commit('SET_AUTHORIZED', true);
           context.commit('SET_USER_TOKEN', jwt);
+          context.commit('SET_USER_ROLE', jwtData.roles);
 
           if (Date.now() > 1000 * (jwtData.iat + 24 * 3600)) {
             const response = await post('API', `/users/${jwtData.userId}/validateToken`, { }, context);
@@ -178,7 +187,7 @@ export default new Vuex.Store({
     VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
     GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),
     GET_POLL: async (context, payload) => {
-      console.log(`GET_POLL ${payload.slug}`);
+      // console.log(`GET_POLL ${payload.slug}`);
       if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
         return; // cached value recycled
       }
@@ -186,6 +195,33 @@ export default new Vuex.Store({
       const pollData = await get('BFF', `/polls/${payload.slug}`, context);
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
+    },
+    GET_POLLS: async (context, payload) => {
+      console.log('GET_POLLS');
+      let url = '/polls';
+      if (payload.lastSeen) {
+        url += `?lr=id:${payload.lastSeen}`;
+      }
+      const response = await get('BFF', url, context);
+      return response.data.data;
+    },
+    CREATE_POLL: async (context, payload) => {
+      console.log('CREATE_POLL');
+      const pollData = await post('API', '/polls', payload, context);
+      return pollData.data.data;
+    },
+    UPDATE_POLL: async (context, payload) => {
+      console.log('UPDATE_POLL');
+      const { pollId } = payload;
+      const pollData = await patch('API', `/polls/${pollId}/`, payload, context);
+      const item = pollData.data.data;
+      context.commit('SET_POLL', item);
+      return item;
+    },
+    DELETE_POLL: async (context, payload) => {
+      console.log('DELETE_POLL');
+      const { pollId } = payload;
+      return deleteApi('API', `/polls/${pollId}/`, {}, context);
     },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
@@ -204,16 +240,20 @@ export default new Vuex.Store({
     INIT_STREAM: async (context) => {
       console.log('INIT_STREAM');
       const pollRequest = get('BFF', '/polls/last', context);
-      const streamRequest = get('API', '/polls/?obd=date', context);
+      const streamRequest = get('BFF', '/polls/?obd=date', context);
       Promise.all([pollRequest, streamRequest])
         .then(([pollData, streamData]) => {
           const poll = pollData.data.data;
           context.commit('SET_LATEST_POLL', poll);
           context.commit('SET_POLL', poll);
+
           let items = streamData.data.data;
           items = items.filter(item => item._id !== poll._id);
           context.commit('SET_STREAM', items);
         });
+    },
+    VERIFY_MAIL_NICKNAME: async (context, payload) => {
+      console.log(payload);
     },
   },
 });

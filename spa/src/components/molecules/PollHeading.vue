@@ -16,7 +16,7 @@
             </h1>
           </b-card-body>
           <b-card-footer>
-            {{created}} &bull;
+            <Date :date="this.item.info.date" format="dynamicDate" />  &bull;
             <ProfileLink :profile="this.item.info.author"/> &bull;
             {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
@@ -36,20 +36,17 @@
 
 <script>
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
-import { showDate } from '@/utils/dateUtils';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'PollHeading',
   components: {
-    ProfileLink,
+    ProfileLink, Date,
+  },
+  props: {
+    item: Object,
   },
   computed: {
-    item() {
-      return this.$store.getters.POLL;
-    },
-    created() {
-      return showDate(this.item.info.date);
-    },
     // urlToShare() {
     //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
     // },

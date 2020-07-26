@@ -6,6 +6,7 @@ const logger = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/bff/polls/last', auth.cors);
   app.options('/bff/polls/:slug', auth.cors);
+  app.options('/bff/polls/id/:id', auth.cors);
 
   app.get('/bff/polls/last', auth.optional, async (req, res) => {
     logger.verbose('getLastPoll handler starts');
@@ -28,7 +29,7 @@ module.exports = (app) => {
   });
 
   app.get('/bff/polls/:slug', auth.optional, async (req, res) => {
-    logger.verbose('getPoll handler starts');
+    logger.verbose('getPoll by slug handler starts');
     const { slug } = req.params;
 
     try {
@@ -41,7 +42,7 @@ module.exports = (app) => {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
       const item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Items fetched');
+      logger.debug('Item fetched');
 
       if (!item) {
         return api.sendNotFound(res, api.createError());

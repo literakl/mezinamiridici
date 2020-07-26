@@ -28,7 +28,7 @@ module.exports = (app) => {
       }
 
       let user = auth.getIdentity(req.identity);
-      if (author !== undefined) {
+      if (author !== undefined && author.length > 0) {
         user = await mongo.getIdentity(dbClient, author);
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
@@ -85,6 +85,10 @@ function insertItem(dbClient, pollId, text, author, picture, publishDate) {
         dislike: 0,
         hate: 0,
       },
+    },
+    comments: {
+      count: 0,
+      last: null,
     },
   };
 
