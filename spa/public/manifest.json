@@ -3,13 +3,23 @@
   "short_name": "Mezi námi řidiči",
   "icons": [
     {
-      "src": "/img/icons/android-chrome-192x192.png",
-      "sizes": "192x220",
+      "src": "/img/fav/192.png",
+      "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/img/icons/android-chrome-512x512.png",
-      "sizes": "512x587",
+      "src": "/img/fav/152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/fav/32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/fav/16.png",
+      "sizes": "16x16",
       "type": "image/png"
     }
   ],

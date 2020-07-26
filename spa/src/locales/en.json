@@ -17,7 +17,12 @@
     "internal-error": "Oops, this is an error. We are sorry.",
     "not-found-caption": "Page not found",
     "not-found-message": "Sorry, this page has been towed away.",
-    "we-must-fix": "We must fix it"
+    "we-must-fix": "We must fix it",
+    "today": "today",
+    "yesterday": "yesterday",
+    "not-published": "not published",
+    "ok-button": "OK",
+    "cancel-button": "Cancel"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -48,7 +53,7 @@
     "current-password": "Current password",
     "new-password": "New password",
     "change-password-button": "Change password",
-    "change-success": "Your password has been changed successfuly. Please log in again."
+    "change-success": "Your password has been changed successfully. Please log in again."
   },
   "sign-up": {
     "heading": "Sign up",
@@ -73,7 +78,9 @@
     "verify-heading": "Verify your account",
     "verify-running": "Thanks, we're just verifying that for you, hold tight...",
     "verify-success": "Account is verified now. You can sign it now to start using the portal full throttle.",
-    "verify-error": "Sorry, we couldn't verify that account, please try again or contact support."
+    "verify-error": "Sorry, we couldn't verify that account, please try again or contact support.",
+    "verify-email":"This email is already registered. Try to login instead or reset your password.",
+    "verify-nickname":"Sorry, this nickname has been already taken."
   },
   "edit-profile": {
     "heading": "Update your profile",
@@ -82,11 +89,8 @@
   "poll": {
     "your-vote": "Your vote:",
     "votes": "votes",
-    "your-say": "comment on poll",
-    "load-more":"Load More",
-    "discussion": "Discussion",
+    "comments": "comments",
     "your-opinion": "What do you want to say about it",
-    "other-polls-button": "Other polls",
     "choices": {
       "neutral": "No problem",
       "trivial": "Trivial trouble",
@@ -129,6 +133,19 @@
       "from": "From",
       "to": "To",
       "years": "years"
+    },
+    "forms": {
+      "new-poll-heading": "New poll",
+      "text-label": "Text",
+      "date-label": "Date",
+      "author-id-label": "Author id",
+      "delete-poll": "Delete poll",
+      "edit-poll": "Edit poll",
+      "delete-message": "Are you sure to delete this poll?",
+      "published-label":"Published",
+      "poll-create-error":"Create error !",
+      "poll-update-error":"Update error !",
+      "poll-confirm-message-title":"Confirmation"
     }
   },
   "profile": {
@@ -184,6 +201,11 @@
     "update-button": "Update my profile"
   },
   "comment": {
+    "discussion": "Discussion",
+    "write-comment-placeholder": "Write your comment",
+    "send-button": "Send",
+    "load-more":"Load More",
+    "show-all":"Show all",
     "reply": "Reply",
     "close": "Close"
   }

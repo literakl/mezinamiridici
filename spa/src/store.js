@@ -2,49 +2,34 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import jwtDecode from 'jwt-decode';
 
-const axios = require('axios').default;
-
-axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
-axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
+import { deleteApi, get, patch, post } from './utils/api';
+import comments from './modules/comments';
 
 Vue.use(Vuex);
 
-const {
-  VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT,
-} = process.env;
-const API_ENDPOINT = VUE_APP_API_ENDPOINT;
-const BFF_ENDPOINT = VUE_APP_BFF_ENDPOINT;
-
-function getAuthHeader(context, jwt = undefined) {
-  const config = { headers: {} };
-  if (jwt || context.state.userToken) {
-    config.headers.Authorization = `bearer ${jwt || context.state.userToken}`;
-  }
-  return config;
-}
-
 export default new Vuex.Store({
+  modules: {
+    comments,
+  },
   state: {
     authorized: false,
     userToken: null,
     userId: null,
     userNickname: null,
+    userRole: null,
     poll: null,
     latestPoll: null,
     stream: null,
-    comments: null,
-    // replies: null; https://forum.vuejs.org/t/vuex-best-practices-for-complex-objects/10143/51
-    // users: null, https://github.com/paularmstrong/normalizr
   },
   getters: {
     IS_AUTHORIZED: state => state.authorized,
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
+    USER_ROLE: state => state.userRole,
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
-    COMMENTS: state => state.comments,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -59,6 +44,9 @@ export default new Vuex.Store({
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
     },
+    SET_USER_ROLE: (state, payload) => {
+      state.userRole = payload;
+    },
     SET_POLL: (state, payload) => {
       state.poll = payload;
     },
@@ -71,37 +59,29 @@ export default new Vuex.Store({
     // APPEND_STREAM: (state, payload) => {
     //   state.stream = payload;
     // },
-    SET_COMMENTS: (state, payload) => {
-      state.pollComments = payload;
-    },
-    SET_COMMENT_REPLIES: (state, commentId, replies) => {
-      const comment = state.comments.find(x => x._id === commentId);
-      if (comment !== undefined) {
-        comment.allReplies = comment.allReplies.concat(replies);
-        comment.showAll = true;
-        comment.replies = comment.allReplies;
-      } else {
-        // console.log(`Comment ${commentId} not found`);
-      }
-    },
   },
   actions: {
     CHANGE_PASSWORD: async (context, payload) => {
-      await axios.patch(
-        `${API_ENDPOINT}/users/${context.state.userId}/password`, {
-          currentPassword: payload.currentPassword,
-          newPassword: payload.newPassword,
-        }, getAuthHeader(context),
-      );
+      const body = {
+        currentPassword: payload.currentPassword,
+        newPassword: payload.newPassword,
+      };
+      await patch('API', `/users/${context.state.userId}/password`, body, context);
       await context.dispatch('SIGN_USER_OUT');
     },
-    FORGOT_PASSWORD: (context, payload) => axios.post(`${API_ENDPOINT}/forgotPassword`, {
-      email: payload.email,
-    }),
-    RESET_PASSWORD: (context, payload) => axios.post(`${API_ENDPOINT}/resetPassword`, {
-      resetPasswordToken: payload.resetPasswordToken,
-      password: payload.password,
-    }),
+    FORGOT_PASSWORD: async (context, payload) => {
+      const body = {
+        email: payload.email,
+      };
+      await post('API', '/forgotPassword', body);
+    },
+    RESET_PASSWORD: (context, payload) => {
+      const body = {
+        resetPasswordToken: payload.resetPasswordToken,
+        password: payload.password,
+      };
+      return post('API', '/resetPassword', body);
+    },
     SET_SOCIAL: async (context, payload) => {
       const jwt = payload.access_token;
       const jwtData = jwtDecode(jwt);
@@ -118,14 +98,16 @@ export default new Vuex.Store({
       context.commit('SET_USER_TOKEN', null);
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
+      context.commit('SET_USER_ROLE', null);
       context.commit('SET_USER_NICKNAME', null);
 
-      const axiosResponse = await axios.post(`${API_ENDPOINT}/authorizeUser`, {
+      const body = {
         email: payload.email,
         password: payload.password,
-      });
+      };
+      const response = await post('API', '/authorizeUser', body);
 
-      const jwt = axiosResponse.data.data;
+      const jwt = response.data.data;
       const jwtData = jwtDecode(jwt);
       localStorage.setItem('jwt', jwt);
 
@@ -133,6 +115,7 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', true);
       context.commit('SET_USER_ID', jwtData.userId);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
+      context.commit('SET_USER_ROLE', jwtData.roles);
       return true;
     },
     SIGN_USER_OUT: (context) => {
@@ -141,6 +124,7 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
       context.commit('SET_USER_NICKNAME', null);
+      context.commit('SET_USER_ROLE', null);
       context.commit('SET_LATEST_POLL', null);
       context.commit('SET_POLL', null);
     },
@@ -164,12 +148,11 @@ export default new Vuex.Store({
           context.commit('SET_USER_NICKNAME', jwtData.nickname);
           context.commit('SET_AUTHORIZED', true);
           context.commit('SET_USER_TOKEN', jwt);
+          context.commit('SET_USER_ROLE', jwtData.roles);
 
           if (Date.now() > 1000 * (jwtData.iat + 24 * 3600)) {
-            const axiosResponse = await axios.post(`${API_ENDPOINT}/users/${jwtData.userId}/validateToken`,
-              {},
-              getAuthHeader(context));
-            jwt = axiosResponse.data.data;
+            const response = await post('API', `/users/${jwtData.userId}/validateToken`, { }, context);
+            jwt = response.data.data;
             localStorage.setItem('jwt', jwt);
             context.commit('SET_USER_TOKEN', jwt);
           }
@@ -188,93 +171,110 @@ export default new Vuex.Store({
         context.commit('SET_USER_ID', null);
       }
     },
-    CREATE_USER_PROFILE: (context, payload) => axios.post(`${API_ENDPOINT}/users`, {
-      email: payload.email,
-      password: payload.password,
-      nickname: payload.nickname,
-      termsAndConditions: payload.termsAndConditions,
-      dataProcessing: payload.dataProcessing,
-      emails: payload.marketing,
-    }),
-    UPDATE_USER_PROFILE: (context, payload) => axios.patch(`${API_ENDPOINT}/users/${payload.userId}`, {
-      drivingSince: payload.drivingSince,
-      vehicles: payload.vehicle,
-      sex: payload.sex,
-      born: payload.bornInYear,
-      region: payload.region,
-      education: payload.education,
-      publicProfile: payload.publicProfile,
-    }, getAuthHeader(context, payload.jwt)),
-    VERIFY_USER: (context, payload) => axios.post(`${API_ENDPOINT}/verify/${payload.token}`),
-    // eslint-disable-next-line arrow-body-style
-    GET_USER_PROFILE_BY_ID: async (context, payload) => {
-      if (context.state.userId === payload.id) {
-        return axios.get(`${API_ENDPOINT}/users/${payload.id}`, getAuthHeader(context));
-      }
-      return axios.get(`${API_ENDPOINT}/users/${payload.id}`);
+    CREATE_USER_PROFILE: (context, payload) => {
+      const body = {
+        email: payload.email,
+        password: payload.password,
+        nickname: payload.nickname,
+        termsAndConditions: payload.termsAndConditions,
+        dataProcessing: payload.dataProcessing,
+        emails: payload.marketing,
+      };
+      return post('API', '/users', body);
     },
+    UPDATE_USER_PROFILE: (context, payload) => {
+      const body = {
+        drivingSince: payload.drivingSince,
+        vehicles: payload.vehicle,
+        sex: payload.sex,
+        born: payload.bornInYear,
+        region: payload.region,
+        education: payload.education,
+        publicProfile: payload.publicProfile,
+      };
+      return patch('API', `/users/${payload.userId}`, body, context, payload.jwt);
+    },
+    VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
+    GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),
     GET_POLL: async (context, payload) => {
       // console.log(`GET_POLL ${payload.slug}`);
       if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
         return; // cached value recycled
       }
       context.commit('SET_POLL', null);
-      const pollData = await axios.get(`${BFF_ENDPOINT}/polls/${payload.slug}`, getAuthHeader(context));
+      const pollData = await get('BFF', `/polls/${payload.slug}`, context);
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
-      await context.dispatch('GET_POLL_COMMENTS', { id: item._id, page: 1, limit: 10 });
+    },
+    GET_POLLS: async (context, payload) => {
+      console.log('GET_POLLS');
+      let url = '/polls';
+      if (payload.lastSeen) {
+        url += `?lr=id:${payload.lastSeen}`;
+      }
+      const response = await get('BFF', url, context);
+      return response.data.data;
+    },
+    CREATE_POLL: async (context, payload) => {
+      console.log('CREATE_POLL');
+      const pollData = await post('API', '/polls', payload, context);
+      return pollData.data.data;
+    },
+    UPDATE_POLL: async (context, payload) => {
+      console.log('UPDATE_POLL');
+      const { pollId } = payload;
+      const pollData = await patch('API', `/polls/${pollId}/`, payload, context);
+      const item = pollData.data.data;
+      context.commit('SET_POLL', item);
+      return item;
+    },
+    DELETE_POLL: async (context, payload) => {
+      console.log('DELETE_POLL');
+      const { pollId } = payload;
+      return deleteApi('API', `/polls/${pollId}/`, {}, context);
     },
     POLL_VOTE: async (context, payload) => {
-      // console.log('POLL_VOTE');
-      const pollData = await axios.post(`${BFF_ENDPOINT}/polls/${payload.id}/votes`, { vote: payload.vote }, getAuthHeader(context));
+      console.log('POLL_VOTE');
+      const body = { vote: payload.vote };
+      const pollData = await post('BFF', `/polls/${payload.id}/votes`, body, context);
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
       if (context.state.latestPoll && context.state.latestPoll._id === item._id) {
         context.commit('SET_LATEST_POLL', item);
       }
     },
-    GET_POLL_VOTES: async (context, payload) => axios.get(`${BFF_ENDPOINT}/polls/${payload.id}/votes?${payload.query}`),
+    GET_POLL_VOTES: async (context, payload) => {
+      console.log(`GET_POLL_VOTES ${payload.id} ${payload.query}`);
+      return get('BFF', `/polls/${payload.id}/votes?${payload.query}`);
+    },
     INIT_STREAM: async (context) => {
-      // console.log('INIT_STREAM');
-      const pollRequest = axios.get(`${BFF_ENDPOINT}/polls/last`, getAuthHeader(context));
-      const streamRequest = axios.get(`${API_ENDPOINT}/polls/?obd=date`, getAuthHeader(context));
+      console.log('INIT_STREAM');
+      const pollRequest = get('BFF', '/polls/last', context);
+      const streamRequest = get('BFF', '/polls/?obd=date', context);
       Promise.all([pollRequest, streamRequest])
         .then(([pollData, streamData]) => {
           const poll = pollData.data.data;
           context.commit('SET_LATEST_POLL', poll);
           context.commit('SET_POLL', poll);
+
           let items = streamData.data.data;
           items = items.filter(item => item._id !== poll._id);
           context.commit('SET_STREAM', items);
         });
     },
-    GET_COMMENTS: async (context, payload) => {
-      if (payload.reset) {
-        context.commit('SET_POLL_COMMENTS', null);
-      }
-      let url = `${BFF_ENDPOINT}/polls/${payload.itemId}/comments`;
-      if (payload.lastSeen) {
-        url += `?lr=id:${payload.lastSeen}`;
-      }
-      const response = await axios.get(url);
-      // console.log(response.data); // todo remove
-      if (context.getters.COMMENTS !== null && context.getters.POLL_COMMENTS.comments !== undefined) {
-        response.data.data.comments = context.getters.COMMENTS.comments.concat(response.data.data.comments);
-      }
-      context.commit('SET_POLL_COMMENTS', response.data.data);
+    VERIFY_MAIL: async (context, payload) => {
+      const body = {
+        email: payload.email,
+      };
+      const response = await post('API', '/check/email', body);
+      return response;
     },
-    GET_REPLIES: async (context, payload) => {
-      let url = `${BFF_ENDPOINT}/polls/${payload.itemId}/comments/${payload.commentId}/replies`;
-      if (payload.lastSeen) {
-        url += `?lr=id:${payload.lastSeen}`;
-      }
-      const response = await axios.get(url);
-      // console.log(response.data); // todo remove
-      if (response.data.success) {
-        context.commit('SET_COMMENT_REPLIES', payload.commentId, response.data.data.replies);
-      }
+    VERIFY_NICKNAME: async (context, payload) => {
+      const body = {
+        nickname: payload.nickname,
+      };
+      const response = await post('API', '/check/nickname', body);
+      return response;
     },
-    ADD_COMMENT: async (context, payload) => axios.post(`${API_ENDPOINT}/items/${payload.id}/comments`, { text: payload.text, parentId: payload.parent }, getAuthHeader(context)),
-    COMMENT_VOTE: async (context, payload) => axios.post(`${API_ENDPOINT}/comments/${payload.commentId}/votes`, { itemId: payload.itemId, vote: payload.vote }, getAuthHeader(context)),
   },
 });

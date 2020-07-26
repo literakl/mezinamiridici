@@ -18,9 +18,6 @@ import './registerServiceWorker';
 import i18n from './i18n';
 import VueAuthenticate from './vue-authenticate';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });

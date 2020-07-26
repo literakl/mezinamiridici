@@ -18,6 +18,8 @@ module.exports = {
     'one-var': 'off',
     'no-use-before-define': ['error', { "functions": false }],
     'no-param-reassign': ['error', { "props": false }],
+    'no-else-return': 'off',
+    'object-curly-newline': 'off',
     "import/no-named-as-default": 0
   },
   parserOptions: {

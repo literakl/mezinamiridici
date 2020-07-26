@@ -1,13 +1,14 @@
 <template>
   <div>
     <column-chart :data="chartData" suffix="%"
+                  height="200px"
                   :colors="[['#28a745', '#007bff', '#ffc107', '#dc3545']]">
     </column-chart>
   </div>
 </template>
 
 <script>
-import normalizeVotes from '@/components/utils/chartUtils';
+import normalizeVotes from '@/utils/chartUtils';
 
 export default {
   name: 'BarChart',

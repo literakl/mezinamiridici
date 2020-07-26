@@ -15,7 +15,7 @@
 
         <TextInput
           v-model="email"
-          rules="required|email"
+          rules="required|email|conflict:email"
           :label="$t('profile.email')"
           :placeholder="$t('sign-up.email-hint')"
           name="email"
@@ -31,7 +31,7 @@
 
         <TextInput
           v-model="nickname"
-          rules="required|min:3"
+          rules="required|min:3|conflict:nick"
           :label="$t('profile.nickname')"
           :placeholder="$t('sign-up.nickname-hint')"
           name="nickname"/>
@@ -242,7 +242,8 @@
 
 <script>
 import jwtDecode from 'jwt-decode';
-import { configure } from 'vee-validate';
+import { configure, extend } from 'vee-validate';
+import store from '../../store';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
@@ -256,6 +257,32 @@ configure({
     return i18n.t(`validation.${values._rule_}`, values);
   },
 });
+
+extend('conflict', {
+  validate: (value, type) => checkConflict(value, type[0]),
+  message: (field) => {
+    let msg = i18n.t('sign-up.verify-email');
+    if (field === 'nickname') {
+      msg = i18n.t('sign-up.verify-nickname');
+    }
+    return msg;
+  },
+});
+
+async function checkConflict(value, type) {
+  try {
+    let result = {};
+    if (type === 'email') {
+      result = await store.dispatch('VERIFY_MAIL', { email: value });
+    } else if (type === 'nick') {
+      result = await store.dispatch('VERIFY_NICKNAME', { nickname: value });
+    }
+    return !result.data.data.conflict;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 
 function setVehicles(vehicles) {
   if (this.bike) vehicles.push('bike');

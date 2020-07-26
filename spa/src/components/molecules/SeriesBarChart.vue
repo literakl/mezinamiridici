@@ -1,11 +1,11 @@
 <template>
   <div>
-    <column-chart :data="chartData" :colors="colors" :suffix="suffix"></column-chart>
+    <column-chart :data="chartData" :colors="colors" :suffix="suffix" height="200px"></column-chart>
   </div>
 </template>
 
 <script>
-import normalizeVotes from '@/components/utils/chartUtils';
+import normalizeVotes from '@/utils/chartUtils';
 
 export default {
   name: 'SeriesBarChart',

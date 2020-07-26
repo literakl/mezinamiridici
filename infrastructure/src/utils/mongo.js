@@ -16,7 +16,7 @@ const stagePublished = { $match: { 'info.published': true } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
-function stageMyVote(userId, pollId) {
+function stageMyPollVote(userId, pollId) {
   if (pollId) {
     return {
       $lookup: {
@@ -55,6 +55,25 @@ function stageMyVote(userId, pollId) {
     },
   };
 }
+function stageCommentVotes() {
+  return {
+    $lookup: {
+      from: 'comment_votes',
+      localField: '_id',
+      foreignField: 'commentId',
+      as: 'votes',
+    },
+  };
+}
+function stageHideIdsinComment() {
+  return {
+    $project: {
+      itemId: 0,
+      'votes._id': 0,
+      'votes.commentId': 0,
+    },
+  };
+}
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
@@ -83,7 +102,10 @@ function findUser(dbClient, params, projection) {
     query._id = params.userId;
   }
   if (params.email) {
-    query['auth.email'] = params.email;
+    query['auth.email'] = new RegExp("^" + params.email + "$", "i");
+  }
+  if (params.nickname) {
+    query['bio.nickname'] = new RegExp("^" + params.nickname + "$", "i");
   }
   if (params.token) {
     query['auth.verifyToken'] = params.token;
@@ -98,6 +120,7 @@ function findUser(dbClient, params, projection) {
     .then(doc => doc);
 }
 
+// counterpart for authenticate.getIdentity()
 function getIdentity(dbClient, userId) {
   const query = { _id: userId };
   return dbClient.db()
@@ -112,7 +135,12 @@ async function getPoll(dbClient, pipeline) {
   if (item == null) {
     return null;
   }
+  return processPoll(item);
+}
+
+function processPoll(item) {
   item.votes = item.data.votes;
+  delete item.data.votes;
   item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
   if (item.me && item.me[0]) {
     item.my_vote = item.me[0].vote;
@@ -134,6 +162,18 @@ function getNeighbourhItem(dbClient, type, published, older) {
     .find({ type, 'info.published': true, 'info.date': dateExpression }, { projection: { info: 1 } })
     .sort(sortExpression)
     .limit(1);
+}
+
+function setupIndexes(dbClient) {
+  dbClient.db().collection('users').createIndex({ 'auth.email': 1 }, { unique: true });
+  dbClient.db().collection('users').createIndex({ 'bio.nickname': 1 }, { unique: true });
+  dbClient.db().collection('items').createIndex({ 'info.type': 1 });
+  dbClient.db().collection('items').createIndex({ 'info.date': 1 });
+  dbClient.db().collection('items').createIndex({ 'info.slug': 1 }, { unique: true });
+  dbClient.db().collection('poll_votes').createIndex({ item: 1, user: 1 }, { unique: true });
+  dbClient.db().collection('comments').createIndex({ itemId: 1 });
+  dbClient.db().collection('comments').createIndex({ parentId: 1 });
+  dbClient.db().collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
 }
 
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
@@ -163,11 +203,15 @@ exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
+exports.processPoll = processPoll;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
-exports.stageMyVote = stageMyVote;
+exports.stageMyPollVote = stageMyPollVote;
+exports.stageHideIdsinComment = stageHideIdsinComment;
+exports.stageCommentVotes = stageCommentVotes;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
 exports.close = close;
+exports.setupIndexes = setupIndexes;

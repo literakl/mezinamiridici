@@ -2,6 +2,9 @@
 
 HTTPS, result codes: https://developer.amazon.com/docs/amazon-drive/ad-restful-api-response-codes.html
 
+* API - this endpoint returns plain data as they are stored in database
+* BFF - this endpoint returns data tailored for frontend (backend for frontend)
+
 #Request
 
 VERB /v1/collection?&oba=id&ps=10&lr=id:ak5e2do&key=value
@@ -24,13 +27,16 @@ JSON structure
 
 **Success**
 
+```
 {
  "success": true,
  "data": {}
 }
+```
 
 **Error**
 
+```
 {
  "success": false,
  "errors": [{
@@ -39,3 +45,4 @@ JSON structure
     "messageKey": "signup.email-exists"
   }]
 }
+```

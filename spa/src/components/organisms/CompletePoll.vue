@@ -3,17 +3,12 @@
     <PollHeading :item="item"/>
 
     <div v-if="voted" class="pt-2 pb-2">
-      <div class="pb-3">
-        {{ $t('poll.your-vote') }}
-        <b-button class="ml-3" :variant="votedVariant" size="md" :pressed="false"
-                  aria-pressed="false" style="cursor: default">
-          <img :src="votedPicture" class="pr-2" align="middle">
-          {{ $t('poll.choices.'+voted) }}
-        </b-button>
-      </div>
-
       <BarChart :votes="item.votes" v-bind:voted="voted"/>
       <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
+      <div>
+        {{ $t('poll.your-vote') }}
+        {{ $t('poll.choices.'+voted) }}
+      </div>
     </div>
 
     <div v-if="!voted" class="m-auto pt-3 pb-3">
@@ -63,34 +58,6 @@ export default {
     },
     voted() {
       return this.$store.getters.POLL.my_vote;
-    },
-    votedVariant() {
-      switch (this.$store.getters.POLL.my_vote) {
-        case 'neutral':
-          return 'success';
-        case 'trivial':
-          return 'primary';
-        case 'dislike':
-          return 'warning';
-        default:
-          return 'danger';
-      }
-    },
-    votedPicture() {
-      switch (this.$store.getters.POLL.my_vote) {
-        case 'neutral':
-          // eslint-disable-next-line global-require
-          return require('@/assets/happy.png');
-        case 'trivial':
-          // eslint-disable-next-line global-require
-          return require('@/assets/ok.png');
-        case 'dislike':
-          // eslint-disable-next-line global-require
-          return require('@/assets/dislike.png');
-        default:
-          // eslint-disable-next-line global-require
-          return require('@/assets/angry.png');
-      }
     },
   },
   methods: {

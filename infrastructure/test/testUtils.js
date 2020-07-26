@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const got = require('got');
 
 const api = got.extend({
@@ -44,6 +45,9 @@ function deepCopy(obj) {
       newObj[key] = deepCopy(obj[key]);
       return newObj;
     }, {});
+  } else {
+    // suppress warnings
+    return obj;
   }
 }
 
@@ -51,8 +55,17 @@ function sleep(time) {
   return new Promise(res => setTimeout(() => { res(); }, time));
 }
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 module.exports.api = api;
 module.exports.bff = bff;
 module.exports.getAuthHeader = getAuthHeader;
 module.exports.deepCopy = deepCopy;
 module.exports.sleep = sleep;
+module.exports.shuffle = shuffle;

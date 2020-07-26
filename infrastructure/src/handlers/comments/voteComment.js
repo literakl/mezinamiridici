@@ -18,9 +18,9 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const commentVote = await dbClient.db().collection('comment_votes').findOne({ commentId, 'user.userId': req.identity.userId });
+      const commentVote = await dbClient.db().collection('comment_votes').findOne({ commentId, 'user.id': req.identity.userId });
       if (commentVote && commentVote.vote !== undefined) {
-        return api.sendResponse(res, api.createError('You have already voted.', 'generic.internal-error'));
+        return api.sendConflict(res, api.createError('You have already voted.', 'generic.internal-error'));
       }
 
       const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, user: 1 } });
@@ -28,14 +28,14 @@ module.exports = (app) => {
       if (!comment || !comment._id) {
         return api.sendNotFound(res, api.createError('Comment not found', 'generic.internal-error'));
       }
-      if (comment.user !== undefined && comment.user.userId === req.identity.userId) {
-        return api.sendResponse(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
+      if (comment.user !== undefined && comment.user.id === req.identity.userId) {
+        return api.sendBadRequest(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
 
       await insertCommentVote(dbClient, commentId, vote, req.identity);
+      logger.debug('Vote inserted');
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);
-
-      logger.debug('Item inserted');
+      logger.debug('Item updated');
       return api.sendCreated(res, api.createResponse(updatedRecord.value));
     } catch (err) {
       logger.error('Request failed', err);
@@ -50,7 +50,7 @@ function insertCommentVote(dbClient, commentId, vote, user) {
     commentId,
     vote,
     user: {
-      userId: user.userId,
+      id: user.userId,
       nickname: user.nickname,
     },
   };

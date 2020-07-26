@@ -6,6 +6,7 @@ const logger = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/bff/polls/last', auth.cors);
   app.options('/bff/polls/:slug', auth.cors);
+  app.options('/bff/polls/id/:id', auth.cors);
 
   app.get('/bff/polls/last', auth.optional, async (req, res) => {
     logger.verbose('getLastPoll handler starts');
@@ -15,7 +16,7 @@ module.exports = (app) => {
 
       const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
-        pipeline.push(mongo.stageMyVote(req.identity.userId));
+        pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Item fetched');
@@ -28,7 +29,7 @@ module.exports = (app) => {
   });
 
   app.get('/bff/polls/:slug', auth.optional, async (req, res) => {
-    logger.verbose('getPoll handler starts');
+    logger.verbose('getPoll by slug handler starts');
     const { slug } = req.params;
 
     try {
@@ -38,10 +39,10 @@ module.exports = (app) => {
       const pipeline = [mongo.stageSlug(slug)];
       if (req.identity) {
         // noinspection JSCheckFunctionSignatures
-        pipeline.push(mongo.stageMyVote(req.identity.userId));
+        pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
       const item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Items fetched');
+      logger.debug('Item fetched');
 
       if (!item) {
         return api.sendNotFound(res, api.createError());

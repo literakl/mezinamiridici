@@ -14,9 +14,9 @@ const MAXIMUM_PAGE_SIZE = parseInt(process.env.MAXIMUM_PAGE_SIZE || '50', 10);
 
 module.exports = (app) => {
   app.options('/bff/items/:itemId/comments', auth.cors);
-  app.options('/bff/items/:itemId/comments/:commentId/replies', auth.cors);
+  app.options('/bff/items/:itemId/comments/:commentId', auth.cors);
 
-  app.get('/bff/items/:itemId/comments', auth.cors, async (req, res) => {
+  app.get('/bff/items/:itemId/comments', auth.cors, auth.optional, async (req, res) => {
     logger.verbose('getComments handler starts');
     const { itemId } = req.params;
     if (!itemId) {
@@ -33,11 +33,14 @@ module.exports = (app) => {
         query._id = listParams.lastResult.value;
       }
 
-      const comments = await dbClient.db().collection('comments')
-        .find(query, { projection: { itemId: 0 } })
-        .sort({ _id: -1 })
-        .limit(listParams.pageSize + 1)
-        .toArray();
+      let pipeline = [
+        { $match: query },
+        { $sort: { _id: -1 } },
+        { $limit: listParams.pageSize + 1 },
+        mongo.stageCommentVotes(),
+        mongo.stageHideIdsinComment(),
+      ];
+      const comments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Comments fetched');
 
       const parentIdList = [];
@@ -55,9 +58,10 @@ module.exports = (app) => {
         return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments: [] }));
       }
 
-      const childComments = await dbClient.db().collection('comments').aggregate([
+      pipeline = [
         { $match: { parentId: { $in: parentIdList } } },
-        { $project: { itemId: 0 } },
+        mongo.stageCommentVotes(),
+        mongo.stageHideIdsinComment(),
         { $sort: { _id: 1 } },
         {
           $group: {
@@ -65,7 +69,8 @@ module.exports = (app) => {
             replies: { $push: '$$ROOT' },
           },
         },
-      ], { allowDiskUse: true }).toArray();
+      ];
+      const childComments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Replies fetched');
 
       comments.forEach((root) => {
@@ -76,7 +81,7 @@ module.exports = (app) => {
         });
       });
 
-      return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments }));
+      return api.sendResponse(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments }));
     } catch (err) {
       logger.error('Request failed');
       logger.error(err);
@@ -84,30 +89,41 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/bff/items/:itemId/comments/:commentId/replies', auth.cors, async (req, res) => {
-    logger.verbose('getReplies handler starts');
+  app.get('/bff/items/:itemId/comments/:commentId', auth.cors, auth.optional, async (req, res) => {
+    logger.verbose('getComment handler starts');
     const { commentId } = req.params;
     if (!commentId) {
       return api.sendBadRequest(res, api.createError('Missing parameter commentId', 'generic.internal-error'));
     }
-    const listParams = api.parseListParams(req, 'id', 1, 0, 0);
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const query = { parentId: commentId };
-      if (listParams.lastResult) {
-        query._id = listParams.lastResult.value;
-      }
+      const query = {
+        $or: [
+          { _id: commentId }, // fetch the comment
+          { parentId: commentId }, // fetch its replies
+        ],
+      };
 
-      const replies = await dbClient.db().collection('comments')
-        .find(query, { projection: { itemId: 0 } })
-        .sort({ _id: 1 })
-        .toArray();
+      const pipeline = [
+        { $match: query },
+        { $sort: { _id: 1 } },
+        mongo.stageCommentVotes(),
+        mongo.stageHideIdsinComment(),
+      ];
+      const replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Replies fetched');
 
-      return api.sendCreated(res, api.createResponse({ replies }));
+      const index = replies.findIndex(obj => obj._id === commentId);
+      const comment = replies[index];
+      const filteredReplies = [
+        ...replies.slice(0, index),
+        ...replies.slice(index + 1),
+      ];
+      comment.replies = filteredReplies;
+      return api.sendResponse(res, api.createResponse({ comment }));
     } catch (err) {
       logger.error('Request failed');
       logger.error(err);

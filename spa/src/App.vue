@@ -74,3 +74,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+  @import "./assets/styles/custom.scss";
+  @import '~bootstrap/scss/bootstrap.scss';
+  @import '~bootstrap-vue/src/index.scss';
+</style>

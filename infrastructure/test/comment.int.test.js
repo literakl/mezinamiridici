@@ -146,6 +146,12 @@ test('Comments API', async (done) => {
   const comment1a = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment1a.success).toBeTruthy();
 
+  // only discussion with two levels are allowed
+  commentBody.text = 'Comment 1aa';
+  commentBody.parentId = comment1a.data.comment._id;
+  const comment1aa = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(comment1aa.success).toBeFalsy();
+
   voteBody.vote = 1;
   voteResponse = await api(`comments/${comment1a.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
@@ -288,17 +294,21 @@ test('Comments API', async (done) => {
 
   commentBody.text = 'Comment 4i';
   commentBody.parentId = comment4.data.comment._id;
-  commentBody.lastReplyId = comment4f.data.comment._id;
   commentBody.date = dayjs(comment4.data.comment.created).add(40, 'minute').format(DATE_FORMAT);
   const comment4i = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jana.jwt) }).json();
   expect(comment4i.success).toBeTruthy();
-  expect(comment4i.data.replies[0].text).toBe(comment4g.data.comment.text);
-  expect(comment4i.data.replies[1].text).toBe(comment4h.data.comment.text);
-  expect(comment4i.data.replies[2].text).toBe(comment4i.data.comment.text);
+  expect(comment4i.data.replies[0].text).toBe(comment4a.data.comment.text);
+  expect(comment4i.data.replies[1].text).toBe(comment4b.data.comment.text);
+  expect(comment4i.data.replies[2].text).toBe(comment4c.data.comment.text);
+  expect(comment4i.data.replies[3].text).toBe(comment4d.data.comment.text);
+  expect(comment4i.data.replies[4].text).toBe(comment4e.data.comment.text);
+  expect(comment4i.data.replies[5].text).toBe(comment4f.data.comment.text);
+  expect(comment4i.data.replies[6].text).toBe(comment4g.data.comment.text);
+  expect(comment4i.data.replies[7].text).toBe(comment4h.data.comment.text);
+  expect(comment4i.data.replies[8].text).toBe(comment4i.data.comment.text);
 
   commentBody.text = 'Comment 6a';
   commentBody.parentId = comment6.data.comment._id;
-  delete commentBody.lastReplyId;
   commentBody.date = dayjs(comment6.data.comment.created).add(3, 'minute').format(DATE_FORMAT);
   const comment6a = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(comment6a.success).toBeTruthy();
@@ -318,6 +328,7 @@ test('Comments API', async (done) => {
   expect(comments.data.comments[0].down).toBe(0);
   expect(comments.data.comments[0].replies.length).toBe(2);
   expect(comments.data.comments[0].replies[0].text).toBe(comment6a.data.comment.text);
+  expect(comments.data.comments[0].replies[0].votes.length).toBe(0);
   expect(comments.data.comments[0].replies[1].text).toBe(comment6b.data.comment.text);
   expect(comments.data.comments[1].text).toBe(comment5.data.comment.text);
   expect(comments.data.comments[1].up).toBe(0);
@@ -344,34 +355,40 @@ test('Comments API', async (done) => {
   expect(comments.data.comments[0].text).toBe(comment3.data.comment.text);
   expect(comments.data.comments[0].up).toBe(2);
   expect(comments.data.comments[0].down).toBe(0);
+  expect(comments.data.comments[0].votes.length).toBe(2);
   expect(comments.data.comments[0].replies).toBeUndefined();
   expect(comments.data.comments[1].text).toBe(comment2.data.comment.text);
   expect(comments.data.comments[1].up).toBe(2);
   expect(comments.data.comments[1].down).toBe(2);
+  expect(comments.data.comments[1].votes.length).toBe(4);
   expect(comments.data.comments[1].replies.length).toBe(4);
   expect(comments.data.comments[2].text).toBe(comment1.data.comment.text);
   expect(comments.data.comments[2].up).toBe(3);
   expect(comments.data.comments[2].down).toBe(2);
+  expect(comments.data.comments[2].votes.length).toBe(5);
   expect(comments.data.comments[2].replies.length).toBe(6);
+  expect(comments.data.comments[2].replies[0].text).toBe(comment1a.data.comment.text);
+  expect(comments.data.comments[2].replies[0].votes.length).toBe(2);
 
-  comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}/replies`).json();
+  comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}`).json();
   expect(comments.success).toBeTruthy();
-  expect(comments.data.replies.length).toBe(9);
-  expect(comments.data.replies[0].text).toBe(comment4a.data.comment.text);
-  expect(comments.data.replies[1].text).toBe(comment4b.data.comment.text);
-  expect(comments.data.replies[2].text).toBe(comment4c.data.comment.text);
-  expect(comments.data.replies[3].text).toBe(comment4d.data.comment.text);
-  expect(comments.data.replies[4].text).toBe(comment4e.data.comment.text);
-  expect(comments.data.replies[5].text).toBe(comment4f.data.comment.text);
-  expect(comments.data.replies[6].text).toBe(comment4g.data.comment.text);
-  expect(comments.data.replies[7].text).toBe(comment4h.data.comment.text);
-  expect(comments.data.replies[8].text).toBe(comment4i.data.comment.text);
+  expect(comments.data.comment.replies.length).toBe(9);
+  expect(comments.data.comment.replies[0].text).toBe(comment4a.data.comment.text);
+  expect(comments.data.comment.replies[1].text).toBe(comment4b.data.comment.text);
+  expect(comments.data.comment.replies[2].text).toBe(comment4c.data.comment.text);
+  expect(comments.data.comment.replies[3].text).toBe(comment4d.data.comment.text);
+  expect(comments.data.comment.replies[4].text).toBe(comment4e.data.comment.text);
+  expect(comments.data.comment.replies[5].text).toBe(comment4f.data.comment.text);
+  expect(comments.data.comment.replies[6].text).toBe(comment4g.data.comment.text);
+  expect(comments.data.comment.replies[7].text).toBe(comment4h.data.comment.text);
+  expect(comments.data.comment.replies[8].text).toBe(comment4i.data.comment.text);
 
-  comments = await bff(`items/${poll.data._id}/comments/${comment4.data.comment._id}/replies?lr=id:${comment4g.data.comment._id}`).json();
-  expect(comments.success).toBeTruthy();
-  expect(comments.data.replies.length).toBe(2);
-  expect(comments.data.replies[0].text).toBe(comment4h.data.comment.text);
-  expect(comments.data.replies[1].text).toBe(comment4i.data.comment.text);
+  commentBody.text = 'Comment 7 :-)\n\nNew paragraph :-D\n\nThird paragraph :-(';
+  commentBody.date = dayjs(poll.data.info.date).add(70, 'minute').format(DATE_FORMAT);
+  const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(comment7.success).toBeTruthy();
+  console.log(comment7.data.comment.text);
+  expect(comment7.data.comment.text).toBe('<p>Comment 7 😃</p>\n<p>New paragraph 😄</p>\n<p>Third paragraph 😦</p>\n');
 
   done();
 });

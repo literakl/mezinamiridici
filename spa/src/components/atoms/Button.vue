@@ -1,11 +1,11 @@
 <template>
   <b-button
-    size="lg"
+    :size="size"
     type="submit"
-    :class="disabled ? 'atom__button--disabled' : 'atom__button'"
     v-on:click="clicked"
     :disabled="disabled"
-    variant="warning">{{value}}
+    variant="warning">
+    {{value}}
   </b-button>
 </template>
 
@@ -14,7 +14,14 @@ export default {
   name: 'Button',
   props: {
     value: String,
-    disabled: Boolean,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    size: {
+      type: String,
+      default: 'lg',
+    },
   },
   methods: {
     clicked(e) {

@@ -1,80 +1,78 @@
 <template>
-    <div v-if="commentslist.length">
+  <div class="" id="comments">
+    <h3>{{ $t('comment.discussion') }}</h3>
 
-        <div v-for="(comment, index) in commentslist" v-bind:key="comment.id">
-            <div
-                v-bind:class="(
-                    parseInt(depth) === 0  || parseInt(depth) > 5) ?
-                    'comment__parent' :
-                    'comment__child'"
-            >
-                <Comment
-                    :itemId="itemId"
-                    :comment="comment"
-                    :commentId="comment._id"
-                    :user="comment.user"
-                    :text="comment.text"
-                    :upvotes="comment.up"
-                    :downvotes="comment.down"
-                    :date="comment.date.toString()"
-                    :depth="parseInt(depth)"
-                    :childCommentCount="comment.childCommentCount"
-                />
-                <ChildComments
-                    :itemId="itemId"
-                    v-if="comment.comments !== undefined"
-                    :childCommentsList="comment.comments"
-                    :paginations="paginations[index]"
-                    :depth="parseInt(depth) + 1"
-                    :rootIndex="index"
-                    @paginate="paginate"
-                />
-            </div>
-        </div>
+    <div v-if="signedIn">
+      <CommentForm :itemId="itemId" :dismissable="false"/>
     </div>
+
+    <!-- Novejsi reload button -->
+
+<!--    <div v-if="comments.length">-->
+      <div v-for="comment in comments" v-bind:key="comment._id">
+        <Comment :itemId="itemId" :comment="comment" :collapseId="getCollapseId(comment)" />
+        <b-collapse :id="`replies_${comment._id}`" visible>
+          <Replies v-if="comment.replies && comment.replies.length > 0" :itemId="itemId" :comment="comment" />
+        </b-collapse>
+
+        <!-- nacist odpovedi v-if="comment.replies === undefined" -->
+      </div>
+<!--    </div>-->
+    <Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" />
+  </div>
 </template>
 
 <script>
-import Comment from '@/components/molecules/Comment.vue';
-import ChildComments from '@/components/organisms/ChildComments.vue';
+import Comment from '@/components/organisms/Comment.vue';
+import Replies from '@/components/organisms/Replies.vue';
+import Button from '@/components/atoms/Button.vue';
+import CommentForm from '@/components/molecules/CommentForm.vue';
 
 export default {
   name: 'Comments',
-  data() {
-    return {
-      paginations: [],
-    };
+  components: {
+    Comment,
+    Replies,
+    Button,
+    CommentForm,
   },
   props: {
     itemId: String,
-    depth: Number,
-    commentslist: Array,
   },
-  components: {
-    Comment,
-    ChildComments,
+  computed: {
+    signedIn() {
+      return this.$store.getters.IS_AUTHORIZED;
+    },
+    incomplete() {
+      return this.$store.getters.DISCUSSION.incomplete;
+    },
+    comments() {
+      return this.$store.getters.DISCUSSION.comments.map(id => this.$store.getters.GET_COMMENT(id));
+    },
+  },
+  async created() {
+    await this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
+  },
+  mounted() {
+    const { hash } = this.$route;
+    if (this.$route.hash) {
+      setTimeout(() => { window.location.href = hash; }, 1000);
+    }
+  },
+  destroyed() {
+    this.$store.commit('DESTROY_COMMENTS');
   },
   methods: {
-    paginate(event) {
-      this.$set(this.paginations, event.rootIndex, this.paginations[event.rootIndex] + 1);
+    getCollapseId(comment) {
+      return (comment.replies && comment.replies.length > 0) ? `replies_${comment._id}` : undefined;
     },
-    changeData() {
-      for (let index = 0; index < this.commentslist.length; index += 1) {
-        this.$set(this.paginations, index, 2);
+    loadMoreComments(itemId) {
+      const payload = { itemId };
+      if (this.comments.length > 0) {
+        payload.lastSeen = this.comments[this.comments.length - 1]._id;
       }
-      return this.paginations;
-    },
-  },
-  watch: {
-    commentslist() {
-      this.changeData();
+      this.$store.dispatch('FETCH_COMMENTS', payload);
     },
   },
 };
 </script>
-
-<style>
-  .comment__child {
-    margin-left: 30px;
-  }
-</style>

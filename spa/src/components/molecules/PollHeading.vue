@@ -7,26 +7,22 @@
         </b-button>
       </b-col>
       <b-col sm="auto">
-        <b-card
-          img-src="../../../public/img/poll/unsplash/cameron-earl-zatacka.jpg"
-          img-alt="Image"
-          img-top
-          tag="article"
-          class="mb-2"
-        >
-          <b-card-title>
+        <b-card tag="article">
+          <b-card-body>
             <h1>
-              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}" class="poll-heading-link">
+              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
                 {{item.info.caption}}
               </router-link>
             </h1>
-          </b-card-title>
-          <b-card-text>
-            {{created}} &bull;
+          </b-card-body>
+          <b-card-footer>
+            <Date :date="this.item.info.date" format="dynamicDate" />  &bull;
             <ProfileLink :profile="this.item.info.author"/> &bull;
-            {{ $t('poll.votes') }}: {{item.votes.total}}
-            <!--                <li>{{poll.pollComments}} comments</li>-->
-          </b-card-text>
+            {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
+            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
+              {{ $t('poll.comments') }}: {{item.comments.count}}
+            </router-link>
+          </b-card-footer>
         </b-card>
       </b-col>
       <b-col sm="1" v-if="item.siblings">
@@ -40,20 +36,17 @@
 
 <script>
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'PollHeading',
   components: {
-    ProfileLink,
+    ProfileLink, Date,
+  },
+  props: {
+    item: Object,
   },
   computed: {
-    item() {
-      return this.$store.getters.POLL;
-    },
-    created() {
-      const date = new Date(this.item.info.date);
-      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-    },
     // urlToShare() {
     //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
     // },
@@ -71,15 +64,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-  .poll-heading-link {
-    color: #000;
-    text-decoration: none;
-  }
-
-  .poll-heading-link:hover {
-    color: #000;
-    text-decoration: underline;
-  }
-</style>

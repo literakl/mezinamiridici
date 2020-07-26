@@ -7,3 +7,6 @@ db.items.createIndex({ 'info.type': 1 });
 db.items.createIndex({ 'info.date': 1 });
 db.items.createIndex({ 'info.slug': 1 }, { unique: true });
 db.poll_votes.createIndex({ item: 1, user: 1 }, { unique: true });
+db.comments.createIndex({ itemId: 1 });
+db.comments.createIndex({ parentId: 1 });
+db.comment_votes.createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });

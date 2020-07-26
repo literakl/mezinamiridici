@@ -6,6 +6,13 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
   },
+  pwa: {
+    iconPaths: {
+      favicon32: '/img/fav/32.png',
+      favicon16: '/img/fav/16.png',
+      appleTouchIcon: '/img/fav/152.png',
+    },
+  },
   chainWebpack: (config) => {
     config.module
       .rule('vue')

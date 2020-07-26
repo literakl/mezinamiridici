@@ -71,9 +71,12 @@ const corsPerRoute = corsMiddleware({
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 });
 
+const ROLE_POLL_ADMIN = 'admin:poll';
+
 module.exports.optional = authenticate(false);
 module.exports.required = authenticate(true);
-module.exports.poll_admin = withRole('admin:poll');
+module.exports.poll_admin = withRole(ROLE_POLL_ADMIN);
+module.exports.ROLE_POLL_ADMIN = ROLE_POLL_ADMIN;
 module.exports.cors = corsPerRoute;
 module.exports.createToken = createToken;
 module.exports.createTokenFromUser = createTokenFromUser;

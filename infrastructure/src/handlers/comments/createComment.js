@@ -1,8 +1,22 @@
 const dayjs = require('dayjs');
+const MarkdownIt = require('markdown-it');
+const emoji = require('markdown-it-emoji/light');
+const mark = require('markdown-it-mark');
+const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
+
+const md = new MarkdownIt({
+  html: false,
+  breaks: true,
+  linkify: true,
+  typographer: true,
+  quotes: '“”‘’',
+});
+md.use(emoji);
+md.use(mark);
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
@@ -10,7 +24,7 @@ module.exports = (app) => {
   app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
     const {
-      text, parentId, date, lastReplyId,
+      text, parentId, date,
     } = req.body;
     const { itemId } = req.params;
     if (!itemId || !text) {
@@ -30,8 +44,14 @@ module.exports = (app) => {
         publishDate = dday.toDate();
       }
 
-      const response = await dbClient.db()
-        .collection('items')
+      if (parentId) {
+        const response = await dbClient.db().collection('comments').findOne({ _id: parentId, parentId: null });
+        if (!response) {
+          return api.sendBadRequest(res, api.createError(`Comment ${parentId} is already reply`, 'generic.internal-error'));
+        }
+      }
+
+      const response = await dbClient.db().collection('items')
         .updateOne({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
       if (response.modifiedCount !== 1) {
         return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
@@ -41,26 +61,22 @@ module.exports = (app) => {
       await dbClient.db()
         .collection('comments')
         .insertOne(comment);
+      comment.votes = [];
       logger.debug('Comment inserted');
 
-      let replies;
+      let replies = [];
       if (parentId) {
-        const query = { parentId };
-        if (lastReplyId) {
-          query._id = { $gt: lastReplyId };
-        }
-
-        replies = await dbClient.db().collection('comments')
-          .find(query, { projection: { itemId: 0 } })
-          .sort({ _id: 1 })
-          .toArray();
+        const pipeline = [
+          { $match: { parentId } },
+          { $sort: { _id: 1 } },
+          mongo.stageCommentVotes(),
+          mongo.stageHideIdsinComment(),
+        ];
+        replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
         logger.debug('Replies fetched');
       }
 
-      const body = { comment };
-      if (replies) {
-        body.replies = replies;
-      }
+      const body = { comment, replies };
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {
       logger.error('Request failed', err);
@@ -75,11 +91,11 @@ function createComment(itemId, text, user, parentId, date) {
     itemId,
     parentId: parentId || undefined,
     date,
-    text,
+    text: md.render(sanitizeHtml(text)),
     up: 0,
     down: 0,
     user: {
-      userId: user.userId,
+      id: user.userId,
       nickname: user.nickname,
     },
   };
