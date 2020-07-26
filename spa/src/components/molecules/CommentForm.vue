@@ -10,9 +10,21 @@
         {{emoji}}
       </b-button>
     </b-popover>
+
     <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
     <b-form-textarea v-model="text" :placeholder="$t('comment.write-comment-placeholder')" rows="2">
     </b-form-textarea>
+
+    <div class="textareaElement" id="textareaElement" contenteditable="">
+    </div>
+    <label class="placeholder">Type your comment ...</label>
+    <div class="icons">
+      <a href="#">S</a>
+      <a href="#">C</a>
+      <a href="#" class="gif">GIF</a>
+      <a href="#">N</a>
+    </div>
+
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
@@ -80,3 +92,71 @@ export default {
   },
 };
 </script>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+  }
+  h1 {
+    color: rgb(19, 146, 231);
+    font-size: 50px;
+    font-weight: bold;
+  }
+
+  .container {
+    position: relative;
+    margin-top: 80px;
+  }
+  .textareaElement {
+    width: 100%;
+    min-height: 17px;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 12px 31px 12px 31px;
+    background: #333;
+    color: #FFF;
+    font-size: 21px;
+    border-radius: 51px;
+    outline: none;
+    z-index: 9999;
+  }
+  .textareaElement a{
+    text-align: right;
+  }
+  textarea:focus{
+    background: #333;
+    color: #FFF;
+  }
+  .icons {
+    position: relative;
+    top: -37px;
+    left: 930px;
+    width: 152px;
+  }
+
+  .icons a {
+    margin: 0 5px;
+    border: 1px solid #FFF;
+    padding: 2px;
+    border-radius: 5px;
+  }
+  .placeholder{
+    position: absolute;
+    top: 14px;
+    left: 43px;
+    color: #999;
+    z-index: 5;
+  }
+</style>
