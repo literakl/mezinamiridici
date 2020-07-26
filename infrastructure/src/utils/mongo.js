@@ -117,6 +117,7 @@ function findUser(dbClient, params, projection) {
     .then(doc => doc);
 }
 
+// counterpart for authenticate.getIdentity()
 function getIdentity(dbClient, userId) {
   const query = { _id: userId };
   return dbClient.db()
