@@ -1,10 +1,12 @@
 <template>
   <div class="pt-3 w-75 m-auto">
-    <b-button-group class="mb-2">
-      <b-button v-if="role" :to="{ name: 'create-poll'}" variant="outline-primary">
-        {{ $t('poll.forms.new-poll-heading') }}
-      </b-button>
-    </b-button-group>
+    <div class="mb-2 d-flex flex-row-reverse">
+      <b-button-group>
+        <b-button v-if="role" :to="{ name: 'create-poll'}" variant="outline-primary">
+          {{ $t('poll.forms.new-poll-heading') }}
+        </b-button>
+      </b-button-group>
+    </div>
 
     <div v-for="item in polls" :key="item._id">
       <b-card tag="article">
