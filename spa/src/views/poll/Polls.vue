@@ -23,6 +23,9 @@
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
               {{ $t('poll.comments') }}: {{item.comments.count}}
             </router-link>
+            <span v-if="! item.info.published">
+               &bull; {{ $t('generic.not-published') }}
+            </span>
           </div>
           <b-button-group>
             <b-button v-if="role" :to="{ name: 'edit-poll', params: { slug: item.info.slug }}" variant="outline-primary">

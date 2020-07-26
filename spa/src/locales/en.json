@@ -19,7 +19,8 @@
     "not-found-message": "Sorry, this page has been towed away.",
     "we-must-fix": "We must fix it",
     "today": "today",
-    "yesterday": "yesterday"
+    "yesterday": "yesterday",
+    "not-published": "not published"
   },
   "sign-in": {
     "email-placeholder": "Email",

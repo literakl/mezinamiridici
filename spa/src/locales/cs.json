@@ -19,7 +19,8 @@
     "not-found-message": "Omlouváme se, tato stránka byla odtáhnuta pryč.",
     "we-must-fix": "Musíme to opravit",
     "today": "dnes",
-    "yesterday": "včera"
+    "yesterday": "včera",
+    "not-published": "nezveřejněno"
   },
   "sign-in": {
     "email-placeholder": "Email",
