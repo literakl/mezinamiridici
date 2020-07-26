@@ -48,17 +48,22 @@
           </b-col>
           <b-col md="6">
             <Button
-              class="w-75"
+              class="w-75 btn btn-block"
               :value="$t('sign-in.sign-up-button')"
               id="signin__sign-up-button"
               @clicked="redirectToSignUp"/>
-          </b-col>
-          <b-col md="6">
             <Button
-              class="fa fa-facebook loginBtn loginBtn--facebook"
-              :value="'Login with Facebook'"
-              id="signin__sign-up-button"
-              @clicked="auth"/>
+            class="w-75 btn btn-block btn-facebook"
+            :value="$t('sign-in.sign-in-facebook')"
+            @clicked="auth('facebook')"/>
+            <Button
+            class="w-75 btn btn-block btn-twitter"
+            :value="$t('sign-in.sign-in-twitter')"
+            @clicked="auth('twitter')"/>
+            <Button
+            class="w-75 btn btn-block btn-google-plus"
+            :value="$t('sign-in.sign-in-google')"
+            @clicked="auth('google')"/>
           </b-col>
         </b-row>
       </b-container>
@@ -122,73 +127,64 @@ export default {
         this.signingIn = false;
       }
     },
-    async auth() {
-      const provider = 'facebook';
+    async auth(provider) {
       if (this.$auth.isAuthenticated()) {
         this.$auth.logout();
       }
       this.response = null;
       // const this_ = this;
       this.token = await this.$auth.authenticate(provider);
+      if (!this.token.data.active) {
+        this.$store.dispatch('SET_SOCIAL', this.token.data);
+        console.log('[test endpoint]');
+        this.$router.push('/confirm');
+      } else {
+        this.$router.push('/');
+        this.$store.dispatch('SET_SOCIAL', this.token.data);
+      }
       // this_.isAuthenticated = this_.$auth.isAuthenticated();
-      this.$store.dispatch('SET_SOCIAL', this.token.data);
-      this.$router.push('/');
     },
   },
 
 };
 </script>
 <style>
-
-/* Shared */
-.loginBtn {
-  box-sizing: border-box;
-  position: relative;
-  /* width: 13em;  - apply for fixed size */
-  margin: 0.2em;
-  padding: 0 15px 0 46px;
-  border: none;
-  /* text-align: left; */
-  line-height: 34px;
-  white-space: nowrap;
-  border-radius: 0.2em;
-  font-size: 16px;
-  color: #FFF;
+.btn {
+  font-weight: bold;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
 }
-.loginBtn:before {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 34px;
-  height: 100%;
+.btn-facebook {
+  color: #fff;
+  background-color: #3b5998;
+  border: 1px solid #335190;
 }
-.loginBtn:focus {
-  outline: none;
-}
-.loginBtn:active {
-  box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+.btn-facebook:hover,
+.btn-facebook:focus {
+  color: #fff;
+  background-color: #294786;
 }
 
+.btn-twitter {
+  color: #fff;
+  background-color: #00aced;
+  border: 1px solid #009fdb;
+}
+.btn-twitter:hover,
+.btn-twitter:focus {
+  color: #fff;
+  background-color: #0090c7;
+}
 
-/* Facebook */
-.loginBtn--facebook {
-  background-color: #4C69BA;
-  background-image: linear-gradient(#4C69BA, #3B55A0);
-  /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
-  text-shadow: 0 -1px 0 #354C8C;
+.btn-google-plus {
+  color: #fff;
+  background-color: #dd4b39;
+  border: 1px solid #d54331;
 }
-.loginBtn--facebook:before {
-  border-right: #364e92 1px solid;
-  content: "\f09a";
-  height: 22px;
-  width: 22px;
-}
-.loginBtn--facebook:hover,
-.loginBtn--facebook:focus {
-  background-color: #5B7BD5;
-  background-image: linear-gradient(#5B7BD5, #4864B1);
+.btn-google-plus:hover,
+.btn-google-plus:focus {
+  color: #fff;
+  background-color: #cb3927;
 }
 
 </style>

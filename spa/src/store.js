@@ -33,6 +33,7 @@ export default new Vuex.Store({
     latestPoll: null,
     stream: null,
     comments: null,
+    userEmail: null,
     // replies: null; https://forum.vuejs.org/t/vuex-best-practices-for-complex-objects/10143/51
     // users: null, https://github.com/paularmstrong/normalizr
   },
@@ -41,6 +42,7 @@ export default new Vuex.Store({
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
+    USER_EMAIL: state => state.userEmail,
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
@@ -58,6 +60,9 @@ export default new Vuex.Store({
     },
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
+    },
+    SET_USER_EMAIL: (state, payload) => {
+      state.userEmail = payload;
     },
     SET_POLL: (state, payload) => {
       state.poll = payload;
@@ -111,6 +116,7 @@ export default new Vuex.Store({
       context.commit('SET_AUTHORIZED', true);
       context.commit('SET_USER_ID', jwtData.userId);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
+      context.commit('SET_USER_EMAIL', payload.email);
     },
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_POLL', null);
@@ -196,6 +202,13 @@ export default new Vuex.Store({
       dataProcessing: payload.dataProcessing,
       emails: payload.marketing,
     }),
+    ACTIVATE_USER_PROFILE: (context, payload) => axios.patch(`${API_ENDPOINT}/user/${payload.userId}/activate`, {
+      email: payload.email,
+      nickname: payload.nickname,
+      termsAndConditions: payload.termsAndConditions,
+      dataProcessing: payload.dataProcessing,
+      emails: payload.marketing,
+    }, getAuthHeader(context, payload.jwt)),
     UPDATE_USER_PROFILE: (context, payload) => axios.patch(`${API_ENDPOINT}/users/${payload.userId}`, {
       drivingSince: payload.drivingSince,
       vehicles: payload.vehicle,

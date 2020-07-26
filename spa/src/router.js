@@ -15,6 +15,7 @@ const requireUnauth = (to, from, next) => {
 };
 
 const requireAuth = (to, from, next) => {
+  store.dispatch('LOAD_USER');
   if (store.getters.IS_AUTHORIZED) {
     next();
     return;
@@ -38,6 +39,12 @@ export default new Router({
       component: () => import('./views/user/SignIn.vue'),
       beforeEnter: requireUnauth,
       props: true,
+    },
+    {
+      path: '/confirm',
+      name: 'confirm',
+      component: () => import('./views/user/Confirm.vue'),
+      // beforeEnter: requireAuth,
     },
     {
       path: '/registrace',

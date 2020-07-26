@@ -10,14 +10,14 @@ import {
 import * as rules from 'vee-validate/dist/rules';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import VueAuthenticate from 'vue-authenticate';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
 import i18n from './i18n';
-import VueAuthenticate from './vue-authenticate';
-
+import CREDENTIAL from './credential.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
@@ -38,8 +38,16 @@ Vue.use(VueAuthenticate, {
   storageType: 'localStorage',
   providers: {
     facebook: {
-      clientId: '860316561127732',
-      redirectUri: 'https://192.168.68.106/api/auth/facebook',
+      clientId: CREDENTIAL.FACEBOOK.CLIENT_ID,
+      redirectUri: CREDENTIAL.FACEBOOK.REDIRECT_URI,
+    },
+    twitter: {
+      clientId: CREDENTIAL.TWITTER.CLIENT_ID,
+      redirectUri: CREDENTIAL.TWITTER.REDIRECT_URI,
+    },
+    google: {
+      clientId: CREDENTIAL.GOOGLE.CLIENT_ID,
+      redirectUri: CREDENTIAL.GOOGLE.REDIRECT_URI,
     },
   },
 });
