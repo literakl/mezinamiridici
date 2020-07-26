@@ -14,6 +14,19 @@ const ISO_DATE_FORMAT_FULL = 'YYYY-MM-DD';
 
 // Mongo returns UTC time, this helper converts it to local time
 
+function show(timeUTC, format) {
+  switch (format) {
+    case 'dynamicDate':
+      return showDate(timeUTC);
+    case 'dynamicDateTime':
+      return showDateTime(timeUTC);
+    case 'ISO':
+      return getISO(timeUTC);
+    default:
+      return timeUTC;
+  }
+}
+
 function showDate(epochMS) {
   const instant = dayjs.utc(epochMS).local();
   const today = dayjs();
@@ -54,5 +67,5 @@ function getISO(epochMS) {
 }
 
 export {
-  showDate, showDateTime, getISO,
+  show, getISO,
 };

@@ -19,7 +19,10 @@
     "not-found-message": "Omlouváme se, tato stránka byla odtáhnuta pryč.",
     "we-must-fix": "Musíme to opravit",
     "today": "dnes",
-    "yesterday": "včera"
+    "yesterday": "včera",
+    "not-published": "nezveřejněno",
+    "ok-button": "OK",
+    "cancel-button": "Storno"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -89,7 +92,6 @@
     "votes": "hlasů",
     "comments": "komentářů",
     "your-opinion": "Co si o tom myslíte vy?",
-    "other-polls-button": "Další ankety",
     "choices": {
       "neutral": "Není problém",
       "trivial": "Banalita",
@@ -135,9 +137,8 @@
     },
     "forms": {
       "new-poll-heading": "Nová anketa",
-      "text-label": "Otázka *",
-      "picture-label": "Obrázek *",
-      "date-label": "Datum *",
+      "text-label": "Otázka",
+      "date-label": "Datum",
       "author-id-label": "ID autora",
       "delete-poll": "Smazat anketu",
       "edit-poll": "Upravit anketu",

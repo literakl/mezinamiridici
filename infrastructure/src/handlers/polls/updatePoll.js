@@ -32,7 +32,7 @@ module.exports = (app) => {
       }
 
       let user = auth.getIdentity(req.identity);
-      if (author !== undefined && author.length > 0) {
+      if (author && author.length > 0) {
         user = await mongo.getIdentity(dbClient, author);
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));

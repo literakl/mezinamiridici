@@ -19,7 +19,10 @@
     "not-found-message": "Sorry, this page has been towed away.",
     "we-must-fix": "We must fix it",
     "today": "today",
-    "yesterday": "yesterday"
+    "yesterday": "yesterday",
+    "not-published": "not published",
+    "ok-button": "OK",
+    "cancel-button": "Cancel"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -88,7 +91,6 @@
     "votes": "votes",
     "comments": "comments",
     "your-opinion": "What do you want to say about it",
-    "other-polls-button": "Other polls",
     "choices": {
       "neutral": "No problem",
       "trivial": "Trivial trouble",
@@ -134,9 +136,8 @@
     },
     "forms": {
       "new-poll-heading": "New poll",
-      "text-label": "Text *",
-      "picture-label": "Picture *",
-      "date-label": "Date *",
+      "text-label": "Text",
+      "date-label": "Date",
       "author-id-label": "Author id",
       "delete-poll": "Delete poll",
       "edit-poll": "Edit poll",

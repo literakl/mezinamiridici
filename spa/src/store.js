@@ -196,9 +196,19 @@ export default new Vuex.Store({
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
     },
+    GET_POLLS: async (context, payload) => {
+      console.log('GET_POLLS');
+      let url = '/polls';
+      if (payload.lastSeen) {
+        url += `?lr=id:${payload.lastSeen}`;
+      }
+      const response = await get('BFF', url, context);
+      return response.data.data;
+    },
     CREATE_POLL: async (context, payload) => {
       console.log('CREATE_POLL');
-      return post('API', '/polls', payload, context);
+      const pollData = await post('API', '/polls', payload, context);
+      return pollData.data.data;
     },
     UPDATE_POLL: async (context, payload) => {
       console.log('UPDATE_POLL');
@@ -206,13 +216,12 @@ export default new Vuex.Store({
       const pollData = await patch('API', `/polls/${pollId}/`, payload, context);
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
-      return pollData.data.data;
+      return item;
     },
     DELETE_POLL: async (context, payload) => {
       console.log('DELETE_POLL');
       const { pollId } = payload;
-      const result = await deleteApi('API', `/polls/${pollId}/`, {}, context);
-      return result;
+      return deleteApi('API', `/polls/${pollId}/`, {}, context);
     },
     POLL_VOTE: async (context, payload) => {
       console.log('POLL_VOTE');
@@ -231,12 +240,13 @@ export default new Vuex.Store({
     INIT_STREAM: async (context) => {
       console.log('INIT_STREAM');
       const pollRequest = get('BFF', '/polls/last', context);
-      const streamRequest = get('API', '/polls/?obd=date', context);
+      const streamRequest = get('BFF', '/polls/?obd=date', context);
       Promise.all([pollRequest, streamRequest])
         .then(([pollData, streamData]) => {
           const poll = pollData.data.data;
           context.commit('SET_LATEST_POLL', poll);
           context.commit('SET_POLL', poll);
+
           let items = streamData.data.data;
           items = items.filter(item => item._id !== poll._id);
           context.commit('SET_STREAM', items);
