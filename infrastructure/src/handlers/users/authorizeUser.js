@@ -8,8 +8,6 @@ const bruteForceDelay = 1000;
 
 module.exports = (app) => {
   app.options('/v1/authorizeUser', auth.cors);
-  app.options('/v1/check/email', auth.cors);
-  app.options('/v1/check/nickname', auth.cors);
 
   app.post('/v1/authorizeUser', auth.cors, async (req, res) => {
     logger.verbose('authorizeUser handler starts');
@@ -49,54 +47,6 @@ module.exports = (app) => {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to authorize the user', 'sign-in.something-went-wrong'));
     }
-  });
-
-  app.post('/v1/check/email', auth.cors, async (req, res) => {
-
-    logger.verbose('User email check handler starts');
-    const { email } = req.body;
-
-    try {
-      const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
-
-      const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
-      logger.debug('User fetched');
-      const data = {conflict: false}
-      if (user) {
-        logger.debug(`User found ${email}`);
-        data.conflict = true;
-      }
-      return api.sendResponse(res, api.createResponse(data));
-    } catch (err) {
-      logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to authorize the user', 'sign-in.something-went-wrong'));
-    }
-
-  });
-
-  app.post('/v1/check/nickname', auth.cors, async (req, res) => {
-
-    logger.verbose('User nickname check handler starts');
-    const { nickname } = req.body;
-
-    try {
-      const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
-
-      const user = await mongo.findUser(dbClient, { nickname }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
-      logger.debug('User fetched');
-      const data = {conflict: false}
-      if (user) {
-        logger.debug(`User found ${nickname}`);
-        data.conflict = true;
-      }
-      return api.sendResponse(res, api.createResponse(data));
-    } catch (err) {
-      logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to authorize the user', 'sign-in.something-went-wrong'));
-    }
-
   });
 };
 
