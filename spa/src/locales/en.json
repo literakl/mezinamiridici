@@ -68,7 +68,7 @@
     "nickname-required": "Nickname long at least 3 characters is required",
     "consents": "Consents",
     "consent-missing": "We cannot continue without your consent",
-    "notifications-label": "I want to recieve email notifications",
+    "notifications-label": "I want to receive email notifications",
     "finished-button-label": "Register",
     "personal-data": "I want to enter my personal information now",
     "region-options": "Choose region",
@@ -84,7 +84,8 @@
   },
   "edit-profile": {
     "heading": "Update your profile",
-    "body": "Enter statistical information you want to share. Your votes are anonymous in each poll."
+    "body": "Enter statistical information you want to share. Your votes are anonymous in each poll.",
+    "save-button": "Save"
   },
   "poll": {
     "your-vote": "Your vote:",

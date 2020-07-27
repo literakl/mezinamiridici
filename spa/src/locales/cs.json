@@ -85,7 +85,8 @@
   },
   "edit-profile": {
     "heading": "Aktualizace profilu",
-    "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě."
+    "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
+    "save-button": "Uložit"
   },
   "poll": {
     "your-vote": "Váš hlas:",
@@ -142,7 +143,7 @@
       "author-id-label": "ID autora",
       "delete-poll": "Smazat anketu",
       "edit-poll": "Upravit anketu",
-      "delete-message": "Opravdu chcete smazat tuto anketu?",      
+      "delete-message": "Opravdu chcete smazat tuto anketu?",
       "published-label":"Publikováno",
       "poll-create-error":"Vytvořit chybu !",
       "poll-update-error":"Chyba aktualizace !",

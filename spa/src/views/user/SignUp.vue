@@ -69,7 +69,7 @@
           minimumView="year"
           type="number"
           :disabled-dates="drivingDateScope"
-          name="driving-since"></Datepicker>
+          name="driving-since"/>
 
           <div>
             <label for="vehicle">{{ $t('profile.vehicle') }}</label>
@@ -139,7 +139,7 @@
           type="number"
           minimumView="year"
           :disabled-dates="bornDateScope"
-          name="born"></Datepicker>
+          name="born"/>
 
           <div>
             <label for="region">{{ $t('profile.region') }}</label>
@@ -340,8 +340,6 @@ export default {
     education: '',
     share: 'public',
     personalData: false,
-    error: null,
-    success: null,
     drivingDateScope: {
       to: new Date(1935, 0, 1),
       from: new Date(),
@@ -350,6 +348,8 @@ export default {
       to: new Date(1915, 0, 1),
       from: new Date(),
     },
+    error: null,
+    success: null,
   }),
   methods: {
     async submitForm() {
