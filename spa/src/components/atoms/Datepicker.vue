@@ -39,6 +39,7 @@
         :disabled-dates="disabledDates"
         :required="required"
         :type="type"
+        :typeble="true"
         ref="input"
         :name="name"></datepicker>
 
