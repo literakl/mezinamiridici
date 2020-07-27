@@ -8,6 +8,7 @@ import {
   extend,
 } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
+import VueScrollTo from 'vue-scrollto';
 
 import App from './App.vue';
 import router from './router';
@@ -25,6 +26,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Chartkick.use(Chart));
+Vue.use(VueScrollTo);
 
 new Vue({
   router,
