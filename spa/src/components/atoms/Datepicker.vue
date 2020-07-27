@@ -27,7 +27,7 @@
       :disabled-dates="disabledDates"
       :required="required"
       :type="type"
-      typeable="true"
+      :typeable="true"
       ref="input"
       :name="name"/>
 

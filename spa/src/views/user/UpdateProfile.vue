@@ -60,6 +60,7 @@
           minimumView="year"
           type="number"
           :disabled-dates="drivingDateScope"
+          :typeable="true"
           name="driving-since"/>
 
         <div>
@@ -127,6 +128,7 @@
           type="number"
           minimumView="year"
           :disabled-dates="bornDateScope"
+          :typeable="true"
           name="born"/>
 
         <label for="region">{{ $t('profile.region') }}</label>
@@ -312,10 +314,10 @@ export default {
         await this.$store.dispatch('UPDATE_USER_PROFILE', {
           jwt: this.$store.getters.USER_TOKEN,
           userId: this.userProfile._id,
-          drivingSince: this.drivingSince,
+          drivingSince: (this.drivingSince) ? new Date(this.drivingSince).getFullYear() : null,
           vehicle: vehicles,
           sex: this.sex,
-          bornInYear: this.bornInYear,
+          bornInYear: (this.bornInYear) ? new Date(this.bornInYear).getFullYear() : null,
           region: this.region,
           education: this.education,
           publicProfile: this.share,
