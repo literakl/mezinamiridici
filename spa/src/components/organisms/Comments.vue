@@ -3,7 +3,7 @@
     <h3>{{ $t('comment.discussion') }}</h3>
 
     <div v-if="signedIn">
-      <CommentForm :itemId="itemId" :dismissable="false"/>
+      <CommentForm :itemId="itemId" :dismissable="false" :dismiss="trigerDismiss"/>
     </div>
 
     <!-- Novejsi reload button -->
@@ -49,6 +49,14 @@ export default {
     comments() {
       return this.$store.getters.DISCUSSION.comments.map(id => this.$store.getters.GET_COMMENT(id));
     },
+    addedId() {
+      return this.$store.getters.DISCUSSION.addedCommentId;
+    },
+  },
+  watch: {
+    comments() {
+      if (this.addedId !== '') setTimeout(() => { this.$scrollTo(document.getElementById(this.addedId), 500, { easing: 'ease' }); }, 1000);
+    },
   },
   async created() {
     await this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
@@ -72,6 +80,9 @@ export default {
         payload.lastSeen = this.comments[this.comments.length - 1]._id;
       }
       this.$store.dispatch('FETCH_COMMENTS', payload);
+    },
+    trigerDismiss() {
+      console.log('dismiss');
     },
   },
 };
