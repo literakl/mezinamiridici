@@ -53,13 +53,15 @@
             name="share-profile"/>
         </b-row>
 
-        <TextInput
-          class="pt-3"
-          v-model="drivingSince"
-          rules="min_value:1935"
+        <Datepicker
           :label="$t('profile.driving-since')"
-          name="driving-since"
-          type="number"/>
+          v-model="drivingSince"
+          format="yyyy"
+          minimumView="year"
+          type="number"
+          :disabled-dates="drivingDateScope"
+          name="driving-since"/>
+
         <div>
           <label for="vehicle">{{ $t('profile.vehicle') }}</label>
         </div>
@@ -118,13 +120,14 @@
             identifier="woman"/>
         </b-row>
 
-        <TextInput
-          class="pt-3"
-          v-model="bornInYear"
-          rules="min_value:1915"
+        <Datepicker
           :label="$t('profile.born')"
-          name="born"
-          type="number"/>
+          v-model="bornInYear"
+          format="yyyy"
+          type="number"
+          minimumView="year"
+          :disabled-dates="bornDateScope"
+          name="born"/>
 
         <label for="region">{{ $t('profile.region') }}</label>
         <div>
@@ -177,7 +180,7 @@
             <Button
               class="w-100"
               :disabled="invalid"
-              :value="$t('sign-up.finished-button-label')"
+              :value="$t('edit-profile.save-button')"
               @clicked="submitForm()"/>
           </b-col>
         </b-row>
@@ -193,10 +196,10 @@
 <script>
 import { configure } from 'vee-validate';
 import { ContentLoader } from 'vue-content-loader';
+import Datepicker from '@/components/atoms/Datepicker.vue';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
-import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '@/i18n';
 
 configure({
@@ -233,8 +236,8 @@ export default {
   name: 'sign-up',
   components: {
     ContentLoader,
+    Datepicker,
     Checkbox,
-    TextInput,
     Button,
     Radio,
   },
@@ -252,6 +255,14 @@ export default {
     region: '',
     education: '',
     share: 'public',
+    drivingDateScope: {
+      to: new Date(1935, 0, 1),
+      from: new Date(),
+    },
+    bornDateScope: {
+      to: new Date(1915, 0, 1),
+      from: new Date(),
+    },
     error: null,
     success: null,
   }),
@@ -263,8 +274,11 @@ export default {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
-        if (this.userProfile.driving) {
-          this.drivingSince = this.userProfile.driving.since;
+        if (this.userProfile.driving.since) {
+          if (this.userProfile.bio.born) {
+            this.drivingSince = new Date(this.userProfile.driving.since, 0, 1);
+          }
+
           if (this.userProfile.driving.vehicles) {
             this.bike = this.userProfile.driving.vehicles.includes('bike');
             this.car = this.userProfile.driving.vehicles.includes('car');
@@ -275,7 +289,9 @@ export default {
           }
         }
         this.sex = this.userProfile.bio.sex;
-        this.bornInYear = this.userProfile.bio.born;
+        if (this.userProfile.bio.born) {
+          this.bornInYear = new Date(this.userProfile.bio.born, 0, 1);
+        }
         this.region = this.userProfile.bio.region;
         this.education = this.userProfile.bio.edu;
         this.share = this.userProfile.prefs.public ? 'public' : 'private';

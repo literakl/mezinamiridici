@@ -16,31 +16,19 @@
           <span>{{ required ? ' *' : '' }}</span>
         </div>
       </label>
-      <!-- <b-form-input
-        :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
-        :id="name"
-        :type="type"
-        :placeholder="placeholder"
-        ref="input"
-        v-model="innerValue"
-        v-bind="ariaInput">
-      </b-form-input>
 
-        wrapper-class="w-50"
-        v-bind="ariaInput"-->
-
-        <datepicker
-        :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
-        :id="name"
-        v-model="innerValue"
-        :format="format"
-        :minimum-view="minimumView"
-        :bootstrap-styling="true"
-        :disabled-dates="disabledDates"
-        :required="required"
-        :type="type"
-        ref="input"
-        :name="name"></datepicker>
+      <datepicker
+      :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
+      :id="name"
+      v-model="innerValue"
+      :format="format"
+      :minimum-view="minimumView"
+      :bootstrap-styling="true"
+      :disabled-dates="disabledDates"
+      :required="required"
+      :type="type"
+      ref="input"
+      :name="name"/>
 
       <div
         class="p-1 text-danger"
