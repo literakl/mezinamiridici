@@ -60,3 +60,5 @@ $ cd spa
 $ npm install
 $ npm run dev
 ```
+
+To log in, use the credentials defined in infrastructure/test/prepareUsers.js.
