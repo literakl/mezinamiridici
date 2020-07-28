@@ -1,8 +1,5 @@
 <template>
   <div class="mb-2">
-    <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
-      &#x1F600;
-    </b-button>
     <b-popover :target="`emoji_list_${commentId}`" triggers="hover" placement="bottom">
       <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index"
                 v-on:click="addEmoji(index)"
@@ -11,18 +8,29 @@
       </b-button>
     </b-popover>
 
-    <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
-    <b-form-textarea v-model="text" :placeholder="$t('comment.write-comment-placeholder')" rows="2">
-    </b-form-textarea>
+    <div class="comment-box">
+      <b-container fluid>
+        <b-row>
+          <b-col sm="12">
+            <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
+            <b-form-textarea
+              id="textarea-auto-height"
+              :placeholder="$t('comment.write-comment-placeholder')"
+              rows="1"
+              max-rows="8"
+              style="overflow-y:hidden;"
+              v-model="text"
+            >
+            </b-form-textarea>
+          </b-col>
+        </b-row>
+      </b-container>
 
-    <div class="textareaElement" id="textareaElement" contenteditable="">
-    </div>
-    <label class="placeholder">Type your comment ...</label>
-    <div class="icons">
-      <a href="#">S</a>
-      <a href="#">C</a>
-      <a href="#" class="gif">GIF</a>
-      <a href="#">N</a>
+      <div class="icons" id="icons">
+        <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
+          &#x1F600;
+        </b-button>
+      </div>
     </div>
 
     <b-alert v-model="error" variant="danger" dismissible>
@@ -59,6 +67,23 @@ export default {
       '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
       '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
   }),
+  mounted() {
+    const textComment = document.getElementById('textarea-auto-height');
+    const icons = document.getElementById('icons');
+    textComment.oninput = function () {
+      if (textComment.value.length > 140) {
+        textComment.style.padding = '13px 50px 34px 32px';
+        icons.style.top = '-36px';
+        icons.style.right = '72px';
+        console.log(textComment.value.length);
+      } else {
+        textComment.style.padding = '10px 174px 5px 28px';
+        icons.style.top = '-45px';
+        icons.style.right = '68px';
+        console.log(textComment.value.length);
+      }
+    };
+  },
   methods: {
     dismiss() {
       this.$emit('dismiss');
@@ -92,71 +117,33 @@ export default {
   },
 };
 </script>
-
-<style>
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    box-sizing: border-box;
-  }
-  h1 {
-    color: rgb(19, 146, 231);
-    font-size: 50px;
-    font-weight: bold;
-  }
-
-  .container {
+<style scoped>
+  .comment-box {
     position: relative;
-    margin-top: 80px;
-  }
-  .textareaElement {
     width: 100%;
-    min-height: 17px;
-    max-height: 300px;
-    overflow-x: hidden;
+    /*margin: 50px auto;*/
+  }
+
+  .textarea-auto-height {
+    height: 40px;
     overflow-y: hidden;
-    padding: 12px 31px 12px 31px;
     background: #333;
-    color: #FFF;
-    font-size: 21px;
-    border-radius: 51px;
-    outline: none;
-    z-index: 9999;
+    border: none;
+    border-radius: 75px;
+    padding: 10px 174px 5px 28px;
   }
-  .textareaElement a{
-    text-align: right;
-  }
-  textarea:focus{
-    background: #333;
-    color: #FFF;
-  }
+
   .icons {
     position: relative;
-    top: -37px;
-    left: 930px;
-    width: 152px;
+    top: -45px;
+    right: 63px;
+    text-align: right;
+    width: 143px;
+    float: right;
   }
 
   .icons a {
     margin: 0 5px;
-    border: 1px solid #FFF;
     padding: 2px;
-    border-radius: 5px;
-  }
-  .placeholder{
-    position: absolute;
-    top: 14px;
-    left: 43px;
-    color: #999;
-    z-index: 5;
   }
 </style>
