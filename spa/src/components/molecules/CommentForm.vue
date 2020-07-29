@@ -14,11 +14,10 @@
           <b-col sm="12">
             <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
             <b-form-textarea
-              id="textarea-auto-height"
+              class="textarea"
+              rows="1" max-rows="8"
+              @input = "adjustIconsInTextarea"
               :placeholder="$t('comment.write-comment-placeholder')"
-              rows="1"
-              max-rows="8"
-              style="overflow-y:hidden;"
               v-model="text"
             >
             </b-form-textarea>
@@ -26,7 +25,7 @@
         </b-row>
       </b-container>
 
-      <div class="icons" id="icons">
+      <div class="icons">
         <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
           &#x1F600;
         </b-button>
@@ -67,26 +66,23 @@ export default {
       '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
       '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
   }),
-  mounted() {
-    const textComment = document.getElementById('textarea-auto-height');
-    const icons = document.getElementById('icons');
-    textComment.oninput = function () {
+  methods: {
+    dismiss() {
+      this.$emit('dismiss');
+    },
+    adjustIconsInTextarea(event) {
+      const textComment = event.target;
+      console.log(textComment.value.length);
+      const icons = this.$refs.iconsRef;
       if (textComment.value.length > 140) {
         textComment.style.padding = '13px 50px 34px 32px';
         icons.style.top = '-36px';
         icons.style.right = '72px';
-        console.log(textComment.value.length);
       } else {
         textComment.style.padding = '10px 174px 5px 28px';
         icons.style.top = '-45px';
         icons.style.right = '68px';
-        console.log(textComment.value.length);
       }
-    };
-  },
-  methods: {
-    dismiss() {
-      this.$emit('dismiss');
     },
     async send() {
       this.error = false;
@@ -124,12 +120,9 @@ export default {
     /*margin: 50px auto;*/
   }
 
-  .textarea-auto-height {
+  .textarea {
     height: 40px;
     overflow-y: hidden;
-    background: #333;
-    border: none;
-    border-radius: 75px;
     padding: 10px 174px 5px 28px;
   }
 
