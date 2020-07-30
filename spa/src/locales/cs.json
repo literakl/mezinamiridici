@@ -28,6 +28,9 @@
     "email-placeholder": "Email",
     "password-placeholder": "Heslo",
     "sign-in-heading": "Přihlášení řidiče",
+    "sign-in-facebook": "Sign in with Facebook",
+    "sign-in-twitter": "Sign in with Twitter",
+    "sign-in-google": "Sign in with Google",
     "sign-up-create-account-heading": "Registrace řidiče",
     "sign-up-create-account-message": "Ještě nemáte řidičský účet? Pozor na kontroly! Bez místního řidičáku nemůžete plnohodnotně používat portál a zapojit se do komunity řidičů.",
     "sign-in-button": "Přihlásit",
@@ -82,6 +85,13 @@
     "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu.",
     "verify-email":"Tento email je již v naši databázi. Zkuste se přihlásit, nebo si resetujte heslo.",
     "verify-nickname":"Litujeme, ale tuto přezdívku si zvolil někdo před vámi."
+  },
+  "confirm": {
+    "heading": "Activate your Account",
+    "body": "please confirm your account by accepting consents.",
+    "success-message": "success message",
+    "finished-button-label": "Activate Account",
+    "nickname-already-present":"nickname already present, please select different nickname"
   },
   "edit-profile": {
     "heading": "Aktualizace profilu",

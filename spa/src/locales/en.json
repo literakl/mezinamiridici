@@ -88,7 +88,7 @@
   "confirm": {
     "heading": "Activate your Account",
     "body": "please confirm your account by accepting consents.",
-    "success-message": "success messange",
+    "success-message": "success message",
     "finished-button-label": "Activate Account",
     "nickname-already-present":"nickname already present, please select different nickname"
   },
