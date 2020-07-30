@@ -9,6 +9,7 @@ export default {
     discussion: {
       incomplete: true,
       comments: [],
+      addedCommentId: '',
     },
     comments: {},
     // replies: null; https://forum.vuejs.org/t/vuex-best-practices-for-complex-objects/10143/51
@@ -26,6 +27,7 @@ export default {
       }
       return comment.replies.slice(0, REPLY_LIMIT);
     },
+    GET_ADDED_ID: state => state.discussion.addedCommentId,
   },
 
   mutations: {
@@ -88,6 +90,10 @@ export default {
         comment.down += 1;
       }
     },
+    SET_ADDED_ID: (state, payload) => {
+      const { commentId } = payload;
+      state.discussion.addedCommentId = commentId;
+    },
   },
 
   actions: {
@@ -120,10 +126,11 @@ export default {
       }
     },
     ADD_COMMENT: async (context, payload) => {
-      console.log('ADD_COMMENT', payload);
+      // console.log('ADD_COMMENT', payload);
       const body = { text: payload.text, parentId: payload.parent };
       const response = await post('API', `/items/${payload.itemId}/comments`, body, context);
-      console.log(response.data); // todo remove
+      // console.log(response.data); // todo remove
+      context.commit('SET_ADDED_ID', { commentId: response.data.data.comment._id });
       if (response.data.success) {
         if (!payload.parent) {
           const mutation = {

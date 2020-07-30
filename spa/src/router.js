@@ -53,6 +53,13 @@ export default new Router({
       beforeEnter: requireUnauth,
     },
     {
+      path: '/overeni-uzivatele/:token',
+      name: 'verify',
+      component: () => import('./views/user/Verify.vue'),
+      beforeEnter: requireUnauth,
+      props: true,
+    },
+    {
       path: '/zapomenute-heslo',
       name: 'forgotten',
       component: () => import('./views/user/ForgottenPassword'),
@@ -77,6 +84,12 @@ export default new Router({
       name: 'user-profile',
       component: () => import('./views/user/Profile.vue'),
       props: true,
+    },
+    {
+      path: '/uprava-profilu',
+      name: 'update-profile',
+      component: () => import('./views/user/UpdateProfile.vue'),
+      beforeEnter: requireAuth,
     },
     {
       path: '/ankety/',
@@ -111,19 +124,6 @@ export default new Router({
       path: '/analyze-votes/:id',
       name: 'analyze-votes',
       component: () => import('./views/poll/AnalyzeVotes.vue'),
-    },
-    {
-      path: '/uprava-profilu',
-      name: 'update-profile',
-      component: () => import('./views/user/UpdateProfile.vue'),
-      beforeEnter: requireAuth,
-    },
-    {
-      path: '/overeni-uzivatele/:token',
-      name: 'verify',
-      component: () => import('./views/user/Verify.vue'),
-      beforeEnter: requireUnauth,
-      props: true,
     },
     {
       path: '/napoveda',

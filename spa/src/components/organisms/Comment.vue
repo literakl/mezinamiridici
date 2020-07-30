@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-secondary rounded mb-2 p-1">
+  <div :id="comment._id" class="border border-secondary rounded mb-2 p-1">
     <div class="font-weight-light border-bottom">
       <Date :date="this.comment.date" format="dynamicDate" /> &bull;
       <ProfileLink :profile="comment.user"/>

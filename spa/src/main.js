@@ -8,6 +8,7 @@ import {
   extend,
 } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
+import VueScrollTo from 'vue-scrollto';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueAuthenticate from 'vue-authenticate';
@@ -31,6 +32,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Chartkick.use(Chart));
+Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',

@@ -62,12 +62,14 @@
           </b-row>
           <br>
 
-          <TextInput
-            v-model="drivingSince"
-            rules="min_value:1935"
-            :label="$t('profile.driving-since')"
-            name="driving-since"
-            type="number"/>
+          <Datepicker
+          :label="$t('profile.driving-since')"
+          v-model="drivingSince"
+          format="yyyy"
+          minimumView="year"
+          type="number"
+          :disabled-dates="drivingDateScope"
+          name="driving-since"/>
 
           <div>
             <label for="vehicle">{{ $t('profile.vehicle') }}</label>
@@ -130,12 +132,14 @@
           </b-row>
           <br>
 
-          <TextInput
-            v-model="bornInYear"
-            rules="min_value:1915"
-            :label="$t('profile.born')"
-            name="born"
-            type="number"/>
+          <Datepicker
+          :label="$t('profile.born')"
+          v-model="bornInYear"
+          format="yyyy"
+          type="number"
+          minimumView="year"
+          :disabled-dates="bornDateScope"
+          name="born"/>
 
           <div>
             <label for="region">{{ $t('profile.region') }}</label>
@@ -248,6 +252,7 @@ import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
+import Datepicker from '@/components/atoms/Datepicker.vue';
 import i18n from '@/i18n';
 
 configure({
@@ -313,6 +318,7 @@ export default {
     TextInput,
     Button,
     Radio,
+    Datepicker,
   },
   data: () => ({
     email: null,
@@ -334,6 +340,14 @@ export default {
     education: '',
     share: 'public',
     personalData: false,
+    drivingDateScope: {
+      to: new Date(1935, 0, 1),
+      from: new Date(),
+    },
+    bornDateScope: {
+      to: new Date(1915, 0, 1),
+      from: new Date(),
+    },
     error: null,
     success: null,
   }),
@@ -366,10 +380,10 @@ export default {
         await this.$store.dispatch('UPDATE_USER_PROFILE', {
           jwt: token,
           userId: jwtData.userId,
-          drivingSince: this.drivingSince,
+          drivingSince: (this.drivingSince) ? new Date(this.drivingSince).getFullYear() : null,
           vehicle: vehicles,
           sex: this.sex,
-          bornInYear: this.bornInYear,
+          bornInYear: (this.bornInYear) ? new Date(this.bornInYear).getFullYear() : null,
           region: this.region,
           education: this.education,
           publicProfile: this.share,

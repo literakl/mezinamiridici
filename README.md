@@ -62,6 +62,8 @@ $ npm install
 $ npm run dev
 ```
 
+To log in, use the credentials defined in infrastructure/test/prepareUsers.js.
+
 ## Nginx
 
 This set up is particularly useful for testing OAuth login.
