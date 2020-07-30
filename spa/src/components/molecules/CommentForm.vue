@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2">
-    <b-popover :target="`emoji_list_${commentId}`" triggers="hover" placement="bottom">
+    <b-popover :target="`emojis_${commentId}`" triggers="hover" placement="bottom">
       <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index"
                 v-on:click="addEmoji(index)"
                 variant="outline" size="sm">
@@ -12,11 +12,10 @@
       <b-container fluid>
         <b-row>
           <b-col sm="12">
-            <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
             <b-form-textarea
               class="textarea"
+              :class="`${!wrapIcons ? 'textarea_long' : 'textarea_short'}`"
               rows="1" max-rows="8"
-              @input = "adjustIconsInTextarea"
               :placeholder="$t('comment.write-comment-placeholder')"
               v-model="text"
             >
@@ -25,9 +24,15 @@
         </b-row>
       </b-container>
 
-      <div class="icons">
-        <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
-          &#x1F600;
+      <div class="icons" :class="`${wrapIcons ? 'icons_long' : 'icons_short'}`">
+        <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
+          <b-icon icon="emoji-sunglasses"></b-icon>
+        </b-button>
+        <b-button v-if="parent" class="mt-2" variant="outline" size="sm">
+          <b-icon icon="chat-quote"></b-icon>
+        </b-button>
+        <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
+          <b-icon icon="x-circle"></b-icon>
         </b-button>
       </div>
     </div>
@@ -47,10 +52,6 @@ export default {
   props: {
     itemId: String,
     parent: String,
-    dismissable: {
-      type: Boolean,
-      default: true,
-    },
     commentId: String,
   },
   components: {
@@ -66,23 +67,14 @@ export default {
       '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
       '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
   }),
+  computed: {
+    wrapIcons() {
+      return this.text.length > 140;
+    },
+  },
   methods: {
     dismiss() {
       this.$emit('dismiss');
-    },
-    adjustIconsInTextarea(event) {
-      const textComment = event.target;
-      console.log(textComment.value.length);
-      const icons = this.$refs.iconsRef;
-      if (textComment.value.length > 140) {
-        textComment.style.padding = '13px 50px 34px 32px';
-        icons.style.top = '-36px';
-        icons.style.right = '72px';
-      } else {
-        textComment.style.padding = '10px 174px 5px 28px';
-        icons.style.top = '-45px';
-        icons.style.right = '68px';
-      }
     },
     async send() {
       this.error = false;
@@ -117,26 +109,35 @@ export default {
   .comment-box {
     position: relative;
     width: 100%;
-    /*margin: 50px auto;*/
   }
 
   .textarea {
     height: 40px;
     overflow-y: hidden;
+  }
+
+  .textarea_short {
+    padding: 13px 50px 34px 32px;
+  }
+
+  .textarea_long {
     padding: 10px 174px 5px 28px;
   }
 
   .icons {
     position: relative;
-    top: -45px;
-    right: 63px;
     text-align: right;
     width: 143px;
     float: right;
   }
 
-  .icons a {
-    margin: 0 5px;
-    padding: 2px;
+  .icons_short {
+    top: -36px;
+    right: 72px;
+  }
+
+  .icons_long {
+    top: -45px;
+    right: 63px; /*68*/
   }
 </style>
