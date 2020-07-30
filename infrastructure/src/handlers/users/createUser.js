@@ -1,11 +1,9 @@
-const AWS = require('aws-sdk');
 const bcrypt = require('bcryptjs');
-
-const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
+const mailService = require('../../utils/mailService');
 
 module.exports = (app) => {
   app.options('/v1/users', auth.cors);
@@ -26,39 +24,54 @@ module.exports = (app) => {
     const dbClient = await mongo.connectToDatabase();
     logger.debug('Mongo connected');
 
-        try {
-            await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
-            logger.debug('User created',);
-        } catch (err) {
-            logger.error('Request failed', err);
-            if (err.code === 11000) {
-                if(err.keyValue) {
-                    if (!!err.keyValue['auth.email']) {
-                        api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
-                    }
-                    if (!!err.keyValue['bio.nickname']) {
-                        api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
-                    }
-                } else {
-                    var keyValue = err.errmsg.split('index:')[1].split('dup key')[0].split('_')[0].trim();
-                    if (keyValue == 'auth.email') {
-                        api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
-                    }
-                    if (keyValue == 'bio.nickname') {
-                        api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
-                    }
-                }
-                return api.sendConflict(res, result);
-            }
-            return api.sendInternalError(res, api.createError('failed to create new user', 'sign-up.something-went-wrong'));
-        }
-
     try {
-      sendVerificationEmail(email, verificationToken);
-      logger.debug('Email sent');
+      let sendResult = '';
+      let sendError = '';
+      let info = await sendVerificationEmail(email, verificationToken, function(error, result){
+        logger.debug(' * * * * * email sent ? ');
+        logger.debug(result);
+        sendResult = result;
+        
+        logger.debug(error);
+        sendError = error;
+      });
+      logger.debug(info);
+      if(info && sendResult !== null){
+        logger.debug(' email sent ');
+      }else{
+        return api.sendInternalError(res, api.createError(sendError, 'sign-up.something-went-wrong'));
+      }
+
     } catch (err) {
       return api.sendInternalError(res, api.createError('Error sending email', 'sign-up.something-went-wrong'));
     }
+
+    try {
+      await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
+      logger.debug('User created',);
+    } catch (err) {
+      logger.error('Request failed', err);
+      if (err.code === 11000) {
+          if(err.keyValue) {
+              if (!!err.keyValue['auth.email']) {
+                  api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
+              }
+              if (!!err.keyValue['bio.nickname']) {
+                  api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
+              }
+          } else {
+              var keyValue = err.errmsg.split('index:')[1].split('dup key')[0].split('_')[0].trim();
+              if (keyValue == 'auth.email') {
+                  api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
+              }
+              if (keyValue == 'bio.nickname') {
+                  api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
+              }
+          }
+          return api.sendConflict(res, result);
+      }
+      return api.sendInternalError(res, api.createError('failed to create new user', 'sign-up.something-went-wrong'));
+  }
 
     const token = auth.createToken(userId, nickname, new Date(), null, '1m');
     return api.sendCreated(res, api.createResponse(token));
@@ -98,27 +111,22 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
   return dbClient.db().collection('users').insertOne(userDoc);
 }
 
-const sendVerificationEmail = (email, token, fn) => {
-  const verificationLink = `https://www.mezinamiridici.cz/verify/${token}`;
-  const subject = 'Dokončení registrace';
-  return ses.sendEmail({
-    Source: 'robot@mezinamiridici.cz',
-    Destination: { ToAddresses: [email] },
-    Message: {
-      Subject: { Data: subject },
-      Body: {
-        Html: {
-          Data: `${'<html><head>'
-                        + '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-                        + `<title>${subject}</title>`
-                        + '</head><body>'
-                        + '<p><a href="'}${verificationLink}">Dokončit registraci</a>.</p>`
-                        + `<p>Pokud odkaz nejde otevřít, zkopírujte následující text a vložte jej do prohlížeče: ${verificationLink}</p>`
-                        + '</body></html>',
-        },
-      },
-    },
-  }, fn);
+const sendVerificationEmail = async (email, token, fn) => {
+
+  const body = {
+    verificationLink : `https://www.mezinamiridici.cz/overeni-uzivatele/${token}`,
+    subject : 'Dokončení registrace',
+    email,
+  }
+  try{
+    let info = await mailService.sendEmailService('welcome', body, fn);
+    logger.info(info);
+    return info;
+  }catch(error){
+    logger.info('---->',error);
+    return error;
+  }
+
 };
 
 const validateParameters = (email, password, nickname, termsAndConditions, dataProcessing) => {

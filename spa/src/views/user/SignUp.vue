@@ -12,7 +12,7 @@
     </b-row>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-
+        <fieldset :disabled='wholeDisable'>
         <TextInput
           v-model="email"
           rules="required|email|conflict:email"
@@ -227,12 +227,14 @@
           <b-col md="4" sm="12">
             <Button
               class="w-100"
+              :waiting="sending"
               :disabled="invalid"
               :value="$t('sign-up.finished-button-label')"
               @clicked="submitForm()"
             />
           </b-col>
         </b-row>
+        </fieldset>
       </b-form>
     </ValidationObserver>
 
@@ -350,10 +352,15 @@ export default {
     },
     error: null,
     success: null,
+    sending: false,
+    wholeDisable: false,
   }),
   methods: {
     async submitForm() {
+      this.error = '';
       try {
+        this.sending = true;
+        this.wholeDisable = true;
         const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
           email: this.email,
           password: this.password,
@@ -362,6 +369,8 @@ export default {
           dataProcessing: this.personalDataProcessing,
           emails: this.emailNotifications,
         });
+        this.sending = false;
+        this.wholeDisable = false;
 
         if (!this.personalData) {
           this.success = true;
@@ -390,6 +399,8 @@ export default {
         });
         this.success = true;
       } catch (error) {
+        this.sending = false;
+        this.wholeDisable = false;
         this.success = false;
         if (error.response) {
           const veeErrors = convertErrors.call(this, error.response.data);

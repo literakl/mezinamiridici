@@ -7,6 +7,7 @@
     <div v-if="!passwordReset">
       <ValidationObserver ref="form" v-slot="{ passes, invalid }">
         <form @submit.prevent="passes(signIn)">
+        <fieldset :disabled='wholeDisable'>
           <div v-if="passwordReset === false">
             <p class="text-danger">{{ $t('sign-in.forget-error') }}</p>
           </div>
@@ -21,10 +22,12 @@
             <b-col md="4" sm="12">
               <Button
                 class="w-100"
+                :waiting="sending"
                 :value="$t('sign-in.reset-password-button')"
                 @clicked="forgotPassword"/>
             </b-col>
           </b-row>
+        </fieldset>
         </form>
       </ValidationObserver>
     </div>
@@ -59,16 +62,23 @@ export default {
     email: null,
     passwordReset: null,
     error: null,
+    sending: false,
+    wholeDisable: false,
   }),
   methods: {
     async forgotPassword() {
+      this.passwordReset = null;
       try {
+        this.sending = true;
+        this.wholeDisable = true;
         const response = await this.$store.dispatch('FORGOT_PASSWORD', {
           email: this.email,
         });
 
         this.passwordReset = response.status === 200;
       } catch (e) {
+        this.sending = false;
+        this.wholeDisable = false;
         // eslint-disable-next-line no-console
         console.log(e);
         this.passwordReset = false;
