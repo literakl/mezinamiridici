@@ -11,35 +11,35 @@
     "test": "jest --config jest.config.js --runInBand"
   },
   "dependencies": {
-    "aws-sdk": "^2.640.0",
+    "aws-sdk": "^2.724.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dayjs": "^1.8.28",
+    "dayjs": "^1.8.31",
     "dotenv": "^8.2.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
-    "fast-json-stringify": "^1.17.0",
+    "fast-json-stringify": "^1.21.0",
     "flatted": "^2.0.2",
     "jsonwebtoken": "^8.5.1",
     "markdown-it": "^11.0.0",
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-mark": "^3.0.0",
-    "mongodb": "^3.5.5",
+    "mongodb": "^3.6.0",
     "morgan": "^1.10.0",
     "nanoid": "^2.1.11",
-    "sanitize-html": "^1.27.1",
-    "slugify": "^1.4.0",
+    "sanitize-html": "^1.27.2",
+    "slugify": "^1.4.5",
     "uuid": "^3.4.0",
-    "winston": "^3.2.1",
-    "winston-transport": "^4.3.0"
+    "winston": "^3.3.3",
+    "winston-transport": "^4.4.0"
   },
   "devDependencies": {
     "got": "^10.7.0",
-    "jest": "^25.3.0",
-    "nodemon": "^2.0.2",
+    "jest": "^25.5.4",
+    "lorem-ipsum": "^2.0.3",
+    "nodemon": "^2.0.4",
     "path": "^0.12.7",
-    "random": "^2.2.0",
-    "lorem-ipsum": "^2.0.3"
+    "random": "^2.2.0"
   },
   "nodemonConfig": {
     "ignore": [
