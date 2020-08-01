@@ -1,11 +1,10 @@
 const axios = require('axios');
 const OAuth = require('oauth');
-const timestamp = require('unix-timestamp');
-const oauthSignature = require('oauth-signature');
+// const timestamp = require('unix-timestamp');
+// const oauthSignature = require('oauth-signature');
 const qs = require('qs');
-var request = require('request-promise');
-const util = require('util');
-
+const request = require('request-promise');// TODO this library is deprecated. What is its purpose? Can we stick with Axios?
+// const util = require('util');
 
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
@@ -13,16 +12,16 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 const CREDENTIAL = require('../../utils/social_provider_credential');
 
-const bruteForceDelay = 1000;
 module.exports = (app) => {
   app.options('/api/auth/:provider');
   app.post('/api/auth/:provider', async (req, res) => {
+    let socialProfile;
     if (req.params.provider === 'google') {
-      var socialProfile = await googleAuth(req, res);
+      socialProfile = await googleAuth(req, res);
     } else if (req.params.provider === 'twitter') {
-      var socialProfile = await twitterAuth(req, res);
+      socialProfile = await twitterAuth(req, res);
     } else if (req.params.provider === 'facebook') {
-      var socialProfile = await facebookAuth(req, res);
+      socialProfile = await facebookAuth(req, res);
     }
     if (socialProfile !== undefined && socialProfile.email !== undefined) {
       const { email, name } = socialProfile;
@@ -45,7 +44,7 @@ module.exports = (app) => {
         return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: user.auth.active });
       }
       if (!user.auth.verified) {
-        setTimeout(() => api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified')), bruteForceDelay);
+        api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
         return res;
       }
       const token = auth.createTokenFromUser(user);
@@ -70,19 +69,20 @@ async function googleAuth(req, res) {
         grant_type: CREDENTIAL.GOOGLE.GRANT_TYPE,
       }),
       headers: {
-        'content-type': 'application/x-www-form-urlencoded'
-      }
-    }
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    };
+
     const googleToken = await axios(googleAuthRequestObject);
-    console.log(googleToken.data)
+    console.log(googleToken.data);
     if (googleToken.status === 200) {
       const googleProfileRequestObject = {
         method: 'get',
         url: CREDENTIAL.GOOGLE.PROFILE_URL,
         headers: {
-          'Authorization': 'Bearer ' + googleToken.data.access_token
-        }
-      }
+          Authorization: `Bearer ${googleToken.data.access_token}`,
+        },
+      };
       const googleProfile = await axios(googleProfileRequestObject);
       if (googleProfile.status === 200) {
         console.log(googleProfile.data);
@@ -98,7 +98,7 @@ async function googleAuth(req, res) {
   } catch (error) {
     console.log('[google auth error]');
     console.log(error);
-    res.status(500).json(err || e);
+    res.status(500).json(error);
   }
 }
 
@@ -118,20 +118,21 @@ async function facebookAuth(req, res) {
   } catch (error) {
     console.log('[facebook auth error]');
     console.log(error);
-    res.status(500).json(err || e);
+    res.status(500).json(error);
   }
 }
 
-function getTwitterProfile(req) {
+function getTwitterProfile(req, res, oauthService) {
   return new Promise((resolve, reject) => {
     oauthService.getOAuthAccessToken(req.body.oauth_token, null, req.body.oauth_verifier,
-      function (error, oauthAccessToken, oauthAccessTokenSecret, results) {
+      (error, oauthAccessToken, oauthAccessTokenSecret, results) => {
+        console.log(results); // TODO what is it for?
         if (error) {
           res.status(500).json(error);
           reject(error);
         } else {
-          var profileUrl = CREDENTIAL.TWITTER.PROFILE_URL;
-          var profileOauth = {
+          const profileUrl = CREDENTIAL.TWITTER.PROFILE_URL;
+          const profileOauth = {
             consumer_key: CREDENTIAL.TWITTER.CLIENT_ID,
             consumer_secret: CREDENTIAL.TWITTER.CLIENT_SECRET,
             token: oauthAccessToken,
@@ -141,49 +142,53 @@ function getTwitterProfile(req) {
             url: profileUrl,
             qs: { include_email: true },
             oauth: profileOauth,
-            json: true
+            json: true,
           })
             .then((profile) => {
               console.log(profile);
-              const email = profile.email;
-              const name = profile.name;
+              const { email } = profile;
+              const { name } = profile;
               resolve({ email, name });
             })
-            .catch((error) => {
-              reject(error);
+            .catch((error2) => {
+              reject(error2);
             });
         }
-      })
+      });
   });
 }
+
 async function twitterAuth(req, res) {
-  oauthService = new OAuth.OAuth(
+  const oauthService = new OAuth.OAuth(
     CREDENTIAL.TWITTER.REQUEST_URL,
     CREDENTIAL.TWITTER.ACCESS_URL,
     CREDENTIAL.TWITTER.CLIENT_ID,
     CREDENTIAL.TWITTER.CLIENT_SECRET,
-    '1.0A', null, CREDENTIAL.TWITTER.ALGORITHM);
+    '1.0A', null,
+    CREDENTIAL.TWITTER.ALGORITHM,
+  );
   try {
     if (!req.body.oauth_token) {
-      oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, function (error, oauthToken, oauthTokenSecret, results) {
+      oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret, results) => {
+        console.log(results); // TODO what is it for?
         if (error) {
-          res.status(500).json(error)
+          res.status(500).json(error);
         } else {
           res.json({
             oauth_token: oauthToken,
-            oauth_token_secret: oauthTokenSecret
-          })
+            oauth_token_secret: oauthTokenSecret,
+          });
         }
-      })
+      });
     } else {
-      const socialProfile = await getTwitterProfile(req);
+      const socialProfile = await getTwitterProfile(req, res, oauthService);
       console.log(socialProfile);
       return socialProfile;
     }
   } catch (error) {
     console.log('[twitter auth error]');
     console.log(error);
-    res.status(500).json(err || e);
+    res.status(500).json(error);
   }
 }
 
@@ -205,8 +210,8 @@ function insertUser(dbClient, id, email, nickname) {
       public: true,
     },
     consent: {
-      terms: now,
-      data: now,
+      terms: now, // todo consent was not granted yet!
+      data: now, // todo consent was not granted yet!
     },
   };
 

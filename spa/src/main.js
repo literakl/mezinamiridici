@@ -36,7 +36,7 @@ Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',
-  baseUrl: 'https://192.168.68.106/api',
+  baseUrl: 'http://localhost:3000/api',
   storageType: 'localStorage',
   providers: {
     facebook: {
