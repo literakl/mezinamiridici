@@ -164,7 +164,7 @@ export default new Vuex.Store({
           }
         } catch (e) {
           // eslint-disable-next-line no-console
-          // console.log('Validate token failed', e);
+          console.log('Validate token failed', e);
           clean = true;
         }
       } else {

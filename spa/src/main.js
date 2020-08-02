@@ -19,6 +19,7 @@ import store from './store';
 import './registerServiceWorker';
 import i18n from './i18n';
 import CREDENTIAL from './credential.json';
+// TODO is this neccessary? We import CSS in App.vue
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 

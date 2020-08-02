@@ -132,8 +132,8 @@ export default {
         this.$auth.logout();
       }
       this.response = null;
-      // const this_ = this;
       this.token = await this.$auth.authenticate(provider);
+      // TODO is the active flag really neccessary?
       if (!this.token.data.active) {
         this.$store.dispatch('SET_SOCIAL', this.token.data);
         console.log('[test endpoint]');
@@ -142,7 +142,6 @@ export default {
         this.$router.push('/');
         this.$store.dispatch('SET_SOCIAL', this.token.data);
       }
-      // this_.isAuthenticated = this_.$auth.isAuthenticated();
     },
   },
 
