@@ -117,8 +117,7 @@ export default {
 
         await this.$router.push('/');
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
+        this.$log.error(error);
         if (error.response && error.response.data && error.response.data.errors) {
           this.error = this.$t(error.response.data.errors[0].messageKey);
         } else {
@@ -136,7 +135,7 @@ export default {
       // TODO is the active flag really neccessary?
       if (!this.token.data.active) {
         this.$store.dispatch('SET_SOCIAL', this.token.data);
-        console.log('[test endpoint]');
+        this.$log.debug('[test endpoint]');
         this.$router.push('/confirm');
       } else {
         this.$router.push('/');

@@ -69,7 +69,7 @@ export default {
         this.text = '';
         this.$emit('dismiss');
       } catch (e) {
-        console.log(e);
+        this.$log.error(e);
         this.error = true;
       }
       this.sending = false;

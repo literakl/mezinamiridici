@@ -69,8 +69,7 @@ export default {
 
         this.passwordReset = response.status === 200;
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+        this.$log.error(e);
         this.passwordReset = false;
       }
     },

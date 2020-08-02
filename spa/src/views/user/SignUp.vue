@@ -284,7 +284,7 @@ async function checkConflict(value, type) {
     }
     return !result.data.data.conflict;
   } catch (error) {
-    console.log(error);
+    this.$log.error(error);
     return false;
   }
 }
@@ -390,6 +390,7 @@ export default {
         });
         this.success = true;
       } catch (error) {
+        this.$log.error(error);
         this.success = false;
         if (error.response) {
           const veeErrors = convertErrors.call(this, error.response.data);

@@ -32,7 +32,7 @@ export default {
 
   mutations: {
     DESTROY_COMMENTS: (state) => {
-      console.log('DESTROY_COMMENTS');
+      Vue.$log.debug('DESTROY_COMMENTS');
       state.comments = {};
       state.discussion.incomplete = true;
       state.discussion.comments = [];
@@ -57,17 +57,17 @@ export default {
       state.comments[comment._id].allShown = true;
     },
     SHOW_ALL_REPLIES: (state, payload) => {
-      console.log('SHOW_ALL_REPLIES');
+      Vue.$log.debug('SHOW_ALL_REPLIES');
       const { commentId } = payload;
       const comment = state.comments[commentId];
       comment.allShown = true;
     },
     SET_REPLIES: (state, payload) => {
-      console.log('SET_REPLIES');
+      Vue.$log.debug('SET_REPLIES');
       const { commentId, replies, userId } = payload;
       const comment = state.comments[commentId];
       if (!comment) {
-        console.log(`Comment ${commentId} not found`);
+        Vue.$log(`Comment ${commentId} not found`);
         return;
       }
 
@@ -99,7 +99,7 @@ export default {
   actions: {
     // pokryt stavy: nacteni nove diskuse, dalsi stranka, nacist nove komentare
     FETCH_COMMENTS: async (context, payload) => {
-      console.log(`FETCH_COMMENTS ${payload}`);
+      Vue.$log.debug(`FETCH_COMMENTS ${payload}`);
       let url = `/items/${payload.itemId}/comments`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
@@ -113,10 +113,9 @@ export default {
       context.commit('APPEND_COMMENTS', mutation);
     },
     RELOAD_COMMENT: async (context, payload) => {
-      console.log(`FETCH_REPLIES ${payload}`);
+      Vue.$log.debug(`FETCH_REPLIES ${payload}`);
       const url = `/items/${payload.itemId}/comments/${payload.commentId}`;
       const response = await get('BFF', url, context);
-      console.log(response.data); // todo remove
       if (response.data.success) {
         const mutation = {
           comment: response.data.data.comment,
@@ -126,10 +125,9 @@ export default {
       }
     },
     ADD_COMMENT: async (context, payload) => {
-      // console.log('ADD_COMMENT', payload);
+      Vue.$log.debug('ADD_COMMENT', payload);
       const body = { text: payload.text, parentId: payload.parent };
       const response = await post('API', `/items/${payload.itemId}/comments`, body, context);
-      // console.log(response.data); // todo remove
       context.commit('SET_ADDED_ID', { commentId: response.data.data.comment._id });
       if (response.data.success) {
         if (!payload.parent) {
@@ -149,7 +147,7 @@ export default {
       }
     },
     VOTE_COMMENT: async (context, payload) => {
-      console.log('COMMENT_VOTE', payload);
+      Vue.$log.debug('COMMENT_VOTE', payload);
       const body = { itemId: payload.itemId, vote: payload.vote };
       await post('API', `/comments/${payload.commentId}/votes`, body, context);
       const mutation = {

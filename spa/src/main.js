@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import log from 'loglevel';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
 import {
@@ -29,7 +30,12 @@ Object.keys(rules).forEach((rule) => {
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
 
-Vue.config.productionTip = false;
+// VUE_APP_LOG_LEVEL
+log.setLevel(process.env.LOG_LEVEL || 'debug');
+Vue.$log = log;
+Vue.prototype.$log = Vue.$log;
+
+Vue.config.productionTip = process.env.VUE_APP_LOG_PRODUCTION_TIP || false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Chartkick.use(Chart));

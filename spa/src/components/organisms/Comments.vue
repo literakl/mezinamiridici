@@ -82,7 +82,7 @@ export default {
       this.$store.dispatch('FETCH_COMMENTS', payload);
     },
     trigerDismiss() {
-      console.log('dismiss');
+      this.$log.debug('dismiss');
     },
   },
 };

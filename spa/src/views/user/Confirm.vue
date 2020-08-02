@@ -315,14 +315,14 @@ export default {
   },
   methods: {
     async getProfile(id) {
-      console.log('[getProfile] ', id);
+      this.$log.debug('[getProfile] ', id);
       if (this.$store.getters.USER_EMAIL !== undefined && this.$store.getters.USER_EMAIL !== null) {
         this.email = this.$store.getters.USER_EMAIL;
         this.nickname = this.$store.getters.USER_NICKNAME;
       } else {
         // when the user try to access this page intentionally
         const profile = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
-        console.log(JSON.stringify(profile));
+        this.$log.debug(JSON.stringify(profile));
         this.nickname = profile.data.data.bio.nickname;
         // this.email = profile.data.data.auth.email;
         // this.$router.push('/');
@@ -339,7 +339,7 @@ export default {
           dataProcessing: this.personalDataProcessing,
           emails: this.emailNotifications,
         });
-        console.log(JSON.stringify(data));
+        this.$log.debug(JSON.stringify(data));
         if (data.success) {
           this.success = true;
           this.$router.push('/');
@@ -350,6 +350,7 @@ export default {
           return false;
         }
       } catch (error) {
+        this.$log.error(error);
         this.success = false;
         if (error.response) {
           const veeErrors = convertErrors.call(this, error.response.data);

@@ -154,8 +154,7 @@ export default {
           this.inProgress = false;
         });
       } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
+        this.$log.error(err);
         if (err.response && err.response.data && err.response.data.errors) {
           this.error = this.$t(err.response.data.errors[0].messageKey);
         } else {
