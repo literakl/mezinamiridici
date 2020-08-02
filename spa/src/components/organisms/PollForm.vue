@@ -112,11 +112,9 @@ export default {
 
       try {
         const item = await this.$store.dispatch(message, body);
-        console.log(item);
         await this.$router.push({ name: 'poll', params: { slug: item.info.slug } });
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
+        this.$log.error(error);
         if (error.response && error.response.data && error.response.data.errors) {
           this.error = this.$t(error.response.data.errors[0].messageKey);
         } else {
@@ -126,7 +124,7 @@ export default {
     },
 
     onContext() {
-      // console.log(this.form.date);
+      // this.$log.debug(this.form.date);
     },
   },
 };

@@ -38,7 +38,8 @@ export default {
           message: this.$t('sign-up.verify-success'),
         },
       });
-    } catch (e) {
+    } catch (error) {
+      this.$log.error(error);
       this.verified = false;
     }
   },

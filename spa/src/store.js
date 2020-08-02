@@ -147,8 +147,7 @@ export default new Vuex.Store({
             context.commit('SET_USER_TOKEN', jwt);
           }
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.log('Validate token failed', e);
+          Vue.$log.error('Validate token failed', e);
           clean = true;
         }
       } else {
@@ -187,7 +186,7 @@ export default new Vuex.Store({
     VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
     GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),
     GET_POLL: async (context, payload) => {
-      // console.log(`GET_POLL ${payload.slug}`);
+      Vue.$log.debug(`GET_POLL ${payload.slug}`);
       if (context.state.poll != null && payload.slug === context.state.poll.info.slug) {
         return; // cached value recycled
       }
@@ -197,7 +196,7 @@ export default new Vuex.Store({
       context.commit('SET_POLL', item);
     },
     GET_POLLS: async (context, payload) => {
-      console.log('GET_POLLS');
+      Vue.$log.debug('GET_POLLS');
       let url = '/polls';
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
@@ -206,12 +205,12 @@ export default new Vuex.Store({
       return response.data.data;
     },
     CREATE_POLL: async (context, payload) => {
-      console.log('CREATE_POLL');
+      Vue.$log.debug('CREATE_POLL');
       const pollData = await post('API', '/polls', payload, context);
       return pollData.data.data;
     },
     UPDATE_POLL: async (context, payload) => {
-      console.log('UPDATE_POLL');
+      Vue.$log.debug('UPDATE_POLL');
       const { pollId } = payload;
       const pollData = await patch('API', `/polls/${pollId}/`, payload, context);
       const item = pollData.data.data;
@@ -219,12 +218,12 @@ export default new Vuex.Store({
       return item;
     },
     DELETE_POLL: async (context, payload) => {
-      console.log('DELETE_POLL');
+      Vue.$log.debug('DELETE_POLL');
       const { pollId } = payload;
       return deleteApi('API', `/polls/${pollId}/`, {}, context);
     },
     POLL_VOTE: async (context, payload) => {
-      console.log('POLL_VOTE');
+      Vue.$log.debug('POLL_VOTE');
       const body = { vote: payload.vote };
       const pollData = await post('BFF', `/polls/${payload.id}/votes`, body, context);
       const item = pollData.data.data;
@@ -234,11 +233,11 @@ export default new Vuex.Store({
       }
     },
     GET_POLL_VOTES: async (context, payload) => {
-      console.log(`GET_POLL_VOTES ${payload.id} ${payload.query}`);
+      Vue.$log.debug(`GET_POLL_VOTES ${payload.id} ${payload.query}`);
       return get('BFF', `/polls/${payload.id}/votes?${payload.query}`);
     },
     INIT_STREAM: async (context) => {
-      console.log('INIT_STREAM');
+      Vue.$log.debug('INIT_STREAM');
       const pollRequest = get('BFF', '/polls/last', context);
       const streamRequest = get('BFF', '/polls/?obd=date', context);
       Promise.all([pollRequest, streamRequest])

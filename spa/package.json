@@ -22,6 +22,7 @@
     "core-js": "^2.6.11",
     "dayjs": "^1.8.29",
     "jwt-decode": "^2.2.0",
+    "loglevel": "^1.6.8",
     "register-service-worker": "^1.7.1",
     "vee-validate": "^3.2.5",
     "vue": "^2.6.11",
