@@ -12,9 +12,12 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 const CREDENTIAL = require('../../utils/social_provider_credential');
 
+axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+
 module.exports = (app) => {
-  app.options('/api/auth/:provider');
-  app.post('/api/auth/:provider', async (req, res) => {
+  app.options('/api/auth/:provider', auth.cors);
+
+  app.get('/api/auth/:provider', auth.cors, async (req, res) => {
     let socialProfile;
     if (req.params.provider === 'google') {
       socialProfile = await googleAuth(req, res);
@@ -23,36 +26,39 @@ module.exports = (app) => {
     } else if (req.params.provider === 'facebook') {
       socialProfile = await facebookAuth(req, res);
     }
-    if (socialProfile !== undefined && socialProfile.email !== undefined) {
-      const { email, name } = socialProfile;
-      const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
-      const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
 
-      if (!user) {
-        logger.debug(`User not found ${email}`);
-        const userId = mongo.generateTimeId();
-        await insertUser(dbClient, userId, email, name);
-        logger.debug('User created');
-        const token = auth.createToken(userId, name, new Date(), null, '1m');
-        return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
-      }
-      if (!user.auth.active) {
-        console.log(user);
-        const userId = user._id;
-        const token = auth.createTokenFromUser(user);
-        return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: user.auth.active });
-      }
-      if (!user.auth.verified) {
-        api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
-        return res;
-      }
-      const token = auth.createTokenFromUser(user);
-      return api.sendResponse(res, { access_token: token, token_type: 'bearer', active: user.auth.active });
+    if (socialProfile === undefined || socialProfile === null || socialProfile.email === undefined) {
+      return api.sendNotAuthorized(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
     }
-    //  else {
-    //   res.status(401);
-    // }
+
+    const { email, name } = socialProfile;
+    const dbClient = await mongo.connectToDatabase();
+    logger.debug('Mongo connected');
+    const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
+
+    if (!user) {
+      logger.debug(`User not found ${email}`);
+      const userId = mongo.generateTimeId();
+      await insertUser(dbClient, userId, email, name);
+      logger.debug('User created');
+      const token = auth.createToken(userId, name, new Date(), null, '1m');
+      return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
+    }
+
+    // TODO is attribute active neccessary?
+    if (!user.auth.active) {
+      console.log(user);
+      const userId = user._id;
+      const token = auth.createTokenFromUser(user);
+      return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: user.auth.active });
+    }
+
+    if (!user.auth.verified) {
+      return api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
+    }
+
+    const token = auth.createTokenFromUser(user);
+    return api.sendResponse(res, { access_token: token, token_type: 'bearer', active: user.auth.active });
   });
 };
 
@@ -89,27 +95,27 @@ async function googleAuth(req, res) {
         const email = googleProfile.data.emailAddresses[0].value;
         const name = googleProfile.data.names[0].displayName;
         return { email, name, provider: 'google' };
-      } else {
-        res.status(500);
       }
-    } else {
-      res.status(500);
     }
+    res.status(500);
+    return null;
   } catch (error) {
     console.log('[google auth error]');
     console.log(error);
     res.status(500).json(error);
+    return null;
   }
 }
 
 async function facebookAuth(req, res) {
   try {
-    const facebookToken = await axios.post(CREDENTIAL.FACEBOOK.TOKEN_URL, {
+    const data = {
       client_id: CREDENTIAL.FACEBOOK.CLIENT_ID,
       client_secret: CREDENTIAL.FACEBOOK.CLIENT_SECRET,
-      code: req.body.code,
+      code: req.query.code,
       redirect_uri: req.body.redirectUri,
-    }, { 'Content-Type': 'application/json' });
+    };
+    const facebookToken = await axios.post(CREDENTIAL.FACEBOOK.TOKEN_URL, data);
     const facebookProfile = await axios.get(CREDENTIAL.FACEBOOK.PROFILE_URL, {
       params: { access_token: facebookToken.data.access_token },
     });
@@ -119,6 +125,44 @@ async function facebookAuth(req, res) {
     console.log('[facebook auth error]');
     console.log(error);
     res.status(500).json(error);
+    return null;
+  }
+}
+
+async function twitterAuth(req, res) {
+  const oauthService = new OAuth.OAuth(
+    CREDENTIAL.TWITTER.REQUEST_URL,
+    CREDENTIAL.TWITTER.ACCESS_URL,
+    CREDENTIAL.TWITTER.CLIENT_ID,
+    CREDENTIAL.TWITTER.CLIENT_SECRET,
+    '1.0A', null,
+    CREDENTIAL.TWITTER.ALGORITHM,
+  );
+  try {
+    if (!req.body.oauth_token) {
+      oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret, results) => {
+        console.log(results); // TODO what is it for?
+        if (error) {
+          res.status(500).json(error);
+          return null;
+        } else {
+          // todo analyze the purpose
+          res.json({
+            oauth_token: oauthToken,
+            oauth_token_secret: oauthTokenSecret,
+          });
+        }
+      });
+    } else {
+      const socialProfile = await getTwitterProfile(req, res, oauthService);
+      console.log(socialProfile);
+      return socialProfile;
+    }
+  } catch (error) {
+    console.log('[twitter auth error]');
+    console.log(error);
+    res.status(500).json(error);
+    return null;
   }
 }
 
@@ -146,6 +190,7 @@ function getTwitterProfile(req, res, oauthService) {
           })
             .then((profile) => {
               console.log(profile);
+              // todo merge desconstructing
               const { email } = profile;
               const { name } = profile;
               resolve({ email, name });
@@ -156,40 +201,6 @@ function getTwitterProfile(req, res, oauthService) {
         }
       });
   });
-}
-
-async function twitterAuth(req, res) {
-  const oauthService = new OAuth.OAuth(
-    CREDENTIAL.TWITTER.REQUEST_URL,
-    CREDENTIAL.TWITTER.ACCESS_URL,
-    CREDENTIAL.TWITTER.CLIENT_ID,
-    CREDENTIAL.TWITTER.CLIENT_SECRET,
-    '1.0A', null,
-    CREDENTIAL.TWITTER.ALGORITHM,
-  );
-  try {
-    if (!req.body.oauth_token) {
-      oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret, results) => {
-        console.log(results); // TODO what is it for?
-        if (error) {
-          res.status(500).json(error);
-        } else {
-          res.json({
-            oauth_token: oauthToken,
-            oauth_token_secret: oauthTokenSecret,
-          });
-        }
-      });
-    } else {
-      const socialProfile = await getTwitterProfile(req, res, oauthService);
-      console.log(socialProfile);
-      return socialProfile;
-    }
-  } catch (error) {
-    console.log('[twitter auth error]');
-    console.log(error);
-    res.status(500).json(error);
-  }
 }
 
 function insertUser(dbClient, id, email, nickname) {
