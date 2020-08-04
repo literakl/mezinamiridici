@@ -1,17 +1,29 @@
 const nodemailer = require('nodemailer');
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 const path = require('path');
 const fs = require('fs');
 const Handlebars = require('handlebars');
 const logger = require('./logging');
 require('./path_env');
 
-const ses = new AWS.SES();
+// const ses = new AWS.SES();
+// AWS.config.region = process.env.AWS_REGION;
 const COMPILED_TEMPLATES = {};
 
-AWS.config.region = process.env.AWS_REGION;
+async function sendEmail(config, options, context) {
+  const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
+  const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  const data = Object.assign({}, emailConfig, options);
+  data.from = process.env.DEFAULT_SENDER;
+  if (emailConfig.text_template) {
+    data.text = processTemplate(config, emailConfig.text_template, context);
+    delete emailConfig.text_template;
+  }
+  if (emailConfig.html_template) {
+    data.html = processTemplate(config, emailConfig.html_template, context);
+    delete emailConfig.html_template;
+  }
 
-async function sendEmail() {
   const testAccount = await nodemailer.createTestAccount();
 
   // create reusable transporter object using the default SMTP transport
@@ -25,114 +37,23 @@ async function sendEmail() {
     },
   });
 
-  const info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: 'bar@example.com, baz@example.com', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: 'Hello world?', // plain text body
-    html: '<b>Hello world?</b>', // html body
-  });
+  const info = await transporter.sendMail(data);
+  logger.debug('Message sent: %s', info.messageId);
+  logger.debug('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
-  console.log('Message sent: %s', info.messageId);
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  return info;
 }
 
-function compileTemplate(templateName, type) {
-  const filename = `${templateName}.${type}`;
-  const cached = COMPILED_TEMPLATES[`${templateName}.${type}`];
-  if (!cached) {
+function processTemplate(templateName, filename, context) {
+  let compiled = COMPILED_TEMPLATES[`${templateName}.${filename}`];
+  if (!compiled) {
     const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, filename);
     const template = fs.readFileSync(filepath, 'utf8');
-    COMPILED_TEMPLATES[`${templateName}.${type}`] = Handlebars.compile(template);
+    compiled = Handlebars.compile(template);
+    COMPILED_TEMPLATES[`${templateName}.${filename}`] = compiled;
   }
 
-  return COMPILED_TEMPLATES[`${templateName}.${type}`];
+  return compiled(context);
 }
 
-function isTruthy(x) {
-  return Boolean(x);
-}
-
-function destinationParams(options) {
-  let toAddresses = options.toAddresses || [];
-  let ccAddresses = options.ccAddresses || [];
-  let bccAddresses = options.bccAddresses || [];
-
-  toAddresses = toAddresses.filter(isTruthy);
-  ccAddresses = ccAddresses.filter(isTruthy);
-  bccAddresses = bccAddresses.filter(isTruthy);
-
-  return {
-    ToAddresses: toAddresses,
-    CcAddresses: ccAddresses,
-    BccAddresses: bccAddresses,
-  };
-}
-
-function messageParams(options) {
-  return {
-    Body: {
-      Html: {
-        Data: compileTemplate(options.templateName, 'html')(options.context),
-        Charset: 'utf8',
-      },
-      Text: {
-        Data: compileTemplate(options.templateName, 'txt')(options.context),
-        Charset: 'utf8',
-      },
-    },
-    Subject: {
-      Data: options.subject,
-      Charset: 'utf8',
-    },
-  };
-}
-
-async function sendMany(options, callback) {
-  const params = {
-    Destination: destinationParams(options),
-    Message: messageParams(options),
-    Source: options.senderEmailAddress || process.env.SENDER_EMAIL_ADDRESS,
-    ReplyToAddresses: [
-      options.replyToAddress || process.env.SENDER_EMAIL_ADDRESS,
-    ],
-  };
-
-  try {
-    await ses.sendEmail(params, callback).promise();
-    logger.debug('mail sent');
-    return true;
-  } catch (error) {
-    logger.debug('send mail failure');
-    return false;
-  }
-}
-
-async function sendEmailService(templateName, params, callback) {
-  const options = {
-    templateName,
-    context: params,
-    subject: params.subject,
-    toAddresses: Array.isArray(params.email) ? params.email : [params.email],
-    senderEmailAddress: params.senderEmailAddress,
-    replyToAddress: params.replyToAddress,
-    ccAddresses: null,
-    bccAddresses: null,
-  };
-
-  logger.debug('send mail handler starts');
-
-  try {
-    const info = await sendMany(options, callback);
-    logger.debug('send mail ==>', info);
-    return info;
-  } catch (error) {
-    logger.debug('send mail failure');
-    return error.message;
-  }
-}
-
-
-exports.sendEmailService = sendEmailService;
-exports.sendMany = sendMany;
 exports.sendEmail = sendEmail;

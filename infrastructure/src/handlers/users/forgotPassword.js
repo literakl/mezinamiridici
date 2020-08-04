@@ -33,6 +33,7 @@ module.exports = (app) => {
         logger.debug('Email sent');
         logger.debug(info);
       } catch (err) {
+        console.error('Sending email failed', err);
         return api.sendInternalError(res, api.createError('Failed to send email', 'sign-in.something-went-wrong'));
       }
       return api.sendResponse(res, api.createResponse({}));
@@ -51,9 +52,11 @@ const prepareSetTokenQuery = (token, date) => {
 };
 
 const sendPasswordResetEmail = async (email, token) => {
-  const body = {
-    verificationLink: `https://www.mezinamiridici.cz/nastaveni-hesla/${token}`,
-    email,
+  const options = {
+    to: email,
   };
-  return mailService.sendEmail(body);
+  const context = {
+    verificationLink: `${process.env.WEB_URL}/nastaveni-hesla/${token}`,
+  };
+  return mailService.sendEmail('reset_password.json', options, context);
 };
