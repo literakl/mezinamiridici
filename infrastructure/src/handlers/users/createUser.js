@@ -27,51 +27,50 @@ module.exports = (app) => {
     try {
       let sendResult = '';
       let sendError = '';
-      let info = await sendVerificationEmail(email, verificationToken, function(error, result){
+      const info = await sendVerificationEmail(email, verificationToken, (error, result2) => {
         logger.debug(' * * * * * email sent ? ');
-        logger.debug(result);
-        sendResult = result;
-        
+        logger.debug(result2);
+        sendResult = result2;
+
         logger.debug(error);
         sendError = error;
       });
       logger.debug(info);
-      if(info && sendResult !== null){
+      if (info && sendResult !== null) {
         logger.debug(' email sent ');
-      }else{
+      } else {
         return api.sendInternalError(res, api.createError(sendError, 'sign-up.something-went-wrong'));
       }
-
     } catch (err) {
       return api.sendInternalError(res, api.createError('Error sending email', 'sign-up.something-went-wrong'));
     }
 
     try {
       await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
-      logger.debug('User created',);
+      logger.debug('User created');
     } catch (err) {
       logger.error('Request failed', err);
       if (err.code === 11000) {
-          if(err.keyValue) {
-              if (!!err.keyValue['auth.email']) {
-                  api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
-              }
-              if (!!err.keyValue['bio.nickname']) {
-                  api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
-              }
-          } else {
-              var keyValue = err.errmsg.split('index:')[1].split('dup key')[0].split('_')[0].trim();
-              if (keyValue == 'auth.email') {
-                  api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
-              }
-              if (keyValue == 'bio.nickname') {
-                  api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
-              }
+        if (err.keyValue) {
+          if (err.keyValue['auth.email']) {
+            api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
           }
-          return api.sendConflict(res, result);
+          if (err.keyValue['bio.nickname']) {
+            api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
+          }
+        } else {
+          const keyValue = err.errmsg.split('index:')[1].split('dup key')[0].split('_')[0].trim();
+          if (keyValue === 'auth.email') {
+            api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
+          }
+          if (keyValue === 'bio.nickname') {
+            api.addValidationError(result, 'nickname', 'nickname has been already taken', 'sign-up.nickname-exists');
+          }
+        }
+        return api.sendConflict(res, result);
       }
       return api.sendInternalError(res, api.createError('failed to create new user', 'sign-up.something-went-wrong'));
-  }
+    }
 
     const token = auth.createToken(userId, nickname, new Date(), null, '1m');
     return api.sendCreated(res, api.createResponse(token));
@@ -112,21 +111,19 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
 }
 
 const sendVerificationEmail = async (email, token, fn) => {
-
   const body = {
-    verificationLink : `https://www.mezinamiridici.cz/overeni-uzivatele/${token}`,
-    subject : 'Dokončení registrace',
+    verificationLink: `https://www.mezinamiridici.cz/overeni-uzivatele/${token}`,
+    subject: 'Dokončení registrace',
     email,
-  }
-  try{
-    let info = await mailService.sendEmailService('welcome', body, fn);
+  };
+  try {
+    const info = await mailService.sendEmailService('welcome', body, fn);
     logger.info(info);
     return info;
-  }catch(error){
-    logger.info('---->',error);
+  } catch (error) {
+    logger.info('---->', error);
     return error;
   }
-
 };
 
 const validateParameters = (email, password, nickname, termsAndConditions, dataProcessing) => {
