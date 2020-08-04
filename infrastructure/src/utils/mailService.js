@@ -3,14 +3,12 @@ const AWS = require('aws-sdk');
 const path = require('path');
 const fs = require('fs');
 const Handlebars = require('handlebars');
-const dotenv = require('dotenv');
 const logger = require('./logging');
+require('./path_env');
 
 const ses = new AWS.SES();
 const COMPILED_TEMPLATES = {};
 
-const envPath = path.join(__dirname, '../..', '.env');
-dotenv.config({ path: envPath });
 AWS.config.region = process.env.AWS_REGION;
 
 async function sendEmail() {

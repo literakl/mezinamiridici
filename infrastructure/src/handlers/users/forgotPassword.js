@@ -3,6 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 const mailService = require('../../utils/mailService');
+require('../../utils/path_env');
 
 module.exports = (app) => {
   app.options('/v1/forgotPassword', auth.cors);
