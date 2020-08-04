@@ -28,24 +28,11 @@ module.exports = (app) => {
       logger.debug('Token updated in User');
 
       try {
-        let sendResult = '';
-        let sendError = '';
-        const info = await sendPasswordResetEmail(email, resetToken, (error, result) => {
-          logger.debug(' * * * * * email sent ? ');
-          logger.debug(result);
-          sendResult = result;
-
-          logger.debug(error);
-          sendError = error;
-        });
+        const info = await sendPasswordResetEmail(email, resetToken);
+        logger.debug('Email sent');
         logger.debug(info);
-        if (info && sendResult !== null) {
-          logger.debug(' Email sent ');
-        } else {
-          return api.sendInternalError(res, api.createError(sendError, 'sign-in.something-went-wrong'));
-        }
       } catch (err) {
-        return api.sendInternalError(res, api.createError('Failed to reset the password', 'sign-in.something-went-wrong'));
+        return api.sendInternalError(res, api.createError('Failed to send email', 'sign-in.something-went-wrong'));
       }
       return api.sendResponse(res, api.createResponse({}));
     } catch (err) {
@@ -62,18 +49,10 @@ const prepareSetTokenQuery = (token, date) => {
   return query;
 };
 
-const sendPasswordResetEmail = async (email, token, fn) => {
+const sendPasswordResetEmail = async (email, token) => {
   const body = {
     verificationLink: `https://www.mezinamiridici.cz/nastaveni-hesla/${token}`,
-    subject: 'Obnova hesla',
     email,
   };
-  try {
-    const info = await mailService.sendEmailService('forgotPassword', body, fn);
-    logger.info(info);
-    return info;
-  } catch (error) {
-    logger.info('---->', error);
-    return error;
-  }
+  return mailService.sendEmail(body);
 };
