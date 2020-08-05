@@ -7,8 +7,8 @@ module.exports = {
     PROFILE_URL: 'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses',
   },
   FACEBOOK: {
-    CLIENT_ID: '860316561127732',
-    CLIENT_SECRET: '277f8e34f5d69d52bdc427b5abb420d6',
+    CLIENT_ID: '262227181532658',
+    CLIENT_SECRET: '2fe01bc4e14b9124d1daf0fb4d72374a',
     TOKEN_URL: 'https://graph.facebook.com/v2.4/oauth/access_token',
     PROFILE_URL: 'https://graph.facebook.com/v2.5/me?fields=email,name',
   },
