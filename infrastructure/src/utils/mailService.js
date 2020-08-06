@@ -1,14 +1,22 @@
 const nodemailer = require('nodemailer');
-// const AWS = require('aws-sdk');
 const path = require('path');
 const fs = require('fs');
 const Handlebars = require('handlebars');
 const logger = require('./logging');
 require('./path_env');
 
-// const ses = new AWS.SES();
-// AWS.config.region = process.env.AWS_REGION;
 const COMPILED_TEMPLATES = {};
+
+let transporter;
+switch (process.env.MAILER) {
+  case 'SES':
+    transporter = createAWSSESTransporter();
+    break;
+  case 'SMTP':
+  case 'FAKE':
+  default:
+    transporter = createFakeTransporter();
+}
 
 async function sendEmail(config, options, context) {
   const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
@@ -24,23 +32,12 @@ async function sendEmail(config, options, context) {
     delete emailConfig.html_template;
   }
 
-  const testAccount = await nodemailer.createTestAccount();
-
-  // create reusable transporter object using the default SMTP transport
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: testAccount.user, // generated ethereal user
-      pass: testAccount.pass, // generated ethereal password
-    },
-  });
-
   const info = await transporter.sendMail(data);
   logger.debug(`Message sent: ${info.messageId}`);
-  logger.debug(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
-
+  const testMessageUrl = nodemailer.getTestMessageUrl(info);
+  if (testMessageUrl) {
+    logger.debug(`Preview URL: ${testMessageUrl}`);
+  }
   return info;
 }
 
@@ -54,6 +51,32 @@ function processTemplate(templateName, filename, context) {
   }
 
   return compiled(context);
+}
+
+async function createFakeTransporter() {
+  const testAccount = await nodemailer.createTestAccount();
+
+  // create reusable transporter object using the default SMTP transport
+  return nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: testAccount.user, // generated ethereal user
+      pass: testAccount.pass, // generated ethereal password
+    },
+  });
+}
+
+function createAWSSESTransporter() {
+  // eslint-disable-next-line global-require
+  const AWS = require('aws-sdk');
+  AWS.config.region = process.env.AWS_REGION;
+  return nodemailer.createTransport({
+    SES: new AWS.SES({
+      apiVersion: '2010-12-01',
+    }),
+  });
 }
 
 exports.sendEmail = sendEmail;
