@@ -29,9 +29,8 @@ module.exports = (app) => {
       logger.debug('Token updated in User');
 
       try {
-        const info = await sendPasswordResetEmail(email, resetToken);
+        await sendPasswordResetEmail(email, resetToken);
         logger.debug('Email sent');
-        logger.debug(info);
       } catch (err) {
         console.error('Sending email failed', err);
         return api.sendInternalError(res, api.createError('Failed to send email', 'sign-in.something-went-wrong'));

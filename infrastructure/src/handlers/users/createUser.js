@@ -25,27 +25,6 @@ module.exports = (app) => {
     logger.debug('Mongo connected');
 
     try {
-      let sendResult = '';
-      let sendError = '';
-      const info = await sendVerificationEmail(email, verificationToken, (error, result2) => {
-        logger.debug(' * * * * * email sent ? ');
-        logger.debug(result2);
-        sendResult = result2;
-
-        logger.debug(error);
-        sendError = error;
-      });
-      logger.debug(info);
-      if (info && sendResult !== null) {
-        logger.debug(' email sent ');
-      } else {
-        return api.sendInternalError(res, api.createError(sendError, 'sign-up.something-went-wrong'));
-      }
-    } catch (err) {
-      return api.sendInternalError(res, api.createError('Error sending email', 'sign-up.something-went-wrong'));
-    }
-
-    try {
       await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
       logger.debug('User created');
     } catch (err) {
@@ -70,6 +49,14 @@ module.exports = (app) => {
         return api.sendConflict(res, result);
       }
       return api.sendInternalError(res, api.createError('failed to create new user', 'sign-up.something-went-wrong'));
+    }
+
+    try {
+      await sendVerificationEmail(email, verificationToken);
+      logger.debug('Email sent');
+    } catch (err) {
+      console.error('Sending email failed', err);
+      return api.sendInternalError(res, api.createError('Failed to send email', 'sign-up.something-went-wrong'));
     }
 
     const token = auth.createToken(userId, nickname, new Date(), null, '1m');
@@ -110,20 +97,14 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
   return dbClient.db().collection('users').insertOne(userDoc);
 }
 
-const sendVerificationEmail = async (email, token, fn) => {
-  const body = {
-    verificationLink: `https://www.mezinamiridici.cz/overeni-uzivatele/${token}`,
-    subject: 'Dokončení registrace',
-    email,
+const sendVerificationEmail = async (email, token) => {
+  const options = {
+    to: email,
   };
-  try {
-    const info = await mailService.sendEmailService('welcome', body, fn);
-    logger.info(info);
-    return info;
-  } catch (error) {
-    logger.info('---->', error);
-    return error;
-  }
+  const context = {
+    verificationLink: `${process.env.WEB_URL}/overeni-uzivatele/${token}`,
+  };
+  return mailService.sendEmail('confirm_email.json', options, context);
 };
 
 const validateParameters = (email, password, nickname, termsAndConditions, dataProcessing) => {

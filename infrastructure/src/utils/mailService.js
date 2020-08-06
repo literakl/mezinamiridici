@@ -38,8 +38,8 @@ async function sendEmail(config, options, context) {
   });
 
   const info = await transporter.sendMail(data);
-  logger.debug('Message sent: %s', info.messageId);
-  logger.debug('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  logger.debug(`Message sent: ${info.messageId}`);
+  logger.debug(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
 
   return info;
 }
