@@ -18,7 +18,7 @@ passport.use('twitter',
       consumerKey     : process.env.TWITTER_CLIENT_ID,
       consumerSecret  : process.env.TWITTER_CLIENT_SECRET,
       callbackURL     : process.env.TWITTER_REDIRECT_URI,
-      includeEmail    : true
+      // includeEmail    : true
       // passReqToCallback : true,
     },
     function(accessToken, refreshToken, profile, done) {

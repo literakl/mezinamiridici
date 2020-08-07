@@ -7,7 +7,8 @@ const passport = require('passport');
 const passportFacebook = require('../socialAuth/facebook');
 const passportTwitter = require('../socialAuth/twitter');
 const passportGoogle = require('../socialAuth/google');
-
+// require('https').globalAgent.options.rejectUnauthorized = false;
+const session = require('express-session');
 
 module.exports = (app) => {
   // app.options('/v1/auth/facebook', auth.cors);
@@ -29,20 +30,20 @@ module.exports = (app) => {
     res.send("Success");
   });
 
-
-  // app.use(passport.initialize());
-  // app.use(passport.session());
+  app.use(session({ secret: 'melody hensley is my spirit animal' }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
     /* FACEBOOK ROUTER */
-  app.get('/v1/auth/facebook', auth.cors, passportFacebook.authenticate('facebook', { scope : 'email', display: 'popup' }));
+  app.get('/v1/auth/facebook', passportFacebook.authenticate('facebook', { scope : 'email'}));
 
-  app.get('/v1/auth/facebook/callback', auth.cors,
+  app.get('/v1/auth/facebook/callback', 
   passportFacebook.authenticate('facebook', { successRedirect: "/", failureRedirect: '/fail' }));
 
   /* TWITTER ROUTER */
-  app.get('/v1/auth/twitter', auth.cors, passportTwitter.authenticate('twitter', {scope:['include_email=true'], display: 'popup'}));
+  app.get('/v1/auth/twitter', passportTwitter.authenticate('twitter', {scope:['include_email=true']}));
 
-  app.get('/v1/auth/twitter/callback', auth.cors,
+  app.get('/api/auth/twitter/callback',
   passportTwitter.authenticate('twitter', { successRedirect: "/", failureRedirect: '/fail' },
   (req, res) => {
     console.log('req ===> ', req);
