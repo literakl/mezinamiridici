@@ -82,6 +82,38 @@ export default new Vuex.Store({
       };
       return post('API', '/resetPassword', body);
     },
+    SIGN_SOCIAL_USER: (context, payload) => {
+      context.commit('SET_POLL', null);
+      context.commit('SET_LATEST_POLL', null);
+      context.commit('SET_USER_TOKEN', null);
+      context.commit('SET_AUTHORIZED', false);
+      context.commit('SET_USER_ID', null);
+      context.commit('SET_USER_ROLE', null);
+      context.commit('SET_USER_NICKNAME', null);
+
+
+      // const response = await get('API', `/auth/${payload}`);
+
+      const jwt = payload;
+      const jwtData = jwtDecode(jwt);
+
+      Vue.$log.debug(jwtData);
+
+      if (jwtData.auth.verified) {
+        context.commit('SET_USER_TOKEN', jwt);
+        context.commit('SET_AUTHORIZED', true);
+        context.commit('SET_USER_ID', jwtData.userId);
+        context.commit('SET_USER_NICKNAME', jwtData.nickname);
+        context.commit('SET_USER_ROLE', jwtData.roles);
+        localStorage.setItem('jwt', jwt);
+        return true;
+      }
+
+      if (jwtData.auth.socialUser) {
+        return jwtData;
+      }
+      return false;
+    },
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_POLL', null);
       context.commit('SET_LATEST_POLL', null);
@@ -96,6 +128,8 @@ export default new Vuex.Store({
         password: payload.password,
       };
       const response = await post('API', '/authorizeUser', body);
+
+      // must implement for error message process.
 
       const jwt = response.data.data;
       const jwtData = jwtDecode(jwt);
@@ -182,6 +216,28 @@ export default new Vuex.Store({
         publicProfile: payload.publicProfile,
       };
       return patch('API', `/users/${payload.userId}`, body, context, payload.jwt);
+    },
+    UPDATE_SOCIAL_USER: async (context, payload) => {
+      const body = {
+        email: payload.email,
+        nickname: payload.nickname,
+        password: payload.password,
+        termsAndConditions: payload.termsAndConditions,
+        dataProcessing: payload.personalDataProcessing,
+        emails: payload.emailNotifications,
+      };
+      const response = await patch('API', `/socialusers/${payload.userId}`, body, context, payload.jwt);
+
+      const jwt = response.data.data;
+      const jwtData = jwtDecode(jwt);
+      localStorage.setItem('jwt', jwt);
+      context.commit('SET_USER_TOKEN', jwt);
+      context.commit('SET_AUTHORIZED', true);
+      context.commit('SET_USER_ID', jwtData.userId);
+      context.commit('SET_USER_NICKNAME', jwtData.nickname);
+      context.commit('SET_USER_ROLE', jwtData.roles);
+
+      return true;
     },
     VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
     GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),

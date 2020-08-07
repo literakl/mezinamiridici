@@ -22,6 +22,7 @@
         :type="type"
         :placeholder="placeholder"
         ref="input"
+        :disabled="disabled"
         v-model="innerValue"
         v-bind="ariaInput">
       </b-form-input>
@@ -81,6 +82,7 @@ export default {
       type: null,
       default: '',
     },
+    disabled: Boolean,
   },
   data: () => ({
     innerValue: '',
