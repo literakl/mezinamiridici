@@ -1,10 +1,9 @@
-const AWS = require('aws-sdk');
-
-const ses = new AWS.SES();
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
+const mailService = require('../../utils/mailService');
+require('../../utils/path_env');
 
 module.exports = (app) => {
   app.options('/v1/forgotPassword', auth.cors);
@@ -29,8 +28,13 @@ module.exports = (app) => {
       dbClient.db().collection('users').updateOne({ _id: user._id }, query);
       logger.debug('Token updated in User');
 
-      sendVerificationEmail(email, resetToken);
-      logger.debug('Email sent');
+      try {
+        await sendPasswordResetEmail(email, resetToken);
+        logger.debug('Email sent');
+      } catch (err) {
+        console.error('Sending email failed', err);
+        return api.sendInternalError(res, api.createError('Failed to send email', 'sign-in.something-went-wrong'));
+      }
       return api.sendResponse(res, api.createResponse({}));
     } catch (err) {
       logger.error('Request failed', err);
@@ -46,27 +50,12 @@ const prepareSetTokenQuery = (token, date) => {
   return query;
 };
 
-const sendVerificationEmail = (email, token, fn) => {
-  const resetLink = `https://www.mezinamiridici.cz/reset-password/${token}`;
-  const subject = 'Obnova hesla';
-  return ses.sendEmail({
-    Source: 'robot@mezinamiridici.cz',
-    Destination: { ToAddresses: [email] },
-    Message: {
-      Subject: { Data: subject },
-      Body: {
-        Html: {
-          Data: `${'<html><head>'
-                        + '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
-                        + `<title>${subject}</title>`
-                        + '</head>'
-                        + '<p>Pokud chcete změnit heslo, otevřete odkaz níže. Má platnost 6 hodin. '
-                        + 'Pokud jste o změnu hesla nežádali, někdo si hraje, ale má smůlu. S klidem email ignorujte.</p>'
-                        + `<p><a href="${resetLink}">Zadat nové heslo</a>.</p>`
-                        + '<p>Pokud odkaz nejde otevřít, zkopírujte následující text a vložte jej do prohlížeče: '}${resetLink}</p>`
-                        + '</body></html>',
-        },
-      },
-    },
-  }, fn);
+const sendPasswordResetEmail = async (email, token) => {
+  const options = {
+    to: email,
+  };
+  const context = {
+    verificationLink: `${process.env.WEB_URL}/nastaveni-hesla/${token}`,
+  };
+  return mailService.sendEmail('reset_password.json', options, context);
 };

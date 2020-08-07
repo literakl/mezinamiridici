@@ -16,7 +16,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'one-var-declaration-per-line': 'off',
     'one-var': 'off',
-    'no-use-before-define': ['error', { "functions": false }],
+    'no-use-before-define': 'off',
     'no-param-reassign': ['error', { "props": false }],
     'no-else-return': 'off',
     'object-curly-newline': 'off'
