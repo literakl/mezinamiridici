@@ -1,0 +1,6 @@
+
+{subject}
+
+{verificationLink}
+Dokončit registraci.
+  Pokud odkaz nejde otevřít, zkopírujte následující text a vložte jej do prohlížeče: {verificationLink}

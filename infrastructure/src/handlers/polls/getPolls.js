@@ -1,9 +1,4 @@
-const path = require('path');
-const dotenv = require('dotenv');
-
-const envPath = path.join(__dirname, '../..', '.env');
-dotenv.config({ path: envPath });
-
+require('../../utils/path_env');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');

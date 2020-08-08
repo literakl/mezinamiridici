@@ -5,7 +5,8 @@
     v-on:click="clicked"
     :disabled="disabled"
     variant="warning">
-    {{value}}
+    <b-spinner v-if="waiting"></b-spinner>
+    <span v-if="waiting===false">{{value}}</span>
   </b-button>
 </template>
 
@@ -22,6 +23,7 @@ export default {
       type: String,
       default: 'lg',
     },
+    waiting: Boolean,
   },
   methods: {
     clicked(e) {

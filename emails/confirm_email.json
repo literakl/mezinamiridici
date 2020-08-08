@@ -1,0 +1,12 @@
+{
+  "subject": "Potvrzení registrace",
+  "text_template": "confirm_email.txt",
+  "html_template": "confirm_email.html",
+  "attachments": [
+    {
+      "filename": "logo.png",
+      "path": "../emails/files/logo.png",
+      "cid": "budlogo"
+    }
+  ]
+}

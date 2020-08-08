@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
 const corsMiddleware = require('cors');
-const dotenv = require('dotenv');
 
-dotenv.config();
 const api = require('./api');
+require('./path_env');
 
 console.log(process.env.NODE_ENV);
 function authenticate(required) {

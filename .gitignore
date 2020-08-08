@@ -27,4 +27,8 @@ yarn-error.log*
 
 #sensitive
 /infrastructure/awsdeploy.bat
+infrastructure/.env
+infrastructure/access.log
+infrastructure/application.log
+infrastructure/error.log
 /infrastructure/src/dist/

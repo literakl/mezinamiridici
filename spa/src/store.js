@@ -78,7 +78,8 @@ export default new Vuex.Store({
       const body = {
         email: payload.email,
       };
-      await post('API', '/forgotPassword', body);
+      const result = await post('API', '/forgotPassword', body);
+      return result;
     },
     RESET_PASSWORD: (context, payload) => {
       const body = {
@@ -176,7 +177,7 @@ export default new Vuex.Store({
         context.commit('SET_USER_ID', null);
       }
     },
-    CREATE_USER_PROFILE: (context, payload) => {
+    CREATE_USER_PROFILE: async (context, payload) => {
       const body = {
         email: payload.email,
         password: payload.password,
@@ -185,7 +186,8 @@ export default new Vuex.Store({
         dataProcessing: payload.dataProcessing,
         emails: payload.marketing,
       };
-      return post('API', '/users', body);
+      const result = await post('API', '/users', body);
+      return result;
     },
     UPDATE_USER_PROFILE: (context, payload) => {
       const body = {

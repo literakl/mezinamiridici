@@ -1,11 +1,9 @@
-const path = require('path');
 const generate = require('nanoid/generate');
-const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
 const logger = require('./logging');
 
-const envPath = path.join(__dirname, '../..', '.env');
-dotenv.config({ path: envPath });
+require('./path_env');
+
 const { MONGODB_URI, TIME_ID_CHARS } = process.env;
 const TIME_ID_CHARS_INT = parseInt(TIME_ID_CHARS || '1', 10);
 logger.info(`Mongo is configured to connect ${MONGODB_URI}`);
