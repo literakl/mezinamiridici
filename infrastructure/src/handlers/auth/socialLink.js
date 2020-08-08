@@ -56,7 +56,7 @@ module.exports = (app) => {
 
 async function googleAuth(req, res) {
   try {
-    const googleAuthRequestObject = {
+    const requestObject = {
       method: 'post',
       url: CREDENTIAL.GOOGLE.TOKEN_URL,
       data: qs.stringify({
@@ -71,7 +71,7 @@ async function googleAuth(req, res) {
       },
     };
 
-    const googleToken = await axios(googleAuthRequestObject);
+    const googleToken = await axios(requestObject);
     if (googleToken.status === 200) {
       const googleProfileRequestObject = {
         method: 'get',
@@ -102,12 +102,20 @@ async function googleAuth(req, res) {
 
 async function facebookAuth(req, res) {
   try {
-    const facebookToken = await axios.post(CREDENTIAL.FACEBOOK.TOKEN_URL, {
-      client_id: CREDENTIAL.FACEBOOK.CLIENT_ID,
-      client_secret: CREDENTIAL.FACEBOOK.CLIENT_SECRET,
-      code: req.body.code,
-      redirect_uri: req.body.redirectUri,
-    }, { 'Content-Type': 'application/json' });
+    const requestObject = {
+      method: 'post',
+      url: CREDENTIAL.FACEBOOK.TOKEN_URL,
+      data: {
+        code: req.body.code,
+        redirect_uri: req.body.redirectUri,
+        client_id: CREDENTIAL.FACEBOOK.CLIENT_ID,
+        client_secret: CREDENTIAL.FACEBOOK.CLIENT_SECRET,
+      },
+      headers: {
+        'content-type': 'application/json',
+      },
+    };
+    const facebookToken = await axios(requestObject);
 
     const facebookProfile = await axios.get(CREDENTIAL.FACEBOOK.PROFILE_URL, {
       params: { access_token: facebookToken.data.access_token },
