@@ -19,7 +19,7 @@ import router from './router';
 import store from './store';
 import './registerServiceWorker';
 import i18n from './i18n';
-import CREDENTIAL from './credential.json';
+
 // TODO is this neccessary? We import CSS in App.vue
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -47,16 +47,16 @@ Vue.use(VueAuthenticate, {
   storageType: 'localStorage',
   providers: {
     facebook: {
-      clientId: CREDENTIAL.FACEBOOK.CLIENT_ID,
-      redirectUri: CREDENTIAL.FACEBOOK.REDIRECT_URI,
+      clientId: process.env.VUE_APP_FACEBOOK_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_FACEBOOK_REDIRECT_URI,
     },
     twitter: {
-      clientId: CREDENTIAL.TWITTER.CLIENT_ID,
-      redirectUri: CREDENTIAL.TWITTER.REDIRECT_URI,
+      clientId: process.env.VUE_APP_TWITTER_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_TWITTER_REDIRECT_URI,
     },
     google: {
-      clientId: CREDENTIAL.GOOGLE.CLIENT_ID,
-      redirectUri: CREDENTIAL.GOOGLE.REDIRECT_URI,
+      clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
     },
   },
 });
