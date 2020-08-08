@@ -1,46 +1,40 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const dotenv = require("dotenv");
-const { parsePollFilterParams } = require('../../utils/api');
-  
+const dotenv = require('dotenv');
+
 dotenv.config();
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser((user, cb) => {
   cb(null, user);
 });
 
-passport.deserializeUser(function(obj, cb) {
+passport.deserializeUser((obj, cb) => {
   cb(null, obj);
 });
 
 passport.use(
   new GoogleStrategy(
     {
-      clientID        : process.env.GOOGLE_CLIENT_ID,
-      clientSecret    : process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL     : process.env.GOOGLE_REDIRECT_URI,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_REDIRECT_URI,
     },
-    function(accessToken, refreshToken, profile, done) {
-
-
-
-      process.nextTick(function() {
-
+    ((accessToken, refreshToken, profile, done) => {
+      process.nextTick(() => {
+        // eslint-disable-next-line camelcase
         const { email, given_name, family_name } = profile._json;
         const userData = {
           socialId: profile.id,
           provider: profile.provider,
           email,
           firstName: given_name,
-          lastName: family_name
+          lastName: family_name,
         };
-        console.log("callback function starts=================================================================================================================");
+        console.log('userData ==>', userData);
         done(null, userData);
-        
       });
-
-    }
-  )
+    }),
+  ),
 );
 
 module.exports = passport;
