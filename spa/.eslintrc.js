@@ -19,7 +19,8 @@ module.exports = {
     'no-use-before-define': 'off',
     'no-param-reassign': ['error', { "props": false }],
     'no-else-return': 'off',
-    'object-curly-newline': 'off'
+    'object-curly-newline': 'off',
+    "import/no-named-as-default": 0
   },
   parserOptions: {
     parser: 'babel-eslint',

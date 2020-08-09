@@ -2,8 +2,11 @@ const express = require('express');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 const { createLogger, format, transports } = require('winston');
+const path = require('path');
 
 const app = express();
+app.use('/', express.static(`${__dirname}/dist/`));
+
 app.use(express.json());
 // TODO only use in development
 app.use(errorhandler());
@@ -18,7 +21,8 @@ require('./handlers/users/resetPassword')(app);
 require('./handlers/users/updateUser')(app);
 require('./handlers/users/validateToken')(app);
 require('./handlers/users/verifyUser')(app);
-require('./handlers/users/socialUser')(app);
+require('./handlers/users/activateUser')(app);
+require('./handlers/users/socialLink')(app);
 require('./handlers/polls/createPoll')(app);
 require('./handlers/polls/updatePoll')(app);
 require('./handlers/polls/getPoll')(app);
@@ -30,6 +34,14 @@ require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
+
+app.all('*', (req, res) => {
+  try {
+    res.sendFile(`${__dirname}/dist/index.html`);
+  } catch (error) {
+    res.json({ success: false, message: 'Something went wrong' });
+  }
+});
 
 const myFormat = format.printf(info => `${info.message}`);
 

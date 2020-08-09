@@ -5,18 +5,13 @@ const api = require('./api');
 require('./path_env');
 
 console.log(process.env.NODE_ENV);
-function authenticate(required, socialUser) {
+function authenticate(required) {
   return function (req, res, next) {
     const { authorization } = req.headers;
     if (authorization) {
       try {
         const token = authorization.split(' ')[1];
-        if(socialUser){
-          req.identity = jwt.verify(token, process.env.JWT_SECRET,{ audience: process.env.JWT_AUDIENCE });
-        }else{
-          req.identity = jwt.verify(token, process.env.JWT_SECRET);
-        }
-        
+        req.identity = jwt.verify(token, process.env.JWT_SECRET);
       } catch (err) {
         api.sendInternalError(res, api.createError('JWT parsing error'));
         res.end();
@@ -44,25 +39,20 @@ function withRole(role) {
 }
 
 function createTokenFromUser(user, expiration = '31d') {
-  return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, user.roles, expiration);
+  return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, user.roles, user.auth.active, expiration);
 }
 
-function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d', audience = '', email, socialUser) {
+function createToken(userId, nickname, pwdTimestamp, roles, active, expiration = '31d') {
   const jwtData = {
     userId,
     nickname,
     pwdTimestamp,
+    active,
   };
   if (roles) {
     jwtData.roles = roles;
   }
-  if(email){
-    jwtData.email = email;
-  }
-  if (socialUser) {
-    jwtData.socialUser = socialUser;
-  }
-  return jwt.sign(jwtData, process.env.JWT_SECRET, { expiresIn: expiration, audience: audience });
+  return jwt.sign(jwtData, process.env.JWT_SECRET, { expiresIn: expiration });
 }
 
 function getIdentity(identity) {
@@ -75,7 +65,7 @@ function checkRole(req, role) {
 }
 
 const corsPerRoute = corsMiddleware({
-  origin: ['http://localhost:8080', 'https://www.mezinamiridici.cz', 'http://localhost:3000'],
+  origin: ['http://localhost:8080', 'http://localhost:3000', 'https://www.mezinamiridici.cz'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   // preflightContinue: false,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -83,9 +73,8 @@ const corsPerRoute = corsMiddleware({
 
 const ROLE_POLL_ADMIN = 'admin:poll';
 
-module.exports.optional = authenticate(false, false);
-module.exports.required = authenticate(true, false);
-module.exports.socialAuth = authenticate(true, true);
+module.exports.optional = authenticate(false);
+module.exports.required = authenticate(true);
 module.exports.poll_admin = withRole(ROLE_POLL_ADMIN);
 module.exports.ROLE_POLL_ADMIN = ROLE_POLL_ADMIN;
 module.exports.cors = corsPerRoute;

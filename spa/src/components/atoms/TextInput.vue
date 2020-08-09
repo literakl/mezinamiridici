@@ -20,6 +20,7 @@
         :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
         :id="name"
         :type="type"
+        :disabled="disabled"
         :placeholder="placeholder"
         ref="input"
         :disabled="disabled"
@@ -58,6 +59,10 @@ export default {
     rules: {
       type: [Object, String],
       default: '',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     placeholder: {
       type: String,

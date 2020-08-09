@@ -38,12 +38,13 @@ module.exports = (app) => {
         return res;
       }
 
-      // following part takes more than 1 second with 128 MB RAM!
+      // following part takes more than 1 second with 128 MB RAM on AWS Lambda!
       if (bcrypt.compareSync(password, user.auth.pwdHash)) {
         logger.debug('Password verified');
         const token = auth.createTokenFromUser(user);
         return api.sendResponse(res, api.createResponse(token));
       }
+
       logger.verbose(`Password mismatch for user ${user._id}`);
       setTimeout(() => api.sendErrorForbidden(res, api.createError('Bad credentials', 'sign-in.auth-error')), bruteForceDelay);
       return res;

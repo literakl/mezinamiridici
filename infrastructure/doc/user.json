@@ -2,7 +2,8 @@
   "_id" : "LL",
   "auth": {
     "email": "leos@literak.cz",
-    "pwdHash": "ABCDEFGH",
+    "oauth": ["GOOGLE", "INSTAGRAM"],
+    "pwdHash": "$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO",
     "pwdTimestamp": 1579203825,
     "verified": true,
     "verifyToken": "ABCDEFGH",

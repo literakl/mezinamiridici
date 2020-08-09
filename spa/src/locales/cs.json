@@ -38,7 +38,6 @@
     "or": "NEBO",
     "auth-error": "Nesprávné přihlašovací údaje",
     "auth-not-verified": "Litujeme, ale nejdříve je potřeba dokončit aktivaci účtu. Otevřete email a postupujte podle instrukcí.",
-    "socialuser-auth-not-verified": "Chcete-li dokončit svůj profil, přihlaste se pomocí {{PROVIDER}}",
     "something-went-wrong": "Něco se pokazilo, zkuste to znovu.",
     "forgot-password-link": "Zapomenuté heslo?",
     "forgot-password-heading": "Zapomenuté heslo",
@@ -86,6 +85,13 @@
     "verify-error": "Je nám líto, ale nesedí data v registru, nebo se něco porouchalo. Zkuste to znovu.",
     "verify-email":"Tento email je již v naši databázi. Zkuste se přihlásit, nebo si resetujte heslo.",
     "verify-nickname":"Litujeme, ale tuto přezdívku si zvolil někdo před vámi."
+  },
+  "confirm": {
+    "heading": "Activate your Account",
+    "body": "please confirm your account by accepting consents.",
+    "success-message": "success message",
+    "finished-button-label": "Activate Account",
+    "nickname-already-present":"nickname already present, please select different nickname"
   },
   "edit-profile": {
     "heading": "Aktualizace profilu",

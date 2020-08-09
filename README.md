@@ -8,6 +8,7 @@ This is a monorepo for mezinamiridici.cz
 
 * `/spa` is the single page Vue.js application that delivers the website experience
 * `/infrastructure` is the NodeJS backend
+* `nginx` is a configuration for Nginx server
 
 ## Database
 
@@ -62,3 +63,20 @@ $ npm run dev
 ```
 
 To log in, use the credentials defined in infrastructure/test/prepareUsers.js.
+
+## Nginx
+
+This set up is particularly useful for testing OAuth login.
+
+Install Nginx and copy `nginx/dev/nginx.conf` to its `conf` directory. Fix the path in `root` directive.
+
+```
+$ cd infrastructure
+$ npm install
+$ npm run dev
+$ cd spa
+$ npm install
+$ npm run buildDev
+$ cd /path/to/nginx
+$ nginx
+```

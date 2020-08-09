@@ -59,7 +59,7 @@ module.exports = (app) => {
       return api.sendInternalError(res, api.createError('Failed to send email', 'sign-up.something-went-wrong'));
     }
 
-    const token = auth.createToken(userId, nickname, new Date(), null, '1m');
+    const token = auth.createToken(userId, nickname, new Date(), null, false, '1m');
     return api.sendCreated(res, api.createResponse(token));
   });
 };
@@ -74,6 +74,7 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
       email,
       pwdHash: passwordHash,
       pwdTimestamp: now,
+      active: false,
       verified: false,
       verifyToken: verificationToken,
     },

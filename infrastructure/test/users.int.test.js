@@ -196,7 +196,7 @@ test('User API', async (done) => {
   jwtData = response.data;
 
   // validate obsolete token
-  const token = auth.createToken(userId, 'leos', new Date(2019), null, '1m');
+  const token = auth.createToken(userId, 'leos', new Date(2019), true, null, '1m');
   response = await api(`users/${userId}/validateToken`, { method: 'POST', json: {}, headers: getAuthHeader(token) });
   expect(response.statusCode).toBe(403);
 

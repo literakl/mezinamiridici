@@ -48,29 +48,22 @@
           </b-col>
           <b-col md="6">
             <Button
-              class="w-75 btn btn-block "
+              class="w-75 btn btn-block"
               :value="$t('sign-in.sign-up-button')"
               id="signin__sign-up-button"
               @clicked="redirectToSignUp"/>
-
-
-            <b-button
-              class="w-75 btn btn-block btn-facebook"
-              href="http://127.0.0.1:3000/api/auth/facebook">
-              {{$t('sign-in.sign-in-facebook')}}
-            </b-button>
-
-            <b-button
-              class="w-75 btn btn-block btn-twitter"
-              href="http://127.0.0.1:3000/api/auth/twitter">
-              {{$t('sign-in.sign-in-twitter')}}
-            </b-button>
-
-            <b-button
-              class="w-75 btn btn-block btn-google-plus"
-              href="http://127.0.0.1:3000/api/auth/google">
-              {{$t('sign-in.sign-in-google')}}
-            </b-button>
+            <Button
+            class="w-75 btn btn-block btn-facebook"
+            :value="$t('sign-in.sign-in-facebook')"
+            @clicked="auth('facebook')"/>
+            <Button
+            class="w-75 btn btn-block btn-twitter"
+            :value="$t('sign-in.sign-in-twitter')"
+            @clicked="auth('twitter')"/>
+            <Button
+            class="w-75 btn btn-block btn-google-plus"
+            :value="$t('sign-in.sign-in-google')"
+            @clicked="auth('google')"/>
           </b-col>
         </b-row>
       </b-container>
@@ -107,6 +100,7 @@ export default {
     password: null,
     signingIn: false,
     error: null,
+    token: null,
   }),
   methods: {
     redirectToSignUp() {
@@ -133,24 +127,20 @@ export default {
       }
     },
     async auth(provider) {
-      this.$log.debug('auth called!');
-      await this.$store.dispatch('SIGN_SOCIAL_USER', `${provider}`);
-      // if (this.$auth.isAuthenticated()) {
-      //   this.$auth.logout();
-      // }
-      // this.response = null;
-      // this.token = await this.$auth.authenticate(provider);
-      // // TODO is the active flag really neccessary?
-      // if (!this.token.data.active) {
-      //   this.$store.dispatch('SET_SOCIAL', this.token.data);
-      //   this.$log.debug('[test endpoint]');
-      //   this.$router.push('/confirm');
-      // } else {
-      //   this.$router.push('/');
-      //   this.$store.dispatch('SET_SOCIAL', this.token.data);
-      // }
+      if (this.$auth.isAuthenticated()) {
+        this.$auth.logout();
+      }
+      this.response = null;
+      this.token = await this.$auth.authenticate(provider);
+      await this.$store.dispatch('SET_SOCIAL', this.token.data);
+      if (!this.token.data.active) {
+        this.$router.push({ name: 'activate' });
+      } else {
+        this.$router.push('/');
+      }
     },
   },
+
 };
 </script>
 <style>

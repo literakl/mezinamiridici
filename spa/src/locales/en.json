@@ -86,6 +86,13 @@
     "verify-email":"This email is already registered. Try to login instead or reset your password.",
     "verify-nickname":"Sorry, this nickname has been already taken."
   },
+  "confirm": {
+    "heading": "Activate your Account",
+    "body": "please confirm your account by accepting consents.",
+    "success-message": "success message",
+    "finished-button-label": "Activate Account",
+    "nickname-already-present":"nickname already present, please select different nickname"
+  },
   "edit-profile": {
     "heading": "Update your profile",
     "body": "Enter statistical information you want to share. Your votes are anonymous in each poll.",

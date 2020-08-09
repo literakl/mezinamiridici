@@ -15,6 +15,7 @@ const requireUnauth = (to, from, next) => {
 };
 
 const requireAuth = (to, from, next) => {
+  store.dispatch('LOAD_USER');
   if (store.getters.IS_AUTHORIZED) {
     next();
     return;
@@ -33,6 +34,12 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/registrace',
+      name: 'sign-up',
+      component: () => import('./views/user/SignUp.vue'),
+      beforeEnter: requireUnauth,
+    },
+    {
       path: '/prihlaseni',
       name: 'sign-in',
       component: () => import('./views/user/SignIn.vue'),
@@ -40,10 +47,9 @@ export default new Router({
       props: true,
     },
     {
-      path: '/registrace',
-      name: 'sign-up',
-      component: () => import('./views/user/SignUp.vue'),
-      beforeEnter: requireUnauth,
+      path: '/aktivace-uzivatele',
+      name: 'activate',
+      component: () => import('./views/user/Confirm.vue'),
     },
     {
       path: '/overeni-uzivatele/:token',

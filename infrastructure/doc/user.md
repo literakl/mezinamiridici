@@ -4,12 +4,14 @@
 ## Auth section
 
 * email: required, unique, indexed
-* pwdHash: bcrypt hash, required
-* pwdTimestamp: password timestamp, required 
-* verified: account verification flag, boolean, required
+* pwdHash: bcrypt hash
+* pwdTimestamp: password timestamp, required if password is set
+* active: account is fully activated, boolean, required
+* verified: email verification flag, boolean, required
 * verifyToken: account verification token
 * reset.token: reset password token
 * reset.expires: reset token expiration
+* linked: array of used providers (facebook, twitter, google)
 
 ## Bio section
 

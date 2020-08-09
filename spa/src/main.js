@@ -10,12 +10,19 @@ import {
 } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 import VueScrollTo from 'vue-scrollto';
+import VueAxios from 'vue-axios';
+import axios from 'axios';
+import VueAuthenticate from 'vue-authenticate';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
 import i18n from './i18n';
+
+// TODO is this neccessary? We import CSS in App.vue
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
@@ -33,6 +40,26 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
+Vue.use(VueAxios, axios);
+Vue.use(VueAuthenticate, {
+  tokenName: 'jwt',
+  baseUrl: 'http://localhost:3000/api',
+  storageType: 'localStorage',
+  providers: {
+    facebook: {
+      clientId: process.env.VUE_APP_FACEBOOK_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_FACEBOOK_REDIRECT_URI,
+    },
+    twitter: {
+      clientId: process.env.VUE_APP_TWITTER_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_TWITTER_REDIRECT_URI,
+    },
+    google: {
+      clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
+    },
+  },
+});
 
 new Vue({
   router,
