@@ -34,6 +34,12 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/registrace',
+      name: 'sign-up',
+      component: () => import('./views/user/SignUp.vue'),
+      beforeEnter: requireUnauth,
+    },
+    {
       path: '/prihlaseni',
       name: 'sign-in',
       component: () => import('./views/user/SignIn.vue'),
@@ -41,16 +47,9 @@ export default new Router({
       props: true,
     },
     {
-      path: '/confirm',
-      name: 'confirm',
+      path: '/aktivace-uzivatele',
+      name: 'activate',
       component: () => import('./views/user/Confirm.vue'),
-      // beforeEnter: requireAuth,
-    },
-    {
-      path: '/registrace',
-      name: 'sign-up',
-      component: () => import('./views/user/SignUp.vue'),
-      beforeEnter: requireUnauth,
     },
     {
       path: '/overeni-uzivatele/:token',
