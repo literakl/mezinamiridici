@@ -32,7 +32,7 @@ module.exports = (app) => {
         const userId = mongo.generateTimeId();
         await insertUser(dbClient, userId, email, name, req.params.provider);
         logger.debug('User created');
-        const token = auth.createToken(userId, name, new Date(), null, '1m');
+        const token = auth.createToken(userId, name, new Date(), null, false, '1m');
         return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
       }
 

@@ -39,14 +39,15 @@ function withRole(role) {
 }
 
 function createTokenFromUser(user, expiration = '31d') {
-  return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, user.roles, expiration);
+  return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, user.roles, user.auth.active, expiration);
 }
 
-function createToken(userId, nickname, pwdTimestamp, roles, expiration = '31d') {
+function createToken(userId, nickname, pwdTimestamp, roles, active, expiration = '31d') {
   const jwtData = {
     userId,
     nickname,
     pwdTimestamp,
+    active,
   };
   if (roles) {
     jwtData.roles = roles;
