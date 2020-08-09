@@ -145,13 +145,6 @@ export default new Router({
       component: () => import('./views/site/Advertisement.vue'),
     },
     {
-      path: '/social/:token',
-      name: 'social-login',
-      component: () => import('./views/user/SignUp.vue'),
-      beforeEnter: requireUnauth,
-      props: true,
-    },
-    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/site/404.vue'),

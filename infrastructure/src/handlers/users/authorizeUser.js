@@ -29,12 +29,8 @@ module.exports = (app) => {
         return res;
       }
 
-      if (!user.auth.socialUser && !user.auth.verified) {
+      if (!user.auth.verified) {
         setTimeout(() => api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified')), bruteForceDelay);
-        return res;
-      }
-      if (user.auth.socialUser && !user.auth.verified) {
-        setTimeout(() => api.sendErrorForbidden(res, api.createError('User not verified', 'socialuser-auth-not-verified', user.auth.oaut.provider)), bruteForceDelay);
         return res;
       }
 
