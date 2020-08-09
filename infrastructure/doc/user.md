@@ -11,7 +11,7 @@
 * verifyToken: account verification token
 * reset.token: reset password token
 * reset.expires: reset token expiration
-* oauth: array of used providers (FACEBOOK, TWITTER, GOOGLE, INSTAGRAM, MICROSOFT, LINKEDIN)
+* linked: array of used providers (facebook, twitter, google)
 
 ## Bio section
 

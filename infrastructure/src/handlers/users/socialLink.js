@@ -30,10 +30,15 @@ module.exports = (app) => {
       if (!user) {
         logger.debug('User not found');
         const userId = mongo.generateTimeId();
-        await insertUser(dbClient, userId, email, name);
+        await insertUser(dbClient, userId, email, name, req.params.provider);
         logger.debug('User created');
         const token = auth.createToken(userId, name, new Date(), null, '1m');
         return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
+      }
+
+      if (!user.auth.linked || !user.auth.linked.includes(req.params.provider)) {
+        await addProvider(dbClient, user, req.params.provider);
+        logger.debug('User linked with new provider');
       }
 
       if (!user.auth.active) {
@@ -195,13 +200,14 @@ function getTwitterProfile(req, res, oauthService) {
   });
 }
 
-function insertUser(dbClient, id, email, nickname) {
+function insertUser(dbClient, id, email, nickname, provider) {
   const userDoc = {
     _id: id,
     auth: {
       email,
       verified: true,
       active: false,
+      linked: [provider],
     },
     bio: {
       nickname,
@@ -213,4 +219,15 @@ function insertUser(dbClient, id, email, nickname) {
   };
 
   return dbClient.db().collection('users').insertOne(userDoc);
+}
+
+async function addProvider(dbClient, user, provider) {
+  const query = { $set: { } };
+  if (user.auth.linked) {
+    user.auth.linked.push(provider);
+  } else {
+    user.auth.linked = [provider];
+  }
+  query.$set['auth.linked'] = user.auth.linked;
+  await dbClient.db().collection('users').updateOne({ _id: user._id }, query);
 }
