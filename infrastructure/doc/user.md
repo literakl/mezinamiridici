@@ -6,7 +6,8 @@
 * email: required, unique, indexed
 * pwdHash: bcrypt hash
 * pwdTimestamp: password timestamp, required if password is set
-* verified: account verification flag, boolean, required
+* active: account is fully activated, boolean, required
+* verified: email verification flag, boolean, required
 * verifyToken: account verification token
 * reset.token: reset password token
 * reset.expires: reset token expiration

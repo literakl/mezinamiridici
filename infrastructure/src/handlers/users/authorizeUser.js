@@ -40,6 +40,7 @@ module.exports = (app) => {
         const token = auth.createTokenFromUser(user);
         return api.sendResponse(res, api.createResponse(token));
       }
+
       logger.verbose(`Password mismatch for user ${user._id}`);
       setTimeout(() => api.sendErrorForbidden(res, api.createError('Bad credentials', 'sign-in.auth-error')), bruteForceDelay);
       return res;

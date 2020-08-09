@@ -40,7 +40,6 @@ function verifyUser(dbClient, user) {
 
   const query = { $set: { }, $unset: { } };
   query.$set['auth.verified'] = true;
-  // TODO: this line might break
   query.$set['auth.active'] = true;
   query.$unset['auth.verifyToken'] = '';
   return dbClient.db().collection('users').updateOne({ _id: user._id }, query);

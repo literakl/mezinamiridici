@@ -39,7 +39,7 @@ module.exports = (app) => {
       if (!user.auth.active) {
         const userId = user._id;
         const token = auth.createTokenFromUser(user);
-        return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: user.auth.active });
+        return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
       }
 
       if (!user.auth.verified) {
@@ -48,7 +48,7 @@ module.exports = (app) => {
       }
 
       const token = auth.createTokenFromUser(user);
-      return api.sendResponse(res, { access_token: token, token_type: 'bearer', active: user.auth.active });
+      return api.sendResponse(res, { access_token: token, token_type: 'bearer', active: true });
     // } else { // no else because of Twitter Oauth1.0 dance
     }
   });
@@ -196,12 +196,10 @@ function getTwitterProfile(req, res, oauthService) {
 }
 
 function insertUser(dbClient, id, email, nickname) {
-  const now = new Date();
   const userDoc = {
     _id: id,
     auth: {
       email,
-      pwdTimestamp: now,
       verified: true,
       active: false,
     },
@@ -211,10 +209,6 @@ function insertUser(dbClient, id, email, nickname) {
     driving: {},
     prefs: {
       public: true,
-    },
-    consent: {
-      terms: now,
-      data: now,
     },
   };
 
