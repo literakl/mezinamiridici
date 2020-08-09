@@ -20,6 +20,33 @@ module.exports = (app) => {
       await dbClient.db().collection('users').updateOne({ _id: userId }, query);
       logger.debug('User updated');
       return api.sendResponse(res, api.createResponse());
+
+    } catch (err) {
+      logger.error('Request failed', err);
+      return api.sendInternalError(res, api.createError('failed update the user', 'sign-up.something-went-wrong'));
+    }
+  });
+
+  
+  app.patch('/v1/socialusers/:userId', auth.socialAuth, auth.cors, async (req, res) => {
+    logger.verbose('update social User handler starts');
+    const { userId } = req.params;
+    if (req.identity.userId !== userId) {
+      logger.error(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
+      return api.sendErrorForbidden(res, api.createError('JWT mismatch', 'sign-in.auth-error'));
+    }
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      logger.debug('Mongo connected');
+
+      const query = socialUserUpdateQuery(req);
+      logger.debug('Social User updated');
+      await dbClient.db().collection('users').updateOne({ _id: userId }, query);
+      const user = await dbClient.db().collection('users').find({ _id: userId });
+      return auth.createTokenFromUser(user);
+
+
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('failed update the user', 'sign-up.something-went-wrong'));
@@ -71,6 +98,27 @@ function prepareUpdateProfileQuery(req) {
   }
   if (Object.keys(unsetters).length !== 0) {
     query.$unset = unsetters;
+  }
+  return query;
+}
+
+function socialUserUpdateQuery(req){
+  const {
+    nickname, password, emails,
+  } = req.body;
+  const setters = {};
+  setters['auth.verified'] = true;
+  setters['bio.nickname'] = nickname;
+  setters['auth.password'] = password;
+
+  if (emails) {
+    setters['consent.email'] = now;
+    setters['prefs.email'] = { newsletter: true, summary: 'daily' };
+  }
+  
+  const query = { };
+  if (Object.keys(setters).length !== 0) {
+    query.$set = setters;
   }
   return query;
 }

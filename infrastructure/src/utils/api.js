@@ -43,7 +43,7 @@ function createResponse(body) {
   return { success: true, data: body };
 }
 
-function createError(message, messageKey) {
+function createError(message, messageKey, parameter) {
   const result = {
     success: false,
   };
@@ -52,6 +52,9 @@ function createError(message, messageKey) {
     const x = { message };
     if (messageKey) {
       x.messageKey = messageKey;
+    }
+    if (parameter) {
+      x.parameter = parameter;
     }
     result.errors = [];
     result.errors.push(x);

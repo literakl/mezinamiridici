@@ -19,6 +19,7 @@
           :label="$t('profile.email')"
           :placeholder="$t('sign-up.email-hint')"
           name="email"
+          :disabled="emailBoxDisabled"
           type="email"/>
 
         <TextInput
@@ -322,6 +323,9 @@ export default {
     Radio,
     Datepicker,
   },
+  props: {
+    token: String,
+  },
   data: () => ({
     email: null,
     password: null,
@@ -354,23 +358,55 @@ export default {
     success: null,
     sending: false,
     wholeDisable: false,
+    emailBoxDisabled: false,
+    tokenUser: null,
   }),
+  mounted() {
+    if (!this.token) return;
+
+    this.tokenUser = this.$store.dispatch('SIGN_SOCIAL_USER', `${this.token}`);
+    if (this.tokenUser === true) {
+      this.$router.push('/');
+    }
+    this.email = this.tokenUser.email;
+    this.nickname = this.tokenUser.nickname;
+    this.emailBoxDisabled = true;
+  },
   methods: {
     async submitForm() {
       this.error = '';
+      let response;
       try {
         this.sending = true;
         this.wholeDisable = true;
-        const { data } = await this.$store.dispatch('CREATE_USER_PROFILE', {
-          email: this.email,
-          password: this.password,
-          nickname: this.nickname,
-          termsAndConditions: this.termsAndConditions,
-          dataProcessing: this.personalDataProcessing,
-          emails: this.emailNotifications,
-        });
+        if (this.tokenUser) {
+          response = await this.$store.dispatch('UPDATE_SOCIAL_USER', {
+            jwt: this.token,
+            userId: this.tokenUser.userId,
+            email: this.email,
+            nickname: this.nickname,
+            password: this.password,
+            termsAndConditions: this.termsAndConditions,
+            dataProcessing: this.personalDataProcessing,
+            emails: this.emailNotifications,
+          });
+          if (response) {
+            this.$router.push('/');
+          }
+        } else {
+          response = await this.$store.dispatch('CREATE_USER_PROFILE', {
+            email: this.email,
+            password: this.password,
+            nickname: this.nickname,
+            termsAndConditions: this.termsAndConditions,
+            dataProcessing: this.personalDataProcessing,
+            emails: this.emailNotifications,
+          });
+        }
         this.sending = false;
         this.wholeDisable = false;
+
+        const { data } = response;
 
         if (!this.personalData) {
           this.success = true;

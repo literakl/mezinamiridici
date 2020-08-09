@@ -48,10 +48,29 @@
           </b-col>
           <b-col md="6">
             <Button
-              class="w-75"
+              class="w-75 btn btn-block "
               :value="$t('sign-in.sign-up-button')"
               id="signin__sign-up-button"
               @clicked="redirectToSignUp"/>
+
+
+            <b-button
+              class="w-75 btn btn-block btn-facebook"
+              href="http://127.0.0.1:3000/api/auth/facebook">
+              {{$t('sign-in.sign-in-facebook')}}
+            </b-button>
+
+            <b-button
+              class="w-75 btn btn-block btn-twitter"
+              href="http://127.0.0.1:3000/api/auth/twitter">
+              {{$t('sign-in.sign-in-twitter')}}
+            </b-button>
+
+            <b-button
+              class="w-75 btn btn-block btn-google-plus"
+              href="http://127.0.0.1:3000/api/auth/google">
+              {{$t('sign-in.sign-in-google')}}
+            </b-button>
           </b-col>
         </b-row>
       </b-container>
@@ -113,6 +132,64 @@ export default {
         this.signingIn = false;
       }
     },
+    async auth(provider) {
+      this.$log.debug('auth called!');
+      await this.$store.dispatch('SIGN_SOCIAL_USER', `${provider}`);
+      // if (this.$auth.isAuthenticated()) {
+      //   this.$auth.logout();
+      // }
+      // this.response = null;
+      // this.token = await this.$auth.authenticate(provider);
+      // // TODO is the active flag really neccessary?
+      // if (!this.token.data.active) {
+      //   this.$store.dispatch('SET_SOCIAL', this.token.data);
+      //   this.$log.debug('[test endpoint]');
+      //   this.$router.push('/confirm');
+      // } else {
+      //   this.$router.push('/');
+      //   this.$store.dispatch('SET_SOCIAL', this.token.data);
+      // }
+    },
   },
 };
 </script>
+<style>
+.btn {
+  font-weight: bold;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+}
+.btn-facebook {
+  color: #fff;
+  background-color: #3b5998;
+  border: 1px solid #335190;
+}
+.btn-facebook:hover,
+.btn-facebook:focus {
+  color: #fff;
+  background-color: #294786;
+}
+
+.btn-twitter {
+  color: #fff;
+  background-color: #00aced;
+  border: 1px solid #009fdb;
+}
+.btn-twitter:hover,
+.btn-twitter:focus {
+  color: #fff;
+  background-color: #0090c7;
+}
+
+.btn-google-plus {
+  color: #fff;
+  background-color: #dd4b39;
+  border: 1px solid #d54331;
+}
+.btn-google-plus:hover,
+.btn-google-plus:focus {
+  color: #fff;
+  background-color: #cb3927;
+}
+
+</style>
