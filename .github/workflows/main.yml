@@ -10,7 +10,7 @@ on:
     paths:
       - 'infrastructure/**'
       - '!infrastructure/doc/**'
-               
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -21,16 +21,19 @@ jobs:
       matrix:
         node-version: [12.x]
         mongodb-version: [4.2]
-        
+
     env:
       JWT_SECRET: SUPERTAJNEHESLO
       MONGODB_URI: mongodb://localhost:27017/bud?retryWrites=true&w=majority
+      MAILER: fake
+      DEFAULT_SENDER: github@literak.cz
+      TEMPLATE_DIRECTORY: ../emails
 
     defaults:
       run:
         shell: bash
         working-directory: infrastructure
-    
+
   # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -50,7 +53,7 @@ jobs:
     - run: npm install
 
     - run: mongo "$MONGODB_URI" mongo/mongo_setup.js
-      
+
     - run: npm test
       env:
         CI: true
