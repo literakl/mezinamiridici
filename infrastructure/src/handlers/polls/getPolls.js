@@ -40,7 +40,6 @@ async function getItems(dbClient, req) {
     { $sort: listParams.order },
     { $limit: listParams.pageSize },
   ];
-  console.log(pipeline);
   const polls = await dbClient.db().collection('items').aggregate(pipeline, { allowDiskUse: true }).toArray();
   polls.forEach(item => mongo.processPoll(item));
   return polls;
