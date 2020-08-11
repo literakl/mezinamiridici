@@ -15,7 +15,7 @@ switch (process.env.MAILER) {
   case 'SMTP':
   case 'FAKE':
   default:
-    transporter = createFakeTransporter();
+    createFakeTransporter().then((x) => { transporter = x; });
 }
 
 async function sendEmail(config, options, context) {
