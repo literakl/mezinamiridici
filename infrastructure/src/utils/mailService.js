@@ -10,8 +10,7 @@ const COMPILED_TEMPLATES = {};
 let transporter;
 
 async function sendEmail(config, options, context) {
-
-  if(transporter === undefined){    
+  if (transporter === undefined) {
     switch (process.env.MAILER) {
       case 'SES':
         transporter = await createAWSSESTransporter();
@@ -22,7 +21,6 @@ async function sendEmail(config, options, context) {
         transporter = await createFakeTransporter();
     }
   }
-
 
   const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
   const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
@@ -60,9 +58,8 @@ function processTemplate(templateName, filename, context) {
 
 async function createFakeTransporter() {
   const testAccount = await nodemailer.createTestAccount();
-
   // create reusable transporter object using the default SMTP transport
-  return await nodemailer.createTransport({
+  return nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     secure: false, // true for 465, false for other ports
@@ -77,7 +74,7 @@ async function createAWSSESTransporter() {
   // eslint-disable-next-line global-require
   const AWS = require('aws-sdk');
   AWS.config.region = process.env.AWS_REGION;
-  return await nodemailer.createTransport({
+  return nodemailer.createTransport({
     SES: new AWS.SES({
       apiVersion: '2010-12-01',
     }),
