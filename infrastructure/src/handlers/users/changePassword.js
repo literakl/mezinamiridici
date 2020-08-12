@@ -5,7 +5,7 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/users/:userId/password');
+  app.options('/v1/users/:userId/password', auth.cors);
 
   app.patch('/v1/users/:userId/password', auth.required, auth.cors, async (req, res) => {
     logger.verbose('changePassword handler starts');
