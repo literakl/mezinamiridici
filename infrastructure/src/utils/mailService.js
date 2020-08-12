@@ -7,18 +7,18 @@ require('./path_env');
 
 const COMPILED_TEMPLATES = {};
 
-let transporter;
-switch (process.env.MAILER) {
-  case 'SES':
-    transporter = createAWSSESTransporter();
-    break;
-  case 'SMTP':
-  case 'FAKE':
-  default:
-    transporter = createFakeTransporter();
-}
 
 async function sendEmail(config, options, context) {
+  let transporter;
+  switch (process.env.MAILER) {
+    case 'SES':
+      transporter = await createAWSSESTransporter();
+      break;
+    case 'SMTP':
+    case 'FAKE':
+    default:
+      transporter = await createFakeTransporter();
+  }
   const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
   const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
   const data = Object.assign({}, emailConfig, options);
@@ -31,7 +31,7 @@ async function sendEmail(config, options, context) {
     data.html = processTemplate(config, emailConfig.html_template, context);
     delete emailConfig.html_template;
   }
-
+  
   const info = await transporter.sendMail(data);
   logger.debug(`Message sent: ${info.messageId}`);
   const testMessageUrl = nodemailer.getTestMessageUrl(info);
@@ -57,7 +57,7 @@ async function createFakeTransporter() {
   const testAccount = await nodemailer.createTestAccount();
 
   // create reusable transporter object using the default SMTP transport
-  return nodemailer.createTransport({
+  return await nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     secure: false, // true for 465, false for other ports
@@ -68,11 +68,11 @@ async function createFakeTransporter() {
   });
 }
 
-function createAWSSESTransporter() {
+async function createAWSSESTransporter() {
   // eslint-disable-next-line global-require
   const AWS = require('aws-sdk');
   AWS.config.region = process.env.AWS_REGION;
-  return nodemailer.createTransport({
+  return await nodemailer.createTransport({
     SES: new AWS.SES({
       apiVersion: '2010-12-01',
     }),
