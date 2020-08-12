@@ -7,18 +7,23 @@ require('./path_env');
 
 const COMPILED_TEMPLATES = {};
 
+let transporter;
 
 async function sendEmail(config, options, context) {
-  let transporter;
-  switch (process.env.MAILER) {
-    case 'SES':
-      transporter = await createAWSSESTransporter();
-      break;
-    case 'SMTP':
-    case 'FAKE':
-    default:
-      transporter = await createFakeTransporter();
+
+  if(transporter === undefined){    
+    switch (process.env.MAILER) {
+      case 'SES':
+        transporter = await createAWSSESTransporter();
+        break;
+      case 'SMTP':
+      case 'FAKE':
+      default:
+        transporter = await createFakeTransporter();
+    }
   }
+
+
   const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
   const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
   const data = Object.assign({}, emailConfig, options);
