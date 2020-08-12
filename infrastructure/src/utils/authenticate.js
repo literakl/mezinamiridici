@@ -4,7 +4,6 @@ const corsMiddleware = require('cors');
 const api = require('./api');
 require('./path_env');
 
-console.log(process.env.NODE_ENV);
 function authenticate(required) {
   return function (req, res, next) {
     const { authorization } = req.headers;
