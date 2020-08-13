@@ -61,6 +61,12 @@ Vue.use(VueAuthenticate, {
   },
 });
 
+router.afterEach((to) => {
+  Vue.nextTick(() => {
+    document.title = to.meta.title(to);
+  });
+});
+
 new Vue({
   router,
   store,
