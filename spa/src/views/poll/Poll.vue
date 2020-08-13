@@ -2,6 +2,7 @@
   <b-container fluid="true" class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
     <ContentLoading v-if="! poll" type="poll" />
     <CompletePoll v-if="poll" />
+    <ShareLink :item="poll" />
     <Comments v-if="poll" :itemId="poll._id" />
   </b-container>
 </template>
@@ -9,6 +10,7 @@
 <script>
 import CompletePoll from '@/components/organisms/CompletePoll.vue';
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
+import ShareLink from '@/components/molecules/ShareLink.vue';
 import Comments from '@/components/organisms/Comments.vue';
 
 export default {
@@ -17,6 +19,7 @@ export default {
     Comments,
     CompletePoll,
     ContentLoading,
+    ShareLink,
   },
   props: {
     slug: String,

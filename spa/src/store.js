@@ -13,4 +13,14 @@ export default new Vuex.Store({
     comments,
     polls,
   },
+  actions: {
+    SHARE_LINK: async (context, payload) => {
+      const body = {
+        path: payload.path,
+        service: payload.service,
+        userId: context.getters.USER_ID,
+      };
+      return post('API', `/items/${payload.itemId}/share`, body);
+    },
+  },
 });

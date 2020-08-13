@@ -22,7 +22,8 @@
     "yesterday": "yesterday",
     "not-published": "not published",
     "ok-button": "OK",
-    "cancel-button": "Cancel"
+    "cancel-button": "Cancel",
+    "share-link": "Share"
   },
   "sign-in": {
     "email-placeholder": "Email",

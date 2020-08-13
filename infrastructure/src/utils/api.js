@@ -30,6 +30,10 @@ function sendInternalError(res, body) {
   return response(res, 500, body, 'private');
 }
 
+function sendRedirectFound(res, body) {
+  return response(res, 302, body, 'private');
+}
+
 function response(res, status, body, cacheControl) {
   res.status(status);
   res.setHeader('Content-Type', 'application/json');
@@ -165,3 +169,4 @@ module.exports.createError = createError;
 module.exports.createResponse = createResponse;
 module.exports.parseListParams = parseListParams;
 module.exports.parsePollFilterParams = parsePollFilterParams;
+module.exports.sendRedirectFound = sendRedirectFound;

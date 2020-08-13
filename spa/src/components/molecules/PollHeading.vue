@@ -46,11 +46,6 @@ export default {
   props: {
     item: Object,
   },
-  computed: {
-    // urlToShare() {
-    //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
-    // },
-  },
   methods: {
     link(poll) {
       const currentPath = this.$route.fullPath;
