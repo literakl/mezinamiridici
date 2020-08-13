@@ -22,13 +22,6 @@
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
               {{ $t('poll.comments') }}: {{item.comments.count}}
             </router-link>
-
-            <b-dropdown v-if="hasPath" text="Share"  variant="primary" class="m-md-2">
-              <b-dropdown-item v-for="(item, index) in shareLinkList" :key="index" @click="shareLink(index)">
-                {{item.toUpperCase()}}
-              </b-dropdown-item>
-            </b-dropdown>
-
           </b-card-footer>
         </b-card>
       </b-col>
@@ -53,19 +46,6 @@ export default {
   props: {
     item: Object,
   },
-  data() {
-    return {
-      shareLinkList: ['facebook', 'twitter', 'messenger', 'whatsapp', 'email'],
-    };
-  },
-  computed: {
-    // urlToShare() {
-    //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
-    // },
-    hasPath() {
-      return this.$route.fullPath.split('/')[1] === 'anketa';
-    },
-  },
   methods: {
     link(poll) {
       const currentPath = this.$route.fullPath;
@@ -75,16 +55,6 @@ export default {
         nextPath += currentPath.substring(j);
       }
       return nextPath;
-    },
-    async shareLink(shareIndex) {
-      const body = {
-        itemId: this.item._id,
-        link: this.shareLinkList[shareIndex],
-        path: `/anketa/${this.item.info.slug}`,
-      };
-      const response = await this.$store.dispatch('SHARE_LINK', body);
-      const { data } = response.data;
-      window.location.href = data;
     },
   },
 };

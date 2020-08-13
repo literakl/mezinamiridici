@@ -22,7 +22,8 @@
     "yesterday": "včera",
     "not-published": "nezveřejněno",
     "ok-button": "OK",
-    "cancel-button": "Storno"
+    "cancel-button": "Storno",
+    "share-link": "Sdílejte"
   },
   "sign-in": {
     "email-placeholder": "Email",

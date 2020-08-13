@@ -286,14 +286,10 @@ export default new Vuex.Store({
     SHARE_LINK: async (context, payload) => {
       const body = {
         path: payload.path,
+        service: payload.service,
+        userId: context.getters.USER_ID,
       };
-      let response;
-      if (context.getters.IS_AUTHORIZED) {
-        response = await post('API', `/r/${payload.link}/${payload.itemId}/${context.getters.USER_ID}`, body);
-      } else {
-        response = await post('API', `/r/${payload.link}/${payload.itemId}`, body);
-      }
-      return response;
+      return post('API', `/items/${payload.itemId}/share`, body);
     },
   },
 });

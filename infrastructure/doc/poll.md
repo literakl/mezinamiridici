@@ -29,7 +29,7 @@
 # Poll vote object
 * poll: id of associated item object, required, indexed
 * user: id of user, required, indexed 
-* date: timestampe of the vote, required
+* date: timestamp of the vote, required
 * vote: values: neutral, trivial, dislike, hate; required
 * sex: copied from User
 * age: calculated from User.bio.born, integer
