@@ -20,7 +20,7 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const {
-        text, author, date, picture,
+        text, author, date, picture, tags,
       } = req.body;
 
       if (!text) {
@@ -45,7 +45,7 @@ module.exports = (app) => {
       }
 
       const pollId = mongo.generateTimeId();
-      await insertItem(dbClient, pollId, text, user, picture, publishDate);
+      await insertItem(dbClient, pollId, text, user, picture, publishDate, tags);
       logger.debug('Item inserted');
 
       const pipeline = [mongo.stageId(pollId)];
@@ -60,7 +60,7 @@ module.exports = (app) => {
   });
 };
 
-function insertItem(dbClient, pollId, text, author, picture, publishDate) {
+function insertItem(dbClient, pollId, text, author, picture, publishDate, tags) {
   const slug = slugify(text, { lower: true, strict: true });
   const item = {
     _id: pollId,
@@ -76,7 +76,7 @@ function insertItem(dbClient, pollId, text, author, picture, publishDate) {
       published: false,
       date: publishDate,
       picture,
-      // tags: ['polls'], // TODO
+      tags,
     },
     data: {
       votes: {

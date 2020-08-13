@@ -145,6 +145,17 @@ export default new Router({
       component: () => import('./views/site/Advertisement.vue'),
     },
     {
+      path: '/stitky',
+      name: 'tags',
+      component: () => import('./views/Tag.vue'),
+    },
+    {
+      path: '/stitky/:tag',
+      name: 'tags-poll',
+      component: () => import('./views/Tag.vue'),
+      props: true,
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/site/404.vue'),

@@ -14,6 +14,7 @@ const stagePublished = { $match: { 'info.published': true } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
+function stageTag(tag) { return { "info.tags": { "$in": [ tag ] }  }; }
 function stageMyPollVote(userId, pollId) {
   if (pollId) {
     return {
@@ -136,6 +137,10 @@ async function getPoll(dbClient, pipeline) {
   return processPoll(item);
 }
 
+async function getPollByTag(dbClient, pipeline){
+  return await dbClient.db().collection('items').find(pipeline).toArray();
+}
+
 function processPoll(item) {
   item.votes = item.data.votes;
   delete item.data.votes;
@@ -201,6 +206,7 @@ exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
+exports.getPollByTag = getPollByTag;
 exports.processPoll = processPoll;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
@@ -211,5 +217,6 @@ exports.stageCommentVotes = stageCommentVotes;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
+exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;

@@ -21,6 +21,8 @@ export default new Vuex.Store({
     latestPoll: null,
     stream: null,
     userEmail: null,
+    tags: null,
+    itemsByTag: null,
   },
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -32,6 +34,8 @@ export default new Vuex.Store({
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
+    TAGS: state => state.tags,
+    ITEM_BY_TAG: state => state.itemsByTag,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -60,6 +64,12 @@ export default new Vuex.Store({
     },
     SET_STREAM: (state, payload) => {
       state.stream = payload;
+    },
+    SET_TAGS: (state, payload) => {
+      state.tags = payload;
+    },
+    SET_ITEMS_BY_TAG: (state, payload) => {
+      state.itemsByTag = payload;
     },
     // APPEND_STREAM: (state, payload) => {
     //   state.stream = payload;
@@ -234,6 +244,18 @@ export default new Vuex.Store({
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
       return item;
+    },
+    GET_TAGS: async (context) => {
+      Vue.$log.debug('GET_TAGS');
+      const response = await get('API', '/misc/tags/', context);
+      context.commit('SET_TAGS', response.data.data);
+      return response.data.data;
+    },
+    GET_POLL_BY_TAG: async (context, payload) => {
+      Vue.$log.debug('GET_POLL_BY_TAG');
+      const response = await get('BFF', `/items/${payload}`, context);
+      context.commit('SET_ITEMS_BY_TAG', response.data.data);
+      return response.data.data;
     },
     DELETE_POLL: async (context, payload) => {
       Vue.$log.debug('DELETE_POLL');
