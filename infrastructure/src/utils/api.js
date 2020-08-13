@@ -30,7 +30,7 @@ function sendInternalError(res, body) {
   return response(res, 500, body, 'private');
 }
 
-function sendRedirectFound(res, body){
+function sendRedirectFound(res, body) {
   return response(res, 302, body, 'private');
 }
 
