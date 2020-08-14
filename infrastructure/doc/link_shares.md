@@ -1,4 +1,4 @@
-# Link share object
+# Link shares object
 * item: id of associated item object; required
 * user: id of user; optional; indexed 
 * date: timestamp of the share; required; indexed
