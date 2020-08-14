@@ -220,5 +220,28 @@
     "show-all":"Show all",
     "reply": "Reply",
     "close": "Close"
+  },
+  "page-title":{
+    "home": "Home",
+    "sign-up": "Sign up",
+    "sign-in": "Sign in",
+    "activate": "Activate",
+    "verify": "Verify",
+    "forgotten": "Forgotten",
+    "reset": "Reset",
+    "update-password": "Update password",
+    "user-profile": "User profile",
+    "update-profile": "Update profile",
+    "polls": "Polls",
+    "poll": "Poll",
+    "edit-poll": "Edit poll",
+    "create-poll": "Create poll",
+    "analyse-poll": "Analyse poll",
+    "analyze-votes": "Analyze votes",
+    "help": "Help",
+    "mission": "Mission",
+    "contact": "Contact",
+    "advertisement": "Advertisement",
+    "not-found": "Page not found"
   }
 }

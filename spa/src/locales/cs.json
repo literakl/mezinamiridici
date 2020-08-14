@@ -220,5 +220,28 @@
     "show-all":"Zobrazit vše",
     "reply": "Odpovědět",
     "close": "Zavřít"
+  },
+  "page-title":{
+    "home": "Domov",
+    "sign-up": "Přihlásit se",
+    "sign-in": "Přihlásit se",
+    "activate": "aktivovat",
+    "verify": "Ověřte",
+    "forgotten": "Zapomenutý",
+    "reset": "Resetovat",
+    "update-password": "Aktualizujte heslo",
+    "user-profile": "Uživatelský profil",
+    "update-profile": "Aktualizovat profil",
+    "polls": "Ankety",
+    "poll": "Anketa",
+    "edit-poll": "Upravit anketa",
+    "create-poll": "Vytvořit anketa",
+    "analyse-poll": "Analyzujte anketa",
+    "analyze-votes": "Analyzujte hlasy",
+    "help": "Nápověda",
+    "mission": "Mise",
+    "contact": "Kontakt",
+    "advertisement": "Reklama",
+    "not-found": "Stránka nenalezena"
   }
 }
