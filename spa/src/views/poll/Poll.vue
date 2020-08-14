@@ -26,7 +26,10 @@ export default {
   },
   computed: {
     poll() {
-      return this.$store.getters.POLL;
+      const poll = this.$store.getters.POLL;
+      if (poll) document.title += poll.info.caption;
+      console.log(document.title);
+      return poll;
     },
     role() {
       return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[0] === 'admin:poll' : false;

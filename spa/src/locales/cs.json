@@ -221,5 +221,28 @@
     "show-all":"Zobrazit vše",
     "reply": "Odpovědět",
     "close": "Zavřít"
+  },
+  "page-title":{
+    "home": "Mezi námi řidiči",
+    "sign-up": "Přihlášení",
+    "sign-in": "Registrace",
+    "activate": "Aktivace účtu",
+    "verify": "Ověření emailu",
+    "forgotten": "Zapomenuté heslo",
+    "reset": "Obnova hesla",
+    "update-password": "Změna hesla",
+    "user-profile": "Uživatelský profil",
+    "update-profile": "Úprava profilu",
+    "polls": "Ankety",
+    "poll": "Anketa",
+    "edit-poll": "Úprava ankety",
+    "create-poll": "Nová anketa",
+    "analyse-poll": "Analýza ankety",
+    "analyze-votes": "Analýza ankety",
+    "help": "Nápověda",
+    "mission": "Mise",
+    "contact": "Kontakt",
+    "advertisement": "Reklama",
+    "not-found": "Stránka nenalezena"
   }
 }
