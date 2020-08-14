@@ -6,7 +6,7 @@
     <b-row>
       <b-col>
         <ul>
-          <li v-for="item in polls" :key="item._id">
+          <li v-for="item in items" :key="item._id">
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
               {{item.info.caption}}
             </router-link>
@@ -38,10 +38,10 @@ export default {
     tags() {
       return this.$store.getters.TAGS;
     },
-    polls() {
+    items() {
       let stream = [];
       if (this.tag) {
-        stream = this.$store.getters.ITEM_BY_TAG;
+        stream = this.$store.getters.ITEMS_BY_TAG;
       }
       return stream;
     },
@@ -49,13 +49,13 @@ export default {
   created() {
     this.$store.dispatch('GET_TAGS');
     if (this.tag) {
-      this.$store.dispatch('GET_POLL_BY_TAG', this.tag);
+      this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
     }
   },
   methods: {
     fetchData() {
       if (this.tag) {
-        this.$store.dispatch('GET_POLL_BY_TAG', this.tag);
+        this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
       }
     },
   },

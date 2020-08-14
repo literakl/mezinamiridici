@@ -30,7 +30,7 @@ require('./handlers/polls/getPolls')(app);
 require('./handlers/polls/deletePoll')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
-require('./handlers/polls/tags')(app);
+require('./handlers/items/tags')(app);
 require('./handlers/misc/tagList')(app);
 require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);

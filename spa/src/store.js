@@ -35,7 +35,7 @@ export default new Vuex.Store({
     LATEST_POLL: state => state.latestPoll,
     STREAM: state => state.stream,
     TAGS: state => state.tags,
-    ITEM_BY_TAG: state => state.itemsByTag,
+    ITEMS_BY_TAG: state => state.itemsByTag,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -251,7 +251,7 @@ export default new Vuex.Store({
       context.commit('SET_TAGS', response.data.data);
       return response.data.data;
     },
-    GET_POLL_BY_TAG: async (context, payload) => {
+    GET_ITEMS_BY_TAG: async (context, payload) => {
       Vue.$log.debug('GET_POLL_BY_TAG');
       const response = await get('BFF', `/items/${payload}`, context);
       context.commit('SET_ITEMS_BY_TAG', response.data.data);
