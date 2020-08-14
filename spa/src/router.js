@@ -121,7 +121,7 @@ export default new Router({
       name: 'edit-poll',
       component: () => import('./views/poll/EditPoll.vue'),
       props: true,
-      meta: { title: route => `${_t(route.name)}\xa0\xa0-\xa0\xa0` },
+      meta: { title: route => `${_t(route.name)}` },
     },
     {
       path: '/nova-anketa/',
