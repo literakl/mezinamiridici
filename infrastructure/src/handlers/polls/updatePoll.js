@@ -24,7 +24,7 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const {
-        text, author, date, picture, published,
+        text, author, date, picture, published, tags,
       } = req.body;
 
       if (!text) {
@@ -48,7 +48,7 @@ module.exports = (app) => {
         publishDate = dday.toDate();
       }
 
-      const query = prepareUpdateQuery(text, user, picture, publishDate, published);
+      const query = prepareUpdateQuery(text, user, picture, publishDate, published, tags);
       await dbClient.db().collection('items').updateOne({ _id: pollId }, query);
       logger.debug('Item updated');
 
@@ -63,7 +63,7 @@ module.exports = (app) => {
   });
 };
 
-function prepareUpdateQuery(text, author, picture, date, published) {
+function prepareUpdateQuery(text, author, picture, date, published, tags) {
   const setters = {}, unsetters = {};
   setters['info.caption'] = text;
   setters['info.slug'] = slugify(text, { lower: true, strict: true });
@@ -74,6 +74,9 @@ function prepareUpdateQuery(text, author, picture, date, published) {
     setters['info.picture'] = picture;
   } else {
     unsetters['info.picture'] = true;
+  }
+  if(tags) {
+    setters['info.tags'] = tags;
   }
   const query = { };
   query.$set = setters;

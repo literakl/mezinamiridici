@@ -14,6 +14,7 @@ const stagePublished = { $match: { 'info.published': true } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
+function stageTag(tag) { return { 'info.tags': { $in: [tag] } }; }
 function stageMyPollVote(userId, pollId) {
   if (pollId) {
     return {
@@ -100,10 +101,10 @@ function findUser(dbClient, params, projection) {
     query._id = params.userId;
   }
   if (params.email) {
-    query['auth.email'] = new RegExp("^" + params.email + "$", "i");
+    query['auth.email'] = new RegExp(`^${params.email}$`, 'i');
   }
   if (params.nickname) {
-    query['bio.nickname'] = new RegExp("^" + params.nickname + "$", "i");
+    query['bio.nickname'] = new RegExp(`^${params.nickname}$`, 'i');
   }
   if (params.token) {
     query['auth.verifyToken'] = params.token;
@@ -211,5 +212,6 @@ exports.stageCommentVotes = stageCommentVotes;
 exports.stagePublished = stagePublished;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
+exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;

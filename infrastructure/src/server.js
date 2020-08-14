@@ -31,6 +31,8 @@ require('./handlers/polls/deletePoll')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
 require('./handlers/items/shareItem')(app);
+require('./handlers/items/tags')(app);
+require('./handlers/misc/tagList')(app);
 require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
