@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2">
+  <div class="mb-2 mt-2">
     <b-popover :target="`emojis_${commentId}`" triggers="hover" placement="bottom">
       <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index"
                 v-on:click="addEmoji(index)"
@@ -105,6 +105,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
   .comment-box {
     position: relative;
@@ -133,11 +134,11 @@ export default {
 
   .icons_short {
     top: -36px;
-    right: 72px;
+    right: 40px;
   }
 
   .icons_long {
     top: -45px;
-    right: 63px; /*68*/
+    right: 40px; /*68*/
   }
 </style>
