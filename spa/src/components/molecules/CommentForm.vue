@@ -28,9 +28,12 @@
         <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
           <b-icon icon="emoji-sunglasses"></b-icon>
         </b-button>
+<!--
+TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
         <b-button v-if="parent" class="mt-2" variant="outline" size="sm">
           <b-icon icon="chat-quote"></b-icon>
         </b-button>
+-->
         <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
           <b-icon icon="x-circle"></b-icon>
         </b-button>
