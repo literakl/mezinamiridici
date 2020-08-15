@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import users from './modules/users';
 import polls from './modules/polls';
 import comments from './modules/comments';
-import { post } from '@/utils/api';
+import { get, post } from '@/utils/api';
 
 Vue.use(Vuex);
 

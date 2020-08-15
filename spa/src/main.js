@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import { BootstrapVue } from 'bootstrap-vue';
 import log from 'loglevel';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
@@ -37,7 +37,6 @@ Vue.prototype.$log = Vue.$log;
 
 Vue.config.productionTip = process.env.VUE_APP_LOG_PRODUCTION_TIP || false;
 Vue.use(BootstrapVue);
-Vue.use(IconsPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);

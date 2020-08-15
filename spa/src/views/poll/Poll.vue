@@ -28,7 +28,6 @@ export default {
     poll() {
       const poll = this.$store.getters.POLL;
       if (poll) document.title += poll.info.caption;
-      console.log(document.title);
       return poll;
     },
     role() {
