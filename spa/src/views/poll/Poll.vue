@@ -27,7 +27,7 @@ export default {
   computed: {
     poll() {
       const poll = this.$store.getters.POLL;
-      if (poll) document.title += poll.info.caption;
+      if (poll) this.changeTitle(poll.info.caption);
       return poll;
     },
     role() {
@@ -42,6 +42,11 @@ export default {
       this.$store.dispatch('GET_POLL', { slug: to.params.slug });
     }
     next();
+  },
+  methods: {
+    changeTitle(title) {
+      setTimeout(() => { document.title += title; }, 10);
+    },
   },
 };
 </script>

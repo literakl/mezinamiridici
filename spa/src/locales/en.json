@@ -243,6 +243,8 @@
     "mission": "Mission",
     "contact": "Contact",
     "advertisement": "Advertisement",
-    "not-found": "Page not found"
+    "not-found": "Page not found",
+    "tags": "Tags",
+    "tags-poll": "Tags polls"
   }
 }
