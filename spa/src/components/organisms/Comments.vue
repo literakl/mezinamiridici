@@ -3,7 +3,7 @@
     <h3>{{ $t('comment.discussion') }}</h3>
 
     <div v-if="signedIn">
-      <CommentForm :itemId="itemId" :dismissable="false" :dismiss="trigerDismiss"/>
+      <CommentForm :itemId="itemId" />
     </div>
 
     <!-- Novejsi reload button -->
