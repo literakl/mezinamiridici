@@ -26,7 +26,7 @@
 
       <div class="icons" :class="`${wrapIcons ? 'icons_long' : 'icons_short'}`">
         <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
-          <b-icon icon="emoji-sunglasses"></b-icon>
+          <BIconEmojiSunglasses></BIconEmojiSunglasses>
         </b-button>
 <!--
 TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
@@ -35,7 +35,7 @@ TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
         </b-button>
 -->
         <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
-          <b-icon icon="x-circle"></b-icon>
+          <BIconXCircle></BIconXCircle>
         </b-button>
       </div>
     </div>
@@ -48,6 +48,7 @@ TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
 </template>
 
 <script>
+import { BIconEmojiSunglasses, BIconXCircle } from 'bootstrap-vue';
 import Button from '@/components/atoms/Button.vue';
 
 export default {
@@ -58,7 +59,7 @@ export default {
     commentId: String,
   },
   components: {
-    Button,
+    Button, BIconEmojiSunglasses, BIconXCircle,
   },
   data: () => ({
     text: '',
