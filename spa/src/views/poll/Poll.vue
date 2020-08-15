@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     changeTitle(title) {
-      setTimeout(() => { document.title += title; }, 10);
+      setTimeout(() => { document.title += `\xa0\xa0-\xa0\xa0${title}`; }, 10);
     },
   },
 };

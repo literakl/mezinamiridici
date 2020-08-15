@@ -62,7 +62,7 @@ Vue.use(VueAuthenticate, {
 
 router.afterEach((to) => {
   Vue.nextTick(() => {
-    document.title = to.meta.title(to);
+    document.title = _t(to.name);
   });
 });
 
@@ -72,3 +72,5 @@ new Vue({
   i18n,
   render: h => h(App),
 }).$mount('#app');
+
+const _t = key => i18n.t(`page-title.${key}`);
