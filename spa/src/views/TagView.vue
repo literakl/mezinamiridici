@@ -1,32 +1,24 @@
 <template>
   <b-container fluid="true" class="pt-3 w-75 m-auto">
-    <TagsHeading v-if="tags" :tags="tags" :cTag="tag"/>
-    <ContentLoading v-if="! tags" type="tags"/>
+    <Tags :cTag="tag" @clicked="viewPoll"/>
+    <ContentLoading v-if="! items" type="items"/>
 
-    <b-row>
-      <b-col>
-        <ul>
-          <li v-for="item in items" :key="item._id">
-            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
-              {{item.info.caption}}
-            </router-link>
-            {{ $t('poll.votes') }}: {{item.votes_count}}
-          </li>
-        </ul>
-      </b-col>
-    </b-row>
+    <Items v-if="hasPolls" :items="items"/>
+
   </b-container>
 </template>
 
 <script>
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
-import TagsHeading from '@/components/molecules/TagsHeading.vue';
+import Tags from '@/components/atoms/Tags.vue';
+import Items from '@/components/atoms/Items.vue';
 
 export default {
   name: 'home',
   components: {
     ContentLoading,
-    TagsHeading,
+    Tags,
+    Items,
   },
   props: {
     tag: String,
@@ -35,9 +27,6 @@ export default {
     $route: 'fetchData',
   },
   computed: {
-    tags() {
-      return this.$store.getters.TAGS;
-    },
     items() {
       let stream = [];
       if (this.tag) {
@@ -45,9 +34,11 @@ export default {
       }
       return stream;
     },
+    hasPolls() {
+      return this.items !== null && this.items.length > 0;
+    },
   },
   created() {
-    this.$store.dispatch('GET_TAGS');
     if (this.tag) {
       this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
     }
@@ -57,6 +48,9 @@ export default {
       if (this.tag) {
         this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
       }
+    },
+    viewPoll(emitTag) {
+      this.$router.push(`/stitky/${emitTag}`);
     },
   },
 };

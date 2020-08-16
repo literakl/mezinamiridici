@@ -8,10 +8,10 @@
             <div>
               <b-button v-for="tag in tags" :key="tag"
                squared v-bind:class="{'active':tag==cTag}"
-               variant="outline-primary"
+               variant="link"
                @click="viewPollByTag(tag)" size="lg"
                style="margin:3px;">
-                {{tag}}
+                #{{tag}}
               </b-button>
             </div>
           </b-card-body>
@@ -26,14 +26,21 @@
 <script>
 
 export default {
-  name: 'TagsHeading',
+  name: 'Tags',
   props: {
-    tags: Array,
     cTag: String,
+  },
+  computed: {
+    tags() {
+      return this.$store.getters.TAGS;
+    },
+  },
+  created() {
+    this.$store.dispatch('GET_TAGS');
   },
   methods: {
     viewPollByTag(tag) {
-      this.$router.push(`/stitky/${tag}`);
+      if (this.cTag !== tag) this.$emit('clicked', tag);
     },
   },
 };
