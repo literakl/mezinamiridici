@@ -1,6 +1,6 @@
 <template>
   <b-container fluid="true" class="pt-3 w-75 m-auto">
-    <Tags :cTag="tag" @clicked="viewPoll"/>
+    <Tags v-if="hasTags" :cTag="tag" :tags="tags" @clicked="viewPoll"/>
     <ContentLoading v-if="! items" type="items"/>
 
     <Items v-if="hasPolls" :items="items"/>
@@ -37,8 +37,15 @@ export default {
     hasPolls() {
       return this.items !== null && this.items.length > 0;
     },
+    hasTags() {
+      return this.tags !== null && this.tags.length > 0;
+    },
+    tags() {
+      return this.$store.getters.TAGS;
+    },
   },
   created() {
+    this.$store.dispatch('GET_TAGS');
     if (this.tag) {
       this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
     }
