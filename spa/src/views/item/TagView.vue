@@ -1,23 +1,34 @@
 <template>
   <b-container fluid="true" class="pt-3 w-75 m-auto">
-    <Tags v-if="hasTags" :cTag="tag" :tags="tags" @clicked="viewPoll"/>
+    <b-button-group size="sm">
+      <b-button
+        v-for="t in tags" :key="t"
+        :to="{ name: 'tag', params: { tag: t } }"
+        :pressed.sync="t === tag"
+        variant="primary"
+      >
+        #{{t}}
+      </b-button>
+<!--
+      <router-link v-for="tag in tags" :key="tag" :to="{ name: 'tag', params: { tag: tag } }">
+        #{{tag}}
+      </router-link>
+-->
+    </b-button-group>
+
     <ContentLoading v-if="! items" type="items"/>
-
-    <Items v-if="hasPolls" :items="items"/>
-
+    <Items v-if="hasItems" :items="items"/>
   </b-container>
 </template>
 
 <script>
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
-import Tags from '@/components/atoms/Tags.vue';
 import Items from '@/components/atoms/Items.vue';
 
 export default {
-  name: 'home',
+  name: 'Tag',
   components: {
     ContentLoading,
-    Tags,
     Items,
   },
   props: {
@@ -34,14 +45,19 @@ export default {
       }
       return stream;
     },
-    hasPolls() {
+    hasItems() {
       return this.items !== null && this.items.length > 0;
     },
     hasTags() {
       return this.tags !== null && this.tags.length > 0;
     },
     tags() {
-      return this.$store.getters.TAGS;
+      const x = this.$store.getters.TAGS;
+      if (x) {
+        x.sort((a, b) => a.localeCompare(b));
+      }
+      console.log(x);
+      return x;
     },
   },
   created() {
@@ -55,9 +71,6 @@ export default {
       if (this.tag) {
         this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
       }
-    },
-    viewPoll(emitTag) {
-      this.$router.push(`/stitky/${emitTag}`);
     },
   },
 };
