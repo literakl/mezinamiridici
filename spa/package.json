@@ -14,6 +14,8 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@toast-ui/vue-editor": "^2.3.1",
+    "@toast-ui/vue-image-editor": "^1.2.0",
     "axios": "^0.19.2",
     "bcrypt": "^3.0.8",
     "bootstrap": "^4.5.0",

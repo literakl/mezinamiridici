@@ -157,6 +157,24 @@ export default new Router({
       props: true,
     },
     {
+      path: '/createBlog',
+      name: 'create-blog',
+      component: () => import('./views/item/CreateItem.vue'),
+      beforeEnter: requireAuth,
+    },
+    {
+      path: '/updateBlog',
+      name: 'update-blog',
+      component: () => import('./views/item/CreateItem.vue'),
+      beforeEnter: requireAuth,
+    },
+    {
+      path: '/viewBlog',
+      name: 'view-blog',
+      component: () => import('./views/item/ViewItem.vue'),
+      beforeEnter: requireAuth,
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/site/404.vue'),
