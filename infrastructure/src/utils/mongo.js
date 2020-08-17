@@ -83,7 +83,7 @@ function connectToDatabase() {
     return Promise.resolve(cachedDb);
   }
 
-  return MongoClient.connect(MONGODB_URI,{
+  return MongoClient.connect(MONGODB_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     })

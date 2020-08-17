@@ -75,7 +75,7 @@ const getCommentVotesCount = async (dbClient, userId) => {
 }
 
 const getShareLinkCount = async (dbClient, userId) => {
-  return await dbClient.db().collection('poll_share').find({ userId: userId }).count();
+  return await dbClient.db().collection('link_share').find({ user: userId }).count();
 }
 
 const getCommentedCount = async (dbClient, userId) => {
@@ -115,7 +115,7 @@ const getConsecutiveSharing = async (dbClient, userId, consecutive = 5) => {
   const pipeline = [
     {
         $match: {
-          userId: userId,
+          user: userId,
         }
     },
     {
@@ -125,7 +125,7 @@ const getConsecutiveSharing = async (dbClient, userId, consecutive = 5) => {
         }
     }
   ];
-  await dbClient.db().collection('poll_share').aggregate(pipeline).forEach((item) => {
+  await dbClient.db().collection('link_share').aggregate(pipeline).forEach((item) => {
     weekArray.push(item._id);
   });
 
