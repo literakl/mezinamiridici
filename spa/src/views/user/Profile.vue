@@ -10,7 +10,7 @@
     <b-row v-if="myProfile && !error">
       <b-col>
         <b-button variant="secondary" :to="{ name: 'update-profile'}">
-          <b-icon icon="BIconPencil" aria-hidden="true"></b-icon>
+          <BIconPencil aria-hidden="true"></BIconPencil>
           {{ $t('profile.update-button') }}
         </b-button>
       </b-col>
@@ -89,12 +89,13 @@
 </template>
 
 <script>
+import { BIconPencil } from 'bootstrap-vue';
 import { ContentLoader } from 'vue-content-loader';
 
 export default {
   name: 'profile',
   components: {
-    ContentLoader,
+    ContentLoader, BIconPencil,
   },
   props: {
     id: String,

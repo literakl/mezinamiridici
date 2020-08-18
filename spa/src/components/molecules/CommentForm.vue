@@ -1,18 +1,45 @@
 <template>
-  <div class="mb-2">
-    <b-button :id="`emoji_list_${commentId}`" class="mt-2" variant="outline" size="sm">
-      &#x1F600;
-    </b-button>
-    <b-popover :target="`emoji_list_${commentId}`" triggers="hover" placement="bottom">
+  <div class="mb-2 mt-2">
+    <b-popover :target="`emojis_${commentId}`" triggers="hover" placement="bottom">
       <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index"
                 v-on:click="addEmoji(index)"
                 variant="outline" size="sm">
         {{emoji}}
       </b-button>
     </b-popover>
-    <b-btn-close v-if="dismissable" @click="dismiss"></b-btn-close>
-    <b-form-textarea v-model="text" :placeholder="$t('comment.write-comment-placeholder')" rows="2">
-    </b-form-textarea>
+
+    <div class="comment-box">
+      <b-container fluid>
+        <b-row>
+          <b-col sm="12">
+            <b-form-textarea
+              class="textarea"
+              :class="`${!wrapIcons ? 'textarea_long' : 'textarea_short'}`"
+              rows="1" max-rows="8"
+              :placeholder="$t('comment.write-comment-placeholder')"
+              v-model="text"
+            >
+            </b-form-textarea>
+          </b-col>
+        </b-row>
+      </b-container>
+
+      <div class="icons" :class="`${wrapIcons ? 'icons_long' : 'icons_short'}`">
+        <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
+          <BIconEmojiSunglasses></BIconEmojiSunglasses>
+        </b-button>
+<!--
+TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
+        <b-button v-if="parent" class="mt-2" variant="outline" size="sm">
+          <b-icon icon="chat-quote"></b-icon>
+        </b-button>
+-->
+        <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
+          <BIconXCircle></BIconXCircle>
+        </b-button>
+      </div>
+    </div>
+
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
@@ -21,6 +48,7 @@
 </template>
 
 <script>
+import { BIconEmojiSunglasses, BIconXCircle } from 'bootstrap-vue';
 import Button from '@/components/atoms/Button.vue';
 
 export default {
@@ -28,14 +56,10 @@ export default {
   props: {
     itemId: String,
     parent: String,
-    dismissable: {
-      type: Boolean,
-      default: true,
-    },
     commentId: String,
   },
   components: {
-    Button,
+    Button, BIconEmojiSunglasses, BIconXCircle,
   },
   data: () => ({
     text: '',
@@ -47,6 +71,11 @@ export default {
       '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
       '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
   }),
+  computed: {
+    wrapIcons() {
+      return this.text.length > 140;
+    },
+  },
   methods: {
     dismiss() {
       this.$emit('dismiss');
@@ -80,3 +109,40 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .comment-box {
+    position: relative;
+    width: 100%;
+  }
+
+  .textarea {
+    height: 40px;
+    overflow-y: hidden;
+  }
+
+  .textarea_short {
+    padding: 13px 50px 34px 32px;
+  }
+
+  .textarea_long {
+    padding: 10px 174px 5px 28px;
+  }
+
+  .icons {
+    position: relative;
+    text-align: right;
+    width: 143px;
+    float: right;
+  }
+
+  .icons_short {
+    top: -36px;
+    right: 40px;
+  }
+
+  .icons_long {
+    top: -45px;
+    right: 40px; /*68*/
+  }
+</style>

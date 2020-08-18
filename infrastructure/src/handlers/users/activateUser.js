@@ -4,7 +4,7 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/api/v1/user/:userId/activate');
+  app.options('/api/v1/user/:userId/activate', auth.cors);
 
   app.patch('/api/v1/user/:userId/activate', auth.required, auth.cors, async (req, res) => {
     logger.verbose('activateUser handler starts');

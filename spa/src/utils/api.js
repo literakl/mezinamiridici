@@ -7,8 +7,8 @@ const { VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT } = process.env;
 
 function getAuthHeader(context, jwt = undefined) {
   const config = { headers: { } };
-  if (jwt || (context && context.rootState.userToken)) {
-    config.headers.Authorization = `bearer ${jwt || context.rootState.userToken}`;
+  if (jwt || (context && context.rootState.users.userToken)) {
+    config.headers.Authorization = `bearer ${jwt || context.rootState.users.userToken}`;
   }
   return config;
 }

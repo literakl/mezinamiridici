@@ -108,7 +108,7 @@ export default {
       const mutation = {
         comments: response.data.data.comments,
         incomplete: response.data.data.incomplete,
-        userId: context.rootState.userId,
+        userId: context.rootState.users.userId,
       };
       context.commit('APPEND_COMMENTS', mutation);
     },
@@ -119,7 +119,7 @@ export default {
       if (response.data.success) {
         const mutation = {
           comment: response.data.data.comment,
-          userId: context.rootState.userId,
+          userId: context.rootState.users.userId,
         };
         context.commit('UPDATE_COMMENT', mutation);
       }
@@ -140,7 +140,7 @@ export default {
           const mutation = {
             commentId: payload.parent,
             replies: response.data.data.replies,
-            userId: context.rootState.userId,
+            userId: context.rootState.users.userId,
           };
           context.commit('SET_REPLIES', mutation);
         }
@@ -153,8 +153,8 @@ export default {
       const mutation = {
         commentId: payload.commentId,
         vote: payload.vote,
-        userId: context.rootState.userId,
-        nickname: context.rootState.userNickname,
+        userId: context.rootState.users.userId,
+        nickname: context.rootState.users.userNickname,
       };
       context.commit('SET_VOTE', mutation);
     },

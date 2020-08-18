@@ -3,7 +3,7 @@
     <b-row align-v="center" align-h="center">
       <b-col sm="1" v-if="item.siblings">
         <b-button v-if="item.siblings.older" :to="link(item.siblings.older)" variant="secondary">
-          <b-icon icon="chevron-double-left" font-scale="2"></b-icon>
+          <BIconChevronDoubleLeft font-scale="2"></BIconChevronDoubleLeft>
         </b-button>
       </b-col>
       <b-col sm="auto">
@@ -27,7 +27,7 @@
       </b-col>
       <b-col sm="1" v-if="item.siblings">
         <b-button v-if="item.siblings.newer" :to="link(item.siblings.newer)" variant="secondary">
-          <b-icon icon="chevron-double-right" font-scale="2"></b-icon>
+          <BIconChevronDoubleRight font-scale="2"></BIconChevronDoubleRight>
         </b-button>
       </b-col>
     </b-row>
@@ -35,21 +35,20 @@
 </template>
 
 <script>
+import { BIconChevronDoubleLeft, BIconChevronDoubleRight } from 'bootstrap-vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'PollHeading',
   components: {
-    ProfileLink, Date,
+    ProfileLink,
+    Date,
+    BIconChevronDoubleLeft,
+    BIconChevronDoubleRight,
   },
   props: {
     item: Object,
-  },
-  computed: {
-    // urlToShare() {
-    //   return `http://mezinamiridici.cz/poll/${this.item.poll.pollId}/${this.item.poll.slug}`;
-    // },
   },
   methods: {
     link(poll) {

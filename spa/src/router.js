@@ -6,6 +6,7 @@ import store from './store';
 Vue.use(Router);
 
 const requireUnauth = (to, from, next) => {
+  store.dispatch('LOAD_USER');
   if (store.getters.IS_AUTHORIZED) {
     next({ name: 'home' });
     return;
@@ -143,6 +144,17 @@ export default new Router({
       path: '/reklama',
       name: 'advertisement',
       component: () => import('./views/site/Advertisement.vue'),
+    },
+    {
+      path: '/stitky',
+      name: 'tags',
+      component: () => import('./views/Tag.vue'),
+    },
+    {
+      path: '/stitky/:tag',
+      name: 'tags-poll',
+      component: () => import('./views/Tag.vue'),
+      props: true,
     },
     {
       path: '*',

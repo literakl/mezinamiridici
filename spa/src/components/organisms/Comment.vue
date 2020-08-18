@@ -11,13 +11,13 @@
 
     <div>
       <b-button v-on:click="reply" class="mr-1" variant="outline-secondary" size="sm">
-        <b-icon icon="chat" aria-hidden="true"></b-icon>
+        <BIconChat aria-hidden="true"></BIconChat>
         {{ $t('comment.reply') }}
       </b-button>
 
       <span :id="`upvotes_${comment._id}`">
         <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
-          <b-icon icon="hand-thumbs-up" aria-hidden="true"></b-icon>
+          <BIconHandThumbsUp aria-hidden="true"></BIconHandThumbsUp>
           {{ comment.up }}
         </b-button>
       </span>
@@ -25,7 +25,7 @@
       <span :id="`downvotes_${comment._id}`">
         <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
           {{ comment.down }}
-          <b-icon icon="hand-thumbs-down" aria-hidden="true"></b-icon>
+          <BIconHandThumbsDown aria-hidden="true"></BIconHandThumbsDown>
         </b-button>
       </span>
 
@@ -38,12 +38,12 @@
       </b-popover>
 
       <b-button v-if="!comment.parentId"  v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
-        <b-icon icon="arrow-clockwise" aria-hidden="true"></b-icon>
+        <BIconArrowClockwise aria-hidden="true"></BIconArrowClockwise>
       </b-button>
 
       <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
-        <b-icon v-if="collapsed"  icon="arrows-expand" aria-hidden="true"></b-icon>
-        <b-icon v-if="!collapsed"  icon="arrows-collapse" aria-hidden="true"></b-icon>
+        <BIconArrowsExpand v-if="collapsed"  aria-hidden="true"></BIconArrowsExpand>
+        <BIconArrowsCollapse v-if="!collapsed"  aria-hidden="true"></BIconArrowsCollapse>
       </b-button>
     </div>
 
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { BIconChat, BIconHandThumbsUp, BIconHandThumbsDown, BIconArrowClockwise, BIconArrowsExpand, BIconArrowsCollapse } from 'bootstrap-vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -64,6 +65,12 @@ export default {
     CommentForm,
     ProfileLink,
     Date,
+    BIconChat,
+    BIconHandThumbsUp,
+    BIconHandThumbsDown,
+    BIconArrowClockwise,
+    BIconArrowsExpand,
+    BIconArrowsCollapse,
   },
   props: {
     itemId: String,

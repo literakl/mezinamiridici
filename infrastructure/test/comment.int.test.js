@@ -387,7 +387,6 @@ test('Comments API', async (done) => {
   commentBody.date = dayjs(poll.data.info.date).add(70, 'minute').format(DATE_FORMAT);
   const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment7.success).toBeTruthy();
-  console.log(comment7.data.comment.text);
   expect(comment7.data.comment.text).toBe('<p>Comment 7 😃</p>\n<p>New paragraph 😄</p>\n<p>Third paragraph 😦</p>\n');
 
   done();

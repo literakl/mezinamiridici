@@ -10,3 +10,5 @@ db.poll_votes.createIndex({ item: 1, user: 1 }, { unique: true });
 db.comments.createIndex({ itemId: 1 });
 db.comments.createIndex({ parentId: 1 });
 db.comment_votes.createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
+db.link_shares.createIndex({ user: 1 });
+db.link_shares.createIndex({ date: 1 });
