@@ -22,7 +22,6 @@ async function sendEmail(config, options, context) {
     }
   }
 
-
   const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
   const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
   const data = Object.assign({}, emailConfig, options);
