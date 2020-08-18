@@ -216,6 +216,9 @@ function insertUser(dbClient, id, email, nickname, provider) {
     prefs: {
       public: true,
     },
+    honors: {
+      rank: 'novice',
+    },
   };
 
   return dbClient.db().collection('users').insertOne(userDoc);

@@ -24,6 +24,9 @@
     "since": 2007,
     "vehicles": ["car"]
   },
+  "honors": {
+    "rank": "novice"
+  },
   "prefs": {
     "public": true,
     "email": {

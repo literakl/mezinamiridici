@@ -32,6 +32,10 @@
 * email.newsletter: newsletter flag, boolean
 * email.summary: frequency of summary emails, values: daily, weekly
 
+## Honors section
+
+* rank: user experience rank; required
+
 ## Consent section
 
 * consent.terms: timestamp when user accepted terms and conditions, required

@@ -85,6 +85,9 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
     prefs: {
       public: true,
     },
+    honors: {
+      rank: 'novice',
+    },
     consent: {
       terms: now,
       data: now,
