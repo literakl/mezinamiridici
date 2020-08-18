@@ -148,12 +148,12 @@ export default new Router({
     {
       path: '/stitky',
       name: 'tags',
-      component: () => import('./views/Tag.vue'),
+      component: () => import('./views/item/TagView.vue'),
     },
     {
       path: '/stitky/:tag',
-      name: 'tags-poll',
-      component: () => import('./views/Tag.vue'),
+      name: 'tag',
+      component: () => import('./views/item/TagView.vue'),
       props: true,
     },
     {

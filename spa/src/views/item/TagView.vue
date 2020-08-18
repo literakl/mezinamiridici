@@ -1,32 +1,30 @@
 <template>
   <b-container fluid="true" class="pt-3 w-75 m-auto">
-    <TagsHeading v-if="tags" :tags="tags" :cTag="tag"/>
-    <ContentLoading v-if="! tags" type="tags"/>
+    <b-button-group size="sm">
+      <b-button
+        v-for="t in tags" :key="t"
+        :to="{ name: 'tag', params: { tag: t } }"
+        :pressed="t === tag"
+        variant="primary"
+      >
+        #{{t}}
+      </b-button>
+    </b-button-group>
 
-    <b-row>
-      <b-col>
-        <ul>
-          <li v-for="item in items" :key="item._id">
-            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
-              {{item.info.caption}}
-            </router-link>
-            {{ $t('poll.votes') }}: {{item.votes_count}}
-          </li>
-        </ul>
-      </b-col>
-    </b-row>
+    <ContentLoading v-if="! items" type="items"/>
+    <Items v-if="hasItems" :items="items"/>
   </b-container>
 </template>
 
 <script>
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
-import TagsHeading from '@/components/molecules/TagsHeading.vue';
+import Items from '@/components/atoms/Items.vue';
 
 export default {
-  name: 'home',
+  name: 'Tag',
   components: {
     ContentLoading,
-    TagsHeading,
+    Items,
   },
   props: {
     tag: String,
@@ -35,15 +33,26 @@ export default {
     $route: 'fetchData',
   },
   computed: {
-    tags() {
-      return this.$store.getters.TAGS;
-    },
     items() {
       let stream = [];
       if (this.tag) {
         stream = this.$store.getters.ITEMS_BY_TAG;
       }
       return stream;
+    },
+    hasItems() {
+      return this.items !== null && this.items.length > 0;
+    },
+    hasTags() {
+      return this.tags !== null && this.tags.length > 0;
+    },
+    tags() {
+      const x = this.$store.getters.TAGS;
+      if (x) {
+        x.sort((a, b) => a.localeCompare(b));
+      }
+      console.log(x);
+      return x;
     },
   },
   created() {

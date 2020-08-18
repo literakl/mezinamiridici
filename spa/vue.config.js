@@ -8,9 +8,9 @@ module.exports = {
   },
   pwa: {
     iconPaths: {
-      favicon32: '/img/fav/32.png',
-      favicon16: '/img/fav/16.png',
-      appleTouchIcon: '/img/fav/152.png',
+      favicon32: 'img/fav/32.png',
+      favicon16: 'img/fav/16.png',
+      appleTouchIcon: 'img/fav/152.png',
     },
   },
   chainWebpack: (config) => {

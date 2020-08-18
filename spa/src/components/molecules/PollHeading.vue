@@ -22,6 +22,10 @@
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
               {{ $t('poll.comments') }}: {{item.comments.count}}
             </router-link>
+            <template v-if="hasTags">
+              &bull;
+              <TagList :tags="tags"/>
+            </template>
           </b-card-footer>
         </b-card>
       </b-col>
@@ -38,17 +42,27 @@
 import { BIconChevronDoubleLeft, BIconChevronDoubleRight } from 'bootstrap-vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
+import TagList from '@/components/atoms/TagList.vue';
 
 export default {
   name: 'PollHeading',
   components: {
     ProfileLink,
     Date,
+    TagList,
     BIconChevronDoubleLeft,
     BIconChevronDoubleRight,
   },
   props: {
     item: Object,
+  },
+  computed: {
+    hasTags() {
+      return this.tags !== null && this.tags.length > 0;
+    },
+    tags() {
+      return this.poll !== null && this.item.info.tags;
+    },
   },
   methods: {
     link(poll) {
