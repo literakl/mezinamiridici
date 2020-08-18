@@ -4,16 +4,11 @@
       <b-button
         v-for="t in tags" :key="t"
         :to="{ name: 'tag', params: { tag: t } }"
-        :pressed.sync="t === tag"
+        :pressed="t === tag"
         variant="primary"
       >
         #{{t}}
       </b-button>
-<!--
-      <router-link v-for="tag in tags" :key="tag" :to="{ name: 'tag', params: { tag: tag } }">
-        #{{tag}}
-      </router-link>
--->
     </b-button-group>
 
     <ContentLoading v-if="! items" type="items"/>
