@@ -157,22 +157,22 @@ export default new Router({
       props: true,
     },
     {
-      path: '/createBlog',
+      path: '/novy-prispevek',
       name: 'create-blog',
       component: () => import('./views/item/CreateItem.vue'),
       beforeEnter: requireAuth,
     },
     {
-      path: '/updateBlog',
+      path: '/uprava-prispevku',
       name: 'update-blog',
       component: () => import('./views/item/CreateItem.vue'),
       beforeEnter: requireAuth,
     },
     {
-      path: '/viewBlog',
+      path: '/prispevek/:slug',
       name: 'view-blog',
       component: () => import('./views/item/ViewItem.vue'),
-      beforeEnter: requireAuth,
+      props: true,
     },
     {
       path: '*',

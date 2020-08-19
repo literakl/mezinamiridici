@@ -20,9 +20,15 @@
             <b-nav-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in-up') }}</b-nav-item>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
+                <BIconPlus scale="2"></BIconPlus>
+              </template>
+              <b-dropdown-item :to="{ name: 'create-blog' }">{{ $t('app.new-post') }}</b-dropdown-item>
+            </b-nav-item-dropdown>
+            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
+              <template v-slot:button-content>
                 <BIconPersonFill scale="2"></BIconPersonFill>
               </template>
-              <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }" v-if="authorized">{{ $t('app.my-profile') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'update-password'}">{{ $t('app.change-password') }}</b-dropdown-item>
               <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
@@ -46,13 +52,12 @@
 </template>
 
 <script>
-import { BIconPersonFill, BIconInfo } from 'bootstrap-vue';
+import { BIconPersonFill, BIconInfo, BIconPlus } from 'bootstrap-vue';
 
 export default {
   name: 'App',
   components: {
-    BIconPersonFill,
-    BIconInfo,
+    BIconPersonFill, BIconInfo, BIconPlus,
   },
   computed: {
     authorized() {
