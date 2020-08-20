@@ -69,6 +69,7 @@
           </b-form-tags>
         </b-form-group>
 
+        <SelectPicture :currentPath="form.picture" @changePath="changePath"/>
 
         <b-form-checkbox
           v-if="!isCreate"
@@ -93,9 +94,13 @@
 
 <script>
 import { getISO } from '@/utils/dateUtils';
+import SelectPicture from '@/components/atoms/SelectPicture.vue';
 
 export default {
   name: 'PollForm',
+  components: {
+    SelectPicture,
+  },
   props: {
     isCreate: Boolean,
     poll: Object,
@@ -108,6 +113,7 @@ export default {
       authorId: '',
       published: false,
       pollTagsList: [],
+      picture: '',
     },
     wholeTagsList: [],
     error: null,
@@ -124,6 +130,7 @@ export default {
       this.form.date = getISO(this.poll.info.date);
       this.form.authorId = this.poll.info.author.id;
       this.form.pollTagsList = (this.poll.info.tags === undefined) ? [] : this.poll.info.tags;
+      this.form.picture = (this.poll.info.picture) ? this.poll.info.picture : '';
     }
   },
   async created() {
@@ -134,6 +141,10 @@ export default {
       return dirty || validated ? valid : null;
     },
 
+    changePath(path) {
+      this.form.picture = path;
+    },
+
     async onSubmit() {
       let message;
       const body = {
@@ -141,6 +152,7 @@ export default {
         date: new Date(this.form.date),
         author: this.form.authorId,
         tags: this.form.pollTagsList,
+        picture: this.form.picture,
       };
 
       if (this.isCreate) {

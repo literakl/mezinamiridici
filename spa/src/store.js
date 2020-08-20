@@ -18,10 +18,12 @@ export default new Vuex.Store({
   state: {
     tags: null,
     itemsByTag: null,
+    itemPictures: [],
   },
   getters: {
     TAGS: state => state.tags,
     ITEMS_BY_TAG: state => state.itemsByTag,
+    ITEM_PICTURES: state => state.itemPictures,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -29,6 +31,9 @@ export default new Vuex.Store({
     },
     SET_ITEMS_BY_TAG: (state, payload) => {
       state.itemsByTag = payload;
+    },
+    SET_ITEM_PICTURES: (state, payload) => {
+      state.itemPictures = payload;
     },
     // APPEND_STREAM: (state, payload) => {
     //   state.stream = payload;
@@ -53,6 +58,12 @@ export default new Vuex.Store({
       Vue.$log.debug('GET_POLL_BY_TAG');
       const response = await get('BFF', `/items/${payload}`, context);
       context.commit('SET_ITEMS_BY_TAG', response.data.data);
+      return response.data.data;
+    },
+    GET_ITEM_PICTURES: async (context) => {
+      Vue.$log.debug('GET_ITEM_PICTURES');
+      const response = await get('API', '/items/pictures', context);
+      context.commit('SET_ITEM_PICTURES', response.data.data);
       return response.data.data;
     },
   },
