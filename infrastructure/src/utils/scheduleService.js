@@ -7,15 +7,17 @@ module.exports = async () => {
   const dbClient = await mongo.connectToDatabase();
   logger.debug('Scheduler starts');
 
-  const task = cron.schedule('*/2 * * * * *', async () => { // TODO move cron expression to environment
+  const task = cron.schedule(process.env.SCHEDULE_TIME, async () => {
     logger.debug('Running a job at 00:00 at Europe/Prague timezone');
 
     // todo get user id and its honor object (I will need in later phase)
-    const userArray = await getUsers(dbClient); // TODO iterate users by 100, this code might break for tens of thousands of users
+    const userArray = await getUsers(dbClient, '', 5); // TODO iterate users by 100, this code might break for tens of thousands of users
 
-    userArray.forEach(async (userId) => { // TODO Promise returned from forEach ignored
-      const currentRank = 'novice'; // todo from user honors object
-      let finalRank = '';
+    userArray.forEach(async (user) => { // TODO Promise returned from forEach ignored
+      const currentRank = (user.honors) ? user.honors.rank : ''; // todo from user honors object
+      const userId = user._id;
+      let finalRank = 'novice';
+
       if (!currentRank || currentRank === 'novice') {
         const pollVotesCount = await getPollVoteCount(dbClient, userId);
         const commentVotesCount = await getCommentVotesCount(dbClient, userId);
@@ -47,15 +49,7 @@ module.exports = async () => {
       } else {
         return;
       }
-      // const pollVotesCount = await getPollVoteCount(dbClient, userId);
-      // const commentVotesCount = await getCommentVotesCount(dbClient, userId);
-      // const shareLinkCount = await getShareLinkCount(dbClient, userId);
-      // const commentedCount = await getCommentedCount(dbClient, userId);
-      // const positiveCommentsVotesCount = await getPositiveCommentsVotesCount(dbClient, userId);
-      // const blogCount = await getBlogCount(dbClient, userId);
-      // const positivePercent = await getPositivePercent(dbClient, userId);
-      // const consecutiveSharing = await getConsecutiveSharing(dbClient, userId, 10);
-
+      
       if (currentRank !== finalRank) {
         await dbClient.db().collection('users').updateOne({ _id: userId }, {
           $set: { 'honors.rank': finalRank },
@@ -73,26 +67,37 @@ module.exports = async () => {
 // TODO return user id and honors object
 // TOOD add new argument - the last _id
 // TOOD fetch page size of users smaller that last_id sorted by _id descending
-const getUsers = async (dbClient) => {
-  const arr = [];
-  await dbClient.db().collection('users')
-    .find().project({ honors: 1 })
+const getUsers = async (dbClient, lastId, pageSize = 5) => {
+  const arr =  await dbClient.db().collection('users')
+    .find().sort({ _id: 1 }).project({ _id: 1, honors: 1 })
     .toArray();
-  return arr;
+  let count = 0;
+  let users = [], start = (lastId === '') ? true : false;
+
+  arr.forEach((item) => {
+    if( start && count < pageSize ){
+      count++;
+      users.push(item);
+    }
+    if( item._id === lastId ){
+      start = true;
+    }
+  })
+  return users;
 };
 
 const getPollVoteCount = async (dbClient, userId) => dbClient.db().collection('poll_votes').find({ user: userId }).count();
 
 const getCommentVotesCount = async (dbClient, userId) => dbClient.db().collection('comment_votes').find({ 'user.id': userId }).count();
 
-const getShareLinkCount = async (dbClient, userId) => dbClient.db().collection('link_share').find({ user: userId }).count();
+const getShareLinkCount = async (dbClient, userId) => dbClient.db().collection('link_shares').find({ user: userId }).count();
 
 const getCommentedCount = async (dbClient, userId) => dbClient.db().collection('comments').find({ 'user.id': userId }).count();
 
 const getPositiveCommentsVotesCount = async (dbClient, userId) => {
   const arr = [];
   await dbClient.db().collection('comments').aggregate([
-    { $match: { 'user.id': userId, up: { $gt: 1 } } },
+    { $match: { 'user.id': userId, up: { $gt: 0 } } },
     { $group: { _id: '$itemId', count: { $sum: 1 } } },
   ]).forEach((item) => { arr.push(item); }); // TODO invalid number of arguments, expected 2
 

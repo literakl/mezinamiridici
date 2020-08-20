@@ -9,7 +9,16 @@ const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
-const { api, getAuthHeader } = require('./testUtils');
+const dayjs = require('dayjs');
+const {
+  api, bff, getAuthHeader,
+} = require('./testUtils');
+const {
+  setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
+} = require('./prepareUsers');
+const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+const schedule = require('../src/utils/scheduleService');
+
 
 let dbClient;
 let server;
@@ -233,8 +242,84 @@ test('CORS', async (done) => {
   done();
 });
 
+test('User Rank', async (done) => {
+  jest.setTimeout(180 * 60000);
+
+  const pollBody = {
+    text: 'First question',
+    picture: 'picture.png',
+    date: dayjs().subtract(7, 'hour').format('YYYY-MM-DD'),
+  };
+  const poll = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(poll.success).toBeTruthy();
+
+  const commentBody = {
+    text: 'Comment 1',
+    date: dayjs(poll.data.info.date).add(10, 'minute').format(DATE_FORMAT),
+  };
+  const comment1 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(comment1.success).toBeTruthy();
+
+  const voteBody = {
+    vote: 1,
+  };
+  let voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(voteResponse.success).toBeFalsy();
+  voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+  voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+  voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+
+  commentBody.text = 'Comment 2';
+  const comment2 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(comment2.success).toBeTruthy();
+
+  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(voteResponse.success).toBeFalsy();
+  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+
+  voteResponse = await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+  
+  const jwtDecoded = jwt.decode(Jiri.jwt);
+  const { userId } = jwtDecoded;
+  const shareBody = {
+    path: `/anketa/${poll.data.info.slug}`,
+    service: 'twitter',
+    userId
+  }
+
+  let shareResponse = await api(`items/${poll.data._id}/share`,{ method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
+  const sendUrl = `http://www.twitter.com/share?url=${process.env.WEB_URL + shareBody.path}`;
+  expect(shareResponse.success).toBeTruthy();
+  expect(shareResponse.data).toBe(sendUrl);
+
+  await schedule();
+
+  setTimeout(async () => {
+
+    let checkUser = await api(`users/${userId}`,{ method: 'GET' }).json();
+    expect(checkUser.data.honors.rank).toBe('student');
+    done();
+    
+  },10000);
+})
+
 beforeEach(async () => {
   await dbClient.db().collection('users').deleteMany({});
+  await dbClient.db().collection('comments').deleteMany({});
+  await dbClient.db().collection('items').deleteMany({});
+  await dbClient.db().collection('poll_votes').deleteMany({});
+  await dbClient.db().collection('comment_votes').deleteMany({});
+  await dbClient.db().collection('link_shares').deleteMany({});
+  await setup(dbClient, api);
 });
 
 beforeAll(async () => {
