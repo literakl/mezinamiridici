@@ -74,7 +74,7 @@ function insertPollVote(dbClient, pollId, vote, user) {
     pollVote.driving = currentYear - user.driving.since;
   }
   
-  mongo.storeActivity(dbClient, user.userId, pollId, 'vote', vote);
+  mongo.storeActivity(dbClient, user._id, pollId, 'vote', vote);
 
   return dbClient.db().collection('poll_votes').insertOne(pollVote);
 }
