@@ -92,5 +92,7 @@ function insertItem(dbClient, pollId, text, author, picture, publishDate, tags) 
     },
   };
 
+  mongo.storeActivity(dbClient, author.userId, pollId, 'create');
+
   return dbClient.db().collection('items').insertOne(item);
 }

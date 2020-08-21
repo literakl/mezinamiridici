@@ -128,6 +128,23 @@ function getIdentity(dbClient, userId) {
     .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
 }
 
+function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
+  const body = {
+    _id: generateTimeId(),
+    userId,
+    published: new Date(),
+    itemId,
+    action,
+  };
+  if(commentId){
+    body.commentId = commentId;
+  }
+  if(vote){
+    body.vote = vote;
+  }
+  return dbClient.db().collection('user_activity').insertOne(body);
+}
+
 async function getPoll(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   const item = await cursor.next();
@@ -215,3 +232,4 @@ exports.stageId = stageId;
 exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
+exports.storeActivity = storeActivity;

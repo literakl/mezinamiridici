@@ -23,7 +23,7 @@ module.exports = (app) => {
         return api.sendConflict(res, api.createError('You have already voted.', 'generic.internal-error'));
       }
 
-      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, user: 1 } });
+      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, user: 1, itemId: 1 } });
       logger.debug('Item fetched');
       if (!comment || !comment._id) {
         return api.sendNotFound(res, api.createError('Comment not found', 'generic.internal-error'));
@@ -32,7 +32,7 @@ module.exports = (app) => {
         return api.sendBadRequest(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
 
-      await insertCommentVote(dbClient, commentId, vote, req.identity);
+      await insertCommentVote(dbClient, commentId, vote, req.identity, comment.itemId);
       logger.debug('Vote inserted');
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);
       logger.debug('Item updated');
@@ -44,7 +44,7 @@ module.exports = (app) => {
   });
 };
 
-function insertCommentVote(dbClient, commentId, vote, user) {
+function insertCommentVote(dbClient, commentId, vote, user, itemId) {
   const commentVote = {
     _id: mongo.generateTimeId(),
     commentId,
@@ -54,6 +54,7 @@ function insertCommentVote(dbClient, commentId, vote, user) {
       nickname: user.nickname,
     },
   };
+  mongo.storeActivity(dbClient, user.userId, itemId, 'vote', vote, commentId);
   return dbClient.db().collection('comment_votes').insertOne(commentVote);
 }
 

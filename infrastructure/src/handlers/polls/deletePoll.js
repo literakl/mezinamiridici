@@ -19,6 +19,10 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const commandResult = await dbClient.db().collection('items').deleteOne({ _id: pollId });
+      
+      let user = auth.getIdentity(req.identity);
+      mongo.storeActivity(dbClient, user.userId, pollId, 'delete');
+
       console.log(commandResult.result);
 
       if (commandResult.result.ok === 1 && commandResult.result.n === 1) {

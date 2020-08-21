@@ -50,6 +50,9 @@ module.exports = (app) => {
 
       const query = prepareUpdateQuery(text, user, picture, publishDate, published, tags);
       await dbClient.db().collection('items').updateOne({ _id: pollId }, query);
+      
+      mongo.storeActivity(dbClient, user.userId, pollId, 'update');
+
       logger.debug('Item updated');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(req.identity.userId)];

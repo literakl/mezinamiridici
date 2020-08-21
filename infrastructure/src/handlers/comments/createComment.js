@@ -64,6 +64,8 @@ module.exports = (app) => {
       comment.votes = [];
       logger.debug('Comment inserted');
 
+      mongo.storeActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
+
       let replies = [];
       if (parentId) {
         const pipeline = [
