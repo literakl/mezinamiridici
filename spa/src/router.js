@@ -97,9 +97,15 @@ export default new Router({
       component: () => import('./views/poll/Polls.vue'),
     },
     {
-      path: '/anketa/:slug',
+      path: '/ankety/:slug',
       name: 'poll',
       component: () => import('./views/poll/Poll.vue'),
+      props: true,
+    },
+    {
+      path: '/ankety/:slug/grafy/:type',
+      name: 'analyse-poll',
+      component: () => import('./views/poll/AnalyzeVotes'),
       props: true,
     },
     {
@@ -113,17 +119,6 @@ export default new Router({
       name: 'create-poll',
       component: () => import('./views/poll/CreatePoll'),
       props: true,
-    },
-    {
-      path: '/anketa/:slug/grafy/:type',
-      name: 'analyse-poll',
-      component: () => import('./views/poll/AnalyzeVotes'),
-      props: true,
-    },
-    {
-      path: '/analyze-votes/:id',
-      name: 'analyze-votes',
-      component: () => import('./views/poll/AnalyzeVotes.vue'),
     },
     {
       path: '/napoveda',
