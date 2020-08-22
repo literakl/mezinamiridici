@@ -24,6 +24,7 @@ test('Poll API', async (done) => {
   // create poll, anonymous user
   let body = {
     text: 'First question',
+    picture: '/pictures/stream/default.jpg',
   };
   let response = await api('polls', { method: 'POST', json: body });
   expect(response.statusCode).toBe(401);

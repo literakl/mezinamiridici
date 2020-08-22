@@ -7,7 +7,7 @@
 * slug: normalized caption for URL, required, unique, indexed
 * date: published timestamp, required, indexed. Order of _id and info.date may not be aligned.
 * published: published flag, required
-* picture: stream picture identifier
+* picture: stream picture path from root; required
 * tags: array of tags
 
 ### Author section
