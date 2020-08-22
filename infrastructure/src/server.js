@@ -35,6 +35,7 @@ require('./handlers/items/tags')(app);
 require('./handlers/items/createBlog')(app);
 require('./handlers/items/updateBlog')(app);
 require('./handlers/items/getBlog')(app);
+require('./handlers/items/imageUpload')(app);
 require('./handlers/misc/tagList')(app);
 require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);

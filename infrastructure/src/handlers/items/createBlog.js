@@ -9,6 +9,9 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
+const edjsHTML = require("editorjs-html");
+const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
+
 module.exports = (app) => {
   app.options('/v1/blog', auth.cors);
 
@@ -20,20 +23,20 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const {
-        title, text,
+        title, source,
       } = req.body;
-
-      if (!text) {
-        return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
+      
+      if (!source) {
+        return api.sendBadRequest(res, api.createError('Missing parameter source', 'generic.internal-error'));
       }
+      const content = edjsParser.parse(source);
 
       let user = auth.getIdentity(req.identity);
-
 
       let publishDate = new Date();
       
       const blogId = mongo.generateTimeId();
-      await insertItem(dbClient, blogId, title, text, user, publishDate);
+      await insertItem(dbClient, blogId, title, source, content, user, publishDate);
       logger.debug('Blog inserted');
 
       const pipeline = [mongo.stageId(blogId)];
@@ -48,14 +51,15 @@ module.exports = (app) => {
   });
 };
 
-function insertItem(dbClient, blogId, title, text, user, publishDate) {
+function insertItem(dbClient, blogId, title, source, content, user, publishDate) {
   const blog = {
     _id: blogId,
     type: 'blog',
     date: publishDate,
     user: user.userId,
     title,
-    text,
+    source,
+    content,
   };
 
   return dbClient.db().collection('blogs').insertOne(blog);

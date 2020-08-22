@@ -14,7 +14,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const pipeline = [{ $sort: { 'date': -1 } }, mongo.stageLimit(1)];
+      const pipeline = [{ $sort: { 'date': -1 } }, mongo.stageLimit(1)];//TODO this is used only code check.
       
       const blog = await getBlog(dbClient, pipeline);
       logger.debug('Blog fetched');

@@ -5,8 +5,8 @@ axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8'
 
 const { VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT } = process.env;
 
-function getAuthHeader(context, jwt = undefined) {
-  const config = { headers: { } };
+function getAuthHeader(context, jwt = undefined, upload) {
+  const config = (upload) ? { headers: { 'Content-Type': 'multipart/form-data' } } : { headers: { } };
   if (jwt || (context && context.rootState.users.userToken)) {
     config.headers.Authorization = `bearer ${jwt || context.rootState.users.userToken}`;
   }
@@ -31,6 +31,15 @@ function post(endpoint, url, body, context, jwt) {
   }
 }
 
+function put(endpoint, url, body, context, jwt) {
+  const headers = getAuthHeader(context, jwt, true);
+  if (endpoint === 'BFF') {
+    return axios.put(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
+  } else {
+    return axios.put(`${VUE_APP_API_ENDPOINT}${url}`, body, headers);
+  }
+}
+
 function patch(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
   if (endpoint === 'BFF') {
@@ -50,5 +59,5 @@ function deleteApi(endpoint, url, body, context, jwt) {
 }
 
 export {
-  get, post, patch, deleteApi,
+  get, post, patch, deleteApi, put,
 };

@@ -9,6 +9,9 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
+const edjsHTML = require("editorjs-html");
+const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
+
 module.exports = (app) => {
   app.options('/v1/blog/:blogId', auth.cors);
 
@@ -24,18 +27,19 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const {
-        text, title, date,
+        source, title, date,
       } = req.body;
 
-      if (!text) {
-        return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
+      if (!source) {
+        return api.sendBadRequest(res, api.createError('Missing parameter source', 'generic.internal-error'));
       }
+      const content = edjsParser.parse(source);
 
       let user = auth.getIdentity(req.identity);
 
       let publishDate = new Date();
 
-      const query = prepareUpdateQuery(text, user, title, publishDate);
+      const query = prepareUpdateQuery(source, content, user, title, publishDate);
       await dbClient.db().collection('blogs').updateOne({ _id: blogId }, query);
       logger.debug('Blog updated');
 
@@ -50,9 +54,10 @@ module.exports = (app) => {
   });
 };
 
-function prepareUpdateQuery(text, author, title, date) {
+function prepareUpdateQuery(source,content, author, title, date) {
   const setters = {};
-  setters['text'] = text;
+  setters['source'] = source;
+  setters['content'] = content;
   setters['title'] = title;
   setters['user'] = author.userId;
   setters['date'] = date;

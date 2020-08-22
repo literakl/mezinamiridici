@@ -13,12 +13,15 @@ import VueScrollTo from 'vue-scrollto';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueAuthenticate from 'vue-authenticate';
+import Editor from 'vue-editor-js';
+// import VueCompositionApi from '@vue/composition-api';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
 import i18n from './i18n';
+
 
 // TODO is this neccessary? We import CSS in App.vue
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -40,6 +43,8 @@ Vue.use(BootstrapVue);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);
+Vue.use(Editor);
+// Vue.use(VueCompositionApi);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',
   baseUrl: 'http://localhost:3000/api',
