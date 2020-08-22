@@ -2,13 +2,13 @@
   <b-container fluid class="p-4">
     <b-img center thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
 
-    <b-modal id="thumbs-list" v-model="listShow" size="xl" centered scrollable :hide-footer="true" v-if="pictureCount>0">
+    <b-modal id="thumbs-list" v-model="listShow" size="xl" centered scrollable :hide-footer="true" v-if="pictureCount > 0">
       <b-row>
         <b-col v-for="index in countPerRow" :key="index-1" class="p-0">
           <b-img
             thumbnail
             fluid
-            :src="picturesList[index-1].thumbnail"
+            :src="pictures[index-1].path"
             class="item-thumb"
             @click="selectThumb(index-1)">
           </b-img>
@@ -19,9 +19,9 @@
           <b-img
             thumbnail
             fluid
-            :src="picturesList[countPerRow + index - 1].thumbnail"
+            :src="pictures[countPerRow + index - 1].path"
             class="item-thumb"
-            v-if="picturesList[countPerRow + index - 1]"
+            v-if="pictures[countPerRow + index - 1]"
             @click="selectThumb(countPerRow + index - 1)">
           </b-img>
         </b-col>
@@ -38,29 +38,33 @@ export default {
   },
   data() {
     return {
-      picturesList: [],
+      pictures: [],
       pictureCount: 0,
       countPerRow: 0,
       listShow: false,
     };
   },
   computed: {
-    allPicturesList() {
+    allPictures() {
       return this.$store.getters.ITEM_PICTURES;
     },
   },
   watch: {
-    allPicturesList() {
-      this.allPicturesList.forEach((item) => {
+    allPictures() {
+      this.allPictures.forEach((item) => {
         if (item.default_picture) {
-          if (!this.currentPath) this.$emit('changePath', item.thumbnail);
+          if (!this.currentPath) {
+            this.$emit('changePath', item.path);
+          }
         } else {
-          this.picturesList.push(item);
+          this.pictures.push(item);
         }
       });
-      this.pictureCount = this.picturesList.length;
+      this.pictureCount = this.pictures.length;
       this.countPerRow = Math.floor(this.pictureCount / 2);
-      if (this.pictureCount % 2 !== 0) this.countPerRow = this.countPerRow + 1;
+      if (this.pictureCount % 2 !== 0) {
+        this.countPerRow = this.countPerRow + 1;
+      }
     },
   },
   methods: {
@@ -69,26 +73,26 @@ export default {
     },
     selectThumb(key) {
       this.listShow = false;
-      this.$emit('changePath', this.picturesList[key].thumbnail);
+      this.$emit('changePath', this.pictures[key].path);
     },
   },
   async created() {
-    await this.$store.dispatch('GET_ITEM_PICTURES');
+    await this.$store.dispatch('FETCH_ITEM_PICTURES');
   },
 };
 </script>
 
 <style scoped>
   .item-thumb {
-    width:200px;
-    height:200px;
+    width:385px;
+    height:230px;
     cursor:pointer;
     transition: 0.5s ease;
   }
-  .item-thumb:hover{
+  .item-thumb:hover {
     transform: translateX(-2px) translateY(-2px) scale(1.03);
   }
-  .item-thumb:active{
+  .item-thumb:active {
     transform: translateX(-1px) translateY(-1px) scale(1.01);
   }
 </style>
