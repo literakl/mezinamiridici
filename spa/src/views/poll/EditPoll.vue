@@ -2,8 +2,7 @@
   <div class="pt-3 w-75 m-auto">
     <h1>{{ $t('poll.forms.edit-poll') }}</h1>
 
-    <PollForm v-if="poll" :poll="poll" :isCreate="isNew"/>
-
+    <PollForm v-if="poll" :poll="poll" :isCreate="false"/>
   </div>
 </template>
 
@@ -14,11 +13,6 @@ import PollForm from '@/components/organisms/PollForm.vue';
 export default {
   components: {
     PollForm,
-  },
-  data() {
-    return {
-      isNew: false,
-    };
   },
   props: {
     slug: String,

@@ -1,31 +1,18 @@
 <template>
-  <b-container fluid class="p-4">
-    <b-img center thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
+  <b-container fluid="true" class="p-4">
+    <b-img thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
 
-    <b-modal id="thumbs-list" v-model="listShow" size="xl" centered scrollable :hide-footer="true" v-if="pictureCount > 0">
-      <b-row>
-        <b-col v-for="index in countPerRow" :key="index-1" class="p-0">
-          <b-img
-            thumbnail
-            fluid
-            :src="pictures[index-1].path"
-            class="item-thumb"
-            @click="selectThumb(index-1)">
-          </b-img>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col v-for="index in countPerRow" :key="countPerRow + index - 1" class="p-0">
-          <b-img
-            thumbnail
-            fluid
-            :src="pictures[countPerRow + index - 1].path"
-            class="item-thumb"
-            v-if="pictures[countPerRow + index - 1]"
-            @click="selectThumb(countPerRow + index - 1)">
-          </b-img>
-        </b-col>
-      </b-row>
+    <b-modal id="thumbs-list" v-model="showSelector" :title="$t('generic.select-picture-title')"
+             size="xl" centered scrollable :hide-footer="true">
+      <b-img
+        thumbnail
+        fluid
+        class="item-thumb"
+        v-for="picture in pictures"
+        :src="picture.path"
+        v-bind:key="picture.path"
+        @click="selectPicture(picture.path)">
+      </b-img>
     </b-modal>
 </b-container>
 </template>
@@ -39,9 +26,7 @@ export default {
   data() {
     return {
       pictures: [],
-      pictureCount: 0,
-      countPerRow: 0,
-      listShow: false,
+      showSelector: false,
     };
   },
   computed: {
@@ -52,28 +37,20 @@ export default {
   watch: {
     allPictures() {
       this.allPictures.forEach((item) => {
-        if (item.default_picture) {
-          if (!this.currentPath) {
-            this.$emit('changePath', item.path);
-          }
-        } else {
-          this.pictures.push(item);
+        this.pictures.push(item);
+        if (!this.currentPath && item.default_picture) {
+          this.$emit('changePath', item.path);
         }
       });
-      this.pictureCount = this.pictures.length;
-      this.countPerRow = Math.floor(this.pictureCount / 2);
-      if (this.pictureCount % 2 !== 0) {
-        this.countPerRow = this.countPerRow + 1;
-      }
     },
   },
   methods: {
     showModal() {
-      this.listShow = true;
+      this.showSelector = true;
     },
-    selectThumb(key) {
-      this.listShow = false;
-      this.$emit('changePath', this.pictures[key].path);
+    selectPicture(path) {
+      this.showSelector = false;
+      this.$emit('changePath', path);
     },
   },
   async created() {
@@ -84,8 +61,8 @@ export default {
 
 <style scoped>
   .item-thumb {
-    width:385px;
-    height:230px;
+    width:200px;
+    height:120px;
     cursor:pointer;
     transition: 0.5s ease;
   }

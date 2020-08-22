@@ -23,7 +23,8 @@
     "not-published": "not published",
     "ok-button": "OK",
     "cancel-button": "Cancel",
-    "share-link": "Share"
+    "share-link": "Share",
+    "select-picture-title": "Select picture"
   },
   "sign-in": {
     "email-placeholder": "Email",

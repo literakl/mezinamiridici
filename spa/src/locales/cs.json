@@ -23,7 +23,8 @@
     "not-published": "nezveřejněno",
     "ok-button": "OK",
     "cancel-button": "Storno",
-    "share-link": "Sdílejte"
+    "share-link": "Sdílejte",
+    "select-picture-title": "Zvolte obrázek"
   },
   "sign-in": {
     "email-placeholder": "Email",
