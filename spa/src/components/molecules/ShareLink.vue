@@ -27,7 +27,6 @@ export default {
   methods: {
     async shareLink(service) {
       const currentPath = this.$route.fullPath;
-      console.log(currentPath);
       const body = {
         itemId: this.item._id,
         service,
@@ -36,7 +35,6 @@ export default {
       };
       const response = await this.$store.dispatch('SHARE_LINK', body);
       const { data } = response.data;
-      console.log(data);
       window.location.href = data;
     },
   },

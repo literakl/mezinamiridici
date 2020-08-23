@@ -18,5 +18,5 @@
 * depends on type of object
 
 ## Comments section
-* count: count of all comments
+* count: count of all comments; required
 * last: timestamp of the last comment

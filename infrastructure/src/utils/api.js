@@ -156,6 +156,55 @@ function convertField(key) {
   throw new Error(`Unsupported field ${key}`);
 }
 
+function edjsHtmlCustomParser(){
+  return {
+    'table': (obj) => {
+      var rows = '', output_HTML = '';
+      obj.data.content.map( function(row) {
+          cells = '';
+          row.map( function (cell) {
+              cells += '<td class="tc-table__cell"><div class="tc-table__area">'
+              + cell + '</div></td>\n';
+          });
+          rows += '<tr>' + cells + '</tr>\n';
+      });
+      output_HTML += '<div class="ce-block"><div class="ce-block__content"><div class="tc-editor cdx-block">'
+      + '<div class="tc-table__wrap"><table class="tc-table"><tbody>'
+      + rows + '</tbody></table></div></div></div></div>\n';
+      return output_HTML;
+    },
+    'code': (obj) => {
+      return `<div class="alert alert-secondary"> ${obj.data.code} </div>`;
+    },
+    'delimiter': () => {
+      return '<div class="ce-block"><div class="ce-block__content"><div class="ce-delimiter cdx-block"></div></div></div>\n';
+    },
+    'checklist': (obj) => {
+      var checklist = '';
+      obj.data.items.map( function (item) {
+          var checked_ext = '';
+          if ( item.checked ) {
+              checked_ext = '--checked'
+          }
+          checklist += '<div class="cdx-checklist__item cdx-checklist__item'
+          + checked_ext + '"><span class="cdx-checklist__item-checkbox"></span><div class="cdx-checklist__item-text">'
+          + item.text + '</div></div>';
+      });
+      return '<div class="ce-block"><div class="ce-block__content"><div class="cdx-block cdx-checklist">'
+      + checklist + '</div></div></div>\n';
+    },
+    'quote': (obj) => {
+      return `<p>${obj.data.caption}</p><blockquote style="text-align:${obj.data.alignment};"> ${obj.data.text} </blockquote>`;
+    },
+    'warning': (obj) => {
+      return `<p>${obj.data.title}</p><div class="alert alert-warning"> ${obj.data.text} </div>`;
+    },
+    'raw': (obj) => {
+      return `<textarea class="cdx-rawhtml cdx-rawhtml-input" disabled >${obj.data.html}</textarea>`;
+    },
+  }
+}
+
 module.exports.sendResponse = sendResponse;
 module.exports.sendErrorForbidden = sendErrorForbidden;
 module.exports.sendInternalError = sendInternalError;
@@ -170,3 +219,4 @@ module.exports.createResponse = createResponse;
 module.exports.parseListParams = parseListParams;
 module.exports.parsePollFilterParams = parsePollFilterParams;
 module.exports.sendRedirectFound = sendRedirectFound;
+module.exports.edjsHtmlCustomParser = edjsHtmlCustomParser;

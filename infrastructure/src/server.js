@@ -2,6 +2,7 @@ const express = require('express');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 const { createLogger, format, transports } = require('winston');
+// eslint-disable-next-line no-unused-vars
 const path = require('path');
 
 const app = express();
@@ -32,6 +33,10 @@ require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
 require('./handlers/items/shareItem')(app);
 require('./handlers/items/tags')(app);
+require('./handlers/items/createBlog')(app);
+require('./handlers/items/updateBlog')(app);
+require('./handlers/items/getBlog')(app);
+require('./handlers/items/imageUpload')(app);
 require('./handlers/items/getItemPictures')(app);
 require('./handlers/misc/tagList')(app);
 require('./handlers/comments/createComment')(app);

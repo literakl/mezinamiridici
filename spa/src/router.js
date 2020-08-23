@@ -152,6 +152,24 @@ export default new Router({
       props: true,
     },
     {
+      path: '/novy-prispevek',
+      name: 'create-blog',
+      component: () => import('./views/item/WriteBlog.vue'),
+      beforeEnter: requireAuth,
+    },
+    {
+      path: '/uprava-prispevku',
+      name: 'update-blog',
+      component: () => import('./views/item/WriteBlog.vue'),
+      beforeEnter: requireAuth,
+    },
+    {
+      path: '/prispevek/:slug',
+      name: 'blog',
+      component: () => import('./views/item/Blog.vue'),
+      props: true,
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/site/404.vue'),
