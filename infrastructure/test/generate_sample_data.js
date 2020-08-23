@@ -58,7 +58,7 @@ async function generateData() {
   let date = dayjs();
   const body = {
     text: lorem.generateWords(7),
-    picture: 'picture.png',
+    picture: '/images/stream/ale-sat-UlmLMQC8pJ4-unsplash.jpg',
     author: Leos._id,
     date: date.subtract(14, 'day').format(DAY_FORMAT),
     published: true,
@@ -83,7 +83,31 @@ async function generateData() {
     await generateComment(poll.data._id, date, random.int(0, 20));
   }
 
-  body.text = lorem.generateWords(5);
+  body.text = lorem.generateWords(4);
+  body.picture = '/images/stream/daniel-j-schwarz-GK9mi6_DuRw-unsplash.jpg';
+  body.date = dayjs().subtract(10, 'day').format(DAY_FORMAT);
+  body.author = Bara._id;
+  poll = await api('polls', { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  await api(`polls/${poll.data._id}`, { method: 'PATCH', json: poll, headers: getAuthHeader(Leos.jwt) }).json();
+
+  voteBody = { vote: 'neutral' };
+  await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Bara.jwt) }).json();
+  await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jana.jwt) }).json();
+  await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  voteBody = { vote: 'dislike' };
+  await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
+  voteBody = { vote: 'hate' };
+  await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
+  await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+
+  commentsCount = random.int(5, 50);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = date.add(random.int(1, 60), 'minute');
+    await generateComment(poll.data._id, date, random.int(0, 20));
+  }
+
+  body.text = lorem.generateWords(6);
+  body.picture = '/images/stream/vladimir-haltakov-3kywHnYzAn4-unsplash.jpg';
   body.date = dayjs().subtract(7, 'day').format(DAY_FORMAT);
   body.author = Bara._id;
   poll = await api('polls', { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
@@ -106,6 +130,7 @@ async function generateData() {
   }
 
   body.text = lorem.generateWords(9);
+  body.picture = '/images/stream/marcus-platt-evVlOOdYw-4-unsplash.jpg';
   body.date = dayjs().subtract(1, 'day').format(DAY_FORMAT);
   body.author = Jana._id;
   poll = await api('polls', { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
