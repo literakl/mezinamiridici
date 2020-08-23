@@ -130,16 +130,15 @@ function getIdentity(dbClient, userId) {
 
 function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
   const body = {
-    _id: generateTimeId(),
     userId,
     published: new Date(),
     itemId,
     action,
   };
-  if(commentId){
+  if (commentId) {
     body.commentId = commentId;
   }
-  if(vote){
+  if (vote) {
     body.vote = vote;
   }
   return dbClient.db().collection('user_activity').insertOne(body);

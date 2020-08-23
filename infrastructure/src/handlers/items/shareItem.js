@@ -67,7 +67,6 @@ function insertShare(dbClient, itemId, user, service) {
   if (user) {
     theShare.user = user;
   }
-  
-  mongo.storeActivity(dbClient, user, itemId, 'share');
+
   return dbClient.db().collection('link_shares').insertOne(theShare);
 }
