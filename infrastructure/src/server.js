@@ -2,6 +2,7 @@ const express = require('express');
 const errorhandler = require('errorhandler');
 const morgan = require('morgan');
 const { createLogger, format, transports } = require('winston');
+// eslint-disable-next-line no-unused-vars
 const path = require('path');
 
 const app = express();

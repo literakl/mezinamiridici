@@ -11,6 +11,10 @@
 <script>
 
 export default {
+  name: 'blog',
+  props: {
+    slug: String,
+  },
   computed: {
     blog() {
       return this.$store.getters.BLOG;
@@ -33,7 +37,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('GET_BLOG');
+    this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
   },
 };
 </script>

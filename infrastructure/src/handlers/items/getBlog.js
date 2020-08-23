@@ -8,16 +8,16 @@ require('../../utils/path_env');
 module.exports = (app) => {
   app.options('/v1/blog', auth.cors);
 
-  app.get('/v1/blog', auth.required, auth.cors, async (req, res) => {
-    logger.debug('GET BLOG');
+  app.get('/v1/blog/:slug', auth.required, auth.cors, async (req, res) => {
+    logger.debug('get blog');
+    const { slug } = req.params;
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const pipeline = [{ $sort: { 'date': -1 } }, mongo.stageLimit(1)];//TODO this is used only code check.
-      
-      const blog = await getBlog(dbClient, pipeline);
+      const blog = await mongo.getBlog(dbClient, slug, undefined);
       logger.debug('Blog fetched');
+      console.log(blog);// todo remove
 
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {
@@ -26,10 +26,3 @@ module.exports = (app) => {
     }
   });
 };
-
-async function getBlog(dbClient, pipeline) {
-  const cursor = dbClient.db().collection('blogs').aggregate(pipeline);
-  const blog = await cursor.next();
-  
-  return blog;
-}

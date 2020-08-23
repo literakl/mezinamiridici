@@ -223,7 +223,7 @@
     "reply": "Odpovědět",
     "close": "Zavřít"
   },
-  "page-title":{
+  "page-title": {
     "home": "Mezi námi řidiči",
     "sign-up": "Přihlášení",
     "sign-in": "Registrace",
@@ -240,6 +240,9 @@
     "create-poll": "Nová anketa",
     "analyse-poll": "Analýza ankety",
     "analyze-votes": "Analýza ankety",
+    "create-blog": "Nový příspěvek",
+    "update-blog": "Úprava příspěvku",
+    "blog": "Příspěvek",
     "help": "Nápověda",
     "mission": "Mise",
     "contact": "Kontakt",

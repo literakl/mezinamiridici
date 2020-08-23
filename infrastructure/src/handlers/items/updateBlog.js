@@ -1,15 +1,11 @@
-const slugify = require('slugify');
-const dayjs = require('dayjs');
-const customParseFormat = require('dayjs/plugin/customParseFormat');
-
-dayjs.extend(customParseFormat);
+const sanitizeHtml = require('sanitize-html');
+const edjsHTML = require('editorjs-html');
 
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
-const edjsHTML = require("editorjs-html");
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
@@ -27,26 +23,24 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const {
-        source, title, date,
+        source, title, picture, tags,
       } = req.body;
 
       if (!source) {
         return api.sendBadRequest(res, api.createError('Missing parameter source', 'generic.internal-error'));
       }
-      const content = edjsParser.parse(source);
 
-      let user = auth.getIdentity(req.identity);
+      if (!picture) {
+        return api.sendBadRequest(res, api.createError('Missing parameter picture', 'generic.internal-error'));
+      }
 
-      let publishDate = new Date();
-
-      const query = prepareUpdateQuery(source, content, user, title, publishDate);
-      await dbClient.db().collection('blogs').updateOne({ _id: blogId }, query);
+      const query = prepareUpdateQuery(source, title, picture, tags);
+      await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
       logger.debug('Blog updated');
 
-      const pipeline = [mongo.stageId(blogId)];
-      const item = await getBlog(dbClient, pipeline);
+      const blog = await mongo.getBlog(dbClient, undefined, blogId);
       logger.debug('Updated blog fetched');
-      return api.sendResponse(res, api.createResponse(item));
+      return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
@@ -54,25 +48,17 @@ module.exports = (app) => {
   });
 };
 
-function prepareUpdateQuery(source,content, author, title, date) {
+function prepareUpdateQuery(source, title, picture, tags) {
+  const content = sanitizeHtml(edjsParser.parse(source));
   const setters = {};
-  setters['source'] = source;
-  setters['content'] = content;
-  setters['title'] = title;
-  setters['user'] = author.userId;
-  setters['date'] = date;
-  
-  
+  setters.data.source = source;
+  setters.data.content = content;
+  setters.info.caption = title;
+  setters.info.picture = picture;
+  setters.info.tags = tags;
+
   const query = { };
   query.$set = setters;
-  
+
   return query;
-}
-
-
-async function getBlog(dbClient, pipeline) {
-  const cursor = dbClient.db().collection('blogs').aggregate(pipeline);
-  const blog = await cursor.next();
-  
-  return blog;
 }

@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import users from './modules/users';
 import polls from './modules/polls';
 import comments from './modules/comments';
-import { get, post, patch, put } from '@/utils/api';
+import { get, post, patch } from '@/utils/api';
 
 Vue.use(Vuex);
 
@@ -79,18 +79,15 @@ export default new Vuex.Store({
       context.commit('SET_BLOG', item);
       return item;
     },
-    GET_BLOG: async (context) => {
-      Vue.$log.debug('GET_BLOG');
-
-      const blog = await get('API', '/blog', context);
+    FETCH_BLOG: async (context, payload) => {
+      Vue.$log.debug('FETCH_BLOG');
+      const blog = await get('API', `/blog/${payload.slug}`, context);
       context.commit('SET_BLOG', blog.data.data);
-
       return blog.data.data;
     },
-    IMAGE_UPLOAD: async (context, payload) => {
+    UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');
-
-      const response = await put('API', '/uploadImage', payload, context);
+      const response = await post('API', '/uploadImage', payload, context);
       return response.data;
     },
   },

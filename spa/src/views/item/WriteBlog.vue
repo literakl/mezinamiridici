@@ -189,6 +189,7 @@ export default {
           result = await this.$store.dispatch('UPDATE_BLOG', body);
         }
         this.$log.debug(result);
+        await this.$router.push({ name: 'blog', params: { slug: result.info.slug } });
       }
     },
     onInitialized(editor) {

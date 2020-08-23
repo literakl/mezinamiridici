@@ -86,7 +86,7 @@ function connectToDatabase() {
   return MongoClient.connect(MONGODB_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    })
+  })
     .then((db) => {
       logger.debug('Successful connect');
       cachedDb = db;
@@ -131,6 +131,12 @@ function getIdentity(dbClient, userId) {
     .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
 }
 
+async function getBlog(dbClient, slug, blogId) {
+  if (blogId) {
+    return dbClient.db().collection('items').findOne({ _id: blogId });
+  }
+}
+
 async function getPoll(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   const item = await cursor.next();
@@ -166,6 +172,7 @@ function getNeighbourhItem(dbClient, type, published, older) {
     .limit(1);
 }
 
+// TODO remove and replace with mongo/mongo_setup.js
 function setupIndexes(dbClient) {
   dbClient.db().collection('users').createIndex({ 'auth.email': 1 }, { unique: true });
   dbClient.db().collection('users').createIndex({ 'bio.nickname': 1 }, { unique: true });
@@ -205,6 +212,7 @@ exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
+exports.getBlog = getBlog;
 exports.processPoll = processPoll;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;

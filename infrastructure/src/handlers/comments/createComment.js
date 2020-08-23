@@ -51,18 +51,18 @@ module.exports = (app) => {
         }
       }
 
-      const response = await dbClient.db().collection('items')
-        .updateOne({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
-      if (response.modifiedCount !== 1) {
-        return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
-      }
-
       const comment = createComment(itemId, text, req.identity, parentId, publishDate);
       await dbClient.db()
         .collection('comments')
         .insertOne(comment);
       comment.votes = [];
       logger.debug('Comment inserted');
+
+      const response = await dbClient.db().collection('items')
+        .updateOne({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
+      if (response.modifiedCount !== 1) {
+        return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
+      }
 
       let replies = [];
       if (parentId) {

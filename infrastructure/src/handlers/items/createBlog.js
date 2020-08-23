@@ -1,15 +1,16 @@
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
+const sanitizeHtml = require('sanitize-html');
 
 dayjs.extend(customParseFormat);
 
+const edjsHTML = require('editorjs-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
-const edjsHTML = require("editorjs-html");
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
@@ -23,44 +24,77 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const {
-        title, source,
+        title, source, author, date, picture, tags,
       } = req.body;
-      
+
       if (!source) {
         return api.sendBadRequest(res, api.createError('Missing parameter source', 'generic.internal-error'));
       }
-      const content = edjsParser.parse(source);
 
       let user = auth.getIdentity(req.identity);
+      if (author !== undefined && author.length > 0) {
+        user = await mongo.getIdentity(dbClient, author);
+        if (user === null) {
+          return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
+        }
+      }
 
       let publishDate = new Date();
-      
+      if (date) {
+        const dday = dayjs(date, 'YYYY-MM-DD');
+        if (!dday.isValid()) {
+          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
+        }
+        publishDate = dday.toDate();
+      }
+
+      if (!picture) {
+        return api.sendBadRequest(res, api.createError('Missing parameter picture', 'generic.internal-error'));
+      }
+
       const blogId = mongo.generateTimeId();
-      await insertItem(dbClient, blogId, title, source, content, user, publishDate);
+      await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
       logger.debug('Blog inserted');
 
-      const pipeline = [mongo.stageId(blogId)];
-      const blog = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Poll fetched');
+      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      logger.debug('Blog fetched');
+      console.log(blog);// todo remove
 
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to create post', 'sign-in.something-went-wrong'));
     }
   });
 };
 
-function insertItem(dbClient, blogId, title, source, content, user, publishDate) {
+function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
+  const content = sanitizeHtml(edjsParser.parse(source));
+  const slug = slugify(title, { lower: true, strict: true });
+
   const blog = {
     _id: blogId,
     type: 'blog',
-    date: publishDate,
-    user: user.userId,
-    title,
-    source,
-    content,
+    info: {
+      author: {
+        nickname: author.nickname,
+        id: author.userId,
+      },
+      caption: title,
+      slug,
+      date: publishDate,
+      picture,
+      tags,
+    },
+    data: {
+      content,
+      source,
+    },
+    comments: {
+      count: 0,
+      last: null,
+    },
   };
 
-  return dbClient.db().collection('blogs').insertOne(blog);
+  return dbClient.db().collection('items').insertOne(blog);
 }

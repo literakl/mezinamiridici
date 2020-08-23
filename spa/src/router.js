@@ -159,19 +159,19 @@ export default new Router({
     {
       path: '/novy-prispevek',
       name: 'create-blog',
-      component: () => import('./views/item/CreateItem.vue'),
+      component: () => import('./views/item/WriteBlog.vue'),
       beforeEnter: requireAuth,
     },
     {
       path: '/uprava-prispevku',
       name: 'update-blog',
-      component: () => import('./views/item/CreateItem.vue'),
+      component: () => import('./views/item/WriteBlog.vue'),
       beforeEnter: requireAuth,
     },
     {
       path: '/prispevek/:slug',
-      name: 'view-blog',
-      component: () => import('./views/item/ViewItem.vue'),
+      name: 'blog',
+      component: () => import('./views/item/Blog.vue'),
       props: true,
     },
     {
