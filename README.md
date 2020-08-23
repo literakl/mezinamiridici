@@ -16,8 +16,10 @@ Install the latest Mongodb and then import the data:
 
 ```
 cd mongo
+# install indexes and constrains
 mongo bud < mongo_setup.js
-cd samples
+# use your favorite command to unzip database dump
+unzip demo_data.zip  
 mongoimport --db=bud --collection=users --jsonArray users.json
 mongoimport --db=bud --collection=items --jsonArray items.json
 mongoimport --db=bud --collection=poll_votes --jsonArray poll_votes.json
@@ -25,55 +27,47 @@ mongoimport --db=bud --collection=comments --jsonArray comments.json
 mongoimport --db=bud --collection=comment_votes --jsonArray comment_votes.json
 ```
 
-### Note 
-
-Before running testcases make sure you create all the indexes mentioned at mongo_setup.js.
-
 ## Configuration
 
 ### infrastructure/.env
 
-```
-MONGODB_URI=mongodb://localhost:27017/bud?retryWrites=true&w=majority
-JWT_SECRET=STUPIDSECRET
-TIME_ID_CHARS=1
-PAGE_SIZE_COMMENTS=10
-MAXIMUM_PAGE_SIZE=50
-```
+Copy `.env.template` to `.env` and update as needed. 
 
 ### spa/.env
 
-```
-VUE_APP_I18N_LOCALE=en
-VUE_APP_I18N_FALLBACK_LOCALE=en
-VUE_APP_API_ENDPOINT=http://127.0.0.1:3000/v1
-VUE_APP_BFF_ENDPOINT=http://127.0.0.1:3000/bff
-VUE_APP_REPLY_LIMIT=2
-```
+Copy `.env.template` to `.env` and update as needed. 
 
 ## Local run
 
+The first terminal: 
 ```
 $ cd infrastructure
 $ npm install
 $ npm run dev
+```
+The second terminal:
+```
 $ cd spa
 $ npm install
 $ npm run dev
 ```
 
-To log in, use the credentials defined in infrastructure/test/prepareUsers.js.
+To log in, use the credentials defined in `infrastructure/test/prepareUsers.js`.
 
 ## Nginx
 
-This set up is particularly useful for testing OAuth login.
+This set up is neccessary for testing OAuth login (Facebook).
 
 Install Nginx and copy `nginx/dev/nginx.conf` to its `conf` directory. Fix the path in `root` directive.
 
+The first terminal: 
 ```
 $ cd infrastructure
 $ npm install
 $ npm run dev
+```
+The second terminal:
+```
 $ cd spa
 $ npm install
 $ npm run buildDev
