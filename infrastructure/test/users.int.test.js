@@ -5,17 +5,18 @@ const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
 const jwt = require('jsonwebtoken');
+const dayjs = require('dayjs');
 const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
-const dayjs = require('dayjs');
 const {
   api, bff, getAuthHeader,
 } = require('./testUtils');
 const {
-  setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
+  setup, Leos, Jiri, Lukas, Vita,
 } = require('./prepareUsers');
+
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const schedule = require('../src/utils/scheduleService');
 
@@ -287,16 +288,16 @@ test('User Rank', async (done) => {
 
   voteResponse = await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
-  
+
   const jwtDecoded = jwt.decode(Jiri.jwt);
   const { userId } = jwtDecoded;
   const shareBody = {
     path: `/anketa/${poll.data.info.slug}`,
     service: 'twitter',
-    userId
-  }
+    userId,
+  };
 
-  let shareResponse = await api(`items/${poll.data._id}/share`,{ method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
+  const shareResponse = await api(`items/${poll.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
   const sendUrl = `http://www.twitter.com/share?url=${process.env.WEB_URL + shareBody.path}`;
   expect(shareResponse.success).toBeTruthy();
   expect(shareResponse.data).toBe(sendUrl);
@@ -304,13 +305,11 @@ test('User Rank', async (done) => {
   await schedule();
 
   setTimeout(async () => {
-
-    let checkUser = await api(`users/${userId}`,{ method: 'GET' }).json();
+    const checkUser = await api(`users/${userId}`, { method: 'GET' }).json();
     expect(checkUser.data.honors.rank).toBe('student');
     done();
-    
-  },10000);
-})
+  }, 10000);
+});
 
 beforeEach(async () => {
   await dbClient.db().collection('users').deleteMany({});

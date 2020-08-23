@@ -49,7 +49,7 @@ module.exports = async () => {
       } else {
         return;
       }
-      
+
       if (currentRank !== finalRank) {
         await dbClient.db().collection('users').updateOne({ _id: userId }, {
           $set: { 'honors.rank': finalRank },
@@ -68,21 +68,22 @@ module.exports = async () => {
 // TOOD add new argument - the last _id
 // TOOD fetch page size of users smaller that last_id sorted by _id descending
 const getUsers = async (dbClient, lastId, pageSize = 5) => {
-  const arr =  await dbClient.db().collection('users')
-    .find().sort({ _id: 1 }).project({ _id: 1, honors: 1 })
+  const arr = await dbClient.db().collection('users')
+    .find().sort({ _id: 1 })
+    .project({ _id: 1, honors: 1 })
     .toArray();
   let count = 0;
-  let users = [], start = (lastId === '') ? true : false;
+  let users = [], start = (lastId === '');
 
   arr.forEach((item) => {
-    if( start && count < pageSize ){
+    if (start && count < pageSize) {
       count++;
       users.push(item);
     }
-    if( item._id === lastId ){
+    if (item._id === lastId) {
       start = true;
     }
-  })
+  });
   return users;
 };
 
