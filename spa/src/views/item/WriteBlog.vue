@@ -8,12 +8,15 @@
       placeholder="Blog Title"
       class="pb-3 w-100"/>
 
-      <editor ref="editor" :config="config" :initialized="onInitialized"/>
+    <!--todo placeholder-->
+    <editor ref="editor" :config="config" :initialized="onInitialized"/>
       <!-- <editor
         ref="editor"
         header list code inlineCode personality embed linkTool marker table raw delimiter quote image warning paragraph checklist
         :config="config"
         :initialized="onInitialized"/> -->
+
+    <SelectPicture :currentPath="picture" @changePath="changePath"/>
 
     <b-button variant="primary" @click="saveBlog">{{ButtonText}}</b-button>
 
@@ -39,17 +42,20 @@ import Delimiter from '@editorjs/delimiter';
 import ImageTool from '@editorjs/image';
 
 import TextInput from '@/components/atoms/TextInput.vue';
+import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
 
 export default {
   components: {
     // Editor,
+    SelectPicture,
     TextInput,
   },
   data() {
     return {
       isCreate: true,
       title: '',
+      picture: '',
       ButtonText: 'Save',
       /* config: {
         image: {
@@ -66,7 +72,7 @@ export default {
           header: {
             class: Header,
             config: {
-              placeholder: 'Enter a header',
+              placeholder: 'Enter a header', // todo localize
               levels: [1, 2, 3, 4, 5, 6],
               defaultLevel: 3,
             },
@@ -177,6 +183,7 @@ export default {
       const body = {
         title: this.title,
         source: editorData,
+        picture: this.picture,
       };
       let result = '';
 
@@ -196,6 +203,9 @@ export default {
       if (this.$route.name === 'update-blog') {
         setTimeout(() => { editor.render(this.blog.source); }, 1000);
       }
+    },
+    changePath(path) {
+      this.picture = path;
     },
   },
   created() {
