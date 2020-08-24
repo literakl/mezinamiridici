@@ -250,13 +250,13 @@
 <script>
 import jwtDecode from 'jwt-decode';
 import { configure, extend } from 'vee-validate';
-import store from '../../store';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import i18n from '@/i18n';
+import store from '../../store';
 
 configure({
   defaultMessage: (field, values) => {

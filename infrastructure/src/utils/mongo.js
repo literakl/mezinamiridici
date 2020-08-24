@@ -144,6 +144,38 @@ function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
   return dbClient.db().collection('user_activity').insertOne(body);
 }
 
+async function getActivity(dbClient, userId){
+  const pipeline = [
+    {
+      $match:
+        {
+          userId: userId,
+        }
+    },
+    {
+      $lookup:
+        {
+          from: "items",
+          localField: "itemId",
+          foreignField: "_id",
+          as: "item_docs"
+        }
+    },
+    {
+      $lookup:
+        {
+          from: "comments",
+          localField: "commentId",
+          foreignField: "_id",
+          as: "comment_docs"
+        }
+    },
+  ];
+
+  
+  return await dbClient.db().collection('user_activity').aggregate(pipeline).toArray();
+}
+
 async function getPoll(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   const item = await cursor.next();
@@ -232,3 +264,4 @@ exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
 exports.storeActivity = storeActivity;
+exports.getActivity = getActivity;
