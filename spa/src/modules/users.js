@@ -12,6 +12,7 @@ export default {
     userNickname: null,
     userRole: null,
     userEmail: null,
+    userActivity: null,
   }),
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -199,7 +200,7 @@ export default {
       return response;
     },
     FETCH_USER_ACTIVITY: async (context) => {
-      Vue.$log.debug('GET_USER_ACTIVITY');
+      Vue.$log.debug('FETCH_USER_ACTIVITY');
       const response = await get('API', `/activity/${context.getters.USER_ID}`, context);
       context.commit('SET_USER_ACTIVITY', response.data.data);
       return response.data.success;

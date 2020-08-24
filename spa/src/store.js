@@ -18,7 +18,6 @@ export default new Vuex.Store({
   state: {
     tags: null,
     itemsByTag: null,
-    userActivity: null,
   },
   getters: {
     TAGS: state => state.tags,

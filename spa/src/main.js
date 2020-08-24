@@ -13,7 +13,6 @@ import VueScrollTo from 'vue-scrollto';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueAuthenticate from 'vue-authenticate';
-import VerticalTimeline from 'vue-vertical-timeline';
 
 import App from './App.vue';
 import router from './router';
@@ -25,7 +24,6 @@ import i18n from './i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-Vue.use(VerticalTimeline);
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
