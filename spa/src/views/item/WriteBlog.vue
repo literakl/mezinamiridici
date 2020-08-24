@@ -8,36 +8,21 @@
       placeholder="Blog Title"
       class="pb-3 w-100"/>
 
-    <!--todo placeholder-->
     <editor ref="editor" :config="config" :initialized="onInitialized"/>
-      <!-- <editor
-        ref="editor"
-        header list code inlineCode personality embed linkTool marker table raw delimiter quote image warning paragraph checklist
-        :config="config"
-        :initialized="onInitialized"/> -->
 
     <SelectPicture :currentPath="picture" @changePath="changePath"/>
 
-    <b-button variant="primary" @click="saveBlog">{{ButtonText}}</b-button>
-
+    <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
   </div>
 </template>
 
 <script>
-// import { Editor } from 'vue-editor-js';
-
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
-import CodeTool from '@editorjs/code';
 import Paragraph from '@editorjs/paragraph';
 import Embed from '@editorjs/embed';
 import Table from '@editorjs/table';
-import Checklist from '@editorjs/checklist';
-import Marker from '@editorjs/marker';
-import Warning from '@editorjs/warning';
-import RawTool from '@editorjs/raw';
 import Quote from '@editorjs/quote';
-import InlineCode from '@editorjs/inline-code';
 import Delimiter from '@editorjs/delimiter';
 import ImageTool from '@editorjs/image';
 
@@ -47,7 +32,6 @@ import store from '@/store';
 
 export default {
   components: {
-    // Editor,
     SelectPicture,
     TextInput,
   },
@@ -56,24 +40,14 @@ export default {
       isCreate: true,
       title: '',
       picture: '',
-      ButtonText: 'Save',
-      /* config: {
-        image: {
-          endpoints: {
-            byFile: 'http://localhost:8090/image',
-            byUrl: 'http://localhost:8090/image-by-url',
-          },
-          field: 'image',
-          types: 'image/*',
-        },
-      }, */
       config: {
         tools: {
           header: {
             class: Header,
+            inlineToolbar: true,
             config: {
-              placeholder: 'Enter a header', // todo localize
-              levels: [1, 2, 3, 4, 5, 6],
+              placeholder: this.$t('blog.form.h-placeholder'),
+              levels: [1, 2, 3],
               defaultLevel: 3,
             },
           },
@@ -81,61 +55,9 @@ export default {
             class: List,
             inlineToolbar: true,
           },
-          code: {
-            class: CodeTool,
-          },
           paragraph: {
             class: Paragraph,
           },
-          embed: {
-            class: Embed,
-            config: {
-              services: {
-                youtube: true,
-                coub: true,
-                imgur: true,
-              },
-            },
-          },
-          table: {
-            class: Table,
-            inlineToolbar: true,
-            config: {
-              rows: 2,
-              cols: 3,
-            },
-          },
-          checklist: {
-            class: Checklist,
-          },
-          Marker: {
-            class: Marker,
-            shortcut: 'CMD+SHIFT+M',
-          },
-          warning: {
-            class: Warning,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+W',
-            config: {
-              titlePlaceholder: 'Title',
-              messagePlaceholder: 'Message',
-            },
-          },
-          raw: RawTool,
-          quote: {
-            class: Quote,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+O',
-            config: {
-              quotePlaceholder: 'Enter a quote',
-              captionPlaceholder: 'Quote\'s author',
-            },
-          },
-          inlineCode: {
-            class: InlineCode,
-            shortcut: 'CMD+SHIFT+M',
-          },
-          delimiter: Delimiter,
           image: {
             class: ImageTool,
             config: {
@@ -155,7 +77,37 @@ export default {
               },
             },
           },
+          embed: {
+            class: Embed,
+            inlineToolbar: true,
+            config: {
+              services: {
+                youtube: true,
+                instagram: true,
+                twitter: true,
+                gfycat: true,
+              },
+            },
+          },
+          delimiter: Delimiter,
+          table: {
+            class: Table,
+            inlineToolbar: true,
+            config: {
+              rows: 2,
+              cols: 3,
+            },
+          },
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            shortcut: 'CMD+SHIFT+O',
+            config: {
+              quotePlaceholder: this.$t('blog.form.q-placeholder'),
+            },
+          },
         },
+        placeholder: this.$t('blog.form.p-placeholder'),
         // onReady: () => {
         //   this.$log.debug('on ready');
         // },
@@ -210,7 +162,6 @@ export default {
   },
   created() {
     if (this.$route.name === 'update-blog') {
-      this.ButtonText = 'Update';
       this.isCreate = false;
       this.$store.dispatch('GET_BLOG');
     }

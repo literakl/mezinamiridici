@@ -101,6 +101,58 @@
     "body": "Enter statistical information you want to share. Your votes are anonymous in each poll.",
     "save-button": "Save"
   },
+  "profile": {
+    "email": "Email",
+    "password": "Password",
+    "nickname": "Nickname",
+    "driving-since": "Driving since",
+    "vehicle": "Vehicle",
+    "vehicles": {
+      "bike": "motorbike",
+      "car": "car",
+      "bus": "bus",
+      "van": "van",
+      "truck": "truck",
+      "tramway": "tramway"
+    },
+    "region": "Region",
+    "regions": {
+      "PRG": "Prague",
+      "SC": "Stredočeský",
+      "JC": "Budweiser",
+      "PLS": "Pilsen",
+      "KV": "Karlovarský",
+      "UST": "Ústecký",
+      "LBR": "Liberecký",
+      "KH": "Královohradecký",
+      "PRD": "Pardubický",
+      "VSC": "Vysočina",
+      "JM": "Jihomoravský",
+      "OLM": "Olomoucký",
+      "ZLN": "Zlínský",
+      "MS": "Moravskoslezský"
+    },
+    "education": "Education",
+    "educations": {
+      "primary": "primary",
+      "secondary": "high school",
+      "university": "university"
+    },
+    "sex": "Sex",
+    "sexes": {
+      "man": "man",
+      "woman": "woman"
+    },
+    "public": "public",
+    "private": "private",
+    "share-profile": "Share profile",
+    "finish-button": "Finish",
+    "born": "Born",
+    "terms": "I agree with terms and conditions",
+    "processing": "I agree with processing of my personal data",
+    "user-not-found": "We are sorry but this driver is unknown to us",
+    "update-button": "Update my profile"
+  },
   "poll": {
     "your-vote": "Your vote:",
     "votes": "votes",
@@ -163,58 +215,6 @@
       "poll-confirm-message-title":"Confirmation"
     }
   },
-  "profile": {
-    "email": "Email",
-    "password": "Password",
-    "nickname": "Nickname",
-    "driving-since": "Driving since",
-    "vehicle": "Vehicle",
-    "vehicles": {
-      "bike": "motorbike",
-      "car": "car",
-      "bus": "bus",
-      "van": "van",
-      "truck": "truck",
-      "tramway": "tramway"
-    },
-    "region": "Region",
-    "regions": {
-      "PRG": "Prague",
-      "SC": "Stredočeský",
-      "JC": "Budweiser",
-      "PLS": "Pilsen",
-      "KV": "Karlovarský",
-      "UST": "Ústecký",
-      "LBR": "Liberecký",
-      "KH": "Královohradecký",
-      "PRD": "Pardubický",
-      "VSC": "Vysočina",
-      "JM": "Jihomoravský",
-      "OLM": "Olomoucký",
-      "ZLN": "Zlínský",
-      "MS": "Moravskoslezský"
-    },
-    "education": "Education",
-    "educations": {
-      "primary": "primary",
-      "secondary": "high school",
-      "university": "university"
-    },
-    "sex": "Sex",
-    "sexes": {
-      "man": "man",
-      "woman": "woman"
-    },
-    "public": "public",
-    "private": "private",
-    "share-profile": "Share profile",
-    "finish-button": "Finish",
-    "born": "Born",
-    "terms": "I agree with terms and conditions",
-    "processing": "I agree with processing of my personal data",
-    "user-not-found": "We are sorry but this driver is unknown to us",
-    "update-button": "Update my profile"
-  },
   "comment": {
     "discussion": "Discussion",
     "write-comment-placeholder": "Write your comment",
@@ -223,6 +223,14 @@
     "show-all":"Show all",
     "reply": "Reply",
     "close": "Close"
+  },
+  "blog": {
+    "form": {
+      "p-placeholder": "Enter your text or press + button",
+      "h-placeholder": "Enter a header",
+      "q-placeholder": "Enter a quote",
+      "save-button": "Save"
+    }
   },
   "page-title":{
     "home": "Home",

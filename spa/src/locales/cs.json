@@ -101,6 +101,58 @@
     "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
     "save-button": "Uložit"
   },
+  "profile": {
+    "email": "Email",
+    "password": "Heslo",
+    "nickname": "Přezdívka",
+    "driving-since": "Řídím od roku",
+    "vehicle": "Řídím",
+    "vehicles": {
+      "bike": "motorka",
+      "car": "auto",
+      "bus": "autobus",
+      "van": "karavan",
+      "truck": "náklaďák",
+      "tramway": "tramvaj"
+    },
+    "region": "Kraj",
+    "regions": {
+      "PRG": "Praha",
+      "SC": "Středočeský",
+      "JC": "Jihočeský",
+      "PLS": "Plzeňský",
+      "KV": "Karlovarský",
+      "UST": "Ústecký",
+      "LBR": "Liberecký",
+      "KH": "Královohradecký",
+      "PRD": "Pardubický",
+      "VSC": "Vysočina",
+      "JM": "Jihomoravský",
+      "OLM": "Olomoucký",
+      "ZLN": "Zlínský",
+      "MS": "Moravskoslezský"
+    },
+    "education": "Vzdělání",
+    "educations": {
+      "primary": "základní",
+      "secondary": "středoškolské",
+      "university": "vysokoškolské"
+    },
+    "sex": "Pohlaví",
+    "sexes": {
+      "man": "muž",
+      "woman": "žena"
+    },
+    "public": "veřejný",
+    "private": "soukromý",
+    "share-profile": "Profil je",
+    "finish-button": "Dokončit",
+    "born": "Rok narození",
+    "terms": "Souhlasím s podmínkami užití",
+    "processing": "Souhlasím se zpracováním osobních údajů",
+    "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
+    "update-button": "Upravit profil"
+  },
   "poll": {
     "your-vote": "Váš hlas:",
     "votes": "hlasů",
@@ -163,58 +215,6 @@
       "poll-confirm-message-title":"potvrzení"
     }
   },
-  "profile": {
-    "email": "Email",
-    "password": "Heslo",
-    "nickname": "Přezdívka",
-    "driving-since": "Řídím od roku",
-    "vehicle": "Řídím",
-    "vehicles": {
-      "bike": "motorka",
-      "car": "auto",
-      "bus": "autobus",
-      "van": "karavan",
-      "truck": "náklaďák",
-      "tramway": "tramvaj"
-    },
-    "region": "Kraj",
-    "regions": {
-      "PRG": "Praha",
-      "SC": "Středočeský",
-      "JC": "Jihočeský",
-      "PLS": "Plzeňský",
-      "KV": "Karlovarský",
-      "UST": "Ústecký",
-      "LBR": "Liberecký",
-      "KH": "Královohradecký",
-      "PRD": "Pardubický",
-      "VSC": "Vysočina",
-      "JM": "Jihomoravský",
-      "OLM": "Olomoucký",
-      "ZLN": "Zlínský",
-      "MS": "Moravskoslezský"
-    },
-    "education": "Vzdělání",
-    "educations": {
-      "primary": "základní",
-      "secondary": "středoškolské",
-      "university": "vysokoškolské"
-    },
-    "sex": "Pohlaví",
-    "sexes": {
-      "man": "muž",
-      "woman": "žena"
-    },
-    "public": "veřejný",
-    "private": "soukromý",
-    "share-profile": "Profil je",
-    "finish-button": "Dokončit",
-    "born": "Rok narození",
-    "terms": "Souhlasím s podmínkami užití",
-    "processing": "Souhlasím se zpracováním osobních údajů",
-    "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
-    "update-button": "Upravit profil"
-  },
   "comment": {
     "discussion": "Diskuse",
     "write-comment-placeholder": "Napište komentář",
@@ -223,6 +223,14 @@
     "show-all":"Zobrazit vše",
     "reply": "Odpovědět",
     "close": "Zavřít"
+  },
+  "blog": {
+    "form": {
+      "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",
+      "h-placeholder": "Napište hlavičku",
+      "q-placeholder": "Napište citaci",
+      "save-button": "Uložit"
+    }
   },
   "page-title": {
     "home": "Mezi námi řidiči",
