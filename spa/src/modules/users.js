@@ -20,6 +20,7 @@ export default {
     USER_NICKNAME: state => state.userNickname,
     USER_ROLE: state => state.userRole,
     USER_EMAIL: state => state.userEmail,
+    USER_ACTIVITY: state => state.userActivity,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -39,6 +40,9 @@ export default {
     },
     SET_USER_EMAIL: (state, payload) => {
       state.userEmail = payload;
+    },
+    SET_USER_ACTIVITY: (state, payload) => {
+      state.userActivity = payload;
     },
   },
   actions: {
@@ -194,7 +198,11 @@ export default {
       const response = await post('API', '/check/nickname', body);
       return response;
     },
+    FETCH_USER_ACTIVITY: async (context) => {
+      Vue.$log.debug('GET_USER_ACTIVITY');
+      const response = await get('API', `/activity/${context.getters.USER_ID}`, context);
+      context.commit('SET_USER_ACTIVITY', response.data.data);
+      return response.data.success;
+    },
   },
-
-
 };

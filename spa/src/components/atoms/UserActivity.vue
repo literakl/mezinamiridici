@@ -2,13 +2,10 @@
   <b-container fluid="true" class="pt-3 w-100 m-auto">
     <h1 v-if="timelineTitle">{{timelineTitle}}</h1>
    <vertical-timeline :inputData="activityList" :reversed="true" />
-
   </b-container>
 </template>
 
-
 <script>
-
 export default {
   name: 'Timeline',
   props: {
@@ -30,7 +27,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('GET_USER_ACTIVITY');
+    this.$store.dispatch('FETCH_USER_ACTIVITY');
   },
   methods: {
     getActivityData(data) {

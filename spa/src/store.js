@@ -23,7 +23,6 @@ export default new Vuex.Store({
   getters: {
     TAGS: state => state.tags,
     ITEMS_BY_TAG: state => state.itemsByTag,
-    USER_ACTIVITY: state => state.userActivity,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -35,9 +34,6 @@ export default new Vuex.Store({
     // APPEND_STREAM: (state, payload) => {
     //   state.stream = payload;
     // },
-    SET_USER_ACTIVITY: (state, payload) => {
-      state.userActivity = payload;
-    },
   },
   actions: {
     SHARE_LINK: async (context, payload) => {
@@ -59,12 +55,6 @@ export default new Vuex.Store({
       const response = await get('BFF', `/items/${payload}`, context);
       context.commit('SET_ITEMS_BY_TAG', response.data.data);
       return response.data.data;
-    },
-    GET_USER_ACTIVITY: async (context) => {
-      Vue.$log.debug('GET_USER_ACTIVITY');
-      const response = await get('API', `/activity/${context.getters.USER_ID}`, context);
-      context.commit('SET_USER_ACTIVITY', response.data.data);
-      return response.data.success;
     },
   },
 });
