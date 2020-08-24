@@ -73,12 +73,7 @@ export default new Vuex.Store({
     },
     CREATE_BLOG: async (context, payload) => {
       Vue.$log.debug('CREATE_BLOG');
-      const { title, source } = payload;
-      const body = {
-        title,
-        source,
-      };
-      const blog = await post('API', '/blog', body, context);
+      const blog = await post('API', '/blog', payload, context);
       Vue.$log.debug(blog);
       return blog.data.success;
     },
