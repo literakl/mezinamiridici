@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import { get, post } from '@/utils/api';
 import users from './modules/users';
 import polls from './modules/polls';
 import comments from './modules/comments';
-import { get, post } from '@/utils/api';
 
 Vue.use(Vuex);
 

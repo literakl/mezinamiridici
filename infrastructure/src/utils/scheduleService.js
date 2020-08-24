@@ -11,9 +11,10 @@ module.exports = async () => {
     logger.debug('Running a job at 00:00 at Europe/Prague timezone');
 
     // todo get user id and its honor object (I will need in later phase)
-    const userArray = await getUsers(dbClient, '', 5); // TODO iterate users by 100, this code might break for tens of thousands of users
-
-    userArray.forEach(async (user) => { // TODO Promise returned from forEach ignored
+    const userArray = await getUsers(dbClient, '', 10); // TODO iterate users by 100, this code might break for tens of thousands of users
+    
+    for (let i = 0; i < userArray.length; i += 1 ){
+      const user = userArray[i];
       const currentRank = (user.honors) ? user.honors.rank : ''; // todo from user honors object
       const userId = user._id;
       let finalRank = 'novice';
@@ -55,9 +56,8 @@ module.exports = async () => {
           $set: { 'honors.rank': finalRank },
         });
       }
-    });
+    }
 
-    task.destroy(); // TODO for dev testing. should remove after test.
   }, {
     scheduled: true,
     timezone: 'Europe/Prague',
