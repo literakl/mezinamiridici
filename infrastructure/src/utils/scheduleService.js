@@ -13,7 +13,7 @@ module.exports = async () => {
     // todo get user id and its honor object (I will need in later phase)
     const userArray = await getUsers(dbClient, '', 10); // TODO iterate users by 100, this code might break for tens of thousands of users
     
-    for (let i = 0; i < userArray.length; i += 1 ){
+    for (let i = 0; i < userArray.length; i += 1) {
       const user = userArray[i];
       const currentRank = (user.honors) ? user.honors.rank : ''; // todo from user honors object
       const userId = user._id;
