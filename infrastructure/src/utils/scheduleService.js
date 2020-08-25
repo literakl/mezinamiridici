@@ -29,41 +29,40 @@ const calculateUserHonors = async () => {
       const sharesPromise = getShareLinkCount(dbClient, userId);
       const commentsPromise = getCommentedCount(dbClient, userId);
       const blogPromise = getBlogCount(dbClient, userId);
-      Promise.all([pollVotesPromise, commentVotesPromise, sharesPromise, commentsPromise, blogPromise])
-        .then(async (pollVotesCount, commentVotesCount, sharesCount, commentsCount, blogCount) => {
-          if (!currentRank || currentRank === 'novice') {
-            if (pollVotesCount >= 1 && commentVotesCount >= 1 && sharesCount >= 1 && commentsCount >= 1) {
-              finalRank = 'student';
-            }
-          } else if (currentRank === 'student') {
-            // eslint-disable-next-line no-await-in-loop
-            const positiveCommentsVotesCount = await getPositiveCommentsVotesCount(dbClient, userId);
-            if (pollVotesCount >= 3 && sharesCount >= 10 && positiveCommentsVotesCount >= 5 && blogCount >= 1) {
-              finalRank = 'graduate';
-            }
-          } else if (currentRank === 'graduate') {
-            const positivePercent = await getPositivePercent(dbClient, userId);
-            const consecutiveSharing = await getConsecutiveSharing(dbClient, userId, 10);
-            if (pollVotesCount >= 10 && consecutiveSharing && positivePercent >= 80 && commentsCount >= 100 && blogCount >= 10) {
-              finalRank = 'master';
-            }
-          } else {
-            return;
-          }
+      // eslint-disable-next-line no-await-in-loop
+      const [pollVotesCount, commentVotesCount, sharesCount, commentsCount, blogCount] = await Promise.all([pollVotesPromise,
+        commentVotesPromise, sharesPromise, commentsPromise, blogPromise]);
 
-          const setters = {
-            'honors.count.poll_votes': pollVotesCount,
-            'honors.count.comment_votes': commentVotesCount,
-            'honors.count.comment': commentsCount,
-            'honors.count.blog': blogCount,
-            'honors.count.shares': sharesCount,
-          };
-          if (currentRank !== finalRank) {
-            setters['honors.rank'] = finalRank;
-          }
-          // eslint-disable-next-line no-await-in-loop
-          await dbClient.db().collection('users').updateOne({ _id: userId }, { $set: setters });
-        });
+      if (!currentRank || currentRank === 'novice') {
+        if (pollVotesCount >= 1 && commentVotesCount >= 1 && sharesCount >= 1 && commentsCount >= 1) {
+          finalRank = 'student';
+        }
+      } else if (currentRank === 'student') {
+        // eslint-disable-next-line no-await-in-loop
+        const positiveCommentsVotesCount = await getPositiveCommentsVotesCount(dbClient, userId);
+        if (pollVotesCount >= 3 && sharesCount >= 10 && positiveCommentsVotesCount >= 5 && blogCount >= 1) {
+          finalRank = 'graduate';
+        }
+      } else if (currentRank === 'graduate') {
+        const positivePercent = await getPositivePercent(dbClient, userId);
+        const consecutiveSharing = await getConsecutiveSharing(dbClient, userId, 10);
+        if (pollVotesCount >= 10 && consecutiveSharing && positivePercent >= 80 && commentsCount >= 100 && blogCount >= 10) {
+          finalRank = 'master';
+        }
+      }
+
+      const setters = {
+        'honors.count.poll_votes': pollVotesCount,
+        'honors.count.comment_votes': commentVotesCount,
+        'honors.count.comment': commentsCount,
+        'honors.count.blog': blogCount,
+        'honors.count.shares': sharesCount,
+      };
+      if (currentRank !== finalRank) {
+        setters['honors.rank'] = finalRank;
+      }
+      // eslint-disable-next-line no-await-in-loop
+      await dbClient.db().collection('users').updateOne({ _id: userId }, { $set: setters });
     }
     // eslint-disable-next-line no-await-in-loop
     users = await getUsers(dbClient, user._id, 100);
