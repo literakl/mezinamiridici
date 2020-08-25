@@ -4,96 +4,100 @@ const mongo = require('./mongo.js');
 const logger = require('./logging');
 
 module.exports = async () => {
-  const dbClient = await mongo.connectToDatabase();
   logger.debug('Scheduler starts');
-
-  const task = cron.schedule(process.env.SCHEDULE_TIME, async () => {
-    logger.debug('Running a job at 00:00 at Europe/Prague timezone');
-
-    // todo get user id and its honor object (I will need in later phase)
-    const userArray = await getUsers(dbClient, '', 10); // TODO iterate users by 100, this code might break for tens of thousands of users
-    
-    for (let i = 0; i < userArray.length; i += 1) {
-      const user = userArray[i];
-      const currentRank = (user.honors) ? user.honors.rank : ''; // todo from user honors object
-      const userId = user._id;
-      let finalRank = 'novice';
-
-      if (!currentRank || currentRank === 'novice') {
-        const pollVotesCount = await getPollVoteCount(dbClient, userId);
-        const commentVotesCount = await getCommentVotesCount(dbClient, userId);
-        const shareLinkCount = await getShareLinkCount(dbClient, userId);
-        const commentedCount = await getCommentedCount(dbClient, userId);
-
-        if (pollVotesCount >= 1 && commentVotesCount >= 1 && shareLinkCount >= 1 && commentedCount >= 1) {
-          finalRank = 'student';
-        }
-      } else if (currentRank === 'student') {
-        const pollVotesCount = await getPollVoteCount(dbClient, userId);
-        const shareLinkCount = await getShareLinkCount(dbClient, userId);
-        const positiveCommentsVotesCount = await getPositiveCommentsVotesCount(dbClient, userId);
-        const blogCount = await getBlogCount(dbClient, userId);
-
-        if (pollVotesCount >= 3 && shareLinkCount >= 10 && positiveCommentsVotesCount >= 5 && blogCount >= 1) {
-          finalRank = 'graduate';
-        }
-      } else if (currentRank === 'graduate') {
-        const pollVotesCount = await getPollVoteCount(dbClient, userId);
-        const positivePercent = await getPositivePercent(dbClient, userId);
-        const commentedCount = await getCommentedCount(dbClient, userId);
-        const blogCount = await getBlogCount(dbClient, userId);
-        const consecutiveSharing = await getConsecutiveSharing(dbClient, userId, 10);
-
-        if (pollVotesCount >= 10 && consecutiveSharing && positivePercent >= 80 && commentedCount >= 100 && blogCount >= 10) {
-          finalRank = 'master';
-        }
-      } else {
-        return;
-      }
-
-      if (currentRank !== finalRank) {
-        await dbClient.db().collection('users').updateOne({ _id: userId }, {
-          $set: { 'honors.rank': finalRank },
-        });
-      }
-    }
-
-  }, {
+  cron.schedule(process.env.SCHEDULE_TIME, async () => calculateUserHonors(), {
     scheduled: true,
     timezone: 'Europe/Prague',
   });
 };
 
-// TODO return user id and honors object
-// TOOD add new argument - the last _id
-// TOOD fetch page size of users smaller that last_id sorted by _id descending
-const getUsers = async (dbClient, lastId, pageSize = 5) => {
-  const arr = await dbClient.db().collection('users')
-    .find().sort({ _id: 1 })
-    .project({ _id: 1, honors: 1 })
-    .toArray();
-  let count = 0;
-  let users = [], start = (lastId === '');
+const calculateUserHonors = async () => {
+  logger.info('Running a job to calculate the user ranks');
 
-  arr.forEach((item) => {
-    if (start && count < pageSize) {
-      count++;
-      users.push(item);
+  const dbClient = await mongo.connectToDatabase();
+  let users = await getUsers(dbClient, undefined, 100);
+  while (users.length > 0) {
+    let user;
+    for (let i = 0; i < users.length; i += 1) {
+      user = users[i];
+      const currentRank = (user.honors) ? user.honors.rank : '';
+      const userId = user._id;
+      let finalRank = 'novice';
+      let pollVotesCount, commentVotesCount, sharesCount, commentsCount, blogCount;
+
+      const pollVotesPromise = getPollVoteCount(dbClient, userId);
+      const commentVotesPromise = getCommentVotesCount(dbClient, userId);
+      const sharesPromise = getShareLinkCount(dbClient, userId);
+      const commentsPromise = getCommentedCount(dbClient, userId);
+      const blogPromise = getBlogCount(dbClient, userId);
+      Promise.all([pollVotesPromise, commentVotesPromise, sharesPromise, commentsPromise, blogPromise]).then(async (values) => {
+        pollVotesCount = values[0];
+        commentVotesCount = values[1];
+        sharesCount = values[2];
+        commentsCount = values[3];
+        blogCount = values[4];
+
+        if (!currentRank || currentRank === 'novice') {
+          if (pollVotesCount >= 1 && commentVotesCount >= 1 && sharesCount >= 1 && commentsCount >= 1) {
+            finalRank = 'student';
+          }
+        } else if (currentRank === 'student') {
+          // eslint-disable-next-line no-await-in-loop
+          const positiveCommentsVotesCount = await getPositiveCommentsVotesCount(dbClient, userId);
+          if (pollVotesCount >= 3 && sharesCount >= 10 && positiveCommentsVotesCount >= 5 && blogCount >= 1) {
+            finalRank = 'graduate';
+          }
+        } else if (currentRank === 'graduate') {
+          const positivePercent = await getPositivePercent(dbClient, userId);
+          const consecutiveSharing = await getConsecutiveSharing(dbClient, userId, 10);
+          if (pollVotesCount >= 10 && consecutiveSharing && positivePercent >= 80 && commentsCount >= 100 && blogCount >= 10) {
+            finalRank = 'master';
+          }
+        } else {
+          return;
+        }
+
+        const setters = {
+          'honors.count.poll_votes': pollVotesCount,
+          'honors.count.comment_votes': commentVotesCount,
+          'honors.count.comment': commentsCount,
+          'honors.count.blog': blogCount,
+          'honors.count.shares': sharesCount,
+        };
+        if (currentRank !== finalRank) {
+          setters['honors.rank'] = finalRank;
+        }
+        // eslint-disable-next-line no-await-in-loop
+        await dbClient.db().collection('users').updateOne({ _id: userId }, { $set: setters });
+      });
     }
-    if (item._id === lastId) {
-      start = true;
-    }
-  });
-  return users;
+    // eslint-disable-next-line no-await-in-loop
+    users = await getUsers(dbClient, user._id, 100);
+  }
 };
 
-const getPollVoteCount = async (dbClient, userId) => dbClient.db().collection('poll_votes').find({ user: userId }).count();
+const getUsers = async (dbClient, lastId, pageSize = 5) => {
+  const query = {};
+  if (lastId !== undefined) {
+    query._id = { $gt: lastId };
+  }
+  return dbClient.db().collection('users')
+    .find(query)
+    .sort({ _id: 1 })
+    .project({ honors: 1 })
+    .limit(pageSize)
+    .toArray();
+};
 
-const getCommentVotesCount = async (dbClient, userId) => dbClient.db().collection('comment_votes').find({ 'user.id': userId }).count();
+const getPollVoteCount = async (dbClient, userId) => dbClient.db().collection('poll_votes').count({ user: userId });
 
-const getShareLinkCount = async (dbClient, userId) => dbClient.db().collection('link_shares').find({ user: userId }).count();
+const getCommentVotesCount = async (dbClient, userId) => dbClient.db().collection('comment_votes').count({ 'user.id': userId });
 
-const getCommentedCount = async (dbClient, userId) => dbClient.db().collection('comments').find({ 'user.id': userId }).count();
+const getShareLinkCount = async (dbClient, userId) => dbClient.db().collection('link_shares').count({ user: userId });
+
+const getCommentedCount = async (dbClient, userId) => dbClient.db().collection('comments').count({ 'user.id': userId });
+
+const getBlogCount = async (dbClient, userId) => dbClient.db().collection('items').count({ 'info.author.id': userId, type: 'blog' });
 
 const getPositiveCommentsVotesCount = async (dbClient, userId) => {
   const arr = [];
@@ -104,8 +108,6 @@ const getPositiveCommentsVotesCount = async (dbClient, userId) => {
 
   return arr.length;
 };
-
-const getBlogCount = async (dbClient, userId) => dbClient.db().collection('items').find({ 'info.author.id': userId }).count();
 
 const getPositivePercent = async (dbClient, userId) => {
   let positive = 0, negative = 0;
