@@ -32,6 +32,7 @@ require('./handlers/polls/deletePoll')(app);
 require('./handlers/polls/votePoll')(app);
 require('./handlers/polls/getVotes')(app);
 require('./handlers/items/shareItem')(app);
+require('./handlers/items/getItems')(app);
 require('./handlers/items/tags')(app);
 require('./handlers/items/createBlog')(app);
 require('./handlers/items/updateBlog')(app);

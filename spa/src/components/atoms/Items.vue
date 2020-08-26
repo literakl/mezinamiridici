@@ -29,8 +29,8 @@
   </b-container>
 </template>
 
+<!-- TODO unused, remove -->
 <script>
-
 export default {
   name: 'Items',
   props: {

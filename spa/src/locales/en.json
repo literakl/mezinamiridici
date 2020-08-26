@@ -156,7 +156,6 @@
   "poll": {
     "your-vote": "Your vote:",
     "votes": "votes",
-    "comments": "comments",
     "your-opinion": "What do you want to say about it",
     "choices": {
       "neutral": "No problem",
@@ -212,11 +211,13 @@
       "published-label":"Published",
       "poll-create-error":"Create error !",
       "poll-update-error":"Update error !",
-      "poll-confirm-message-title":"Confirmation"
+      "poll-confirm-message-title":"Confirmation",
+      "tag-select-label":"Tagged input using select"
     }
   },
   "comment": {
     "discussion": "Discussion",
+    "comments": "comments",
     "write-comment-placeholder": "Write your comment",
     "send-button": "Send",
     "load-more":"Load More",

@@ -20,7 +20,7 @@
             <ProfileLink :profile="this.item.info.author"/> &bull;
             {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
-              {{ $t('poll.comments') }}: {{item.comments.count}}
+              {{ $t('comment.comments') }}: {{item.comments.count}}
             </router-link>
             <template v-if="hasTags">
               &bull;

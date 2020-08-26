@@ -1,6 +1,5 @@
 const sanitizeHtml = require('sanitize-html');
 const edjsHTML = require('editorjs-html');
-
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -49,13 +48,18 @@ module.exports = (app) => {
 };
 
 function prepareUpdateQuery(source, title, picture, tags) {
-  const content = sanitizeHtml(edjsParser.parse(source));
+  let content = '';
+  edjsParser.parse(source).forEach((item) => {
+    content += item;
+  });
+  content = sanitizeHtml(edjsParser.parse(source));
+
   const setters = {};
-  setters.data.source = source;
-  setters.data.content = content;
-  setters.info.caption = title;
-  setters.info.picture = picture;
-  setters.info.tags = tags;
+  setters['data.source'] = source;
+  setters['data.content'] = content;
+  setters['info.caption'] = title;
+  setters['info.picture'] = picture;
+  setters['info.tags'] = tags;
 
   const query = { };
   query.$set = setters;

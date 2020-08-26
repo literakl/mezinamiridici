@@ -17,7 +17,6 @@ module.exports = (app) => {
 
       const blog = await mongo.getBlog(dbClient, slug, undefined);
       logger.debug('Blog fetched');
-      console.log(blog);// todo remove
 
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {

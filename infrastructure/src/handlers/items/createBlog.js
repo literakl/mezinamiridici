@@ -58,7 +58,6 @@ module.exports = (app) => {
 
       const blog = await mongo.getBlog(dbClient, undefined, blogId);
       logger.debug('Blog fetched');
-      console.log(blog);// todo remove
 
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {
@@ -69,7 +68,11 @@ module.exports = (app) => {
 };
 
 function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
-  const content = sanitizeHtml(edjsParser.parse(source));
+  let content = '';
+  edjsParser.parse(source).forEach((item) => {
+    content += item;
+  });
+  content = sanitizeHtml(edjsParser.parse(source));
   const slug = slugify(title, { lower: true, strict: true });
 
   const blog = {
