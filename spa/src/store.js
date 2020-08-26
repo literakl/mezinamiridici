@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import { get, post, patch, put } from '@/utils/api';
 import users from './modules/users';
 import polls from './modules/polls';
 import comments from './modules/comments';
-import { get, post, patch } from '@/utils/api';
 
 Vue.use(Vuex);
 
@@ -20,12 +20,15 @@ export default new Vuex.Store({
     itemsByTag: null,
     blog: null,
     itemPictures: [],
+    itemStream: [],
   },
   getters: {
     TAGS: state => state.tags,
     ITEMS_BY_TAG: state => state.itemsByTag,
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
+    ITEM_STREAM: state => state.itemStream,
+
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -40,9 +43,9 @@ export default new Vuex.Store({
     SET_ITEM_PICTURES: (state, payload) => {
       state.itemPictures = payload;
     },
-    // APPEND_STREAM: (state, payload) => {
-    //   state.stream = payload;
-    // },
+    APPEND_STREAM: (state, payload) => {
+      state.itemStream.push(...payload);
+    },
   },
   actions: {
     SHARE_LINK: async (context, payload) => {
@@ -74,8 +77,7 @@ export default new Vuex.Store({
     CREATE_BLOG: async (context, payload) => {
       Vue.$log.debug('CREATE_BLOG');
       const blog = await post('API', '/blog', payload, context);
-      Vue.$log.debug(blog);
-      return blog.data.success;
+      return blog.data.data;
     },
     UPDATE_BLOG: async (context, payload) => {
       Vue.$log.debug('UPDATE_BLOG');
@@ -93,8 +95,15 @@ export default new Vuex.Store({
     },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');
-      const response = await post('API', '/uploadImage', payload, context);
+      const response = await put('API', '/uploadImage', payload, context);
       return response.data;
+    },
+    GET_ITEM_STREAM: async (context, payload) => {
+      Vue.$log.debug('GET_ITEM_STREAM');
+      const { start, num, tag } = payload;
+      const response = await get('API', `/item-stream?start=${start}&num=${num}&tag=${tag}`, context);
+      // context.commit('APPEND_STREAM', response.data.data);
+      return response.data.data;
     },
   },
 });

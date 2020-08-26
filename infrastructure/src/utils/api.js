@@ -194,7 +194,7 @@ function edjsHtmlCustomParser(){
       + checklist + '</div></div></div>\n';
     },
     'quote': (obj) => {
-      return `<p>${obj.data.caption}</p><blockquote style="text-align:${obj.data.alignment};"> ${obj.data.text} </blockquote>`;
+      return `<blockquote style="text-align:${obj.data.alignment};"><p>${obj.data.caption}</p> ${obj.data.text} </blockquote>`;
     },
     'warning': (obj) => {
       return `<p>${obj.data.title}</p><div class="alert alert-warning"> ${obj.data.text} </div>`;

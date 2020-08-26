@@ -212,7 +212,8 @@
       "published-label":"Publikováno",
       "poll-create-error":"Vytvořit chybu !",
       "poll-update-error":"Chyba aktualizace !",
-      "poll-confirm-message-title":"potvrzení"
+      "poll-confirm-message-title":"potvrzení",
+      "tag-select-label":"Označený vstup pomocí select"
     }
   },
   "comment": {

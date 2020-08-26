@@ -15,18 +15,23 @@
         </ul>
       </b-col>
     </b-row>
+
+    <ItemList/>
   </b-container>
 </template>
 
 <script>
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
 import CompletePoll from '@/components/organisms/CompletePoll.vue';
+import ItemList from '@/components/molecules/ItemList.vue';
+
 
 export default {
   name: 'home',
   components: {
     ContentLoading,
     CompletePoll,
+    ItemList,
   },
   computed: {
     poll() {

@@ -212,7 +212,8 @@
       "published-label":"Published",
       "poll-create-error":"Create error !",
       "poll-update-error":"Update error !",
-      "poll-confirm-message-title":"Confirmation"
+      "poll-confirm-message-title":"Confirmation",
+      "tag-select-label":"Tagged input using select"
     }
   },
   "comment": {

@@ -10,6 +10,8 @@
 
     <editor ref="editor" :config="config" :initialized="onInitialized"/>
 
+    <TagSeletor :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="tags"/>
+
     <SelectPicture :currentPath="picture" @changePath="changePath"/>
 
     <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
@@ -29,17 +31,23 @@ import ImageTool from '@editorjs/image';
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
+import TagSeletor from '@/components/atoms/TagSelector.vue';
 
 export default {
   components: {
     SelectPicture,
     TextInput,
+    TagSeletor,
+  },
+  props: {
+    slug: String,
   },
   data() {
     return {
       isCreate: true,
       title: '',
       picture: '',
+      tags: [],
       config: {
         tools: {
           header: {
@@ -66,7 +74,7 @@ export default {
                   const formData = new FormData();
                   formData.append('image', file);
 
-                  const res = await store.dispatch('IMAGE_UPLOAD', formData);
+                  const res = await store.dispatch('UPLOAD_IMAGE', formData);
                   return {
                     success: res.success,
                     file: {
@@ -125,7 +133,9 @@ export default {
   },
   watch: {
     blog() {
-      this.title = this.blog.title;
+      this.title = this.blog.info.caption;
+      this.picture = this.blog.info.picture;
+      this.tags = this.blog.info.tags;
     },
   },
   methods: {
@@ -136,6 +146,7 @@ export default {
         title: this.title,
         source: editorData,
         picture: this.picture,
+        tags: this.tags,
       };
       let result = '';
 
@@ -147,13 +158,15 @@ export default {
           body.date = this.blog.date;
           result = await this.$store.dispatch('UPDATE_BLOG', body);
         }
-        this.$log.debug(result);
         await this.$router.push({ name: 'blog', params: { slug: result.info.slug } });
       }
     },
+    tagSelect(tags) {
+      this.tags = tags;
+    },
     onInitialized(editor) {
       if (this.$route.name === 'update-blog') {
-        setTimeout(() => { editor.render(this.blog.source); }, 1000);
+        setTimeout(() => { editor.render(this.blog.data.source); }, 1000);
       }
     },
     changePath(path) {
@@ -163,7 +176,7 @@ export default {
   created() {
     if (this.$route.name === 'update-blog') {
       this.isCreate = false;
-      this.$store.dispatch('GET_BLOG');
+      this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
     }
   },
 };

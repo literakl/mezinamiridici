@@ -1,10 +1,11 @@
 <template>
-  <div class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
 
     <h1>{{title}}</h1>
 
     <div v-html="blogHtml"></div>
 
+    <b-img thumbnail :src="picture" class="item-thumb"></b-img>
   </div>
 </template>
 
@@ -22,18 +23,23 @@ export default {
     blogHtml() {
       let txt = '';
       if (this.blog !== null) {
-        this.blog.content.forEach((item) => {
-          txt += item;
-        });
+        txt = this.blog.data.content;
       }
       return txt;
     },
     title() {
       let txt = '';
       if (this.blog !== null) {
-        txt = this.blog.title;
+        txt = this.blog.info.caption;
       }
       return txt;
+    },
+    picture() {
+      let path = '';
+      if (this.blog !== null) {
+        path = this.blog.info.picture;
+      }
+      return path;
     },
   },
   created() {
@@ -42,6 +48,24 @@ export default {
 };
 </script>
 <style>
+  .item-thumb {
+    width:200px;
+    height:120px;
+    box-shadow: grey 2px 2px 10px;
+  }
+  blockquote {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 40px;
+    background-color: whitesmoke;
+    padding: 20px;
+    font-style: italic;
+  }
+  blockquote p {
+    font-style: normal;
+    font-weight: bold;
+  }
   .tc-table {
       width: 100%;
       height: 100%;

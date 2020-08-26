@@ -135,6 +135,9 @@ async function getBlog(dbClient, slug, blogId) {
   if (blogId) {
     return dbClient.db().collection('items').findOne({ _id: blogId });
   }
+  if (slug) {
+    return dbClient.db().collection('items').findOne({ 'info.slug': slug });
+  }
 }
 
 async function getPoll(dbClient, pipeline) {

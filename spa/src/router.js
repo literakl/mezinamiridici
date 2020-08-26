@@ -158,10 +158,11 @@ export default new Router({
       beforeEnter: requireAuth,
     },
     {
-      path: '/uprava-prispevku',
+      path: '/uprava-prispevku/:slug',
       name: 'update-blog',
       component: () => import('./views/item/WriteBlog.vue'),
       beforeEnter: requireAuth,
+      props: true,
     },
     {
       path: '/prispevek/:slug',

@@ -28,12 +28,13 @@ module.exports = (app) => {
 
   app.options('/v1/uploadImage', auth.cors);
 
-  app.post('/v1/uploadImage', auth.cors, upload.single('image'), async (req, res) => {
+  app.put('/v1/uploadImage', auth.cors, upload.single('image'), async (req, res) => {
     logger.verbose('image upload handler starts');
 
     try {
+      const host = `${req.connection.encrypted ? 'https' : 'http'}://${req.headers.host}`;
       const body = {
-        url: `/uploads/${req.file.filename}`, // todo shall we sanitize file names?
+        url: `${host}/uploads/${req.file.filename}`, // todo shall we sanitize file names?
       };
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {
