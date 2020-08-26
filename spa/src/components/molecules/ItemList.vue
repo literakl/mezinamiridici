@@ -17,7 +17,7 @@
 
 <script>
 import { GridLayout } from '@egjs/vue-infinitegrid';
-import ViewItem from '@/views/item/ViewItem.vue';
+import ViewItem from '@/components/molecules/ItemBox.vue';
 
 export default {
   name: 'ItemList',

@@ -28,7 +28,7 @@ module.exports = (app) => {
 
   app.options('/v1/uploadImage', auth.cors);
 
-  app.put('/v1/uploadImage', auth.cors, upload.single('image'), async (req, res) => {
+  app.post('/v1/uploadImage', auth.cors, upload.single('image'), async (req, res) => {
     logger.verbose('image upload handler starts');
 
     try {

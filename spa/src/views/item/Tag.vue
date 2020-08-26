@@ -12,21 +12,18 @@
     </b-button-group>
 
     <ContentLoading v-if="! items" type="items"/>
-    <Items v-if="hasItems" :items="items"/>
     <ItemList :tag="tag" v-if="tag"/>
   </b-container>
 </template>
 
 <script>
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
-import Items from '@/components/atoms/Items.vue';
 import ItemList from '@/components/molecules/ItemList.vue';
 
 export default {
   name: 'Tag',
   components: {
     ContentLoading,
-    Items,
     ItemList,
   },
   props: {

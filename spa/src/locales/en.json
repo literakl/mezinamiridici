@@ -156,7 +156,6 @@
   "poll": {
     "your-vote": "Your vote:",
     "votes": "votes",
-    "comments": "comments",
     "your-opinion": "What do you want to say about it",
     "choices": {
       "neutral": "No problem",
@@ -218,6 +217,7 @@
   },
   "comment": {
     "discussion": "Discussion",
+    "comments": "comments",
     "write-comment-placeholder": "Write your comment",
     "send-button": "Send",
     "load-more":"Load More",

@@ -156,7 +156,6 @@
   "poll": {
     "your-vote": "Váš hlas:",
     "votes": "hlasů",
-    "comments": "komentářů",
     "your-opinion": "Co si o tom myslíte vy?",
     "choices": {
       "neutral": "Není problém",
@@ -218,6 +217,7 @@
   },
   "comment": {
     "discussion": "Diskuse",
+    "comments": "komentářů",
     "write-comment-placeholder": "Napište komentář",
     "send-button": "Odeslat",
     "load-more":"Načíst další",

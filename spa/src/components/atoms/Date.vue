@@ -6,6 +6,7 @@
 import { show } from '@/utils/dateUtils';
 
 export default {
+  name: 'Date',
   props: {
     date: String,
     format: String,

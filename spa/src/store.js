@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { get, post, patch, put } from '@/utils/api';
+import { get, post, patch } from '@/utils/api';
 import users from './modules/users';
 import polls from './modules/polls';
 import comments from './modules/comments';
@@ -95,7 +95,7 @@ export default new Vuex.Store({
     },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');
-      const response = await put('API', '/uploadImage', payload, context);
+      const response = await post('API', '/uploadImage', payload, context);
       return response.data;
     },
     GET_ITEM_STREAM: async (context, payload) => {

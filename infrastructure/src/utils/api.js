@@ -156,53 +156,28 @@ function convertField(key) {
   throw new Error(`Unsupported field ${key}`);
 }
 
-function edjsHtmlCustomParser(){
+function edjsHtmlCustomParser() {
   return {
-    'table': (obj) => {
-      var rows = '', output_HTML = '';
-      obj.data.content.map( function(row) {
-          cells = '';
-          row.map( function (cell) {
-              cells += '<td class="tc-table__cell"><div class="tc-table__area">'
-              + cell + '</div></td>\n';
-          });
-          rows += '<tr>' + cells + '</tr>\n';
+    table: (obj) => {
+      let rows = '', rendered = '';
+      // eslint-disable-next-line array-callback-return
+      obj.data.content.map((row) => {
+        let cells = '';
+        // eslint-disable-next-line array-callback-return
+        row.map((cell) => {
+          cells += `<td class="tc-table__cell"><div class="tc-table__area">${
+            cell}</div></td>\n`;
+        });
+        rows += `<tr>${cells}</tr>\n`;
       });
-      output_HTML += '<div class="ce-block"><div class="ce-block__content"><div class="tc-editor cdx-block">'
-      + '<div class="tc-table__wrap"><table class="tc-table"><tbody>'
-      + rows + '</tbody></table></div></div></div></div>\n';
-      return output_HTML;
+      rendered += `${'<div class="ce-block"><div class="ce-block__content"><div class="tc-editor cdx-block">'
+      + '<div class="tc-table__wrap">\n<table class="tc-table"><tbody>'}${
+        rows}</tbody></table>\n</div></div></div></div>\n`;
+      return rendered;
     },
-    'code': (obj) => {
-      return `<div class="alert alert-secondary"> ${obj.data.code} </div>`;
-    },
-    'delimiter': () => {
-      return '<div class="ce-block"><div class="ce-block__content"><div class="ce-delimiter cdx-block"></div></div></div>\n';
-    },
-    'checklist': (obj) => {
-      var checklist = '';
-      obj.data.items.map( function (item) {
-          var checked_ext = '';
-          if ( item.checked ) {
-              checked_ext = '--checked'
-          }
-          checklist += '<div class="cdx-checklist__item cdx-checklist__item'
-          + checked_ext + '"><span class="cdx-checklist__item-checkbox"></span><div class="cdx-checklist__item-text">'
-          + item.text + '</div></div>';
-      });
-      return '<div class="ce-block"><div class="ce-block__content"><div class="cdx-block cdx-checklist">'
-      + checklist + '</div></div></div>\n';
-    },
-    'quote': (obj) => {
-      return `<blockquote style="text-align:${obj.data.alignment};"><p>${obj.data.caption}</p> ${obj.data.text} </blockquote>`;
-    },
-    'warning': (obj) => {
-      return `<p>${obj.data.title}</p><div class="alert alert-warning"> ${obj.data.text} </div>`;
-    },
-    'raw': (obj) => {
-      return `<textarea class="cdx-rawhtml cdx-rawhtml-input" disabled >${obj.data.html}</textarea>`;
-    },
-  }
+    delimiter: () => '<div class="ce-block"><div class="ce-block__content"><div class="ce-delimiter cdx-block"></div></div></div>\n',
+    quote: obj => `<blockquote style="text-align:${obj.data.alignment};"><p>${obj.data.caption}</p> ${obj.data.text} </blockquote>`,
+  };
 }
 
 module.exports.sendResponse = sendResponse;

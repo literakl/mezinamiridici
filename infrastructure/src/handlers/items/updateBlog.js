@@ -1,6 +1,5 @@
 const sanitizeHtml = require('sanitize-html');
 const edjsHTML = require('editorjs-html');
-const slugify = require('slugify');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -53,12 +52,12 @@ function prepareUpdateQuery(source, title, picture, tags) {
   edjsParser.parse(source).forEach((item) => {
     content += item;
   });
-  const slug = slugify(title, { lower: true, strict: true });
+  content = sanitizeHtml(edjsParser.parse(source));
+
   const setters = {};
   setters['data.source'] = source;
   setters['data.content'] = content;
   setters['info.caption'] = title;
-  setters['info.slug'] = slug;
   setters['info.picture'] = picture;
   setters['info.tags'] = tags;
 
