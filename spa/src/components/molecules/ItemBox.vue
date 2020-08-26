@@ -24,6 +24,7 @@
 <script>
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import { deepCopy } from '@/utils/api';
 
 export default {
   name: 'ItemBox',
@@ -50,7 +51,7 @@ export default {
       return { name: 'home' };
     },
     commentLink() {
-      const route = this.link;
+      const route = deepCopy(this.link);
       route.hash = '#comments';
       return route;
     },
