@@ -1,0 +1,40 @@
+{
+  "date": ISODate("2020-07-18T23:13:14Z"),
+  "regions": [
+    {
+      "region": "PRG",
+      "counts": 200,
+      "impact": {
+        "deaths": 2,
+        "severely": 8,
+        "slighty": 20,
+        "damage": 1500
+      },
+      "reason": {
+        "speed": 10,
+        "priority": 20,
+        "passing": 8,
+        "driving": 15,
+        "drunk": 7,
+        "other": 3
+      }
+    }
+  ],
+  "total": {
+    "counts": 200,
+    "impact": {
+      "deaths": 2,
+      "severely": 8,
+      "slighty": 20,
+      "damage": 1500
+    },
+    "reason": {
+      "speed": 10,
+      "priority": 20,
+      "passing": 8,
+      "driving": 15,
+      "drunk": 7,
+      "other": 3
+    }
+  }
+}
