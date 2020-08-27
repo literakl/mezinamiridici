@@ -61,7 +61,7 @@ export default {
   },
   created() {
     if (this.item !== null) {
-      this.lastCommentDate = (this.item.comments.last === null) ? '' : new Date(this.item.comments.last).toLocaleDateString('cs-CZ');
+      // this.lastCommentDate = (this.item.comments.last === null) ? '' : new Date(this.item.comments.last).toLocaleDateString('cs-CZ');
     }
   },
 };

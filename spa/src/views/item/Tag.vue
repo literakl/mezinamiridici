@@ -1,15 +1,18 @@
 <template>
   <b-container fluid="true" class="pt-3 w-75 m-auto">
-    <b-button-group size="sm">
-      <b-button
-        v-for="t in tags" :key="t"
-        :to="{ name: 'tag', params: { tag: t } }"
-        :pressed="t === tag"
-        variant="primary"
+    <vue-word-cloud
+      style="width: 100%; height: 240px;"
+      :words="tags"
+      :color="([, weight]) => weight > 5 ? 'DeepPink' : weight > 3 ? 'RoyalBlue' : 'Indigo'"
+      font-family="fantasy"
+      :spacing="0.1"
       >
-        #{{t}}
-      </b-button>
-    </b-button-group>
+      <template slot-scope="{text, weight, word}">
+        <div :title="weight" style="cursor: pointer;" @click="onTagClick(word)">
+          {{ text }}
+        </div>
+      </template>
+    </vue-word-cloud>
 
     <ContentLoading v-if="! items" type="items"/>
     <ItemList :tag="tag" v-if="tag"/>
@@ -17,6 +20,7 @@
 </template>
 
 <script>
+import VueWordCloud from 'vuewordcloud';
 import ContentLoading from '@/components/molecules/ContentLoading.vue';
 import ItemList from '@/components/molecules/ItemList.vue';
 
@@ -25,6 +29,7 @@ export default {
   components: {
     ContentLoading,
     ItemList,
+    [VueWordCloud.name]: VueWordCloud,
   },
   props: {
     tag: String,
@@ -47,11 +52,7 @@ export default {
       return this.tags !== null && this.tags.length > 0;
     },
     tags() {
-      const x = this.$store.getters.TAGS;
-      if (x) {
-        x.sort((a, b) => a.localeCompare(b));
-      }
-      return x;
+      return this.$store.getters.TAGS;
     },
   },
   created() {
@@ -65,6 +66,9 @@ export default {
       if (this.tag) {
         this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
       }
+    },
+    onTagClick(tag) {
+      this.$router.push({ name: 'tag', params: { tag: tag[0] } });
     },
   },
 };
