@@ -27,6 +27,7 @@ export default {
   },
   props: {
     tag: String,
+    exceptItem: Object,
   },
   data() {
     return {
@@ -61,10 +62,13 @@ export default {
       const { tag } = this;
       const start = this.start || 0;
 
-      const res = await this.$store.dispatch('GET_ITEM_STREAM', { start, num, tag });
+      let res = await this.$store.dispatch('GET_ITEM_STREAM', { start, num, tag });
       if (res.length === 0) {
         this.$refs.ig.endLoading();
         this.isEnded = true;
+      }
+      if (this.exceptItem) {
+        res = res.filter(item => item._id !== this.exceptItem._id);
       }
       this.start = start + num;
       return res;

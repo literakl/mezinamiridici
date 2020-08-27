@@ -2,7 +2,7 @@
   <b-container fluid="true" class="pt-3 w-75 m-auto">
     <PollHeading v-if="poll" :item="poll"/>
     <ContentLoading v-if="! poll" type="poll"/>
-    <ItemList/>
+    <ItemList :exceptItem="poll"/>
   </b-container>
 </template>
 
