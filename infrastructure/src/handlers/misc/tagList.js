@@ -15,13 +15,24 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const tagsWeight = await getTagWeight(dbClient);
-      logger.debug('get tags weight');
+      let tags = String(process.env.TAGS).split(',');
+      const tagWeights = await dbClient.db().collection('items').aggregate([
+        { $unwind: '$info.tags' },
+        { $group: { _id: '$info.tags', count: { $sum: 1 } } },
+      ]).toArray();
+      logger.debug('Tag weights fetched');
 
-      const tagsArray = String(process.env.TAGS).split(',');
-      tagsArray.forEach((item, index) => {
-        tagsArray[index] = [item, tagsWeight[item]];
+      const tagsArray = [];
+      tagWeights.forEach((item) => {
+        tagsArray.push([item._id, item.count]);
+        tags = tags.filter(x => x !== item._id);
       });
+
+      tags.forEach((tag) => {
+        tagsArray.push([tag, 0]);
+      });
+
+      tagsArray.sort();
 
       return api.sendResponse(res, api.createResponse(tagsArray));
     } catch (err) {
@@ -30,17 +41,3 @@ module.exports = (app) => {
     }
   });
 };
-
-const getTagWeight = async (dbClient) => {
-  let arr = {};
-  const items = await dbClient.db().collection('items').find({ }).toArray();
-  items.forEach((item) => {
-    const itemTags = item.info.tags;
-    
-    itemTags.forEach((i) => {
-      if(!arr[i]) arr[i] = 0;
-      arr[i] += 1;
-    });
-  });
-  return arr;
-}

@@ -56,15 +56,16 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('GET_TAGS');
+    this.$store.dispatch('FETCH_TAGS');
     if (this.tag) {
-      this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
+      this.$store.dispatch('FETCH_ITEMS_BY_TAG', this.tag);
+      setTimeout(() => { document.title += `\xa0\xa0-\xa0\xa0${this.tag}`; }, 10);
     }
   },
   methods: {
     fetchData() {
       if (this.tag) {
-        this.$store.dispatch('GET_ITEMS_BY_TAG', this.tag);
+        this.$store.dispatch('FETCH_ITEMS_BY_TAG', this.tag);
       }
     },
     onTagClick(tag) {
