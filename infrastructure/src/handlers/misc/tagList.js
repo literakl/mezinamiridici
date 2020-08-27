@@ -15,7 +15,6 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      let tags = String(process.env.TAGS).split(',');
       const tagWeights = await dbClient.db().collection('items').aggregate([
         { $unwind: '$info.tags' },
         { $group: { _id: '$info.tags', count: { $sum: 1 } } },
@@ -25,13 +24,7 @@ module.exports = (app) => {
       const tagsArray = [];
       tagWeights.forEach((item) => {
         tagsArray.push([item._id, item.count]);
-        tags = tags.filter(x => x !== item._id);
       });
-
-      tags.forEach((tag) => {
-        tagsArray.push([tag, 0]);
-      });
-
       tagsArray.sort();
 
       return api.sendResponse(res, api.createResponse(tagsArray));
