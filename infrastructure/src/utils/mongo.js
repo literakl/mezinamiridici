@@ -10,7 +10,7 @@ logger.info(`Mongo is configured to connect ${MONGODB_URI}`);
 let cachedDb = null;
 
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
-const stagePublished = { $match: { 'info.published': true } };
+const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
@@ -224,7 +224,7 @@ exports.stageLimit = stageLimit;
 exports.stageMyPollVote = stageMyPollVote;
 exports.stageHideIdsinComment = stageHideIdsinComment;
 exports.stageCommentVotes = stageCommentVotes;
-exports.stagePublished = stagePublished;
+exports.stagePublishedPoll = stagePublishedPoll;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
 exports.stageTag = stageTag;

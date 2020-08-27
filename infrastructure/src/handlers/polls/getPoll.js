@@ -14,7 +14,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const pipeline = [mongo.stagePublished, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
+      const pipeline = [mongo.stagePublishedPoll, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
