@@ -39,6 +39,8 @@ Copy `.env.template` to `.env` and update as needed.
 
 ## Local run
 
+You might need to unblock the ports 3000 (app) and 27017 (mongo) in your firewall.
+
 The first terminal: 
 ```
 $ cd infrastructure
