@@ -10,7 +10,7 @@
 
     <editor ref="editor" :config="config" :initialized="onInitialized"/>
 
-    <TagSeletor :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="tags"/>
+    <TagSelector :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="tags"/>
 
     <SelectPicture :currentPath="picture" @changePath="changePath"/>
 
@@ -31,13 +31,13 @@ import ImageTool from '@editorjs/image';
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
-import TagSeletor from '@/components/atoms/TagSelector.vue';
+import TagSelector from '@/components/atoms/TagSelector.vue';
 
 export default {
   components: {
     SelectPicture,
     TextInput,
-    TagSeletor,
+    TagSelector,
   },
   props: {
     slug: String,

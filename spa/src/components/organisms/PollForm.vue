@@ -41,7 +41,7 @@
 
         </ValidationProvider>
 
-        <TagSeletor :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="form.pollTagsList"/>
+        <TagSelector :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="form.pollTagsList"/>
 
         <SelectPicture :currentPath="form.picture" @changePath="changePath"/>
 
@@ -69,13 +69,13 @@
 <script>
 import { getISO } from '@/utils/dateUtils';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
-import TagSeletor from '@/components/atoms/TagSelector.vue';
+import TagSelector from '@/components/atoms/TagSelector.vue';
 
 export default {
   name: 'PollForm',
   components: {
     SelectPicture,
-    TagSeletor,
+    TagSelector,
   },
   props: {
     isCreate: Boolean,
