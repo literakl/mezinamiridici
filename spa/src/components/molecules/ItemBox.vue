@@ -59,11 +59,6 @@ export default {
       return this.item.type !== 'poll';
     },
   },
-  created() {
-    if (this.item !== null) {
-      // this.lastCommentDate = (this.item.comments.last === null) ? '' : new Date(this.item.comments.last).toLocaleDateString('cs-CZ');
-    }
-  },
 };
 </script>
 <style scoped>
