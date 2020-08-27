@@ -138,6 +138,7 @@ async function getBlog(dbClient, slug, blogId) {
   if (slug) {
     return dbClient.db().collection('items').findOne({ 'info.slug': slug });
   }
+  throw new Error('Both slug and id are empty');
 }
 
 async function getPoll(dbClient, pipeline) {
