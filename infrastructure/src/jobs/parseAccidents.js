@@ -1,5 +1,5 @@
 const axios = require('axios').default;
-const logger = require('../utils/logging');
+const { createLogger, format, transports } = require('winston');
 const mongo = require('../utils/mongo.js');
 
 const cron = require('node-cron');
@@ -7,6 +7,35 @@ const cheerio = require('cheerio');
 const cheerioAdv = require('cheerio-advanced-selectors');
 const dateFormat = require('dateformat');
 const FormData = require('form-data');
+
+const { combine, printf } = format;
+const myFormat = printf(info => `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`);
+const appendTimestamp = format((info, opts) => {
+  info.timestamp = dateFormat(new Date(), 'yyyy-mm-dd HH:MM:s:l');
+  return info;
+});
+const logger = createLogger({
+  level: 'debug',
+  format: combine(
+    appendTimestamp(),
+    myFormat,
+  ),
+  transports: [
+    new transports.File({
+      filename: 'accidents.log',
+      colorize: false,
+    }),
+  ],
+  exitOnError: false,
+});
+logger.add(new transports.Console({
+  format: format.simple(),
+}));
+logger.stream = {
+  write(message) {
+    logger.info(message.replace(/\n$/, ''));
+  },
+};
 
 const cheerioParser = cheerioAdv.wrap(cheerio)
 
@@ -19,32 +48,39 @@ const keyArray = [
   'region', 'counts', 'deaths', 'severely', 'slighty', 'damage', 'speed', 'priority', 'passing', 'driving', 'drunk', 'other'
 ]
 
-let currentSchedule = ACCIDENTS_RECORDS_CRON;
+let currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
 
 async function parseData(date) {
-  logger.debug('Parsing data started');
+  logger.debug('::: Parsing data started');
   
   let html = await getAxios(ACCIDENTS_RECORDS_URL);
   let $ = await cheerioParser.load(html);
-  // const body = {
-  //     'ctl00_Application_ScriptManager1_HiddenField' : $('#ctl00_Application_ScriptManager1_HiddenField').val(),
-  //     '__EVENTTARGET' : $('#__EVENTTARGET').val(),
-  //     '__EVENTARGUMENT' : $('#__EVENTARGUMENT').val(),
-  //     '__VIEWSTATE' : $('#__VIEWSTATE').val(),
-  //     '__VIEWSTATEGENERATOR' : $('#__VIEWSTATEGENERATOR').val(),
-  //     '__EVENTVALIDATION' : $('#__EVENTVALIDATION').val(),
-  //     'ctl00$Application$ddlKraje' : 'Česká republika',
-  //     'ctl00$Application$txtDatum' : date,
-  //     'ctl00$Application$cmdZobraz' : 'Zobrazit',
-  // }
+  const body = {
+      'ctl00_Application_ScriptManager1_HiddenField' : $('#ctl00_Application_ScriptManager1_HiddenField').val(),
+      '__EVENTTARGET' : $('#__EVENTTARGET').val(),
+      '__EVENTARGUMENT' : $('#__EVENTARGUMENT').val(),
+      '__VIEWSTATE' : $('#__VIEWSTATE').val(),
+      '__VIEWSTATEGENERATOR' : $('#__VIEWSTATEGENERATOR').val(),
+      '__EVENTVALIDATION' : $('#__EVENTVALIDATION').val(),
+      'ctl00$Application$ddlKraje' : 'Česká republika',
+      'ctl00$Application$txtDatum' : date,
+      'ctl00$Application$cmdZobraz' : 'Zobrazit',
+  }
   
-  // const formData = new FormData();
-  // for(key in body){
-  //   formData.append(key, (body[key]) ? body[key]: '');
-  // }
+  logger.debug('::: require date');
+  logger.debug(date);
+  logger.debug('::: get content when first loading');
 
-  // html = await getAxios(ACCIDENTS_RECORDS_URL, formData);
-  // $ = await cheerioParser.load(html);
+  const formData = new FormData();
+  for(key in body){
+    formData.append(key, (body[key]) ? body[key]: '');
+  }
+
+  html = await getAxios(ACCIDENTS_RECORDS_URL, formData);
+  $ = await cheerioParser.load(html);
+
+  logger.debug('::: get content when second loading');
+
   const regionsData = $('#celacr tr');
   let result = false;
   
@@ -52,35 +88,33 @@ async function parseData(date) {
     result = await treatData(regionsData, date, $);
   } else {
     result = false;
-  }
-
+  }  
+  logger.debug('The result is ');
+  logger.debug(result);
   return result;
 }
 
 function scheduleParsing() {
 
-  const task = cron.schedule(currentSchedule, async () => {
-    logger.debug('Running get accident data at 06:00 at Europe/Prague timezone');
+  const task = cron.schedule(currentScheduleExpression, async () => {
+    logger.debug('Running get accident data at 06:00 at Europe/Prague timezone'); 
+    logger.debug('Current schedule expression is: ');
+    logger.debug(currentScheduleExpression);
 
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    // console.log(dateFormat(yesterday, dateFormatType))
 
     const isParsed = await parseData(dateFormat(yesterday, dateFormatType));
 
-    // if (!isParsed) {
-    //   task.destroy();
-    //   currentSchedule = `*/${ACCIDENTS_RECORDS_RETRY} * * * *`;
-    //   scheduleParsing();
-    // } else if (currentSchedule !== ACCIDENTS_RECORDS_CRON) {
-    //   task.destroy();
-    //   currentSchedule = ACCIDENTS_RECORDS_CRON;
-    //   scheduleParsing();
-    // }
-
-    console.log('pased ===', isParsed)
-    
-    task.destroy();
+    if (!isParsed) {
+      task.destroy();
+      currentScheduleExpression = `*/${ACCIDENTS_RECORDS_RETRY} * * * *`;
+      scheduleParsing();
+    } else if (currentScheduleExpression !== ACCIDENTS_RECORDS_CRON) {
+      task.destroy();
+      currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
+      scheduleParsing();
+    }
 
   }, {
     scheduled: true,
@@ -89,24 +123,21 @@ function scheduleParsing() {
 
 }
 
-async function getAxios(url, body, header = { headers: { } }){
+async function getAxios(url, data){
   let html = '';
 
-  if(body === undefined){
+  if(data === undefined){
       
     await axios.post(url)
     .then(response => {
       html = response.data;
-      console.log('axios ===>', html.length);
     })
     .catch(console.error);
 
   } else {
-    
-    await axios.post(url, body, header)
+    await axios.post(url, data, {headers : data.getHeaders()})
     .then(response => {
       html = response.data;
-      console.log('axios ===>', html.length);
     })
     .catch(console.error);
 
@@ -162,6 +193,7 @@ async function treatData(region, date, $){
   await dbClient.db().collection('accidents').insertOne(storeData);
   return true;
 }
+
 
 exports.scheduleParsing = scheduleParsing;
 exports.parseData = parseData;
