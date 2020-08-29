@@ -4,8 +4,8 @@ const morgan = require('morgan');
 const { createLogger, format, transports } = require('winston');
 // eslint-disable-next-line no-unused-vars
 const path = require('path');
-require('./jobs/parseAccidents.js').scheduleParsing();
 
+require('./jobs/parseAccidents.js').scheduleParsing();
 
 const app = express();
 app.use('/', express.static(`${__dirname}/dist/`));
