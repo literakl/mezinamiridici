@@ -150,7 +150,7 @@ async function treatData(region, date, $){
   logger.debug('Mongo connected');
   
   const storeData = {
-    date,
+    date: new Date(date.split('.').reverse().join('-')),
     regions: [],
     total: {},
   };
