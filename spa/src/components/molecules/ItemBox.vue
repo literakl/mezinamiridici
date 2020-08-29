@@ -1,5 +1,5 @@
 <template>
-  <div class="m-auto item-div">
+  <div class="m-auto item-div item-hover">
     <h4>
       <router-link :to="link">
         {{ item.info.caption }}
