@@ -2,7 +2,7 @@ const api = require('../utils/api.js');
 const logger = require('../utils/logging');
 
 module.exports = (app) => {
-  app.get('/api/v1/status', (req, res) => {
+  app.get('/v1/status', (req, res) => {
     logger.verbose('getStatus handler starts');
     const response = {
       api: '1.0',
