@@ -65,11 +65,6 @@ let formDataBody = {};
 
 let currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
 
-Date.prototype.getWeek = function() {
-  var dt = new Date(this.getFullYear(),0,1);
-  return Math.ceil((((this - dt) / 86400000) + dt.getDay()+1)/7);
-};
-
 async function setInitFormData() {
   logger.debug('::: get content when first loading');
   let html = await getAxios(ACCIDENTS_RECORDS_URL);
@@ -128,8 +123,7 @@ async function scheduleParsing() {
 
     await setInitFormData();
 
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterday = dayjs().subtract(1, 'day');
 
     const isParsed = await parseData(dbClient, dayjs(yesterday).format(dateFormatType));
 
@@ -142,6 +136,7 @@ async function scheduleParsing() {
       currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
       scheduleParsing();
     } else {
+      task.destroy();
       const data = await getBlog(dbClient);
       storeBlogItem(dbClient, data);
     }
@@ -226,11 +221,8 @@ async function getBlog(dbClient) {
     'deaths', 'severely', 'slighty'
   ]
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const prevYearDate = new Date();
-  prevYearDate.setYear(prevYearDate.getFullYear() - 1);
-  prevYearDate.setDate(prevYearDate.getDate() - 1);
+  const yesterday = dayjs().subtract(1, 'day').toDate();
+  const prevYearDate = dayjs().subtract(1, 'day').subtract(1, 'year').toDate();
   const prevYearStartDate = new Date(prevYearDate.getFullYear(), 0, 1);
   const thisYearStartDate = new Date(new Date().getFullYear(), 0, 1);
 
@@ -252,8 +244,6 @@ async function getBlog(dbClient) {
 }
 
 function makeCompareData(keys, allYearData, compareDate, resultData, isPrev){
-  const thisWeek = compareDate.getWeek();
-
   allYearData.forEach((item) => {
     const date = new Date(item.date);
     if (date.toLocaleDateString() === compareDate.toLocaleDateString()) {
@@ -263,7 +253,7 @@ function makeCompareData(keys, allYearData, compareDate, resultData, isPrev){
         keys.map((k) => {resultData.day.now[k] = item.total.impact[k]});
       }
     }
-    if (date.getWeek() === compareDate.getWeek()) {
+    if (dayjs(date).week() === dayjs(compareDate).week()) {
       if (isPrev) {
         keys.map((k) => {resultData.week.prev[k] += item.total.impact[k]});
       } else {
@@ -327,6 +317,7 @@ async function storeBlogItem(dbClient, data) {
   const source = {date: new Date().getTime(), blocks:[], version: '2.18.0'};
 
   const lastYearDate = publishDate.subtract(1, 'year');
+  const week = publishDate.week();
 
   for (key in data) {
     const headerItem = { 'type': 'header', 'data': { 'text': `Compare with ${(key === 'year')?'':key + ' of'} last year`, 'level': 3 } };
@@ -341,7 +332,7 @@ async function storeBlogItem(dbClient, data) {
             txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.format(dateFormatType)})` : `${subKey}\n(${publishDate.format(dateFormatType)})`;
             break;
           case 'week':
-            txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.week()})` : `${subKey}\n(${publishDate.week()})`;
+            txt = (dayKey === 'prev') ? `${subKey}\n(${week})` : `${subKey}\n(${week})`;
             break;
           case 'month':
             txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.month() + 1})` : `${subKey}\n(${publishDate.month() + 1})`;
