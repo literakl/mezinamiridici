@@ -2,12 +2,12 @@
 
 # Between us Drivers
 
-This is a monorepo for mezinamiridici.cz
+This is a monorepo for portal mezinamiridici.cz
 
 ## Repository contents
 
-* `/spa` is the single page Vue.js application that delivers the website experience
-* `/infrastructure` is the NodeJS backend
+* `spa` is the single page Vue.js application that delivers the website experience
+* `infrastructure` is the NodeJS backend
 * `nginx` is a configuration for Nginx server
 
 ## Database
@@ -18,7 +18,7 @@ Install the latest Mongodb and then import the data:
 cd mongo
 # install indexes and constrains
 mongo bud < mongo_setup.js
-# use your favorite command to unzip database dump
+# use your favorite command to unzip the database dump
 unzip demo_data.zip  
 mongoimport --db=bud --collection=users --jsonArray users.json
 mongoimport --db=bud --collection=items --jsonArray items.json
@@ -35,11 +35,13 @@ Copy `.env.template` to `.env` and update as needed.
 
 ### spa/.env
 
-Copy `.env.template` to `.env` and update as needed. 
+Copy `.env.template` to `.env` and update as needed. If you want to access the web 
+from other devices (e.g. mobile phone), you should point the endpoint properties
+to the real IP address (not localhost or 127.0.0.1).
 
 ## Local run
 
-You might need to unblock the ports 3000 (app) and 27017 (mongo) in your firewall.
+You might need to unblock the ports 8080 (web), 3000 (backend) and 27017 (mongo) in your firewall.
 
 The first terminal: 
 ```
