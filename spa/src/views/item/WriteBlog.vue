@@ -116,12 +116,6 @@ export default {
           },
         },
         placeholder: this.$t('blog.form.p-placeholder'),
-        // onReady: () => {
-        //   this.$log.debug('on ready');
-        // },
-        // onChange: (args) => {
-        //   this.$log.debug(args, 'Now I know that Editor\'s content changed!');
-        // },
         data: {},
         i18n: {
           messages: {
@@ -238,3 +232,15 @@ export default {
   },
 };
 </script>
+
+<style>
+ .codex-editor {
+   border: 1px solid #ced4da
+ }
+
+ .codex-editor__redactor {
+   padding-bottom: 100px
+ }
+
+ /*.ce-block__content, .ce-toolbar__content*/
+</style>
