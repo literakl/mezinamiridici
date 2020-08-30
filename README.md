@@ -1,4 +1,5 @@
 ![CI](https://github.com/literakl/mezinamiridici/workflows/CI/badge.svg?branch=master)
+[![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/literakl/mezinamiridici/)
 
 # Between us Drivers
 
