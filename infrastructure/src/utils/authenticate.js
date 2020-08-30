@@ -1,8 +1,20 @@
 const jwt = require('jsonwebtoken');
 const corsMiddleware = require('cors');
 
+const logger = require('../utils/logging');
+
 const api = require('./api');
 require('./path_env');
+
+let CORS_ORIGINS = ['http://localhost:8080', 'http://localhost:3000'];
+try {
+  const envOrigins = process.env.CORS_ORIGINS;
+  if (envOrigins) {
+    CORS_ORIGINS = JSON.parse(envOrigins);
+  }
+} catch (e) {
+  logger.error(`Failed to parse CORS_ORIGINS ${e}`);
+}
 
 function authenticate(required) {
   return function (req, res, next) {
@@ -64,7 +76,7 @@ function checkRole(req, role) {
 }
 
 const corsPerRoute = corsMiddleware({
-  origin: ['http://localhost:8080', 'http://localhost:3000', 'https://www.mezinamiridici.cz'],
+  origin: CORS_ORIGINS,
   allowedHeaders: ['Content-Type', 'Authorization'],
   // preflightContinue: false,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204

@@ -31,7 +31,7 @@ mongoimport --db=bud --collection=comment_votes --jsonArray comment_votes.json
 
 ### infrastructure/.env
 
-Copy `.env.template` to `.env` and update as needed. 
+Copy `.env.template` to `.env` and update as needed. You may need to set your local IP address in CORS_ORIGINS property.
 
 ### spa/.env
 
@@ -56,7 +56,7 @@ $ npm install
 $ npm run dev
 ```
 
-To log in, use the credentials defined in `infrastructure/test/prepareUsers.js`.
+To log in, use the users defined in `infrastructure/test/prepareUsers.js` and password `BadPassword`.
 
 ## Nginx
 
