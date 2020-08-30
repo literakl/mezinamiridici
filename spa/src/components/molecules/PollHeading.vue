@@ -9,11 +9,11 @@
       <b-col sm="auto">
         <b-card tag="article">
           <b-card-body>
-            <h1>
+            <h4>
               <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
                 {{item.info.caption}}
               </router-link>
-            </h1>
+            </h4>
           </b-card-body>
           <b-card-footer>
             <Date :date="this.item.info.date" format="dynamicDate" />  &bull;
