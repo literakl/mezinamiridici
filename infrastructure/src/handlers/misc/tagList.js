@@ -1,11 +1,14 @@
 const api = require('../../utils/api.js');
 const logger = require('../../utils/logging');
+const auth = require('../../utils/authenticate');
 const mongo = require('../../utils/mongo.js');
 
 require('../../utils/path_env');
 
 module.exports = (app) => {
-  app.get('/v1/misc/tags', async (req, res) => {
+  app.options('/v1/misc/tags', auth.cors);
+
+  app.get('/v1/misc/tags', auth.required, auth.cors, async (req, res) => {
     logger.debug('GET TAGS');
 
     try {
@@ -27,7 +30,7 @@ module.exports = (app) => {
       return api.sendResponse(res, api.createResponse(tagsArray));
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to fetch tags', 'sign-in.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to create post', 'sign-in.something-went-wrong'));
     }
   });
 };
