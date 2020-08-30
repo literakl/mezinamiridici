@@ -7,9 +7,16 @@ require('../../utils/path_env');
 
 module.exports = (app) => {
   app.options('/v1/misc/tags', auth.cors);
+  app.options('/v1/misc/tags/cloud', auth.cors);
 
-  app.get('/v1/misc/tags', auth.required, auth.cors, async (req, res) => {
-    logger.debug('GET TAGS');
+  app.get('/v1/misc/tags', auth.cors, async (req, res) => {
+    logger.debug('get tags');
+    const tagsArray = String(process.env.TAGS).split(',');
+    return api.sendResponse(res, api.createResponse(tagsArray));
+  });
+
+  app.get('/v1/misc/tags/cloud', auth.cors, async (req, res) => {
+    logger.debug('get tag cloud');
 
     try {
       const dbClient = await mongo.connectToDatabase();

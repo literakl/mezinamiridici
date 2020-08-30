@@ -10,7 +10,7 @@
 
     <editor ref="editor" :config="config" :initialized="onInitialized"/>
 
-    <TagSelector :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="tags"/>
+    <TagSelector @changeTags="tagSelect" :formTags="tags"/>
 
     <SelectPicture :currentPath="picture" @changePath="changePath"/>
 

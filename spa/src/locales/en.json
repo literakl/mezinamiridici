@@ -25,7 +25,8 @@
     "ok-button": "OK",
     "cancel-button": "Cancel",
     "share-link": "Share",
-    "select-picture-title": "Select picture"
+    "select-picture-title": "Select picture",
+    "tag-select-label":"Hash tags"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -211,8 +212,7 @@
       "published-label":"Published",
       "poll-create-error":"Create error !",
       "poll-update-error":"Update error !",
-      "poll-confirm-message-title":"Confirmation",
-      "tag-select-label":"Tagged input using select"
+      "poll-confirm-message-title":"Confirmation"
     }
   },
   "comment": {

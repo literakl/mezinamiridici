@@ -17,6 +17,7 @@ export default new Vuex.Store({
   },
   state: {
     tags: null,
+    tagCloud: null,
     itemsByTag: null,
     blog: null,
     itemPictures: [],
@@ -24,6 +25,7 @@ export default new Vuex.Store({
   },
   getters: {
     TAGS: state => state.tags,
+    TAG_CLOUD: state => state.tagCloud,
     ITEMS_BY_TAG: state => state.itemsByTag,
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
@@ -33,6 +35,9 @@ export default new Vuex.Store({
   mutations: {
     SET_TAGS: (state, payload) => {
       state.tags = payload;
+    },
+    SET_TAG_CLOUD: (state, payload) => {
+      state.tagCloud = payload;
     },
     SET_ITEMS_BY_TAG: (state, payload) => {
       state.itemsByTag = payload;
@@ -60,6 +65,12 @@ export default new Vuex.Store({
       Vue.$log.debug('FETCH_TAGS');
       const response = await get('API', '/misc/tags/', context);
       context.commit('SET_TAGS', response.data.data);
+      return response.data.data;
+    },
+    FETCH_TAG_CLOUD: async (context) => {
+      Vue.$log.debug('FETCH_TAG_CLOUD');
+      const response = await get('API', '/misc/tags/cloud', context);
+      context.commit('SET_TAG_CLOUD', response.data.data);
       return response.data.data;
     },
     FETCH_ITEMS_BY_TAG: async (context, payload) => {

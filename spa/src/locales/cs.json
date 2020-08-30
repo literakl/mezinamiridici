@@ -25,7 +25,8 @@
     "ok-button": "OK",
     "cancel-button": "Storno",
     "share-link": "Sdílejte",
-    "select-picture-title": "Zvolte obrázek"
+    "select-picture-title": "Zvolte obrázek",
+    "tag-select-label":"Štítky"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -211,8 +212,7 @@
       "published-label":"Publikováno",
       "poll-create-error":"Vytvořit chybu !",
       "poll-update-error":"Chyba aktualizace !",
-      "poll-confirm-message-title":"potvrzení",
-      "tag-select-label":"Označený vstup pomocí select"
+      "poll-confirm-message-title":"potvrzení"
     }
   },
   "comment": {

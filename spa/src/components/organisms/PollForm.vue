@@ -41,7 +41,7 @@
 
         </ValidationProvider>
 
-        <TagSelector :label="$t('poll.forms.tag-select-label')" @changeTags="tagSelect" :formTags="form.pollTagsList"/>
+        <TagSelector @changeTags="tagSelect" :formTags="form.pollTagsList"/>
 
         <SelectPicture :currentPath="form.picture" @changePath="changePath"/>
 

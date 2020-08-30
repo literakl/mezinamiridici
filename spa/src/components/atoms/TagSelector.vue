@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group :label="$t('generic.tag-select-label')">
     <b-form-tags v-model="tagList" size="lg" add-on-change no-outer-focus class="mb-2">
       <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
         <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
@@ -31,7 +31,6 @@
 export default {
   name: 'TagSelector',
   props: {
-    label: String,
     formTags: Array,
   },
   data: () => ({
@@ -53,7 +52,7 @@ export default {
     },
   },
   async created() {
-    this.wholeTagsList = await this.$store.dispatch('GET_TAGS');
+    this.wholeTagsList = await this.$store.dispatch('FETCH_TAGS');
   },
   methods: {
     onContext() {

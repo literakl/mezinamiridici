@@ -52,11 +52,11 @@ export default {
       return this.tags !== null && this.tags.length > 0;
     },
     tags() {
-      return this.$store.getters.TAGS;
+      return this.$store.getters.TAG_CLOUD;
     },
   },
   created() {
-    this.$store.dispatch('FETCH_TAGS');
+    this.$store.dispatch('FETCH_TAG_CLOUD');
     if (this.tag) {
       this.$store.dispatch('FETCH_ITEMS_BY_TAG', this.tag);
       setTimeout(() => { document.title += `\xa0\xa0-\xa0\xa0${this.tag}`; }, 10);
