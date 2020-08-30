@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver ref="form" v-slot="{ passes, invalid }">
     <b-form @submit.prevent="passes(signIn)">
-      <b-container fluid="true" class="pt-3 w-75 m-auto">
+      <div class="pt-3 w-75 m-auto pb-5">
         <b-row class="w-75 m-auto pt-5">
           <b-col md="6">
             <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
@@ -66,7 +66,7 @@
             @clicked="auth('google')"/>
           </b-col>
         </b-row>
-      </b-container>
+      </div>
     </b-form>
   </ValidationObserver>
 </template>

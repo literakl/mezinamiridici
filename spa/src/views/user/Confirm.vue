@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <b-row>
       <b-col>
         <h1>{{ $t('confirm.heading') }}</h1>
@@ -247,7 +247,7 @@
         <p>{{ $t('sign-up.success-message') }}</p>
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>

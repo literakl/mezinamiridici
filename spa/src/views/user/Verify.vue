@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <b-row>
       <b-col>
         <h1>{{ $t(('sign-up.verify-heading')) }}</h1>
@@ -15,7 +15,7 @@
         <p class="text-danger">{{ $t(('sign-up.verify-error')) }}</p>
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>

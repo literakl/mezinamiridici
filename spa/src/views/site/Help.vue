@@ -1,12 +1,12 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <b-row>
       <b-col>
         <h1>Help</h1>
         <p>Contact page here.</p>
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>

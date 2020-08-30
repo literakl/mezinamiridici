@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <b-row>
       <b-col>
         <h1>{{ $t('generic.not-found-caption') }}</h1>
@@ -7,7 +7,7 @@
         <img src="/img/opravit.jpg" :alt="$t('generic.we-must-fix')" width="800">
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>

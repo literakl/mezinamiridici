@@ -1,9 +1,9 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <PollHeading v-if="poll" :item="poll"/>
     <ContentLoading v-if="! poll" type="poll"/>
     <ItemList :exceptItem="poll"/>
-  </b-container>
+  </div>
 </template>
 
 <script>

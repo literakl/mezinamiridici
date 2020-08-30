@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <b-row>
       <b-col>
         <h2>{{ $t('edit-profile.heading') }}</h2>
@@ -192,7 +192,7 @@
     <div id="sign-up-form-success" v-if="success === true">
       <p>{{ $t('sign-up.success-message') }}</p>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script>

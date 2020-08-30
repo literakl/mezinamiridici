@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(changePassword)">
         <h1>{{ $t('sign-in.change-password-heading') }}</h1>
@@ -44,7 +44,7 @@
         </div>
       </b-form>
     </ValidationObserver>
-  </b-container>
+  </div>
 </template>
 
 <script>

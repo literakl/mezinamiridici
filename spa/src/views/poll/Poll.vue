@@ -1,10 +1,10 @@
 <template>
-  <b-container fluid="true" class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
+  <div class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
     <ContentLoading v-if="! poll" type="poll" />
     <CompletePoll v-if="poll" />
     <ShareLink :item="poll" />
     <Comments v-if="poll" :itemId="poll._id" />
-  </b-container>
+  </div>
 </template>
 
 <script>

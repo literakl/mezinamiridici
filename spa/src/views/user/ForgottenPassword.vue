@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <h1>{{ $t('sign-in.forgot-password-heading') }}</h1>
 
     <p v-if="passwordReset !== true">{{ $t('sign-in.email-reset-description') }}</p>
@@ -35,7 +35,7 @@
     <div v-if="passwordReset === true">
       <p class="text-success">{{ $t('sign-in.forget-success') }}</p>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script>

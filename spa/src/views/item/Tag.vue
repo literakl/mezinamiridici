@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <vue-word-cloud
       style="width: 100%; height: 240px;"
       :words="tags"
@@ -16,7 +16,7 @@
 
     <ContentLoading v-if="! items" type="items"/>
     <ItemList :tag="tag" v-if="tag"/>
-  </b-container>
+  </div>
 </template>
 
 <script>

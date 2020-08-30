@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto pb-5">
     <b-row v-if="error">
       <b-col>
         <strong class="text-danger">
@@ -85,7 +85,7 @@
       <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
       <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
     </content-loader>
-  </b-container>
+  </div>
 </template>
 
 <script>
