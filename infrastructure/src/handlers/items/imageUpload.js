@@ -2,22 +2,24 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
+const sanitize = require('sanitize-filename');
 
 const logger = require('../../utils/logging');
 const auth = require('../../utils/authenticate');
 const api = require('../../utils/api.js');
+require('../../utils/path_env');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    const dir = './src/dist/uploads'; // todo env
+    const dir = process.env.BLOG_PICTURES_UPLOAD_DIR; // todo make it more dynamic
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
     cb(null, dir);
   },
   filename(req, file, cb) {
-    // todo shall we sanitize file names?
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+    const sanitizedFilename = sanitize(file.originalname);
+    cb(null, `${path.basename(sanitizedFilename)}-${Date.now()}${path.extname(sanitizedFilename)}`);
   },
 });
 
