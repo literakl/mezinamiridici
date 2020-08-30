@@ -25,8 +25,10 @@
     "ok-button": "OK",
     "cancel-button": "Storno",
     "share-link": "Sdílejte",
+    "select-picture-label": "Obrázek",
     "select-picture-title": "Zvolte obrázek",
-    "tag-select-label":"Štítky"
+    "tag-select-label": "Štítky",
+    "tag-select-placeholder": "Zvolte štítek"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -227,6 +229,8 @@
   },
   "blog": {
     "form": {
+      "title-label": "Titulek",
+      "title-placeholder": "Název příspěvku",
       "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",
       "h-placeholder": "Napište hlavičku",
       "q-placeholder": "Napište citaci",

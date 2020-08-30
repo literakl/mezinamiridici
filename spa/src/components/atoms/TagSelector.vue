@@ -1,6 +1,6 @@
 <template>
   <b-form-group :label="$t('generic.tag-select-label')">
-    <b-form-tags v-model="tagList" size="lg" add-on-change no-outer-focus class="mb-2">
+    <b-form-tags v-model="tagList" size="lg" add-on-change no-outer-focus class="mb-0">
       <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
         <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
           <li v-for="tag in tags" :key="tag" class="list-inline-item">
@@ -19,7 +19,7 @@
           :options="availableOptions"
         >
           <template v-slot:first>
-            <option disabled value="">Choose a tag...</option>
+            <option disabled value="">{{ $t('generic.tag-select-placeholder') }}</option>
           </template>
         </b-form-select>
       </template>

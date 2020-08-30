@@ -1,11 +1,9 @@
 <template>
   <div class="pt-3 w-75 m-auto">
-    <!-- <h1>{{ $t('poll.forms.new-poll-heading') }}</h1> -->
-
     <TextInput
       v-model="title"
-      label=""
-      placeholder="Blog Title"
+      :label="$t('blog.form.title-label')"
+      :placeholder="$t('blog.form.title-placeholder')"
       class="pb-3 w-100"/>
 
     <editor ref="editor" :config="config" :initialized="onInitialized"/>

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="true" class="p-4">
+  <b-form-group :label="$t('generic.select-picture-label')">
     <b-img thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
 
     <b-modal id="thumbs-list" v-model="showSelector" :title="$t('generic.select-picture-title')"
@@ -14,7 +14,7 @@
         @click="selectPicture(picture.path)">
       </b-img>
     </b-modal>
-</b-container>
+  </b-form-group>
 </template>
 
 <script>
