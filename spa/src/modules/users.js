@@ -201,7 +201,7 @@ export default {
     },
     FETCH_USER_ACTIVITY: async (context) => {
       Vue.$log.debug('FETCH_USER_ACTIVITY');
-      const response = await get('API', `/activity/${context.getters.USER_ID}`, context);
+      const response = await get('API', `/v1/users/${context.getters.USER_ID}/activity`, context);
       context.commit('SET_USER_ACTIVITY', response.data.data);
       return response.data.success;
     },

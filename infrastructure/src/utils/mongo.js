@@ -131,7 +131,7 @@ function getIdentity(dbClient, userId) {
 function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
   const body = {
     userId,
-    published: new Date(),
+    date: new Date(),
     itemId,
     action,
   };
@@ -142,38 +142,6 @@ function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
     body.vote = vote;
   }
   return dbClient.db().collection('user_activity').insertOne(body);
-}
-
-async function getActivity(dbClient, userId){
-  const pipeline = [
-    {
-      $match:
-        {
-          userId: userId,
-        }
-    },
-    {
-      $lookup:
-        {
-          from: "items",
-          localField: "itemId",
-          foreignField: "_id",
-          as: "item_docs"
-        }
-    },
-    {
-      $lookup:
-        {
-          from: "comments",
-          localField: "commentId",
-          foreignField: "_id",
-          as: "comment_docs"
-        }
-    },
-  ];
-
-  
-  return await dbClient.db().collection('user_activity').aggregate(pipeline).toArray();
 }
 
 async function getPoll(dbClient, pipeline) {
@@ -264,4 +232,3 @@ exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
 exports.storeActivity = storeActivity;
-exports.getActivity = getActivity;

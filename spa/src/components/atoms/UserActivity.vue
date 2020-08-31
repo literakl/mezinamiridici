@@ -1,6 +1,6 @@
 <template>
   <b-container fluid="true" class="pt-3 w-100 m-auto">
-    <h1 v-if="timelineTitle">{{timelineTitle}}</h1>
+    <h3 v-if="timelineTitle">{{timelineTitle}}</h3>
 
     <div id="table">
       <div class="header">
@@ -77,7 +77,7 @@ export default {
         const vote = (item.vote === 1) ? 'up' : 'down';
         arr.push({
           text: `${item.item_docs[0].info.caption}`,
-          date: new Date(item.published).toLocaleString('cs-CZ'),
+          date: new Date(item.date).toLocaleString('cs-CZ'),
           tags: `${item.action} ${(item.action === 'vote') ? vote : ''}`,
         });
       });

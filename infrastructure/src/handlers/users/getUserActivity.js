@@ -4,9 +4,9 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/activity/:userId', auth.cors);
+  app.options('/v1/users/:userId/activity', auth.cors);
 
-  app.get('/v1/activity/:userId', auth.required, async (req, res) => {
+  app.get('/v1/users/:userId/activity', async (req, res) => {
     logger.verbose('get user activity handler starts');
     const { userId } = req.params;
     if (!userId) {
@@ -17,22 +17,42 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const user = await mongo.findUser(dbClient, { userId });
-      logger.debug('User fetched');
-      if (!user) {
-        return api.sendErrorForbidden(res, api.createError('User not found', 'profile.user-not-found'));
-      }
-
-      if ((!req.identity || req.identity.userId !== userId) && !user.prefs.public) {
-        logger.debug('not authorized');
-      }
-      const list = await mongo.getActivity(dbClient, userId);
-
+      const list = await getActivity(dbClient, userId);
       return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to load  the user', 'generic.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to load  the user activity', 'generic.something-went-wrong'));
     }
   });
-
 };
+
+async function getActivity(dbClient, userId) {
+  const pipeline = [
+    {
+      $match:
+        {
+          userId,
+        },
+    },
+    {
+      $lookup:
+        {
+          from: 'items',
+          localField: 'itemId',
+          foreignField: '_id',
+          as: 'item_docs',
+        },
+    },
+    {
+      $lookup:
+        {
+          from: 'comments',
+          localField: 'commentId',
+          foreignField: '_id',
+          as: 'comment_docs',
+        },
+    },
+  ];
+
+  return dbClient.db().collection('user_activity').aggregate(pipeline).toArray();
+}
