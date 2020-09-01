@@ -76,7 +76,7 @@ export default {
       data.forEach((item) => {
         const vote = (item.vote === 1) ? 'up' : 'down';
         arr.push({
-          text: `${item.item_docs[0].info.caption}`,
+          text: `${item.info.caption}`,
           date: new Date(item.date).toLocaleString('cs-CZ'),
           tags: `${item.action} ${(item.action === 'vote') ? vote : ''}`,
         });
