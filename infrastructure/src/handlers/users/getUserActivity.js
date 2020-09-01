@@ -40,17 +40,34 @@ async function getActivity(dbClient, userId) {
           from: 'items',
           localField: 'itemId',
           foreignField: '_id',
-          as: 'item_docs',
+          as: 'item_doc',
         },
     },
     {
-      $lookup:
-        {
-          from: 'comments',
-          localField: 'commentId',
-          foreignField: '_id',
-          as: 'comment_docs',
+      $unwind: '$item_doc',
+    },
+    {
+      $replaceRoot: {
+        newRoot: {
+          $mergeObjects: [
+            '$item_doc',
+            '$$ROOT',
+          ],
         },
+      },
+    },
+    {
+      $project: {
+        userId: 1,
+        date: 1,
+        itemId: 1,
+        commentId: 1,
+        action: 1,
+        vote: 1,
+        'info.slug': 1,
+        'info.caption': 1,
+        comments: 1,
+      },
     },
   ];
 

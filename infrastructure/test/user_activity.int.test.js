@@ -17,7 +17,7 @@ const {
 let server;
 let dbClient;
 
-test('Poll API', async (done) => {
+test('User activity API', async (done) => {
   jest.setTimeout(180000);
 
   // create first poll
@@ -69,12 +69,16 @@ test('Poll API', async (done) => {
   expect(response.data[0].userId).toBe(Leos._id);
   expect(response.data[0].itemId).toBe(firstPoll.id);
   expect(response.data[0].action).toBe('vote');
+  expect(response.data[0].info.caption).toBe(firstPoll.text);
   expect(response.data[1].itemId).toBe(secondPoll.id);
   expect(response.data[1].action).toBe('vote');
+  expect(response.data[1].info.caption).toBe(secondPoll.text);
   expect(response.data[2].itemId).toBe(firstPoll.id);
+  expect(response.data[2].info.caption).toBe(firstPoll.text);
   expect(response.data[2].action).toBe('comment');
   expect(response.data[2].commentId).toBe(comment1.data.comment._id);
   expect(response.data[3].itemId).toBe(secondPoll.id);
+  expect(response.data[3].info.caption).toBe(secondPoll.text);
   expect(response.data[3].action).toBe('vote');
   expect(response.data[3].commentId).toBe(comment2.data.comment._id);
 
