@@ -79,7 +79,7 @@ function prepareUpdateQuery(text, author, picture, date, published, tags) {
   } else {
     unsetters['info.picture'] = true;
   }
-  if(tags) {
+  if (tags) {
     setters['info.tags'] = tags;
   }
   const query = { };

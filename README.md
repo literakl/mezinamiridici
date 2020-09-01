@@ -26,6 +26,7 @@ mongoimport --db=bud --collection=items --jsonArray items.json
 mongoimport --db=bud --collection=poll_votes --jsonArray poll_votes.json
 mongoimport --db=bud --collection=comments --jsonArray comments.json
 mongoimport --db=bud --collection=comment_votes --jsonArray comment_votes.json
+mongoimport --db=bud --collection=user_activity --jsonArray user_activity.json
 ```
 
 ## Configuration
