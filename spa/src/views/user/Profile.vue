@@ -85,17 +85,22 @@
       <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
       <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
     </content-loader>
+
+    <UserActivity :timeline-title="title"/>
   </div>
 </template>
 
 <script>
 import { BIconPencil } from 'bootstrap-vue';
 import { ContentLoader } from 'vue-content-loader';
+import UserActivity from '../../components/atoms/UserActivity.vue';
 
 export default {
   name: 'profile',
   components: {
-    ContentLoader, BIconPencil,
+    ContentLoader,
+    BIconPencil,
+    UserActivity,
   },
   props: {
     id: String,
@@ -103,6 +108,7 @@ export default {
   data: () => ({
     userProfile: null,
     error: null,
+    title: 'User Activity',
   }),
   computed: {
     myProfile() {

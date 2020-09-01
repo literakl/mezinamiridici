@@ -44,16 +44,19 @@ generateData()
 async function generateData() {
   server = app.listen(3000, () => logger.info('Server started'));
   dbClient = await mongo.connectToDatabase();
-  await dbClient.db().collection('users').dropIndexes();
-  await dbClient.db().collection('users').drop();
-  await dbClient.db().collection('items').dropIndexes();
-  await dbClient.db().collection('items').drop();
-  await dbClient.db().collection('comments').dropIndexes();
-  await dbClient.db().collection('comments').drop();
-  await dbClient.db().collection('comment_votes').dropIndexes();
-  await dbClient.db().collection('comment_votes').drop();
-  await setup(dbClient, api);
-  await mongo.setupIndexes(dbClient);
+  const db = dbClient.db();
+  try {
+    dropCollection(db, 'users');
+    dropCollection(db, 'items');
+    dropCollection(db, 'comments');
+    dropCollection(db, 'comment_votes');
+    dropCollection(db, 'user_activity');
+    await setup(dbClient, api);
+    await mongo.setupIndexes(dbClient);
+  } catch (e) {
+    logger.error(e);
+    process.exit(1);
+  }
 
   let date = dayjs();
   const body = {
@@ -197,4 +200,9 @@ function randomText() {
 
 function randomUser() {
   return USERS[random.int(0, USERS.length - 1)];
+}
+
+function dropCollection(db, name) {
+  db.collection(name).dropIndexes().then(logger.info(`Indexes for ${name} were deleted`)).catch(logger.info(`Indexes for ${name} were not deleted`));
+  db.collection(name).drop().then(logger.info(`Collection ${name} was deleted`)).catch(logger.info(`Collection ${name} was not deleted`));
 }

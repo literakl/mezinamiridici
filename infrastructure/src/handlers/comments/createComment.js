@@ -64,6 +64,8 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
       }
 
+      mongo.storeActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
+
       let replies = [];
       if (parentId) {
         const pipeline = [

@@ -131,6 +131,22 @@ function getIdentity(dbClient, userId) {
     .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
 }
 
+function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
+  const body = {
+    userId,
+    date: new Date(),
+    itemId,
+    action,
+  };
+  if (commentId) {
+    body.commentId = commentId;
+  }
+  if (vote) {
+    body.vote = vote;
+  }
+  return dbClient.db().collection('user_activity').insertOne(body);
+}
+
 async function getBlog(dbClient, slug, blogId) {
   if (blogId) {
     return dbClient.db().collection('items').findOne({ _id: blogId });
@@ -178,15 +194,20 @@ function getNeighbourhItem(dbClient, type, published, older) {
 
 // TODO remove and replace with mongo/mongo_setup.js
 function setupIndexes(dbClient) {
-  dbClient.db().collection('users').createIndex({ 'auth.email': 1 }, { unique: true });
-  dbClient.db().collection('users').createIndex({ 'bio.nickname': 1 }, { unique: true });
-  dbClient.db().collection('items').createIndex({ 'info.type': 1 });
-  dbClient.db().collection('items').createIndex({ 'info.date': 1 });
-  dbClient.db().collection('items').createIndex({ 'info.slug': 1 }, { unique: true });
-  dbClient.db().collection('poll_votes').createIndex({ item: 1, user: 1 }, { unique: true });
-  dbClient.db().collection('comments').createIndex({ itemId: 1 });
-  dbClient.db().collection('comments').createIndex({ parentId: 1 });
-  dbClient.db().collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
+  const db = dbClient.db();
+  db.collection('users').createIndex({ 'auth.email': 1 }, { unique: true });
+  db.collection('users').createIndex({ 'bio.nickname': 1 }, { unique: true });
+  db.collection('items').createIndex({ 'info.type': 1 });
+  db.collection('items').createIndex({ 'info.date': 1 });
+  db.collection('items').createIndex({ 'info.slug': 1 }, { unique: true });
+  db.collection('poll_votes').createIndex({ item: 1, user: 1 }, { unique: true });
+  db.collection('comments').createIndex({ itemId: 1 });
+  db.collection('comments').createIndex({ parentId: 1 });
+  db.collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
+  db.collection('link_shares').createIndex({ user: 1 });
+  db.collection('link_shares').createIndex({ date: 1 });
+  db.collection('user_activity').createIndex({ userId: 1 });
+  db.collection('user_activity').createIndex({ date: 1 });
 }
 
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
@@ -230,3 +251,4 @@ exports.stageId = stageId;
 exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
+exports.storeActivity = storeActivity;

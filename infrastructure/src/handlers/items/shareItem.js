@@ -58,14 +58,15 @@ function createURL(service, path) {
   return sendUrl;
 }
 
-function insertShare(dbClient, item, user, service) {
+function insertShare(dbClient, itemId, user, service) {
   const theShare = {
-    item,
+    itemId,
     service,
     date: new Date(),
   };
   if (user) {
     theShare.user = user;
   }
+
   return dbClient.db().collection('link_shares').insertOne(theShare);
 }
