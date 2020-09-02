@@ -28,7 +28,8 @@
     "select-picture-label": "Obrázek",
     "select-picture-title": "Zvolte obrázek",
     "tag-select-label": "Štítky",
-    "tag-select-placeholder": "Zvolte štítek"
+    "tag-select-placeholder": "Zvolte štítek",
+    "loading-message": "Loading .."
   },
   "sign-in": {
     "email-placeholder": "Email",

@@ -28,7 +28,8 @@
     "select-picture-label": "Picture",
     "select-picture-title": "Select picture",
     "tag-select-label":"Hash tags",
-    "tag-select-placeholder": "Chooose the tag"
+    "tag-select-placeholder": "Chooose the tag",
+    "loading-message": "Loading .."
   },
   "sign-in": {
     "email-placeholder": "Email",

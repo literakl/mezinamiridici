@@ -22,7 +22,7 @@
           @layout-complete="onLayoutComplete"
           v-if="activityData"
         >
-          <div slot="loading">Loading...</div>
+          <div slot="loading">{{ $t('generic.loading-message') }}</div>
           <div class="post" v-for="item in list" :key="item.key">
             <span class="no">{{item.key + 1}}</span>
             <span class="date">{{item.data.date}}</span>
