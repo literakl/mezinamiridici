@@ -18,7 +18,6 @@
     "cheerio": "^1.0.0-rc.3",
     "cheerio-advanced-selectors": "^2.0.1",
     "cors": "^2.8.5",
-    "dateformat": "^3.0.3",
     "dayjs": "^1.8.31",
     "dotenv": "^8.2.0",
     "editorjs-html": "^2.1.0",

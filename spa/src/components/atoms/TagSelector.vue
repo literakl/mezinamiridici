@@ -53,7 +53,7 @@ export default {
     },
   },
   async created() {
-    this.wholeTagsList = await this.$store.dispatch('GET_TAGS');
+    this.wholeTagsList = await this.$store.dispatch('FETCH_TAGS');
   },
   methods: {
     onContext() {
