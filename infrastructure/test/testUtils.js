@@ -63,9 +63,17 @@ function shuffle(array) {
   return array;
 }
 
+async function getActivityCounter(dbClient, userId, property) {
+  // const projection = {};
+  // projection[property] = 1;
+  const user = await dbClient.db().collection('users').findOne({ _id: userId });
+  return user.honors.count[property];
+}
+
 module.exports.api = api;
 module.exports.bff = bff;
 module.exports.getAuthHeader = getAuthHeader;
 module.exports.deepCopy = deepCopy;
 module.exports.sleep = sleep;
 module.exports.shuffle = shuffle;
+module.exports.getActivityCounter = getActivityCounter;

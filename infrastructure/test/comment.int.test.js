@@ -12,7 +12,7 @@ const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader,
+  api, bff, getAuthHeader, getActivityCounter,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Lukas, Vita, Jana, Bara,

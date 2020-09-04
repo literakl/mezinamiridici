@@ -36,6 +36,13 @@
 
 * rank: user experience rank; required
 
+## Count section
+poll_votes: count of polls a user voted in; int; required
+comments: how many comments a user wrote; int; required
+comment_votes: count of votes a uswr casted; int; required 
+blogs: blog stories coumt; int; required
+shares: how many links a user shared; int; required
+
 ## Consent section
 
 * consent.terms: timestamp when user accepted terms and conditions, required

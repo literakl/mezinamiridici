@@ -131,6 +131,24 @@ function getIdentity(dbClient, userId) {
     .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
 }
 
+async function incrementUSerActivity(dbClient, userId, type, action) {
+  let update;
+  if (type === 'comment') {
+    if (action === 'vote') {
+      update = { $inc: { 'honors.count.comment_votes': 1 } };
+    } else {
+      update = { $inc: { 'honors.count.comments': 1 } };
+    }
+  } else if (type === 'poll') {
+    update = { $inc: { 'honors.count.poll_votes': 1 } };
+  } else if (type === 'share') {
+    update = { $inc: { 'honors.count.shares': 1 } };
+  } else if (type === 'blog') {
+    update = { $inc: { 'honors.count.blogs': 1 } };
+  }
+  return dbClient.db().collection('users').update({ _id: userId }, update);
+}
+
 async function getPoll(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   const item = await cursor.next();
@@ -218,3 +236,4 @@ exports.stageId = stageId;
 exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
+exports.incrementUSerActivity = incrementUSerActivity;

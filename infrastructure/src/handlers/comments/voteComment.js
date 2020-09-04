@@ -33,6 +33,7 @@ module.exports = (app) => {
       }
 
       await insertCommentVote(dbClient, commentId, vote, req.identity);
+      await mongo.incrementUSerActivity(dbClient, req.identity.userId, 'comment', 'vote');
       logger.debug('Vote inserted');
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);
       logger.debug('Item updated');

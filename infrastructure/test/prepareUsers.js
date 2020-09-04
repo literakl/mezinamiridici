@@ -15,6 +15,10 @@ const Leos = {
   },
   driving: { since: fix(2007), vehicles: ['car'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
   roles: ['admin:poll'],
 };
@@ -31,6 +35,10 @@ const Jiri = {
   },
   driving: { since: fix(1996), vehicles: ['bike', 'car'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Lukas = {
@@ -44,6 +52,10 @@ const Lukas = {
   bio: { nickname: 'Lukáš', region: 'OLM' },
   driving: {},
   prefs: { public: false },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Vita = {
@@ -59,6 +71,10 @@ const Vita = {
   },
   driving: { since: fix(2000), vehicles: ['bike', 'car', 'van'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Jana = {
@@ -74,6 +90,10 @@ const Jana = {
   },
   driving: { since: fix(2018), vehicles: ['car'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Bara = {
@@ -89,6 +109,10 @@ const Bara = {
   },
   driving: { since: fix(2019), vehicles: ['bus', 'truck', 'tramway'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 

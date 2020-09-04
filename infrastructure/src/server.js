@@ -37,7 +37,6 @@ require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
-require('./utils/scheduleService')();
 
 app.all('*', (req, res) => {
   try {

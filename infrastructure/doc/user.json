@@ -25,7 +25,14 @@
     "vehicles": ["car"]
   },
   "honors": {
-    "rank": "novice"
+    "rank": "novice",
+    "count": {
+      "poll_votes": 0,
+      "comments": 0,
+      "comment_votes": 0,
+      "blogs": 0,
+      "shares": 0
+    }
   },
   "prefs": {
     "public": true,

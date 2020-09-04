@@ -58,10 +58,8 @@ module.exports = (app) => {
       }
 
       const comment = createComment(itemId, text, req.identity, parentId, publishDate);
-      await dbClient.db()
-        .collection('comments')
-        .insertOne(comment);
-      comment.votes = [];
+      await dbClient.db().collection('comments').insertOne(comment);
+      await mongo.incrementUSerActivity(dbClient, req.identity.userId, 'comment', 'create');
       logger.debug('Comment inserted');
 
       let replies = [];
@@ -76,6 +74,7 @@ module.exports = (app) => {
         logger.debug('Replies fetched');
       }
 
+      comment.votes = [];
       const body = { comment, replies };
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {

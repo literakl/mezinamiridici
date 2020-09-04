@@ -18,7 +18,7 @@ const {
 } = require('./prepareUsers');
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-const schedule = require('../src/utils/scheduleService');
+const schedule = require('../src/jobs/calculateUserRanks');
 
 
 let dbClient;

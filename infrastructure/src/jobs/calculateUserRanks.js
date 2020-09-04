@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 
-const mongo = require('./mongo.js');
-const logger = require('./logging');
+const mongo = require('../utils/mongo.js');
+const logger = require('../utils/logging');
 
 module.exports = async () => {
   logger.debug('Scheduler starts');
@@ -23,15 +23,8 @@ const calculateUserHonors = async () => {
       const currentRank = (user.honors) ? user.honors.rank : '';
       const userId = user._id;
       let finalRank = 'novice';
-
-      const pollVotesPromise = getPollVoteCount(dbClient, userId);
-      const commentVotesPromise = getCommentVotesCount(dbClient, userId);
-      const sharesPromise = getShareLinkCount(dbClient, userId);
-      const commentsPromise = getCommentedCount(dbClient, userId);
-      const blogPromise = getBlogCount(dbClient, userId);
-      // eslint-disable-next-line no-await-in-loop
-      const [pollVotesCount, commentVotesCount, sharesCount, commentsCount, blogCount] = await Promise.all([pollVotesPromise,
-        commentVotesPromise, sharesPromise, commentsPromise, blogPromise]);
+      const pollVotesCount = user.honors.count.poll_votes, commentVotesCount = user.honors.count.comment_votes,
+        commentsCount = user.honors.count.comments, blogCount = user.honors.count.blogs, sharesCount = user.honors.count.shares;
 
       if (!currentRank || currentRank === 'novice') {
         if (pollVotesCount >= 1 && commentVotesCount >= 1 && sharesCount >= 1 && commentsCount >= 1) {
@@ -44,25 +37,19 @@ const calculateUserHonors = async () => {
           finalRank = 'graduate';
         }
       } else if (currentRank === 'graduate') {
-        const positivePercent = await getPositivePercent(dbClient, userId);
-        const consecutiveSharing = await getConsecutiveSharing(dbClient, userId, 10);
+        const positivePercentPromise = getPositivePercent(dbClient, userId);
+        const consecutiveSharingPromise = getConsecutiveSharing(dbClient, userId, 10);
+        // eslint-disable-next-line no-await-in-loop
+        const [positivePercent, consecutiveSharing] = await Promise.all([positivePercentPromise, consecutiveSharingPromise]);
         if (pollVotesCount >= 10 && consecutiveSharing && positivePercent >= 80 && commentsCount >= 100 && blogCount >= 10) {
           finalRank = 'master';
         }
       }
 
-      const setters = {
-        'honors.count.poll_votes': pollVotesCount,
-        'honors.count.comment_votes': commentVotesCount,
-        'honors.count.comment': commentsCount,
-        'honors.count.blog': blogCount,
-        'honors.count.shares': sharesCount,
-      };
       if (currentRank !== finalRank) {
-        setters['honors.rank'] = finalRank;
+        // eslint-disable-next-line no-await-in-loop
+        await dbClient.db().collection('users').updateOne({ _id: userId }, { 'honors.rank': finalRank });
       }
-      // eslint-disable-next-line no-await-in-loop
-      await dbClient.db().collection('users').updateOne({ _id: userId }, { $set: setters });
     }
     // eslint-disable-next-line no-await-in-loop
     users = await getUsers(dbClient, user._id, 100);
@@ -81,16 +68,6 @@ const getUsers = async (dbClient, lastId, pageSize = 5) => {
     .limit(pageSize)
     .toArray();
 };
-
-const getPollVoteCount = async (dbClient, userId) => dbClient.db().collection('poll_votes').count({ user: userId });
-
-const getCommentVotesCount = async (dbClient, userId) => dbClient.db().collection('comment_votes').count({ 'user.id': userId });
-
-const getShareLinkCount = async (dbClient, userId) => dbClient.db().collection('link_shares').count({ user: userId });
-
-const getCommentedCount = async (dbClient, userId) => dbClient.db().collection('comments').count({ 'user.id': userId });
-
-const getBlogCount = async (dbClient, userId) => dbClient.db().collection('items').count({ 'info.author.id': userId, type: 'blog' });
 
 const getPositiveCommentsVotesCount = async (dbClient, userId) => {
   const arr = [];
