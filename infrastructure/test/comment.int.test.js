@@ -389,6 +389,11 @@ test('Comments API', async (done) => {
   expect(comment7.success).toBeTruthy();
   expect(comment7.data.comment.text).toBe('<p>Comment 7 😃</p>\n<p>New paragraph 😄</p>\n<p>Third paragraph 😦</p>\n');
 
+  let counter = await getActivityCounter(dbClient, Leos._id, 'comments');
+  expect(counter).toBe(3);
+  counter = await getActivityCounter(dbClient, Leos._id, 'comment_votes');
+  expect(counter).toBe(3);
+
   done();
 });
 

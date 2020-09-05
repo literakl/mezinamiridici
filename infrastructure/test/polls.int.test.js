@@ -90,7 +90,7 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(0);
   expect(response.data.votes.dislike).toBe(0);
   expect(response.data.votes.hate).toBe(0);
-  const counter = await getActivityCounter(dbClient, Leos._id, 'poll_votes');
+  let counter = await getActivityCounter(dbClient, Leos._id, 'poll_votes');
   expect(counter).toBe(1);
 
   // get poll, anonymous user
@@ -194,6 +194,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.hate).toBe(2);
   expect(response.data.siblings.older).toBe(null);
   expect(response.data.siblings.newer).toBe(null);
+  counter = await getActivityCounter(dbClient, Leos._id, 'poll_votes');
+  expect(counter).toBe(4);
 
   // publish the fist poll
   firstPoll.published = true;
