@@ -11,14 +11,14 @@ const logger = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader,
+  api, bff, getAuthHeader, getUserRank,
 } = require('./testUtils');
 const {
-  setup, Leos, Jiri, Lukas, Vita,
+  setup, Leos, Jiri, Vita,
 } = require('./prepareUsers');
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-const schedule = require('../src/jobs/calculateUserRanks');
+const { calculateUserHonors } = require('../src/jobs/calculateUserRanks');
 
 
 let dbClient;
@@ -264,13 +264,9 @@ test('User Rank', async (done) => {
   const voteBody = {
     vote: 1,
   };
-  let voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(voteResponse.success).toBeFalsy();
-  voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  let voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
   voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(voteResponse.success).toBeTruthy();
-  voteResponse = await api(`comments/${comment1.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
   commentBody.text = 'Comment 2';
@@ -279,36 +275,31 @@ test('User Rank', async (done) => {
 
   voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
-  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
-  expect(voteResponse.success).toBeFalsy();
-  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(voteResponse.success).toBeTruthy();
-  voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(voteResponse.success).toBeTruthy();
 
   voteResponse = await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
-  const jwtDecoded = jwt.decode(Jiri.jwt);
-  const { userId } = jwtDecoded;
   const shareBody = {
     path: `/anketa/${poll.data.info.slug}`,
     service: 'twitter',
-    userId,
+    userId: Leos._id,
   };
 
   const shareResponse = await api(`items/${poll.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
-  const sendUrl = `http://www.twitter.com/share?url=${process.env.WEB_URL + shareBody.path}`;
   expect(shareResponse.success).toBeTruthy();
-  expect(shareResponse.data).toBe(sendUrl);
 
-  await schedule();
+  await calculateUserHonors();
+  let rank = await getUserRank(dbClient, Leos._id);
+  expect(rank).toBe('novice');
 
-  setTimeout(async () => {
-    const checkUser = await api(`users/${userId}`, { method: 'GET' }).json();
-    expect(checkUser.data.honors.rank).toBe('student');
-    done();
-  }, 10000);
+  voteResponse = await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+
+  await calculateUserHonors();
+  rank = await getUserRank(dbClient, Leos._id);
+  expect(rank).toBe('student');
+
+  done();
 });
 
 beforeEach(async () => {

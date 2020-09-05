@@ -146,7 +146,7 @@ async function incrementUSerActivity(dbClient, userId, type, action) {
   } else if (type === 'blog') {
     update = { $inc: { 'honors.count.blogs': 1 } };
   }
-  return dbClient.db().collection('users').update({ _id: userId }, update);
+  return dbClient.db().collection('users').updateOne({ _id: userId }, update);
 }
 
 async function getPoll(dbClient, pipeline) {

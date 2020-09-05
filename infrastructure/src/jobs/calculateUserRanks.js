@@ -3,14 +3,6 @@ const cron = require('node-cron');
 const mongo = require('../utils/mongo.js');
 const logger = require('../utils/logging');
 
-module.exports = async () => {
-  logger.debug('Scheduler starts');
-  cron.schedule(process.env.SCHEDULE_TIME, async () => calculateUserHonors(), {
-    scheduled: true,
-    timezone: 'Europe/Prague',
-  });
-};
-
 const calculateUserHonors = async () => {
   logger.info('Running a job to calculate the user ranks');
 
@@ -19,37 +11,41 @@ const calculateUserHonors = async () => {
   while (users.length > 0) {
     let user;
     for (let i = 0; i < users.length; i += 1) {
+      const setters = {};
       user = users[i];
       const currentRank = (user.honors) ? user.honors.rank : '';
-      const userId = user._id;
       let finalRank = 'novice';
       const pollVotesCount = user.honors.count.poll_votes, commentVotesCount = user.honors.count.comment_votes,
         commentsCount = user.honors.count.comments, blogCount = user.honors.count.blogs, sharesCount = user.honors.count.shares;
+      // eslint-disable-next-line no-await-in-loop
+      const commentRatio = await getCommentRatio(dbClient, user._id);
+      setters['honors.count.commentVoteRatio'] = commentRatio;
 
       if (!currentRank || currentRank === 'novice') {
         if (pollVotesCount >= 1 && commentVotesCount >= 1 && sharesCount >= 1 && commentsCount >= 1) {
           finalRank = 'student';
         }
       } else if (currentRank === 'student') {
-        // eslint-disable-next-line no-await-in-loop
-        const positiveCommentsVotesCount = await getPositiveCommentsVotesCount(dbClient, userId);
-        if (pollVotesCount >= 3 && sharesCount >= 10 && positiveCommentsVotesCount >= 5 && blogCount >= 1) {
+        if (pollVotesCount >= 3 && sharesCount >= 10 && commentRatio > 50 && blogCount >= 1) {
           finalRank = 'graduate';
         }
       } else if (currentRank === 'graduate') {
-        const positivePercentPromise = getPositivePercent(dbClient, userId);
-        const consecutiveSharingPromise = getConsecutiveSharing(dbClient, userId, 10);
         // eslint-disable-next-line no-await-in-loop
-        const [positivePercent, consecutiveSharing] = await Promise.all([positivePercentPromise, consecutiveSharingPromise]);
-        if (pollVotesCount >= 10 && consecutiveSharing && positivePercent >= 80 && commentsCount >= 100 && blogCount >= 10) {
+        const consecutiveSharedWeeks = await getConsecutiveSharing(dbClient, user._id);
+        if (pollVotesCount >= 10 && consecutiveSharedWeeks >= 10 && commentRatio >= 80 && commentsCount >= 100 && blogCount >= 10) {
           finalRank = 'master';
+        } else {
+          setters['honors.count.sharedWeeks'] = consecutiveSharedWeeks;
         }
       }
 
       if (currentRank !== finalRank) {
-        // eslint-disable-next-line no-await-in-loop
-        await dbClient.db().collection('users').updateOne({ _id: userId }, { 'honors.rank': finalRank });
+        setters['honors.rank'] = finalRank;
+        setters['honors.date'] = new Date();
       }
+
+      // eslint-disable-next-line no-await-in-loop
+      await dbClient.db().collection('users').updateOne({ _id: user._id }, { $set: setters });
     }
     // eslint-disable-next-line no-await-in-loop
     users = await getUsers(dbClient, user._id, 100);
@@ -69,26 +65,25 @@ const getUsers = async (dbClient, lastId, pageSize = 5) => {
     .toArray();
 };
 
-const getPositiveCommentsVotesCount = async (dbClient, userId) => {
-  const arr = [];
-  await dbClient.db().collection('comments').aggregate([
-    { $match: { 'user.id': userId, up: { $gt: 0 } } },
-    { $group: { _id: '$itemId', count: { $sum: 1 } } },
-  ]).forEach((item) => { arr.push(item); }); // TODO invalid number of arguments, expected 2
-
-  return arr.length;
-};
-
-const getPositivePercent = async (dbClient, userId) => {
-  let positive = 0, negative = 0;
-  await dbClient.db().collection('comments').aggregate([
+const getCommentRatio = async (dbClient, userId) => {
+  const cursor = dbClient.db().collection('comments').aggregate([
     { $match: { 'user.id': userId } },
-    { $group: { _id: '$user.id', total_p: { $sum: '$up' }, total_n: { $sum: '$down' } } },
-  ]).forEach((item) => {
-    positive = item.total_p;
-    negative = item.total_n;
-  });
-  return (positive === 0 && negative === 0) ? 0 : 100 * positive / (positive + negative);
+    { $group: { _id: null,
+      count: { $sum: 1 },
+      positives: {
+        $sum: {
+          $cond: [{ $gte: ['$up', '$down'] }, 1, 0],
+        },
+      },
+    },
+    },
+  ]);
+  const result = await cursor.next();
+  if (!result) {
+    return undefined;
+  }
+  const { positives, count } = result;
+  return (count === 0) ? undefined : 100 * positives / count;
 };
 
 const getConsecutiveSharing = async (dbClient, userId, consecutive = 5) => {
@@ -139,3 +134,13 @@ const consecutiveDigits = (arr, consecutive) => {
   }
   return false;
 };
+
+module.exports = async () => {
+  logger.debug('Scheduler starts');
+  cron.schedule(process.env.SCHEDULE_TIME, async () => calculateUserHonors(), {
+    scheduled: true,
+    timezone: 'Europe/Prague',
+  });
+};
+
+module.exports.calculateUserHonors = calculateUserHonors;

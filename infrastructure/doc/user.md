@@ -35,6 +35,7 @@
 ## Honors section
 
 * rank: user experience rank; required
+* date: date of the last promotion; required
 
 ## Count section
 poll_votes: count of polls a user voted in; int; required
@@ -42,6 +43,8 @@ comments: how many comments a user wrote; int; required
 comment_votes: count of votes a uswr casted; int; required 
 blogs: blog stories coumt; int; required
 shares: how many links a user shared; int; required
+commentVoteRatio: ratio between negative and positive votes; int; optional
+sharedWeeks: weeks where a user shared some link; int; optional
 
 ## Consent section
 

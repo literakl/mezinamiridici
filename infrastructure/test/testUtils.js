@@ -64,10 +64,13 @@ function shuffle(array) {
 }
 
 async function getActivityCounter(dbClient, userId, property) {
-  // const projection = {};
-  // projection[property] = 1;
-  const user = await dbClient.db().collection('users').findOne({ _id: userId });
+  const user = await dbClient.db().collection('users').findOne({ _id: userId }, { honors: 1 });
   return user.honors.count[property];
+}
+
+async function getUserRank(dbClient, userId) {
+  const user = await dbClient.db().collection('users').findOne({ _id: userId }, { honors: 1 });
+  return user.honors.rank;
 }
 
 module.exports.api = api;
@@ -77,3 +80,4 @@ module.exports.deepCopy = deepCopy;
 module.exports.sleep = sleep;
 module.exports.shuffle = shuffle;
 module.exports.getActivityCounter = getActivityCounter;
+module.exports.getUserRank = getUserRank;
