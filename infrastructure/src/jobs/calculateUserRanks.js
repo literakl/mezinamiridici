@@ -31,11 +31,12 @@ const calculateUserHonors = async () => {
         }
       } else if (currentRank === 'graduate') {
         // eslint-disable-next-line no-await-in-loop
-        const consecutiveSharedWeeks = await getConsecutiveSharing(dbClient, user._id);
-        if (pollVotesCount >= 10 && consecutiveSharedWeeks >= 10 && commentRatio >= 80 && commentsCount >= 100 && blogCount >= 10) {
+        const { sharingWeeksCount, sharingWeeksList } = await getConsecutiveSharing(dbClient, user._id);
+        if (pollVotesCount >= 10 && sharingWeeksCount >= 10 && commentRatio >= 80 && commentsCount >= 100 && blogCount >= 10) {
           finalRank = 'master';
         } else {
-          setters['honors.count.sharedWeeks'] = consecutiveSharedWeeks;
+          setters['honors.count.sharingWeeks'] = sharingWeeksCount;
+          setters['honors.sharingWeeksList'] = sharingWeeksList;
         }
       }
 

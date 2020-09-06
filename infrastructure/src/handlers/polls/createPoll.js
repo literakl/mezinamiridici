@@ -14,18 +14,17 @@ module.exports = (app) => {
 
   app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
     logger.verbose('createPoll handler starts');
+    const {
+      text, author, date, picture, tags,
+    } = req.body;
+    if (!text) {
+      return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
+    }
+    const publishDate = api.parseDate(date, () => api.sendInvalidParam(res, 'date', date));
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      const {
-        text, author, date, picture, tags,
-      } = req.body;
-
-      if (!text) {
-        return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
-      }
 
       let user = auth.getIdentity(req.identity);
       if (author !== undefined && author.length > 0) {
@@ -33,15 +32,6 @@ module.exports = (app) => {
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
         }
-      }
-
-      let publishDate = new Date();
-      if (date) {
-        const dday = dayjs(date, 'YYYY-MM-DD');
-        if (!dday.isValid()) {
-          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
-        }
-        publishDate = dday.toDate();
       }
 
       const pollId = mongo.generateTimeId();

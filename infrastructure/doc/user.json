@@ -27,6 +27,7 @@
   "honors": {
     "rank": "novice",
     "date": "2020-03-22 16:46",
+    "sharingWeeksList": [true, false, true, true, true, false, true],
     "count": {
       "poll_votes": 0,
       "comments": 0,
@@ -34,7 +35,7 @@
       "blogs": 0,
       "shares": 0,
       "commentVoteRatio": 66,
-      "sharedWeeks": 7
+      "sharingWeeks": 7
     }
   },
   "prefs": {

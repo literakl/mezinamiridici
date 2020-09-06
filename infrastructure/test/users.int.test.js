@@ -1,15 +1,16 @@
 const dotenv = require('dotenv');
 const path = require('path');
-
-const envPath = path.join(__dirname, '..', '.test.env');
-dotenv.config({ path: envPath });
-
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
+
 const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
+
+const envPath = path.join(__dirname, '..', '.test.env');
+dotenv.config({ path: envPath });
+
 const {
   api, bff, getAuthHeader, getUserRank,
 } = require('./testUtils');
@@ -20,9 +21,7 @@ const {
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const { calculateUserHonors } = require('../src/jobs/calculateUserRanks');
 
-
-let dbClient;
-let server;
+let dbClient, server;
 
 test('User API', async (done) => {
   jest.setTimeout(60000);
@@ -249,16 +248,16 @@ test('User Rank', async (done) => {
   const pollBody = {
     text: 'First question',
     picture: 'picture.png',
-    date: dayjs().subtract(7, 'hour').format('YYYY-MM-DD'),
+    date: dayjs().subtract(11, 'week').format('YYYY-MM-DD'),
   };
-  const poll = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(poll.success).toBeTruthy();
+  const poll1 = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(poll1.success).toBeTruthy();
 
   const commentBody = {
     text: 'Comment 1',
-    date: dayjs(poll.data.info.date).add(10, 'minute').format(DATE_FORMAT),
+    date: dayjs(poll1.data.info.date).add(10, 'minute').format(DATE_FORMAT),
   };
-  const comment1 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
+  const comment1 = await api(`items/${poll1.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(comment1.success).toBeTruthy();
 
   const voteBody = {
@@ -270,34 +269,59 @@ test('User Rank', async (done) => {
   expect(voteResponse.success).toBeTruthy();
 
   commentBody.text = 'Comment 2';
-  const comment2 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  const comment2 = await api(`items/${poll1.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(comment2.success).toBeTruthy();
 
   voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
-  voteResponse = await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  voteResponse = await bff(`polls/${poll1.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
   const shareBody = {
-    path: `/anketa/${poll.data.info.slug}`,
+    path: `/anketa/${poll1.data.info.slug}`,
     service: 'twitter',
     userId: Leos._id,
+    date: dayjs().subtract(10, 'week').format('YYYY-MM-DD'),
   };
 
-  const shareResponse = await api(`items/${poll.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
+  let shareResponse = await api(`items/${poll1.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(shareResponse.success).toBeTruthy();
 
   await calculateUserHonors();
   let rank = await getUserRank(dbClient, Leos._id);
   expect(rank).toBe('novice');
 
-  voteResponse = await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
+  voteResponse = await bff(`polls/${poll1.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
   await calculateUserHonors();
   rank = await getUserRank(dbClient, Leos._id);
   expect(rank).toBe('student');
+
+  for (let i = 9; i > 0;) {
+    shareBody.date = dayjs().subtract(i, 'week').format('YYYY-MM-DD');
+    // eslint-disable-next-line no-await-in-loop
+    shareResponse = await api(`items/${poll1.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
+    expect(shareResponse.success).toBeTruthy();
+    i -= 1;
+  }
+
+  pollBody.text = 'Second poll';
+  pollBody.date = dayjs().subtract(6, 'week').format('YYYY-MM-DD');
+  const poll2 = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(poll2.success).toBeTruthy();
+
+  voteResponse = await bff(`polls/${poll2.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+
+  pollBody.text = 'Third poll';
+  pollBody.date = dayjs().subtract(6, 'week').format('YYYY-MM-DD');
+  const poll3 = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(poll3.success).toBeTruthy();
+
+  voteResponse = await bff(`polls/${poll3.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
 
   done();
 });

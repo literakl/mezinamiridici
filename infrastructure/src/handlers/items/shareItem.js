@@ -11,20 +11,21 @@ module.exports = (app) => {
   app.post('/v1/items/:itemId/share', auth.cors, async (req, res) => {
     logger.verbose('share link handler starts');
     const { itemId } = req.params;
-    const { path, service, userId } = req.body;
+    const { path, service, userId, date } = req.body;
     if (!codes.includes(service)) {
       return api.sendBadRequest(res, api.createError('Mismatch share code', 'generic.internal-error'));
     }
     if (!itemId || !path) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
+    const publishDate = api.parseDate(date, () => api.sendInvalidParam(res, 'date', date));
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
       const url = createURL(service, path);
-      await insertShare(dbClient, itemId, userId, service);
+      await insertShare(dbClient, itemId, userId, service, publishDate);
       await mongo.incrementUSerActivity(dbClient, userId, 'share', 'create');
       logger.debug('Share recorded');
 
@@ -59,11 +60,11 @@ function createURL(service, path) {
   return sendUrl;
 }
 
-function insertShare(dbClient, item, user, service) {
+function insertShare(dbClient, item, user, service, date) {
   const theShare = {
     item,
     service,
-    date: new Date(),
+    date,
   };
   if (user) {
     theShare.user = user;

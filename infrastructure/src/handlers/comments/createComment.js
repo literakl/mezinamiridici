@@ -30,19 +30,11 @@ module.exports = (app) => {
     if (!itemId || !text) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
+    const publishDate = api.parseDate(date, () => api.sendInvalidParam(res, 'date', date));
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      let publishDate = new Date();
-      if (date) {
-        const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
-        if (!dday.isValid()) {
-          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
-        }
-        publishDate = dday.toDate();
-      }
 
       if (parentId) {
         const response = await dbClient.db().collection('comments').findOne({ _id: parentId, parentId: null });

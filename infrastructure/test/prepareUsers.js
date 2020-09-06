@@ -36,8 +36,8 @@ const Jiri = {
   driving: { since: fix(1996), vehicles: ['bike', 'car'] },
   prefs: { public: true },
   honors: {
-    rank: 'novice',
-    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+    rank: 'master',
+    count: { poll_votes: 10, comments: 100, comment_votes: 50, blogs: 20, shares: 30 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -53,8 +53,9 @@ const Lukas = {
   driving: {},
   prefs: { public: false },
   honors: {
-    rank: 'novice',
-    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+    rank: 'graduate',
+    sharingWeeksList: [true, false, true, true, true, false, true, true, false, true],
+    count: { poll_votes: 5, comments: 20, comment_votes: 30, blogs: 2, shares: 15 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -72,8 +73,8 @@ const Vita = {
   driving: { since: fix(2000), vehicles: ['bike', 'car', 'van'] },
   prefs: { public: true },
   honors: {
-    rank: 'novice',
-    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+    rank: 'student',
+    count: { poll_votes: 2, comments: 2, comment_votes: 10, blogs: 1, shares: 3 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -111,7 +112,7 @@ const Bara = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+    count: { poll_votes: 1, comments: 10, comment_votes: 20, blogs: 2, shares: 5 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
