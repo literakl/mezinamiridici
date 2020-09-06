@@ -27,7 +27,7 @@
   "honors": {
     "rank": "novice",
     "date": "2020-03-22 16:46",
-    "sharingWeeksList": [true, false, true, true, true, false, true],
+    "sharingWeeksList": [[23, true], [24, false], [25, true], [26, true], [27, true], [28, false], [29, true]],
     "count": {
       "poll_votes": 0,
       "comments": 0,

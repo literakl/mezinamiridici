@@ -17,7 +17,7 @@ const Leos = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
   roles: ['admin:poll'],
@@ -37,7 +37,7 @@ const Jiri = {
   prefs: { public: true },
   honors: {
     rank: 'master',
-    count: { poll_votes: 10, comments: 100, comment_votes: 50, blogs: 20, shares: 30 },
+    count: { poll_votes: 10, comments: 100, comment_votes: 50, blogs: 20, sharingWeeks: 30 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -54,8 +54,8 @@ const Lukas = {
   prefs: { public: false },
   honors: {
     rank: 'graduate',
-    sharingWeeksList: [true, false, true, true, true, false, true, true, false, true],
-    count: { poll_votes: 5, comments: 20, comment_votes: 30, blogs: 2, shares: 15 },
+    sharingWeeksList: [[23, true], [24, false], [25, true], [26, true], [27, true], [28, false], [29, true], [30, true], [31, true], [32, false]],
+    count: { poll_votes: 5, comments: 20, comment_votes: 30, blogs: 2, sharingWeeks: 15 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -74,7 +74,7 @@ const Vita = {
   prefs: { public: true },
   honors: {
     rank: 'student',
-    count: { poll_votes: 2, comments: 2, comment_votes: 10, blogs: 1, shares: 3 },
+    count: { poll_votes: 2, comments: 2, comment_votes: 10, blogs: 1, sharingWeeks: 3 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -93,7 +93,7 @@ const Jana = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, shares: 0 },
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -112,7 +112,7 @@ const Bara = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { poll_votes: 1, comments: 10, comment_votes: 20, blogs: 2, shares: 5 },
+    count: { poll_votes: 1, comments: 10, comment_votes: 20, blogs: 2, sharingWeeks: 5 },
   },
   consent: { terms: new Date(), data: new Date() },
 };

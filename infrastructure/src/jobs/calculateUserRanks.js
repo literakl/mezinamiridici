@@ -1,7 +1,11 @@
 const cron = require('node-cron');
+const dayjs = require('dayjs');
+const isoWeek = require('dayjs/plugin/isoWeek');
 
 const mongo = require('../utils/mongo.js');
 const logger = require('../utils/logging');
+
+dayjs.extend(isoWeek);
 
 const calculateUserHonors = async () => {
   logger.info('Running a job to calculate the user ranks');
@@ -30,13 +34,21 @@ const calculateUserHonors = async () => {
           finalRank = 'graduate';
         }
       } else if (currentRank === 'graduate') {
-        // eslint-disable-next-line no-await-in-loop
-        const { sharingWeeksCount, sharingWeeksList } = await getConsecutiveSharing(dbClient, user._id);
+        let sharingWeeksCount = user.honors.count.sharingWeeks, consecutive;
+        if ((sharingWeeksCount || 0) < 10) {
+          // eslint-disable-next-line no-await-in-loop
+          consecutive = await getConsecutiveSharing(dbClient, user._id);
+          // eslint-disable-next-line prefer-destructuring
+          sharingWeeksCount = consecutive.sharingWeeksCount;
+        }
+
         if (pollVotesCount >= 10 && sharingWeeksCount >= 10 && commentRatio >= 80 && commentsCount >= 100 && blogCount >= 10) {
           finalRank = 'master';
-        } else {
+        }
+
+        if (sharingWeeksCount < 10) {
           setters['honors.count.sharingWeeks'] = sharingWeeksCount;
-          setters['honors.sharingWeeksList'] = sharingWeeksList;
+          setters['honors.sharingWeeksList'] = consecutive.sharingWeeksList;
         }
       }
 
@@ -69,14 +81,14 @@ const getUsers = async (dbClient, lastId, pageSize = 5) => {
 const getCommentRatio = async (dbClient, userId) => {
   const cursor = dbClient.db().collection('comments').aggregate([
     { $match: { 'user.id': userId } },
-    { $group: { _id: null,
+    { $group: {
+      _id: null,
       count: { $sum: 1 },
       positives: {
         $sum: {
           $cond: [{ $gte: ['$up', '$down'] }, 1, 0],
         },
-      },
-    },
+      } },
     },
   ]);
   const result = await cursor.next();
@@ -87,54 +99,48 @@ const getCommentRatio = async (dbClient, userId) => {
   return (count === 0) ? undefined : 100 * positives / count;
 };
 
-const getConsecutiveSharing = async (dbClient, userId, consecutive = 5) => {
-  const weekArray = [];
+const getConsecutiveSharing = async (dbClient, userId) => {
+  const start = dayjs().subtract(10, 'week'), limit = start.subtract(1, 'week');
   const pipeline = [
-    {
-      $match: {
-        user: userId,
-      },
-    },
+    { $match: { user: userId, date: { $gte: limit.toDate() } } },
     {
       $group: {
-        _id: { $week: '$date' },
-        documentCount: { $sum: 1 },
+        _id: { $isoWeek: '$date' },
+        shares: { $sum: 1 },
       },
     },
+    { $sort: { _id: 1 } },
   ];
-  await dbClient.db().collection('link_share').aggregate(pipeline).forEach((item) => {
-    weekArray.push(item._id);
-  });
-
-  if (weekArray.length === 0) return false;
-
-  const maxW = Math.max.apply(null, weekArray);
-  if (maxW > 51) {
-    weekArray.forEach((item, index) => {
-      if ((maxW - item) > consecutive) weekArray[index] = item + maxW;
-    });
-  }
-  weekArray.sort((a, b) => a - b);
-  return consecutiveDigits(weekArray, consecutive);
+  const foundWeeks = await dbClient.db().collection('link_shares').aggregate(pipeline).toArray();
+  return calculateConsecutiveSharing(start, foundWeeks);
 };
 
-// TODO I will have to use debugger to understand this code
-const consecutiveDigits = (arr, consecutive) => {
-  let curr, prev, count = 0;
-  for (let i = 0; i < arr.length; i += 1) {
-    curr = arr[i];
-    if (count === 0) {
-      count += 1;
-    } else if (prev + 1 === curr) {
-      count += 1;
-      if (count === consecutive) {
-        return true;
-      }
+function calculateConsecutiveSharing(date, foundWeeks) {
+  const weeks = [];
+  let start = date, index = 0, week, counter = 0;
+  for (let i = 0; i < 10;) {
+    week = start.isoWeek();
+    while (index < foundWeeks.length && foundWeeks[index]._id < week) {
+      index += 1;
     }
-    prev = curr;
+
+    if (index < foundWeeks.length && foundWeeks[index]._id === week) {
+      if (foundWeeks[index].shares > 0) {
+        weeks.push({ week, shared: true });
+        counter += 1;
+      } else {
+        weeks.push({ week, shared: false });
+      }
+      index += 1;
+    } else {
+      weeks.push({ week, shared: false });
+    }
+    start = start.add(1, 'week');
+    i += 1;
   }
-  return false;
-};
+
+  return { sharingWeeksCount: counter, sharingWeeksList: weeks };
+}
 
 module.exports = async () => {
   logger.debug('Scheduler starts');
@@ -145,3 +151,4 @@ module.exports = async () => {
 };
 
 module.exports.calculateUserHonors = calculateUserHonors;
+module.exports.calculateConsecutiveSharing = calculateConsecutiveSharing;
