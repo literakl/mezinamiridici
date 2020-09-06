@@ -30,7 +30,10 @@ module.exports = (app) => {
     if (!itemId || !text) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
-    const publishDate = api.parseDate(date, () => api.sendInvalidParam(res, 'date', date));
+    const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
+    if (!publishDate) {
+      return api.sendInvalidParam(res, 'date', date);
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();

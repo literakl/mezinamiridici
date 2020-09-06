@@ -163,11 +163,11 @@ function convertField(key) {
   throw new Error(`Unsupported field ${key}`);
 }
 
-function parseDate(date, errorHandler) {
+function parseDate(date, format) {
   if (date) {
-    const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
+    const dday = dayjs(date, format);
     if (!dday.isValid()) {
-      errorHandler();
+      return undefined;
     }
     return dday.toDate();
   }

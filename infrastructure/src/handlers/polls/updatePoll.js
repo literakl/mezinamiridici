@@ -21,7 +21,10 @@ module.exports = (app) => {
     const {
       text, author, date, picture, published, tags,
     } = req.body;
-    const publishDate = api.parseDate(date, () => api.sendInvalidParam(res, 'date', date));
+    const publishDate = api.parseDate(date, 'YYYY-MM-DD');
+    if (!publishDate) {
+      return api.sendInvalidParam(res, 'date', date);
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();
