@@ -244,6 +244,7 @@ test('CORS', async (done) => {
 
 test('User Rank', async (done) => {
   jest.setTimeout(180 * 60000);
+  await setup(dbClient, api);
 
   const pollBody = {
     text: 'First question',
@@ -381,13 +382,13 @@ test('User Rank', async (done) => {
 });
 
 beforeEach(async () => {
-  await dbClient.db().collection('users').deleteMany({});
-  await dbClient.db().collection('comments').deleteMany({});
-  await dbClient.db().collection('items').deleteMany({});
-  await dbClient.db().collection('poll_votes').deleteMany({});
-  await dbClient.db().collection('comment_votes').deleteMany({});
-  await dbClient.db().collection('link_shares').deleteMany({});
-  await setup(dbClient, api);
+  const db = dbClient.db();
+  await db.collection('users').deleteMany({});
+  await db.collection('comments').deleteMany({});
+  await db.collection('items').deleteMany({});
+  await db.collection('poll_votes').deleteMany({});
+  await db.collection('comment_votes').deleteMany({});
+  await db.collection('link_shares').deleteMany({});
 });
 
 beforeAll(async () => {

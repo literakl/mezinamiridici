@@ -36,7 +36,7 @@ module.exports = (app) => {
       // todo transaction, replicas required
       await insertPollVote(dbClient, pollId, vote, user);
       await incrementPoll(dbClient, pollId, vote);
-      await mongo.incrementUSerActivity(dbClient, user._id, 'poll', 'vote');
+      await mongo.incrementUserActivityCounter(dbClient, user._id, 'poll', 'vote');
       logger.debug('Vote recorded');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(user._id, pollId)];
@@ -75,7 +75,7 @@ function insertPollVote(dbClient, pollId, vote, user) {
     pollVote.driving = currentYear - user.driving.since;
   }
 
-  mongo.storeActivity(dbClient, user._id, pollId, 'vote', vote);
+  mongo.storeUserActivity(dbClient, user._id, pollId, 'vote', vote);
   return dbClient.db().collection('poll_votes').insertOne(pollVote);
 }
 

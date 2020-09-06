@@ -131,7 +131,7 @@ function getIdentity(dbClient, userId) {
     .then(user => ((user === null) ? null : { userId: user._id, nickname: user.bio.nickname }));
 }
 
-async function incrementUSerActivity(dbClient, userId, type, action) {
+async function incrementUserActivityCounter(dbClient, userId, type, action) {
   let update;
   if (type === 'comment') {
     if (action === 'vote') {
@@ -149,7 +149,7 @@ async function incrementUSerActivity(dbClient, userId, type, action) {
   return dbClient.db().collection('users').updateOne({ _id: userId }, update);
 }
 
-function storeActivity(dbClient, userId, itemId, action, vote, commentId) {
+function storeUserActivity(dbClient, userId, itemId, action, vote, commentId) {
   const body = {
     userId,
     date: new Date(),
@@ -269,5 +269,5 @@ exports.stageId = stageId;
 exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
-exports.storeActivity = storeActivity;
-exports.incrementUSerActivity = incrementUSerActivity;
+exports.storeUserActivity = storeUserActivity;
+exports.incrementUserActivityCounter = incrementUserActivityCounter;

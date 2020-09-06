@@ -118,8 +118,9 @@ const Bara = {
 };
 
 async function setup(dbClient, api) {
-  await dbClient.db().collection('users').deleteMany({});
-  await dbClient.db().collection('users').insertMany([Leos, Jiri, Lukas, Vita, Jana, Bara]);
+  const db = dbClient.db();
+  await db.collection('users').deleteMany({});
+  await db.collection('users').insertMany([Leos, Jiri, Lukas, Vita, Jana, Bara]);
 
   const body = {
     email: 'vita@email.bud',

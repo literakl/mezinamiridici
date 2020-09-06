@@ -26,7 +26,7 @@ module.exports = (app) => {
 
       const url = createURL(service, path);
       await insertShare(dbClient, itemId, userId, service, publishDate);
-      await mongo.incrementUSerActivity(dbClient, userId, 'share', 'create');
+      await mongo.incrementUserActivityCounter(dbClient, userId, 'share', 'create');
       logger.debug('Share recorded');
 
       return api.sendResponse(res, api.createResponse(url));
@@ -62,7 +62,7 @@ function createURL(service, path) {
 
 function insertShare(dbClient, item, user, service, date) {
   const theShare = {
-    itemId,
+    item,
     service,
     date,
   };

@@ -48,7 +48,7 @@ module.exports = (app) => {
 
       const comment = createComment(itemId, text, req.identity, parentId, publishDate);
       await dbClient.db().collection('comments').insertOne(comment);
-      await mongo.incrementUSerActivity(dbClient, req.identity.userId, 'comment', 'create');
+      await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'comment', 'create');
       logger.debug('Comment inserted');
 
       const response = await dbClient.db().collection('items')
@@ -57,7 +57,7 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
       }
 
-      mongo.storeActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
+      mongo.storeUserActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
 
       let replies = [];
       if (parentId) {

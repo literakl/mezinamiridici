@@ -32,9 +32,9 @@ module.exports = (app) => {
         return api.sendBadRequest(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
 
-      await insertCommentVote(dbClient, commentId, vote, req.identity);
-      await mongo.incrementUSerActivity(dbClient, req.identity.userId, 'comment', 'vote');
       await insertCommentVote(dbClient, commentId, vote, req.identity, comment.itemId);
+      await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'comment', 'vote');
+      mongo.storeUserActivity(dbClient, req.identity.userId, comment.itemId, 'vote', vote, commentId);
       logger.debug('Vote inserted');
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);
       logger.debug('Item updated');
@@ -56,7 +56,6 @@ function insertCommentVote(dbClient, commentId, vote, user, itemId) {
       nickname: user.nickname,
     },
   };
-  mongo.storeActivity(dbClient, user.userId, itemId, 'vote', vote, commentId);
   return dbClient.db().collection('comment_votes').insertOne(commentVote);
 }
 
