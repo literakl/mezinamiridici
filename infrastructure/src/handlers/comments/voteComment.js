@@ -32,6 +32,8 @@ module.exports = (app) => {
         return api.sendBadRequest(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
 
+      await insertCommentVote(dbClient, commentId, vote, req.identity);
+      await mongo.incrementUSerActivity(dbClient, req.identity.userId, 'comment', 'vote');
       await insertCommentVote(dbClient, commentId, vote, req.identity, comment.itemId);
       logger.debug('Vote inserted');
       const updatedRecord = await incrementVote(dbClient, commentId, vote, comment);

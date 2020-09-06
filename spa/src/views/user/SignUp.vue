@@ -256,6 +256,7 @@ import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import i18n from '@/i18n';
+import store from '../../store';
 
 configure({
   defaultMessage: (field, values) => {

@@ -30,19 +30,14 @@ module.exports = (app) => {
     if (!itemId || !text) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
+    const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
+    if (!publishDate) {
+      return api.sendInvalidParam(res, 'date', date);
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      let publishDate = new Date();
-      if (date) {
-        const dday = dayjs(date, 'YYYY-MM-DD HH:mm:ss');
-        if (!dday.isValid()) {
-          return api.sendBadRequest(res, api.createError(`Date ${date} is invalid`, 'generic.internal-error'));
-        }
-        publishDate = dday.toDate();
-      }
 
       if (parentId) {
         const response = await dbClient.db().collection('comments').findOne({ _id: parentId, parentId: null });
@@ -52,10 +47,8 @@ module.exports = (app) => {
       }
 
       const comment = createComment(itemId, text, req.identity, parentId, publishDate);
-      await dbClient.db()
-        .collection('comments')
-        .insertOne(comment);
-      comment.votes = [];
+      await dbClient.db().collection('comments').insertOne(comment);
+      await mongo.incrementUSerActivity(dbClient, req.identity.userId, 'comment', 'create');
       logger.debug('Comment inserted');
 
       const response = await dbClient.db().collection('items')
@@ -78,6 +71,7 @@ module.exports = (app) => {
         logger.debug('Replies fetched');
       }
 
+      comment.votes = [];
       const body = { comment, replies };
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {

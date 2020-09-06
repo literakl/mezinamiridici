@@ -36,6 +36,7 @@ module.exports = (app) => {
       // todo transaction, replicas required
       await insertPollVote(dbClient, pollId, vote, user);
       await incrementPoll(dbClient, pollId, vote);
+      await mongo.incrementUSerActivity(dbClient, user._id, 'poll', 'vote');
       logger.debug('Vote recorded');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(user._id, pollId)];

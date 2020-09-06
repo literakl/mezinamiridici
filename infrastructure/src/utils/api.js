@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+
 function sendResponse(res, body, cacheControl = 'private') {
   return response(res, 200, body, cacheControl);
 }
@@ -7,6 +9,11 @@ function sendCreated(res, body, cacheControl = 'private') {
 }
 
 function sendBadRequest(res, body) {
+  return response(res, 400, body, 'private');
+}
+
+function sendInvalidParam(res, param, value) {
+  const body = createError(`Parameter ${param} has invalid value '${value}'`, 'generic.internal-error');
   return response(res, 400, body, 'private');
 }
 
@@ -180,10 +187,22 @@ function edjsHtmlCustomParser() {
   };
 }
 
+function parseDate(date, format) {
+  if (date) {
+    const dday = dayjs(date, format);
+    if (!dday.isValid()) {
+      return undefined;
+    }
+    return dday.toDate();
+  }
+  return new Date();
+}
+
 module.exports.sendResponse = sendResponse;
 module.exports.sendErrorForbidden = sendErrorForbidden;
 module.exports.sendInternalError = sendInternalError;
 module.exports.sendBadRequest = sendBadRequest;
+module.exports.sendInvalidParam = sendInvalidParam;
 module.exports.sendNotFound = sendNotFound;
 module.exports.sendCreated = sendCreated;
 module.exports.sendNotAuthorized = sendNotAuthorized;
@@ -195,3 +214,4 @@ module.exports.parseListParams = parseListParams;
 module.exports.parsePollFilterParams = parsePollFilterParams;
 module.exports.sendRedirectFound = sendRedirectFound;
 module.exports.edjsHtmlCustomParser = edjsHtmlCustomParser;
+module.exports.parseDate = parseDate;

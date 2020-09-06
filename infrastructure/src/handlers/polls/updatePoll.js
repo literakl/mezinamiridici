@@ -18,14 +18,17 @@ module.exports = (app) => {
     if (!pollId) {
       return api.sendBadRequest(res, api.createError('Missing parameter pollId', 'generic.internal-error'));
     }
+    const {
+      text, author, date, picture, published, tags,
+    } = req.body;
+    const publishDate = api.parseDate(date, 'YYYY-MM-DD');
+    if (!publishDate) {
+      return api.sendInvalidParam(res, 'date', date);
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      const {
-        text, author, date, picture, published, tags,
-      } = req.body;
 
       if (!text) {
         return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
@@ -41,15 +44,6 @@ module.exports = (app) => {
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
         }
-      }
-
-      let publishDate = new Date();
-      if (date) {
-        const dday = dayjs(date, 'YYYY-MM-DD');
-        if (!dday.isValid()) {
-          return api.sendBadRequest(res, api.createError(`Date ${publishDate} is invalid`, 'generic.internal-error'));
-        }
-        publishDate = dday.toDate();
       }
 
       const query = prepareUpdateQuery(text, user, picture, publishDate, published, tags);

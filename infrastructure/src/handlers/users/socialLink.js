@@ -54,7 +54,6 @@ module.exports = (app) => {
 
       const token = auth.createTokenFromUser(user);
       return api.sendResponse(res, { access_token: token, token_type: 'bearer', active: true });
-    // } else { // no else because of Twitter Oauth1.0 dance
     }
   });
 };
@@ -215,6 +214,16 @@ function insertUser(dbClient, id, email, nickname, provider) {
     driving: {},
     prefs: {
       public: true,
+    },
+    honors: {
+      rank: 'novice',
+      count: {
+        poll_votes: 0,
+        comments: 0,
+        comment_votes: 0,
+        blogs: 0,
+        shares: 0,
+      },
     },
   };
 

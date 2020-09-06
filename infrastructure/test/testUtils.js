@@ -63,9 +63,21 @@ function shuffle(array) {
   return array;
 }
 
+async function getActivityCounter(dbClient, userId, property) {
+  const user = await dbClient.db().collection('users').findOne({ _id: userId }, { honors: 1 });
+  return user.honors.count[property];
+}
+
+async function getUserRank(dbClient, userId) {
+  const user = await dbClient.db().collection('users').findOne({ _id: userId }, { honors: 1 });
+  return user.honors.rank;
+}
+
 module.exports.api = api;
 module.exports.bff = bff;
 module.exports.getAuthHeader = getAuthHeader;
 module.exports.deepCopy = deepCopy;
 module.exports.sleep = sleep;
 module.exports.shuffle = shuffle;
+module.exports.getActivityCounter = getActivityCounter;
+module.exports.getUserRank = getUserRank;

@@ -15,6 +15,10 @@ const Leos = {
   },
   driving: { since: fix(2007), vehicles: ['car'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, sharingWeeks: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
   roles: ['admin:poll'],
 };
@@ -31,6 +35,10 @@ const Jiri = {
   },
   driving: { since: fix(1996), vehicles: ['bike', 'car'] },
   prefs: { public: true },
+  honors: {
+    rank: 'master',
+    count: { poll_votes: 10, comments: 100, comment_votes: 50, blogs: 20, sharingWeeks: 30 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Lukas = {
@@ -44,6 +52,11 @@ const Lukas = {
   bio: { nickname: 'Lukáš', region: 'OLM' },
   driving: {},
   prefs: { public: false },
+  honors: {
+    rank: 'graduate',
+    sharingWeeksList: [[23, true], [24, false], [25, true], [26, true], [27, true], [28, false], [29, true], [30, true], [31, true], [32, false]],
+    count: { poll_votes: 5, comments: 20, comment_votes: 30, blogs: 2, sharingWeeks: 15 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Vita = {
@@ -59,6 +72,10 @@ const Vita = {
   },
   driving: { since: fix(2000), vehicles: ['bike', 'car', 'van'] },
   prefs: { public: true },
+  honors: {
+    rank: 'student',
+    count: { poll_votes: 2, comments: 2, comment_votes: 10, blogs: 1, sharingWeeks: 3 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Jana = {
@@ -74,6 +91,10 @@ const Jana = {
   },
   driving: { since: fix(2018), vehicles: ['car'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 0, comments: 0, comment_votes: 0, blogs: 0, sharingWeeks: 0 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 const Bara = {
@@ -89,6 +110,10 @@ const Bara = {
   },
   driving: { since: fix(2019), vehicles: ['bus', 'truck', 'tramway'] },
   prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { poll_votes: 1, comments: 10, comment_votes: 20, blogs: 2, sharingWeeks: 5 },
+  },
   consent: { terms: new Date(), data: new Date() },
 };
 

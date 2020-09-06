@@ -4,12 +4,12 @@
     "email": "leos@literak.cz",
     "oauth": ["GOOGLE", "INSTAGRAM"],
     "pwdHash": "$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO",
-    "pwdTimestamp": 1579203825,
+    "pwdTimestamp": "2020-03-22 16:46",
     "verified": true,
     "verifyToken": "ABCDEFGH",
     "reset": {
       "token": "QWERTY",
-      "expires": 1579203825
+      "expires": "2020-03-22 16:46"
     }
   },
   "roles": ["admin:poll"],
@@ -24,6 +24,20 @@
     "since": 2007,
     "vehicles": ["car"]
   },
+  "honors": {
+    "rank": "novice",
+    "date": "2020-03-22 16:46",
+    "sharingWeeksList": [[23, true], [24, false], [25, true], [26, true], [27, true], [28, false], [29, true]],
+    "count": {
+      "poll_votes": 0,
+      "comments": 0,
+      "comment_votes": 0,
+      "blogs": 0,
+      "shares": 0,
+      "commentVoteRatio": 66,
+      "sharingWeeks": 7
+    }
+  },
   "prefs": {
     "public": true,
     "email": {
@@ -32,8 +46,8 @@
     }
   },
   "consent": {
-    "terms": 1579203825,
-    "data": 1579203825,
-    "email": 1579203825
+    "terms": "2020-03-22 16:46",
+    "data": "2020-03-22 16:46",
+    "email": "2020-03-22 16:46"
   }
 }

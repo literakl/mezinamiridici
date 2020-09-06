@@ -20,7 +20,8 @@ module.exports = {
     'no-param-reassign': ['error', { "props": false }],
     'no-else-return': 'off',
     'object-curly-newline': 'off',
-    "import/no-named-as-default": 0
+    "import/no-named-as-default": 0,
+    "prefer-destructuring": ["error", {"object": true, "array": false}]
   },
   parserOptions: {
     parser: 'babel-eslint',

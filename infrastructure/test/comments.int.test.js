@@ -12,7 +12,7 @@ const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader,
+  api, bff, getAuthHeader, getActivityCounter,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
@@ -388,6 +388,11 @@ test('Comments API', async (done) => {
   const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment7.success).toBeTruthy();
   expect(comment7.data.comment.text).toBe('<p>Comment 7 😃</p>\n<p>New paragraph 😄</p>\n<p>Third paragraph 😦</p>\n');
+
+  let counter = await getActivityCounter(dbClient, Leos._id, 'comments');
+  expect(counter).toBe(3);
+  counter = await getActivityCounter(dbClient, Leos._id, 'comment_votes');
+  expect(counter).toBe(3);
 
   done();
 });

@@ -9,7 +9,7 @@ const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader, deepCopy,
+  api, bff, getAuthHeader, deepCopy, getActivityCounter,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
@@ -91,6 +91,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.trivial).toBe(0);
   expect(response.data.votes.dislike).toBe(0);
   expect(response.data.votes.hate).toBe(0);
+  let counter = await getActivityCounter(dbClient, Leos._id, 'poll_votes');
+  expect(counter).toBe(1);
 
   // get poll, anonymous user
   let getResponse = await bff(`polls/${response.data.info.slug}`).json();
@@ -193,6 +195,8 @@ test('Poll API', async (done) => {
   expect(response.data.votes.hate).toBe(2);
   expect(response.data.siblings.older).toBe(null);
   expect(response.data.siblings.newer).toBe(null);
+  counter = await getActivityCounter(dbClient, Leos._id, 'poll_votes');
+  expect(counter).toBe(4);
 
   // publish the fist poll
   firstPoll.published = true;
