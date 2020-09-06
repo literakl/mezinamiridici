@@ -323,6 +323,10 @@ test('User Rank', async (done) => {
   voteResponse = await bff(`polls/${poll3.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
+  await calculateUserHonors();
+  rank = await getUserRank(dbClient, Leos._id);
+  expect(rank).toBe('student');
+
   done();
 });
 

@@ -14,7 +14,7 @@ const calculateUserHonors = async () => {
       const setters = {};
       user = users[i];
       const currentRank = (user.honors) ? user.honors.rank : '';
-      let finalRank = 'novice';
+      let finalRank = user.honors.rank || 'novice';
       const pollVotesCount = user.honors.count.poll_votes, commentVotesCount = user.honors.count.comment_votes,
         commentsCount = user.honors.count.comments, blogCount = user.honors.count.blogs, sharesCount = user.honors.count.shares;
       // eslint-disable-next-line no-await-in-loop
