@@ -3,13 +3,13 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
 
+const envPath = path.join(__dirname, '..', '.test.env');
+dotenv.config({ path: envPath });
+
 const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
-
-const envPath = path.join(__dirname, '..', '.test.env');
-dotenv.config({ path: envPath });
 
 const {
   api, bff, getAuthHeader, getUserRank,
