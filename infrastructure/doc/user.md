@@ -20,6 +20,7 @@
 * born: year
 * region: values: PRG, SC, JC, PLS, KV, UST, LBR, KH, PRD, VSC, JM, OLM, ZLN, MS
 * edu: values: primary, secondary, university
+* registered: date when user became a member; required; date
 
 ## Driving section
 
@@ -38,7 +39,7 @@
 * date: date of the last promotion; required
 * sharingWeeksList: array of booleans where a user shared a link; optional
 
-## Count section
+### Count section
 poll_votes: count of polls a user voted in; int; required
 comments: how many comments a user wrote; int; required
 comment_votes: count of votes a uswr casted; int; required 

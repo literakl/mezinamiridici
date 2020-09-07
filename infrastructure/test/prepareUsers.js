@@ -11,7 +11,7 @@ const Leos = {
     verified: true,
   },
   bio: {
-    nickname: 'literakl', born: fix(1975), edu: 'university', region: 'PRG', sex: 'man',
+    nickname: 'literakl', born: fix(1975), edu: 'university', region: 'PRG', sex: 'man', registered: new Date(),
   },
   driving: { since: fix(2007), vehicles: ['car'] },
   prefs: { public: true },
@@ -31,7 +31,7 @@ const Jiri = {
     verified: true,
   },
   bio: {
-    nickname: 'jirka', born: fix(1978), edu: 'primary', region: 'MS', sex: 'man',
+    nickname: 'jirka', born: fix(1978), edu: 'primary', region: 'MS', sex: 'man', registered: new Date(),
   },
   driving: { since: fix(1996), vehicles: ['bike', 'car'] },
   prefs: { public: true },
@@ -49,7 +49,7 @@ const Lukas = {
     pwdTimestamp: new Date(),
     verified: true,
   },
-  bio: { nickname: 'Lukáš', region: 'OLM' },
+  bio: { nickname: 'Lukáš', region: 'OLM', registered: new Date() },
   driving: {},
   prefs: { public: false },
   honors: {
@@ -68,7 +68,7 @@ const Vita = {
     verified: true,
   },
   bio: {
-    nickname: 'Víťa', born: fix(1980), edu: 'university', region: 'JM', sex: 'man',
+    nickname: 'Víťa', born: fix(1980), edu: 'university', region: 'JM', sex: 'man', registered: new Date(),
   },
   driving: { since: fix(2000), vehicles: ['bike', 'car', 'van'] },
   prefs: { public: true },
@@ -87,7 +87,7 @@ const Jana = {
     verified: true,
   },
   bio: {
-    nickname: 'Jana', born: fix(2000), edu: 'secondary', region: 'SC', sex: 'woman',
+    nickname: 'Jana', born: fix(2000), edu: 'secondary', region: 'SC', sex: 'woman', registered: new Date(),
   },
   driving: { since: fix(2018), vehicles: ['car'] },
   prefs: { public: true },
@@ -106,7 +106,7 @@ const Bara = {
     verified: true,
   },
   bio: {
-    nickname: 'Barbora', born: fix(1995), edu: 'university', region: 'PRG', sex: 'woman',
+    nickname: 'Barbora', born: fix(1995), edu: 'university', region: 'PRG', sex: 'woman', registered: new Date(),
   },
   driving: { since: fix(2019), vehicles: ['bus', 'truck', 'tramway'] },
   prefs: { public: true },

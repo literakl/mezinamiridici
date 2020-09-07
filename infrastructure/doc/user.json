@@ -18,7 +18,8 @@
     "sex": "man",
     "born": 1975,
     "region": "PRG",
-    "edu": "university"
+    "edu": "university",
+    "registered": "2020-03-22 16:46"
   },
   "driving": {
     "since": 2007,

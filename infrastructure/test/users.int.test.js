@@ -218,6 +218,18 @@ test('User API', async (done) => {
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
 
+  // get the user info
+  response = await bff(`users/${userId}/info`).json();
+  expect(response.success).toBeTruthy();
+  expect(response.data).toBeDefined();
+  const info = response.data;
+  expect(info.bio.sex).toBeUndefined();
+  expect(info.bio.nickname).toBe('leos');
+  expect(info.bio.registered).toBeDefined();
+  expect(info.honors).toBeDefined();
+  expect(info.honors.rank).toBe('novice');
+  expect(info.honors.count).toBeDefined();
+
   done();
 });
 

@@ -80,6 +80,7 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
     },
     bio: {
       nickname,
+      registered: now,
     },
     driving: {},
     prefs: {

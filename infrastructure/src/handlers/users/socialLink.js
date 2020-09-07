@@ -210,6 +210,7 @@ function insertUser(dbClient, id, email, nickname, provider) {
     },
     bio: {
       nickname,
+      registered: new Date(),
     },
     driving: {},
     prefs: {

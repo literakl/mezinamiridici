@@ -7,12 +7,13 @@ module.exports = (app) => {
   app.options('/v1/users/:userId', auth.cors);
   app.options('/v1/check/email', auth.cors);
   app.options('/v1/check/nickname', auth.cors);
+  app.options('/bff/users/:userId/info', auth.cors);
 
   app.get('/v1/users/:userId', auth.optional, async (req, res) => {
     logger.verbose('getUser handler starts');
     const { userId } = req.params;
     if (!userId) {
-      return api.sendBadRequest(res, api.createError('Missing user id', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'userId');
     }
 
     try {
@@ -80,6 +81,26 @@ module.exports = (app) => {
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to check the user', 'sign-in.something-went-wrong'));
+    }
+  });
+
+  app.get('/bff/users/:userId/info', auth.cors, async (req, res) => {
+    logger.verbose('Get user info check handler starts');
+    const { userId } = req.params;
+    if (!userId) {
+      return api.sendMissingParam(res, 'userId');
+    }
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      logger.debug('Mongo connected');
+
+      const user = await mongo.findUser(dbClient, { userId }, { projection: { 'bio.nickname': 1, 'bio.registered': 1, honors: 1 } });
+      logger.debug('User fetched');
+      return api.sendResponse(res, api.createResponse(user));
+    } catch (err) {
+      logger.error('Request failed', err);
+      return api.sendInternalError(res, api.createError('Failed to get the user', 'sign-in.something-went-wrong'));
     }
   });
 };
