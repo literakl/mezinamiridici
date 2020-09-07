@@ -16,7 +16,7 @@ module.exports = (app) => {
     logger.verbose('updatePoll handler starts');
     const { pollId } = req.params;
     if (!pollId) {
-      return api.sendBadRequest(res, api.createError('Missing parameter pollId', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'pollId');
     }
     const {
       text, author, date, picture, published, tags,
@@ -25,18 +25,16 @@ module.exports = (app) => {
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);
     }
+    if (!text) {
+      return api.sendMissingParam(res, 'text');
+    }
+    if (!picture) {
+      return api.sendMissingParam(res, 'picture');
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      if (!text) {
-        return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
-      }
-
-      if (!picture) {
-        return api.sendBadRequest(res, api.createError('Missing parameter picture', 'generic.internal-error'));
-      }
 
       let user = auth.getIdentity(req.identity);
       if (author && author.length > 0) {

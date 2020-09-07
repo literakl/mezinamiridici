@@ -11,10 +11,10 @@ module.exports = (app) => {
     const { pollId } = req.params;
     const { vote } = req.body;
     if (!pollId) {
-      return api.sendBadRequest(res, api.createError('Missing pollId', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'pollId');
     }
     if (!vote) {
-      return api.sendBadRequest(res, api.createError('Missing vote', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'vote');
     }
 
     try {
@@ -37,6 +37,7 @@ module.exports = (app) => {
       await insertPollVote(dbClient, pollId, vote, user);
       await incrementPoll(dbClient, pollId, vote);
       await mongo.incrementUserActivityCounter(dbClient, user._id, 'poll', 'vote');
+      mongo.storeUserActivity(dbClient, user._id, pollId, 'vote', vote);
       logger.debug('Vote recorded');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(user._id, pollId)];
@@ -75,7 +76,6 @@ function insertPollVote(dbClient, pollId, vote, user) {
     pollVote.driving = currentYear - user.driving.since;
   }
 
-  mongo.storeUserActivity(dbClient, user._id, pollId, 'vote', vote);
   return dbClient.db().collection('poll_votes').insertOne(pollVote);
 }
 

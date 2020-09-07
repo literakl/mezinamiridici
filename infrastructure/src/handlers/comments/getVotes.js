@@ -9,6 +9,9 @@ module.exports = (app) => {
   app.get('/bff/comments/:commentId/votes', auth.cors, async (req, res) => {
     logger.verbose('getVotes handler starts');
     const { commentId } = req.params;
+    if (!commentId) {
+      return api.sendMissingParam(res, 'commentId');
+    }
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');

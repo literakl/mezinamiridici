@@ -14,24 +14,21 @@ module.exports = (app) => {
     logger.verbose('update blog handler starts');
     const { blogId } = req.params;
     if (!blogId) {
-      return api.sendBadRequest(res, api.createError('Missing parameter blogId', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'blogId');
+    }
+    const {
+      source, title, picture, tags,
+    } = req.body;
+    if (!source) {
+      return api.sendMissingParam(res, 'source');
+    }
+    if (!picture) {
+      return api.sendMissingParam(res, 'picture');
     }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      const {
-        source, title, picture, tags,
-      } = req.body;
-
-      if (!source) {
-        return api.sendBadRequest(res, api.createError('Missing parameter source', 'generic.internal-error'));
-      }
-
-      if (!picture) {
-        return api.sendBadRequest(res, api.createError('Missing parameter picture', 'generic.internal-error'));
-      }
 
       const query = prepareUpdateQuery(source, title, picture, tags);
       await dbClient.db().collection('items').updateOne({ _id: blogId }, query);

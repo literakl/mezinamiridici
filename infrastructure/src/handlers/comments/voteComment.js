@@ -10,8 +10,14 @@ module.exports = (app) => {
     logger.verbose('voteComment handler starts');
     const { vote } = req.body;
     const { commentId } = req.params;
-    if (!commentId || !vote || (vote !== -1 && vote !== 1)) {
-      return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
+    if (!commentId) {
+      return api.sendMissingParam(res, 'commentId');
+    }
+    if (!vote) {
+      return api.sendMissingParam(res, 'vote');
+    }
+    if (vote !== -1 && vote !== 1) {
+      return api.sendInvalidParam(res, 'vote', vote);
     }
 
     try {
@@ -46,7 +52,7 @@ module.exports = (app) => {
   });
 };
 
-function insertCommentVote(dbClient, commentId, vote, user, itemId) {
+function insertCommentVote(dbClient, commentId, vote, user) {
   const commentVote = {
     _id: mongo.generateTimeId(),
     commentId,

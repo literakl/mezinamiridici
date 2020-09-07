@@ -15,10 +15,16 @@ module.exports = (app) => {
     if (!codes.includes(service)) {
       return api.sendBadRequest(res, api.createError('Mismatch share code', 'generic.internal-error'));
     }
-    if (!itemId || !path) {
-      return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
+    if (!itemId) {
+      return api.sendMissingParam(res, 'itemId');
     }
-    const publishDate = api.parseDate(date, () => api.sendInvalidParam(res, 'date', date));
+    if (!path) {
+      return api.sendMissingParam(res, 'path');
+    }
+    const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
+    if (!publishDate) {
+      return api.sendInvalidParam(res, 'date', date);
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();

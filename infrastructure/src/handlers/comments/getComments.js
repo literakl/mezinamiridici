@@ -15,7 +15,7 @@ module.exports = (app) => {
     logger.verbose('getComments handler starts');
     const { itemId } = req.params;
     if (!itemId) {
-      return api.sendBadRequest(res, api.createError('Missing parameter itemId', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'itemId');
     }
     const listParams = api.parseListParams(req, 'id', -1, PAGE_SIZE_COMMENTS, MAXIMUM_PAGE_SIZE);
 

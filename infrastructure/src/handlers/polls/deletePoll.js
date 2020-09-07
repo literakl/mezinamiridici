@@ -11,7 +11,7 @@ module.exports = (app) => {
     const { pollId } = req.params;
 
     if (!pollId) {
-      return api.sendBadRequest(res, api.createError('Missing parameter pollId', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'pollId');
     }
 
     try {

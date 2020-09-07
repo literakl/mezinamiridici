@@ -18,20 +18,19 @@ module.exports = (app) => {
       text, author, date, picture, tags,
     } = req.body;
     if (!text) {
-      return api.sendBadRequest(res, api.createError('Missing parameter text', 'generic.internal-error'));
+      return api.sendMissingParam(res, 'text');
     }
     const publishDate = api.parseDate(date, 'YYYY-MM-DD');
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);
     }
+    if (!picture) {
+      return api.sendMissingParam(res, 'picture');
+    }
 
     try {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
-
-      if (!picture) {
-        return api.sendBadRequest(res, api.createError('Missing parameter picture', 'generic.internal-error'));
-      }
 
       let user = auth.getIdentity(req.identity);
       if (author !== undefined && author.length > 0) {

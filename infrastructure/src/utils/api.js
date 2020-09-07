@@ -17,6 +17,11 @@ function sendInvalidParam(res, param, value) {
   return response(res, 400, body, 'private');
 }
 
+function sendMissingParam(res, param) {
+  const body = createError(`Missing parameter '${param}'`, 'generic.internal-error');
+  return response(res, 400, body, 'private');
+}
+
 function sendNotAuthorized(res, body) {
   return response(res, 401, body, 'private');
 }
@@ -203,6 +208,7 @@ module.exports.sendErrorForbidden = sendErrorForbidden;
 module.exports.sendInternalError = sendInternalError;
 module.exports.sendBadRequest = sendBadRequest;
 module.exports.sendInvalidParam = sendInvalidParam;
+module.exports.sendMissingParam = sendMissingParam;
 module.exports.sendNotFound = sendNotFound;
 module.exports.sendCreated = sendCreated;
 module.exports.sendNotAuthorized = sendNotAuthorized;

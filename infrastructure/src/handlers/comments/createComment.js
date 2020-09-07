@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 const MarkdownIt = require('markdown-it');
 const emoji = require('markdown-it-emoji/light');
 const mark = require('markdown-it-mark');
@@ -27,8 +26,11 @@ module.exports = (app) => {
       text, parentId, date,
     } = req.body;
     const { itemId } = req.params;
-    if (!itemId || !text) {
-      return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
+    if (!itemId) {
+      return api.sendMissingParam(res, 'itemId');
+    }
+    if (!text) {
+      return api.sendMissingParam(res, 'text');
     }
     const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
     if (!publishDate) {
@@ -49,15 +51,14 @@ module.exports = (app) => {
       const comment = createComment(itemId, text, req.identity, parentId, publishDate);
       await dbClient.db().collection('comments').insertOne(comment);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'comment', 'create');
+      mongo.storeUserActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
       logger.debug('Comment inserted');
 
-      const response = await dbClient.db().collection('items')
-        .updateOne({ _id: itemId }, { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } });
+      const update = { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } };
+      const response = await dbClient.db().collection('items').updateOne({ _id: itemId }, update);
       if (response.modifiedCount !== 1) {
-        return api.sendNotFound(res, api.createError('Item not found', 'generic.internal-error'));
+        return api.sendNotFound(res, api.createError(`Item ${itemId} not found`, 'generic.internal-error'));
       }
-
-      mongo.storeUserActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
 
       let replies = [];
       if (parentId) {
