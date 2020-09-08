@@ -184,7 +184,6 @@ export default {
     },
     VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
     GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),
-
     VERIFY_MAIL: async (context, payload) => {
       const body = {
         email: payload.email,
@@ -204,6 +203,11 @@ export default {
       const response = await get('API', `/users/${context.getters.USER_ID}/activity`, context);
       context.commit('SET_USER_ACTIVITY', response.data.data);
       return response.data.success;
+    },
+    FETCH_USER_INFO: async (context, payload) => {
+      Vue.$log.debug('FETCH_USER_INFO');
+      const response = await get('BFF', `/users/${payload.userId}/info`, context);
+      return response.data.data;
     },
   },
 };

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 
 export default {

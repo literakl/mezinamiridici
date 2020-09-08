@@ -40,7 +40,7 @@
 
 <script>
 import { BIconChevronDoubleLeft, BIconChevronDoubleRight } from 'bootstrap-vue';
-import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
 

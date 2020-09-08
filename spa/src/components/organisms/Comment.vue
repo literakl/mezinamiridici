@@ -56,7 +56,7 @@
 <script>
 import { BIconChat, BIconHandThumbsUp, BIconHandThumbsDown, BIconArrowClockwise, BIconArrowsExpand, BIconArrowsCollapse } from 'bootstrap-vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
-import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 
 export default {

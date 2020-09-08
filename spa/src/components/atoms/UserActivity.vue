@@ -37,16 +37,15 @@
 </template>
 
 <script>
-
 import { GridLayout } from '@egjs/vue-infinitegrid';
 
 export default {
   name: 'Timeline',
-  props: {
-    timelineTitle: String,
-  },
   components: {
     GridLayout,
+  },
+  props: {
+    timelineTitle: String,
   },
   data: () => ({
     start: 0,

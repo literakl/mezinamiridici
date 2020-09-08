@@ -23,7 +23,7 @@
 
 <script>
 import Date from '@/components/atoms/Date.vue';
-import ProfileLink from '@/components/atoms/ProfileLink.vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import { deepCopy } from '@/utils/api';
 
 export default {
