@@ -63,7 +63,6 @@ test('User activity API', async (done) => {
   // todo write blog
 
   response = await api(`users/${Leos._id}/activity`).json();
-  console.log(response);
   expect(response.success).toBeTruthy();
   expect(response.data.length).toBe(4);
   expect(response.data[0].userId).toBe(Leos._id);

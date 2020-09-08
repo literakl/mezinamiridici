@@ -295,7 +295,7 @@ test('User Rank', async (done) => {
     path: `/anketa/${poll1.data.info.slug}`,
     service: 'twitter',
     userId: Leos._id,
-    date: dayjs().subtract(10, 'week').format(SHORT_DATE_FORMAT),
+    date: dayjs().subtract(10, 'week').format(FULL_DATE_FORMAT),
   };
 
   let shareResponse = await api(`items/${poll1.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
@@ -313,7 +313,7 @@ test('User Rank', async (done) => {
   expect(rank).toBe('student');
 
   for (let i = 9; i >= 0;) {
-    shareBody.date = dayjs().subtract(i, 'week').format(SHORT_DATE_FORMAT);
+    shareBody.date = dayjs().subtract(i, 'week').format(FULL_DATE_FORMAT);
     // eslint-disable-next-line no-await-in-loop
     shareResponse = await api(`items/${poll1.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
     expect(shareResponse.success).toBeTruthy();
