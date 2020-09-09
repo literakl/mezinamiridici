@@ -1,9 +1,9 @@
 <template>
   <span>
-    <router-link :to="{ name: 'user-profile', params: { id: profile.id }}" :id="`user_${profile.id}`">
+    <router-link :to="{ name: 'user-profile', params: { id: profile.id }}" :id="id">
       {{profile.nickname}}
     </router-link>
-    <b-popover @show="onShow" :target="`user_${profile.id}`" triggers="hover" placement="top" delay="150">
+    <b-popover v-if="showUserInfo" @show="onShow" :target="id" triggers="hover" placement="top" delay="150">
       <template v-slot:title>Popover Title</template>
       <template v-slot:default v-if="userInfo">
         I am {{ userInfo.bio.nickname }}
@@ -14,6 +14,7 @@
 
 <script>
 import { BPopover } from 'bootstrap-vue';
+import { nanoid } from 'nanoid';
 
 export default {
   name: 'ProfileLink',
@@ -22,11 +23,16 @@ export default {
   },
   props: {
     profile: Object,
+    showUserInfo: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
       userInfo: undefined,
       requested: false,
+      id: nanoid(6),
     };
   },
   methods: {

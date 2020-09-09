@@ -30,11 +30,15 @@
       </span>
 
       <b-popover :target="`upvotes_${comment._id}`" triggers="hover" placement="top">
-        <div v-for="vote in upvotes" v-bind:key="vote._id"><ProfileLink :profile="vote.user"/></div>
+        <div v-for="vote in upvotes" v-bind:key="vote._id">
+          <ProfileLink :profile="vote.user" :show-user-info="false"/>
+        </div>
       </b-popover>
 
       <b-popover :target="`downvotes_${comment._id}`" triggers="hover" placement="top">
-        <div v-for="vote in downvotes" v-bind:key="vote._id"><ProfileLink :profile="vote.user"/></div>
+        <div v-for="vote in downvotes" v-bind:key="vote._id">
+          <ProfileLink :profile="vote.user" :show-user-info="false"/>
+        </div>
       </b-popover>
 
       <b-button v-if="!comment.parentId"  v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
