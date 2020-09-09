@@ -172,6 +172,11 @@ export default {
             },
           },
         },
+        onReady: () => {
+          if (this.$route.name === 'update-blog' && this.blog) {
+            this.$refs.editor.state.editor.render(this.blog.data.source);
+          }
+        },
       },
     };
   },
@@ -213,10 +218,10 @@ export default {
     tagSelect(tags) {
       this.tags = tags;
     },
-    onInitialized(editor) {
-      if (this.$route.name === 'update-blog') {
-        setTimeout(() => { editor.render(this.blog.data.source); }, 1000);
-      }
+    onInitialized() {
+      // if (this.$route.name === 'update-blog') {
+      //   setTimeout(() => { editor.render(this.blog.data.source); }, 1000);
+      // }editor
     },
     changePath(path) {
       this.picture = path;

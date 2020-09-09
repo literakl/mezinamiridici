@@ -1,22 +1,11 @@
 const dayjs = require('dayjs');
-const MarkdownIt = require('markdown-it');
-const emoji = require('markdown-it-emoji/light');
-const mark = require('markdown-it-mark');
 const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
-
-const md = new MarkdownIt({
-  html: false,
-  breaks: true,
-  linkify: true,
-  typographer: true,
-  quotes: '“”‘’',
-});
-md.use(emoji);
-md.use(mark);
+const edjsHTML = require('editorjs-html');
+const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
@@ -24,10 +13,10 @@ module.exports = (app) => {
   app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
     const {
-      text, parentId, date,
+      source, parentId, date,
     } = req.body;
     const { itemId } = req.params;
-    if (!itemId || !text) {
+    if (!itemId || !source) {
       return api.sendBadRequest(res, api.createError('Missing parameter', 'generic.internal-error'));
     }
 
@@ -51,7 +40,7 @@ module.exports = (app) => {
         }
       }
 
-      const comment = createComment(itemId, text, req.identity, parentId, publishDate);
+      const comment = createComment(itemId, source, req.identity, parentId, publishDate);
       await dbClient.db()
         .collection('comments')
         .insertOne(comment);
@@ -85,13 +74,19 @@ module.exports = (app) => {
   });
 };
 
-function createComment(itemId, text, user, parentId, date) {
+function createComment(itemId, source, user, parentId, date) {
+  let text = '';
+  edjsParser.parse(source).forEach((item) => {
+    text += item;
+  });
+  text = sanitizeHtml(text);
   const comment = {
     _id: mongo.generateTimeId(),
     itemId,
     parentId: parentId || undefined,
     date,
-    text: md.render(sanitizeHtml(text)),
+    source,
+    text,
     up: 0,
     down: 0,
     user: {

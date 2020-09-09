@@ -126,7 +126,7 @@ export default {
     },
     ADD_COMMENT: async (context, payload) => {
       Vue.$log.debug('ADD_COMMENT', payload);
-      const body = { text: payload.text, parentId: payload.parent };
+      const body = { source: payload.source, parentId: payload.parent };
       const response = await post('API', `/items/${payload.itemId}/comments`, body, context);
       context.commit('SET_ADDED_ID', { commentId: response.data.data.comment._id });
       if (response.data.success) {
