@@ -135,12 +135,12 @@ async function incrementUserActivityCounter(dbClient, userId, type, action) {
   let update;
   if (type === 'comment') {
     if (action === 'vote') {
-      update = { $inc: { 'honors.count.comment_votes': 1 } };
+      update = { $inc: { 'honors.count.commentVotes': 1 } };
     } else {
       update = { $inc: { 'honors.count.comments': 1 } };
     }
   } else if (type === 'poll') {
-    update = { $inc: { 'honors.count.poll_votes': 1 } };
+    update = { $inc: { 'honors.count.pollVotes': 1 } };
   } else if (type === 'share') {
     update = { $inc: { 'honors.count.shares': 1 } };
   } else if (type === 'blog') {

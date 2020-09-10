@@ -19,7 +19,7 @@ const calculateUserHonors = async () => {
       user = users[i];
       const currentRank = (user.honors) ? user.honors.rank : '';
       let finalRank = user.honors.rank || 'novice';
-      const pollVotesCount = user.honors.count.poll_votes, commentVotesCount = user.honors.count.comment_votes,
+      const pollVotesCount = user.honors.count.pollVotes, commentVotesCount = user.honors.count.commentVotes,
         commentsCount = user.honors.count.comments, blogCount = user.honors.count.blogs, sharesCount = user.honors.count.shares;
       // eslint-disable-next-line no-await-in-loop
       const commentRatio = await getCommentRatio(dbClient, user._id);
@@ -43,7 +43,7 @@ const calculateUserHonors = async () => {
         }
 
         if (pollVotesCount >= 10 && sharingWeeksCount >= 10 && commentRatio >= 80 && commentsCount >= 100 && blogCount >= 10) {
-          finalRank = 'master';
+          finalRank = 'expert';
         }
 
         if (sharingWeeksCount < 10) {

@@ -155,7 +155,19 @@
     "terms": "I agree with terms and conditions",
     "processing": "I agree with processing of my personal data",
     "user-not-found": "We are sorry but this driver is unknown to us",
-    "update-button": "Update my profile"
+    "update-button": "Update my profile",
+    "info": {
+      "member-since": "Member since",
+      "rank-label": "Rank",
+      "comments-label": "Comments",
+      "comment-ratio-label": "Approval rate",
+      "rank": {
+        "novice": "novice",
+        "student": "student",
+        "graduate": "graduate",
+        "expert": "expert"
+      }
+    }
   },
   "poll": {
     "your-vote": "Your vote:",

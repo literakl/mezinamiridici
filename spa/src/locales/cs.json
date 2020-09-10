@@ -155,7 +155,19 @@
     "terms": "Souhlasím s podmínkami užití",
     "processing": "Souhlasím se zpracováním osobních údajů",
     "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
-    "update-button": "Upravit profil"
+    "update-button": "Upravit profil",
+    "info": {
+      "member-since": "Členem od",
+      "rank-label": "Úroveň",
+      "comments-label": "Komentářů",
+      "comment-ratio-label": "Míra souhlasu",
+      "rank": {
+        "novice": "učeň",
+        "student": "student",
+        "graduate": "veterán",
+        "expert": "mistr"
+      }
+    }
   },
   "poll": {
     "your-vote": "Váš hlas:",

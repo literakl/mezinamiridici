@@ -219,9 +219,9 @@ function insertUser(dbClient, id, email, nickname, provider) {
     honors: {
       rank: 'novice',
       count: {
-        poll_votes: 0,
+        pollVotes: 0,
         comments: 0,
-        comment_votes: 0,
+        commentVotes: 0,
         blogs: 0,
         shares: 0,
       },

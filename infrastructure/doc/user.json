@@ -30,9 +30,9 @@
     "date": "2020-03-22 16:46",
     "sharingWeeksList": [[23, true], [24, false], [25, true], [26, true], [27, true], [28, false], [29, true]],
     "count": {
-      "poll_votes": 0,
+      "pollVotes": 0,
       "comments": 0,
-      "comment_votes": 0,
+      "commentVotes": 0,
       "blogs": 0,
       "shares": 0,
       "commentVoteRatio": 66,

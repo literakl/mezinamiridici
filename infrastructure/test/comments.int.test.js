@@ -391,7 +391,7 @@ test('Comments API', async (done) => {
 
   let counter = await getActivityCounter(dbClient, Leos._id, 'comments');
   expect(counter).toBe(3);
-  counter = await getActivityCounter(dbClient, Leos._id, 'comment_votes');
+  counter = await getActivityCounter(dbClient, Leos._id, 'commentVotes');
   expect(counter).toBe(3);
 
   done();
