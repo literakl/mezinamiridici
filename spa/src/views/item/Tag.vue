@@ -21,7 +21,7 @@
 
 <script>
 import VueWordCloud from 'vuewordcloud';
-import ContentLoading from '@/components/molecules/ContentLoading.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import ItemList from '@/components/molecules/ItemList.vue';
 
 export default {

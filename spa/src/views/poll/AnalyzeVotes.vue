@@ -38,7 +38,7 @@
 <script>
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import SeriesBarChart from '@/components/molecules/SeriesBarChart.vue';
-import ContentLoading from '@/components/molecules/ContentLoading.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import SeriesForm from '@/components/molecules/SeriesForm.vue';
 import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
 

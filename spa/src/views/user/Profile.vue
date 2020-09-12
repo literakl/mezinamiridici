@@ -62,29 +62,7 @@
       </b-col>
     </b-row>
 
-    <content-loader
-      :height="100"
-      :width="400"
-      :speed="2"
-      primaryColor="#949494"
-      secondaryColor="#606060"
-      v-if="!userProfile && !error"
-    >
-      <rect x="9" y="12" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="12" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="31" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="31" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="51" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="51" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="71" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="71" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
-    </content-loader>
+    <ContentLoading v-if="!userProfile && !error" type="profile" />
 
     <UserActivity :timeline-title="title"/>
   </div>
@@ -92,13 +70,13 @@
 
 <script>
 import { BIconPencil } from 'bootstrap-vue';
-import { ContentLoader } from 'vue-content-loader';
-import UserActivity from '../../components/atoms/UserActivity.vue';
+import UserActivity from '@/components/atoms/UserActivity.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 
 export default {
   name: 'profile',
   components: {
-    ContentLoader,
+    ContentLoading,
     BIconPencil,
     UserActivity,
   },

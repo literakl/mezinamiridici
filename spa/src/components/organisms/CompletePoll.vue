@@ -15,24 +15,12 @@
       <PollButtons v-on:do-vote="onVote"/>
     </div>
 
-    <content-loader
-      :height="200"
-      :width="400"
-      :speed="22"
-      primaryColor="#f3f3f3"
-      secondaryColor="#ecebeb"
-      v-if="voting"
-    >
-      <rect x="50" y="9.61" rx="3" ry="3" width="40" height="200"/>
-      <rect x="130" y="9.61" rx="3" ry="3" width="40" height="200"/>
-      <rect x=210 y="7.61" rx="3" ry="3" width="40" height="200"/>
-      <rect x="290" y="7.61" rx="3" ry="3" width="40" height="200"/>
-    </content-loader>
+    <ContentLoading v-if="voting" type="voting"/>
   </div>
 </template>
 
 <script>
-import { ContentLoader } from 'vue-content-loader';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import BarChart from '@/components/molecules/BarChart.vue';
@@ -41,7 +29,7 @@ import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.
 export default {
   name: 'CompletePoll',
   components: {
-    ContentLoader,
+    ContentLoading,
     BarChart,
     PollButtons,
     PollHeading,

@@ -9,7 +9,7 @@
 
 <script>
 import CompletePoll from '@/components/organisms/CompletePoll.vue';
-import ContentLoading from '@/components/molecules/ContentLoading.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Comments from '@/components/organisms/Comments.vue';
 

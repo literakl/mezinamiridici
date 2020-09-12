@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ContentLoading from '@/components/molecules/ContentLoading.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import ItemList from '@/components/molecules/ItemList.vue';
 

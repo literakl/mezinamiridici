@@ -11,29 +11,7 @@
       </b-col>
     </b-row>
 
-    <content-loader
-      :height="100"
-      :width="400"
-      :speed="2"
-      primaryColor="#949494"
-      secondaryColor="#606060"
-      v-if="!userProfile && !error"
-    >
-      <rect x="9" y="12" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="12" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="31" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="31" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="51" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="51" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="71" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="71" rx="3" ry="3" width="100" height="5"/>
-
-      <rect x="9" y="91" rx="3" ry="3" width="50" height="5"/>
-      <rect x="70" y="91" rx="3" ry="3" width="100" height="5"/>
-    </content-loader>
+    <ContentLoading v-if="!userProfile && !error" type="profile" />
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
@@ -197,7 +175,7 @@
 
 <script>
 import { configure } from 'vee-validate';
-import { ContentLoader } from 'vue-content-loader';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
@@ -237,7 +215,7 @@ function convertErrors(jsonErrors) {
 export default {
   name: 'sign-up',
   components: {
-    ContentLoader,
+    ContentLoading,
     Datepicker,
     Checkbox,
     Button,
