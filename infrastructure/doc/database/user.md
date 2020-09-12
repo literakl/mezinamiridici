@@ -46,7 +46,7 @@ commentVotes: count of votes a user has casted; int; required
 blogs: blog stories coumt; int; required
 shares: how many links a user shared; int; required
 commentVoteRatio: ratio between negative and positive votes; int; optional
-sharingWeeks: weeks where a user shared some link; int; optional
+sharingWeeks: last consecutive weeks where a user shared some link; int; optional
 
 ## Consent section
 

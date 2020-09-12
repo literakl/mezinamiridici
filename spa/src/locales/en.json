@@ -156,13 +156,21 @@
     "user-not-found": "We are sorry but this driver is unknown to us",
     "member-since-label": "Member since",
     "rank-label": "Rank",
-    "comments-label": "Comments",
-    "comment-ratio-label": "Approval rate",
     "rank": {
       "novice": "novice",
       "student": "student",
       "graduate": "graduate",
       "expert": "expert"
+    },
+    "honors": {
+      "next-rank-label": "Next rank",
+      "poll-votes-label": "Poll votes",
+      "comments-label": "Comments",
+      "comment-votes-label": "Comment votes",
+      "comment-ratio-label": "Approval rate",
+      "shares-label": "Shares",
+      "sharing-weeks-label": "Weeks of sharing",
+      "blogs-label": "Blogs"
     }
   },
   "poll": {
