@@ -4,6 +4,7 @@ const isoWeek = require('dayjs/plugin/isoWeek');
 
 const mongo = require('../utils/mongo.js');
 const logger = require('../utils/logging');
+const { findLastIndex } = require('../utils/helpers');
 
 dayjs.extend(isoWeek);
 
@@ -30,7 +31,7 @@ const calculateUserHonors = async () => {
           finalRank = 'student';
         }
       } else if (currentRank === 'student') {
-        if (pollVotesCount >= 3 && sharesCount >= 10 && commentRatio > 50 && blogCount >= 1) {
+        if (pollVotesCount >= 3 && sharesCount >= 10 && commentRatio > 66 && blogCount >= 1) {
           finalRank = 'graduate';
         }
       } else if (currentRank === 'graduate') {
@@ -117,7 +118,7 @@ const getConsecutiveSharing = async (dbClient, userId) => {
 
 function calculateConsecutiveSharing(date, foundWeeks) {
   const weeks = [];
-  let start = date, index = 0, week, counter = 0;
+  let start = date, index = 0, week;
   for (let i = 0; i < 10;) {
     week = start.isoWeek();
     while (index < foundWeeks.length && foundWeeks[index]._id < week) {
@@ -127,7 +128,6 @@ function calculateConsecutiveSharing(date, foundWeeks) {
     if (index < foundWeeks.length && foundWeeks[index]._id === week) {
       if (foundWeeks[index].shares > 0) {
         weeks.push({ week, shared: true });
-        counter += 1;
       } else {
         weeks.push({ week, shared: false });
       }
@@ -139,7 +139,15 @@ function calculateConsecutiveSharing(date, foundWeeks) {
     i += 1;
   }
 
-  return { sharingWeeksCount: counter, sharingWeeksList: weeks };
+  // let count = weeks.reverse().findIndex(aWeek => !aWeek.shared);
+  let count = findLastIndex(weeks, aWeek => !aWeek.shared);
+  if (count === -1) {
+    count = 0;
+  } else {
+    count = 9 - count;
+  }
+
+  return { sharingWeeksCount: count, sharingWeeksList: weeks };
 }
 
 module.exports = async () => {

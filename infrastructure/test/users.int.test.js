@@ -350,11 +350,11 @@ test('User Rank', async (done) => {
     { _id: 33, shares: 1 },
     { _id: 34, shares: 0 },
     { _id: 35, shares: 1 },
-    { _id: 36, shares: 0 },
+    { _id: 36, shares: 1 },
   ];
   let start = dayjs('2020-06-29');
   let calculatedWeeks = calculateConsecutiveSharing(start, foundWeeks);
-  expect(calculatedWeeks).toStrictEqual({ sharingWeeksCount: 5,
+  expect(calculatedWeeks).toStrictEqual({ sharingWeeksCount: 2,
     sharingWeeksList: [
       { week: 27, shared: true },
       { week: 28, shared: false },
@@ -365,7 +365,7 @@ test('User Rank', async (done) => {
       { week: 33, shared: true },
       { week: 34, shared: false },
       { week: 35, shared: true },
-      { week: 36, shared: false },
+      { week: 36, shared: true },
     ] });
 
   start = dayjs('2019-12-22');
@@ -376,7 +376,7 @@ test('User Rank', async (done) => {
     { _id: 7, shares: 3 },
   ];
   calculatedWeeks = calculateConsecutiveSharing(start, foundWeeks);
-  expect(calculatedWeeks).toStrictEqual({ sharingWeeksCount: 4,
+  expect(calculatedWeeks).toStrictEqual({ sharingWeeksCount: 0,
     sharingWeeksList: [
       { week: 51, shared: false },
       { week: 52, shared: true },

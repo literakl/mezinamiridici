@@ -17,7 +17,7 @@ const Leos = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { pollVotes: 0, comments: 0, commentVotes: 0, commentVoteRatio: 25, blogs: 0, sharingWeeks: 0 },
+    count: { pollVotes: 0, comments: 4, commentVotes: 0, commentVoteRatio: 25, blogs: 0, shares: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
   roles: ['admin:poll'],
@@ -37,7 +37,7 @@ const Jiri = {
   prefs: { public: true },
   honors: {
     rank: 'expert',
-    count: { pollVotes: 10, comments: 100, commentVotes: 50, commentVoteRatio: 90, blogs: 20, sharingWeeks: 30 },
+    count: { pollVotes: 10, comments: 100, commentVotes: 50, commentVoteRatio: 90, blogs: 20, shares: 250, sharingWeeks: 30 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -55,7 +55,7 @@ const Lukas = {
   honors: {
     rank: 'graduate',
     sharingWeeksList: [[23, true], [24, false], [25, true], [26, true], [27, true], [28, false], [29, true], [30, true], [31, true], [32, false]],
-    count: { pollVotes: 5, comments: 20, commentVotes: 30, commentVoteRatio: 80, blogs: 2, sharingWeeks: 15 },
+    count: { pollVotes: 5, comments: 20, commentVotes: 30, commentVoteRatio: 80, blogs: 2, shares: 30, sharingWeeks: 15 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -74,7 +74,7 @@ const Vita = {
   prefs: { public: true },
   honors: {
     rank: 'student',
-    count: { pollVotes: 2, comments: 2, commentVotes: 10, blogs: 1, sharingWeeks: 3 },
+    count: { pollVotes: 2, comments: 2, commentVotes: 10, blogs: 1, shares: 4, sharingWeeks: 3 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -93,7 +93,7 @@ const Jana = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { pollVotes: 0, comments: 0, commentVotes: 0, blogs: 0, sharingWeeks: 0 },
+    count: { pollVotes: 0, comments: 0, commentVotes: 0, blogs: 0, shares: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
 };
@@ -112,7 +112,7 @@ const Bara = {
   prefs: { public: true },
   honors: {
     rank: 'novice',
-    count: { pollVotes: 1, comments: 10, commentVotes: 20, commentVoteRatio: 66, blogs: 2, sharingWeeks: 5 },
+    count: { pollVotes: 1, comments: 10, commentVotes: 20, commentVoteRatio: 66, blogs: 2, shares: 7, sharingWeeks: 5 },
   },
   consent: { terms: new Date(), data: new Date() },
 };

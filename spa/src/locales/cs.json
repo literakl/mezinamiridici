@@ -156,13 +156,22 @@
     "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
     "member-since-label": "Datum registrace",
     "rank-label": "Úroveň",
-    "comments-label": "Komentářů",
-    "comment-ratio-label": "Míra souhlasu",
     "rank": {
-      "novice": "student",
-      "student": "zajíc",
-      "graduate": "frajer",
-      "expert": "eso"
+      "novice": "začátečník",
+      "student": "zkušený",
+      "graduate": "expert",
+      "expert": "guru"
+    },
+    "honors": {
+      "next-rank-label": "Příští úroveň",
+      "requirements-label": "Podmínky",
+      "poll-votes-label": "Hlasy v anketách",
+      "comments-label": "Komentáře",
+      "comment-votes-label": "Hlasy v komentářích",
+      "comment-ratio-label": "Míra souhlasu",
+      "shares-label": "Sdílení",
+      "sharing-weeks-label": "Týdny sdílení",
+      "blogs-label": "Blogy"
     }
   },
   "poll": {
