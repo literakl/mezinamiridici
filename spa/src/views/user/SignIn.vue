@@ -106,6 +106,7 @@ export default {
   },
   props: {
     message: String,
+    redirectUrl: String,
   },
   data: () => ({
     page: 0,
@@ -128,7 +129,7 @@ export default {
           password: this.password,
         });
 
-        await this.$router.push('/');
+        await this.$router.push(this.redirectUrl || '/');
       } catch (error) {
         this.$log.error(error);
         if (error.response && error.response.data && error.response.data.errors) {

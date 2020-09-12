@@ -118,6 +118,10 @@ export default {
       });
     },
     async upvote() {
+      if (!this.$store.getters.IS_AUTHORIZED) {
+        await this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        return;
+      }
       if (this.voted) return;
       await this.$store.dispatch('VOTE_COMMENT', {
         vote: 1,
@@ -127,6 +131,10 @@ export default {
       this.voted = true;
     },
     async downvote() {
+      if (!this.$store.getters.IS_AUTHORIZED) {
+        await this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        return;
+      }
       if (this.voted) return;
       await this.$store.dispatch('VOTE_COMMENT', {
         vote: -1,
@@ -136,6 +144,10 @@ export default {
       this.voted = true;
     },
     reply() {
+      if (!this.$store.getters.IS_AUTHORIZED) {
+        this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        return;
+      }
       this.replying = !this.replying;
     },
   },
