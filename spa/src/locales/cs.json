@@ -162,10 +162,10 @@
       "comments-label": "Komentářů",
       "comment-ratio-label": "Míra souhlasu",
       "rank": {
-        "novice": "zajíc",
-        "student": "student",
-        "graduate": "absolvent",
-        "expert": "mistr"
+        "novice": "student",
+        "student": "zajíc",
+        "graduate": "frajer",
+        "expert": "eso"
       }
     }
   },
