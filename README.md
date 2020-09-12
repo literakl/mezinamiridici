@@ -11,23 +11,32 @@ This is a monorepo for portal mezinamiridici.cz
 * `infrastructure` is the NodeJS backend
 * `nginx` is a configuration for Nginx server
 
+##Prerequisities
+
+* download and install [NodeJS 12](https://nodejs.org/en/download/). It needs to be on your path so you can start it from any directory.
+* download and install [MongoDB 4.2](https://www.mongodb.com/try/download/community) or newer.
+* You might need to unblock the ports 8080 (web), 3000 (backend) and 27017 (mongo) in your firewall.
+
 ## Database
 
-Install the latest Mongodb and then import the data:
+Import the data:
 
 ```
-cd mongo
+cd infrastructure/database/doc
 # install indexes and constrains
-mongo bud < mongo_setup.js
-# use your favorite command to unzip the database dump
-unzip demo_data.zip  
-mongoimport --db=bud --collection=users --jsonArray users.json
-mongoimport --db=bud --collection=items --jsonArray items.json
-mongoimport --db=bud --collection=poll_votes --jsonArray poll_votes.json
-mongoimport --db=bud --collection=comments --jsonArray comments.json
-mongoimport --db=bud --collection=comment_votes --jsonArray comment_votes.json
-mongoimport --db=bud --collection=user_activity --jsonArray user_activity.json
+mongo bud mongo_setup.js
+cd ..
+# generate demo database (backend server must not be running!)
+node test/generate_sample_data.js
 ```
+
+If you need to recreate the database:
+
+```
+mongo bud --eval db.dropDatabase()
+```
+
+and repeat the import procedure. 
 
 ## Configuration
 
@@ -39,11 +48,9 @@ Copy `.env.template` to `.env` and update as needed. You may need to set your lo
 
 Copy `.env.template` to `.env` and update as needed. If you want to access the web 
 from other devices (e.g. mobile phone), you should point the endpoint properties
-to the real IP address (not localhost or 127.0.0.1).
+to your real IP address (not localhost or 127.0.0.1).
 
 ## Local run
-
-You might need to unblock the ports 8080 (web), 3000 (backend) and 27017 (mongo) in your firewall.
 
 The first terminal: 
 ```
