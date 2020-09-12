@@ -174,6 +174,44 @@
             identifier="university"/>
         </b-row>
 
+        <label class="pt-3" for="emailNotifications">{{ $t('profile.email-notifications') }}</label>
+        <div>
+          <Checkbox
+            v-model="emailNotifications"
+            :label="$t('sign-up.notifications-label')"
+            name="email-notifications"
+            identifier="emailNotifications"/>
+        </div>
+
+        <div v-if="emailNotifications" class="pl-3">
+
+          <Checkbox
+            v-model="newPollNotification"
+            :label="$t('profile.newsletter.new-poll-notification')"
+            name="new-poll-notifications"
+            identifier="newPollNotification"/>
+          <Checkbox
+            v-model="reactionNotification"
+            :label="$t('profile.newsletter.reaction-notification')"
+            name="reaction-notifications"
+            identifier="reactionNotification"/>
+
+          <b-row>
+            <Radio
+              class="pl-3"
+              v-model="newsletter"
+              :label="$t('profile.newsletter.weekly')"
+              name="newsletter"
+              identifier="weekly"/>
+            <Radio
+              class="pl-3"
+              v-model="newsletter"
+              :label="$t('profile.newsletter.daily')"
+              name="newsletter"
+              identifier="daily"/>
+          </b-row>
+        </div>
+
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
@@ -267,6 +305,10 @@ export default {
     },
     error: null,
     success: null,
+    emailNotifications: false,
+    newsletter: 'daily',
+    newPollNotification: false,
+    reactionNotification: false,
   }),
   created() {
     this.getProfile(this.$store.getters.USER_ID);
@@ -297,6 +339,13 @@ export default {
         this.region = this.userProfile.bio.region;
         this.education = this.userProfile.bio.edu;
         this.share = this.userProfile.prefs.public ? 'public' : 'private';
+
+        if (this.userProfile.prefs.email.newsletter) {
+          this.emailNotifications = true;
+          this.newsletter = this.userProfile.prefs.email.summary;
+          this.newPollNotification = this.userProfile.prefs.email.poll;
+          this.reactionNotification = this.userProfile.prefs.email.reaction;
+        }
       } catch (err) {
         this.$log.error(err);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -320,6 +369,10 @@ export default {
           region: this.region,
           education: this.education,
           publicProfile: this.share,
+          emails: this.emailNotifications,
+          newsletter: this.newsletter,
+          newPollNotification: this.newPollNotification,
+          reactionNotification: this.reactionNotification,
         });
         await this.$router.push({ name: 'user-profile', params: { id: this.userProfile._id } });
       } catch (error) {

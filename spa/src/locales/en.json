@@ -147,6 +147,13 @@
       "man": "man",
       "woman": "woman"
     },
+    "email-notifications": "Email Notifications",
+    "newsletter": {
+      "weekly": "weekly",
+      "daily": "daily",
+      "new-poll-notification": "I agree to receive email when a poll is published newly.",
+      "reaction-notification": "I agree to receive email when somebody else reply to comment on a poll you are participating."
+    },
     "public": "public",
     "private": "private",
     "share-profile": "Share profile",

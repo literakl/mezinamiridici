@@ -171,6 +171,18 @@ export default new Router({
       props: true,
     },
     {
+      path: '/reject-poll-notification/:token',
+      name: 'reject-poll-notification',
+      component: () => import('./views/user/RejectNotification.vue'),
+      props: true,
+    },
+    {
+      path: '/reject-reaction-notification/:token',
+      name: 'reject-reaction-notification',
+      component: () => import('./views/user/RejectNotification.vue'),
+      props: true,
+    },
+    {
       path: '*',
       name: 'not-found',
       component: () => import('./views/site/404.vue'),

@@ -29,7 +29,7 @@ module.exports = (app) => {
 
 function prepareUpdateProfileQuery(req) {
   const {
-    drivingSince, vehicles, sex, born, region, education, publicProfile,
+    drivingSince, vehicles, sex, born, region, education, publicProfile, emails, newsletter, newPollNotification, reactionNotification
   } = req.body;
   const setters = {}, unsetters = {};
   if (sex) {
@@ -64,6 +64,16 @@ function prepareUpdateProfileQuery(req) {
   }
   if (publicProfile === true || publicProfile === false) {
     setters['prefs.public'] = publicProfile;
+  }
+  if (emails) {
+    setters['consent.email'] = new Date();
+    setters['prefs.email.newsletter'] = emails;
+    setters['prefs.email.summary'] = newsletter;
+    setters['prefs.email.poll'] = newPollNotification;
+    setters['prefs.email.reaction'] = reactionNotification;
+  } else {
+    setters['consent.email'] = '';
+    setters['prefs.email.newsletter'] = emails;
   }
   const query = { };
   if (Object.keys(setters).length !== 0) {

@@ -1,0 +1,12 @@
+{
+  "subject": "Reaction Notification",
+  "text_template": "reaction_notification.txt",
+  "html_template": "reaction_notification.html",
+  "attachments": [
+    {
+      "filename": "logo.png",
+      "path": "../emails/files/logo.png",
+      "cid": "budlogo"
+    }
+  ]
+}

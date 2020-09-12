@@ -11,7 +11,7 @@ module.exports = (app) => {
   app.post('/v1/users', auth.cors, async (req, res) => {
     logger.verbose('createUser handler starts');
     const {
-      email, password, nickname, termsAndConditions, dataProcessing, emails,
+      email, password, nickname, termsAndConditions, dataProcessing, emails, newsletter, newPollNotification, reactionNotification,
     } = req.body;
     const result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
     if (!result.success) {
@@ -25,7 +25,7 @@ module.exports = (app) => {
     logger.debug('Mongo connected');
 
     try {
-      await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
+      await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken, newsletter, newPollNotification, reactionNotification);
       logger.debug('User created');
     } catch (err) {
       logger.error('Request failed', err);
@@ -64,7 +64,7 @@ module.exports = (app) => {
   });
 };
 
-function insertUser(dbClient, id, email, password, nickname, emails, verificationToken) {
+function insertUser(dbClient, id, email, password, nickname, emails, verificationToken, newsletter, newPollNotification, reactionNotification) {
   const salt = bcrypt.genSaltSync(10);
   const passwordHash = bcrypt.hashSync(password, salt);
   const now = new Date();
@@ -103,7 +103,7 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
   };
   if (emails) {
     userDoc.consent.email = now;
-    userDoc.prefs.email = { newsletter: true, summary: 'daily' };
+    userDoc.prefs.email = { newsletter: true, summary: newsletter, poll: newPollNotification, reaction: reactionNotification };
   }
 
   return dbClient.db().collection('users').insertOne(userDoc);

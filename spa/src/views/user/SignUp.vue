@@ -218,6 +218,35 @@
             identifier="emailNotifications"/>
         </div>
 
+        <div v-if="emailNotifications" class="pl-3">
+
+          <Checkbox
+            v-model="newPollNotification"
+            :label="$t('profile.newsletter.new-poll-notification')"
+            name="new-poll-notifications"
+            identifier="newPollNotification"/>
+          <Checkbox
+            v-model="reactionNotification"
+            :label="$t('profile.newsletter.reaction-notification')"
+            name="reaction-notifications"
+            identifier="reactionNotification"/>
+
+          <b-row>
+            <Radio
+              class="pl-3"
+              v-model="newsletter"
+              :label="$t('profile.newsletter.weekly')"
+              name="newsletter"
+              identifier="weekly"/>
+            <Radio
+              class="pl-3"
+              v-model="newsletter"
+              :label="$t('profile.newsletter.daily')"
+              name="newsletter"
+              identifier="daily"/>
+          </b-row>
+        </div>
+
         <div v-if="error" class="text-danger">
           <strong>
             {{ error }}
@@ -256,7 +285,6 @@ import Radio from '@/components/atoms/Radio.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import i18n from '@/i18n';
-import store from '../../store';
 
 configure({
   defaultMessage: (field, values) => {
@@ -360,6 +388,9 @@ export default {
     wholeDisable: false,
     emailBoxDisabled: false,
     tokenUser: null,
+    newsletter: 'daily',
+    newPollNotification: false,
+    reactionNotification: false,
   }),
   mounted() {
     if (!this.token) return;
@@ -389,6 +420,9 @@ export default {
             termsAndConditions: this.termsAndConditions,
             dataProcessing: this.personalDataProcessing,
             emails: this.emailNotifications,
+            newsletter: this.newsletter,
+            newPollNotification: this.newPollNotification,
+            reactionNotification: this.reactionNotification,
           });
           if (response) {
             this.$router.push('/');
@@ -401,6 +435,9 @@ export default {
             termsAndConditions: this.termsAndConditions,
             dataProcessing: this.personalDataProcessing,
             emails: this.emailNotifications,
+            newsletter: this.newsletter,
+            newPollNotification: this.newPollNotification,
+            reactionNotification: this.reactionNotification,
           });
         }
         this.sending = false;

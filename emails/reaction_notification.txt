@@ -1,0 +1,14 @@
+Zdravíme z portálu Mezi námi řidiči,
+
+na základě nastavení vašeho účtu vám posíláme, co se událo nového. Pokud vás tyto informace již nezajímají, na konci emailu je můžete jedním kliknutím odhlásit.
+
+Je živo v diskusích, kterých se účastníte.
+
+Pod vašimi komentáři přibyly reakce v těchto diskusích:
+
+{{commentList}}
+ 
+
+Váš tým Mezi námi řidici
+
+Odhlásit upozornění na nové reakce{{ rejectLink }}

@@ -3,3 +3,4 @@ const logger = require('./utils/logging');
 
 app.listen(3000, () => logger.info('Server started'));
 require('./jobs/calculateUserRanks')();
+require('./jobs/setNotificationEmail')();

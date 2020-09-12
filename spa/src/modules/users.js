@@ -165,7 +165,10 @@ export default {
         nickname: payload.nickname,
         termsAndConditions: payload.termsAndConditions,
         dataProcessing: payload.dataProcessing,
-        emails: payload.marketing,
+        emails: payload.emails,
+        newsletter: payload.newsletter,
+        newPollNotification: payload.newPollNotification,
+        reactionNotification: payload.reactionNotification,
       };
       const result = await post('API', '/users', body);
       return result;
@@ -179,6 +182,10 @@ export default {
         region: payload.region,
         education: payload.education,
         publicProfile: payload.publicProfile,
+        emails: payload.emails,
+        newsletter: payload.newsletter,
+        newPollNotification: payload.newPollNotification,
+        reactionNotification: payload.reactionNotification,
       };
       return patch('API', `/users/${payload.userId}`, body, context, payload.jwt);
     },
@@ -205,5 +212,6 @@ export default {
       context.commit('SET_USER_ACTIVITY', response.data.data);
       return response.data.success;
     },
+    REJECT_NOTIFICATION: async (context, payload) => post('API', `/reject/${payload}`),
   },
 };

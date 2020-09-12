@@ -25,6 +25,7 @@ require('./handlers/users/verifyUser')(app);
 require('./handlers/users/activateUser')(app);
 require('./handlers/users/socialLink')(app);
 require('./handlers/users/getUserActivity')(app);
+require('./handlers/users/rejectNotification')(app);
 require('./handlers/polls/createPoll')(app);
 require('./handlers/polls/updatePoll')(app);
 require('./handlers/polls/getPoll')(app);

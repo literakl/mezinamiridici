@@ -63,6 +63,7 @@ async function getActivity(dbClient, userId) {
         itemId: 1,
         commentId: 1,
         action: 1,
+        published: 1,
         vote: 1,
         'info.slug': 1,
         'info.caption': 1,

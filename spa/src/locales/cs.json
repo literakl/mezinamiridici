@@ -142,6 +142,13 @@
       "secondary": "středoškolské",
       "university": "vysokoškolské"
     },
+    "email-notifications": "E-mailová oznámení",
+    "newsletter": {
+      "weekly": "týdně",
+      "daily": "denně",
+      "newPollNotification": "Souhlasím se zasíláním e-mailů při zveřejnění nové ankety.",
+      "reactionNotification": "Souhlasím se zasíláním e-mailů, když někdo jiný odpoví na komentář k anketě, které se účastníte."
+    },
     "sex": "Pohlaví",
     "sexes": {
       "man": "muž",

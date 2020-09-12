@@ -1,0 +1,12 @@
+Zdravíme z portálu Mezi námi řidiči,
+
+na základě nastavení vašeho účtu vám posíláme, co se událo nového. Pokud vás tyto informace již nezajímají, na konci emailu je můžete jedním kliknutím odhlásit.
+
+Vyšla nová anketa: {{poll_caption}}
+Co si o tom myslíte? Je to pohoda, nebo na kriminál?
+
+Přejeme spoustu kilometrů bez nehody. A hlavně klid!
+
+Váš tým Mezi námi řidici
+
+Odhlásit upozornění na novou anketu{{reject_url}}

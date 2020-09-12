@@ -1,0 +1,12 @@
+{
+  "subject": "New Poll Notification",
+  "text_template": "new_poll_notification.txt",
+  "html_template": "new_poll_notification.html",
+  "attachments": [
+    {
+      "filename": "logo.png",
+      "path": "../emails/files/logo.png",
+      "cid": "budlogo"
+    }
+  ]
+}

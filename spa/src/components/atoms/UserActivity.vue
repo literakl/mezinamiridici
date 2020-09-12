@@ -20,7 +20,7 @@
           }"
           @append="onAppend"
           @layout-complete="onLayoutComplete"
-          v-if="activityData"
+          v-if="activityList.length > 0"
         >
           <div slot="loading">{{ $t('generic.loading-message') }}</div>
           <div class="post" v-for="item in list" :key="item.key">
@@ -77,7 +77,7 @@ export default {
         const vote = (item.vote === 1) ? 'up' : 'down';
         arr.push({
           text: `${item.info.caption}`,
-          date: new Date(item.date).toLocaleString('cs-CZ'),
+          date: new Date(item.published).toLocaleString('cs-CZ'),
           tags: `${item.action} ${(item.action === 'vote') ? vote : ''}`,
         });
       });
