@@ -6,10 +6,10 @@
     <b-popover v-if="showUserInfo" @show="onShow" :target="id" triggers="hover" placement="top" delay="150">
       <template v-slot:title><span v-if="userInfo">{{ userInfo.bio.nickname }}</span></template>
       <template v-slot:default v-if="userInfo">
-        <div>{{ $t('profile.info.member-since') }}: <Date :date="userInfo.bio.registered" format="dynamicDate" /></div>
-        <div>{{ $t('profile.info.rank-label') }}: {{ $t(`profile.info.rank.${userInfo.honors.rank}`) }}</div>
-        <div>{{ $t('profile.info.comments-label') }}: {{ userInfo.honors.count.comments }}</div>
-        <div v-if="userInfo.honors.count.commentVoteRatio">{{ $t('profile.info.comment-ratio-label') }}: {{ userInfo.honors.count.commentVoteRatio }}</div>
+        <div>{{ $t('profile.member-since-label') }}: <Date :date="userInfo.bio.registered" format="dynamicDate" /></div>
+        <div>{{ $t('profile.rank-label') }}: {{ $t(`profile.rank.${userInfo.honors.rank}`) }}</div>
+        <div>{{ $t('profile.comments-label') }}: {{ userInfo.honors.count.comments }}</div>
+        <div v-if="userInfo.honors.count.commentVoteRatio">{{ $t('profile.comment-ratio-label') }}: {{ userInfo.honors.count.commentVoteRatio }}</div>
       </template>
     </b-popover>
   </span>

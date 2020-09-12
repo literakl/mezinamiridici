@@ -29,6 +29,7 @@
                 <BIconPersonFill scale="2"></BIconPersonFill>
               </template>
               <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'update-profile'}">{{ $t('app.update-profile') }}</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'update-password'}">{{ $t('app.change-password') }}</b-dropdown-item>
               <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>

@@ -32,7 +32,7 @@
         </b-row>
 
         <Datepicker
-          :label="$t('profile.driving-since')"
+          :label="$t('profile.driving-since-label')"
           v-model="drivingSince"
           format="yyyy"
           minimumView="year"
@@ -42,7 +42,7 @@
           name="driving-since"/>
 
         <div>
-          <label for="vehicle">{{ $t('profile.vehicle') }}</label>
+          <label for="vehicle">{{ $t('profile.vehicles-label') }}</label>
         </div>
         <b-row>
           <Checkbox

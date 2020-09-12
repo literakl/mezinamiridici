@@ -6,6 +6,7 @@
     "sign-in-up": "Sign in / Sign up",
     "sign-out": "Sign out",
     "my-profile": "My profile",
+    "update-profile": "Update my profile",
     "change-password": "Change my password",
     "new-post": "New post",
     "help": "Help",
@@ -107,8 +108,8 @@
     "email": "Email",
     "password": "Password",
     "nickname": "Nickname",
-    "driving-since": "Driving since",
-    "vehicle": "Vehicle",
+    "driving-since-label": "Driving since",
+    "vehicles-label": "Vehicle",
     "vehicles": {
       "bike": "motorbike",
       "car": "car",
@@ -153,18 +154,15 @@
     "terms": "I agree with terms and conditions",
     "processing": "I agree with processing of my personal data",
     "user-not-found": "We are sorry but this driver is unknown to us",
-    "update-button": "Update my profile",
-    "info": {
-      "member-since": "Member since",
-      "rank-label": "Rank",
-      "comments-label": "Comments",
-      "comment-ratio-label": "Approval rate",
-      "rank": {
-        "novice": "novice",
-        "student": "student",
-        "graduate": "graduate",
-        "expert": "expert"
-      }
+    "member-since-label": "Member since",
+    "rank-label": "Rank",
+    "comments-label": "Comments",
+    "comment-ratio-label": "Approval rate",
+    "rank": {
+      "novice": "novice",
+      "student": "student",
+      "graduate": "graduate",
+      "expert": "expert"
     }
   },
   "poll": {

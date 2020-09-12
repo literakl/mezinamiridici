@@ -6,6 +6,7 @@
     "sign-in-up": "Přihlášení / Registrace",
     "sign-out": "Odhlásit se",
     "my-profile": "Můj profil",
+    "update-profile": "Upravit profil",
     "change-password": "Změnit heslo",
     "new-post": "Nový příspěvek",
     "help": "Nápověda",
@@ -107,8 +108,8 @@
     "email": "Email",
     "password": "Heslo",
     "nickname": "Přezdívka",
-    "driving-since": "Řídím od roku",
-    "vehicle": "Řídím",
+    "driving-since-label": "Řídí od roku",
+    "vehicles-label": "Vozidla",
     "vehicles": {
       "bike": "motorka",
       "car": "auto",
@@ -153,18 +154,15 @@
     "terms": "Souhlasím s podmínkami užití",
     "processing": "Souhlasím se zpracováním osobních údajů",
     "user-not-found": "Je nám líto, ale tohoto řidiče nemáme v evidenci",
-    "update-button": "Upravit profil",
-    "info": {
-      "member-since": "Členem od",
-      "rank-label": "Úroveň",
-      "comments-label": "Komentářů",
-      "comment-ratio-label": "Míra souhlasu",
-      "rank": {
-        "novice": "student",
-        "student": "zajíc",
-        "graduate": "frajer",
-        "expert": "eso"
-      }
+    "member-since-label": "Datum registrace",
+    "rank-label": "Úroveň",
+    "comments-label": "Komentářů",
+    "comment-ratio-label": "Míra souhlasu",
+    "rank": {
+      "novice": "student",
+      "student": "zajíc",
+      "graduate": "frajer",
+      "expert": "eso"
     }
   },
   "poll": {

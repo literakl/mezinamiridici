@@ -7,57 +7,51 @@
         </strong>
       </b-col>
     </b-row>
-    <b-row v-if="myProfile && !error">
+    <b-row v-if="userProfile">
       <b-col>
-        <b-button variant="secondary" :to="{ name: 'update-profile'}">
-          <BIconPencil aria-hidden="true"></BIconPencil>
-          {{ $t('profile.update-button') }}
-        </b-button>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <h1 v-if="userProfile">
+        <h2>
           {{ userProfile.bio.nickname }}
-        </h1>
+        </h2>
+
+        <HonorsProgress v-if="myProfile" :user="userProfile" />
+
+        <div>
+          {{ $t('profile.member-since-label') }}: <Date :date="userProfile.bio.registered" format="dynamicDate" />
+        </div>
+
+        <div>
+          {{ $t('profile.rank-label') }}: {{ $t(`profile.rank.${userProfile.honors.rank}`) }}
+        </div>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="userProfile && !error">
       <b-col>
-        <dl v-if="userProfile && !error">
-          <template v-if="publicProfile">
-            <template v-if="userProfile.driving">
-              <template v-if="userProfile.driving.since">
-                <dt>{{ $t('profile.driving-since') }}</dt>
-                <dl>{{userProfile.driving.since}}</dl>
-              </template>
+        <dl v-if="showProfile">
+          <template v-if="userProfile.driving">
+            <div v-if="userProfile.driving.since">
+              {{ $t('profile.driving-since-label') }}: {{userProfile.driving.since}}
+            </div>
 
-              <template v-if="vehicles">
-                <dt>{{ $t('profile.vehicle') }}</dt>
-                <dl>{{vehicles}}</dl>
-              </template>
-            </template>
-
-            <template v-if="userProfile.bio.sex">
-              <dt>{{ $t('profile.sex') }}</dt>
-              <dl>{{ $t('profile.sexes.' + userProfile.bio.sex) }}</dl>
-            </template>
-
-            <template v-if="userProfile.bio.born">
-              <dt>{{ $t('profile.born') }}</dt>
-              <dl>{{userProfile.bio.born}}</dl>
-            </template>
-
-            <template v-if="userProfile.bio.region">
-              <dt>{{ $t('profile.region') }}</dt>
-              <dl>{{ $t('profile.regions.' + userProfile.bio.region) }}</dl>
-            </template>
-
-            <template v-if="userProfile.bio.edu">
-              <dt>{{ $t('profile.education') }}</dt>
-              <dl>{{ $t('profile.educations.' + userProfile.bio.edu) }}</dl>
-            </template>
+            <div v-if="vehicles">
+              {{ $t('profile.vehicles-label') }}: {{vehicles}}
+            </div>
           </template>
+
+          <div v-if="userProfile.bio.sex">
+            {{ $t('profile.sex') }}: {{ $t('profile.sexes.' + userProfile.bio.sex) }}
+          </div>
+
+          <div v-if="userProfile.bio.born">
+            {{ $t('profile.born') }}: {{userProfile.bio.born}}
+          </div>
+
+          <div v-if="userProfile.bio.region">
+            {{ $t('profile.region') }}: {{ $t('profile.regions.' + userProfile.bio.region) }}
+          </div>
+
+          <div v-if="userProfile.bio.edu">
+            {{ $t('profile.education') }}: {{ $t('profile.educations.' + userProfile.bio.edu) }}
+          </div>
         </dl>
       </b-col>
     </b-row>
@@ -69,16 +63,18 @@
 </template>
 
 <script>
-import { BIconPencil } from 'bootstrap-vue';
 import UserActivity from '@/components/atoms/UserActivity.vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
+import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'profile',
   components: {
     ContentLoading,
-    BIconPencil,
     UserActivity,
+    HonorsProgress,
+    Date,
   },
   props: {
     id: String,
@@ -92,7 +88,7 @@ export default {
     myProfile() {
       return this.id === this.$store.getters.USER_ID;
     },
-    publicProfile() {
+    showProfile() {
       return this.myProfile || this.userProfile.prefs.public === true;
     },
     vehicles() {
