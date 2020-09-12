@@ -1,14 +1,18 @@
 <template>
   <ValidationObserver ref="form" v-slot="{ passes, invalid }">
     <b-form @submit.prevent="passes(signIn)">
-      <div class="pt-3 w-75 m-auto pb-5">
-        <b-row class="w-75 m-auto pt-5">
-          <b-col md="6">
-            <h1>{{ $t('sign-in.sign-in-heading') }}</h1>
+      <div class="w-50 mt-5 ml-auto mr-auto border rounded">
+        <b-row class="w-85 m-auto pb-1">
+          <b-col>
+            <h2>{{ $t('sign-in.sign-in-heading') }}</h2>
+
             <div>{{ message }}</div>
+
             <TextInput
               v-model="email"
               rules="required|email"
+              class="w-100"
+              :label="$t('profile.email')"
               :placeholder="$t('sign-in.email-placeholder')"
               name="email"
               type="email"
@@ -17,13 +21,16 @@
             <TextInput
               v-model="password"
               rules="required"
+              class="w-100"
+              :label="$t('profile.password')"
               :placeholder="$t('sign-in.password-placeholder')"
               name="password"
               type="password"
             />
 
-            <div>
-              <router-link :to="{ name: 'forgotten' }">{{ $t('sign-in.forgot-password-link')}}
+            <div class="w-100 d-flex flex-row-reverse">
+              <router-link :to="{ name: 'forgotten' }">
+                {{ $t('sign-in.forgot-password-link')}}
               </router-link>
             </div>
 
@@ -33,37 +40,43 @@
               </strong>
             </div>
           </b-col>
-          <b-col md="6">
-            <h1>{{ $t('sign-in.sign-up-create-account-heading') }}</h1>
-            {{ $t('sign-in.sign-up-create-account-message') }}
-          </b-col>
         </b-row>
-        <b-row class="w-75 m-auto pb-5">
-          <b-col md="6">
+        <b-row class="w-85 m-auto pb-2">
+          <b-col>
             <Button
-              class="w-75"
+              class="w-100 btn btn-block"
               :disabled="invalid"
               :value="$t('sign-in.sign-in-button')"
               @clicked="signIn"/>
-          </b-col>
-          <b-col md="6">
+
             <Button
-              class="w-75 btn btn-block"
+              class="w-100 btn btn-block"
               :value="$t('sign-in.sign-up-button')"
               id="signin__sign-up-button"
               @clicked="redirectToSignUp"/>
+          </b-col>
+        </b-row>
+        <b-row class="w-85 m-auto pb-2">
+          <b-col>
+            <div class="d-flex justify-content-center">{{ $t('sign-in.or') }}</div>
+          </b-col>
+        </b-row>
+        <b-row class="w-85 m-auto pb-2">
+          <b-col>
             <Button
-            class="w-75 btn btn-block btn-facebook"
-            :value="$t('sign-in.sign-in-facebook')"
-            @clicked="auth('facebook')"/>
+              class="w-100 btn btn-block btn-facebook"
+              :value="$t('sign-in.sign-in-facebook')"
+              @clicked="auth('facebook')"/>
+
             <Button
-            class="w-75 btn btn-block btn-twitter"
-            :value="$t('sign-in.sign-in-twitter')"
-            @clicked="auth('twitter')"/>
+              class="w-100 btn btn-block btn-twitter"
+              :value="$t('sign-in.sign-in-twitter')"
+              @clicked="auth('twitter')"/>
+
             <Button
-            class="w-75 btn btn-block btn-google-plus"
-            :value="$t('sign-in.sign-in-google')"
-            @clicked="auth('google')"/>
+              class="w-100 btn btn-block btn-google-plus"
+              :value="$t('sign-in.sign-in-google')"
+              @clicked="auth('google')"/>
           </b-col>
         </b-row>
       </div>
@@ -104,7 +117,7 @@ export default {
   }),
   methods: {
     redirectToSignUp() {
-      this.$router.push({ name: 'sign-up' });
+      this.$router.push({ name: 'sign-up', params: { presetEmail: this.email, presetPassword: this.password } });
     },
     async signIn() {
       this.signingIn = true;
@@ -181,5 +194,4 @@ export default {
   color: #fff;
   background-color: #cb3927;
 }
-
 </style>

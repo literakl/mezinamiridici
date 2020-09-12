@@ -324,6 +324,8 @@ export default {
   },
   props: {
     token: String,
+    presetEmail: String,
+    presetPassword: String,
   },
   data: () => ({
     email: null,
@@ -361,15 +363,18 @@ export default {
     tokenUser: null,
   }),
   mounted() {
-    if (!this.token) return;
+    if (this.presetEmail) this.email = this.presetEmail;
+    if (this.presetPassword) this.password = this.presetPassword;
 
-    this.tokenUser = this.$store.dispatch('SIGN_SOCIAL_USER', `${this.token}`);
-    if (this.tokenUser === true) {
-      this.$router.push('/');
+    if (this.token) {
+      this.tokenUser = this.$store.dispatch('SIGN_SOCIAL_USER', `${this.token}`);
+      if (this.tokenUser === true) {
+        this.$router.push('/');
+      }
+      this.email = this.tokenUser.email;
+      this.nickname = this.tokenUser.nickname;
+      this.emailBoxDisabled = true;
     }
-    this.email = this.tokenUser.email;
-    this.nickname = this.tokenUser.nickname;
-    this.emailBoxDisabled = true;
   },
   methods: {
     async submitForm() {
