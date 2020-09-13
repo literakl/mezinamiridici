@@ -326,7 +326,7 @@ test('User Rank', async (done) => {
   const poll2 = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(poll2.success).toBeTruthy();
 
-  voteResponse = await bff(`polls/${poll2.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  voteResponse = await bff(`polls/${poll2.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
   pollBody.text = 'Third poll';
@@ -334,12 +334,25 @@ test('User Rank', async (done) => {
   const poll3 = await api('polls', { method: 'POST', json: pollBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(poll3.success).toBeTruthy();
 
-  voteResponse = await bff(`polls/${poll3.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  voteResponse = await bff(`polls/${poll3.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(voteResponse.success).toBeTruthy();
 
   await calculateUserHonors();
   rank = await getUserRank(dbClient, Leos._id);
   expect(rank).toBe('student');
+
+  const blogBody = {
+    title: 'First blog',
+    source: { date: new Date().getTime(), blocks:[], version: '2.18.0' },
+    picture: 'picture.png',
+    tags: ['tag', 'another tag'],
+  };
+  voteResponse = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(voteResponse.success).toBeTruthy();
+
+  await calculateUserHonors();
+  rank = await getUserRank(dbClient, Leos._id);
+  expect(rank).toBe('graduate');
 
   let foundWeeks = [
     { _id: 27, shares: 1 },
