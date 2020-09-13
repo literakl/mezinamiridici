@@ -1,10 +1,11 @@
 const dayjs = require('dayjs');
+const edjsHTML = require('editorjs-html');
 const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
-const edjsHTML = require('editorjs-html');
+
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
@@ -59,7 +60,7 @@ module.exports = (app) => {
           { $match: { parentId } },
           { $sort: { _id: 1 } },
           mongo.stageCommentVotes(),
-          mongo.stageHideIdsinComment(),
+          mongo.stageReduceCommentData(),
         ];
         replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
         logger.debug('Replies fetched');

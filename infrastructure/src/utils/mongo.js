@@ -64,10 +64,11 @@ function stageCommentVotes() {
     },
   };
 }
-function stageHideIdsinComment() {
+function stageReduceCommentData() {
   return {
     $project: {
       itemId: 0,
+      source: 0,
       'votes._id': 0,
       'votes.commentId': 0,
     },
@@ -222,7 +223,7 @@ exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;
 exports.stageMyPollVote = stageMyPollVote;
-exports.stageHideIdsinComment = stageHideIdsinComment;
+exports.stageReduceCommentData = stageReduceCommentData;
 exports.stageCommentVotes = stageCommentVotes;
 exports.stagePublishedPoll = stagePublishedPoll;
 exports.stageSlug = stageSlug;
