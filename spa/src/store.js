@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { get, post, patch } from '@/utils/api';
+import { get, post, patch, deleteApi } from '@/utils/api';
 import users from './modules/users';
 import polls from './modules/polls';
 import comments from './modules/comments';
@@ -22,6 +22,7 @@ export default new Vuex.Store({
     blog: null,
     itemPictures: [],
     itemStream: [],
+    cms: null,
   },
   getters: {
     TAGS: state => state.tags,
@@ -30,7 +31,7 @@ export default new Vuex.Store({
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
     ITEM_STREAM: state => state.itemStream,
-
+    CMS: state => state.cms,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -50,6 +51,9 @@ export default new Vuex.Store({
     },
     APPEND_STREAM: (state, payload) => {
       state.itemStream.push(...payload);
+    },
+    SET_CMS: (state, payload) => {
+      state.cms = payload;
     },
   },
   actions: {
@@ -103,6 +107,44 @@ export default new Vuex.Store({
       const blog = await get('API', `/blog/${payload.slug}`, context);
       context.commit('SET_BLOG', blog.data.data);
       return blog.data.data;
+    },
+    FETCH_CMS: async (context, payload) => {
+      Vue.$log.debug(`FETCH_CMS ${payload.slug}`);
+      if (context.state.cms != null && payload.slug === context.state.cms.info.slug) {
+        return; // cached value recycled
+      }
+      context.commit('SET_CMS', null);
+      let cmsData = null;
+      if (payload.type === 'content') {
+        cmsData = await get('BFF', `/c/${payload.slug}`, context);
+      } else {
+        cmsData = await get('BFF', `/h/${payload.slug}`, context);
+      }
+      const cms = cmsData.data.data;
+      context.commit('SET_CMS', cms);
+    },
+    CREATE_CMS: async (context, payload) => {
+      Vue.$log.debug('CREATE_CMS');
+      const cmsData = await post('API', '/cms', payload, context);
+      return cmsData.data.data;
+    },
+    UPDATE_CMS: async (context, payload) => {
+      Vue.$log.debug('UPDATE_CMS');
+      const { cmsId } = payload;
+      const cmsData = await patch('API', `/cms/${cmsId}/`, payload, context);
+      const item = cmsData.data.data;
+      context.commit('SET_CMS', item);
+      return item;
+    },
+    DELETE_CMS: async (context, payload) => {
+      Vue.$log.debug('DELETE_CMS');
+      const { cmsId } = payload;
+      return deleteApi('API', `/cms/${cmsId}/`, {}, context);
+    },
+    FETCH_CMS_LIST: async (context) => {
+      Vue.$log.debug('FETCH_CMS_LIST');
+      const response = await get('BFF', '/cms-list', context);
+      return response.data.data;
     },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');

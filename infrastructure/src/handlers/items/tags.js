@@ -43,6 +43,13 @@ async function getItems(dbClient, req) {
   ];
   const items = await dbClient.db().collection('items').aggregate(pipeline, { allowDiskUse: true }).toArray();
   // todo make it generic for any kind of item
-  items.forEach(item => mongo.processPoll(item));
+  items.forEach(item => {
+    if (item.type === 'poll' || item.type === 'blog'){
+      return mongo.processPoll(item);
+    } else {
+      return item;
+    }
+    
+  });
   return items;
 }

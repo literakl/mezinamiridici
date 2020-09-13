@@ -13,7 +13,7 @@
       <template v-if="showAuthor"><ProfileLink :profile="item.info.author"/> &bull;</template>
       <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{item.votes_count}} &bull;</template>
       <template>
-        <router-link :to="commentLink">
+        <router-link :to="commentLink" v-if="item.type === 'poll' || item.type === 'blog'">
           {{ $t('comment.comments') }}: {{item.comments.count}}
         </router-link>
       </template>
@@ -47,6 +47,9 @@ export default {
       }
       if (this.item.type === 'blog') {
         return { name: 'blog', params: { slug: this.item.info.slug } };
+      }
+      if (this.item.type === 'help' || this.item.type === 'content') {
+        return { name: 'cms', params: { slug: this.item.info.slug, type: this.item.type } };
       }
       return { name: 'home' };
     },

@@ -118,7 +118,30 @@ export default new Router({
     {
       path: '/nova-anketa/',
       name: 'create-poll',
-      component: () => import('./views/poll/CreatePoll'),
+      component: () => import('./views/poll/CreatePoll.vue'),
+      props: true,
+    },
+    {
+      path: '/cms-list/',
+      name: 'cms-list',
+      component: () => import('./views/item/CMSList.vue'),
+    },
+    {
+      path: '/cms/:slug/:type',
+      name: 'cms',
+      component: () => import('./views/item/CMS.vue'),
+      props: true,
+    },
+    {
+      path: '/update-cms/:slug/:type',
+      name: 'edit-cms',
+      component: () => import('./views/item/EditCMS.vue'),
+      props: true,
+    },
+    {
+      path: '/create-cms/',
+      name: 'create-cms',
+      component: () => import('./views/item/CreateCMS.vue'),
       props: true,
     },
     {
