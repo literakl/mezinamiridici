@@ -12,7 +12,7 @@ const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
 
 const {
-  api, bff, getAuthHeader, getUserRank,
+  api, bff, getAuthHeader, getUserRank, resetHonors,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Vita,
@@ -257,6 +257,7 @@ test('CORS', async (done) => {
 test('User Rank', async (done) => {
   jest.setTimeout(180 * 60000);
   await setup(dbClient, api);
+  await resetHonors(dbClient);
 
   const pollBody = {
     text: 'First question',

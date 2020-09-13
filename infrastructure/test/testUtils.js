@@ -73,6 +73,19 @@ async function getUserRank(dbClient, userId) {
   return user.honors.rank;
 }
 
+async function resetHonors(dbClient) {
+  return dbClient.db().collection('users').updateMany({ }, { $set: { honors: {
+    rank: 'novice',
+    count: {
+      pollVotes: 0,
+      comments: 0,
+      commentVotes: 0,
+      blogs: 0,
+      shares: 0,
+    },
+  } } });
+}
+
 module.exports.api = api;
 module.exports.bff = bff;
 module.exports.getAuthHeader = getAuthHeader;
@@ -81,3 +94,4 @@ module.exports.sleep = sleep;
 module.exports.shuffle = shuffle;
 module.exports.getActivityCounter = getActivityCounter;
 module.exports.getUserRank = getUserRank;
+module.exports.resetHonors = resetHonors;

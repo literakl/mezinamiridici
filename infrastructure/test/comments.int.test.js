@@ -12,7 +12,7 @@ const mongo = require('../src/utils/mongo.js');
 const logger = require('../src/utils/logging');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader, getActivityCounter,
+  api, bff, getAuthHeader, getActivityCounter, resetHonors,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
@@ -407,6 +407,7 @@ beforeAll(async () => {
   server = app.listen(3000, () => logger.info('Server started'));
   dbClient = await mongo.connectToDatabase();
   await setup(dbClient, api);
+  await resetHonors(dbClient);
 });
 
 afterAll(() => {
