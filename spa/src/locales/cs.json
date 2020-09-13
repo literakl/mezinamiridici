@@ -231,31 +231,7 @@
     "form": {
       "title-label": "Titulek",
       "title-placeholder": "Název příspěvku",
-      "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",
-      "h-placeholder": "Napište hlavičku",
-      "q-placeholder": "Napište citaci",
-      "save-button": "Uložit",
-      "click-to-tune": "Klepnutím nalaďte",
-      "or-drag-to-move": "nebo tažením pohybujte",
-      "convert-to": "Převést na",
-      "add": "Přidat",
-      "text": "Text",
-      "heading": "Nadpis",
-      "list": "Seznam",
-      "quote": "Citát",
-      "delimiter": "Oddělovač",
-      "table": "Stůl",
-      "image": "obraz",
-      "bold": "tučně",
-      "italic": "Kurzíva",
-      "inlineCode": "Vložený kód",
-      "title": "Titul",
-      "message": "Zpráva",
-      "add-link": "Přidejte odkaz",
-      "display-incorrect": "Blok nelze zobrazit správně.",
-      "delete": "Vymazat",
-      "move-up": "Posuňte se nahoru",
-      "move-down": "Posunout dolů"
+      "save-button": "Uložit"
     }
   },
   "page-title": {
@@ -285,5 +261,10 @@
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
     "tags": "Štítky"
+  },
+  "editorjs": {
+    "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",
+    "h-placeholder": "Napište hlavičku",
+    "q-placeholder": "Napište citaci"
   }
 }

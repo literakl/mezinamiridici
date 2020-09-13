@@ -39,6 +39,7 @@ import { BIconEmojiSunglasses, BIconXCircle } from 'bootstrap-vue';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 import Button from '@/components/atoms/Button.vue';
+import resourceBundle from '@/utils/editorJSResourceBundle';
 
 export default {
   name: 'CommentForm',
@@ -73,65 +74,9 @@ export default {
             inlineToolbar: true,
           },
         },
-        placeholder: this.$t('blog.form.p-placeholder'),
+        placeholder: this.$t('editorjs.p-placeholder'),
         data: {},
-        i18n: {
-          messages: {
-            ui: {
-              blockTunes: {
-                toggler: {
-                  'Click to tune': this.$t('blog.form.click-to-tune'),
-                  'or drag to move': this.$t('blog.form.or-drag-to-move'),
-                },
-              },
-              inlineToolbar: {
-                converter: {
-                  'Convert to': this.$t('blog.form.convert-to'),
-                },
-              },
-              toolbar: {
-                toolbox: {
-                  Add: this.$t('blog.form.add'),
-                },
-              },
-            },
-            toolNames: {
-              Text: this.$t('blog.form.text'),
-              Heading: this.$t('blog.form.heading'),
-              List: this.$t('blog.form.list'),
-              Quote: this.$t('blog.form.quote'),
-              Delimiter: this.$t('blog.form.delimiter'),
-              Table: this.$t('blog.form.table'),
-              Image: this.$t('blog.form.table'),
-              Bold: this.$t('blog.form.bold'),
-              Italic: this.$t('blog.form.italic'),
-              InlineCode: this.$t('blog.form.inlineCode'),
-            },
-            tools: {
-              warning: {
-                Title: this.$t('blog.form.title'),
-                Message: this.$t('blog.form.message'),
-              },
-              link: {
-                'Add a link': this.$t('blog.form.add-link'),
-              },
-              stub: {
-                'The block can not be displayed correctly.': this.$t('blog.form.display-incorrect'),
-              },
-            },
-            blockTunes: {
-              delete: {
-                Delete: this.$t('blog.form.delete'),
-              },
-              moveUp: {
-                'Move up': this.$t('blog.form.move-up'),
-              },
-              moveDown: {
-                'Move down': this.$t('blog.form.move-down'),
-              },
-            },
-          },
-        },
+        i18n: resourceBundle,
       },
     };
   },

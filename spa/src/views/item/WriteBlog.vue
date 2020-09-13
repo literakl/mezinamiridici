@@ -30,6 +30,7 @@ import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
 import TagSelector from '@/components/atoms/TagSelector.vue';
+import resourceBundle from '@/utils/editorJSResourceBundle';
 
 export default {
   components: {
@@ -52,7 +53,7 @@ export default {
             class: Header,
             inlineToolbar: true,
             config: {
-              placeholder: this.$t('blog.form.h-placeholder'),
+              placeholder: this.$t('editorjs.h-placeholder'),
               levels: [1, 2, 3],
               defaultLevel: 3,
             },
@@ -109,69 +110,13 @@ export default {
             inlineToolbar: true,
             shortcut: 'CMD+SHIFT+O',
             config: {
-              quotePlaceholder: this.$t('blog.form.q-placeholder'),
+              quotePlaceholder: this.$t('editorjs.q-placeholder'),
             },
           },
         },
-        placeholder: this.$t('blog.form.p-placeholder'),
+        placeholder: this.$t('editorjs.p-placeholder'),
         data: {},
-        i18n: {
-          messages: {
-            ui: {
-              blockTunes: {
-                toggler: {
-                  'Click to tune': this.$t('blog.form.click-to-tune'),
-                  'or drag to move': this.$t('blog.form.or-drag-to-move'),
-                },
-              },
-              inlineToolbar: {
-                converter: {
-                  'Convert to': this.$t('blog.form.convert-to'),
-                },
-              },
-              toolbar: {
-                toolbox: {
-                  Add: this.$t('blog.form.add'),
-                },
-              },
-            },
-            toolNames: {
-              Text: this.$t('blog.form.text'),
-              Heading: this.$t('blog.form.heading'),
-              List: this.$t('blog.form.list'),
-              Quote: this.$t('blog.form.quote'),
-              Delimiter: this.$t('blog.form.delimiter'),
-              Table: this.$t('blog.form.table'),
-              Image: this.$t('blog.form.table'),
-              Bold: this.$t('blog.form.bold'),
-              Italic: this.$t('blog.form.italic'),
-              InlineCode: this.$t('blog.form.inlineCode'),
-            },
-            tools: {
-              warning: {
-                Title: this.$t('blog.form.title'),
-                Message: this.$t('blog.form.message'),
-              },
-              link: {
-                'Add a link': this.$t('blog.form.add-link'),
-              },
-              stub: {
-                'The block can not be displayed correctly.': this.$t('blog.form.display-incorrect'),
-              },
-            },
-            blockTunes: {
-              delete: {
-                Delete: this.$t('blog.form.delete'),
-              },
-              moveUp: {
-                'Move up': this.$t('blog.form.move-up'),
-              },
-              moveDown: {
-                'Move down': this.$t('blog.form.move-down'),
-              },
-            },
-          },
-        },
+        i18n: resourceBundle,
         onReady: () => {
           if (this.$route.name === 'update-blog' && this.blog) {
             this.$refs.editor.state.editor.render(this.blog.data.source);
