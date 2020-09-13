@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 const edjsHTML = require('editorjs-html');
 const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
