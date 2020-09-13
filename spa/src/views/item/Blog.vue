@@ -45,18 +45,19 @@ export default {
     background-color: whitesmoke;
     padding: 20px;
     font-style: italic;
+    overflow-wrap: anywhere;
   }
   blockquote p {
     font-style: normal;
     font-weight: bold;
   }
-  .tc-table {
+  table {
       width: 100%;
       height: 100%;
       border-collapse: collapse;
       table-layout: fixed;
   }
-  .tc-table__wrap {
+  table {
       border: 1px solid #DBDBE2;
       border-radius: 3px;
       position: relative;
@@ -64,12 +65,12 @@ export default {
       width: 100%;
       box-sizing: border-box;
   }
-  .tc-table__cell {
+  td {
       border: 1px solid #DBDBE2;
       padding: 0;
       vertical-align: top;
   }
-  .tc-table__area {
+  td div{
       padding: 10px;
       height: 100%;
   }
@@ -80,16 +81,16 @@ export default {
       height: 100%;
       overflow: hidden;
   }
-  .tc-table tbody tr:first-child td {
+  tbody tr:first-child td {
       border-top: none;
   }
-  .tc-table tbody tr:last-child td {
+  tbody tr:last-child td {
       border-bottom: none;
   }
-  .tc-table tbody tr td:last-child {
+  tbody tr td:last-child {
       border-right: none;
   }
-  .tc-table tbody tr td:first-child {
+  tbody tr td:first-child {
       border-left: none;
   }
   img {

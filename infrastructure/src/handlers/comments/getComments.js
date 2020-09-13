@@ -33,7 +33,7 @@ module.exports = (app) => {
         { $sort: { _id: -1 } },
         { $limit: listParams.pageSize + 1 },
         mongo.stageCommentVotes(),
-        mongo.stageHideIdsinComment(),
+        mongo.stageReduceCommentData(),
       ];
       const comments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Comments fetched');
@@ -56,7 +56,7 @@ module.exports = (app) => {
       pipeline = [
         { $match: { parentId: { $in: parentIdList } } },
         mongo.stageCommentVotes(),
-        mongo.stageHideIdsinComment(),
+        mongo.stageReduceCommentData(),
         { $sort: { _id: 1 } },
         {
           $group: {
@@ -106,7 +106,7 @@ module.exports = (app) => {
         { $match: query },
         { $sort: { _id: 1 } },
         mongo.stageCommentVotes(),
-        mongo.stageHideIdsinComment(),
+        mongo.stageReduceCommentData(),
       ];
       const replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
       logger.debug('Replies fetched');

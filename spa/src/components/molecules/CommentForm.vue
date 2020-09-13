@@ -11,29 +11,16 @@
     <div class="comment-box">
       <b-container fluid>
         <b-row>
-          <b-col sm="12">
-            <b-form-textarea
-              class="textarea"
-              :class="`${!wrapIcons ? 'textarea_long' : 'textarea_short'}`"
-              rows="1" max-rows="8"
-              :placeholder="$t('comment.write-comment-placeholder')"
-              v-model="text"
-            >
-            </b-form-textarea>
+          <b-col sm="12" class="editor-js" :id="`editor-js-${commentId}`">
+            <editor v-if="isShow" class="textarea" ref="editor" :config="config"/>
           </b-col>
         </b-row>
       </b-container>
 
-      <div class="icons" :class="`${wrapIcons ? 'icons_long' : 'icons_short'}`">
+      <div class="icons">
         <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
           <BIconEmojiSunglasses></BIconEmojiSunglasses>
         </b-button>
-<!--
-TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
-        <b-button v-if="parent" class="mt-2" variant="outline" size="sm">
-          <b-icon icon="chat-quote"></b-icon>
-        </b-button>
--->
         <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
           <BIconXCircle></BIconXCircle>
         </b-button>
@@ -49,7 +36,10 @@ TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
 
 <script>
 import { BIconEmojiSunglasses, BIconXCircle } from 'bootstrap-vue';
+import List from '@editorjs/list';
+import Paragraph from '@editorjs/paragraph';
 import Button from '@/components/atoms/Button.vue';
+import resourceBundle from '@/utils/editorJSResourceBundle';
 
 export default {
   name: 'CommentForm',
@@ -57,24 +47,38 @@ export default {
     itemId: String,
     parent: String,
     commentId: String,
+    isShow: Boolean,
   },
   components: {
     Button, BIconEmojiSunglasses, BIconXCircle,
   },
-  data: () => ({
-    text: '',
-    sending: null,
-    error: null,
-    emojiArray: ['\u{1F600}', '\u{1F603}', '\u{1F601}', '\u{1F606}',
-      '\u{1F60B}', '\u{1F61B}', '\u{1F61C}', '\u{1F92D}', '\u{1F92B}',
-      '\u{1F910}', '\u{1F928}', '\u{1F644}', '\u{1F614}', '\u{1F634}',
-      '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
-      '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
-  }),
-  computed: {
-    wrapIcons() {
-      return this.text.length > 140;
-    },
+  data() {
+    return {
+      sending: null,
+      error: null,
+      emojiArray: ['\u{1F600}', '\u{1F603}', '\u{1F601}', '\u{1F606}',
+        '\u{1F60B}', '\u{1F61B}', '\u{1F61C}', '\u{1F92D}', '\u{1F92B}',
+        '\u{1F910}', '\u{1F928}', '\u{1F644}', '\u{1F614}', '\u{1F634}',
+        '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
+        '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
+
+      config: {
+        holder: `editor-js-${this.commentId}`,
+        minHeight: 0,
+        tools: {
+          paragraph: {
+            class: Paragraph,
+          },
+          list: {
+            class: List,
+            inlineToolbar: true,
+          },
+        },
+        placeholder: this.$t('editorjs.p-placeholder'),
+        data: {},
+        i18n: resourceBundle,
+      },
+    };
   },
   methods: {
     dismiss() {
@@ -84,9 +88,11 @@ export default {
       this.error = false;
       this.sending = true;
 
+      const editorData = await this.$refs.editor.state.editor.save().then(res => res);
+
       const payload = {
         itemId: this.itemId,
-        text: this.text,
+        source: editorData,
       };
 
       if (this.parent) {
@@ -95,7 +101,7 @@ export default {
 
       try {
         await this.$store.dispatch('ADD_COMMENT', payload);
-        this.text = '';
+        this.$refs.editor.state.editor.clear();
         this.$emit('dismiss');
       } catch (e) {
         this.$log.error(e);
@@ -103,46 +109,46 @@ export default {
       }
       this.sending = false;
     },
-    addEmoji(idx) {
-      this.text += this.emojiArray[idx];
+    async addEmoji(idx) {
+      this.$refs.editor.state.editor.blocks.insert('paragraph', { text: this.emojiArray[idx] });
     },
   },
 };
 </script>
 
-<style scoped>
-  .comment-box {
+<style>
+  .editor-js {
+    border: 1px solid #ced4da;
+    overflow: auto;
+  }
+
+  .comment-box .codex-editor {
+    height: 110px;
+  }
+
+  .comment-box .codex-editor__redactor {
+    padding-bottom: 110px
+  }
+
+  .comment-box .comment-box {
     position: relative;
     width: 100%;
   }
 
-  .textarea {
-    height: 40px;
-    overflow-y: hidden;
-  }
-
-  .textarea_short {
-    padding: 13px 50px 34px 32px;
-  }
-
-  .textarea_long {
-    padding: 10px 174px 5px 28px;
-  }
-
-  .icons {
+  .comment-box .icons {
     position: relative;
     text-align: right;
     width: 143px;
     float: right;
-  }
-
-  .icons_short {
-    top: -36px;
     right: 40px;
   }
 
-  .icons_long {
-    top: -45px;
-    right: 40px; /*68*/
+  /*this is necessary to make editor fill the content */
+  .ce-block__content, .ce-toolbar__content {
+    position: relative;
+    max-width: 96%;
+    margin: 0 auto;
+    -webkit-transition: background-color .15s ease;
+    transition: background-color .15s ease;
   }
 </style>

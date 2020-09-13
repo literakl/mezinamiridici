@@ -159,7 +159,7 @@ async function generateData() {
 
 async function generateComment(itemId, date, repliesCount) {
   const body = {
-    text: randomText(),
+    source: randomSource(),
     date: date.format(DATE_FORMAT),
   };
   let user = randomUser();
@@ -171,7 +171,7 @@ async function generateComment(itemId, date, repliesCount) {
   for (let i = 0; i <= repliesCount; i += 1) {
     user = randomUser();
     aDate = aDate.add(random.int(1, 30), 'minute');
-    body.text = randomText();
+    body.source = randomSource();
     body.date = aDate.format(DATE_FORMAT);
     const reply = await api(`items/${itemId}/comments`, { method: 'POST', json: body, headers: getAuthHeader(user.jwt) }).json();
     await voteComment(reply.data.comment._id, user._id);
@@ -195,6 +195,34 @@ function randomText() {
     return lorem.generateSentences(random.int(1, 5));
   } else {
     return lorem.generateParagraphs(random.int(1, 3));
+  }
+}
+
+function randomSource() {
+  return {
+    time: 1599551274438,
+    version: "2.18.0",
+    blocks: [
+      {
+        type:"header",
+        data: {
+          text: randomText(),
+          level: 3
+        }
+      },
+      {
+        type:"paragraph",
+        data: {
+          text: randomText()
+        }
+      },
+      {
+        type:"paragraph",
+        data: {
+          text: randomText(),
+        }
+      }
+    ]
   }
 }
 

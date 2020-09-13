@@ -40,7 +40,25 @@ test('Comments API', async (done) => {
   expect(comments.data.incomplete).toBeFalsy();
 
   const commentBody = {
-    text: 'Comment 1',
+    source: {
+      time: 1599551274438,
+      version: "2.18.0",
+      blocks: [
+        {
+          type:"paragraph",
+          data: {
+            text: "This is test paragraph."
+          }
+        },
+        {
+          type:"header",
+          data: {
+            text: "This is Header.",
+            level: 3
+          }
+        }
+      ]
+    },
     date: dayjs(poll.data.info.date).add(10, 'minute').format(DATE_FORMAT),
   };
   const comment1 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
@@ -383,11 +401,35 @@ test('Comments API', async (done) => {
   expect(comments.data.comment.replies[7].text).toBe(comment4h.data.comment.text);
   expect(comments.data.comment.replies[8].text).toBe(comment4i.data.comment.text);
 
-  commentBody.text = 'Comment 7 :-)\n\nNew paragraph :-D\n\nThird paragraph :-(';
+  commentBody.source = {
+    time: 1599551274438,
+    version: "2.18.0",
+    blocks: [
+      {
+        type:"header",
+        data: {
+          text: "Comment 7",
+          level: 3
+        }
+      },
+      {
+        type:"paragraph",
+        data: {
+          text: "New paragraph"
+        }
+      },
+      {
+        type:"paragraph",
+        data: {
+          text: "Third paragraph",
+        }
+      }
+    ]
+  }
   commentBody.date = dayjs(poll.data.info.date).add(70, 'minute').format(DATE_FORMAT);
   const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment7.success).toBeTruthy();
-  expect(comment7.data.comment.text).toBe('<p>Comment 7 😃</p>\n<p>New paragraph 😄</p>\n<p>Third paragraph 😦</p>\n');
+  expect(comment7.data.comment.text).toBe('<h3> Comment 7 </h3><p> New paragraph </p><p> Third paragraph </p>');
 
   let counter = await getActivityCounter(dbClient, Leos._id, 'comments');
   expect(counter).toBe(3);

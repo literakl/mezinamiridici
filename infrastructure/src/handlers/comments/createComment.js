@@ -1,21 +1,12 @@
-const MarkdownIt = require('markdown-it');
-const emoji = require('markdown-it-emoji/light');
-const mark = require('markdown-it-mark');
+const dayjs = require('dayjs');
+const edjsHTML = require('editorjs-html');
 const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
-const md = new MarkdownIt({
-  html: false,
-  breaks: true,
-  linkify: true,
-  typographer: true,
-  quotes: '“”‘’',
-});
-md.use(emoji);
-md.use(mark);
+const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
@@ -23,14 +14,14 @@ module.exports = (app) => {
   app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
     logger.verbose('createComment handler starts');
     const {
-      text, parentId, date,
+      source, parentId, date,
     } = req.body;
     const { itemId } = req.params;
     if (!itemId) {
       return api.sendMissingParam(res, 'itemId');
     }
-    if (!text) {
-      return api.sendMissingParam(res, 'text');
+    if (!source) {
+      return api.sendMissingParam(res, 'source');
     }
     const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
     if (!publishDate) {
@@ -48,7 +39,7 @@ module.exports = (app) => {
         }
       }
 
-      const comment = createComment(itemId, text, req.identity, parentId, publishDate);
+      const comment = createComment(itemId, source, req.identity, parentId, publishDate);
       await dbClient.db().collection('comments').insertOne(comment);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'comment', 'create');
       mongo.storeUserActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
@@ -66,7 +57,7 @@ module.exports = (app) => {
           { $match: { parentId } },
           { $sort: { _id: 1 } },
           mongo.stageCommentVotes(),
-          mongo.stageHideIdsinComment(),
+          mongo.stageReduceCommentData(),
         ];
         replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
         logger.debug('Replies fetched');
@@ -82,13 +73,19 @@ module.exports = (app) => {
   });
 };
 
-function createComment(itemId, text, user, parentId, date) {
+function createComment(itemId, source, user, parentId, date) {
+  let text = '';
+  edjsParser.parse(source).forEach((item) => {
+    text += item;
+  });
+  text = sanitizeHtml(text);
   const comment = {
     _id: mongo.generateTimeId(),
     itemId,
     parentId: parentId || undefined,
     date,
-    text: md.render(sanitizeHtml(text)),
+    source,
+    text,
     up: 0,
     down: 0,
     user: {
