@@ -12,25 +12,15 @@
       <b-container fluid>
         <b-row>
           <b-col sm="12" class="editor-js" :id="`editor-js-${commentId}`">
-            <editor
-            v-if="isShow"
-            class="textarea"
-            ref="editor"
-            :config="config"/>
+            <editor v-if="isShow" class="textarea" ref="editor" :config="config"/>
           </b-col>
         </b-row>
       </b-container>
 
-      <div class="icons icons_short">
+      <div class="icons">
         <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
           <BIconEmojiSunglasses></BIconEmojiSunglasses>
         </b-button>
-<!--
-TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
-        <b-button v-if="parent" class="mt-2" variant="outline" size="sm">
-          <b-icon icon="chat-quote"></b-icon>
-        </b-button>
--->
         <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
           <BIconXCircle></BIconXCircle>
         </b-button>
@@ -46,11 +36,8 @@ TODO: tato funkce vyzaduje widget, ktery rozumi HTML znackam
 
 <script>
 import { BIconEmojiSunglasses, BIconXCircle } from 'bootstrap-vue';
-import Header from '@editorjs/header';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
-import Table from '@editorjs/table';
-import Quote from '@editorjs/quote';
 import Button from '@/components/atoms/Button.vue';
 
 export default {
@@ -76,38 +63,14 @@ export default {
 
       config: {
         holder: `editor-js-${this.commentId}`,
+        minHeight: 0,
         tools: {
-          header: {
-            class: Header,
-            inlineToolbar: true,
-            config: {
-              placeholder: this.$t('blog.form.h-placeholder'),
-              levels: [1, 2, 3],
-              defaultLevel: 3,
-            },
+          paragraph: {
+            class: Paragraph,
           },
           list: {
             class: List,
             inlineToolbar: true,
-          },
-          paragraph: {
-            class: Paragraph,
-          },
-          table: {
-            class: Table,
-            inlineToolbar: true,
-            config: {
-              rows: 2,
-              cols: 3,
-            },
-          },
-          quote: {
-            class: Quote,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+O',
-            config: {
-              quotePlaceholder: this.$t('blog.form.q-placeholder'),
-            },
           },
         },
         placeholder: this.$t('blog.form.p-placeholder'),
@@ -214,7 +177,7 @@ export default {
     overflow: auto;
   }
   .comment-box .codex-editor {
-    height: 250px;
+    height: 100px;
   }
   .comment-box .codex-editor__redactor {
     padding-bottom: 100px
@@ -234,7 +197,7 @@ export default {
   }
 
   .comment-box .textarea_long {
-    padding: 0px 30px 5px 30px;
+    padding: 0 30px 5px 30px;
   }
 
   .comment-box .icons {
@@ -242,15 +205,14 @@ export default {
     text-align: right;
     width: 143px;
     float: right;
-  }
-
-  .comment-box .icons_short {
-    /* top: -36px; */
     right: 40px;
   }
 
-  .comment-box .icons_long {
-    top: -45px;
-    right: 40px; /*68*/
+  .ce-block__content, .ce-toolbar__content {
+    position: relative;
+    max-width: 97%;
+    margin: 0 auto;
+    -webkit-transition: background-color .15s ease;
+    transition: background-color .15s ease;
   }
 </style>
