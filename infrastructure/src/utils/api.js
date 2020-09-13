@@ -176,7 +176,14 @@ function edjsHtmlCustomParser() {
       return rendered;
     },
     delimiter: () => '<div class="ce-block"><div class="ce-block__content"><div class="ce-delimiter cdx-block"></div></div></div>\n',
-    quote: obj => `<blockquote style="text-align:${obj.data.alignment};"><p>${obj.data.caption}</p> ${obj.data.text} </blockquote>`,
+    quote: (obj) => {
+      let html = `<blockquote style="text-align:${obj.data.alignment};">`;
+      if (obj.data.caption != null && obj.data.caption !== '') {
+        html += `<p>${obj.data.caption}</p> `;
+      }
+      html += `${obj.data.text} </blockquote>`;
+      return html;
+    },
   };
 }
 
