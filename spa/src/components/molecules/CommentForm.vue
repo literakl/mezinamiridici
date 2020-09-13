@@ -121,28 +121,18 @@ export default {
     border: 1px solid #ced4da;
     overflow: auto;
   }
+
   .comment-box .codex-editor {
-    height: 100px;
+    height: 110px;
   }
+
   .comment-box .codex-editor__redactor {
-    padding-bottom: 100px
+    padding-bottom: 110px
   }
+
   .comment-box .comment-box {
     position: relative;
     width: 100%;
-  }
-
-  .comment-box .textarea {
-    /* height: 40px; */
-    overflow-y: hidden;
-  }
-
-  .comment-box .textarea_short {
-    padding: 13px 50px 34px 32px;
-  }
-
-  .comment-box .textarea_long {
-    padding: 0 30px 5px 30px;
   }
 
   .comment-box .icons {
@@ -153,9 +143,10 @@ export default {
     right: 40px;
   }
 
+  /*this is necessary to make editor fill the content */
   .ce-block__content, .ce-toolbar__content {
     position: relative;
-    max-width: 97%;
+    max-width: 96%;
     margin: 0 auto;
     -webkit-transition: background-color .15s ease;
     transition: background-color .15s ease;
