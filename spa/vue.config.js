@@ -1,8 +1,14 @@
 module.exports = {
+  css: {
+    extract: false,
+  },
   configureWebpack: {
     devtool: 'source-map',
+    optimization: {
+      splitChunks: false,
+    },
   },
-  productionSourceMap: true,
+  productionSourceMap: false,
   devServer: {
     host: '0.0.0.0',
   },
