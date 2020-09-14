@@ -151,8 +151,8 @@ function calculateConsecutiveSharing(date, foundWeeks) {
 }
 
 module.exports = async () => {
-  logger.debug('Scheduler starts');
-  cron.schedule(process.env.SCHEDULE_TIME, async () => calculateUserHonors(), {
+  logger.info(`Rank job scheduled to run at ${process.env.SCHEDULE_RANK}`);
+  cron.schedule(process.env.SCHEDULE_RANK, async () => calculateUserHonors(), {
     scheduled: true,
     timezone: 'Europe/Prague',
   });
