@@ -51,10 +51,10 @@ export default {
   methods: {
     async onShow() {
       if (!this.requested) {
-        console.log(`onShow ${this.profile.id}`);
+        this.$log.debug(`onShow ${this.profile.id}`);
         this.requested = true;
         this.userInfo = await this.$store.dispatch('FETCH_USER_INFO', { userId: this.profile.id });
-        console.log(this.userInfo);
+        this.$log.debug(this.userInfo);
       }
     },
   },
