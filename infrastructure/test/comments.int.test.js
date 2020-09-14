@@ -42,22 +42,22 @@ test('Comments API', async (done) => {
   const commentBody = {
     source: {
       time: 1599551274438,
-      version: "2.18.0",
+      version: '2.18.0',
       blocks: [
         {
-          type:"paragraph",
+          type: 'paragraph',
           data: {
-            text: "This is test paragraph."
-          }
+            text: 'This is test paragraph.',
+          },
         },
         {
-          type:"header",
+          type: 'header',
           data: {
-            text: "This is Header.",
-            level: 3
-          }
-        }
-      ]
+            text: 'This is Header.',
+            level: 3,
+          },
+        },
+      ],
     },
     date: dayjs(poll.data.info.date).add(10, 'minute').format(DATE_FORMAT),
   };
@@ -403,29 +403,29 @@ test('Comments API', async (done) => {
 
   commentBody.source = {
     time: 1599551274438,
-    version: "2.18.0",
+    version: '2.18.0',
     blocks: [
       {
-        type:"header",
+        type: 'header',
         data: {
-          text: "Comment 7",
-          level: 3
-        }
+          text: 'Comment 7',
+          level: 3,
+        },
       },
       {
-        type:"paragraph",
+        type: 'paragraph',
         data: {
-          text: "New paragraph"
-        }
+          text: 'New paragraph',
+        },
       },
       {
-        type:"paragraph",
+        type: 'paragraph',
         data: {
-          text: "Third paragraph",
-        }
-      }
-    ]
-  }
+          text: 'Third paragraph',
+        },
+      },
+    ],
+  };
   commentBody.date = dayjs(poll.data.info.date).add(70, 'minute').format(DATE_FORMAT);
   const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment7.success).toBeTruthy();

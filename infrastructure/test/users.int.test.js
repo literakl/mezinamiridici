@@ -268,7 +268,25 @@ test('User Rank', async (done) => {
   expect(poll1.success).toBeTruthy();
 
   const commentBody = {
-    text: 'Comment 1',
+    source: {
+      time: 1599551274438,
+      version: '2.18.0',
+      blocks: [
+        {
+          type: 'paragraph',
+          data: {
+            text: 'This is test paragraph.',
+          },
+        },
+        {
+          type: 'header',
+          data: {
+            text: 'This is Header.',
+            level: 3,
+          },
+        },
+      ],
+    },
     date: dayjs(poll1.data.info.date).add(10, 'minute').format(FULL_DATE_FORMAT),
   };
   const comment1 = await api(`items/${poll1.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();

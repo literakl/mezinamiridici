@@ -48,7 +48,25 @@ test('User activity API', async (done) => {
   expect(response.success).toBeTruthy();
 
   // create two comments, different users
-  const commentBody = { text: 'Comment 1' };
+  const commentBody = { source: {
+    time: 1599551274438,
+    version: '2.18.0',
+    blocks: [
+      {
+        type: 'paragraph',
+        data: {
+          text: 'This is test paragraph.',
+        },
+      },
+      {
+        type: 'header',
+        data: {
+          text: 'This is Header.',
+          level: 3,
+        },
+      },
+    ],
+  } };
   const comment1 = await api(`items/${firstPoll.id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(comment1.success).toBeTruthy();
   commentBody.text = 'Comment 2';
