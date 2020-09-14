@@ -278,7 +278,25 @@
     "advertisement": "Advertisement",
     "not-found": "Page not found",
     "tag": "Tag",
-    "tags": "Tags"
+    "tags": "Tags",
+    "cms-list": "CMS List",
+    "cms": "CMS",
+    "edit-cms": "Edit CMS",
+    "create-cms": "Create CMS"
+  },
+  "cms": {
+    "edit": {
+      "caption-label": "Caption",
+      "slug-label": "Slug",
+      "type-label": "Type",
+      "content-label": "Content",
+      "help": "Help",
+      "content": "Content",
+      "edit-cms": "Edit CMS",
+      "delete-cms": "Delete CMS",
+      "new-cms-heading": "New CMS",
+      "delete-message": "Are you sure to delete this CMS?"
+    }
   },
   "editorjs": {
     "p-placeholder": "Enter your text or press + button",

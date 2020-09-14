@@ -278,11 +278,29 @@
     "advertisement": "Reklama",
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
-    "tags": "Štítky"
+    "tags": "Štítky",
+    "cms-list": "Seznam CMS",
+    "cms": "CMS",
+    "edit-cms": "Upravit CMS",
+    "create-cms": "Vytvořte CMS"
   },
   "editorjs": {
     "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",
     "h-placeholder": "Napište hlavičku",
     "q-placeholder": "Napište citaci"
+  },
+  "cms": {
+    "edit": {
+      "caption-label": "Titulek",
+      "slug-label": "Slimák",
+      "type-label": "Typ",
+      "content-label": "Obsah",
+      "help": "Pomoc",
+      "content": "Obsah",
+      "edit-cms": "Upravit CMS",
+      "delete-cms": "Vymazat CMS",
+      "new-cms-heading": "Nový CMS",
+      "delete-message": "Opravdu chcete tento CMS smazat?"
+    }
   }
 }
