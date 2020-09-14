@@ -66,11 +66,7 @@ function prepareUpdateQuery(text, author, picture, date, published, tags) {
   setters['info.author'] = { nickname: author.nickname, id: author.userId };
   setters['info.date'] = date;
   setters['info.published'] = published;
-  if (picture) {
-    setters['info.picture'] = picture;
-  } else {
-    unsetters['info.picture'] = true;
-  }
+  setters['info.picture'] = picture;
   if (tags) {
     setters['info.tags'] = tags;
   }

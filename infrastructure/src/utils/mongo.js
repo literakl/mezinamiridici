@@ -14,7 +14,6 @@ const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
-function stageCMSSlug(slug, type) { return { $match: { 'info.slug': slug, type: type } }; }
 function stageTag(tag) { return { 'info.tags': { $in: [tag] } }; }
 function stageMyPollVote(userId, pollId) {
   if (pollId) {
@@ -266,7 +265,6 @@ exports.getPoll = getPoll;
 exports.getBlog = getBlog;
 exports.processPoll = processPoll;
 exports.getCMS = getCMS;
-exports.stageCMSSlug = stageCMSSlug;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;

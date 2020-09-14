@@ -279,10 +279,10 @@
     "not-found": "Page not found",
     "tag": "Tag",
     "tags": "Tags",
-    "cms-list": "CMS List",
     "cms": "CMS",
-    "edit-cms": "Edit CMS",
-    "create-cms": "Create CMS"
+    "content": "Content",
+    "edit-content": "Edit content",
+    "create-content": "Create CMS"
   },
   "cms": {
     "edit": {

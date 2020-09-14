@@ -2,17 +2,17 @@
   <div class="pt-3 w-75 m-auto">
     <h1>{{ $t('cms.edit.new-cms-heading') }}</h1>
 
-    <CMSForm :isCreate="true"/>
+    <ContentForm :isCreate="true"/>
   </div>
 </template>
 
 <script>
-
-import CMSForm from '@/components/organisms/CMSForm.vue';
+import ContentForm from '@/components/organisms/ContentForm.vue';
 
 export default {
+  name: 'CreateContent',
   components: {
-    CMSForm,
+    ContentForm,
   },
 };
 </script>

@@ -8,7 +8,7 @@ require('../../utils/path_env');
 module.exports = (app) => {
   app.options('/v1/item-stream', auth.cors);
 
-  app.get('/v1/item-stream', auth.optional, auth.cors, async (req, res) => {
+  app.get('/v1/item-stream', auth.cors, async (req, res) => {
     logger.debug('Get items');
     const { start, num, tag } = req.query;
 
@@ -28,7 +28,8 @@ module.exports = (app) => {
 };
 
 function getItems(dbClient, start, num, tag) {
-  const query = (tag === 'undefined') ? {} : { 'info.tags': tag };
+  const query = { type: { $ne: 'help' } };
+  if (tag !== 'undefined') query['info.tags'] = tag;
 
   return dbClient.db().collection('items')
     .find(query)

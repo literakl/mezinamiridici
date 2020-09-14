@@ -1,4 +1,3 @@
-const slugify = require('slugify');
 const dayjs = require('dayjs');
 const sanitizeHtml = require('sanitize-html');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
@@ -11,10 +10,10 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/cms', auth.cors);
+  app.options('/v1/content', auth.cors);
 
-  app.post('/v1/cms', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.verbose('Create CMS handler starts');
+  app.post('/v1/content', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+    logger.verbose('Create content handler starts');
     const {
       type, caption, slug, content, author, date, picture, tags,
     } = req.body;

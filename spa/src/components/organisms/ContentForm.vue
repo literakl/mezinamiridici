@@ -18,7 +18,7 @@
               identifier="content"/>
           </b-row>
         </b-form-group>
-        <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
+        <ValidationProvider :rules="{ required: true, min: 3 }" v-slot="validationContext">
           <b-form-group id="caption-group" :label="$t('cms.edit.caption-label')" label-for="caption">
 
             <b-form-input
@@ -31,7 +31,7 @@
           </b-form-group>
         </ValidationProvider>
 
-        <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
+        <ValidationProvider :rules="{ required: true, min: 3 }" v-slot="validationContext">
           <b-form-group id="slug-group" :label="$t('cms.edit.slug-label')" label-for="slug">
 
             <b-form-input
@@ -118,7 +118,7 @@ import TagSelector from '@/components/atoms/TagSelector.vue';
 import Radio from '@/components/atoms/Radio.vue';
 
 export default {
-  name: 'CmsForm',
+  name: 'ContentForm',
   components: {
     SelectPicture,
     TagSelector,
@@ -181,9 +181,9 @@ export default {
       };
 
       if (this.isCreate) {
-        message = 'CREATE_CMS';
+        message = 'CREATE_CONTENT';
       } else {
-        message = 'UPDATE_CMS';
+        message = 'UPDATE_CONTENT';
         body.cmsId = this.cms._id;
         body.published = this.form.published;
       }

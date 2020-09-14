@@ -37,10 +37,10 @@
               <template v-slot:button-content>
                 <BIconInfo scale="2"></BIconInfo>
               </template>
-              <b-dropdown-item :to="{ name: 'help'}">{{ $t('app.help') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'mission'}">{{ $t('app.our-mission') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'contact'}">{{ $t('app.contact') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'advertisement'}">{{ $t('app.advertisement') }}</b-dropdown-item>
+              <b-dropdown-item href="/h/napoveda">{{ $t('app.help') }}</b-dropdown-item>
+              <b-dropdown-item href="/h/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
+              <b-dropdown-item href="/h/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
+              <b-dropdown-item href="/h/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>

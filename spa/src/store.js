@@ -22,7 +22,7 @@ export default new Vuex.Store({
     blog: null,
     itemPictures: [],
     itemStream: [],
-    cms: null,
+    content: null,
   },
   getters: {
     TAGS: state => state.tags,
@@ -31,7 +31,7 @@ export default new Vuex.Store({
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
     ITEM_STREAM: state => state.itemStream,
-    CMS: state => state.cms,
+    CONTENT: state => state.content,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -52,8 +52,8 @@ export default new Vuex.Store({
     APPEND_STREAM: (state, payload) => {
       state.itemStream.push(...payload);
     },
-    SET_CMS: (state, payload) => {
-      state.cms = payload;
+    SET_CONTENT: (state, payload) => {
+      state.content = payload;
     },
   },
   actions: {
@@ -108,43 +108,38 @@ export default new Vuex.Store({
       context.commit('SET_BLOG', blog.data.data);
       return blog.data.data;
     },
-    FETCH_CMS: async (context, payload) => {
-      Vue.$log.debug(`FETCH_CMS ${payload.slug}`);
-      if (context.state.cms != null && payload.slug === context.state.cms.info.slug) {
+    FETCH_CONTENT: async (context, payload) => {
+      Vue.$log.debug(`FETCH_CONTENT ${payload.slug}`);
+      if (context.state.content != null && payload.slug === context.state.content.info.slug) {
         return; // cached value recycled
       }
-      context.commit('SET_CMS', null);
-      let cmsData = null;
-      if (payload.type === 'content') {
-        cmsData = await get('BFF', `/c/${payload.slug}`, context);
-      } else {
-        cmsData = await get('BFF', `/h/${payload.slug}`, context);
-      }
+      context.commit('SET_CONTENT', null);
+      const cmsData = await get('API', `/content/${payload.slug}`, context);
       const cms = cmsData.data.data;
-      context.commit('SET_CMS', cms);
+      context.commit('SET_CONTENT', cms);
     },
-    CREATE_CMS: async (context, payload) => {
-      Vue.$log.debug('CREATE_CMS');
-      const cmsData = await post('API', '/cms', payload, context);
+    FETCH_CONTENTS: async (context) => {
+      Vue.$log.debug('FETCH_CONTENTS');
+      const response = await get('API', '/content', context);
+      return response.data.data;
+    },
+    CREATE_CONTENT: async (context, payload) => {
+      Vue.$log.debug('CREATE_CONTENT');
+      const cmsData = await post('API', '/content', payload, context);
       return cmsData.data.data;
     },
-    UPDATE_CMS: async (context, payload) => {
-      Vue.$log.debug('UPDATE_CMS');
+    UPDATE_CONTENT: async (context, payload) => {
+      Vue.$log.debug('UPDATE_CONTENT');
       const { cmsId } = payload;
-      const cmsData = await patch('API', `/cms/${cmsId}/`, payload, context);
+      const cmsData = await patch('API', `/content/${cmsId}/`, payload, context);
       const item = cmsData.data.data;
-      context.commit('SET_CMS', item);
+      context.commit('SET_CONTENT', item);
       return item;
     },
-    DELETE_CMS: async (context, payload) => {
-      Vue.$log.debug('DELETE_CMS');
+    DELETE_CONTENT: async (context, payload) => {
+      Vue.$log.debug('DELETE_CONTENT');
       const { cmsId } = payload;
-      return deleteApi('API', `/cms/${cmsId}/`, {}, context);
-    },
-    FETCH_CMS_LIST: async (context) => {
-      Vue.$log.debug('FETCH_CMS_LIST');
-      const response = await get('BFF', '/cms-list', context);
-      return response.data.data;
+      return deleteApi('API', `/content/${cmsId}/`, {}, context);
     },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');

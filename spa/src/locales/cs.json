@@ -279,10 +279,10 @@
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
     "tags": "Štítky",
-    "cms-list": "Seznam CMS",
     "cms": "CMS",
-    "edit-cms": "Upravit CMS",
-    "create-cms": "Vytvořte CMS"
+    "content": "Obsah",
+    "create-content": "Úprava obsahu",
+    "edit-content": "Upravit obsah"
   },
   "editorjs": {
     "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",

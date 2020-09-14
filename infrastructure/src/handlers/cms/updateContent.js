@@ -1,4 +1,3 @@
-const slugify = require('slugify');
 const dayjs = require('dayjs');
 const sanitizeHtml = require('sanitize-html');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
@@ -11,10 +10,10 @@ const auth = require('../../utils/authenticate');
 const logger = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/cms/:cmsId', auth.cors);
+  app.options('/v1/content/:cmsId', auth.cors);
 
-  app.patch('/v1/cms/:cmsId', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
-    logger.verbose('Update CMS handler starts');
+  app.patch('/v1/content/:cmsId', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+    logger.verbose('Update content handler starts');
     const { cmsId } = req.params;
     if (!cmsId) {
       return api.sendMissingParam(res, 'cmsId');
@@ -26,7 +25,13 @@ module.exports = (app) => {
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);
     }
-    if (!type || !caption || !slug || !content) {
+    if (!type) {
+      return api.sendMissingParam(res, 'type');
+    }
+    if (!caption) {
+      return api.sendMissingParam(res, 'caption');
+    }
+    if (!content) {
       return api.sendMissingParam(res, 'content');
     }
     if (!picture) {
@@ -47,7 +52,7 @@ module.exports = (app) => {
 
       const query = prepareUpdateQuery(type, caption, slug, content, user, picture, publishDate, published, tags);
       await dbClient.db().collection('items').updateOne({ _id: cmsId }, query);
-      logger.debug('CMS updated');
+      logger.debug('Content updated');
 
       const pipeline = [mongo.stageId(cmsId)];
       const item = await mongo.getCMS(dbClient, pipeline);
@@ -62,18 +67,14 @@ module.exports = (app) => {
 
 function prepareUpdateQuery(type, caption, slug, content, author, picture, date, published, tags) {
   const setters = {}, unsetters = {};
-  setters['type'] = type;
+  setters.type = type;
   setters['info.caption'] = caption;
   setters['info.slug'] = slug;
   setters['data.content'] = sanitizeHtml(content);
   setters['info.author'] = { nickname: author.nickname, id: author.userId };
   setters['info.date'] = date;
   setters['info.published'] = published;
-  if (picture) {
-    setters['info.picture'] = picture;
-  } else {
-    unsetters['info.picture'] = true;
-  }
+  setters['info.picture'] = picture;
   if (tags) {
     setters['info.tags'] = tags;
   }
