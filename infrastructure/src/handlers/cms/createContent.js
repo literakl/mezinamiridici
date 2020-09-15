@@ -75,6 +75,10 @@ function insertCMS(dbClient, cmsId, type, caption, slug, content, author, pictur
     data: {
       content: sanitizeHtml(content, api.sanitizeConfigure()),
     },
+    comments: {
+      count: 0,
+      last: null,
+    },
   };
 
   return dbClient.db().collection('items').insertOne(item);

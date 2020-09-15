@@ -9,11 +9,12 @@
       <b-img :src="item.info.picture"></b-img>
     </router-link>
     <div class="mt-3 p-1 pl-3 item-footer">
-      <Date :date="item.info.date" format="dynamicDate" /> &bull;
-      <template v-if="showAuthor"><ProfileLink :profile="item.info.author"/> &bull;</template>
-      <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{item.votes_count}} &bull;</template>
-      <template>
-        <router-link :to="commentLink" v-if="item.type === 'poll' || item.type === 'blog'">
+      <Date :date="item.info.date" format="dynamicDate" />
+      <template v-if="showAuthor">&bull; <ProfileLink :profile="item.info.author"/></template>
+      <template v-if="item.type === 'poll'">&bull; {{ $t('poll.votes') }}: {{item.votes_count}}</template>
+      <template v-if="hasDiscussion">
+        &bull;
+        <router-link :to="commentLink">
           {{ $t('comment.comments') }}: {{item.comments.count}}
         </router-link>
       </template>
@@ -60,6 +61,9 @@ export default {
     },
     showAuthor() {
       return this.item.type !== 'poll';
+    },
+    hasDiscussion() {
+      return this.item.type === 'poll' || this.item.type === 'blog' || this.item.type === 'content';
     },
   },
 };
