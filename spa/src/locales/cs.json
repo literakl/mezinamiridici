@@ -280,9 +280,9 @@
     "tag": "Štítek",
     "tags": "Štítky",
     "cms": "CMS",
-    "content": "Obsah",
-    "create-content": "Úprava obsahu",
-    "edit-content": "Upravit obsah"
+    "content": "Stránka",
+    "create-content": "Nová stránka",
+    "edit-content": "Úprava stránky"
   },
   "editorjs": {
     "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",
@@ -292,15 +292,15 @@
   "cms": {
     "edit": {
       "caption-label": "Titulek",
-      "slug-label": "Slimák",
+      "slug-label": "URL adresa",
       "type-label": "Typ",
       "content-label": "Obsah",
-      "help": "Pomoc",
+      "help": "Nápověda",
       "content": "Obsah",
-      "edit-cms": "Upravit CMS",
-      "delete-cms": "Vymazat CMS",
-      "new-cms-heading": "Nový CMS",
-      "delete-message": "Opravdu chcete tento CMS smazat?"
+      "edit-cms": "Upravit",
+      "delete-cms": "Smazat ",
+      "new-cms-heading": "Nový obsah",
+      "delete-message": "Opravdu chcete tuto stránku smazat?"
     }
   }
 }

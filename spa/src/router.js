@@ -133,12 +133,6 @@ export default new Router({
       props: true,
     },
     {
-      path: '/h/:slug',
-      name: 'content',
-      component: () => import('./views/item/Content.vue'),
-      props: true,
-    },
-    {
       path: '/novy-obsah/',
       name: 'create-content',
       component: () => import('./views/item/CreateContent.vue'),
