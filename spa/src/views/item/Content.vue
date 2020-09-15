@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     changeTitle(title) {
-      setTimeout(() => { document.title = title; }, 10);improved
+      setTimeout(() => { document.title = title; }, 10);
     },
   },
 };

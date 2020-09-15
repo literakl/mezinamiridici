@@ -49,7 +49,7 @@ export default {
         return { name: 'blog', params: { slug: this.item.info.slug } };
       }
       if (this.item.type === 'help' || this.item.type === 'content') {
-        return { name: 'cms', params: { slug: this.item.info.slug, type: this.item.type } };
+        return { name: 'content', params: { slug: this.item.info.slug } };
       }
       return { name: 'home' };
     },
