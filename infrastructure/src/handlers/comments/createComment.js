@@ -77,7 +77,7 @@ function createComment(itemId, source, user, parentId, date) {
   edjsParser.parse(source).forEach((item) => {
     text += item;
   });
-  text = sanitizeHtml(text);
+  text = sanitizeHtml(text, api.sanitizeConfigure());
   const comment = {
     _id: mongo.generateTimeId(),
     itemId,

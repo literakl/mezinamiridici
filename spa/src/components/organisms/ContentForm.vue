@@ -172,7 +172,7 @@ export default {
       const body = {
         type: this.form.type,
         caption: this.form.caption,
-        slug: this.form.slug,
+        slug: this.form.slug.replaceAll('/', ''),
         date: new Date(this.form.date),
         author: this.form.authorId,
         content: this.form.content,

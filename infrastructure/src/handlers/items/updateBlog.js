@@ -49,7 +49,7 @@ function prepareUpdateQuery(source, title, picture, tags) {
   edjsParser.parse(source).forEach((item) => {
     content += item;
   });
-  content = sanitizeHtml(edjsParser.parse(source));
+  content = sanitizeHtml(content, api.sanitizeConfigure());
 
   const setters = {};
   setters['data.source'] = source;

@@ -210,6 +210,19 @@ function parseDate(date, format) {
   return new Date();
 }
 
+function sanitizeConfigure() {
+  return {
+    allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+    'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'abbr', 'code', 'hr', 'br', 'div',
+    'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe',
+    'h1', 'h2', 'img'],
+    allowedAttributes: {
+      a: [ 'href', 'name', 'target' ],
+      img: [ 'src' ]
+    },
+  }
+}
+
 module.exports.sendResponse = sendResponse;
 module.exports.sendErrorForbidden = sendErrorForbidden;
 module.exports.sendInternalError = sendInternalError;
@@ -228,3 +241,4 @@ module.exports.parsePollFilterParams = parsePollFilterParams;
 module.exports.sendRedirectFound = sendRedirectFound;
 module.exports.edjsHtmlCustomParser = edjsHtmlCustomParser;
 module.exports.parseDate = parseDate;
+module.exports.sanitizeConfigure = sanitizeConfigure;

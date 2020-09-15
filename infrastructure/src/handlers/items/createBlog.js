@@ -67,7 +67,7 @@ function insertItem(dbClient, blogId, title, source, author, publishDate, pictur
   edjsParser.parse(source).forEach((item) => {
     content += item;
   });
-  content = sanitizeHtml(content);
+  content = sanitizeHtml(content, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
 
   const blog = {

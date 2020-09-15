@@ -73,7 +73,7 @@ function insertCMS(dbClient, cmsId, type, caption, slug, content, author, pictur
       tags,
     },
     data: {
-      content: sanitizeHtml(content),
+      content: sanitizeHtml(content, api.sanitizeConfigure()),
     },
   };
 

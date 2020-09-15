@@ -70,7 +70,7 @@ function prepareUpdateQuery(type, caption, slug, content, author, picture, date,
   setters.type = type;
   setters['info.caption'] = caption;
   setters['info.slug'] = slug;
-  setters['data.content'] = sanitizeHtml(content);
+  setters['data.content'] = sanitizeHtml(content, api.sanitizeConfigure());
   setters['info.author'] = { nickname: author.nickname, id: author.userId };
   setters['info.date'] = date;
   setters['info.published'] = published;
