@@ -7,6 +7,7 @@ module.exports = {
     optimization: {
       splitChunks: false,
     },
+    mode: 'production',
   },
   productionSourceMap: false,
   devServer: {
