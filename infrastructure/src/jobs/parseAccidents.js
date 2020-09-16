@@ -1,6 +1,6 @@
+import { jobLogger as logger } from '../utils/logging';
+
 const axios = require('axios').default;
-const { stringify } = require('flatted/cjs');
-const { createLogger, format, transports } = require('winston');
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
@@ -18,46 +18,15 @@ dayjs.extend(customParseFormat);
 dayjs.extend(weekOfYear);
 
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
-
-const { combine, printf } = format;
-const myFormat = printf(info => `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`);
-const appendTimestamp = format((info) => {
-  info.timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss:SSS');
-  return info;
-});
-const logger = createLogger({
-  level: 'debug',
-  format: combine(
-    appendTimestamp(),
-    myFormat,
-  ),
-  transports: [
-    new transports.File({
-      filename: 'accidents.log',
-      colorize: false,
-    }),
-  ],
-  exitOnError: false,
-});
-logger.add(new transports.Console({
-  format: format.simple(),
-}));
-logger.stream = {
-  write(message) {
-    logger.info(message.replace(/\n$/, ''));
-  },
-};
-
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
-const { ACCIDENTS_RECORDS_URL } = process.env;
-const { ACCIDENTS_RECORDS_CRON } = process.env;
-const { ACCIDENTS_RECORDS_RETRY } = process.env;
+const { ACCIDENTS_RECORDS_URL, ACCIDENTS_RECORDS_CRON, ACCIDENTS_RECORDS_RETRY } = process.env;
 const dateFormatType = 'DD.MM.YYYY';
 
 const keyArray = [
-  'region', 'counts', 'deaths', 'severely', 'slighty', 'damage', 'speed', 'priority', 'passing', 'driving', 'drunk', 'other',
+  'region', 'counts', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'priority', 'passing', 'driving', 'drunk', 'other',
 ];
+
 let formDataBody = {};
 
 let currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
@@ -97,7 +66,7 @@ async function parseData(dbClient, date) {
   logger.debug('::: get content when second loading');
 
   const regionsData = $('#celacr tr');
-  let result = false;
+  let result;
 
   if (regionsData && regionsData.length > 0) {
     result = await treatData(dbClient, regionsData, date, $);
@@ -113,16 +82,13 @@ async function scheduleParsing() {
   const task = cron.schedule(currentScheduleExpression, async () => {
     const dbClient = await mongo.connectToDatabase();
     logger.debug('Mongo connected');
-    logger.debug('Running get accident data at 06:00 at Europe/Prague timezone');
     logger.debug('Current schedule expression is: ');
     logger.debug(currentScheduleExpression);
 
     await setInitFormData();
 
     const yesterday = dayjs().subtract(1, 'day');
-
     const isParsed = await parseData(dbClient, dayjs(yesterday).format(dateFormatType));
-
     if (!isParsed) {
       task.destroy();
       currentScheduleExpression = `*/${ACCIDENTS_RECORDS_RETRY} * * * *`;

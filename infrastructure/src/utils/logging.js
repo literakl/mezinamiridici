@@ -3,7 +3,6 @@ const { stringify } = require('flatted/cjs');
 const { createLogger, format, transports } = require('winston');
 
 const { combine, printf } = format;
-
 const myFormat = printf(info => `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`);
 
 function myTimestamp() {
@@ -22,31 +21,26 @@ function myTimestamp() {
   }
   return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day} ${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}:${ms}`;
 }
-const appendTimestamp = format((info, opts) => {
+
+const appendTimestamp = format((info) => {
   info.timestamp = myTimestamp();
   return info;
 });
 
-let logger;
+let appLogger, jobLogger;
 
 if (process.env.NODE_ENV === 'test') {
-  logger = createLogger({
+  appLogger = createLogger({
     level: 'debug',
-    format: combine(
-      appendTimestamp(),
-      myFormat,
-    ),
+    format: combine(appendTimestamp(), myFormat),
     transports: [
       new transports.File({ filename: 'test.log' }),
     ],
   });
 } else {
-  logger = createLogger({
+  appLogger = createLogger({
     level: 'debug',
-    format: combine(
-      appendTimestamp(),
-      myFormat,
-    ),
+    format: combine(appendTimestamp(), myFormat),
     // defaultMeta: { service: 'user-service' },
     transports: [
       new transports.File({ filename: 'application.log' }),
@@ -57,14 +51,19 @@ if (process.env.NODE_ENV === 'test') {
   });
 
   if (process.env.NODE_ENV !== 'production') { // todo check condition
-    logger.add(new transports.Console({
+    appLogger.add(new transports.Console({
       format: format.simple(),
     }));
   }
+
+  jobLogger = createLogger({
+    level: 'debug',
+    format: combine(appendTimestamp(), myFormat),
+    transports: [
+      new transports.File({ filename: 'jobs.log' }),
+    ],
+  });
 }
 
-logger.on('finish', (info) => {
-  // All `info` log messages has now been logged
-});
-
-module.exports = logger;
+exports.logger = appLogger;
+exports.jobLogger = jobLogger;
