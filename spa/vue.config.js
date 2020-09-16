@@ -1,3 +1,5 @@
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 module.exports = {
   css: {
     extract: false,
@@ -8,6 +10,9 @@ module.exports = {
       splitChunks: false,
     },
     mode: 'production',
+    plugins: [
+      new BundleAnalyzerPlugin(),
+    ],
   },
   productionSourceMap: false,
   devServer: {
