@@ -1,18 +1,11 @@
 const express = require('express');
-const errorhandler = require('errorhandler');
-const morgan = require('morgan');
-const { createLogger, format, transports } = require('winston');
-// eslint-disable-next-line no-unused-vars
-const path = require('path');
+require('path');
 
 require('./jobs/parseAccidents.js').scheduleParsing();
 
 const app = express();
 app.use('/', express.static(`${__dirname}/dist/`));
-
 app.use(express.json());
-// TODO only use in development
-app.use(errorhandler());
 
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
@@ -54,30 +47,5 @@ app.all('*', (req, res) => {
     res.json({ success: false, message: 'Something went wrong' });
   }
 });
-
-const myFormat = format.printf(info => `${info.message}`);
-
-const logger = createLogger({
-  format: myFormat,
-  level: 'info',
-  transports: [
-    new transports.File({
-      filename: 'access.log',
-      handleExceptions: true,
-      maxsize: 5242880, // 5MB
-      maxFiles: 5,
-      colorize: false,
-    }),
-  ],
-  exitOnError: false,
-});
-
-logger.stream = {
-  write(message) {
-    logger.info(message.replace(/\n$/, ''));
-  },
-};
-
-app.use(morgan('combined', { stream: logger.stream }));
 
 module.exports = app;
