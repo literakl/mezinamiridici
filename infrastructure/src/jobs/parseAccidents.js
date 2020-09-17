@@ -5,7 +5,7 @@ const slugify = require('slugify');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 const weekOfYear = require('dayjs/plugin/weekOfYear');
-const cron = require('node-cron');
+const { CronJob } = require('cron');
 const cheerio = require('cheerio');
 const cheerioAdv = require('cheerio-advanced-selectors');
 const FormData = require('form-data');
@@ -20,22 +20,42 @@ dayjs.extend(weekOfYear);
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
-const { ACCIDENTS_RECORDS_URL, ACCIDENTS_RECORDS_CRON, ACCIDENTS_RECORDS_RETRY } = process.env;
+const { ACCIDENTS_STATS_URL, SCHEDULE_ACCIDENTS_STATS, ACCIDENTS_STATS_RETRY_MINUTES } = process.env;
 const dateFormatType = 'DD.MM.YYYY';
 
 const keyArray = [
   'region', 'counts', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'priority', 'passing', 'driving', 'drunk', 'other',
 ];
 
-let formDataBody = {};
+async function scheduleParsing() {
+  const job = new CronJob(SCHEDULE_ACCIDENTS_STATS, async () => doJob);
+  job.start();
+}
 
-let currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
+async function doJob() {
+  logger.info('Connecting to server');
+  const formDataBody = await getInitialFormData();
+  const yesterday = dayjs().subtract(1, 'day');
+  const dbClient = await mongo.connectToDatabase();
+  // todo pass Date and format it when needed
+  const isParsed = await parseData(dbClient, formDataBody, dayjs(yesterday).format(dateFormatType));
+  if (!isParsed) {
+    logger.info('Data not available, rescheduling');
+    const nextTime = dayjs().add(ACCIDENTS_STATS_RETRY_MINUTES, 'minute').toDate();
+    const job = new CronJob(nextTime, async () => doJob);
+    job.start();
+  } else {
+    logger.info('Data fetched, creating new article');
+    const data = await getBlog(dbClient);
+    await storeBlogItem(dbClient, data);
+  }
+}
 
-async function setInitFormData() {
-  logger.debug('::: get content when first loading');
-  const html = await getAxios(ACCIDENTS_RECORDS_URL);
+async function getInitialFormData() {
+  logger.debug('Initial loading to load the bloody form');
+  const html = await getPage(ACCIDENTS_STATS_URL);
   const $ = await cheerioParser.load(html);
-  formDataBody = {
+  return {
     ctl00_Application_ScriptManager1_HiddenField: $('#ctl00_Application_ScriptManager1_HiddenField').val(),
     __EVENTTARGET: $('#__EVENTTARGET').val(),
     __EVENTARGUMENT: $('#__EVENTARGUMENT').val(),
@@ -43,91 +63,56 @@ async function setInitFormData() {
     __VIEWSTATEGENERATOR: $('#__VIEWSTATEGENERATOR').val(),
     __EVENTVALIDATION: $('#__EVENTVALIDATION').val(),
     ctl00$Application$ddlKraje: 'Česká republika',
-    // 'ctl00$Application$txtDatum' : date,
     ctl00$Application$cmdZobraz: 'Zobrazit',
   };
 }
 
-async function parseData(dbClient, date) {
-  logger.debug('::: Parsing data started');
-
-  logger.debug('::: require date');
-  logger.debug(date);
-
+async function parseData(dbClient, date, formDataBody) {
+  logger.debug(`Data retrieval for ${date} started`);
   formDataBody.ctl00$Application$txtDatum = date;
   const formData = new FormData();
+  // eslint-disable-next-line no-restricted-syntax
   for (const key in formDataBody) {
-    formData.append(key, (formDataBody[key]) ? formDataBody[key] : '');
+    // eslint-disable-next-line no-prototype-builtins
+    if (formDataBody.hasOwnProperty(key)) {
+      formData.append(key, (formDataBody[key]) ? formDataBody[key] : '');
+    }
   }
 
-  const html = await getAxios(ACCIDENTS_RECORDS_URL, formData);
+  const html = await getPage(ACCIDENTS_STATS_URL, formData);
   const $ = await cheerioParser.load(html);
-
-  logger.debug('::: get content when second loading');
+  logger.debug('Page downloaded');
 
   const regionsData = $('#celacr tr');
   let result;
-
   if (regionsData && regionsData.length > 0) {
-    result = await treatData(dbClient, regionsData, date, $);
+    result = await saveData(dbClient, regionsData, date, $);
+    logger.debug('Data stored in Mongo');
+    return result;
   } else {
-    result = false;
+    return false;
   }
-  logger.debug('The result is ');
-  logger.debug(result);
-  return result;
 }
 
-async function scheduleParsing() {
-  const task = cron.schedule(currentScheduleExpression, async () => {
-    const dbClient = await mongo.connectToDatabase();
-    logger.debug('Mongo connected');
-    logger.debug('Current schedule expression is: ');
-    logger.debug(currentScheduleExpression);
-
-    await setInitFormData();
-
-    const yesterday = dayjs().subtract(1, 'day');
-    const isParsed = await parseData(dbClient, dayjs(yesterday).format(dateFormatType));
-    if (!isParsed) {
-      task.destroy();
-      currentScheduleExpression = `*/${ACCIDENTS_RECORDS_RETRY} * * * *`;
-      scheduleParsing();
-    } else if (currentScheduleExpression !== ACCIDENTS_RECORDS_CRON) {
-      task.destroy();
-      currentScheduleExpression = ACCIDENTS_RECORDS_CRON;
-      scheduleParsing();
-    } else {
-      task.destroy();
-      const data = await getBlog(dbClient);
-      storeBlogItem(dbClient, data);
-    }
-  }, {
-    scheduled: true,
-    timezone: 'Europe/Prague',
-  });
-}
-
-async function getAxios(url, data) {
+async function getPage(url, data) {
   let html = '';
-
   if (data === undefined) {
     await axios.post(url)
       .then((response) => {
         html = response.data;
       })
-      .catch(console.error);
+      .catch(logger.error);
   } else {
     await axios.post(url, data, { headers: data.getHeaders() })
       .then((response) => {
         html = response.data;
       })
-      .catch(console.error);
+      .catch(logger.error);
   }
   return html;
 }
 
-async function treatData(dbClient, region, date, $) {
+async function saveData(dbClient, region, date, $) {
   const storeData = {
     date: new Date(date.split('.').reverse().join('-')),
     regions: [],

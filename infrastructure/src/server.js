@@ -1,8 +1,6 @@
 const express = require('express');
 require('path');
 
-require('./jobs/parseAccidents.js').scheduleParsing();
-
 const app = express();
 app.use('/', express.static(`${__dirname}/dist/`));
 app.use(express.json());
