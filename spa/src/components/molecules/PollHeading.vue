@@ -39,7 +39,9 @@
 </template>
 
 <script>
-import { BIconChevronDoubleLeft, BIconChevronDoubleRight } from 'bootstrap-vue';
+import { BIconChevronDoubleLeft, BIconChevronDoubleRight,
+  BContainer, BRow, BCol, BCard, BCardBody, BCardFooter,
+  BButton } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
@@ -52,6 +54,13 @@ export default {
     TagList,
     BIconChevronDoubleLeft,
     BIconChevronDoubleRight,
+    BContainer,
+    BRow,
+    BCol,
+    BCard,
+    BCardBody,
+    BCardFooter,
+    BButton,
   },
   props: {
     item: Object,

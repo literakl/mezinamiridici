@@ -18,8 +18,13 @@
 </template>
 
 <script>
+import { BFormGroup, BImg, BModal } from 'bootstrap-vue';
+
 export default {
   name: 'SelectPicture',
+  components: {
+    BFormGroup, BImg, BModal,
+  },
   props: {
     currentPath: String,
   },

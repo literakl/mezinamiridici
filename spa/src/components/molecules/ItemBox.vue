@@ -26,12 +26,14 @@
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import { deepCopy } from '@/utils/api';
+import { BImg } from 'bootstrap-vue';
 
 export default {
   name: 'ItemBox',
   components: {
     Date,
     ProfileLink,
+    BImg,
   },
   props: {
     item: Object,

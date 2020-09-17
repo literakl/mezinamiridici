@@ -116,6 +116,7 @@ import { getISO } from '@/utils/dateUtils';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
 import Radio from '@/components/atoms/Radio.vue';
+import { BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BFormDatepicker, BFormCheckbox, BButton, BRow, BFormTextarea } from 'bootstrap-vue';
 
 export default {
   name: 'ContentForm',
@@ -123,6 +124,15 @@ export default {
     SelectPicture,
     TagSelector,
     Radio,
+    BForm,
+    BFormGroup,
+    BFormInput,
+    BFormInvalidFeedback,
+    BFormDatepicker,
+    BFormCheckbox,
+    BButton,
+    BRow,
+    BFormTextarea,
   },
   props: {
     isCreate: Boolean,

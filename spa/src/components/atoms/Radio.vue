@@ -14,7 +14,12 @@
 </template>
 
 <script>
+import { BFormRadio } from 'bootstrap-vue';
+
 export default {
+  components: {
+    BFormRadio,
+  },
   data: () => ({
     selected: null,
   }),

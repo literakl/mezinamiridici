@@ -70,12 +70,20 @@
 import { getISO } from '@/utils/dateUtils';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
+import { BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BFormDatepicker, BFormCheckbox, BButton } from 'bootstrap-vue';
 
 export default {
   name: 'PollForm',
   components: {
     SelectPicture,
     TagSelector,
+    BForm,
+    BFormGroup,
+    BFormInput,
+    BFormInvalidFeedback,
+    BFormDatepicker,
+    BFormCheckbox,
+    BButton,
   },
   props: {
     isCreate: Boolean,

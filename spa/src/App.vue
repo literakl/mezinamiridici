@@ -53,12 +53,24 @@
 </template>
 
 <script>
-import { BIconPersonFill, BIconInfo, BIconPlus } from 'bootstrap-vue';
+import { BIconPersonFill, BIconInfo, BIconPlus,
+  BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem,
+  BNavbarToggle, BNavbarBrand, BCollapse, BNavItem } from 'bootstrap-vue';
 
 export default {
   name: 'App',
   components: {
-    BIconPersonFill, BIconInfo, BIconPlus,
+    BIconPersonFill,
+    BIconInfo,
+    BIconPlus,
+    BNavbar,
+    BNavbarNav,
+    BNavItemDropdown,
+    BDropdownItem,
+    BNavbarToggle,
+    BNavbarBrand,
+    BCollapse,
+    BNavItem,
   },
   computed: {
     authorized() {

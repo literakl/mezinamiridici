@@ -37,8 +37,13 @@
 </template>
 
 <script>
+import { BFormInput } from 'bootstrap-vue';
+
 export default {
   name: 'TextInput',
+  components: {
+    BFormInput,
+  },
   props: {
     vid: {
       type: String,

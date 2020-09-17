@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import { BFormInput } from 'bootstrap-vue';
+
 export default {
   name: 'Submit',
+  components: {
+    BFormInput,
+  },
   props: {
     value: String,
   },

@@ -181,6 +181,7 @@ import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import i18n from '@/i18n';
+import { BForm, BRow, BCol } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
@@ -220,6 +221,9 @@ export default {
     Checkbox,
     Button,
     Radio,
+    BForm,
+    BRow,
+    BCol,
   },
   data: () => ({
     userProfile: null,

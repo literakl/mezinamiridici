@@ -11,8 +11,13 @@
 </template>
 
 <script>
+import { BButton } from 'bootstrap-vue';
+
 export default {
   name: 'Button',
+  components: {
+    BButton,
+  },
   props: {
     value: String,
     disabled: {
