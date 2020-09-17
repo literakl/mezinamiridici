@@ -1,10 +1,13 @@
-const cron = require('node-cron');
+import { logger } from '../utils/logging';
+
+const { CronJob } = require('cron');
 const dayjs = require('dayjs');
 const isoWeek = require('dayjs/plugin/isoWeek');
 
 const mongo = require('../utils/mongo.js');
-const logger = require('../utils/logging');
 const { findLastIndex } = require('../utils/helpers');
+
+const { SCHEDULE_RANK } = process.env;
 
 dayjs.extend(isoWeek);
 
@@ -150,13 +153,12 @@ function calculateConsecutiveSharing(date, foundWeeks) {
   return { sharingWeeksCount: count, sharingWeeksList: weeks };
 }
 
-module.exports = async () => {
-  logger.info(`Rank job scheduled to run at ${process.env.SCHEDULE_RANK}`);
-  cron.schedule(process.env.SCHEDULE_RANK, async () => calculateUserHonors(), {
-    scheduled: true,
-    timezone: 'Europe/Prague',
-  });
-};
+function scheduleCalculation() {
+  logger.info(`Rank job scheduled to run at ${SCHEDULE_RANK}`);
+  const job = new CronJob(SCHEDULE_RANK, async () => calculateUserHonors);
+  job.start();
+}
 
-module.exports.calculateUserHonors = calculateUserHonors;
-module.exports.calculateConsecutiveSharing = calculateConsecutiveSharing;
+exports.schedule = scheduleCalculation;
+exports.calculateUserHonors = calculateUserHonors;
+exports.calculateConsecutiveSharing = calculateConsecutiveSharing;

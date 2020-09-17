@@ -27,7 +27,7 @@ const keyArray = [
   'region', 'counts', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'priority', 'passing', 'driving', 'drunk', 'other',
 ];
 
-async function scheduleParsing() {
+function scheduleParsing() {
   const job = new CronJob(SCHEDULE_ACCIDENTS_STATS, async () => doJob);
   job.start();
 }
@@ -318,5 +318,5 @@ function insertItem(dbClient, title, source, author, publishDate, picture, tags)
   return dbClient.db().collection('items').insertOne(blog);
 }
 
-exports.scheduleParsing = scheduleParsing;
+exports.schedule = scheduleParsing;
 exports.parseData = parseData;
