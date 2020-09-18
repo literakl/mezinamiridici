@@ -2,7 +2,7 @@ const { CronJob } = require('cron');
 const dayjs = require('dayjs');
 const isoWeek = require('dayjs/plugin/isoWeek');
 
-const { logger } = require('../utils/logging');
+const { jobLogger } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 const { findLastIndex } = require('../utils/helpers');
 
@@ -11,7 +11,7 @@ const { SCHEDULE_RANK } = process.env;
 dayjs.extend(isoWeek);
 
 const calculateUserHonors = async () => {
-  logger.info('Running a job to calculate the user ranks');
+  jobLogger.info('Running a job to calculate the user ranks');
 
   const dbClient = await mongo.connectToDatabase();
   let users = await getUsers(dbClient, undefined, 100);
@@ -153,7 +153,7 @@ function calculateConsecutiveSharing(date, foundWeeks) {
 }
 
 function scheduleCalculation() {
-  logger.info(`Rank job scheduled to run at ${SCHEDULE_RANK}`);
+  jobLogger.info(`Rank job scheduled to run at ${SCHEDULE_RANK}`);
   const job = new CronJob(SCHEDULE_RANK, async () => calculateUserHonors);
   job.start();
 }

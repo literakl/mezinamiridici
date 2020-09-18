@@ -1,5 +1,3 @@
-import { jobLogger as logger } from '../utils/logging';
-
 const axios = require('axios').default;
 const slugify = require('slugify');
 const dayjs = require('dayjs');
@@ -11,6 +9,7 @@ const cheerioAdv = require('cheerio-advanced-selectors');
 const FormData = require('form-data');
 const edjsHTML = require('editorjs-html');
 
+const { jobLogger } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 const api = require('../utils/api.js');
 
@@ -33,26 +32,26 @@ function scheduleParsing() {
 }
 
 async function doJob() {
-  logger.info('Connecting to server');
+  jobLogger.info('Connecting to server');
   const formDataBody = await getInitialFormData();
   const yesterday = dayjs().subtract(1, 'day');
   const dbClient = await mongo.connectToDatabase();
   // todo pass Date and format it when needed
   const isParsed = await parseData(dbClient, formDataBody, dayjs(yesterday).format(dateFormatType));
   if (!isParsed) {
-    logger.info('Data not available, rescheduling');
+    jobLogger.info('Data not available, rescheduling');
     const nextTime = dayjs().add(ACCIDENTS_STATS_RETRY_MINUTES, 'minute').toDate();
     const job = new CronJob(nextTime, async () => doJob);
     job.start();
   } else {
-    logger.info('Data fetched, creating new article');
+    jobLogger.info('Data fetched, creating new article');
     const data = await getBlog(dbClient);
     await storeBlogItem(dbClient, data);
   }
 }
 
 async function getInitialFormData() {
-  logger.debug('Initial loading to load the bloody form');
+  jobLogger.debug('Initial loading to load the bloody form');
   const html = await getPage(ACCIDENTS_STATS_URL);
   const $ = await cheerioParser.load(html);
   return {
@@ -68,7 +67,7 @@ async function getInitialFormData() {
 }
 
 async function parseData(dbClient, date, formDataBody) {
-  logger.debug(`Data retrieval for ${date} started`);
+  jobLogger.debug(`Data retrieval for ${date} started`);
   formDataBody.ctl00$Application$txtDatum = date;
   const formData = new FormData();
   // eslint-disable-next-line no-restricted-syntax
@@ -81,13 +80,13 @@ async function parseData(dbClient, date, formDataBody) {
 
   const html = await getPage(ACCIDENTS_STATS_URL, formData);
   const $ = await cheerioParser.load(html);
-  logger.debug('Page downloaded');
+  jobLogger.debug('Page downloaded');
 
   const regionsData = $('#celacr tr');
   let result;
   if (regionsData && regionsData.length > 0) {
     result = await saveData(dbClient, regionsData, date, $);
-    logger.debug('Data stored in Mongo');
+    jobLogger.debug('Data stored in Mongo');
     return result;
   } else {
     return false;
@@ -101,13 +100,13 @@ async function getPage(url, data) {
       .then((response) => {
         html = response.data;
       })
-      .catch(logger.error);
+      .catch(jobLogger.error);
   } else {
     await axios.post(url, data, { headers: data.getHeaders() })
       .then((response) => {
         html = response.data;
       })
-      .catch(logger.error);
+      .catch(jobLogger.error);
   }
   return html;
 }
