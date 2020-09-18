@@ -1,5 +1,4 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const webpack = require('webpack');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   css: {
@@ -11,8 +10,7 @@ module.exports = {
       splitChunks: false,
     },
     plugins: [
-      new BundleAnalyzerPlugin(),
-      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /cs/),
+      // new BundleAnalyzerPlugin(),
     ],
   },
   productionSourceMap: false,
