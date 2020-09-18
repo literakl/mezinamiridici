@@ -1,5 +1,4 @@
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const webpack = require('webpack');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   css: {
@@ -10,9 +9,9 @@ module.exports = {
     optimization: {
       splitChunks: false,
     },
-    mode: 'production',
+    // mode: 'production',
     plugins: [
-      new BundleAnalyzerPlugin(),
+      // new BundleAnalyzerPlugin(),
     ],
   },
   productionSourceMap: false,
