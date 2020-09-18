@@ -18,7 +18,7 @@ const lorem = new LoremIpsum({
 });
 
 const mongo = require('../src/utils/mongo.js');
-const logger = require('../src/utils/logging');
+const { logger } = require('../src/utils/logging');
 const app = require('..');
 const {
   api, bff, getAuthHeader, shuffle,

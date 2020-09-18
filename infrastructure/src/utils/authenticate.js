@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const corsMiddleware = require('cors');
 
-const logger = require('../utils/logging');
+const { logger } = require('../utils/logging');
 
 const api = require('./api');
 require('./path_env');

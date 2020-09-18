@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/users/:userId/validateToken', auth.cors);

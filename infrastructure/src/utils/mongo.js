@@ -1,7 +1,7 @@
 const generate = require('nanoid/generate');
 const { MongoClient } = require('mongodb');
-const logger = require('./logging');
 
+const { logger } = require('./logging');
 require('./path_env');
 
 const { MONGODB_URI, TIME_ID_CHARS } = process.env;

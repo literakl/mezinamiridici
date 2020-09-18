@@ -1,7 +1,7 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 
 const MAXIMUM_PAGE_SIZE = process.env.MAXIMUM_PAGE_SIZE || 50;
 
@@ -49,7 +49,7 @@ async function getItems(dbClient, req) {
     } else {
       return item;
     }
-    
+
   });
   return items;
 }

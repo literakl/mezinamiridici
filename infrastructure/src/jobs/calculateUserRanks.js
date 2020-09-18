@@ -1,9 +1,8 @@
-import { logger } from '../utils/logging';
-
 const { CronJob } = require('cron');
 const dayjs = require('dayjs');
 const isoWeek = require('dayjs/plugin/isoWeek');
 
+const { logger } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 const { findLastIndex } = require('../utils/helpers');
 

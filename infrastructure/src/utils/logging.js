@@ -65,5 +65,5 @@ if (process.env.NODE_ENV === 'test') {
   });
 }
 
-exports.logger = appLogger;
-exports.jobLogger = jobLogger;
+module.exports.logger = appLogger;
+module.exports.jobLogger = jobLogger;

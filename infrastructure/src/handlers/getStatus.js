@@ -1,5 +1,5 @@
 const api = require('../utils/api.js');
-const logger = require('../utils/logging');
+const { logger } = require('../utils/logging');
 
 module.exports = (app) => {
   app.get('/v1/status', (req, res) => {

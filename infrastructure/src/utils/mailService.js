@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const Handlebars = require('handlebars');
-const logger = require('./logging');
+const { logger } = require('./logging');
 require('./path_env');
 
 const COMPILED_TEMPLATES = {};

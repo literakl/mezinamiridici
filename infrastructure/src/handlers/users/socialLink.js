@@ -6,7 +6,7 @@ const request = require('request-promise');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 const CREDENTIAL = require('../../utils/social_provider_credential');
 
 module.exports = (app) => {

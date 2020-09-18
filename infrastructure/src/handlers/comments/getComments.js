@@ -2,7 +2,7 @@ require('../../utils/path_env');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 
 const PAGE_SIZE_COMMENTS = parseInt(process.env.PAGE_SIZE_COMMENTS || '10', 10);
 const MAXIMUM_PAGE_SIZE = parseInt(process.env.MAXIMUM_PAGE_SIZE || '50', 10);

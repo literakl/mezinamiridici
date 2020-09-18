@@ -1,6 +1,6 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.get('/bff/polls/:pollId/votes', async (req, res) => {

@@ -1,5 +1,5 @@
 const api = require('../../utils/api.js');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 const auth = require('../../utils/authenticate');
 const mongo = require('../../utils/mongo.js');
 

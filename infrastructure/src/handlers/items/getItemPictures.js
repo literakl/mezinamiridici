@@ -1,7 +1,7 @@
 const fs = require('fs');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 
 const IMAGES_DIR = process.env.STREAM_PICTURES_DIR;
 const WEB_PATH = process.env.STREAM_PICTURES_PATH;

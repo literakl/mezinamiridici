@@ -7,7 +7,7 @@ const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
 const mongo = require('../src/utils/mongo.js');
-const logger = require('../src/utils/logging');
+const { logger } = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
 

@@ -1,8 +1,7 @@
 const app = require('./server.js');
-const logger = require('./utils/logging');
+const { logger } = require('./utils/logging');
 
 app.listen(3000, () => logger.info('Server started'));
-require('./jobs/calculateUserRanks')();
 
 /*
 process.on('unhandledRejection', (reason, p) => {

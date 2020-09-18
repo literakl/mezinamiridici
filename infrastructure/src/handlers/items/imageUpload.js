@@ -4,7 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const sanitize = require('sanitize-filename');
 
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 const auth = require('../../utils/authenticate');
 const api = require('../../utils/api.js');
 require('../../utils/path_env');

@@ -3,7 +3,7 @@ const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const logger = require('../../utils/logging');
+const { logger } = require('../../utils/logging');
 
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
