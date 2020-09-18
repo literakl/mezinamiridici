@@ -31,12 +31,14 @@ import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
 import TagSelector from '@/components/atoms/TagSelector.vue';
 import resourceBundle from '@/utils/editorJSResourceBundle';
+import { BButton } from 'bootstrap-vue';
 
 export default {
   components: {
     SelectPicture,
     TextInput,
     TagSelector,
+    BButton,
   },
   props: {
     slug: String,

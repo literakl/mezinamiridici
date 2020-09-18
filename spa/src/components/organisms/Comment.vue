@@ -58,7 +58,9 @@
 </template>
 
 <script>
-import { BIconChat, BIconHandThumbsUp, BIconHandThumbsDown, BIconArrowClockwise, BIconArrowsExpand, BIconArrowsCollapse } from 'bootstrap-vue';
+import { BIconChat, BIconHandThumbsUp, BIconHandThumbsDown,
+  BIconArrowClockwise, BIconArrowsExpand, BIconArrowsCollapse,
+  BButton, BPopover } from 'bootstrap-vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -75,6 +77,8 @@ export default {
     BIconArrowClockwise,
     BIconArrowsExpand,
     BIconArrowsCollapse,
+    BButton,
+    BPopover,
   },
   props: {
     itemId: String,

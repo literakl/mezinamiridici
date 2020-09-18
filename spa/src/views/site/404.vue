@@ -11,8 +11,13 @@
 </template>
 
 <script>
+import { BRow, BCol } from 'bootstrap-vue';
 
 export default {
   name: 'not-found',
+  components: {
+    BRow,
+    BCol,
+  },
 };
 </script>

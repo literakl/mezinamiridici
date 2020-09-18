@@ -38,11 +38,13 @@
 
 <script>
 import { GridLayout } from '@egjs/vue-infinitegrid';
+import { BContainer } from 'bootstrap-vue';
 
 export default {
   name: 'Timeline',
   components: {
     GridLayout,
+    BContainer,
   },
   props: {
     timelineTitle: String,

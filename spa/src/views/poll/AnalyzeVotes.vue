@@ -41,6 +41,7 @@ import SeriesBarChart from '@/components/molecules/SeriesBarChart.vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import SeriesForm from '@/components/molecules/SeriesForm.vue';
 import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
+import { BFormGroup, BFormRadio, BCard, BFormRadioGroup, BButton } from 'bootstrap-vue';
 
 export default {
   name: 'analyze-votes',
@@ -50,6 +51,11 @@ export default {
     SeriesBarChart,
     PredefinedComparisons,
     ContentLoading,
+    BFormGroup,
+    BFormRadio,
+    BCard,
+    BFormRadioGroup,
+    BButton,
   },
   props: {
     slug: String,

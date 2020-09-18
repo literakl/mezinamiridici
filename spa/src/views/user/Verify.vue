@@ -19,8 +19,14 @@
 </template>
 
 <script>
+import { BRow, BCol } from 'bootstrap-vue';
+
 export default {
   name: 'Verify',
+  components: {
+    BRow,
+    BCol,
+  },
   data: () => ({
     verified: null,
   }),

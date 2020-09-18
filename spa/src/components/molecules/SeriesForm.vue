@@ -62,8 +62,14 @@
 </template>
 
 <script>
+import { BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox,
+  BFormCheckboxGroup, BFormSelect, BInputGroupAppend, BInputGroupText } from 'bootstrap-vue';
+
 export default {
   name: 'SeriesForm',
+  components: {
+    BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox, BFormCheckboxGroup, BFormSelect, BInputGroupAppend, BInputGroupText,
+  },
   props: {
     group: Object,
     id: String,

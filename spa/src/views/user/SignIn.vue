@@ -88,6 +88,7 @@
 import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
+import { BForm, BRow, BCol } from 'bootstrap-vue';
 import i18n from '../../i18n';
 
 configure({
@@ -101,6 +102,9 @@ configure({
 export default {
   name: 'signin',
   components: {
+    BForm,
+    BRow,
+    BCol,
     Button,
     TextInput,
   },

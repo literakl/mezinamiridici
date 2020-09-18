@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { BIconEmojiSunglasses, BIconXCircle } from 'bootstrap-vue';
+import { BIconEmojiSunglasses, BIconXCircle, BPopover, BButton, BContainer, BRow, BCol, BAlert } from 'bootstrap-vue';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 import Button from '@/components/atoms/Button.vue';
@@ -50,7 +50,7 @@ export default {
     isShow: Boolean,
   },
   components: {
-    Button, BIconEmojiSunglasses, BIconXCircle,
+    Button, BIconEmojiSunglasses, BIconXCircle, BPopover, BButton, BContainer, BRow, BCol, BAlert,
   },
   data() {
     return {

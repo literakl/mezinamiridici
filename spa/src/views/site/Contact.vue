@@ -10,8 +10,12 @@
 </template>
 
 <script>
+import { BRow, BCol } from 'bootstrap-vue';
 
 export default {
   name: 'Contact',
+  components: {
+    BRow, BCol,
+  },
 };
 </script>

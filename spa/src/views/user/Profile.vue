@@ -67,6 +67,7 @@ import UserActivity from '@/components/atoms/UserActivity.vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
 import Date from '@/components/atoms/Date.vue';
+import { BRow, BCol } from 'bootstrap-vue';
 
 export default {
   name: 'profile',
@@ -75,6 +76,8 @@ export default {
     UserActivity,
     HonorsProgress,
     Date,
+    BRow,
+    BCol,
   },
   props: {
     id: String,

@@ -28,8 +28,16 @@
 </template>
 
 <script>
+import { BFormGroup, BFormTags, BFormSelect, BFormTag } from 'bootstrap-vue';
+
 export default {
   name: 'TagSelector',
+  components: {
+    BFormGroup,
+    BFormTags,
+    BFormSelect,
+    BFormTag,
+  },
   props: {
     formTags: Array,
   },

@@ -42,10 +42,11 @@
 <script>
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
+import { BButtonGroup, BButton, BCard, BCardBody, BCardFooter } from 'bootstrap-vue';
 
 export default {
   components: {
-    ProfileLink, Date,
+    ProfileLink, Date, BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   },
   data() {
     return {

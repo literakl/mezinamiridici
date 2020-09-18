@@ -42,6 +42,7 @@
 import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
+import { BRow, BCol } from 'bootstrap-vue';
 import i18n from '../../i18n';
 
 configure({
@@ -57,6 +58,8 @@ export default {
   components: {
     Button,
     TextInput,
+    BRow,
+    BCol,
   },
   data: () => ({
     email: null,

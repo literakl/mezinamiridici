@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import { BootstrapVue } from 'bootstrap-vue';
+import { ModalPlugin } from 'bootstrap-vue';
 import log from 'loglevel';
 import Chartkick from 'vue-chartkick';
-import Chart from 'chart.js';
+import { Chart, LinearScale, CategoryScale, BarController, Rectangle } from 'chart.js';
 import {
   ValidationObserver,
   ValidationProvider,
@@ -26,6 +26,8 @@ import i18n from './i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+Chart.register(LinearScale, CategoryScale, BarController, Rectangle);
+
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
@@ -38,7 +40,7 @@ Vue.$log = log;
 Vue.prototype.$log = Vue.$log;
 
 Vue.config.productionTip = process.env.VUE_APP_LOG_PRODUCTION_TIP || false;
-Vue.use(BootstrapVue);
+Vue.use(ModalPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);

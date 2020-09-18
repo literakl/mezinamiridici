@@ -35,8 +35,17 @@
 </template>
 
 <script>
+import { BContainer, BButton, BRow, BCol } from 'bootstrap-vue';
+
 export default {
   name: 'PollButtons',
+  components: {
+    BContainer,
+    BButton,
+    BRow,
+    BCol,
+
+  },
   methods: {
     voted(vote) {
       if (!this.$store.getters.IS_AUTHORIZED) {

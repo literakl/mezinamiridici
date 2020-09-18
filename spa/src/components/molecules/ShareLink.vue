@@ -1,17 +1,22 @@
 <template>
   <div>
     {{ $t('generic.share-link') }}:
-    <b-btn @click="shareLink('twitter')" class="mr-2 p-0" v-html="twitter" variant="transparent" />
-    <b-btn @click="shareLink('facebook')" class="mr-2 p-0" v-html="facebook" variant="transparent" />
-    <b-btn @click="shareLink('messenger')" class="mr-2 p-0" v-html="messenger" variant="transparent" />
-    <b-btn @click="shareLink('whatsapp')" class="mr-2 p-0" v-html="whatsapp" variant="transparent" />
-    <b-btn @click="shareLink('email')" class="p-0" v-html="email" variant="transparent" />
+    <b-button @click="shareLink('twitter')" class="mr-2 p-0" v-html="twitter" variant="transparent" />
+    <b-button @click="shareLink('facebook')" class="mr-2 p-0" v-html="facebook" variant="transparent" />
+    <b-button @click="shareLink('messenger')" class="mr-2 p-0" v-html="messenger" variant="transparent" />
+    <b-button @click="shareLink('whatsapp')" class="mr-2 p-0" v-html="whatsapp" variant="transparent" />
+    <b-button @click="shareLink('email')" class="p-0" v-html="email" variant="transparent" />
   </div>
 </template>
 
 <script>
+import { BButton } from 'bootstrap-vue';
+
 export default {
   name: 'share_link',
+  components: {
+    BButton,
+  },
   props: {
     item: Object,
   },

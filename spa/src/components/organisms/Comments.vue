@@ -27,6 +27,7 @@ import Comment from '@/components/organisms/Comment.vue';
 import Replies from '@/components/organisms/Replies.vue';
 import Button from '@/components/atoms/Button.vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
+import { BCollapse } from 'bootstrap-vue';
 
 export default {
   name: 'Comments',
@@ -35,6 +36,7 @@ export default {
     Replies,
     Button,
     CommentForm,
+    BCollapse,
   },
   props: {
     itemId: String,

@@ -21,7 +21,12 @@
 </template>
 
 <script>
+import { BFormCheckbox } from 'bootstrap-vue';
+
 export default {
+  components: {
+    BFormCheckbox,
+  },
   data: () => ({
     checked: null,
   }),
