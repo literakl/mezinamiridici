@@ -2,10 +2,11 @@
 const { stringify } = require('flatted/cjs');
 const { createLogger, format, transports } = require('winston');
 
+const { NODE_ENV } = process.env;
 const { combine, printf } = format;
 const myFormat = printf(info => `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`);
 
-function myTimestamp() {
+function fullTimestamp() {
   const currentDate = new Date();
   const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1;
@@ -22,17 +23,36 @@ function myTimestamp() {
   return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day} ${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}:${ms}`;
 }
 
-const appendTimestamp = format((info) => {
-  info.timestamp = myTimestamp();
+function shortTimestamp() {
+  const currentDate = new Date();
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const seconds = currentDate.getSeconds();
+  let ms = currentDate.getMilliseconds();
+  if (ms < 10) {
+    ms = `00${ms}`;
+  } else if (ms < 100) {
+    ms = `0${ms}`;
+  }
+  return `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}:${ms}`;
+}
+
+const appendFullTimestamp = format((info) => {
+  info.timestamp = fullTimestamp();
+  return info;
+});
+
+const appendShortTimestamp = format((info) => {
+  info.timestamp = shortTimestamp();
   return info;
 });
 
 let appLogger, jobLogger;
 
-if (process.env.NODE_ENV === 'test') {
+if (NODE_ENV === 'test') {
   appLogger = createLogger({
     level: 'debug',
-    format: combine(appendTimestamp(), myFormat),
+    format: combine(appendFullTimestamp(), myFormat),
     transports: [
       new transports.File({ filename: 'test.log' }),
     ],
@@ -40,7 +60,7 @@ if (process.env.NODE_ENV === 'test') {
 } else {
   appLogger = createLogger({
     level: 'debug',
-    format: combine(appendTimestamp(), myFormat),
+    format: combine(appendFullTimestamp(), myFormat),
     // defaultMeta: { service: 'user-service' },
     transports: [
       new transports.File({ filename: 'application.log' }),
@@ -50,14 +70,14 @@ if (process.env.NODE_ENV === 'test') {
     ],
   });
 
-  if (process.env.NODE_ENV !== 'production') { // todo check condition
+  if (NODE_ENV !== 'production') { // todo check condition
     appLogger.add(new transports.Console({
-      format: format.simple(),
+      format: combine(appendShortTimestamp(), myFormat),
     }));
   }
 
   jobLogger = createLogger({
-    format: combine(appendTimestamp(), myFormat),
+    format: combine(appendFullTimestamp(), myFormat),
     transports: [
       new transports.File({ filename: 'jobs.log', level: 'debug' }),
     ],
