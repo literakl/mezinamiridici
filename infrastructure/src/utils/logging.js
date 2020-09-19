@@ -57,10 +57,9 @@ if (process.env.NODE_ENV === 'test') {
   }
 
   jobLogger = createLogger({
-    level: 'debug',
     format: combine(appendTimestamp(), myFormat),
     transports: [
-      new transports.File({ filename: 'jobs.log' }),
+      new transports.File({ filename: 'jobs.log', level: 'debug' }),
     ],
   });
 }

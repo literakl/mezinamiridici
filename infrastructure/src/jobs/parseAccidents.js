@@ -46,7 +46,7 @@ let createArticle = true, retried = 0;
 async function doRun() {
   const args = process.argv.slice(2);
   // const args = process.argv.slice(2).split(' ');
-  if (args.length < 1 || args.length === 2 || args.length > 3) {
+  if (args.length < 1 || args.length === 2 || args.length > 4) {
     exitWithHelp();
   }
 
@@ -91,6 +91,7 @@ async function doRun() {
 
   jobLogger.info('Finished');
   mongo.close();
+  jobLogger.end();
 }
 
 function scheduleParsing() {
