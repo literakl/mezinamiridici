@@ -19,39 +19,121 @@ dayjs.extend(weekOfYear);
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
-const { ACCIDENTS_STATS_URL, SCHEDULE_ACCIDENTS_STATS, ACCIDENTS_STATS_RETRY_MINUTES } = process.env;
-const dateFormatType = 'DD.MM.YYYY';
-
-const keyArray = [
-  'region', 'counts', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'priority', 'passing', 'driving', 'drunk', 'other',
+const { ACCIDENTS_STATS_URL, SCHEDULE_ACCIDENTS_STATS, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
+const DATE_FORMAT = 'DD.MM.YYYY';
+const KEYS = [
+  'region', 'count', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'giveway', 'passing', 'mistake', 'drunk', 'other',
 ];
+const REGIONS = {
+  PRG: 'Praha',
+  SC: 'Středočeský',
+  JC: 'Jihočeský',
+  PLS: 'Plzeňský',
+  KV: 'Karlovarský',
+  UST: 'Ústecký',
+  LBR: 'Liberecký',
+  KH: 'Královéhradecký',
+  PRD: 'Pardubický',
+  VSC: 'Vysočina',
+  JM: 'Jihomoravský',
+  OLM: 'Olomoucký',
+  ZLN: 'Zlínský',
+  MS: 'Moravskoslezský',
+};
+
+let createArticle = true, retried = 0;
+
+async function doRun() {
+  const args = process.argv.slice(2);
+  // const args = process.argv.slice(2).split(' ');
+  if (args.length < 1 || args.length === 2 || args.length > 3) {
+    exitWithHelp();
+  }
+
+  if (args[0] === 'true') {
+    scheduleParsing();
+    return;
+  }
+
+  let current, until;
+  createArticle = args[1] === 'true';
+  current = dayjs(args[2], DATE_FORMAT, true);
+  if (args.length === 4) {
+    until = dayjs(args[3], DATE_FORMAT, true);
+  } else {
+    until = current;
+  }
+  if (!current.isValid() || !until.isValid()) {
+    exitWithHelp();
+  }
+
+  jobLogger.info('Connecting to server');
+  const formDataBody = await getInitialFormData();
+  const dbClient = await mongo.connectToDatabase();
+  while (current.unix() <= until.unix()) {
+    console.log(`Started to fetch data for ${current}`);
+    // eslint-disable-next-line no-await-in-loop
+    const isParsed = await parseData(dbClient, formDataBody, current);
+    if (!isParsed) {
+      console.error(`Failed to parse accident statistics for ${current}`);
+      process.exit(1);
+    }
+
+    if (createArticle) {
+      // eslint-disable-next-line no-await-in-loop
+      const data = await getArticleData(dbClient);
+      // eslint-disable-next-line no-await-in-loop
+      await saveArticle(dbClient, data);
+    }
+
+    current = current.add(1, 'day');
+  }
+
+  jobLogger.info('Finished');
+  mongo.close();
+}
 
 function scheduleParsing() {
   const job = new CronJob(SCHEDULE_ACCIDENTS_STATS, async () => doJob);
   job.start();
+  jobLogger.info(`Parse accidents job scheduled to ${SCHEDULE_ACCIDENTS_STATS}`);
 }
 
 async function doJob() {
   jobLogger.info('Connecting to server');
   const formDataBody = await getInitialFormData();
-  const yesterday = dayjs().subtract(1, 'day');
   const dbClient = await mongo.connectToDatabase();
-  // todo pass Date and format it when needed
-  const isParsed = await parseData(dbClient, formDataBody, dayjs(yesterday).format(dateFormatType));
+  const isParsed = await parseData(dbClient, formDataBody, dayjs().subtract(1, 'day'));
   if (!isParsed) {
-    jobLogger.info('Data not available, rescheduling');
+    if (retried >= ACCIDENTS_STATS_RETRY_MAXIMUM) {
+      // todo send email
+      jobLogger.info('Data is not available, maximum retries reached. Run this script from command line when data is ready.');
+      return;
+    }
+
+    retried += 1;
+    jobLogger.info(`Data is not available, scheduling the attempt ${retried}`);
     const nextTime = dayjs().add(ACCIDENTS_STATS_RETRY_MINUTES, 'minute').toDate();
     const job = new CronJob(nextTime, async () => doJob);
     job.start();
-  } else {
+  } else if (createArticle) {
     jobLogger.info('Data fetched, creating new article');
-    const data = await getBlog(dbClient);
-    await storeBlogItem(dbClient, data);
+    const data = await getArticleData(dbClient);
+    await saveArticle(dbClient, data);
   }
 }
 
+function exitWithHelp() {
+  console.error('Usage: node jobs/parseAccidents.js schedule createArticle since until\n'
+    + 'schedule: boolean, if job should be scheduled. Other parameters are ignored.\n'
+    + 'createArticle: boolean, if article shall be created\n'
+    + 'since: start date in DD.MM.YYYY format\n'
+    + 'until: end date (inclusive) in DD.MM.YYYY format. If not set, since will be used.\n');
+  process.exit(1);
+}
+
 async function getInitialFormData() {
-  jobLogger.debug('Initial loading to load the bloody form');
+  jobLogger.debug('Initial loading of the bloody form');
   const html = await getPage(ACCIDENTS_STATS_URL);
   const $ = await cheerioParser.load(html);
   return {
@@ -66,9 +148,9 @@ async function getInitialFormData() {
   };
 }
 
-async function parseData(dbClient, date, formDataBody) {
-  jobLogger.debug(`Data retrieval for ${date} started`);
-  formDataBody.ctl00$Application$txtDatum = date;
+async function parseData(dbClient, formDataBody, date) {
+  jobLogger.debug(`Started to fetch data for ${date}`);
+  formDataBody.ctl00$Application$txtDatum = dayjs(date).format(DATE_FORMAT);
   const formData = new FormData();
   // eslint-disable-next-line no-restricted-syntax
   for (const key in formDataBody) {
@@ -113,39 +195,37 @@ async function getPage(url, data) {
 
 async function saveData(dbClient, region, date, $) {
   const storeData = {
-    date: new Date(date.split('.').reverse().join('-')),
+    date: date.toDate(),
     regions: [],
     total: {},
   };
   region.each((i, v) => {
     if (i === 0 || i === 1) return;
-    const item = { impact: {}, reason: {} };
-
+    const item = { region: undefined, count: 0, impact: {}, reason: {} };
     if (i === region.length - 1) {
       $(v).find('th').each((inx, value) => {
         const val = Number($(value).text().trim());
-
         if (inx === 1) {
-          item[keyArray[inx]] = val;
+          item[KEYS[inx]] = val;
         } else if ([2, 3, 4, 5].indexOf(inx) > -1) {
-          item.impact[keyArray[inx]] = val;
+          item.impact[KEYS[inx]] = val;
         } else if ([6, 7, 8, 9, 10, 11].indexOf(inx) > -1) {
-          item.reason[keyArray[inx]] = val;
+          item.reason[KEYS[inx]] = val;
         }
       });
+      delete item.region;
       storeData.total = item;
     } else {
       $(v).find('td').each((inx, value) => {
         const val = Number($(value).find('span').text());
-
         if (inx === 0) {
-          item[keyArray[inx]] = $(value).text().trim();
+          item[KEYS[inx]] = lookupRegion($(value).text().trim());
         } else if (inx === 1) {
-          item[keyArray[inx]] = val;
+          item[KEYS[inx]] = val;
         } else if ([2, 3, 4, 5].indexOf(inx) > -1) {
-          item.impact[keyArray[inx]] = val;
+          item.impact[KEYS[inx]] = val;
         } else if ([6, 7, 8, 9, 10, 11].indexOf(inx) > -1) {
-          item.reason[keyArray[inx]] = val;
+          item.reason[KEYS[inx]] = val;
         }
       });
       storeData.regions.push(item);
@@ -156,7 +236,7 @@ async function saveData(dbClient, region, date, $) {
   return true;
 }
 
-async function getBlog(dbClient) {
+async function getArticleData(dbClient) {
   const keys = ['deaths', 'severely', 'slighty'];
   const yesterday = dayjs().subtract(1, 'day').toDate();
   const prevYearDate = dayjs().subtract(1, 'day').subtract(1, 'year').toDate();
@@ -230,7 +310,7 @@ async function storeDataByDateRange(dbClient, start, end) {
     const data = await getStoredData(dbClient, dayjs(loop).format('YYYY-MM-DD'));
     if (data.length > 0) {
       resultData.push(...data);
-    } else if (await parseData(dbClient, dayjs(loop).format(dateFormatType))) {
+    } else if (await parseData(dbClient, dayjs(loop).format(DATE_FORMAT))) {
       resultData.push(...await getStoredData(dbClient, dayjs(loop).format('YYYY-MM-DD')));
     }
     const newDate = loop.setDate(loop.getDate() + 1);
@@ -243,9 +323,9 @@ async function getStoredData(dbClient, date) {
   return dbClient.db().collection('accidents').find({ date: new Date(date) }).toArray();
 }
 
-async function storeBlogItem(dbClient, data) {
+async function saveArticle(dbClient, data) {
   const publishDate = dayjs().subtract(1, 'day');
-  const title = `A States for ${dayjs(publishDate).format(dateFormatType)}`;
+  const title = `A States for ${dayjs(publishDate).format(DATE_FORMAT)}`;
   const picture = `${process.env.STREAM_PICTURES_PATH}/${process.env.STREAM_PICTURES_DEFAULT}`;
   const blogAuthor = await mongo.getIdentity(dbClient, process.env.COMPARE_BLOG_AUTHOR);
   const source = { date: new Date().getTime(), blocks: [], version: '2.18.0' };
@@ -263,7 +343,7 @@ async function storeBlogItem(dbClient, data) {
         let txt = '';
         switch (key) {
           case 'day':
-            txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.format(dateFormatType)})` : `${subKey}\n(${publishDate.format(dateFormatType)})`;
+            txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.format(DATE_FORMAT)})` : `${subKey}\n(${publishDate.format(DATE_FORMAT)})`;
             break;
           case 'week':
             txt = (dayKey === 'prev') ? `${subKey}\n(${week})` : `${subKey}\n(${week})`;
@@ -317,5 +397,23 @@ function insertItem(dbClient, title, source, author, publishDate, picture, tags)
   return dbClient.db().collection('items').insertOne(blog);
 }
 
-exports.schedule = scheduleParsing;
-exports.parseData = parseData;
+function lookupRegion(vusc) {
+  if (vusc.indexOf(REGIONS.JC) >= 0) return 'JC';
+  if (vusc.indexOf(REGIONS.JM) >= 0) return 'JM';
+  if (vusc.indexOf(REGIONS.KH) >= 0) return 'KH';
+  if (vusc.indexOf(REGIONS.KV) >= 0) return 'KV';
+  if (vusc.indexOf(REGIONS.LBR) >= 0) return 'LBR';
+  if (vusc.indexOf(REGIONS.MS) >= 0) return 'MS';
+  if (vusc.indexOf(REGIONS.OLM) >= 0) return 'OLM';
+  if (vusc.indexOf(REGIONS.PLS) >= 0) return 'PLS';
+  if (vusc.indexOf(REGIONS.PRD) >= 0) return 'PRD';
+  if (vusc.indexOf(REGIONS.PRG) >= 0) return 'PRG';
+  if (vusc.indexOf(REGIONS.SC) >= 0) return 'SC';
+  if (vusc.indexOf(REGIONS.UST) >= 0) return 'UST';
+  if (vusc.indexOf(REGIONS.VSC) >= 0) return 'VSC';
+  if (vusc.indexOf(REGIONS.ZLN) >= 0) return 'ZLN';
+  throw new Error(`Unrecognized region ${vusc}`);
+}
+
+module.exports = doRun;
+doRun().then(() => console.log('finished'));
