@@ -66,7 +66,7 @@ async function doRun() {
     exitWithHelp();
   }
 
-  jobLogger.info('Connecting to server');
+  jobLogger.info('Connecting to server', { label: 'parseAccidents' });
   const formDataBody = await getInitialFormData();
   const dbClient = await mongo.connectToDatabase();
   while (current.unix() <= until.unix()) {
@@ -88,7 +88,7 @@ async function doRun() {
     current = current.add(1, 'day');
   }
 
-  jobLogger.info('Finished');
+  jobLogger.info('Finished', { label: 'parseAccidents' });
   mongo.close();
   jobLogger.end();
 }
@@ -96,28 +96,28 @@ async function doRun() {
 function scheduleParsing() {
   const job = new CronJob(SCHEDULE_ACCIDENTS_STATS, async () => doJob);
   job.start();
-  jobLogger.info(`Parse accidents job scheduled to ${SCHEDULE_ACCIDENTS_STATS}`);
+  jobLogger.info(`Parse accidents job scheduled to ${SCHEDULE_ACCIDENTS_STATS}`, { label: 'parseAccidents' });
 }
 
 async function doJob() {
-  jobLogger.info('Connecting to server');
+  jobLogger.info('Connecting to server', { label: 'parseAccidents' });
   const formDataBody = await getInitialFormData();
   const dbClient = await mongo.connectToDatabase();
   const isParsed = await parseData(dbClient, formDataBody, dayjs().subtract(1, 'day'));
   if (!isParsed) {
     if (retried >= ACCIDENTS_STATS_RETRY_MAXIMUM) {
       // todo send email
-      jobLogger.info('Data is not available, maximum retries reached. Run this script from command line when data is ready.');
+      jobLogger.info('Data is not available, maximum retries reached. Run this script from command line when data is ready.', { label: 'parseAccidents' });
       return;
     }
 
     retried += 1;
-    jobLogger.info(`Data is not available, scheduling the attempt ${retried}`);
+    jobLogger.info(`Data is not available, scheduling the attempt ${retried}`, { label: 'parseAccidents' });
     const nextTime = dayjs().add(ACCIDENTS_STATS_RETRY_MINUTES, 'minute').toDate();
     const job = new CronJob(nextTime, async () => doJob);
     job.start();
   } else if (createArticle) {
-    jobLogger.info('Data fetched, creating new article');
+    jobLogger.info('Data fetched, creating new article', { label: 'parseAccidents' });
     const data = await getArticleData(dbClient);
     await saveArticle(dbClient, data);
   }
@@ -133,7 +133,7 @@ function exitWithHelp() {
 }
 
 async function getInitialFormData() {
-  jobLogger.debug('Initial loading of the bloody form');
+  jobLogger.debug('Initial loading of the bloody form', { label: 'parseAccidents' });
   const html = await getPage(ACCIDENTS_STATS_URL);
   const $ = await cheerioParser.load(html);
   return {
@@ -149,7 +149,7 @@ async function getInitialFormData() {
 }
 
 async function parseData(dbClient, formDataBody, date) {
-  jobLogger.debug(`Started to fetch data for ${date.format(DATE_FORMAT)}`);
+  jobLogger.debug(`Started to fetch data for ${date.format(DATE_FORMAT)}`, { label: 'parseAccidents' });
   formDataBody.ctl00$Application$txtDatum = dayjs(date).format(DATE_FORMAT);
   const formData = new FormData();
   // eslint-disable-next-line no-restricted-syntax
@@ -162,13 +162,13 @@ async function parseData(dbClient, formDataBody, date) {
 
   const html = await getPage(ACCIDENTS_STATS_URL, formData);
   const $ = await cheerioParser.load(html);
-  jobLogger.debug('Page downloaded');
+  jobLogger.debug('Page downloaded', { label: 'parseAccidents' });
 
   const regionsData = $('#celacr tr');
   let result;
   if (regionsData && regionsData.length > 0) {
     result = await saveData(dbClient, regionsData, date, $);
-    jobLogger.debug('Data stored in Mongo');
+    jobLogger.debug('Data stored in Mongo', { label: 'parseAccidents' });
     return result;
   } else {
     return false;
@@ -415,5 +415,5 @@ function lookupRegion(vusc) {
   throw new Error(`Unrecognized region ${vusc}`);
 }
 
-module.exports = doRun;
+exports.doRun = doRun;
 doRun().then(() => console.log('finished'));

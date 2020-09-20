@@ -1,10 +1,15 @@
-// const util = require('util');
 const { stringify } = require('flatted/cjs');
 const { createLogger, format, transports } = require('winston');
 
 const { NODE_ENV } = process.env;
 const { combine, printf } = format;
-const myFormat = printf(info => `${info.timestamp} [${info.level}]: ${info.message === Object(info.message) ? stringify(info.message) : info.message}`);
+const myFormat = printf((info) => {
+  let output = info.timestamp;
+  if (info.label) output += `[${info.label}] `;
+  output += `[${info.level}]: `;
+  output += (info.message === Object(info.message)) ? stringify(info.message) : info.message;
+  return output;
+});
 
 function fullTimestamp() {
   const currentDate = new Date();
@@ -86,5 +91,5 @@ if (NODE_ENV === 'test') {
   });
 }
 
-module.exports.logger = appLogger;
-module.exports.jobLogger = jobLogger;
+exports.logger = appLogger;
+exports.jobLogger = jobLogger;

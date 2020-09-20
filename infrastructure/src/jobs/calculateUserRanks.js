@@ -11,7 +11,7 @@ const { SCHEDULE_RANK } = process.env;
 dayjs.extend(isoWeek);
 
 const calculateUserHonors = async () => {
-  jobLogger.info('Running a job to calculate the user ranks');
+  jobLogger.info('Running a job to calculate the user ranks', { label: 'calculateUserRanks' });
 
   const dbClient = await mongo.connectToDatabase();
   let users = await getUsers(dbClient, undefined, 100);
@@ -153,7 +153,7 @@ function calculateConsecutiveSharing(date, foundWeeks) {
 }
 
 function scheduleCalculation() {
-  jobLogger.info(`Rank job scheduled to run at ${SCHEDULE_RANK}`);
+  jobLogger.info(`Rank job scheduled to run at ${SCHEDULE_RANK}`, { label: 'calculateUserRanks' });
   const job = new CronJob(SCHEDULE_RANK, async () => calculateUserHonors);
   job.start();
 }
