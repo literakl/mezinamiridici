@@ -416,4 +416,3 @@ function lookupRegion(vusc) {
 }
 
 exports.doRun = doRun;
-doRun().then(() => console.log('finished'));
