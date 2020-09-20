@@ -5,7 +5,7 @@ const { NODE_ENV } = process.env;
 const { combine, printf } = format;
 const myFormat = printf((info) => {
   let output = info.timestamp;
-  if (info.label) output += `[${info.label}] `;
+  if (info.label) output += ` [${info.label}] `;
   output += `[${info.level}]: `;
   output += (info.message === Object(info.message)) ? stringify(info.message) : info.message;
   return output;
