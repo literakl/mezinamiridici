@@ -45,7 +45,6 @@ let createArticle = true, retried = 0;
 
 async function doRun() {
   const args = process.argv.slice(2);
-  // const args = process.argv.slice(2).split(' ');
   if (args.length < 1 || args.length === 2 || args.length > 4) {
     exitWithHelp();
   }
@@ -71,11 +70,11 @@ async function doRun() {
   const formDataBody = await getInitialFormData();
   const dbClient = await mongo.connectToDatabase();
   while (current.unix() <= until.unix()) {
-    console.log(`Started to fetch data for ${current}`);
+    console.log(`Started to fetch data for ${current.format(DATE_FORMAT)}`);
     // eslint-disable-next-line no-await-in-loop
     const isParsed = await parseData(dbClient, formDataBody, current);
     if (!isParsed) {
-      console.error(`Failed to parse accident statistics for ${current}`);
+      console.error(`Failed to parse accident statistics for ${current.format(DATE_FORMAT)}`);
       process.exit(1);
     }
 
@@ -150,7 +149,7 @@ async function getInitialFormData() {
 }
 
 async function parseData(dbClient, formDataBody, date) {
-  jobLogger.debug(`Started to fetch data for ${date}`);
+  jobLogger.debug(`Started to fetch data for ${date.format(DATE_FORMAT)}`);
   formDataBody.ctl00$Application$txtDatum = dayjs(date).format(DATE_FORMAT);
   const formData = new FormData();
   // eslint-disable-next-line no-restricted-syntax
