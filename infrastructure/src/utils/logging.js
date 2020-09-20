@@ -57,6 +57,8 @@ if (NODE_ENV === 'test') {
       new transports.File({ filename: 'test.log' }),
     ],
   });
+
+  jobLogger = appLogger;
 } else {
   appLogger = createLogger({
     level: 'debug',

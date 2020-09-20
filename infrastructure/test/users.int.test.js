@@ -7,7 +7,7 @@ const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
 const mongo = require('../src/utils/mongo.js');
-const { logger, jobLogger } = require('../src/utils/logging');
+const { logger } = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
 
@@ -320,7 +320,6 @@ test('User Rank', async (done) => {
   let shareResponse = await api(`items/${poll1.data._id}/share`, { method: 'POST', json: shareBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(shareResponse.success).toBeTruthy();
 
-  jobLogger.info('a');
   await calculateUserHonors();
   let rank = await getUserRank(dbClient, Leos._id);
   expect(rank).toBe('novice');
