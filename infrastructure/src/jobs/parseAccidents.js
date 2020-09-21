@@ -80,7 +80,7 @@ async function doRun() {
 
     if (createArticle) {
       // eslint-disable-next-line no-await-in-loop
-      const data = await getArticleData(dbClient);
+      const data = await getArticleData(dbClient, current);
       // eslint-disable-next-line no-await-in-loop
       await saveArticle(dbClient, data);
     }
@@ -103,7 +103,8 @@ async function doJob() {
   jobLogger.info('Connecting to server', { label: 'parseAccidents' });
   const formDataBody = await getInitialFormData();
   const dbClient = await mongo.connectToDatabase();
-  const isParsed = await parseData(dbClient, formDataBody, dayjs().subtract(1, 'day'));
+  const date = dayjs().subtract(1, 'day');
+  const isParsed = await parseData(dbClient, formDataBody, date);
   if (!isParsed) {
     if (retried >= ACCIDENTS_STATS_RETRY_MAXIMUM) {
       // todo send email
@@ -118,7 +119,7 @@ async function doJob() {
     job.start();
   } else if (createArticle) {
     jobLogger.info('Data fetched, creating new article', { label: 'parseAccidents' });
-    const data = await getArticleData(dbClient);
+    const data = await getArticleData(dbClient, date);
     await saveArticle(dbClient, data);
   }
 }
@@ -176,20 +177,17 @@ async function parseData(dbClient, formDataBody, date) {
 }
 
 async function getPage(url, data) {
-  let html = '';
+  let html = '', promise;
   if (data === undefined) {
-    await axios.post(url)
-      .then((response) => {
-        html = response.data;
-      })
-      .catch(jobLogger.error);
+    promise = axios.post(url);
   } else {
-    await axios.post(url, data, { headers: data.getHeaders() })
-      .then((response) => {
-        html = response.data;
-      })
-      .catch(jobLogger.error);
+    promise = axios.post(url, data, { headers: data.getHeaders() });
   }
+  await promise
+    .then((response) => {
+      html = response.data;
+    })
+    .catch(error => jobLogger.error(error, { label: 'parseAccidents' }));
   return html;
 }
 
@@ -236,91 +234,71 @@ async function saveData(dbClient, region, date, $) {
   return true;
 }
 
-async function getArticleData(dbClient) {
-  const keys = ['deaths', 'severely', 'slighty'];
-  const yesterday = dayjs().subtract(1, 'day').toDate();
-  const prevYearDate = dayjs().subtract(1, 'day').subtract(1, 'year').toDate();
-  const prevYearStartDate = new Date(prevYearDate.getFullYear(), 0, 1);
-  const thisYearStartDate = new Date(new Date().getFullYear(), 0, 1);
+async function getArticleData(dbClient, date) {
+  const thisYearStartDate = date.startOf('year');
+  const yearAgoDate = date.subtract(1, 'year');
+  const lastYearStartDate = yearAgoDate.startOf('year');
 
-  const prevYearData = await storeDataByDateRange(dbClient, prevYearStartDate, prevYearDate);
-  const thisYearData = await storeDataByDateRange(dbClient, thisYearStartDate, yesterday);
-
-  const compareData = {
-    day: { prev: {}, now: {} },
-    week: { prev: {}, now: {} },
-    month: { prev: {}, now: {} },
-    year: { prev: {}, now: {} },
-  };
-  initCompareData(keys, compareData);
-  makeCompareData(keys, prevYearData, prevYearDate, compareData, true);
-  makeCompareData(keys, thisYearData, yesterday, compareData, false);
-
-  console.log(compareData);
-  return compareData;
+  const prevYearData = await fetchByDateRange(dbClient, lastYearStartDate, yearAgoDate);
+  const thisYearData = await fetchByDateRange(dbClient, thisYearStartDate, date);
+  return compareData(date, date.subtract(1, 'year'), prevYearData, thisYearData);
 }
 
-function makeCompareData(keys, allYearData, compareDate, resultData, isPrev) {
-  allYearData.forEach((item) => {
-    const date = new Date(item.date);
-    if (date.toLocaleDateString() === compareDate.toLocaleDateString()) {
-      if (isPrev) {
-        keys.map((k) => { resultData.day.prev[k] = item.total.impact[k]; });
-      } else {
-        keys.map((k) => { resultData.day.now[k] = item.total.impact[k]; });
-      }
+async function fetchByDateRange(dbClient, start, end) {
+  const query = { date: { $gte: start.toDate(), $lte: end.toDate() } };
+  return dbClient.db().collection('accidents').find(query, { regions: 0 }).toArray();
+}
+
+function compareData(thisYearDate, yearAgoDate, prevYearData, thisYearData) {
+  const summary = {
+    lastYear: {
+      day: {}, week: emptyStats(), month: emptyStats(), year: emptyStats(),
+    },
+    thisYear: {
+      day: {}, week: emptyStats(), month: emptyStats(), year: emptyStats(),
+    },
+  };
+  aggregateData(yearAgoDate, prevYearData, summary.lastYear);
+  aggregateData(thisYearDate, thisYearData, summary.thisYear);
+  return summary;
+}
+
+function emptyStats() {
+  return {
+    count: 0,
+    impact: { deaths: 0, severely: 0, slightly: 0, damage: 0 },
+    reason: { speed: 0, giveway: 0, passing: 0, mistake: 0, drunk: 0, other: 0 },
+  };
+}
+
+function aggregateData(now, yearData, summary) {
+  yearData.forEach((day) => {
+    const date = dayjs(day.date);
+    if (date.isSame(now, 'day')) {
+      summary.day = day.total;
     }
-    if (dayjs(date).week() === dayjs(compareDate).week()) {
-      if (isPrev) {
-        keys.map((k) => { resultData.week.prev[k] += item.total.impact[k]; });
-      } else {
-        keys.map((k) => { resultData.week.now[k] += item.total.impact[k]; });
-      }
+    if (date.isSame(now, 'week')) {
+      add(day.total, summary.week);
     }
-    if (date.getMonth() === compareDate.getMonth()) {
-      if (isPrev) {
-        keys.map((k) => { resultData.month.prev[k] += item.total.impact[k]; });
-      } else {
-        keys.map((k) => { resultData.month.now[k] += item.total.impact[k]; });
-      }
+    if (date.isSame(now, 'month')) {
+      add(day.total, summary.month);
     }
-    if (isPrev) {
-      keys.map((k) => { resultData.year.prev[k] += item.total.impact[k]; });
-    } else {
-      keys.map((k) => { resultData.year.now[k] += item.total.impact[k]; });
-    }
+    add(day.total, summary.year);
   });
 }
 
-function initCompareData(keys, obj) {
-  for (const v1 in obj) {
-    for (const v2 in obj[v1]) {
-      keys.map((i) => { obj[v1][v2][i] = 0; });
-    }
-  }
-}
-
-async function storeDataByDateRange(dbClient, start, end) {
-  const resultData = [];
-  const startDate = new Date(start);
-  const endDate = new Date(end);
-
-  let loop = new Date(startDate);
-  while (loop <= endDate) {
-    const data = await getStoredData(dbClient, dayjs(loop).format('YYYY-MM-DD'));
-    if (data.length > 0) {
-      resultData.push(...data);
-    } else if (await parseData(dbClient, dayjs(loop).format(DATE_FORMAT))) {
-      resultData.push(...await getStoredData(dbClient, dayjs(loop).format('YYYY-MM-DD')));
-    }
-    const newDate = loop.setDate(loop.getDate() + 1);
-    loop = new Date(newDate);
-  }
-  return resultData;
-}
-
-async function getStoredData(dbClient, date) {
-  return dbClient.db().collection('accidents').find({ date: new Date(date) }).toArray();
+function add(total, summary) {
+  summary.count += total.count;
+  summary.impact.deaths += total.impact.deaths;
+  summary.impact.severely += total.impact.severely;
+  summary.impact.slightly += total.impact.slightly;
+  summary.impact.damage += total.impact.damage;
+  summary.reason.speed += total.reason.speed;
+  summary.reason.giveway += total.reason.giveway;
+  summary.reason.passing += total.reason.passing;
+  summary.reason.mistake += total.reason.mistake;
+  summary.reason.drunk += total.reason.drunk;
+  summary.reason.other += total.reason.other;
 }
 
 async function saveArticle(dbClient, data) {
@@ -416,3 +394,13 @@ function lookupRegion(vusc) {
 }
 
 exports.doRun = doRun;
+
+/*
+async function x() {
+  const dbClient = await mongo.connectToDatabase();
+  await getArticleData(dbClient, dayjs('01.02.2020', DATE_FORMAT));
+  mongo.close();
+}
+
+x().then(() => { console.log('finished'); });
+*/
