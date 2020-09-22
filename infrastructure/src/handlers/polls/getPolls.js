@@ -4,7 +4,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
-const MAXIMUM_PAGE_SIZE = process.env.MAXIMUM_PAGE_SIZE || 50;
+const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 
 module.exports = (app) => {
   app.options('/bff/polls/', auth.cors);

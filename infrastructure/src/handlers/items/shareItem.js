@@ -3,6 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
+const { WEB_URL } = process.env;
 const codes = ['facebook', 'twitter', 'messenger', 'whatsapp', 'email'];
 
 module.exports = (app) => {
@@ -44,7 +45,7 @@ module.exports = (app) => {
 };
 
 function createURL(service, path) {
-  const encodeURL = process.env.WEB_URL + path;
+  const encodeURL = WEB_URL + path;
   let sendUrl = '';
   // eslint-disable-next-line default-case
   switch (service) {

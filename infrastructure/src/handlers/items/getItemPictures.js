@@ -3,9 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
-const IMAGES_DIR = process.env.STREAM_PICTURES_DIR;
-const WEB_PATH = process.env.STREAM_PICTURES_PATH;
-const DEFAULT_IMAGE = process.env.STREAM_PICTURES_DEFAULT;
+const { STREAM_PICTURES_DIR, STREAM_PICTURES_PATH, STREAM_PICTURES_DEFAULT } = process.env;
 const EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
 module.exports = (app) => {
@@ -14,15 +12,15 @@ module.exports = (app) => {
   app.get('/v1/items/pictures', auth.required, async (req, res) => {
     logger.verbose('get Item Pictures handler starts');
     try {
-      if (!IMAGES_DIR || !WEB_PATH || !DEFAULT_IMAGE) {
+      if (!STREAM_PICTURES_DIR || !STREAM_PICTURES_PATH || !STREAM_PICTURES_DEFAULT) {
         return api.sendInternalError(res, api.createError('Incomplete configuration', 'sign-in.something-went-wrong'));
       }
 
       const files = [];
 
-      fs.readdirSync(IMAGES_DIR).forEach((file) => {
+      fs.readdirSync(STREAM_PICTURES_DIR).forEach((file) => {
         if (isPicture(file)) {
-          files.push(getItemBody(file, file === DEFAULT_IMAGE));
+          files.push(getItemBody(file, file === STREAM_PICTURES_DEFAULT));
         }
       });
 
@@ -41,7 +39,7 @@ function isPicture(fileName) {
 
 function getItemBody(fileName, isDefault) {
   return {
-    path: `${WEB_PATH}/${fileName}`,
+    path: `${STREAM_PICTURES_PATH}/${fileName}`,
     default_picture: isDefault,
   };
 }

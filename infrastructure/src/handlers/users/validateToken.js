@@ -4,6 +4,8 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
+const { JWT_SECRET } = process.env;
+
 module.exports = (app) => {
   app.options('/v1/users/:userId/validateToken', auth.cors);
 
@@ -26,7 +28,7 @@ module.exports = (app) => {
       }
 
       delete jwtData.exp;
-      const token = jwt.sign(jwtData, process.env.JWT_SECRET, { expiresIn: '31d' });
+      const token = jwt.sign(jwtData, JWT_SECRET, { expiresIn: '31d' });
       logger.debug('Token validated');
       return api.sendResponse(res, api.createResponse(token));
     } catch (err) {

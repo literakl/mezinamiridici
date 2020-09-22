@@ -9,9 +9,11 @@ const auth = require('../../utils/authenticate');
 const api = require('../../utils/api.js');
 require('../../utils/path_env');
 
+const { BLOG_PICTURES_UPLOAD_DIR } = process.env;
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    const dir = process.env.BLOG_PICTURES_UPLOAD_DIR; // todo make it more dynamic
+    const dir = BLOG_PICTURES_UPLOAD_DIR; // todo make it more dynamic
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }

@@ -6,12 +6,12 @@ const { logger } = require('./logging');
 require('./path_env');
 
 const COMPILED_TEMPLATES = {};
-
+const { MAILER, AWS_REGION, TEMPLATE_DIRECTORY, DEFAULT_SENDER } = process.env;
 let transporter;
 
 async function sendEmail(config, options, context) {
   if (transporter === undefined) {
-    switch (process.env.MAILER) {
+    switch (MAILER) {
       case 'SES':
         transporter = await createAWSSESTransporter();
         break;
@@ -22,10 +22,10 @@ async function sendEmail(config, options, context) {
     }
   }
 
-  const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, config);
+  const filepath = path.resolve(TEMPLATE_DIRECTORY, config);
   const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
   const data = Object.assign({}, emailConfig, options);
-  data.from = process.env.DEFAULT_SENDER;
+  data.from = DEFAULT_SENDER;
   if (emailConfig.text_template) {
     data.text = processTemplate(config, emailConfig.text_template, context);
     delete emailConfig.text_template;
@@ -47,7 +47,7 @@ async function sendEmail(config, options, context) {
 function processTemplate(templateName, filename, context) {
   let compiled = COMPILED_TEMPLATES[`${templateName}.${filename}`];
   if (!compiled) {
-    const filepath = path.resolve(process.env.TEMPLATE_DIRECTORY, filename);
+    const filepath = path.resolve(TEMPLATE_DIRECTORY, filename);
     const template = fs.readFileSync(filepath, 'utf8');
     compiled = Handlebars.compile(template);
     COMPILED_TEMPLATES[`${templateName}.${filename}`] = compiled;
@@ -73,7 +73,7 @@ async function createFakeTransporter() {
 async function createAWSSESTransporter() {
   // eslint-disable-next-line global-require
   const AWS = require('aws-sdk');
-  AWS.config.region = process.env.AWS_REGION;
+  AWS.config.region = AWS_REGION;
   return nodemailer.createTransport({
     SES: new AWS.SES({
       apiVersion: '2010-12-01',

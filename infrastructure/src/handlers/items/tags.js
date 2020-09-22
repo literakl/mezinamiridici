@@ -3,7 +3,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
-const MAXIMUM_PAGE_SIZE = process.env.MAXIMUM_PAGE_SIZE || 50;
+const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 
 module.exports = (app) => {
   app.options('/bff/items/:tag', auth.cors);
@@ -43,13 +43,12 @@ async function getItems(dbClient, req) {
   ];
   const items = await dbClient.db().collection('items').aggregate(pipeline, { allowDiskUse: true }).toArray();
   // todo make it generic for any kind of item
-  items.forEach(item => {
-    if (item.type === 'poll' || item.type === 'blog'){
+  items.forEach((item) => {
+    if (item.type === 'poll' || item.type === 'blog') {
       return mongo.processPoll(item);
     } else {
       return item;
     }
-
   });
   return items;
 }

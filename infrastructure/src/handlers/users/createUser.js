@@ -5,6 +5,8 @@ const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 const mailService = require('../../utils/mailService');
 
+const { WEB_URL } = process.env;
+
 module.exports = (app) => {
   app.options('/v1/users', auth.cors);
 
@@ -114,7 +116,7 @@ const sendVerificationEmail = async (email, token) => {
     to: email,
   };
   const context = {
-    verificationLink: `${process.env.WEB_URL}/overeni-uzivatele/${token}`,
+    verificationLink: `${WEB_URL}/overeni-uzivatele/${token}`,
   };
   return mailService.sendEmail('confirm_email.json', options, context);
 };
