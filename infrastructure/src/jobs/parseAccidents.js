@@ -8,10 +8,14 @@ const cheerio = require('cheerio');
 const cheerioAdv = require('cheerio-advanced-selectors');
 const FormData = require('form-data');
 const edjsHTML = require('editorjs-html');
+const Handlebars = require('handlebars');
+const path = require('path');
+const fs = require('fs');
 
 const { jobLogger } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 const api = require('../utils/api.js');
+const { PATH_SEPARATOR } = require('../utils/path_env');
 
 dayjs.extend(customParseFormat);
 dayjs.extend(weekOfYear);
@@ -19,7 +23,10 @@ dayjs.extend(weekOfYear);
 const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
-const { ACCIDENTS_STATS_URL, SCHEDULE_ACCIDENTS_STATS, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
+const { ACCIDENTS_STATS_URL, ACCIDENTS_STATS_SCHEDULE, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
+const { TEMPLATES_DIRECTORY, STREAM_PICTURES_PATH, STREAM_PICTURES_DEFAULT } = process.env;
+// eslint-disable-next-line prefer-template
+const PAGE_TEMPLATES_DIRECTORY = TEMPLATES_DIRECTORY + PATH_SEPARATOR + 'emails';
 const DATE_FORMAT = 'DD.MM.YYYY';
 const KEYS = [
   'region', 'count', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'giveway', 'passing', 'mistake', 'drunk', 'other',
@@ -40,6 +47,7 @@ const REGIONS = {
   ZLN: 'Zlínský',
   MS: 'Moravskoslezský',
 };
+const MONTHS = ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'];
 
 let createArticle = true, retried = 0;
 
@@ -82,7 +90,7 @@ async function doRun() {
       // eslint-disable-next-line no-await-in-loop
       const data = await getArticleData(dbClient, current);
       // eslint-disable-next-line no-await-in-loop
-      await saveArticle(dbClient, data);
+      await saveArticle(dbClient, data, current);
     }
 
     current = current.add(1, 'day');
@@ -94,9 +102,9 @@ async function doRun() {
 }
 
 function scheduleParsing() {
-  const job = new CronJob(SCHEDULE_ACCIDENTS_STATS, async () => doJob);
+  const job = new CronJob(ACCIDENTS_STATS_SCHEDULE, async () => doJob);
   job.start();
-  jobLogger.info(`Parse accidents job scheduled to ${SCHEDULE_ACCIDENTS_STATS}`, { label: 'parseAccidents' });
+  jobLogger.info(`Parse accidents job scheduled to ${ACCIDENTS_STATS_SCHEDULE}`, { label: 'parseAccidents' });
 }
 
 async function doJob() {
@@ -120,7 +128,7 @@ async function doJob() {
   } else if (createArticle) {
     jobLogger.info('Data fetched, creating new article', { label: 'parseAccidents' });
     const data = await getArticleData(dbClient, date);
-    await saveArticle(dbClient, data);
+    await saveArticle(dbClient, data, date);
   }
 }
 
@@ -301,46 +309,22 @@ function add(total, summary) {
   summary.reason.other += total.reason.other;
 }
 
-async function saveArticle(dbClient, data) {
-  const publishDate = dayjs().subtract(1, 'day');
-  const title = `A States for ${dayjs(publishDate).format(DATE_FORMAT)}`;
-  const picture = `${process.env.STREAM_PICTURES_PATH}/${process.env.STREAM_PICTURES_DEFAULT}`;
-  const blogAuthor = await mongo.getIdentity(dbClient, process.env.COMPARE_BLOG_AUTHOR);
-  const source = { date: new Date().getTime(), blocks: [], version: '2.18.0' };
+async function saveArticle(dbClient, data, date) {
+  const filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, 'stats_article');
+  const config = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 
-  const lastYearDate = publishDate.subtract(1, 'year');
-  const week = publishDate.week();
+  const formattedDate = `${date.date()}. ${MONTHS[date.month()]} ${date.year()}`;
+  const title = config.title + formattedDate;
+  data.title = title;
+  data.timestamp = new Date().getTime();
+  data.lastYear = date.year() - 1;
+  data.thisYear = date.year();
+  const compiled = Handlebars.compile(config.json_template);
+  const source = compiled(data);
 
-  for (const key in data) {
-    const headerItem = { type: 'header', data: { text: `Compare with ${(key === 'year') ? '' : `${key} of`} last year`, level: 3 } };
-    const tableItem = { type: 'table', data: { content: [] } };
-    const thArray = [];
-    const tdArray = [];
-    for (const dayKey in data[key]) {
-      for (const subKey in data[key][dayKey]) {
-        let txt = '';
-        switch (key) {
-          case 'day':
-            txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.format(DATE_FORMAT)})` : `${subKey}\n(${publishDate.format(DATE_FORMAT)})`;
-            break;
-          case 'week':
-            txt = (dayKey === 'prev') ? `${subKey}\n(${week})` : `${subKey}\n(${week})`;
-            break;
-          case 'month':
-            txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.month() + 1})` : `${subKey}\n(${publishDate.month() + 1})`;
-            break;
-          case 'year':
-            txt = (dayKey === 'prev') ? `${subKey}\n(${lastYearDate.year()})` : `${subKey}\n(${publishDate.year()})`;
-        }
-        thArray.push(txt);
-        tdArray.push(data[key][dayKey][subKey]);
-      }
-    }
-    tableItem.data.content.push(thArray, tdArray);
-    source.blocks.push(headerItem, tableItem);
-  }
-
-  await insertItem(dbClient, title, source, blogAuthor, publishDate, picture, []);
+  const picture = `${STREAM_PICTURES_PATH}/${STREAM_PICTURES_DEFAULT}`;
+  const blogAuthor = await mongo.getIdentity(dbClient, config.author);
+  await insertItem(dbClient, title, source, blogAuthor, date, picture, []);
 }
 
 function insertItem(dbClient, title, source, author, publishDate, picture, tags) {

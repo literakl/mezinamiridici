@@ -1,0 +1,44 @@
+{
+  "time": {{ timestamp }},
+  "version": "2.18.0",
+  "blocks": [
+    {
+      "type": "table",
+      "data": {
+        "content": [
+          [
+            "",
+            "{{ lastYear }}",
+            "{{ thisYear }}"
+          ],
+          [
+            "tento den",
+            "0 - 12 - 34",
+            "1 - 5 - 30"
+          ],
+          [
+            "tento týden",
+            "2 - 20 - 89",
+            ""
+          ],
+          [
+            "tento&nbsp;měsíc",
+            "4 - 59 - 99",
+            ""
+          ],
+          [
+            "tento rok",
+            "221 - 699 - 3400",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "Vysvětlivky: počet úmrtí - těžkých zranění - lehkých zranění"
+      }
+    }
+  ],
+}

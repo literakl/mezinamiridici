@@ -3,10 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const Handlebars = require('handlebars');
 const { logger } = require('./logging');
-require('./path_env');
+const { PATH_SEPARATOR } = require('./path_env');
 
 const COMPILED_TEMPLATES = {};
-const { MAILER, AWS_REGION, TEMPLATE_DIRECTORY, DEFAULT_SENDER } = process.env;
+const { MAILER, AWS_REGION, TEMPLATES_DIRECTORY, DEFAULT_SENDER } = process.env;
+// eslint-disable-next-line prefer-template
+const EMAIL_TEMPLATES_DIRECTORY = TEMPLATES_DIRECTORY + PATH_SEPARATOR + 'emails';
 let transporter;
 
 async function sendEmail(config, options, context) {
@@ -22,7 +24,7 @@ async function sendEmail(config, options, context) {
     }
   }
 
-  const filepath = path.resolve(TEMPLATE_DIRECTORY, config);
+  const filepath = path.resolve(EMAIL_TEMPLATES_DIRECTORY, config);
   const emailConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
   const data = Object.assign({}, emailConfig, options);
   data.from = DEFAULT_SENDER;
@@ -47,7 +49,7 @@ async function sendEmail(config, options, context) {
 function processTemplate(templateName, filename, context) {
   let compiled = COMPILED_TEMPLATES[`${templateName}.${filename}`];
   if (!compiled) {
-    const filepath = path.resolve(TEMPLATE_DIRECTORY, filename);
+    const filepath = path.resolve(EMAIL_TEMPLATES_DIRECTORY, filename);
     const template = fs.readFileSync(filepath, 'utf8');
     compiled = Handlebars.compile(template);
     COMPILED_TEMPLATES[`${templateName}.${filename}`] = compiled;
