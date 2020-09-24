@@ -24,9 +24,9 @@ const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
 const { ACCIDENTS_STATS_URL, ACCIDENTS_STATS_SCHEDULE, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
-const { TEMPLATES_DIRECTORY, STREAM_PICTURES_PATH, STREAM_PICTURES_DEFAULT } = process.env;
+const { TEMPLATES_DIRECTORY, STREAM_PICTURES_PATH } = process.env;
 // eslint-disable-next-line prefer-template
-const PAGE_TEMPLATES_DIRECTORY = TEMPLATES_DIRECTORY + PATH_SEPARATOR + 'emails';
+const PAGE_TEMPLATES_DIRECTORY = TEMPLATES_DIRECTORY + PATH_SEPARATOR + 'pages';
 const DATE_FORMAT = 'DD.MM.YYYY';
 const KEYS = [
   'region', 'count', 'deaths', 'severely', 'slightly', 'damage', 'speed', 'giveway', 'passing', 'mistake', 'drunk', 'other',
@@ -310,7 +310,7 @@ function add(total, summary) {
 }
 
 async function saveArticle(dbClient, data, date) {
-  const filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, 'stats_article');
+  let filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, 'stats_article.json');
   const config = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 
   const formattedDate = `${date.date()}. ${MONTHS[date.month()]} ${date.year()}`;
@@ -319,12 +319,15 @@ async function saveArticle(dbClient, data, date) {
   data.timestamp = new Date().getTime();
   data.lastYear = date.year() - 1;
   data.thisYear = date.year();
-  const compiled = Handlebars.compile(config.json_template);
+
+  filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, config.json_template);
+  const template = fs.readFileSync(filepath, 'utf8');
+  const compiled = Handlebars.compile(template);
   const source = compiled(data);
 
-  const picture = `${STREAM_PICTURES_PATH}/${STREAM_PICTURES_DEFAULT}`;
+  const picture = `${STREAM_PICTURES_PATH}/${data.picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
-  await insertItem(dbClient, title, source, blogAuthor, date, picture, []);
+  await insertItem(dbClient, title, source, blogAuthor, date, picture, data.tags);
 }
 
 function insertItem(dbClient, title, source, author, publishDate, picture, tags) {
@@ -379,12 +382,12 @@ function lookupRegion(vusc) {
 
 exports.doRun = doRun;
 
-/*
 async function x() {
   const dbClient = await mongo.connectToDatabase();
-  await getArticleData(dbClient, dayjs('01.02.2020', DATE_FORMAT));
+  const date = dayjs('01.02.2020', DATE_FORMAT);
+  const stats = await getArticleData(dbClient, date);
+  await saveArticle(dbClient, stats, date);
   mongo.close();
 }
 
 x().then(() => { console.log('finished'); });
-*/
