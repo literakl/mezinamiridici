@@ -13,23 +13,23 @@
           ],
           [
             "tento den",
-            "0 - 12 - 34",
-            "1 - 5 - 30"
+            "{{ lastYear.day.deaths }} - {{ lastYear.day.severely }} - {{ lastYear.day.slightly }}",
+            "{{ thisYear.day.deaths }} - {{ thisYear.day.severely }} - {{ thisYear.day.slightly }}",
           ],
           [
             "tento týden",
-            "2 - 20 - 89",
-            ""
+            "{{ lastYear.week.deaths }} - {{ lastYear.week.severely }} - {{ lastYear.week.slightly }}",
+            "{{ thisYear.week.deaths }} - {{ thisYear.week.severely }} - {{ thisYear.week.slightly }}",
           ],
           [
-            "tento&nbsp;měsíc",
-            "4 - 59 - 99",
-            ""
+            "tento měsíc",
+            "{{ lastYear.month.deaths }} - {{ lastYear.month.severely }} - {{ lastYear.month.slightly }}",
+            "{{ thisYear.month.deaths }} - {{ thisYear.month.severely }} - {{ thisYear.month.slightly }}",
           ],
           [
             "tento rok",
-            "221 - 699 - 3400",
-            ""
+            "{{ lastYear.year.deaths }} - {{ lastYear.year.severely }} - {{ lastYear.year.slightly }}",
+            "{{ thisYear.year.deaths }} - {{ thisYear.year.severely }} - {{ thisYear.year.slightly }}",
           ]
         ]
       }
