@@ -8,28 +8,77 @@
         "content": [
           [
             "",
+            "Počet nehod",
+            "Úmrtí",
+            "Těžkých zranění",
+            "Lehkých zranění",
+            "Rychlost",
+            "Přednost v jízdě",
+            "Předjíždění",
+            "Návykové látky",
+            "Nesprávná jízda",
+            "Jiný důvod"
+          ],
+          {{#each regions}}
+          [
+            "{{ this.region}}",
+            "{{ this.count}}",
+            "{{ this.impact.deaths }}",
+            "{{ this.impact.severely }}",
+            "{{ this.impact.slightly }}",
+            "{{ this.reason.speed }}",
+            "{{ this.reason.giveway }}",
+            "{{ this.reason.passing }}",
+            "{{ this.reason.drunk }}",
+            "{{ this.reason.mistake }}",
+            "{{ this.reason.other }}"
+          ],
+          {{/each}}
+          [
+            "<b>Celkem</b>",
+            "{{ total.count}}",
+            "{{ total.impact.deaths }}",
+            "{{ total.impact.severely }}",
+            "{{ total.impact.slightly }}",
+            "{{ total.reason.speed }}",
+            "{{ total.reason.giveway }}",
+            "{{ total.reason.passing }}",
+            "{{ total.reason.drunk }}",
+            "{{ total.reason.mistake }}",
+            "{{ total.reason.other }}"
+          ]
+        ]
+      }
+    },
+    { "type" : "header", "data" : { "text" : "Srovnání s loňským rokem", "level" : 3 } },
+    {
+      "type": "table",
+      "data": {
+        "content": [
+          [
+            "",
             "{{ lastYear }}",
             "{{ thisYear }}"
           ],
           [
-            "tento den",
+            "Tento den",
             "{{ lastYear.day.deaths }} - {{ lastYear.day.severely }} - {{ lastYear.day.slightly }}",
-            "{{ thisYear.day.deaths }} - {{ thisYear.day.severely }} - {{ thisYear.day.slightly }}",
+            "{{ thisYear.day.deaths }} - {{ thisYear.day.severely }} - {{ thisYear.day.slightly }}"
           ],
           [
-            "tento týden",
+            "Tento týden",
             "{{ lastYear.week.deaths }} - {{ lastYear.week.severely }} - {{ lastYear.week.slightly }}",
-            "{{ thisYear.week.deaths }} - {{ thisYear.week.severely }} - {{ thisYear.week.slightly }}",
+            "{{ thisYear.week.deaths }} - {{ thisYear.week.severely }} - {{ thisYear.week.slightly }}"
           ],
           [
-            "tento měsíc",
+            "Tento měsíc",
             "{{ lastYear.month.deaths }} - {{ lastYear.month.severely }} - {{ lastYear.month.slightly }}",
-            "{{ thisYear.month.deaths }} - {{ thisYear.month.severely }} - {{ thisYear.month.slightly }}",
+            "{{ thisYear.month.deaths }} - {{ thisYear.month.severely }} - {{ thisYear.month.slightly }}"
           ],
           [
-            "tento rok",
+            "Tento rok",
             "{{ lastYear.year.deaths }} - {{ lastYear.year.severely }} - {{ lastYear.year.slightly }}",
-            "{{ thisYear.year.deaths }} - {{ thisYear.year.severely }} - {{ thisYear.year.slightly }}",
+            "{{ thisYear.year.deaths }} - {{ thisYear.year.severely }} - {{ thisYear.year.slightly }}"
           ]
         ]
       }
@@ -40,5 +89,5 @@
         "text": "Vysvětlivky: počet úmrtí - těžkých zranění - lehkých zranění"
       }
     }
-  ],
+  ]
 }

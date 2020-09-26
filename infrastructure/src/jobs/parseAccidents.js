@@ -323,7 +323,8 @@ async function saveArticle(dbClient, data, date) {
   filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, config.json_template);
   const template = fs.readFileSync(filepath, 'utf8');
   const compiled = Handlebars.compile(template);
-  const source = compiled(data);
+  const rendered = compiled(data);
+  const source = JSON.parse(rendered);
 
   const picture = `${STREAM_PICTURES_PATH}/${data.picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
