@@ -328,12 +328,12 @@ async function saveArticle(dbClient, data, date) {
   const rendered = compiled(data);
   const source = JSON.parse(rendered);
 
-  const picture = `${STREAM_PICTURES_PATH}/${data.picture}`;
+  const picture = `${STREAM_PICTURES_PATH}/${config.picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
-  await insertItem(dbClient, title, source, blogAuthor, date, picture, data.tags);
+  await insertItem(dbClient, title, source, blogAuthor, picture, config.tags);
 }
 
-function insertItem(dbClient, title, source, author, publishDate, picture, tags) {
+function insertItem(dbClient, title, source, author, picture, tags) {
   let content = '';
   edjsParser.parse(source).forEach((item) => {
     content += item;
@@ -348,7 +348,7 @@ function insertItem(dbClient, title, source, author, publishDate, picture, tags)
       },
       caption: title,
       slug,
-      date: publishDate.toDate(),
+      date: new Date(),
       picture,
       tags,
     },

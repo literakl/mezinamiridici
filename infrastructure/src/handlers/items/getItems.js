@@ -16,10 +16,10 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const blog = await getItems(dbClient, Number(start), Number(num), tag);
+      const items = await getItems(dbClient, Number(start), Number(num), tag);
       logger.debug('Items fetched');
 
-      return api.sendCreated(res, api.createResponse(blog));
+      return api.sendCreated(res, api.createResponse(items));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
