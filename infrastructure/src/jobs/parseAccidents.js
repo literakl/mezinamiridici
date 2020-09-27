@@ -249,7 +249,9 @@ async function getArticleData(dbClient, date) {
 
   const prevYearData = await fetchByDateRange(dbClient, lastYearStartDate, yearAgoDate);
   const thisYearData = await fetchByDateRange(dbClient, thisYearStartDate, date);
-  return compareData(date, date.subtract(1, 'year'), prevYearData, thisYearData);
+  const data = compareData(date, date.subtract(1, 'year'), prevYearData, thisYearData);
+  data.day = thisYearData[thisYearData.length - 1];
+  return data;
 }
 
 async function fetchByDateRange(dbClient, start, end) {
@@ -317,8 +319,8 @@ async function saveArticle(dbClient, data, date) {
   const title = config.title + formattedDate;
   data.title = title;
   data.timestamp = new Date().getTime();
-  data.lastYear = date.year() - 1;
-  data.thisYear = date.year();
+  data.lastYearValue = date.year() - 1;
+  data.thisYearValue = date.year();
 
   filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, config.json_template);
   const template = fs.readFileSync(filepath, 'utf8');
