@@ -44,7 +44,6 @@ module.exports = (app) => {
 function prepareUpdateQuery(source, title, picture, tags) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const setters = {};
-  // setters['data.source'] = source;
   setters['data.content'] = content;
   setters['info.caption'] = title;
   setters['info.picture'] = picture;

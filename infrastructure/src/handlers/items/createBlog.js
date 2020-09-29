@@ -79,7 +79,6 @@ function insertItem(dbClient, blogId, title, source, author, publishDate, pictur
     },
     data: {
       content,
-      // source,
     },
     comments: {
       count: 0,
