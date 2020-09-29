@@ -1,11 +1,8 @@
-const edjsHTML = require('editorjs-html');
 const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
-
-const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
@@ -73,11 +70,7 @@ module.exports = (app) => {
 };
 
 function createComment(itemId, source, user, parentId, date) {
-  let text = '';
-  edjsParser.parse(source).forEach((item) => {
-    text += item;
-  });
-  text = sanitizeHtml(text, api.sanitizeConfigure());
+  let text = sanitizeHtml(source, api.sanitizeConfigure());
   const comment = {
     _id: mongo.generateTimeId(),
     itemId,

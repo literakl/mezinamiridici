@@ -1,11 +1,8 @@
-const sanitizeHtml = require('sanitize-html');
-const edjsHTML = require('editorjs-html');
+// const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
-
-const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
   app.options('/v1/blog/:blogId', auth.cors);
@@ -46,11 +43,6 @@ module.exports = (app) => {
 
 function prepareUpdateQuery(source, title, picture, tags) {
   let content = '';
-  edjsParser.parse(source).forEach((item) => {
-    content += item;
-  });
-  content = sanitizeHtml(content, api.sanitizeConfigure());
-
   const setters = {};
   setters['data.source'] = source;
   setters['data.content'] = content;

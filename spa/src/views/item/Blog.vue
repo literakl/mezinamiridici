@@ -1,27 +1,77 @@
 <template>
   <div class="pt-3 w-75 m-auto pb-5">
     <h1>{{title}}</h1>
-    <div v-html="blogHtml"></div>
+    <editor-content class="editor__content" :editor="editor" />
   </div>
 </template>
 
 <script>
 
+import { Editor, EditorContent } from 'tiptap';
+import {
+  Blockquote,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  HorizontalRule,
+  OrderedList,
+  BulletList,
+  ListItem,
+  TodoItem,
+  TodoList,
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+  History,
+} from 'tiptap-extensions';
+import Image from '@/utils/editorImage';
+
 export default {
   name: 'blog',
+  components: {
+    EditorContent,
+  },
   props: {
     slug: String,
+  },
+  data() {
+    return {
+      editor: new Editor({
+        extensions: [
+          new Blockquote(),
+          new BulletList(),
+          new CodeBlock(),
+          new HardBreak(),
+          new Heading({ levels: [1, 2, 3] }),
+          new HorizontalRule(),
+          new ListItem(),
+          new OrderedList(),
+          new TodoItem(),
+          new TodoList(),
+          new Link(),
+          new Bold(),
+          new Code(),
+          new Italic(),
+          new Strike(),
+          new Underline(),
+          new History(),
+          new Image(),
+        ],
+        editable: false,
+      }),
+    };
+  },
+  watch: {
+    blog() {
+      this.setContent(this.blog.data.source);
+    },
   },
   computed: {
     blog() {
       return this.$store.getters.BLOG;
-    },
-    blogHtml() {
-      let txt = '';
-      if (this.blog !== null) {
-        txt = this.blog.data.content;
-      }
-      return txt;
     },
     title() {
       let txt = '';
@@ -34,9 +84,18 @@ export default {
   created() {
     this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
   },
+  methods: {
+    setContent(json) {
+      this.editor.setContent(json, true);
+      this.editor.focus();
+    },
+  },
 };
 </script>
 <style>
+  img {
+    width:100%;
+  }
   blockquote {
     display: block;
     margin-top: 1em;
@@ -50,63 +109,5 @@ export default {
   blockquote p {
     font-style: normal;
     font-weight: bold;
-  }
-  table {
-      width: 100%;
-      height: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-  }
-  table {
-      border: 1px solid #DBDBE2;
-      border-radius: 3px;
-      position: relative;
-      height: 100%;
-      width: 100%;
-      box-sizing: border-box;
-  }
-  td {
-      border: 1px solid #DBDBE2;
-      padding: 0;
-      vertical-align: top;
-  }
-  td div{
-      padding: 10px;
-      height: 100%;
-  }
-  .tc-table__inp {
-      outline: none;
-      flex-grow: 100;
-      min-height: 1.5em;
-      height: 100%;
-      overflow: hidden;
-  }
-  tbody tr:first-child td {
-      border-top: none;
-  }
-  tbody tr:last-child td {
-      border-bottom: none;
-  }
-  tbody tr td:last-child {
-      border-right: none;
-  }
-  tbody tr td:first-child {
-      border-left: none;
-  }
-  img {
-    width:100%;
-  }
-  .ce-delimiter {
-    line-height: 1.6em;
-    width: 100%;
-    text-align: center;
-  }
-  .ce-delimiter:before {
-    display: inline-block;
-    content: "***";
-    font-size: 30px;
-    line-height: 65px;
-    height: 30px;
-    letter-spacing: 0.2em;
   }
 </style>

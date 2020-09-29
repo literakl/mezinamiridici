@@ -1,17 +1,14 @@
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-const sanitizeHtml = require('sanitize-html');
+// const sanitizeHtml = require('sanitize-html');
 
 dayjs.extend(customParseFormat);
 
-const edjsHTML = require('editorjs-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
-
-const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 
 module.exports = (app) => {
   app.options('/v1/blog', auth.cors);
@@ -64,10 +61,6 @@ module.exports = (app) => {
 
 function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
   let content = '';
-  edjsParser.parse(source).forEach((item) => {
-    content += item;
-  });
-  content = sanitizeHtml(content, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
 
   const blog = {

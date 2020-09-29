@@ -12,7 +12,137 @@
       <b-container fluid>
         <b-row>
           <b-col sm="12" class="editor-js" :id="`editor-js-${commentId}`">
-            <editor v-if="isShow" class="textarea" ref="editor" :config="config"/>
+            <editor-menu-bar v-if="isShow" :editor="editor" v-slot="{ commands, isActive }">
+              <div class="menubar">
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.bold() }"
+                  @click="commands.bold"
+                >
+                  <icon name="bold" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.italic() }"
+                  @click="commands.italic"
+                >
+                  <icon name="italic" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.strike() }"
+                  @click="commands.strike"
+                >
+                  <icon name="strike" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.underline() }"
+                  @click="commands.underline"
+                >
+                  <icon name="underline" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.code() }"
+                  @click="commands.code"
+                >
+                  <icon name="code" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.paragraph() }"
+                  @click="commands.paragraph"
+                >
+                  <icon name="paragraph" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+                  @click="commands.heading({ level: 1 })"
+                >
+                  H1
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+                  @click="commands.heading({ level: 2 })"
+                >
+                  H2
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+                  @click="commands.heading({ level: 3 })"
+                >
+                  H3
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.bullet_list() }"
+                  @click="commands.bullet_list"
+                >
+                  <icon name="ul" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.ordered_list() }"
+                  @click="commands.ordered_list"
+                >
+                  <icon name="ol" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.blockquote() }"
+                  @click="commands.blockquote"
+                >
+                  <icon name="quote" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  :class="{ 'is-active': isActive.code_block() }"
+                  @click="commands.code_block"
+                >
+                  <icon name="code" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  @click="commands.horizontal_rule"
+                >
+                  <icon name="hr" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  @click="commands.undo"
+                >
+                  <icon name="undo" />
+                </button>
+
+                <button
+                  class="menubar__button"
+                  @click="commands.redo"
+                >
+                  <icon name="redo" />
+                </button>
+
+              </div>
+            </editor-menu-bar>
+            <editor-content v-if="isShow" :editor="editor" />
           </b-col>
         </b-row>
       </b-container>
@@ -36,10 +166,29 @@
 
 <script>
 import { BIconEmojiSunglasses, BIconXCircle, BPopover, BButton, BContainer, BRow, BCol, BAlert } from 'bootstrap-vue';
-import List from '@editorjs/list';
-import Paragraph from '@editorjs/paragraph';
+import Icon from '@/components/atoms/EditorIcon.vue';
+import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
+import {
+  Blockquote,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  HorizontalRule,
+  OrderedList,
+  BulletList,
+  ListItem,
+  TodoItem,
+  TodoList,
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+  History,
+} from 'tiptap-extensions';
 import Button from '@/components/atoms/Button.vue';
-import resourceBundle from '@/utils/editorJSResourceBundle';
+// import resourceBundle from '@/utils/editorJSResourceBundle';
 
 export default {
   name: 'CommentForm',
@@ -50,7 +199,18 @@ export default {
     isShow: Boolean,
   },
   components: {
-    Button, BIconEmojiSunglasses, BIconXCircle, BPopover, BButton, BContainer, BRow, BCol, BAlert,
+    Button,
+    BIconEmojiSunglasses,
+    BIconXCircle,
+    BPopover,
+    BButton,
+    BContainer,
+    BRow,
+    BCol,
+    BAlert,
+    Icon,
+    EditorContent,
+    EditorMenuBar,
   },
   data() {
     return {
@@ -61,23 +221,34 @@ export default {
         '\u{1F910}', '\u{1F928}', '\u{1F644}', '\u{1F614}', '\u{1F634}',
         '\u{1F637}', '\u{1F975}', '\u{1F60E}', '\u{2639}', '\u{1F633}',
         '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
-
-      config: {
-        holder: `editor-js-${this.commentId}`,
-        minHeight: 0,
-        tools: {
-          paragraph: {
-            class: Paragraph,
-          },
-          list: {
-            class: List,
-            inlineToolbar: true,
-          },
+      editor: new Editor({
+        extensions: [
+          new Blockquote(),
+          new BulletList(),
+          new CodeBlock(),
+          new HardBreak(),
+          new Heading({ levels: [1, 2, 3] }),
+          new HorizontalRule(),
+          new ListItem(),
+          new OrderedList(),
+          new TodoItem(),
+          new TodoList(),
+          new Link(),
+          new Bold(),
+          new Code(),
+          new Italic(),
+          new Strike(),
+          new Underline(),
+          new History(),
+        ],
+        content: '',
+        onUpdate: ({ getJSON, getHTML }) => {
+          this.json = getJSON();
+          this.html = getHTML();
         },
-        placeholder: this.$t('editorjs.p-placeholder'),
-        data: {},
-        i18n: resourceBundle,
-      },
+      }),
+      json: 'Update content to see changes',
+      html: 'Update content to see changes',
     };
   },
   methods: {
@@ -88,7 +259,7 @@ export default {
       this.error = false;
       this.sending = true;
 
-      const editorData = await this.$refs.editor.state.editor.save().then(res => res);
+      const editorData = this.html;
 
       const payload = {
         itemId: this.itemId,
@@ -101,7 +272,7 @@ export default {
 
       try {
         await this.$store.dispatch('ADD_COMMENT', payload);
-        this.$refs.editor.state.editor.clear();
+        this.editor.clearContent(true);
         this.$emit('dismiss');
       } catch (e) {
         this.$log.error(e);
@@ -110,45 +281,62 @@ export default {
       this.sending = false;
     },
     async addEmoji(idx) {
-      this.$refs.editor.state.editor.blocks.insert('paragraph', { text: this.emojiArray[idx] });
+      const editorData = `${this.html}<p>${this.emojiArray[idx]}</p>`;
+      this.editor.setContent(editorData);
     },
   },
 };
 </script>
 
 <style>
-  .editor-js {
-    border: 1px solid #ced4da;
-    overflow: auto;
+  .ProseMirror {
+    border: #dddddd solid 1px;
+    padding: 10px;
   }
-
-  .comment-box .codex-editor {
-    height: 110px;
-  }
-
-  .comment-box .codex-editor__redactor {
-    padding-bottom: 110px
-  }
-
-  .comment-box .comment-box {
-    position: relative;
+  .ProseMirror img{
     width: 100%;
   }
+</style>
 
-  .comment-box .icons {
-    position: relative;
-    text-align: right;
-    width: 143px;
-    float: right;
-    right: 40px;
+<style lang="scss" scoped>
+  $color-black: #000000;
+  $color-white: #ffffff;
+  $color-grey: #dddddd;
+
+
+  .menubar__button{
+    font-weight: 700;
+    display: -webkit-inline-box;
+    background: transparent;
+    border: 0;
+    color: $color-black;
+    padding: .2rem .5rem;
+    margin-right: .2rem;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.is-active {
+      background-color: rgba($color-black,.1);
+    }
   }
-
-  /*this is necessary to make editor fill the content */
-  .ce-block__content, .ce-toolbar__content {
-    position: relative;
-    max-width: 96%;
-    margin: 0 auto;
-    -webkit-transition: background-color .15s ease;
-    transition: background-color .15s ease;
+  .actions {
+    max-width: 30rem;
+    margin: 0 auto 2rem auto;
+  }
+  .export {
+    max-width: 30rem;
+    margin: 0 auto 2rem auto;
+    pre {
+      padding: 1rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      background: rgba($color-black, 0.05);
+      color: rgba($color-black, 0.8);
+    }
+    code {
+      display: block;
+      white-space: pre-wrap;
+    }
   }
 </style>

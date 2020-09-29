@@ -168,37 +168,6 @@ function convertField(key) {
   throw new Error(`Unsupported field ${key}`);
 }
 
-function edjsHtmlCustomParser() {
-  return {
-    table: (obj) => {
-      let rows = '', rendered = '';
-      // eslint-disable-next-line array-callback-return
-      obj.data.content.map((row) => {
-        let cells = '';
-        // eslint-disable-next-line array-callback-return
-        row.map((cell) => {
-          cells += `<td class="tc-table__cell"><div class="tc-table__area">${
-            cell}</div></td>\n`;
-        });
-        rows += `<tr>${cells}</tr>\n`;
-      });
-      rendered += `${'<div class="ce-block"><div class="ce-block__content"><div class="tc-editor cdx-block">'
-      + '<div class="tc-table__wrap">\n<table class="tc-table"><tbody>'}${
-        rows}</tbody></table>\n</div></div></div></div>\n`;
-      return rendered;
-    },
-    delimiter: () => '<div class="ce-block"><div class="ce-block__content"><div class="ce-delimiter cdx-block"></div></div></div>\n',
-    quote: (obj) => {
-      let html = `<blockquote style="text-align:${obj.data.alignment};">`;
-      if (obj.data.caption != null && obj.data.caption !== '') {
-        html += `<p>${obj.data.caption}</p> `;
-      }
-      html += `${obj.data.text} </blockquote>`;
-      return html;
-    },
-  };
-}
-
 function parseDate(date, format) {
   if (date) {
     const dday = dayjs(date, format);
@@ -239,6 +208,5 @@ module.exports.createResponse = createResponse;
 module.exports.parseListParams = parseListParams;
 module.exports.parsePollFilterParams = parsePollFilterParams;
 module.exports.sendRedirectFound = sendRedirectFound;
-module.exports.edjsHtmlCustomParser = edjsHtmlCustomParser;
 module.exports.parseDate = parseDate;
 module.exports.sanitizeConfigure = sanitizeConfigure;

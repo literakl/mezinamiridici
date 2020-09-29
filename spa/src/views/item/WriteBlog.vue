@@ -6,32 +6,190 @@
       :placeholder="$t('blog.form.title-placeholder')"
       class="pb-3 w-100"/>
 
-    <editor ref="editor" :config="config" :initialized="onInitialized"/>
+    <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+      <div class="menubar">
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.bold() }"
+          @click="commands.bold"
+        >
+          <icon name="bold" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.italic() }"
+          @click="commands.italic"
+        >
+          <icon name="italic" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.strike() }"
+          @click="commands.strike"
+        >
+          <icon name="strike" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.underline() }"
+          @click="commands.underline"
+        >
+          <icon name="underline" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.code() }"
+          @click="commands.code"
+        >
+          <icon name="code" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.paragraph() }"
+          @click="commands.paragraph"
+        >
+          <icon name="paragraph" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+          @click="commands.heading({ level: 1 })"
+        >
+          H1
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+          @click="commands.heading({ level: 2 })"
+        >
+          H2
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+          @click="commands.heading({ level: 3 })"
+        >
+          H3
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.bullet_list() }"
+          @click="commands.bullet_list"
+        >
+          <icon name="ul" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.ordered_list() }"
+          @click="commands.ordered_list"
+        >
+          <icon name="ol" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.blockquote() }"
+          @click="commands.blockquote"
+        >
+          <icon name="quote" />
+        </button>
+
+        <button
+          class="menubar__button"
+          :class="{ 'is-active': isActive.code_block() }"
+          @click="commands.code_block"
+        >
+          <icon name="code" />
+        </button>
+
+        <button
+          class="menubar__button"
+          @click="commands.horizontal_rule"
+        >
+          <icon name="hr" />
+        </button>
+
+        <button class="menubar-button" @click="showImageModal(commands.image)">
+            <Icon name="image"/>
+        </button>
+
+        <button
+          class="menubar__button"
+          @click="commands.undo"
+        >
+          <icon name="undo" />
+        </button>
+
+        <button
+          class="menubar__button"
+          @click="commands.redo"
+        >
+          <icon name="redo" />
+        </button>
+
+      </div>
+    </editor-menu-bar>
+    <editor-content :editor="editor" />
 
     <TagSelector @changeTags="tagSelect" :formTags="tags"/>
 
     <SelectPicture :currentPath="picture" @changePath="changePath"/>
 
     <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
+
+    <input type="file" ref="fileUploadInput" style="display:none;"/>
   </div>
 </template>
 
 <script>
-import Header from '@editorjs/header';
-import List from '@editorjs/list';
-import Paragraph from '@editorjs/paragraph';
-import Embed from '@editorjs/embed';
-import Table from '@editorjs/table';
-import Quote from '@editorjs/quote';
-import Delimiter from '@editorjs/delimiter';
-import ImageTool from '@editorjs/image';
+import Icon from '@/components/atoms/EditorIcon.vue';
+import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
+import {
+  Blockquote,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  HorizontalRule,
+  OrderedList,
+  BulletList,
+  ListItem,
+  TodoItem,
+  TodoList,
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+  History,
+} from 'tiptap-extensions';
+import Image from '@/utils/editorImage';
 
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-import resourceBundle from '@/utils/editorJSResourceBundle';
+// import resourceBundle from '@/utils/editorJSResourceBundle';
 import { BButton } from 'bootstrap-vue';
+
+async function upload(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const res = await store.dispatch('UPLOAD_IMAGE', formData);
+  return res.data.url;
+}
 
 export default {
   components: {
@@ -39,6 +197,9 @@ export default {
     TextInput,
     TagSelector,
     BButton,
+    Icon,
+    EditorContent,
+    EditorMenuBar,
   },
   props: {
     slug: String,
@@ -49,82 +210,35 @@ export default {
       title: '',
       picture: '',
       tags: [],
-      config: {
-        tools: {
-          header: {
-            class: Header,
-            inlineToolbar: true,
-            config: {
-              placeholder: this.$t('editorjs.h-placeholder'),
-              levels: [1, 2, 3],
-              defaultLevel: 3,
-            },
-          },
-          list: {
-            class: List,
-            inlineToolbar: true,
-          },
-          paragraph: {
-            class: Paragraph,
-          },
-          image: {
-            class: ImageTool,
-            config: {
-              uploader: {
-                async uploadByFile(file) {
-                  const formData = new FormData();
-                  formData.append('image', file);
-
-                  const res = await store.dispatch('UPLOAD_IMAGE', formData);
-                  return {
-                    success: res.success,
-                    file: {
-                      url: res.data.url,
-                    },
-                  };
-                },
-              },
-            },
-          },
-          embed: {
-            class: Embed,
-            inlineToolbar: true,
-            config: {
-              services: {
-                youtube: true,
-                instagram: true,
-                twitter: true,
-                gfycat: true,
-              },
-            },
-          },
-          delimiter: Delimiter,
-          table: {
-            class: Table,
-            inlineToolbar: true,
-            config: {
-              rows: 2,
-              cols: 3,
-            },
-          },
-          quote: {
-            class: Quote,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+O',
-            config: {
-              quotePlaceholder: this.$t('editorjs.q-placeholder'),
-            },
-          },
+      editor: new Editor({
+        extensions: [
+          new Blockquote(),
+          new BulletList(),
+          new CodeBlock(),
+          new HardBreak(),
+          new Heading({ levels: [1, 2, 3] }),
+          new HorizontalRule(),
+          new ListItem(),
+          new OrderedList(),
+          new TodoItem(),
+          new TodoList(),
+          new Link(),
+          new Bold(),
+          new Code(),
+          new Italic(),
+          new Strike(),
+          new Underline(),
+          new History(),
+          new Image(null, null, upload),
+        ],
+        content: '',
+        onUpdate: ({ getJSON, getHTML }) => {
+          this.json = getJSON();
+          this.html = getHTML();
         },
-        placeholder: this.$t('editorjs.p-placeholder'),
-        data: {},
-        i18n: resourceBundle,
-        onReady: () => {
-          if (this.$route.name === 'update-blog' && this.blog) {
-            this.$refs.editor.state.editor.render(this.blog.data.source);
-          }
-        },
-      },
+      }),
+      json: 'Update content to see changes',
+      html: 'Update content to see changes',
     };
   },
   computed: {
@@ -137,11 +251,12 @@ export default {
       this.title = this.blog.info.caption;
       this.picture = this.blog.info.picture;
       this.tags = this.blog.info.tags;
+      this.setContent(this.blog.data.source);
     },
   },
   methods: {
     async saveBlog() {
-      const editorData = await this.$refs.editor.state.editor.save().then(res => res);
+      const editorData = this.json;
 
       const body = {
         title: this.title,
@@ -165,13 +280,20 @@ export default {
     tagSelect(tags) {
       this.tags = tags;
     },
-    onInitialized() {
-      // if (this.$route.name === 'update-blog') {
-      //   setTimeout(() => { editor.render(this.blog.data.source); }, 1000);
-      // }editor
-    },
     changePath(path) {
       this.picture = path;
+    },
+    showImageModal(command) {
+      this.$refs.fileUploadInput.click();
+      this.$refs.fileUploadInput.command = command;
+    },
+    clearContent() {
+      this.editor.clearContent(true);
+      this.editor.focus();
+    },
+    setContent(json) {
+      this.editor.setContent(json, true);
+      this.editor.focus();
     },
   },
   created() {
@@ -180,17 +302,86 @@ export default {
       this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
     }
   },
+  mounted() {
+    window.addEventListener('load', () => {
+      this.$refs.fileUploadInput.addEventListener('change', async (event) => {
+        if (event.target.files && event.target.files[0]) {
+          const src = await upload(event.target.files[0]);
+          event.target.command({ src });
+          event.target.command = null;
+        }
+      });
+    });
+  },
+  beforeDestroy() {
+    this.editor.destroy();
+  },
 };
 </script>
 
 <style>
- .codex-editor {
-   border: 1px solid #ced4da
- }
+  .ProseMirror {
+    border: #dddddd solid 1px;
+    padding: 10px;
+  }
+  .ProseMirror img{
+    width: 100%;
+  }
+  blockquote {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 40px;
+    background-color: whitesmoke;
+    padding: 20px;
+    font-style: italic;
+    overflow-wrap: anywhere;
+  }
+  blockquote p {
+    font-style: normal;
+    font-weight: bold;
+  }
+</style>
 
- .codex-editor__redactor {
-   padding-bottom: 100px
- }
+<style lang="scss" scoped>
+  $color-black: #000000;
+  $color-white: #ffffff;
+  $color-grey: #dddddd;
 
- /*.ce-block__content, .ce-toolbar__content*/
+
+  .menubar__button{
+    font-weight: 700;
+    display: -webkit-inline-box;
+    background: transparent;
+    border: 0;
+    color: $color-black;
+    padding: .2rem .5rem;
+    margin-right: .2rem;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.is-active {
+      background-color: rgba($color-black,.1);
+    }
+  }
+  .actions {
+    max-width: 30rem;
+    margin: 0 auto 2rem auto;
+  }
+  .export {
+    max-width: 30rem;
+    margin: 0 auto 2rem auto;
+    pre {
+      padding: 1rem;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      background: rgba($color-black, 0.05);
+      color: rgba($color-black, 0.8);
+    }
+    code {
+      display: block;
+      white-space: pre-wrap;
+    }
+  }
 </style>
