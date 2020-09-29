@@ -1,7 +1,7 @@
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-// const sanitizeHtml = require('sanitize-html');
+const sanitizeHtml = require('sanitize-html');
 
 dayjs.extend(customParseFormat);
 
@@ -60,7 +60,7 @@ module.exports = (app) => {
 };
 
 function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
-  let content = '';
+  const content = sanitizeHtml(source, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
 
   const blog = {
@@ -79,7 +79,7 @@ function insertItem(dbClient, blogId, title, source, author, publishDate, pictur
     },
     data: {
       content,
-      source,
+      // source,
     },
     comments: {
       count: 0,

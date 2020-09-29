@@ -251,12 +251,12 @@ export default {
       this.title = this.blog.info.caption;
       this.picture = this.blog.info.picture;
       this.tags = this.blog.info.tags;
-      this.setContent(this.blog.data.source);
+      this.setContent(this.blog.data.content);
     },
   },
   methods: {
     async saveBlog() {
-      const editorData = this.json;
+      const editorData = this.html;
 
       const body = {
         title: this.title,

@@ -1,4 +1,4 @@
-// const sanitizeHtml = require('sanitize-html');
+const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -42,9 +42,9 @@ module.exports = (app) => {
 };
 
 function prepareUpdateQuery(source, title, picture, tags) {
-  let content = '';
+  const content = sanitizeHtml(source, api.sanitizeConfigure());
   const setters = {};
-  setters['data.source'] = source;
+  // setters['data.source'] = source;
   setters['data.content'] = content;
   setters['info.caption'] = title;
   setters['info.picture'] = picture;
