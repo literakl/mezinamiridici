@@ -8,115 +8,51 @@
 
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
+        <button class="menubar__button" @click="commands.undo">
+          <icon name="undo" />
+        </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bold() }"
-          @click="commands.bold"
-        >
+        <button class="menubar__button" @click="commands.redo">
+          <icon name="redo" />
+        </button>
+
+        <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
           <icon name="bold" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.italic() }"
-          @click="commands.italic"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
           <icon name="italic" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.strike() }"
-          @click="commands.strike"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
           <icon name="strike" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.underline() }"
-          @click="commands.underline"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
           <icon name="underline" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code() }"
-          @click="commands.code"
-        >
-          <icon name="code" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.paragraph() }"
-          @click="commands.paragraph"
-        >
-          <icon name="paragraph" />
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-          @click="commands.heading({ level: 1 })"
-        >
-          H1
-        </button>
-
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-          @click="commands.heading({ level: 2 })"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
           H2
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-          @click="commands.heading({ level: 3 })"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">
           H3
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bullet_list() }"
-          @click="commands.bullet_list"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
           <icon name="ul" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.ordered_list() }"
-          @click="commands.ordered_list"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
           <icon name="ol" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.blockquote() }"
-          @click="commands.blockquote"
-        >
+        <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
           <icon name="quote" />
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code_block() }"
-          @click="commands.code_block"
-        >
-          <icon name="code" />
-        </button>
-
-        <button
-          class="menubar__button"
-          @click="commands.horizontal_rule"
-        >
+        <button class="menubar__button" @click="commands.horizontal_rule">
           <icon name="hr" />
         </button>
 
@@ -124,20 +60,36 @@
             <Icon name="image"/>
         </button>
 
-        <button
-          class="menubar__button"
-          @click="commands.undo"
-        >
-          <icon name="undo" />
+        <button class="menubar__button" @click="commands.createTable({rowsCount: 2, colsCount: 2, withHeaderRow: false })">
+          <icon name="table" />
         </button>
 
-        <button
-          class="menubar__button"
-          @click="commands.redo"
-        >
-          <icon name="redo" />
-        </button>
-
+        <span v-if="isActive.table()">
+          <button class="menubar__button" @click="commands.deleteTable">
+            <icon name="delete_table" />
+          </button>
+          <button class="menubar__button" @click="commands.addColumnBefore">
+            <icon name="add_col_before" />
+          </button>
+          <button class="menubar__button" @click="commands.addColumnAfter">
+            <icon name="add_col_after" />
+          </button>
+          <button class="menubar__button" @click="commands.deleteColumn">
+            <icon name="delete_col" />
+          </button>
+          <button class="menubar__button" @click="commands.addRowBefore">
+            <icon name="add_row_before" />
+          </button>
+          <button class="menubar__button" @click="commands.addRowAfter">
+            <icon name="add_row_after" />
+          </button>
+          <button class="menubar__button" @click="commands.deleteRow">
+            <icon name="delete_row" />
+          </button>
+          <button class="menubar__button" @click="commands.toggleCellMerge">
+            <icon name="combine_cells" />
+          </button>
+        </span>
       </div>
     </editor-menu-bar>
     <editor-content :editor="editor" />
@@ -157,22 +109,23 @@ import Icon from '@/components/atoms/EditorIcon.vue';
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
 import {
   Blockquote,
-  CodeBlock,
   HardBreak,
   Heading,
   HorizontalRule,
   OrderedList,
   BulletList,
   ListItem,
-  TodoItem,
-  TodoList,
   Bold,
-  Code,
   Italic,
   Link,
   Strike,
   Underline,
   History,
+  Table,
+  TableHeader,
+  TableCell,
+  TableRow,
+  Focus,
 } from 'tiptap-extensions';
 import Image from '@/utils/editorImage';
 
@@ -180,13 +133,11 @@ import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import store from '@/store';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-// import resourceBundle from '@/utils/editorJSResourceBundle';
 import { BButton } from 'bootstrap-vue';
 
 async function upload(file) {
   const formData = new FormData();
   formData.append('image', file);
-
   const res = await store.dispatch('UPLOAD_IMAGE', formData);
   return res.data.url;
 }
@@ -214,30 +165,34 @@ export default {
         extensions: [
           new Blockquote(),
           new BulletList(),
-          new CodeBlock(),
           new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
+          new Heading({ levels: [2, 3] }),
           new HorizontalRule(),
           new ListItem(),
           new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
           new Link(),
           new Bold(),
-          new Code(),
           new Italic(),
           new Strike(),
           new Underline(),
           new History(),
           new Image(null, null, upload),
+          new Table({
+            resizable: true,
+          }),
+          new TableHeader(),
+          new TableCell(),
+          new TableRow(),
+          new Focus({
+            className: 'has-focus',
+            nested: false,
+          }),
         ],
         content: '',
-        onUpdate: ({ getJSON, getHTML }) => {
-          this.json = getJSON();
+        onUpdate: ({ getHTML }) => {
           this.html = getHTML();
         },
       }),
-      json: 'Update content to see changes',
       html: 'Update content to see changes',
     };
   },
@@ -256,11 +211,9 @@ export default {
   },
   methods: {
     async saveBlog() {
-      const editorData = this.html;
-
       const body = {
         title: this.title,
-        source: editorData,
+        source: this.html,
         picture: this.picture,
         tags: this.tags,
       };
@@ -324,7 +277,7 @@ export default {
     border: #dddddd solid 1px;
     padding: 10px;
   }
-  .ProseMirror img{
+  .ProseMirror img {
     width: 100%;
   }
   blockquote {
@@ -348,8 +301,7 @@ export default {
   $color-white: #ffffff;
   $color-grey: #dddddd;
 
-
-  .menubar__button{
+  .menubar__button {
     font-weight: 700;
     display: -webkit-inline-box;
     background: transparent;
@@ -364,10 +316,12 @@ export default {
       background-color: rgba($color-black,.1);
     }
   }
+
   .actions {
     max-width: 30rem;
     margin: 0 auto 2rem auto;
   }
+
   .export {
     max-width: 30rem;
     margin: 0 auto 2rem auto;
@@ -383,5 +337,10 @@ export default {
       display: block;
       white-space: pre-wrap;
     }
+  }
+
+  .has-focus {
+    border-radius: 3px;
+    box-shadow: 0 0 0 3px #3ea4ffe6;
   }
 </style>
