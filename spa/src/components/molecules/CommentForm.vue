@@ -49,21 +49,20 @@
                 <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
                   <icon name="quote" />
                 </button>
+
+                <b-button class="menubar__button"  :id="`emojis_${commentId}`" variant="outline" size="sm">
+                  <BIconEmojiSunglasses></BIconEmojiSunglasses>
+                </b-button>
+
+                <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" style="float:right;">
+                  <BIconXCircle></BIconXCircle>
+                </b-button>
               </div>
             </editor-menu-bar>
             <editor-content v-if="isShow" :editor="editor" />
           </b-col>
         </b-row>
       </b-container>
-
-      <div class="icons">
-        <b-button :id="`emojis_${commentId}`" class="mt-2" variant="outline" size="sm">
-          <BIconEmojiSunglasses></BIconEmojiSunglasses>
-        </b-button>
-        <b-button v-if="parent" @click="dismiss" class="mt-2" variant="outline" size="sm">
-          <BIconXCircle></BIconXCircle>
-        </b-button>
-      </div>
     </div>
 
     <b-alert v-model="error" variant="danger" dismissible>
@@ -141,8 +140,8 @@ export default {
           this.html = getHTML();
         },
       }),
-      json: 'Update content to see changes',
-      html: 'Update content to see changes',
+      json: '',
+      html: '',
     };
   },
   methods: {
@@ -176,7 +175,7 @@ export default {
     },
     async addEmoji(idx) {
       const editorData = `${this.html}<p>${this.emojiArray[idx]}</p>`;
-      this.editor.setContent(editorData);
+      this.editor.setContent(editorData, true);
     },
   },
 };

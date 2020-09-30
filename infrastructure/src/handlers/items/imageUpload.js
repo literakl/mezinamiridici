@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
   },
   filename(req, file, cb) {
     const sanitizedFilename = sanitize(file.originalname);
-    cb(null, `${path.basename(sanitizedFilename)}-${Date.now()}${path.extname(sanitizedFilename)}`);
+    cb(null, `${path.basename(sanitizedFilename).split('.')[0]}-${Date.now()}${path.extname(sanitizedFilename)}`);
   },
 });
 
