@@ -7,20 +7,17 @@ const { CronJob } = require('cron');
 const cheerio = require('cheerio');
 const cheerioAdv = require('cheerio-advanced-selectors');
 const FormData = require('form-data');
-const edjsHTML = require('editorjs-html');
 const Handlebars = require('handlebars');
 const path = require('path');
 const fs = require('fs');
 
 const { jobLogger } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
-const api = require('../utils/api.js');
 const { PATH_SEPARATOR } = require('../utils/path_env');
 
 dayjs.extend(customParseFormat);
 dayjs.extend(weekOfYear);
 
-const edjsParser = edjsHTML(api.edjsHtmlCustomParser());
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
 const { ACCIDENTS_STATS_URL, ACCIDENTS_STATS_SCHEDULE, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
@@ -311,33 +308,29 @@ function add(total, summary) {
   summary.reason.other += total.reason.other;
 }
 
-async function saveArticle(dbClient, data, date) {
+async function saveArticle(dbClient, context, date) {
   let filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, 'stats_article.json');
   const config = JSON.parse(fs.readFileSync(filepath, 'utf8'));
 
   const formattedDate = `${date.date()}. ${MONTHS[date.month()]} ${date.year()}`;
   const title = config.title + formattedDate;
-  data.title = title;
-  data.timestamp = new Date().getTime();
-  data.lastYearValue = date.year() - 1;
-  data.thisYearValue = date.year();
+  context.title = title;
+  context.timestamp = new Date().getTime();
+  context.lastYearValue = date.year() - 1;
+  context.thisYearValue = date.year();
 
   filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, config.json_template);
   const template = fs.readFileSync(filepath, 'utf8');
   const compiled = Handlebars.compile(template);
-  const rendered = compiled(data);
-  const source = JSON.parse(rendered);
+  const rendered = compiled(context);
 
   const picture = `${STREAM_PICTURES_PATH}/${config.picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
-  await insertItem(dbClient, title, source, blogAuthor, picture, config.tags);
+  const article = await insertItem(dbClient, title, rendered, blogAuthor, picture, config.tags);
+  console.log(article);
 }
 
-function insertItem(dbClient, title, source, author, picture, tags) {
-  let content = '';
-  edjsParser.parse(source).forEach((item) => {
-    content += item;
-  });
+function insertItem(dbClient, title, content, author, picture, tags) {
   const slug = slugify(title, { lower: true, strict: true });
   const blog = {
     type: 'blog',
@@ -354,7 +347,6 @@ function insertItem(dbClient, title, source, author, picture, tags) {
     },
     data: {
       content,
-      source,
     },
     comments: {
       count: 0,
@@ -387,7 +379,7 @@ exports.doRun = doRun;
 
 async function x() {
   const dbClient = await mongo.connectToDatabase();
-  const date = dayjs('01.02.2020', DATE_FORMAT);
+  const date = dayjs('02.02.2020', DATE_FORMAT);
   const stats = await getArticleData(dbClient, date);
   await saveArticle(dbClient, stats, date);
   mongo.close();

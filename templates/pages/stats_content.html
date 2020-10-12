@@ -1,0 +1,118 @@
+<table>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th colspan="3">Následky</th>
+      <th colspan="6">Příčina</th>
+    </tr>
+    <tr>
+      <th>Oblast</th>
+      <th>Nehod</th>
+      <th>Úmrtí</th>
+      <th>Těžkých zranění</th>
+      <th>Lehkých zranění</th>
+      <th>Rychlost</th>
+      <th>Přednost v jízdě</th>
+      <th>Předjíždění</th>
+      <th>Návykové látky</th>
+      <th>Nesprávná jízda</th>
+      <th>Jiný důvod</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{#each day.regions}}
+    <tr>
+      <td>{{ this.region}}</td>
+      <td>{{ this.count}}</td>
+      <td>{{ this.impact.deaths }}</td>
+      <td>{{ this.impact.severely }}</td>
+      <td>{{ this.impact.slightly }}</td>
+      <td>{{ this.reason.speed }}</td>
+      <td>{{ this.reason.giveway }}</td>
+      <td>{{ this.reason.passing }}</td>
+      <td>{{ this.reason.drunk }}</td>
+      <td>{{ this.reason.mistake }}</td>
+      <td>{{ this.reason.other }}</td>
+    </tr>
+  {{/each}}
+    <tr>
+      <td>Celkem</td>
+      <td>{{ day.total.count}}</td>
+      <td>{{ day.total.impact.deaths }}</td>
+      <td>{{ day.total.impact.severely }}</td>
+      <td>{{ day.total.impact.slightly }}</td>
+      <td>{{ day.total.reason.speed }}</td>
+      <td>{{ day.total.reason.giveway }}</td>
+      <td>{{ day.total.reason.passing }}</td>
+      <td>{{ day.total.reason.drunk }}</td>
+      <td>{{ day.total.reason.mistake }}</td>
+      <td>{{ day.total.reason.other }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Srovnání s loňským rokem</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th colspan="2">Počet nehod</th>
+      <th colspan="2">Úmrtí</th>
+      <th colspan="2">Těžkých zranění</th>
+      <th colspan="2">Lehkých zranění</th>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>{{ lastYearValue }}</th>
+      <th>{{ thisYearValue }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tento den</td>
+      <td>{{ lastYear.day.count }}</td>
+      <td>{{ thisYear.day.count }}</td>
+      <td>{{ lastYear.day.impact.deaths }}</td>
+      <td>{{ thisYear.day.impact.deaths }}</td>
+      <td>{{ lastYear.day.impact.severely }}</td>
+      <td>{{ thisYear.day.impact.severely }}</td>
+      <td>{{ lastYear.day.impact.slightly }}</td>
+      <td>{{ thisYear.day.impact.slightly }}</td>
+    </tr>
+    <tr>
+      <td>Tento týden</td>
+      <td>{{ lastYear.week.count }}</td>
+      <td>{{ thisYear.week.count }}</td>
+      <td>{{ lastYear.week.impact.deaths }}</td>
+      <td>{{ thisYear.week.impact.deaths }}</td>
+      <td>{{ lastYear.week.impact.severely }}</td>
+      <td>{{ thisYear.week.impact.severely }}</td>
+      <td>{{ lastYear.week.impact.slightly }}</td>
+      <td>{{ thisYear.week.impact.slightly }}</td>
+    </tr>
+    <tr>
+      <td>Tento měsíc</td>
+      <td>{{ lastYear.month.count }}</td>
+      <td>{{ thisYear.month.count }}</td>
+      <td>{{ lastYear.month.impact.deaths }}</td>
+      <td>{{ thisYear.month.impact.deaths }}</td>
+      <td>{{ lastYear.month.impact.severely }}</td>
+      <td>{{ thisYear.month.impact.severely }}</td>
+      <td>{{ lastYear.month.impact.slightly }}</td>
+      <td>{{ thisYear.month.impact.slightly }}</td>
+    </tr>
+    <tr>
+      <td>Tento rok</td>
+      <td>{{ lastYear.year.count }}</td>
+      <td>{{ thisYear.year.count }}</td>
+      <td>{{ lastYear.year.impact.deaths }}</td>
+      <td>{{ thisYear.year.impact.deaths }}</td>
+      <td>{{ lastYear.year.impact.severely }}</td>
+      <td>{{ thisYear.year.impact.severely }}</td>
+      <td>{{ lastYear.year.impact.slightly }}</td>
+      <td>{{ thisYear.year.impact.slightly }}</td>
+    </tr>
+  </tbody>
+</table>
