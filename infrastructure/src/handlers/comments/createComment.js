@@ -70,7 +70,7 @@ module.exports = (app) => {
 };
 
 function createComment(itemId, source, user, parentId, date) {
-  let text = sanitizeHtml(source, api.sanitizeConfigure());
+  const text = sanitizeHtml(source, api.sanitizeConfigure());
   const comment = {
     _id: mongo.generateTimeId(),
     itemId,

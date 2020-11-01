@@ -401,35 +401,11 @@ test('Comments API', async (done) => {
   expect(comments.data.comment.replies[7].text).toBe(comment4h.data.comment.text);
   expect(comments.data.comment.replies[8].text).toBe(comment4i.data.comment.text);
 
-  commentBody.source = {
-    time: 1599551274438,
-    version: '2.18.0',
-    blocks: [
-      {
-        type: 'header',
-        data: {
-          text: 'Comment 7',
-          level: 3,
-        },
-      },
-      {
-        type: 'paragraph',
-        data: {
-          text: 'New paragraph',
-        },
-      },
-      {
-        type: 'paragraph',
-        data: {
-          text: 'Third paragraph',
-        },
-      },
-    ],
-  };
+  commentBody.source = '<h3 onmouseover=alert(\'Wufff!\')> Comment 7 </h3><p> New paragraph </p><p> Third paragraph </p><SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT><IMG SRC=javAScript:alert(&quot;XSS&quot;)>';
   commentBody.date = dayjs(poll.data.info.date).add(70, 'minute').format(DATE_FORMAT);
   const comment7 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(comment7.success).toBeTruthy();
-  expect(comment7.data.comment.text).toBe('<h3> Comment 7 </h3><p> New paragraph </p><p> Third paragraph </p>');
+  expect(comment7.data.comment.text).toBe('<h3> Comment 7 </h3><p> New paragraph </p><p> Third paragraph </p><img />');
 
   let counter = await getActivityCounter(dbClient, Leos._id, 'comments');
   expect(counter).toBe(3);
