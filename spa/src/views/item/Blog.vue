@@ -2,14 +2,21 @@
   <div class="pt-3 w-75 m-auto pb-5">
     <h1>{{title}}</h1>
     <div v-html="blogHtml"></div>
+    <ShareLink :item="blog" />
+    <Comments v-if="blog.type==='content'" :itemId="blog._id" />
   </div>
 </template>
 
 <script>
-
+import Comments from '@/components/organisms/Comments.vue';
+import ShareLink from '@/components/molecules/ShareLink.vue';
 
 export default {
   name: 'blog',
+  components: {
+    Comments,
+    ShareLink,
+  },
   props: {
     slug: String,
   },

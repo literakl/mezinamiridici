@@ -3,8 +3,8 @@
     <ContentLoading v-if="! content" type="cms" />
     <div v-if="content">
       <div v-html="content.data.content"></div>
-      <Comments v-if="content.type==='content'" :itemId="content._id" />
       <ShareLink :item="content" />
+      <Comments v-if="content.type==='content'" :itemId="content._id" />
     </div>
   </div>
 </template>
@@ -29,6 +29,13 @@ export default {
       const cms = this.$store.getters.CONTENT;
       if (cms) this.changeTitle(cms.info.caption);
       return cms;
+    },
+    title() {
+      let txt = '';
+      if (this.content !== null) {
+        txt = this.content.info.caption;
+      }
+      return txt;
     },
   },
   created() {
