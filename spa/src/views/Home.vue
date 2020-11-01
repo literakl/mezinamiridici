@@ -27,12 +27,12 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('INIT_STREAM');
+    this.$store.dispatch('GET_LATEST_POLL');
     this.$root.$once('sign-out', this.logoutEventHandler);
   },
   methods: {
     logoutEventHandler() {
-      this.$store.dispatch('INIT_STREAM');
+      this.$store.dispatch('GET_LATEST_POLL');
     },
   },
 };

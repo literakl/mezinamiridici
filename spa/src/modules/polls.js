@@ -2,16 +2,13 @@ import Vue from 'vue';
 import { deleteApi, get, patch, post } from '@/utils/api';
 
 export default {
-
   state: () => ({
     poll: null,
     latestPoll: null,
-    stream: null,
   }),
   getters: {
     POLL: state => state.poll,
     LATEST_POLL: state => state.latestPoll,
-    STREAM: state => state.stream,
   },
   mutations: {
     SET_POLL: (state, payload) => {
@@ -19,9 +16,6 @@ export default {
     },
     SET_LATEST_POLL: (state, payload) => {
       state.latestPoll = payload;
-    },
-    SET_STREAM: (state, payload) => {
-      state.stream = payload;
     },
   },
   actions: {
@@ -76,20 +70,12 @@ export default {
       Vue.$log.debug(`GET_POLL_VOTES ${payload.id} ${payload.query}`);
       return get('BFF', `/polls/${payload.id}/votes?${payload.query}`);
     },
-    INIT_STREAM: async (context) => {
-      Vue.$log.debug('INIT_STREAM');
-      const pollRequest = get('BFF', '/polls/last', context);
-      const streamRequest = get('BFF', '/polls/?obd=date', context);
-      Promise.all([pollRequest, streamRequest])
-        .then(([pollData, streamData]) => {
-          const poll = pollData.data.data;
-          context.commit('SET_LATEST_POLL', poll);
-          context.commit('SET_POLL', poll);
-
-          let items = streamData.data.data;
-          items = items.filter(item => item._id !== poll._id);
-          context.commit('SET_STREAM', items);
-        });
+    GET_LATEST_POLL: async (context) => {
+      Vue.$log.debug('GET_LATEST_POLL');
+      const pollData = await get('BFF', '/polls/last', context);
+      const poll = pollData.data.data;
+      context.commit('SET_LATEST_POLL', poll);
+      context.commit('SET_POLL', poll);
     },
   },
 };
