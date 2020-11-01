@@ -291,6 +291,7 @@
       "type-label": "Type",
       "content-label": "Content",
       "help": "Help",
+      "article": "Article",
       "content": "Content",
       "edit-cms": "Edit CMS",
       "delete-cms": "Delete CMS",

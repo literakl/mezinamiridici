@@ -1,6 +1,7 @@
 const axios = require('axios').default;
 const slugify = require('slugify');
 const dayjs = require('dayjs');
+const dayOfYear = require('dayjs/plugin/dayOfYear');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 const weekOfYear = require('dayjs/plugin/weekOfYear');
 const { CronJob } = require('cron');
@@ -17,6 +18,7 @@ const { PATH_SEPARATOR } = require('../utils/path_env');
 
 dayjs.extend(customParseFormat);
 dayjs.extend(weekOfYear);
+dayjs.extend(dayOfYear);
 
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
@@ -130,7 +132,7 @@ async function doJob() {
 }
 
 function exitWithHelp() {
-  console.error('Usage: node jobs/parseAccidents.js schedule createArticle since until\n'
+  console.error('Usage: node jobs/cli_ParseAccidents.js schedule createArticle since until\n'
     + 'schedule: boolean, if job should be scheduled. Other parameters are ignored.\n'
     + 'createArticle: boolean, if article shall be created\n'
     + 'since: start date in DD.MM.YYYY format\n'
@@ -318,22 +320,25 @@ async function saveArticle(dbClient, context, date) {
   context.timestamp = new Date().getTime();
   context.lastYearValue = date.year() - 1;
   context.thisYearValue = date.year();
+  context.REGIONS = REGIONS;
 
   filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, config.json_template);
   const template = fs.readFileSync(filepath, 'utf8');
   const compiled = Handlebars.compile(template);
   const rendered = compiled(context);
 
-  const picture = `${STREAM_PICTURES_PATH}/${config.picture}`;
+  const picture = config.pictures[date.dayOfYear() % config.pictures.length];
+  const pictureWithPath = `${STREAM_PICTURES_PATH}/${picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
-  const article = await insertItem(dbClient, title, rendered, blogAuthor, picture, config.tags);
-  console.log(article);
+  const article = await insertItem(dbClient, title, rendered, blogAuthor, pictureWithPath, config.tags);
+  console.log(article.result);
 }
 
 function insertItem(dbClient, title, content, author, picture, tags) {
   const slug = slugify(title, { lower: true, strict: true });
   const blog = {
-    type: 'blog',
+    _id: mongo.generateTimeId(),
+    type: 'content',
     info: {
       author: {
         nickname: author.nickname,
@@ -377,12 +382,14 @@ function lookupRegion(vusc) {
 
 exports.doRun = doRun;
 
+/*
 async function x() {
   const dbClient = await mongo.connectToDatabase();
-  const date = dayjs('02.02.2020', DATE_FORMAT);
+  const date = dayjs('12.02.2020', DATE_FORMAT);
   const stats = await getArticleData(dbClient, date);
   await saveArticle(dbClient, stats, date);
   mongo.close();
 }
 
 x().then(() => { console.log('finished'); });
+*/

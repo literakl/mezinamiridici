@@ -1,30 +1,51 @@
-<table>
+<h1>{{ title }}</h1>
+
+<p>
+  Přinášíme vám aktuální statistiky nehod za předchozí den a srovnání se stejným období letoška a loňska.
+  Prosíme, jezděte opatrně, neriskujte a počítejte s chybami ostatních řidičů. Ať se vám tato statistika vyhýbá!
+</p>
+
+<table class="table table-hover table-bordered text-center">
   <thead>
     <tr>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th colspan="3">Následky</th>
-      <th colspan="6">Příčina</th>
-    </tr>
-    <tr>
-      <th>Oblast</th>
-      <th>Nehod</th>
-      <th>Úmrtí</th>
-      <th>Těžkých zranění</th>
-      <th>Lehkých zranění</th>
-      <th>Rychlost</th>
-      <th>Přednost v jízdě</th>
-      <th>Předjíždění</th>
-      <th>Návykové látky</th>
-      <th>Nesprávná jízda</th>
-      <th>Jiný důvod</th>
+      <th scope="col">Kraj</th>
+      <th scope="col">
+        <img src="/images/icons/crash.png" width="48" height="48" title="Nehod">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/tombstone.png" width="48" height="48" title="Úmrtí">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/ambulance.png" width="48" height="48" title="Těžkých zranění">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/minor_injuries.png" width="48" height="48" title="Lehkých zranění">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/reason_speed.png" width="48" height="48" title="Rychlost">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/reason_give_way.png" width="48" height="48" title="Přednost v jízdě">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/reason_passing.png" width="48" height="48" title="Předjíždění">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/reason_drunk.png" width="48" height="48" title="Návykové látky">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/reason_mistake.png" width="48" height="48" title="Nesprávná jízda">
+      </th>
+      <th scope="col">
+        <img src="/images/icons/reason_other.png" width="48" height="48" title="Jiný důvod">
+      </th>
     </tr>
   </thead>
   <tbody>
   {{#each day.regions}}
     <tr>
-      <td>{{ this.region}}</td>
-      <td>{{ this.count}}</td>
+      <td>{{ lookup ../REGIONS this.region }}</td>
+      <td>{{ this.count }}</td>
       <td>{{ this.impact.deaths }}</td>
       <td>{{ this.impact.severely }}</td>
       <td>{{ this.impact.slightly }}</td>
@@ -38,7 +59,7 @@
   {{/each}}
     <tr>
       <td>Celkem</td>
-      <td>{{ day.total.count}}</td>
+      <td>{{ day.total.count }}</td>
       <td>{{ day.total.impact.deaths }}</td>
       <td>{{ day.total.impact.severely }}</td>
       <td>{{ day.total.impact.slightly }}</td>
@@ -52,21 +73,35 @@
   </tbody>
 </table>
 
-<h3>Srovnání s loňským rokem</h3>
+<h2>Srovnání s loňským rokem</h2>
 
-<table>
+<table class="table table-hover table-sm table-bordered text-center">
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <th colspan="2">Počet nehod</th>
-      <th colspan="2">Úmrtí</th>
-      <th colspan="2">Těžkých zranění</th>
-      <th colspan="2">Lehkých zranění</th>
+      <th colspan="2" scope="col">
+        <img src="/images/icons/crash.png" width="48" height="48" alt="Počet nehod">
+      </th>
+      <th colspan="2" scope="col">
+        <img src="/images/icons/tombstone.png" width="48" height="48" alt="Počet úmrtí">
+      </th>
+      <th colspan="2" scope="col">
+        <img src="/images/icons/ambulance.png" width="48" height="48" alt="Počet těžkých zranění">
+      </th>
+      <th colspan="2" scope="col">
+        <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="Počet lehkých zranění">
+      </th>
     </tr>
     <tr>
       <th>&nbsp;</th>
-      <th>{{ lastYearValue }}</th>
-      <th>{{ thisYearValue }}</th>
+      <th scope="col">{{ lastYearValue }}</th>
+      <th scope="col">{{ thisYearValue }}</th>
+      <th scope="col">{{ lastYearValue }}</th>
+      <th scope="col">{{ thisYearValue }}</th>
+      <th scope="col">{{ lastYearValue }}</th>
+      <th scope="col">{{ thisYearValue }}</th>
+      <th scope="col">{{ lastYearValue }}</th>
+      <th scope="col">{{ thisYearValue }}</th>
     </tr>
   </thead>
   <tbody>
@@ -80,17 +115,6 @@
       <td>{{ thisYear.day.impact.severely }}</td>
       <td>{{ lastYear.day.impact.slightly }}</td>
       <td>{{ thisYear.day.impact.slightly }}</td>
-    </tr>
-    <tr>
-      <td>Tento týden</td>
-      <td>{{ lastYear.week.count }}</td>
-      <td>{{ thisYear.week.count }}</td>
-      <td>{{ lastYear.week.impact.deaths }}</td>
-      <td>{{ thisYear.week.impact.deaths }}</td>
-      <td>{{ lastYear.week.impact.severely }}</td>
-      <td>{{ thisYear.week.impact.severely }}</td>
-      <td>{{ lastYear.week.impact.slightly }}</td>
-      <td>{{ thisYear.week.impact.slightly }}</td>
     </tr>
     <tr>
       <td>Tento měsíc</td>
@@ -115,4 +139,59 @@
       <td>{{ thisYear.year.impact.slightly }}</td>
     </tr>
   </tbody>
+</table>
+
+<h3>Legenda</h3>
+
+<table class="table table-bordered text-center">
+  <tr>
+    <td>
+      <img src="/images/icons/crash.png" width="48" height="48" alt="">
+    </td>
+    <td>Počet nehod</td>
+    <td>
+      <img src="/images/icons/tombstone.png" width="48" height="48" alt="">
+    </td>
+    <td>Počet úmrtí</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="/images/icons/ambulance.png" width="48" height="48" alt="">
+    </td>
+    <td>Počet těžkých zranění</td>
+    <td>
+      <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="">
+    </td>
+    <td>Počet lehkých zranění</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="/images/icons/reason_speed.png" width="48" height="48" alt="">
+    </td>
+    <td>Nepřiměřená rychlost</td>
+    <td>
+      <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="">
+    </td>
+    <td>Nedání přednosti v jízdě</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="/images/icons/reason_passing.png" width="48" height="48" alt="">
+    </td>
+    <td>Nesprávné předjíždění</td>
+    <td>
+      <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="">
+    </td>
+    <td>Pod vlivem návykových látek</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="">
+    </td>
+    <td>Nesprávný způsob jízdy</td>
+    <td>
+      <img src="/images/icons/reason_other.png" width="48" height="48" alt="">
+    </td>
+    <td>Jiná příčina</td>
+  </tr>
 </table>
