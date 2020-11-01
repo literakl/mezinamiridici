@@ -33,6 +33,7 @@ function getItems(dbClient, start, num, tag) {
 
   return dbClient.db().collection('items')
     .find(query)
+    .project({ type: 1, info: 1, comments: 1 })
     .sort({ 'info.date': -1 })
     .skip(start)
     .limit(num)
