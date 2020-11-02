@@ -2,9 +2,7 @@ import Vue from 'vue';
 import jwtDecode from 'jwt-decode';
 import { get, patch, post } from '@/utils/api';
 
-
 export default {
-
   state: () => ({
     authorized: false,
     userToken: null,
@@ -59,8 +57,7 @@ export default {
       const body = {
         email: payload.email,
       };
-      const result = await post('API', '/forgotPassword', body);
-      return result;
+      return post('API', '/forgotPassword', body);
     },
     RESET_PASSWORD: (context, payload) => {
       const body = {
@@ -116,16 +113,6 @@ export default {
       context.commit('SET_LATEST_POLL', null);
       context.commit('SET_POLL', null);
     },
-    GET_DECODED_JWT: () => {
-      const jwt = localStorage.getItem('jwt');
-      if (!jwt) return;
-      const jwtData = jwtDecode(jwt);
-      // eslint-disable-next-line consistent-return
-      return {
-        decoded: jwtData,
-        encoded: { token: jwt },
-      };
-    },
     LOAD_USER: async (context) => {
       let jwt = localStorage.getItem('jwt');
       let clean = false;
@@ -167,8 +154,7 @@ export default {
         dataProcessing: payload.dataProcessing,
         emails: payload.marketing,
       };
-      const result = await post('API', '/users', body);
-      return result;
+      return post('API', '/users', body);
     },
     UPDATE_USER_PROFILE: (context, payload) => {
       const body = {
@@ -188,15 +174,13 @@ export default {
       const body = {
         email: payload.email,
       };
-      const response = await post('API', '/check/email', body);
-      return response;
+      return post('API', '/check/email', body);
     },
     VERIFY_NICKNAME: async (context, payload) => {
       const body = {
         nickname: payload.nickname,
       };
-      const response = await post('API', '/check/nickname', body);
-      return response;
+      return post('API', '/check/nickname', body);
     },
     FETCH_USER_ACTIVITY: async (context) => {
       Vue.$log.debug('FETCH_USER_ACTIVITY');
