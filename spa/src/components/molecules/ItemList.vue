@@ -58,36 +58,38 @@ export default {
     },
   },
   methods: {
-    async loadItems(groupKey, num) {
-      const { tag } = this;
-      const start = this.start || 0;
-
-      let res = await this.$store.dispatch('GET_ITEM_STREAM', { start, num, tag });
-      if (res.length === 0) {
-        this.$refs.ig.endLoading();
+    async onAppend({ groupKey, startLoading }) {
+      this.$log.debug(`onAppend group key = ${groupKey}`);
+      const { list } = this;
+      if (this.isEnded) return;
+      const items = await this.loadItems();
+      startLoading();
+      this.list = list.concat(items);
+    },
+    async loadItems() {
+      const start = this.start || 0, size = parseFloat(this.pageSize), { tag } = this;
+      this.$log.debug(`loadItems start = ${start}, size = ${size}`);
+      let res = await this.$store.dispatch('GET_ITEM_STREAM', { start, size, tag });
+      if (res.length === 0) { // todo or smaller than requested
+        this.$log.debug('loadItems no data');
         this.isEnded = true;
+        this.$refs.ig.endLoading();
+        return res;
       }
       if (this.exceptItem) {
         res = res.filter(item => item._id !== this.exceptItem._id);
       }
-      this.start = start + num;
+      this.start = start + res.length;
       return res;
     },
-    async onAppend({ groupKey, startLoading }) {
-      const { list } = this;
-      if (this.isEnded) return;
-
-      const items = await this.loadItems(parseFloat(groupKey || 0) + 1, this.pageSize);
-      startLoading();
-      this.list = list.concat(items);
-    },
     onLayoutComplete({ isLayout, endLoading }) {
+      this.$log.debug(`onLayoutComplete isLayout = ${isLayout}`);
       if (!isLayout) {
         endLoading();
       }
     },
     onImageError({ totalIndex }) {
-      this.list.splice(totalIndex, 1);
+      this.$log.warn(`Failed to load picture ${this.list[totalIndex].info.picture}`);
     },
   },
 };

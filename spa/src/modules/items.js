@@ -8,7 +8,6 @@ export default {
     itemsByTag: null,
     blog: null,
     itemPictures: [],
-    itemStream: [],
     content: null,
   }),
   getters: {
@@ -17,7 +16,6 @@ export default {
     ITEMS_BY_TAG: state => state.itemsByTag,
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
-    ITEM_STREAM: state => state.itemStream,
     CONTENT: state => state.content,
   },
   mutations: {
@@ -35,9 +33,6 @@ export default {
     },
     SET_ITEM_PICTURES: (state, payload) => {
       state.itemPictures = payload;
-    },
-    APPEND_STREAM: (state, payload) => {
-      state.itemStream.push(...payload);
     },
     SET_CONTENT: (state, payload) => {
       state.content = payload;
@@ -134,10 +129,13 @@ export default {
       return response.data;
     },
     GET_ITEM_STREAM: async (context, payload) => {
-      Vue.$log.debug('GET_ITEM_STREAM');
-      const { start, num, tag } = payload;
-      const response = await get('API', `/item-stream?start=${start}&num=${num}&tag=${tag}`, context);
-      // context.commit('APPEND_STREAM', response.data.data);
+      Vue.$log.debug(`GET_ITEM_STREAM ${JSON.stringify(payload)}`);
+      const { start, size, tag } = payload;
+      let url = `/item-stream?start=${start}&ps=${size}`;
+      if (tag) {
+        url = `${url}&tag=${tag}`;
+      }
+      const response = await get('API', url, context);
       return response.data.data;
     },
   },
