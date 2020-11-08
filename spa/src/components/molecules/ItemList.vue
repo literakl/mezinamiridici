@@ -7,7 +7,7 @@
     @layout-complete="onLayoutComplete"
     @image-error="onImageError"
   >
-    <div class="item" v-for="(item) in list" :key="item.key">
+    <div class="item" v-for="item in list" :key="item._id" :groupKey="item.groupKey">
       <ViewItem :item="item"/>
     </div>
   </GridLayout>
@@ -29,15 +29,15 @@ export default {
   },
   data() {
     return {
-      index: 0,
+      index: 0, // TODO remove once fixed
       start: 0,
-      loading: false,
-      list: [],
+      pageSize: 3,
       isEnded: false,
+      list: [],
       options: {
-        isOverflowScroll: false,
-        useFit: true,
-        useRecycle: true,
+        // isOverflowScroll: false,
+        // useFit: true,
+        // useRecycle: true,
         horizontal: false,
         align: 'center',
         transitionDuration: 0.2,
@@ -46,7 +46,6 @@ export default {
         margin: 15,
         align: 'center',
       },
-      pageSize: 3,
     };
   },
   watch: {
@@ -57,24 +56,30 @@ export default {
     },
   },
   methods: {
-    async onAppend({ startLoading }) {
+    async onAppend({ groupKey, startLoading }) {
       const marker = this.index, start = this.start || 0, { tag } = this;
+      const newGroupKey = parseFloat(groupKey || 0) + 1;
       this.index += 1;
-      this.start = start + this.pageSize;
       this.$log.debug(`loadItems ${marker} Start = ${start}`);
       if (this.isEnded) {
         this.$log.debug(`loadItems ${marker} End detected`);
         return;
       }
+      this.start = start + this.pageSize;
+
       let items = await this.$store.dispatch('GET_ITEM_STREAM', { start, size: this.pageSize, tag });
       if (items.length === 0 || items.length < this.pageSize) {
         this.$log.debug(`loadItems ${marker} End of data`);
         this.isEnded = true;
         this.$refs.ig.endLoading();
+        return;
       }
+
+      // this.start = start + items.length;
       if (this.exceptItem) {
         items = items.filter(item => item._id !== this.exceptItem._id);
       }
+      items.forEach((item) => { item.groupKey = newGroupKey; });
       this.$log.debug(`loadItems ${marker} Data ready, call startLoading`);
       startLoading();
       this.list = this.list.concat(items);
