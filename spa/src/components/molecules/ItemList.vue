@@ -7,13 +7,11 @@
     @layout-complete="onLayoutComplete"
     @image-error="onImageError"
   >
-    <div slot="loading">Loading...</div>
     <div class="item" v-for="(item) in list" :key="item.key">
       <ViewItem :item="item"/>
     </div>
   </GridLayout>
 </template>
-
 
 <script>
 import { GridLayout } from '@egjs/vue-infinitegrid';
@@ -31,6 +29,7 @@ export default {
   },
   data() {
     return {
+      index: 0,
       start: 0,
       loading: false,
       list: [],
@@ -58,33 +57,33 @@ export default {
     },
   },
   methods: {
-    async onAppend({ groupKey, startLoading }) {
-      this.$log.debug(`onAppend group key = ${groupKey}`);
-      const { list } = this;
-      if (this.isEnded) return;
-      const items = await this.loadItems();
-      startLoading();
-      this.list = list.concat(items);
-    },
-    async loadItems() {
-      const start = this.start || 0, size = parseFloat(this.pageSize), { tag } = this;
-      this.$log.debug(`loadItems start = ${start}, size = ${size}`);
-      let res = await this.$store.dispatch('GET_ITEM_STREAM', { start, size, tag });
-      if (res.length === 0) { // todo or smaller than requested
-        this.$log.debug('loadItems no data');
+    async onAppend({ startLoading }) {
+      const marker = this.index, start = this.start || 0, { tag } = this;
+      this.index += 1;
+      this.start = start + this.pageSize;
+      this.$log.debug(`loadItems ${marker} Start = ${start}`);
+      if (this.isEnded) {
+        this.$log.debug(`loadItems ${marker} End detected`);
+        return;
+      }
+      let items = await this.$store.dispatch('GET_ITEM_STREAM', { start, size: this.pageSize, tag });
+      if (items.length === 0 || items.length < this.pageSize) {
+        this.$log.debug(`loadItems ${marker} End of data`);
         this.isEnded = true;
         this.$refs.ig.endLoading();
-        return res;
       }
       if (this.exceptItem) {
-        res = res.filter(item => item._id !== this.exceptItem._id);
+        items = items.filter(item => item._id !== this.exceptItem._id);
       }
-      this.start = start + res.length;
-      return res;
+      this.$log.debug(`loadItems ${marker} Data ready, call startLoading`);
+      startLoading();
+      this.list = this.list.concat(items);
+      this.$log.debug(`loadItems ${marker} Finished`);
     },
     onLayoutComplete({ isLayout, endLoading }) {
       this.$log.debug(`onLayoutComplete isLayout = ${isLayout}`);
       if (!isLayout) {
+        this.$log.debug('onLayoutComplete Call endLoading');
         endLoading();
       }
     },
