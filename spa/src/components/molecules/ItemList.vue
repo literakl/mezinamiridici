@@ -29,7 +29,6 @@ export default {
   },
   data() {
     return {
-      index: 0, // TODO remove once fixed
       start: 0,
       pageSize: 3,
       isEnded: false,
@@ -38,6 +37,7 @@ export default {
         // isOverflowScroll: false,
         // useFit: true,
         // useRecycle: true,
+        isConstantSize: true,
         horizontal: false,
         align: 'center',
         transitionDuration: 0.2,
@@ -56,20 +56,20 @@ export default {
     },
   },
   methods: {
-    async onAppend({ groupKey, startLoading }) {
-      const marker = this.index, start = this.start || 0, { tag } = this;
+    async onAppend({ groupKey, startLoading, currentTarget }) {
+      if (currentTarget.isProcessing()) {
+        return;
+      }
+      const start = this.start || 0, { tag } = this;
       const newGroupKey = parseFloat(groupKey || 0) + 1;
       this.index += 1;
-      this.$log.debug(`loadItems ${marker} Start = ${start}`);
       if (this.isEnded) {
-        this.$log.debug(`loadItems ${marker} End detected`);
         return;
       }
       this.start = start + this.pageSize;
 
       let items = await this.$store.dispatch('GET_ITEM_STREAM', { start, size: this.pageSize, tag });
       if (items.length === 0 || items.length < this.pageSize) {
-        this.$log.debug(`loadItems ${marker} End of data`);
         this.isEnded = true;
         this.$refs.ig.endLoading();
         return;
@@ -80,15 +80,11 @@ export default {
         items = items.filter(item => item._id !== this.exceptItem._id);
       }
       items.forEach((item) => { item.groupKey = newGroupKey; });
-      this.$log.debug(`loadItems ${marker} Data ready, call startLoading`);
       startLoading();
       this.list = this.list.concat(items);
-      this.$log.debug(`loadItems ${marker} Finished`);
     },
     onLayoutComplete({ isLayout, endLoading }) {
-      this.$log.debug(`onLayoutComplete isLayout = ${isLayout}`);
       if (!isLayout) {
-        this.$log.debug('onLayoutComplete Call endLoading');
         endLoading();
       }
     },
