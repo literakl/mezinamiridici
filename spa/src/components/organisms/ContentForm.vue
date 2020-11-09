@@ -13,7 +13,7 @@
             <Radio
               class="pl-3"
               v-model="form.type"
-              :label="$t('cms.edit.content')"
+              :label="$t('cms.edit.article')"
               name="type"
               identifier="content"/>
           </b-row>

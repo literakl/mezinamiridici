@@ -20,6 +20,9 @@ module.exports = (app) => {
     if (!caption || !slug || !content) {
       return api.sendMissingParam(res, 'content');
     }
+    if (type !== 'article' && type !== 'help') {
+      return api.sendInvalidParam(res, 'type', type);
+    }
     const publishDate = api.parseDate(date, 'YYYY-MM-DD');
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);

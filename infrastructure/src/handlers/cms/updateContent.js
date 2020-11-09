@@ -25,8 +25,8 @@ module.exports = (app) => {
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);
     }
-    if (!type) {
-      return api.sendMissingParam(res, 'type');
+    if (type !== 'article' && type !== 'help') {
+      return api.sendInvalidParam(res, 'type', type);
     }
     if (!caption) {
       return api.sendMissingParam(res, 'caption');

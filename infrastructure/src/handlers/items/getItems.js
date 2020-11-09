@@ -28,7 +28,7 @@ module.exports = (app) => {
 };
 
 function getItems(dbClient, start, num, tag) {
-  const query = { type: { $ne: 'help' } };
+  const query = { 'info.published': true, type: { $ne: 'help' } };
   if (tag) {
     query['info.tags'] = tag;
   }

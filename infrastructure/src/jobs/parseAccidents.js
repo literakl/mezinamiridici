@@ -338,12 +338,13 @@ function insertItem(dbClient, title, content, author, picture, tags) {
   const slug = slugify(title, { lower: true, strict: true });
   const blog = {
     _id: mongo.generateTimeId(),
-    type: 'content',
+    type: 'article',
     info: {
       author: {
         nickname: author.nickname,
         id: author.userId,
       },
+      published: true,
       caption: title,
       slug,
       date: new Date(),
