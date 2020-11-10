@@ -68,6 +68,7 @@ export default {
       }
       this.start = start + this.pageSize;
 
+      startLoading();
       let items = await this.$store.dispatch('GET_ITEM_STREAM', { start, size: this.pageSize, tag });
       if (items.length === 0 || items.length < this.pageSize) {
         this.isEnded = true;
@@ -80,7 +81,6 @@ export default {
         items = items.filter(item => item._id !== this.exceptItem._id);
       }
       items.forEach((item) => { item.groupKey = newGroupKey; });
-      startLoading();
       this.list = this.list.concat(items);
     },
     onLayoutComplete({ isLayout, endLoading }) {
