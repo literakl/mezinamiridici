@@ -22,11 +22,20 @@ export default {
     },
     chartData() {
       return [
-        [this.$t('poll.choices.neutral'), this.poll.neutral],
-        [this.$t('poll.choices.trivial'), this.poll.trivial],
-        [this.$t('poll.choices.dislike'), this.poll.dislike],
-        [this.$t('poll.choices.hate'), this.poll.hate],
+        [this.label('neutral', this.voted), this.poll.neutral],
+        [this.label('trivial', this.voted), this.poll.trivial],
+        [this.label('dislike', this.voted), this.poll.dislike],
+        [this.label('hate', this.voted), this.poll.hate],
       ];
+    },
+  },
+  methods: {
+    label(vote, voted) {
+      if (voted === vote) {
+        return `${this.$t('poll.your-vote')} ${this.$t(`poll.choices.${vote}`)}`;
+      } else {
+        return this.$t(`poll.choices.${vote}`);
+      }
     },
   },
 };

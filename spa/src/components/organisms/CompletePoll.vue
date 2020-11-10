@@ -5,10 +5,6 @@
     <div v-if="voted" class="pt-2 pb-2">
       <BarChart :votes="item.votes" v-bind:voted="voted"/>
       <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
-      <div>
-        {{ $t('poll.your-vote') }}
-        {{ $t('poll.choices.'+voted) }}
-      </div>
     </div>
 
     <div v-if="!voted" class="m-auto pt-3 pb-3">
