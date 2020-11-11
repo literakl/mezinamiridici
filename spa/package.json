@@ -21,7 +21,7 @@
     "bcrypt": "^5.0.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.16.0",
-    "chart.js": "^3.0.0-beta",
+    "chart.js": "^2.9.4",
     "core-js": "^2.6.11",
     "dayjs": "^1.8.31",
     "jwt-decode": "^2.2.0",

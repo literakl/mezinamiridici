@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { ModalPlugin } from 'bootstrap-vue';
 import log from 'loglevel';
 import Chartkick from 'vue-chartkick';
-import { Chart, LinearScale, CategoryScale, BarController, Rectangle } from 'chart.js';
+import Chart from 'chart.js';
 import {
   ValidationObserver,
   ValidationProvider,
@@ -25,8 +25,6 @@ import i18n from './i18n';
 // TODO is this neccessary? We import CSS in App.vue
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-
-Chart.register(LinearScale, CategoryScale, BarController, Rectangle);
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);

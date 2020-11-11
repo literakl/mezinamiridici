@@ -3,7 +3,7 @@
     <PollHeading :item="item"/>
 
     <div v-if="voted" class="pt-2 pb-2">
-      <BarChart :votes="item.votes" v-bind:voted="voted"/>
+      <VotesChart :votes="item.votes" v-bind:voted="voted"/>
       <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
     </div>
 
@@ -19,14 +19,14 @@
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import PollButtons from '@/components/molecules/PollButtons.vue';
-import BarChart from '@/components/molecules/BarChart.vue';
+import VotesChart from '@/components/molecules/VotesChart.vue';
 import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
 
 export default {
   name: 'CompletePoll',
   components: {
     ContentLoading,
-    BarChart,
+    VotesChart,
     PollButtons,
     PollHeading,
     PredefinedComparisons,
