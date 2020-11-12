@@ -65,7 +65,7 @@ export default {
       return this.item.type !== 'poll';
     },
     hasDiscussion() {
-      return this.item.type === 'poll' || this.item.type === 'blog' || this.item.type === 'content';
+      return this.item.type === 'poll' || this.item.type === 'blog' || this.item.type === 'article';
     },
   },
 };
