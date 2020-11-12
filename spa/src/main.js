@@ -13,8 +13,6 @@ import VueScrollTo from 'vue-scrollto';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueAuthenticate from 'vue-authenticate';
-// import VueCompositionApi from '@vue/composition-api';
-
 
 import App from './App.vue';
 import router from './router';
@@ -42,7 +40,6 @@ Vue.use(ModalPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);
-// Vue.use(VueCompositionApi);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',
   baseUrl: 'http://localhost:3000/api',
