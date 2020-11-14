@@ -76,7 +76,6 @@ export default {
         return;
       }
 
-      // this.start = start + items.length;
       if (this.exceptItem) {
         items = items.filter(item => item._id !== this.exceptItem._id);
       }
