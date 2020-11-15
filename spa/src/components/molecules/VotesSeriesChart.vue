@@ -1,6 +1,6 @@
 <template>
   <div>
-    <column-chart :data="chartData" :colors="colors" :suffix="suffix" height="200px"></column-chart>
+    <column-chart :data="chartData" :colors="['#007bffff', '#28a745ff']" :suffix="suffix" height="200px"></column-chart>
   </div>
 </template>
 
@@ -12,7 +12,6 @@ export default {
   props: {
     series: Array,
     captions: Array,
-    colors: Array,
     absoluteValues: Boolean,
   },
   computed: {

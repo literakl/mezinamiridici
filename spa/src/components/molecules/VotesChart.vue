@@ -1,13 +1,13 @@
 <template>
   <div>
     <bar-chart v-if="horizontal && stacked" :data="chartData" suffix="%" height="100px" :stacked="true"
-               :colors="['#28a745', '#007bff', '#ffc107', '#dc3545']">
+               :colors="['#28a745ff', '#007bffff', '#ffc107ff', '#dc3545ff']">
     </bar-chart>
     <bar-chart v-if="horizontal && !stacked" :data="chartData" suffix="%" height="100px"
-              :colors="[['#28a745', '#007bff', '#ffc107', '#dc3545']]">
+              :colors="[['#28a745ff', '#007bffff', '#ffc107ff', '#dc3545ff']]">
     </bar-chart>
     <column-chart v-if="!horizontal" :data="chartData" suffix="%" height="200px"
-              :colors="[['#28a745', '#007bff', '#ffc107', '#dc3545']]">
+              :colors="[['#28a745ff', '#007bffff', '#ffc107ff', '#dc3545ff']]">
     </column-chart>
   </div>
 </template>

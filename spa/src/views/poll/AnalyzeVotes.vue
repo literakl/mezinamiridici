@@ -8,7 +8,7 @@
           <PollHeading :item="item"/>
 
           <div v-if="! inProgress">
-            <SeriesBarChart :series="groups" :colors="['#007bff', '#28a745']" :captions="captions" :absolute-values="absoluteValues"/>
+            <SeriesBarChart :series="groups" :captions="captions" :absolute-values="absoluteValues"/>
           </div>
 
           <PredefinedComparisons :slug="slug"></PredefinedComparisons>
