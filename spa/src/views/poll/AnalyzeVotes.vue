@@ -2,27 +2,33 @@
   <div class="container flex-wrap pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
     <div class="row">
       <div class="col">
-        <PollHeading v-if="item" :item="item"/>
         <ContentLoading v-if="! item" type="poll"/>
-        <SeriesBarChart v-if="! inProgress" :series="groups" :colors="['#ffd200', '#f5a522']"
-                        :captions="captions" :absolute-values="absoluteValues"/>
-        <PredefinedComparisons v-if="item" :slug="slug"></PredefinedComparisons>
-        <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1">
-          <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2">
-            <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
-            <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
-          </b-form-radio-group>
-        </b-form-group>
+
+        <template v-if="item">
+          <PollHeading :item="item"/>
+
+          <div v-if="! inProgress">
+            <SeriesBarChart :series="groups" :colors="['#007bff', '#28a745']" :captions="captions" :absolute-values="absoluteValues"/>
+          </div>
+
+          <PredefinedComparisons :slug="slug"></PredefinedComparisons>
+          <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1">
+            <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2">
+              <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
+              <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
+            </b-form-radio-group>
+          </b-form-group>
+        </template>
       </div>
     </div>
     <div class="row" v-if="this.type === 'vlastni'">
       <div class="col-sm-6">
-        <b-card :header="captions[0]">
+        <b-card :header="captions[0]" header-bg-variant="primary" header-text-variant="white">
           <SeriesForm :group="forms[0]" id="1" />
         </b-card>
       </div>
       <div class="col-sm-6">
-        <b-card :header="captions[1]">
+        <b-card :header="captions[1]" header-bg-variant="success" header-text-variant="white">
           <SeriesForm :group="forms[1]" id="2" />
         </b-card>
       </div>
@@ -37,7 +43,7 @@
 
 <script>
 import PollHeading from '@/components/molecules/PollHeading.vue';
-import SeriesBarChart from '@/components/molecules/SeriesBarChart.vue';
+import SeriesBarChart from '@/components/molecules/VotesSeriesChart.vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import SeriesForm from '@/components/molecules/SeriesForm.vue';
 import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
@@ -70,6 +76,11 @@ export default {
     inProgress: true,
     error: null,
   }),
+  computed: {
+    item() {
+      return this.$store.getters.POLL;
+    },
+  },
   created() {
     this.parseType(this.type);
     this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
@@ -89,11 +100,6 @@ export default {
       this.groups = [{}, {}];
     }
     next();
-  },
-  computed: {
-    item() {
-      return this.$store.getters.POLL;
-    },
   },
   methods: {
     parseGroup(group) {
