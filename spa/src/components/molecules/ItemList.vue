@@ -56,34 +56,36 @@ export default {
     },
   },
   methods: {
-    async onAppend({ groupKey, startLoading, currentTarget }) {
-      if (currentTarget.isProcessing()) {
+    async onAppend({ groupKey, startLoading }) {
+      this.$log.debug(`onAppend start=${this.start}, group=${groupKey}`);
+      if (this.$refs.ig.isProcessing()) {
+        this.$log.debug('Detected isProcessing');
         return;
       }
-      const start = this.start || 0, { tag } = this;
-      const newGroupKey = parseFloat(groupKey || 0) + 1;
-      this.index += 1;
       if (this.isEnded) {
+        this.$log.debug('Detected isEnded');
         return;
       }
-      this.start = start + this.pageSize;
 
       startLoading();
-      let items = await this.$store.dispatch('GET_ITEM_STREAM', { start, size: this.pageSize, tag });
-      if (items.length === 0 || items.length < this.pageSize) {
+      let items = await this.$store.dispatch('GET_ITEM_STREAM', { start: this.start, size: this.pageSize, tag: this.tag });
+      if (items.length === 0) {
         this.isEnded = true;
         this.$refs.ig.endLoading();
         return;
       }
 
+      this.start = this.start + this.pageSize;
       if (this.exceptItem) {
         items = items.filter(item => item._id !== this.exceptItem._id);
       }
+      const newGroupKey = parseFloat(groupKey || 0) + 1;
       items.forEach((item) => { item.groupKey = newGroupKey; });
       this.list = this.list.concat(items);
     },
     onLayoutComplete({ isLayout, endLoading }) {
       if (!isLayout) {
+        this.$log.debug('Detected isLayout == false');
         endLoading();
       }
     },
