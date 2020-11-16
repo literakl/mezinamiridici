@@ -10,7 +10,6 @@
 
 <script>
 import normalizeVotes from '@/utils/chartUtils';
-import Vue from 'vue';
 
 export default {
   name: 'VotesChart',
@@ -109,7 +108,6 @@ export default {
   }),
   computed: {
     poll() {
-      Vue.$log.debug(`BarChart ${this.votes}`);
       return normalizeVotes(this.votes);
     },
     chartData() {
