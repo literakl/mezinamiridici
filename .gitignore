@@ -31,4 +31,5 @@ yarn-error.log*
 /infrastructure/src/dist/
 /infrastructure/test/coverage
 /spa/.env
+/spa/.env.staging
 /spa/.env.production
