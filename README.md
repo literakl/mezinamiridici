@@ -3,12 +3,12 @@
 
 # Between us Drivers
 
-This is a monorepo for portal mezinamiridici.cz
+This is a monorepo for portal www.mezinamiridici.cz
 
 ## Repository contents
 
 * `spa` is the single page Vue.js application that delivers the website experience
-* `infrastructure` is the NodeJS backend
+* `backend` is the NodeJS backend
 * `nginx` is a configuration for Nginx server
 
 ##Prerequisities
@@ -22,7 +22,7 @@ This is a monorepo for portal mezinamiridici.cz
 Import the data:
 
 ```
-cd infrastructure/database/doc
+cd backend/database/doc
 # install indexes and constrains
 mongo bud mongo_setup.js
 cd ..
@@ -40,7 +40,7 @@ and repeat the import procedure.
 
 ## Configuration
 
-### infrastructure/.env
+### backend/.env
 
 Copy `.env.template` to `.env` and update as needed. You may need to set your local IP address in CORS_ORIGINS property.
 
@@ -54,7 +54,7 @@ to your real IP address (not localhost or 127.0.0.1).
 
 The first terminal: 
 ```
-$ cd infrastructure
+$ cd backend
 $ npm install
 $ npm run dev
 ```
@@ -65,7 +65,7 @@ $ npm install
 $ npm run dev
 ```
 
-To log in, use the users defined in `infrastructure/test/prepareUsers.js` and password `BadPassword`.
+To log in, use the users defined in `backend/test/prepareUsers.js` and password `BadPassword`.
 
 ## Nginx
 
@@ -75,7 +75,7 @@ Install Nginx and copy `nginx/dev/nginx.conf` to its `conf` directory. Fix the p
 
 The first terminal: 
 ```
-$ cd infrastructure
+$ cd backend
 $ npm install
 $ npm run dev
 ```
