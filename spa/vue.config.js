@@ -20,9 +20,9 @@ module.exports = {
   },
   pwa: {
     iconPaths: {
-      favicon32: 'img/fav/32.png',
-      favicon16: 'img/fav/16.png',
-      appleTouchIcon: 'img/fav/152.png',
+      favicon32: 'images/fav/32.png',
+      favicon16: 'images/fav/16.png',
+      appleTouchIcon: 'images/fav/152.png',
     },
   },
   chainWebpack: (config) => {
@@ -48,25 +48,6 @@ module.exports = {
       });
   },
   pluginOptions: {
-    s3Deploy: {
-      registry: undefined,
-      awsProfile: 'default',
-      region: 'eu-central-1',
-      bucket: 'mezinamiridici.cz',
-      createBucket: true,
-      staticHosting: true,
-      staticIndexPage: 'index.html',
-      staticErrorPage: 'index.html',
-      assetPath: 'dist',
-      assetMatch: '**',
-      deployPath: '/',
-      acl: 'public-read',
-      pwa: true,
-      pwaFiles: 'service-worker.js',
-      enableCloudfront: false,
-      uploadConcurrency: 5,
-      pluginVersion: '3.0.0',
-    },
     i18n: {
       locale: 'cz',
       fallbackLocale: 'cz',
