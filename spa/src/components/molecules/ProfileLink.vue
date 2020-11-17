@@ -16,7 +16,7 @@
           {{ $t('profile.honors.comments-label') }}: {{ userInfo.honors.count.comments }}
         </div>
         <div v-if="userInfo.honors.count.commentVoteRatio">
-          {{ $t('profile.honors.comment-ratio-label') }}: {{ userInfo.honors.count.commentVoteRatio }}
+          {{ $t('profile.honors.comment-ratio-label') }}: {{ userInfo.honors.count.commentVoteRatio }}%
         </div>
       </template>
     </b-popover>
