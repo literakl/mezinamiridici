@@ -4,7 +4,7 @@
     <div v-if="content">
       <div v-html="content.data.content"></div>
       <ShareLink :item="content" />
-      <Comments v-if="content.type==='content'" :itemId="content._id" />
+      <Comments v-if="content.type==='article'" :itemId="content._id" />
     </div>
   </div>
 </template>

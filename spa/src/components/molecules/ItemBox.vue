@@ -51,7 +51,7 @@ export default {
       if (this.item.type === 'blog') {
         return { name: 'blog', params: { slug: this.item.info.slug } };
       }
-      if (this.item.type === 'help' || this.item.type === 'content') {
+      if (this.item.type === 'help' || this.item.type === 'article') {
         return { name: 'content', params: { slug: this.item.info.slug } };
       }
       return { name: 'home' };
