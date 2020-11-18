@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       start: 0,
-      pageSize: 3,
+      pageSize: 10,
       isEnded: false,
       list: [],
       options: {
@@ -57,13 +57,10 @@ export default {
   },
   methods: {
     async onAppend({ groupKey, startLoading }) {
-      this.$log.debug(`onAppend start=${this.start}, group=${groupKey}`);
       if (this.$refs.ig.isProcessing()) {
-        this.$log.debug('Detected isProcessing');
         return;
       }
       if (this.isEnded) {
-        this.$log.debug('Detected isEnded');
         return;
       }
 
@@ -85,7 +82,6 @@ export default {
     },
     onLayoutComplete({ isLayout, endLoading }) {
       if (!isLayout) {
-        this.$log.debug('Detected isLayout == false');
         endLoading();
       }
     },
