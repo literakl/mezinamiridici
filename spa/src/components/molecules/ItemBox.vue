@@ -90,9 +90,7 @@ export default {
   .item-hover:active {
     transform: translateX(-1px) translateY(-1px) scale(1.01);
   }
-  .item-div h1 {
-    margin: 20px;
-  }
+  .item-div h4 {}
   .item-footer {
     background-color: #f1f1f1;
     font-size: 0.8em;

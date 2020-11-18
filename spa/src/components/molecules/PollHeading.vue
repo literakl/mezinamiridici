@@ -7,15 +7,13 @@
         </b-button>
       </b-col>
       <b-col sm="auto">
-        <b-card tag="article">
-          <b-card-body>
-            <h4>
-              <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
-                {{item.info.caption}}
-              </router-link>
-            </h4>
-          </b-card-body>
-          <b-card-footer>
+        <div class="item-div item-hover mb-3">
+          <h4>
+            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
+              {{item.info.caption}}
+            </router-link>
+          </h4>
+          <div class="mt-3 p-1 pl-3 item-footer">
             <Date :date="this.item.info.date" format="dynamicDate" />  &bull;
             <ProfileLink :profile="this.item.info.author"/> &bull;
             {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
@@ -26,8 +24,8 @@
               &bull;
               <TagList :tags="tags"/>
             </template>
-          </b-card-footer>
-        </b-card>
+          </div>
+        </div>
       </b-col>
       <b-col sm="1" v-if="item.siblings">
         <b-button v-if="item.siblings.newer" :to="link(item.siblings.newer)" variant="secondary">
@@ -39,9 +37,7 @@
 </template>
 
 <script>
-import { BIconChevronDoubleLeft, BIconChevronDoubleRight,
-  BContainer, BRow, BCol, BCard, BCardBody, BCardFooter,
-  BButton } from 'bootstrap-vue';
+import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BContainer, BRow, BCol, BButton } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
@@ -57,9 +53,6 @@ export default {
     BContainer,
     BRow,
     BCol,
-    BCard,
-    BCardBody,
-    BCardFooter,
     BButton,
   },
   props: {
@@ -86,3 +79,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.item-div {
+  border-width: 10px;
+  border-color: #f1f1f1;
+  border-style: solid;
+  box-shadow: #c1c1c1 1px 1px 10px;
+}
+.item-footer {
+  background-color: #f1f1f1;
+  font-size: 0.8em;
+  color: #201f27;
+  font-weight: 600;
+}
+</style>

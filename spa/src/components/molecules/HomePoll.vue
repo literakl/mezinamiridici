@@ -1,5 +1,5 @@
 <template>
-  <div class="w-75 text-center">
+  <div class="item-div item-hover mb-3">
     <h4 class="text-center">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
@@ -33,8 +33,8 @@
       <PollButtons v-on:do-vote="onVote"/>
     </div>
 
-    <div class="mb-3">
-      <Date :date="poll.info.date" format="dynamicDate" />  &bull;
+    <div class="mt-3 p-1 pl-3 item-footer">
+      <Date :date="poll.info.date" format="dynamicDate" /> &bull;
       <ProfileLink :profile="poll.info.author"/> &bull;
       {{ $t('poll.votes') }}: {{ poll.votes.total }} &bull;
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }, hash: '#comments'}">
@@ -91,5 +91,17 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+.item-div {
+  border-width: 10px;
+  border-color: #f1f1f1;
+  border-style: solid;
+  box-shadow: #c1c1c1 1px 1px 10px;
+}
+.item-footer {
+  background-color: #f1f1f1;
+  font-size: 0.8em;
+  color: #201f27;
+  font-weight: 600;
+}
 </style>
