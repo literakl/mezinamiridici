@@ -1,20 +1,17 @@
 <template>
   <div class="pt-3 w-75 m-auto pb-5">
     <HomePoll v-if="poll" :poll="poll"/>
-    <ContentLoading v-if="!poll" type="poll"/>
     <ItemList :exceptItem="poll"/>
   </div>
 </template>
 
 <script>
-import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HomePoll from '@/components/molecules/HomePoll.vue';
 import ItemList from '@/components/molecules/ItemList.vue';
 
 export default {
   name: 'home',
   components: {
-    ContentLoading,
     HomePoll,
     ItemList,
   },
