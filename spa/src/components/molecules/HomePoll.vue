@@ -1,16 +1,35 @@
 <template>
-  <div>
+  <div class="w-75 text-center">
     <h4 class="text-center">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
       </router-link>
     </h4>
 
-    <div v-if="voted" class="pt-2 pb-2">
-      <VotesChart :votes="poll.votes" v-bind:voted="voted" :horizontal="true" :stacked="true"/>
+    <div v-if="voted" class="pt-2 pb-2 d-flex justify-content-center">
+      <b-button variant="success" :class="myVoteClass('neutral')" class="m-3">
+        <img src="@/assets/happy.png" class="pr-2" alt="">
+        {{ $t('poll.choices.neutral') }}
+        <span class="badge badge-pill badge-light">{{ this.votes.neutral }}%</span>
+      </b-button>
+      <b-button variant="primary" :class="myVoteClass('trivial')" class="m-3">
+        <img src="@/assets/ok.png" class="pr-2" alt="">
+        {{ $t('poll.choices.trivial') }}
+        <span class="badge badge-pill badge-light">{{ this.votes.trivial }}%</span>
+      </b-button>
+      <b-button variant="warning" :class="myVoteClass('dislike')" class="m-3">
+        <img src="@/assets/dislike.png" class="pr-2" alt="">
+        {{ $t('poll.choices.dislike') }}
+        <span class="badge badge-pill badge-light">{{ this.votes.dislike }}%</span>
+      </b-button>
+      <b-button variant="danger" :class="myVoteClass('hate')" class="m-3">
+        <img src="@/assets/angry.png" class="pr-2" alt="">
+        {{ $t('poll.choices.hate') }}
+        <span class="badge badge-pill badge-light">{{ this.votes.hate }}%</span>
+      </b-button>
     </div>
 
-    <div v-if="!voted" class="m-auto pt-3 pb-3">
+    <div v-if="!voted" class="pt-2 pb-2 d-flex justify-content-center">
       <PollButtons v-on:do-vote="onVote"/>
     </div>
 
@@ -26,18 +45,19 @@
 </template>
 
 <script>
-import VotesChart from '@/components/molecules/VotesChart.vue';
+import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
+import { BButton } from 'bootstrap-vue';
 
 export default {
-  name: 'home',
+  name: 'HomePoll',
   components: {
-    VotesChart,
     PollButtons,
     ProfileLink,
     Date,
+    BButton,
   },
   props: {
     poll: Object,
@@ -49,10 +69,16 @@ export default {
   },
   computed: {
     voted() {
-      return this.$store.getters.POLL.my_vote;
+      return this.poll.my_vote;
+    },
+    votes() {
+      return normalizeVotes(this.poll.votes);
     },
   },
   methods: {
+    myVoteClass(value) {
+      return this.poll.my_vote === value ? 'button_my_vote' : '';
+    },
     async onVote(vote) {
       this.voting = true;
       await this.$store.dispatch('POLL_VOTE', {
@@ -64,3 +90,6 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+</style>

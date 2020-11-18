@@ -58,6 +58,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+//TODO. Is this really useful? I cannot find a difference, when I delete these classes.
+
   .btn.btn-primary:active:hover, .btn.btn-primary:hover {
     border-color: var(--primary);
     background-color: var(--primary);

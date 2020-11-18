@@ -1,32 +1,30 @@
 <template>
   <b-container>
-    <b-row class="mb-3">
-      <b-col>
-        <h3>{{ $t('poll.your-opinion') }}</h3>
-      </b-col>
-    </b-row>
     <b-row>
       <b-col>
-        <b-button variant="success" size="md" v-on:click="voted('neutral')">
-          <img src="@/assets/happy.png" class="pr-2" align="middle">
+        <h4 class="text-your-opinion">{{ $t('poll.your-opinion') }}</h4>
+      </b-col>
+      <b-col>
+        <b-button variant="success" v-on:click="voted('neutral')">
+          <img src="@/assets/happy.png" class="pr-2" alt="">
           {{ $t('poll.choices.neutral') }}
         </b-button>
       </b-col>
       <b-col>
-        <b-button variant="primary" size="md" v-on:click="voted('trivial')">
-          <img src="@/assets/ok.png" class="pr-2" align="middle">
+        <b-button variant="primary" v-on:click="voted('trivial')">
+          <img src="@/assets/ok.png" class="pr-2" alt="">
           {{ $t('poll.choices.trivial') }}
         </b-button>
       </b-col>
       <b-col>
-        <b-button variant="warning" size="md" v-on:click="voted('dislike')">
-          <img src="@/assets/dislike.png" class="pr-2" align="middle">
+        <b-button variant="warning" v-on:click="voted('dislike')">
+          <img src="@/assets/dislike.png" class="pr-2" alt="">
           {{ $t('poll.choices.dislike') }}
         </b-button>
       </b-col>
       <b-col>
-        <b-button variant="danger" size="md" v-on:click="voted('hate')">
-          <img src="@/assets/angry.png" class="pr-2" align="middle">
+        <b-button variant="danger" v-on:click="voted('hate')">
+          <img src="@/assets/angry.png" class="pr-2" alt="">
           {{ $t('poll.choices.hate') }}
         </b-button>
       </b-col>
@@ -57,3 +55,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+  .text-your-opinion {
+    //font-size: x-large;
+  }
+</style>
