@@ -6,9 +6,13 @@ axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8'
 const { VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT } = process.env;
 
 function getAuthHeader(context, jwt = undefined, upload) {
-  const config = (upload) ? { headers: { 'Content-Type': 'multipart/form-data' } } : { headers: { } };
+  const config = { headers: { } };
+  config.headers['Accept-Encoding'] = 'gzip';
   if (jwt || (context && context.rootState.users.userToken)) {
     config.headers.Authorization = `bearer ${jwt || context.rootState.users.userToken}`;
+  }
+  if (upload) {
+    config.headers['Content-Type'] = 'multipart/form-data';
   }
   return config;
 }
