@@ -3,7 +3,7 @@
     <header>
       <b-navbar toggleable="sm" type="dark" variant="dark">
         <b-navbar-brand href="/">
-          <img src="./assets/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top">
+          <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top">
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

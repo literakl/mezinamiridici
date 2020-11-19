@@ -33,3 +33,4 @@ yarn-error.log*
 /spa/.env
 /spa/.env.staging
 /spa/.env.production
+/spa/backup/

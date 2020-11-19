@@ -8,22 +8,22 @@
 
     <div v-if="voted" class="pt-2 pb-2 d-flex justify-content-center">
       <b-button variant="success" :class="myVoteClass('neutral')" class="m-3">
-        <img src="@/assets/happy.png" class="pr-2" alt="">
+        <img src="/images/icons/happy.png" class="pr-2" alt="">
         {{ $t('poll.choices.neutral') }}
         <span class="badge badge-pill badge-light">{{ this.votes.neutral }}%</span>
       </b-button>
       <b-button variant="primary" :class="myVoteClass('trivial')" class="m-3">
-        <img src="@/assets/ok.png" class="pr-2" alt="">
+        <img src="/images/icons/ok.png" class="pr-2" alt="">
         {{ $t('poll.choices.trivial') }}
         <span class="badge badge-pill badge-light">{{ this.votes.trivial }}%</span>
       </b-button>
       <b-button variant="warning" :class="myVoteClass('dislike')" class="m-3">
-        <img src="@/assets/dislike.png" class="pr-2" alt="">
+        <img src="/images/icons/dislike.png" class="pr-2" alt="">
         {{ $t('poll.choices.dislike') }}
         <span class="badge badge-pill badge-light">{{ this.votes.dislike }}%</span>
       </b-button>
       <b-button variant="danger" :class="myVoteClass('hate')" class="m-3">
-        <img src="@/assets/angry.png" class="pr-2" alt="">
+        <img src="/images/icons/angry.png" class="pr-2" alt="">
         {{ $t('poll.choices.hate') }}
         <span class="badge badge-pill badge-light">{{ this.votes.hate }}%</span>
       </b-button>

@@ -1,6 +1,6 @@
 <template>
   <div class="icon" :class="[`icon--${name}`, `icon--${size}`, { 'has-align-fix': fixAlign }]">
-    <img class="icon__svg" :src="`/images/icons/${name}.svg`"/>
+    <img class="icon__svg" :src="`/images/editor/${name}.svg`"/>
   </div>
 </template>
 
@@ -46,7 +46,6 @@ export default {
   &:last-child {
     margin-right: 0;
   }
-
 }
 
 // svg sprite

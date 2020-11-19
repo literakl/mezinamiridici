@@ -6,25 +6,25 @@
       </b-col>
       <b-col>
         <b-button variant="success" v-on:click="voted('neutral')">
-          <img src="@/assets/happy.png" class="pr-2" alt="">
+          <img src="/images/icons/happy.png" class="pr-2" alt="">
           {{ $t('poll.choices.neutral') }}
         </b-button>
       </b-col>
       <b-col>
         <b-button variant="primary" v-on:click="voted('trivial')">
-          <img src="@/assets/ok.png" class="pr-2" alt="">
+          <img src="/images/icons/ok.png" class="pr-2" alt="">
           {{ $t('poll.choices.trivial') }}
         </b-button>
       </b-col>
       <b-col>
         <b-button variant="warning" v-on:click="voted('dislike')">
-          <img src="@/assets/dislike.png" class="pr-2" alt="">
+          <img src="/images/icons/dislike.png" class="pr-2" alt="">
           {{ $t('poll.choices.dislike') }}
         </b-button>
       </b-col>
       <b-col>
         <b-button variant="danger" v-on:click="voted('hate')">
-          <img src="@/assets/angry.png" class="pr-2" alt="">
+          <img src="/images/icons/angry.png" class="pr-2" alt="">
           {{ $t('poll.choices.hate') }}
         </b-button>
       </b-col>
