@@ -73,6 +73,7 @@ function insertItem(dbClient, blogId, title, source, author, publishDate, pictur
       },
       caption: title,
       slug,
+      published: true,
       date: publishDate,
       picture,
       tags,
