@@ -172,7 +172,9 @@
       "shares-label": "Sdílení",
       "sharing-weeks-label": "Týdny sdílení",
       "blogs-label": "Blogy"
-    }
+    },
+    "add-url": "Přidat URL",
+    "enter-url": "Zadejte URL"
   },
   "poll": {
     "your-vote": "Váš hlas:",

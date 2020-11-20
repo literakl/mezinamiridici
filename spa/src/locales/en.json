@@ -172,7 +172,9 @@
       "shares-label": "Shares",
       "sharing-weeks-label": "Weeks of sharing",
       "blogs-label": "Blogs"
-    }
+    },
+    "add-url": "Add URL",
+    "enter-url": "Enter a URL"
   },
   "poll": {
     "your-vote": "Your vote:",

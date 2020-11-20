@@ -152,6 +152,16 @@
             identifier="university"/>
         </b-row>
 
+        <b-row class="pb-3 mx-0">
+          <b-button @click="addRow" @submit.stop.prevent="() => {}" size="sm" variant="outline-primary">{{ $t('profile.add-url') }}</b-button>
+        </b-row>
+
+        <b-row v-for="(url, index) in urls" :key="index" class="mx-5 pb-2">
+          <b-form-input v-model="urls[index]" :placeholder="$t('profile.enter-url')" class="w-50"></b-form-input>
+          <b-button @click="deleteRow(index)" size="sm" variant="primary" class="ml-3">{{$t('editorjs.delete')}}</b-button>
+        </b-row>
+
+
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
@@ -181,7 +191,7 @@ import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import i18n from '@/i18n';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
+import { BForm, BRow, BCol, BButton, BFormInput } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
@@ -224,6 +234,8 @@ export default {
     BForm,
     BRow,
     BCol,
+    BButton,
+    BFormInput,
   },
   data: () => ({
     userProfile: null,
@@ -249,6 +261,7 @@ export default {
     },
     error: null,
     success: null,
+    urls: [],
   }),
   created() {
     this.getProfile(this.$store.getters.USER_ID);
@@ -279,6 +292,8 @@ export default {
         this.region = this.userProfile.bio.region;
         this.education = this.userProfile.bio.edu;
         this.share = this.userProfile.prefs.public ? 'public' : 'private';
+
+        this.urls = this.userProfile.bio.urls;
       } catch (err) {
         this.$log.error(err);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -302,6 +317,7 @@ export default {
           region: this.region,
           education: this.education,
           publicProfile: this.share,
+          urls: this.urls,
         });
         await this.$router.push({ name: 'user-profile', params: { id: this.userProfile._id } });
       } catch (error) {
@@ -314,6 +330,12 @@ export default {
           this.error = this.$t('sign-up.something-went-wrong');
         }
       }
+    },
+    addRow() {
+      this.urls.push('');
+    },
+    deleteRow(index) {
+      this.urls.splice(index, 1);
     },
   },
 };

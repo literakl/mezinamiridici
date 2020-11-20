@@ -9,12 +9,28 @@
     </b-row>
     <b-row v-if="userProfile">
       <b-col>
-        <h2>
-          {{ userProfile.bio.nickname }}
-        </h2>
+        <b-input-group inline>
 
-        <HonorsProgress v-if="myProfile" :user="userProfile" />
+          <div class="mr-3">
+            <b-avatar :src="userProfile.bio.avatar" size="5rem"></b-avatar>
+          </div>
 
+          <b-col cols="10">
+            <b-row>
+              <h2>
+                {{ userProfile.bio.nickname }}
+              </h2>
+            </b-row>
+            <b-row v-if="userProfile.prefs.public">
+              <BIconGeoAlt font-scale="2"></BIconGeoAlt>
+              <span>{{$t(`profile.regions.${userProfile.bio.region}`)}}</span>
+              <div v-for="(item, inx) in userProfile.bio.urls" :key="inx" class="mx-2"> <BIconLink/> <a :href="item">{{item}}</a></div>
+            </b-row>
+          </b-col>
+
+        </b-input-group>
+
+        <HonorsProgress v-if="myProfile" :user="userProfile"/>
         <div>
           {{ $t('profile.member-since-label') }}: <Date :date="userProfile.bio.registered" format="dynamicDate" />
         </div>
@@ -67,7 +83,7 @@ import UserActivity from '@/components/atoms/UserActivity.vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
 import Date from '@/components/atoms/Date.vue';
-import { BRow, BCol } from 'bootstrap-vue';
+import { BRow, BCol, BAvatar, BInputGroup, BIconGeoAlt, BIconLink } from 'bootstrap-vue';
 
 export default {
   name: 'profile',
@@ -78,6 +94,10 @@ export default {
     Date,
     BRow,
     BCol,
+    BAvatar,
+    BInputGroup,
+    BIconGeoAlt,
+    BIconLink,
   },
   props: {
     id: String,

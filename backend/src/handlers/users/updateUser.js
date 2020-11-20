@@ -29,7 +29,7 @@ module.exports = (app) => {
 
 function prepareUpdateProfileQuery(req) {
   const {
-    drivingSince, vehicles, sex, born, region, education, publicProfile,
+    drivingSince, vehicles, sex, born, region, education, publicProfile, urls
   } = req.body;
   const setters = {}, unsetters = {};
   if (sex) {
@@ -71,6 +71,11 @@ function prepareUpdateProfileQuery(req) {
   }
   if (Object.keys(unsetters).length !== 0) {
     query.$unset = unsetters;
+  }
+  if (urls) {
+    setters['bio.urls'] = urls;
+  } else {
+    unsetters['bio.urls'] = [];
   }
   return query;
 }
