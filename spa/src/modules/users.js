@@ -183,9 +183,9 @@ export default {
       };
       return post('API', '/check/nickname', body);
     },
-    FETCH_USER_ACTIVITY: async (context) => {
+    FETCH_USER_ACTIVITY: async (context, payload) => {
       Vue.$log.debug('FETCH_USER_ACTIVITY');
-      const response = await get('API', `/users/${context.getters.USER_ID}/activity`, context);
+      const response = await get('API', `/users/${payload.userId}/activity`, context);
       context.commit('SET_USER_ACTIVITY', response.data.data);
       return response.data.success;
     },

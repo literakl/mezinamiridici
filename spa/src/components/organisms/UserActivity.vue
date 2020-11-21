@@ -1,7 +1,5 @@
 <template>
   <b-container fluid="true" class="pt-3 w-100 m-auto">
-    <h3 v-if="timelineTitle">{{timelineTitle}}</h3>
-
     <div id="table">
       <div class="header">
         <span class="no">No</span>
@@ -32,7 +30,6 @@
         </GridLayout>
       </div>
     </div>
-
   </b-container>
 </template>
 
@@ -41,13 +38,13 @@ import { GridLayout } from '@egjs/vue-infinitegrid';
 import { BContainer } from 'bootstrap-vue';
 
 export default {
-  name: 'Timeline',
+  name: 'UserActivity',
   components: {
     GridLayout,
     BContainer,
   },
   props: {
-    timelineTitle: String,
+    userId: String,
   },
   data: () => ({
     start: 0,
@@ -69,7 +66,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('FETCH_USER_ACTIVITY');
+    this.$store.dispatch('FETCH_USER_ACTIVITY', { userId: this.userId });
   },
   methods: {
     getActivityData(data) {

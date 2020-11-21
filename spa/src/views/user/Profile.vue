@@ -62,7 +62,7 @@
         </b-tab>
 
         <b-tab :title="$t('profile.tabs.activity')">
-          <UserActivity :timeline-title="title"/>
+          <UserActivity :userId="userProfile._id"/>
         </b-tab>
 
         <b-tab v-if="myProfile" :title="$t('profile.tabs.honors')">
@@ -105,7 +105,6 @@ export default {
   },
   data: () => ({
     userProfile: null,
-    title: 'User Activity',
   }),
   computed: {
     myProfile() {
@@ -122,16 +121,16 @@ export default {
     },
   },
   created() {
-    this.getProfile(this.id);
+    this.fetchProfile(this.id);
   },
   beforeRouteUpdate(to, from, next) {
     this.userProfile = null;
     const { params: { id } } = to;
-    this.getProfile(id);
+    this.fetchProfile(id);
     next();
   },
   methods: {
-    async getProfile(id) {
+    async fetchProfile(id) {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
