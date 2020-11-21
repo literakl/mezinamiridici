@@ -257,6 +257,8 @@ import TextInput from '@/components/atoms/TextInput.vue';
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import i18n from '@/i18n';
 import { BForm, BRow, BCol } from 'bootstrap-vue';
+import Vue from 'vue';
+import store from '../../store';
 
 configure({
   defaultMessage: (field, values) => {
@@ -281,13 +283,13 @@ async function checkConflict(value, type) {
   try {
     let result = {};
     if (type === 'email') {
-      result = await this.$store.dispatch('VERIFY_MAIL', { email: value });
+      result = await store.dispatch('VERIFY_MAIL', { email: value });
     } else if (type === 'nick') {
-      result = await this.$store.dispatch('VERIFY_NICKNAME', { nickname: value });
+      result = await store.dispatch('VERIFY_NICKNAME', { nickname: value });
     }
     return !result.data.data.conflict;
   } catch (error) {
-    this.$log.error(error);
+    Vue.$log.error(error);
     return false;
   }
 }
