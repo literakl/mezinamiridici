@@ -1,3 +1,4 @@
+const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
@@ -29,7 +30,7 @@ module.exports = (app) => {
 
 function prepareUpdateProfileQuery(req) {
   const {
-    drivingSince, vehicles, sex, born, region, education, publicProfile,
+    drivingSince, vehicles, sex, born, region, education, publicProfile, urls,
   } = req.body;
   const setters = {}, unsetters = {};
   if (sex) {
@@ -71,6 +72,20 @@ function prepareUpdateProfileQuery(req) {
   }
   if (Object.keys(unsetters).length !== 0) {
     query.$unset = unsetters;
+  }
+  if (urls) {
+    setters['bio.urls'] = urls.filter((x) => {
+      if (!x || x === '') return false;
+      const source = `<a href="${x}">XSS</a>`;
+      const sanitized = sanitizeHtml(source, api.sanitizeConfigure());
+      if (source !== sanitized) {
+        logger.error(`XSS detected ${x}`);
+        throw new Error('XSS detected');
+      }
+      return true;
+    });
+  } else {
+    unsetters['bio.urls'] = [];
   }
   return query;
 }

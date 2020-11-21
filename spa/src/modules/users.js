@@ -165,6 +165,7 @@ export default {
         region: payload.region,
         education: payload.education,
         publicProfile: payload.publicProfile,
+        urls: payload.urls,
       };
       return patch('API', `/users/${payload.userId}`, body, context, payload.jwt);
     },

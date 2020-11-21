@@ -1,12 +1,9 @@
 <template>
-  <div v-if="user.honors.rank !== 'expert'" class="border mb-3">
+  <div v-if="user.honors.rank !== 'expert'" class="mb-3">
     <div v-if="user.honors.rank === 'novice'">
       <div>
         {{ $t('profile.honors.next-rank-label') }}: {{ $t('profile.rank.student') }}
       </div>
-      <h3>
-        {{ $t('profile.honors.requirements-label') }}
-      </h3>
       <div class="d-flex">
         <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
         <b-progress v-if="pollVotesCount < 1" :value="pollVotesCount" max="1" class="w-25 my-auto" show-value></b-progress>

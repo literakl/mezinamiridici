@@ -7,7 +7,6 @@
     "sign-out": "Odhlásit se",
     "my-profile": "Můj profil",
     "update-profile": "Upravit profil",
-    "change-password": "Změnit heslo",
     "new-post": "Nový příspěvek",
     "help": "Nápověda",
     "our-mission": "Naše mise",
@@ -102,13 +101,15 @@
   "edit-profile": {
     "heading": "Aktualizace profilu",
     "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
+    "urls": "Vaše stránky",
+    "enter-url": "Zadejte adresu",
     "save-button": "Uložit"
   },
   "profile": {
     "email": "Email",
     "password": "Heslo",
     "nickname": "Přezdívka",
-    "driving-since-label": "Řídí od roku",
+    "driving-since-label": "Řídičem od",
     "vehicles-label": "Vozidla",
     "vehicles": {
       "bike": "motorka",
@@ -164,7 +165,6 @@
     },
     "honors": {
       "next-rank-label": "Příští úroveň",
-      "requirements-label": "Podmínky",
       "poll-votes-label": "Hlasy v anketách",
       "comments-label": "Komentáře",
       "comment-votes-label": "Hlasy v komentářích",
@@ -172,6 +172,12 @@
       "shares-label": "Sdílení",
       "sharing-weeks-label": "Týdny sdílení",
       "blogs-label": "Blogy"
+    },
+    "tabs": {
+      "summary": "Souhrn",
+      "activity": "Aktivita",
+      "honors": "Úroveň",
+      "settings": "Nastavení"
     }
   },
   "poll": {
@@ -283,7 +289,8 @@
     "cms": "CMS",
     "content": "Stránka",
     "create-content": "Nová stránka",
-    "edit-content": "Úprava stránky"
+    "edit-content": "Úprava stránky",
+    "junkyard": "Vrakoviště"
   },
   "editorjs": {
     "p-placeholder": "Napište text nebo stiskněte tlačítko +. Označením textu se objeví další možnosti.",

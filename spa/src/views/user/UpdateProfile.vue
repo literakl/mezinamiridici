@@ -152,6 +152,17 @@
             identifier="university"/>
         </b-row>
 
+        <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
+        <b-row class="pb-2">
+          <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+        </b-row>
+        <b-row class="pb-2">
+          <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+        </b-row>
+        <b-row class="pb-2">
+          <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+        </b-row>
+
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
@@ -181,7 +192,7 @@ import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import i18n from '@/i18n';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
+import { BForm, BRow, BCol, BFormInput } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
@@ -224,6 +235,7 @@ export default {
     BForm,
     BRow,
     BCol,
+    BFormInput,
   },
   data: () => ({
     userProfile: null,
@@ -249,6 +261,7 @@ export default {
     },
     error: null,
     success: null,
+    urls: ['', '', ''],
   }),
   created() {
     this.getProfile(this.$store.getters.USER_ID);
@@ -279,6 +292,20 @@ export default {
         this.region = this.userProfile.bio.region;
         this.education = this.userProfile.bio.edu;
         this.share = this.userProfile.prefs.public ? 'public' : 'private';
+
+        this.urls = this.userProfile.bio.urls;
+        if (this.urls) {
+          this.urls = this.urls.map(x => encodeURI(x));
+          // eslint-disable-next-line no-console
+          console.log(this.urls);
+        }
+        if (!this.urls || this.urls.length === 0) {
+          this.urls = ['', '', ''];
+        } else if (this.urls.length === 1) {
+          this.urls.push('', '');
+        } else if (this.urls.length === 2) {
+          this.urls.push('');
+        }
       } catch (err) {
         this.$log.error(err);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -302,6 +329,7 @@ export default {
           region: this.region,
           education: this.education,
           publicProfile: this.share,
+          urls: this.urls,
         });
         await this.$router.push({ name: 'user-profile', params: { id: this.userProfile._id } });
       } catch (error) {
