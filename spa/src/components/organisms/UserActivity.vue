@@ -84,7 +84,6 @@ export default {
       });
       return arr;
     },
-
     loadItems(groupKey, num) {
       const items = [];
       const start = this.start || 0;

@@ -1,8 +1,9 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(changePassword)">
-        <h1>{{ $t('sign-in.change-password-heading') }}</h1>
+        <h3>{{ $t('sign-in.change-password-heading') }}</h3>
+
         <div>
           <TextInput
             v-model="email"

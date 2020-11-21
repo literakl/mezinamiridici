@@ -75,12 +75,6 @@ export default new Router({
       props: true,
     },
     {
-      path: '/zmena-hesla',
-      name: 'update-password',
-      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ChangePassword'),
-      beforeEnter: requireAuth,
-    },
-    {
       path: '/profil/:id',
       name: 'user-profile',
       component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/Profile.vue'),
@@ -173,6 +167,11 @@ export default new Router({
       name: 'blog',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Blog.vue'),
       props: true,
+    },
+    {
+      path: '/vrakoviste',
+      name: 'junkyard',
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/site/404.vue'),
     },
     {
       path: '*',

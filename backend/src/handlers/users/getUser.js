@@ -27,8 +27,7 @@ module.exports = (app) => {
       }
 
       if ((!req.identity || req.identity.userId !== userId) && !user.prefs.public) {
-        logger.debug('not authorized');
-        user.bio = { nickname: user.bio.nickname };
+        user.bio = { nickname: user.bio.nickname, registered: user.bio.registered };
         user.prefs = { public: user.prefs.public };
         user.driving = {};
       }

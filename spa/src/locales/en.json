@@ -6,7 +6,6 @@
     "sign-in-up": "Sign in / Sign up",
     "sign-out": "Sign out",
     "my-profile": "My profile",
-    "update-profile": "Update my profile",
     "change-password": "Change my password",
     "new-post": "New post",
     "help": "Help",
@@ -166,7 +165,6 @@
     },
     "honors": {
       "next-rank-label": "Next rank",
-      "requirements-label": "Requirements",
       "poll-votes-label": "Poll votes",
       "comments-label": "Comments",
       "comment-votes-label": "Comment votes",
@@ -174,6 +172,12 @@
       "shares-label": "Shares",
       "sharing-weeks-label": "Weeks of sharing",
       "blogs-label": "Blogs"
+    },
+    "tabs": {
+      "summary": "Summary",
+      "activity": "Activity",
+      "honors": "Honors",
+      "settings": "Settings"
     }
   },
   "poll": {
@@ -285,7 +289,8 @@
     "cms": "CMS",
     "content": "Content",
     "edit-content": "Edit content",
-    "create-content": "Create CMS"
+    "create-content": "Create CMS",
+    "junkyard": "Vrakoviště"
   },
   "cms": {
     "edit": {
