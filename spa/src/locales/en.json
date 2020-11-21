@@ -102,6 +102,8 @@
   "edit-profile": {
     "heading": "Update your profile",
     "body": "Enter statistical information you want to share. Your votes are anonymous in each poll.",
+    "urls": "Your websites",
+    "enter-url": "Enter a URL",
     "save-button": "Save"
   },
   "profile": {
@@ -172,9 +174,7 @@
       "shares-label": "Shares",
       "sharing-weeks-label": "Weeks of sharing",
       "blogs-label": "Blogs"
-    },
-    "add-url": "Add URL",
-    "enter-url": "Enter a URL"
+    }
   },
   "poll": {
     "your-vote": "Your vote:",

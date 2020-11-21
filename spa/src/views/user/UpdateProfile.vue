@@ -152,15 +152,16 @@
             identifier="university"/>
         </b-row>
 
-        <b-row class="pb-3 mx-0">
-          <b-button @click="addRow" @submit.stop.prevent="() => {}" size="sm" variant="outline-primary">{{ $t('profile.add-url') }}</b-button>
+        <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
+        <b-row class="pb-2">
+          <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
         </b-row>
-
-        <b-row v-for="(url, index) in urls" :key="index" class="mx-5 pb-2">
-          <b-form-input v-model="urls[index]" :placeholder="$t('profile.enter-url')" class="w-50"></b-form-input>
-          <b-button @click="deleteRow(index)" size="sm" variant="primary" class="ml-3">{{$t('editorjs.delete')}}</b-button>
+        <b-row class="pb-2">
+          <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
         </b-row>
-
+        <b-row class="pb-2">
+          <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+        </b-row>
 
         <div v-if="error" class="text-danger">
           {{ error }}
@@ -191,7 +192,7 @@ import Button from '@/components/atoms/Button.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import i18n from '@/i18n';
-import { BForm, BRow, BCol, BButton, BFormInput } from 'bootstrap-vue';
+import { BForm, BRow, BCol, BFormInput } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
@@ -234,7 +235,6 @@ export default {
     BForm,
     BRow,
     BCol,
-    BButton,
     BFormInput,
   },
   data: () => ({
@@ -261,7 +261,7 @@ export default {
     },
     error: null,
     success: null,
-    urls: [],
+    urls: ['', '', ''],
   }),
   created() {
     this.getProfile(this.$store.getters.USER_ID);
@@ -294,6 +294,18 @@ export default {
         this.share = this.userProfile.prefs.public ? 'public' : 'private';
 
         this.urls = this.userProfile.bio.urls;
+        if (this.urls) {
+          this.urls = this.urls.map(x => encodeURI(x));
+          // eslint-disable-next-line no-console
+          console.log(this.urls);
+        }
+        if (!this.urls || this.urls.length === 0) {
+          this.urls = ['', '', ''];
+        } else if (this.urls.length === 1) {
+          this.urls.push('', '');
+        } else if (this.urls.length === 2) {
+          this.urls.push('');
+        }
       } catch (err) {
         this.$log.error(err);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -330,12 +342,6 @@ export default {
           this.error = this.$t('sign-up.something-went-wrong');
         }
       }
-    },
-    addRow() {
-      this.urls.push('');
-    },
-    deleteRow(index) {
-      this.urls.splice(index, 1);
     },
   },
 };

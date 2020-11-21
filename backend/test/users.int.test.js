@@ -112,6 +112,7 @@ test('User API', async (done) => {
     born: 1975,
     region: 'MS',
     publicProfile: true,
+    urls: ['', 'https://github.com/literakl/', ''],
   };
   response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
   expect(response.success).toBeTruthy();
@@ -125,8 +126,15 @@ test('User API', async (done) => {
   expect(profile.bio.born).toBe(1975);
   expect(profile.bio.region).toBe('MS');
   expect(profile.bio.edu).toBeUndefined();
+  expect(profile.bio.urls).toStrictEqual(['https://github.com/literakl/']);
   expect(profile.driving.since).toBeUndefined();
   expect(profile.driving.vehicles).toStrictEqual(['car', 'bike']);
+
+  // check XSS in URLs
+  // eslint-disable-next-line no-script-url
+  body.urls = ['https://github.com/literakl/', 'javascript:alert(11);'];
+  response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) });
+  expect(response.statusCode).toBe(500); // Forbidden would be better
 
   // verify account
   profile = await mongo.findUser(dbClient, { userId });

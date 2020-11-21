@@ -102,6 +102,8 @@
   "edit-profile": {
     "heading": "Aktualizace profilu",
     "body": "Pokud chcete, vyplňte osobní údaje pro statistické účely. Hlasování je anonymní. Více v nápovědě.",
+    "urls": "Vaše stránky",
+    "enter-url": "Zadejte adresu",
     "save-button": "Uložit"
   },
   "profile": {
@@ -172,9 +174,7 @@
       "shares-label": "Sdílení",
       "sharing-weeks-label": "Týdny sdílení",
       "blogs-label": "Blogy"
-    },
-    "add-url": "Přidat URL",
-    "enter-url": "Zadejte URL"
+    }
   },
   "poll": {
     "your-vote": "Váš hlas:",

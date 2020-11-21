@@ -10,16 +10,13 @@
     <b-row v-if="userProfile">
       <b-col>
         <b-input-group inline>
-
           <div class="mr-3">
             <b-avatar :src="userProfile.bio.avatar" size="5rem"></b-avatar>
           </div>
 
           <b-col cols="10">
             <b-row>
-              <h2>
-                {{ userProfile.bio.nickname }}
-              </h2>
+              <h2>{{ userProfile.bio.nickname }}</h2>
             </b-row>
             <b-row v-if="userProfile.prefs.public">
               <BIconGeoAlt font-scale="2"></BIconGeoAlt>
