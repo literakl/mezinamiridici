@@ -7,7 +7,7 @@ const { logger } = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/resetPassword', auth.cors);
 
-  app.post('/v1/resetPassword', auth.cors, async (req, res) => {
+  app.post('/v1/resetPassword', auth.cors, api.authAPILimits, async (req, res) => {
     logger.verbose('resetPassword handler starts');
     const { resetPasswordToken, password } = req.body;
     if (!resetPasswordToken) {

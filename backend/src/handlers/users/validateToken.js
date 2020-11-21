@@ -9,7 +9,7 @@ const { JWT_SECRET } = process.env;
 module.exports = (app) => {
   app.options('/v1/users/:userId/validateToken', auth.cors);
 
-  app.post('/v1/users/:userId/validateToken', auth.required, auth.cors, async (req, res) => {
+  app.post('/v1/users/:userId/validateToken', auth.required, auth.cors, api.authAPILimits, async (req, res) => {
     logger.verbose('validateToken handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();

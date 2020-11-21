@@ -1,4 +1,15 @@
+require('../utils/path_env');
 const dayjs = require('dayjs');
+const rateLimit = require('express-rate-limit');
+
+const authAPILimits = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: process.env.API_LIMIT_AUTH || 2,
+});
+const diskAPILimits = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: process.env.API_LIMIT_DISK || 2,
+});
 
 function sendResponse(res, body, cacheControl = 'private') {
   return response(res, 200, body, cacheControl);
@@ -210,3 +221,5 @@ module.exports.parsePollFilterParams = parsePollFilterParams;
 module.exports.sendRedirectFound = sendRedirectFound;
 module.exports.parseDate = parseDate;
 module.exports.sanitizeConfigure = sanitizeConfigure;
+module.exports.authAPILimits = authAPILimits;
+module.exports.diskAPILimits = diskAPILimits;

@@ -11,7 +11,7 @@ const CREDENTIAL = require('../../utils/social_provider_credential');
 
 module.exports = (app) => {
   app.options('/api/auth/:provider');
-  app.post('/api/auth/:provider', async (req, res) => {
+  app.post('/api/auth/:provider', api.authAPILimits, async (req, res) => {
     let socialProfile;
     if (req.params.provider === 'google') {
       socialProfile = await googleAuth(req, res);

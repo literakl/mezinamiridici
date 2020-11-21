@@ -9,7 +9,7 @@ const EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 module.exports = (app) => {
   app.options('/v1/items/pictures', auth.cors);
 
-  app.get('/v1/items/pictures', auth.required, async (req, res) => {
+  app.get('/v1/items/pictures', auth.required, api.diskAPILimits, async (req, res) => {
     logger.verbose('get Item Pictures handler starts');
     try {
       if (!STREAM_PICTURES_DIR || !STREAM_PICTURES_PATH || !STREAM_PICTURES_DEFAULT) {
