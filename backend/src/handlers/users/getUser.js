@@ -23,7 +23,7 @@ module.exports = (app) => {
       const user = await mongo.findUser(dbClient, { userId }, { projection: { auth: 0, 'prefs.email': 0, consent: 0 } });
       logger.debug('User fetched');
       if (!user) {
-        return api.sendErrorForbidden(res, api.createError('User not found', 'profile.user-not-found'));
+        return api.sendNotFound(res, api.createError('User not found', 'profile.user-not-found'));
       }
 
       if ((!req.identity || req.identity.userId !== userId) && !user.prefs.public) {

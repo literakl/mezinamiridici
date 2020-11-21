@@ -1,17 +1,10 @@
 <template>
   <div class="pt-3 w-75 m-auto pb-5">
-    <b-row v-if="error">
-      <b-col>
-        <strong class="text-danger">
-          {{ error }}
-        </strong>
-      </b-col>
-    </b-row>
     <b-row v-if="userProfile">
       <b-col>
         <b-input-group inline>
           <div class="mr-3">
-            <b-avatar :src="userProfile.bio.avatar" size="5rem"></b-avatar>
+            <b-avatar size="5rem"></b-avatar>
           </div>
 
           <b-col cols="10">
@@ -21,6 +14,8 @@
             <b-row v-if="userProfile.prefs.public">
               <BIconGeoAlt font-scale="2"></BIconGeoAlt>
               <span>{{$t(`profile.regions.${userProfile.bio.region}`)}}</span>
+            </b-row>
+            <b-row>
               <div v-for="(item, inx) in userProfile.bio.urls" :key="inx" class="mx-2"> <BIconLink/> <a :href="item">{{item}}</a></div>
             </b-row>
           </b-col>
@@ -37,7 +32,7 @@
         </div>
       </b-col>
     </b-row>
-    <b-row v-if="userProfile && !error">
+    <b-row v-if="userProfile">
       <b-col>
         <dl v-if="showProfile">
           <template v-if="userProfile.driving">
@@ -69,7 +64,7 @@
       </b-col>
     </b-row>
 
-    <ContentLoading v-if="!userProfile && !error" type="profile" />
+    <ContentLoading v-if="!userProfile" type="profile" />
 
     <UserActivity :timeline-title="title"/>
   </div>
@@ -101,7 +96,6 @@ export default {
   },
   data: () => ({
     userProfile: null,
-    error: null,
     title: 'User Activity',
   }),
   computed: {
@@ -123,7 +117,6 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.userProfile = null;
-    this.error = null;
     const { params: { id } } = to;
     this.getProfile(id);
     next();
@@ -135,11 +128,7 @@ export default {
         this.userProfile = response.data.data;
       } catch (err) {
         this.$log.error(err);
-        if (err.response && err.response.data && err.response.data.errors) {
-          this.error = this.$t(err.response.data.errors[0].messageKey);
-        } else {
-          this.error = this.$t('generic.internal-error');
-        }
+        await this.$router.push({ name: 'not-found' });
       }
     },
   },
