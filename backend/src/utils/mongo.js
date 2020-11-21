@@ -105,10 +105,10 @@ function findUser(dbClient, params, projection) {
     query._id = params.userId;
   }
   if (params.email) {
-    query['auth.email'] = new RegExp(`^${params.email}$`, 'i');
+    query['auth.email'] = params.email;
   }
   if (params.nickname) {
-    query['bio.nickname'] = new RegExp(`^${params.nickname}$`, 'i');
+    query['bio.nickname'] = params.nickname;
   }
   if (params.token) {
     query['auth.verifyToken'] = params.token;
@@ -187,8 +187,7 @@ async function getPoll(dbClient, pipeline) {
 
 async function getCMS(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
-  const item = await cursor.next();
-  return item;
+  return cursor.next();
 }
 
 function processPoll(item) {

@@ -16,4 +16,9 @@ function findLastIndex(array, predicate) {
   return -1;
 }
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 exports.findLastIndex = findLastIndex;
+exports.escapeRegExp = escapeRegExp;
