@@ -41,7 +41,7 @@ module.exports = (app) => {
 
 function prepareUpdateProfileQuery(req) {
   const { emails, nickname } = req.body;
-  const query = { $set: { }, $unset: { } };
+  const query = { $set: { } };
   const now = new Date();
 
   query.$set['consent.terms'] = now;
