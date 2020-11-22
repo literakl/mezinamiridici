@@ -10,8 +10,9 @@ const { logger } = require('../../utils/logging');
 const CREDENTIAL = require('../../utils/social_provider_credential');
 
 module.exports = (app) => {
-  app.options('/api/auth/:provider');
-  app.post('/api/auth/:provider', api.authAPILimits, async (req, res) => {
+  app.options('/v1/auth/:provider');
+  app.post('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
+    logger.verbose('socialLink handler starts');
     let socialProfile;
     if (req.params.provider === 'google') {
       socialProfile = await googleAuth(req, res);
@@ -59,6 +60,7 @@ module.exports = (app) => {
 };
 
 async function googleAuth(req, res) {
+  logger.verbose('Google authentication starts');
   try {
     const requestObject = {
       method: 'post',
@@ -105,6 +107,7 @@ async function googleAuth(req, res) {
 }
 
 async function facebookAuth(req, res) {
+  logger.verbose('Facebook authentication starts');
   try {
     const requestObject = {
       method: 'post',
@@ -134,6 +137,7 @@ async function facebookAuth(req, res) {
 }
 
 async function twitterAuth(req, res) {
+  logger.verbose('Twitter authentication starts');
   try {
     const oauthService = new OAuth.OAuth(
       CREDENTIAL.TWITTER.REQUEST_URL,
