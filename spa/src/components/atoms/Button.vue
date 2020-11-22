@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import { BButton } from 'bootstrap-vue';
+import { BButton, BSpinner } from 'bootstrap-vue';
 
 export default {
   name: 'Button',
   components: {
-    BButton,
+    BButton, BSpinner,
   },
   props: {
     value: String,
