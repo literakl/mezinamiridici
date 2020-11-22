@@ -9,7 +9,7 @@ const bruteForceDelay = 1000;
 module.exports = (app) => {
   app.options('/v1/authorizeUser', auth.cors);
 
-  app.post('/v1/authorizeUser', auth.cors, api.authAPILimits, async (req, res) => {
+  app.post('/v1/authorizeUser', api.authAPILimits, auth.cors, async (req, res) => {
     logger.verbose('authorizeUser handler starts');
     const { email, password } = req.body;
     const result = validateParameters(email, password);

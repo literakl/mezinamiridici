@@ -6,7 +6,7 @@ const { logger } = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/verify/:token', auth.cors);
 
-  app.post('/v1/verify/:token', auth.cors, api.authAPILimits, async (req, res) => {
+  app.post('/v1/verify/:token', api.authAPILimits, auth.cors, async (req, res) => {
     logger.verbose('verifyUser handler starts');
     const { token } = req.params;
 

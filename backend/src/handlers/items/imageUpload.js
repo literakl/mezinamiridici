@@ -32,7 +32,7 @@ module.exports = (app) => {
 
   app.options('/v1/uploadImage', auth.cors);
 
-  app.post('/v1/uploadImage', auth.cors, api.diskAPILimits, upload.single('image'), async (req, res) => {
+  app.post('/v1/uploadImage', api.diskAPILimits, auth.cors, upload.single('image'), async (req, res) => {
     logger.verbose('image upload handler starts');
 
     try {

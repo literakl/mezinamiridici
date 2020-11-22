@@ -10,7 +10,7 @@ const { WEB_URL } = process.env;
 module.exports = (app) => {
   app.options('/v1/users', auth.cors);
 
-  app.post('/v1/users', auth.cors, api.authAPILimits, async (req, res) => {
+  app.post('/v1/users', api.authAPILimits, auth.cors, async (req, res) => {
     logger.verbose('createUser handler starts');
     const {
       email, password, nickname, termsAndConditions, dataProcessing, emails,

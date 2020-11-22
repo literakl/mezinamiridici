@@ -8,7 +8,7 @@ require('../../utils/path_env');
 module.exports = (app) => {
   app.options('/v1/forgotPassword', auth.cors);
 
-  app.post('/v1/forgotPassword', auth.cors, api.authAPILimits, async (req, res) => {
+  app.post('/v1/forgotPassword', api.authAPILimits, auth.cors, async (req, res) => {
     logger.verbose('forgotPassword handler starts');
     const { email } = req.body;
 
