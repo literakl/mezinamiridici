@@ -72,8 +72,8 @@ export default {
         nickname: payload.nickname,
         password: payload.password,
         termsAndConditions: payload.termsAndConditions,
-        dataProcessing: payload.personalDataProcessing,
-        emails: payload.emailNotifications,
+        dataProcessing: payload.dataProcessing,
+        emails: payload.emails,
       };
       return patch('API', `/users/${payload.userId}/activate`, body, context, payload.jwt);
     },
