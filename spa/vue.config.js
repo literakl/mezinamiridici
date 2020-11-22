@@ -14,7 +14,7 @@ module.exports = {
       // new BundleAnalyzerPlugin(),
     ],
   },
-  productionSourceMap: false,
+  productionSourceMap: true,
   devServer: {
     host: '0.0.0.0',
   },
