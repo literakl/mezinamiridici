@@ -1,6 +1,8 @@
 {
   "name": "between-us-drivers",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.vue"
+  ],
   "version": "0.1.0",
   "private": true,
   "scripts": {
