@@ -66,6 +66,17 @@ export default {
       };
       return post('API', '/resetPassword', body);
     },
+    ACTIVATE_USER_PROFILE: async (context, payload) => {
+      const body = {
+        email: payload.email,
+        nickname: payload.nickname,
+        password: payload.password,
+        termsAndConditions: payload.termsAndConditions,
+        dataProcessing: payload.personalDataProcessing,
+        emails: payload.emailNotifications,
+      };
+      return patch('API', `/users/${payload.userId}/activate`, body, context, payload.jwt);
+    },
     SET_SOCIAL: async (context, payload) => {
       const jwt = payload.access_token;
       const jwtData = jwtDecode(jwt);

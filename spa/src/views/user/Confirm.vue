@@ -326,10 +326,7 @@ export default {
       } else {
         // when the user try to access this page intentionally
         const profile = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
-        this.$log.debug(JSON.stringify(profile));
         this.nickname = profile.data.data.bio.nickname;
-        // this.email = profile.data.data.auth.email;
-        // this.$router.push('/');
       }
     },
     async submitForm() {
@@ -343,8 +340,8 @@ export default {
           dataProcessing: this.personalDataProcessing,
           emails: this.emailNotifications,
         });
-        this.$log.debug(JSON.stringify(data));
         if (data.success) {
+          // TODO missing update profile handler
           this.success = true;
           this.$router.push('/');
           // return true;
