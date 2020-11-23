@@ -10,7 +10,6 @@
     "buildStaging": "vue-cli-service build --mode staging",
     "buildProd": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "vue-cli-service s3-deploy",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
@@ -57,13 +56,16 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.5.1",
+    "del": "^6.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.2",
     "lint-staged": "^8.1.5",
+    "merge2": "^1.4.1",
     "sass": "^1.26.10",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-i18n": "^0.6.1",
-    "vue-cli-plugin-s3-deploy": "^3.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {
