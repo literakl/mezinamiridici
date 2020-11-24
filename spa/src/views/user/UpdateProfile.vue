@@ -15,153 +15,8 @@
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-        <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-        <b-row>
-          <Radio
-            class="pl-3"
-            v-model="share"
-            identifier="public"
-            :label="$t('profile.public')"
-            name="share-profile"/>
-          <Radio
-            class="pl-3"
-            v-model="share"
-            identifier="private"
-            :label="$t('profile.private')"
-            name="share-profile"/>
-        </b-row>
 
-        <Datepicker
-          :label="$t('profile.driving-since-label')"
-          v-model="drivingSince"
-          format="yyyy"
-          minimumView="year"
-          type="number"
-          :disabled-dates="drivingDateScope"
-          :typeable="true"
-          name="driving-since"/>
-
-        <div>
-          <label for="vehicle">{{ $t('profile.vehicles-label') }}</label>
-        </div>
-        <b-row>
-          <Checkbox
-            class="pl-3"
-            v-model="bike"
-            :label="$t('profile.vehicles.bike')"
-            name="vehicle"
-            identifier="bike"/>
-          <Checkbox
-            class="pl-3"
-            v-model="car"
-            :label="$t('profile.vehicles.car')"
-            name="vehicle"
-            identifier="car"/>
-          <Checkbox
-            class="pl-3"
-            v-model="bus"
-            :label="$t('profile.vehicles.bus')"
-            name="vehicle"
-            identifier="bus"/>
-          <Checkbox
-            class="pl-3"
-            v-model="van"
-            :label="$t('profile.vehicles.van')"
-            name="vehicle"
-            identifier="van"/>
-          <Checkbox
-            class="pl-3"
-            v-model="truck"
-            :label="$t('profile.vehicles.truck')"
-            name="vehicle"
-            identifier="truck"/>
-          <Checkbox
-            class="pl-3"
-            v-model="tramway"
-            :label="$t('profile.vehicles.tramway')"
-            name="vehicle"
-            identifier="tramway"/>
-        </b-row>
-
-        <label class="pt-3" for="sex">{{ $t('profile.sex') }}</label>
-        <b-row>
-          <Radio
-            class="pl-3"
-            v-model="sex"
-            :label="$t('profile.sexes.man')"
-            name="sex"
-            identifier="man"/>
-          <Radio
-            class="pl-3"
-            v-model="sex"
-            :label="$t('profile.sexes.woman')"
-            name="sex"
-            identifier="woman"/>
-        </b-row>
-
-        <Datepicker
-          :label="$t('profile.born')"
-          v-model="bornInYear"
-          format="yyyy"
-          type="number"
-          minimumView="year"
-          :disabled-dates="bornDateScope"
-          :typeable="true"
-          name="born"/>
-
-        <label for="region">{{ $t('profile.region') }}</label>
-        <div>
-          <select id="region" v-model="region">
-            <option value="">{{ $t('sign-up.region-options') }}</option>
-            <option value="PRG">{{ $t('profile.regions.PRG') }}</option>
-            <option value="SC">{{ $t('profile.regions.SC') }}</option>
-            <option value="JC">{{ $t('profile.regions.JC') }}</option>
-            <option value="PLS">{{ $t('profile.regions.PLS') }}</option>
-            <option value="KV">{{ $t('profile.regions.KV') }}</option>
-            <option value="UST">{{ $t('profile.regions.UST') }}</option>
-            <option value="LBR">{{ $t('profile.regions.LBR') }}</option>
-            <option value="KH">{{ $t('profile.regions.KH') }}</option>
-            <option value="PRD">{{ $t('profile.regions.PRD') }}</option>
-            <option value="VSC">{{ $t('profile.regions.VSC') }}</option>
-            <option value="JM">{{ $t('profile.regions.JM') }}</option>
-            <option value="OLM">{{ $t('profile.regions.OLM') }}</option>
-            <option value="ZLN">{{ $t('profile.regions.ZLN') }}</option>
-            <option value="MS">{{ $t('profile.regions.MS') }}</option>
-          </select>
-        </div>
-
-        <label class="pt-3" for="education">{{ $t('profile.education') }}</label>
-        <b-row class="pb-3">
-          <Radio
-            class="pl-3"
-            v-model="education"
-            :label="$t('profile.educations.primary')"
-            name="education"
-            identifier="primary"/>
-          <Radio
-            class="pl-3"
-            v-model="education"
-            :label="$t('profile.educations.secondary')"
-            name="education"
-            identifier="secondary"/>
-          <Radio
-            class="pl-3"
-            v-model="education"
-            :label="$t('profile.educations.university')"
-            name="education"
-            identifier="university"/>
-        </b-row>
-
-        <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
-        <b-row class="pb-2">
-          <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
-        </b-row>
-        <b-row class="pb-2">
-          <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
-        </b-row>
-        <b-row class="pb-2">
-          <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
-        </b-row>
+        <ProfileForm :formData="profileForm" @update="updateProfileForm"/>
 
         <div v-if="error" class="text-danger">
           {{ error }}
@@ -187,12 +42,10 @@
 <script>
 import { configure } from 'vee-validate';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
-import Datepicker from '@/components/atoms/Datepicker.vue';
+import ProfileForm from '@/components/molecules/ProfileForm.vue';
 import Button from '@/components/atoms/Button.vue';
-import Checkbox from '@/components/atoms/Checkbox.vue';
-import Radio from '@/components/atoms/Radio.vue';
 import i18n from '@/i18n';
-import { BForm, BRow, BCol, BFormInput } from 'bootstrap-vue';
+import { BForm, BRow, BCol } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
@@ -203,12 +56,12 @@ configure({
 });
 
 function setVehicles(vehicles) {
-  if (this.bike) vehicles.push('bike');
-  if (this.car) vehicles.push('car');
-  if (this.bus) vehicles.push('bus');
-  if (this.van) vehicles.push('van');
-  if (this.truck) vehicles.push('truck');
-  if (this.tramway) vehicles.push('tramway');
+  if (this.profileForm.bike) vehicles.push('bike');
+  if (this.profileForm.car) vehicles.push('car');
+  if (this.profileForm.bus) vehicles.push('bus');
+  if (this.profileForm.van) vehicles.push('van');
+  if (this.profileForm.truck) vehicles.push('truck');
+  if (this.profileForm.tramway) vehicles.push('tramway');
 }
 
 function convertErrors(jsonErrors) {
@@ -228,40 +81,31 @@ export default {
   name: 'sign-up',
   components: {
     ContentLoading,
-    Datepicker,
-    Checkbox,
+    ProfileForm,
     Button,
-    Radio,
     BForm,
     BRow,
     BCol,
-    BFormInput,
   },
   data: () => ({
     userProfile: null,
-    drivingSince: null,
-    bike: false,
-    car: false,
-    bus: false,
-    van: false,
-    truck: false,
-    tramway: false,
-    sex: null,
-    bornInYear: null,
-    region: '',
-    education: '',
-    share: 'public',
-    drivingDateScope: {
-      to: new Date(1935, 0, 1),
-      from: new Date(),
-    },
-    bornDateScope: {
-      to: new Date(1915, 0, 1),
-      from: new Date(),
-    },
     error: null,
     success: null,
-    urls: ['', '', ''],
+    profileForm: {
+      drivingSince: null,
+      bike: false,
+      car: false,
+      bus: false,
+      van: false,
+      truck: false,
+      tramway: false,
+      sex: null,
+      bornInYear: null,
+      region: '',
+      education: '',
+      share: 'public',
+      urls: ['', '', ''],
+    },
   }),
   created() {
     this.getProfile(this.$store.getters.USER_ID);
@@ -273,38 +117,38 @@ export default {
         this.userProfile = response.data.data;
         if (this.userProfile.driving.since) {
           if (this.userProfile.bio.born) {
-            this.drivingSince = new Date(this.userProfile.driving.since, 0, 1);
+            this.profileForm.drivingSince = new Date(this.userProfile.driving.since, 0, 1);
           }
 
           if (this.userProfile.driving.vehicles) {
-            this.bike = this.userProfile.driving.vehicles.includes('bike');
-            this.car = this.userProfile.driving.vehicles.includes('car');
-            this.bus = this.userProfile.driving.vehicles.includes('bus');
-            this.van = this.userProfile.driving.vehicles.includes('van');
-            this.truck = this.userProfile.driving.vehicles.includes('truck');
-            this.tramway = this.userProfile.driving.vehicles.includes('tramway');
+            this.profileForm.bike = this.userProfile.driving.vehicles.includes('bike');
+            this.profileForm.car = this.userProfile.driving.vehicles.includes('car');
+            this.profileForm.bus = this.userProfile.driving.vehicles.includes('bus');
+            this.profileForm.van = this.userProfile.driving.vehicles.includes('van');
+            this.profileForm.truck = this.userProfile.driving.vehicles.includes('truck');
+            this.profileForm.tramway = this.userProfile.driving.vehicles.includes('tramway');
           }
         }
-        this.sex = this.userProfile.bio.sex;
+        this.profileForm.sex = this.userProfile.bio.sex;
         if (this.userProfile.bio.born) {
-          this.bornInYear = new Date(this.userProfile.bio.born, 0, 1);
+          this.profileForm.bornInYear = new Date(this.userProfile.bio.born, 0, 1);
         }
-        this.region = this.userProfile.bio.region;
-        this.education = this.userProfile.bio.edu;
-        this.share = this.userProfile.prefs.public ? 'public' : 'private';
+        this.profileForm.region = this.userProfile.bio.region;
+        this.profileForm.education = this.userProfile.bio.edu;
+        this.profileForm.share = this.userProfile.prefs.public ? 'public' : 'private';
 
-        this.urls = this.userProfile.bio.urls;
-        if (this.urls) {
-          this.urls = this.urls.map(x => encodeURI(x));
+        this.profileForm.urls = this.userProfile.bio.urls;
+        if (this.profileForm.urls) {
+          this.profileForm.urls = this.profileForm.urls.map(x => encodeURI(x));
           // eslint-disable-next-line no-console
-          console.log(this.urls);
+          console.log(this.profileForm.urls);
         }
-        if (!this.urls || this.urls.length === 0) {
-          this.urls = ['', '', ''];
-        } else if (this.urls.length === 1) {
-          this.urls.push('', '');
-        } else if (this.urls.length === 2) {
-          this.urls.push('');
+        if (!this.profileForm.urls || this.profileForm.urls.length === 0) {
+          this.profileForm.urls = ['', '', ''];
+        } else if (this.profileForm.urls.length === 1) {
+          this.profileForm.urls.push('', '');
+        } else if (this.profileForm.urls.length === 2) {
+          this.profileForm.urls.push('');
         }
       } catch (err) {
         this.$log.error(err);
@@ -322,14 +166,14 @@ export default {
         await this.$store.dispatch('UPDATE_USER_PROFILE', {
           jwt: this.$store.getters.USER_TOKEN,
           userId: this.userProfile._id,
-          drivingSince: (this.drivingSince) ? new Date(this.drivingSince).getFullYear() : null,
+          drivingSince: (this.profileForm.drivingSince) ? new Date(this.profileForm.drivingSince).getFullYear() : null,
           vehicle: vehicles,
-          sex: this.sex,
-          bornInYear: (this.bornInYear) ? new Date(this.bornInYear).getFullYear() : null,
-          region: this.region,
-          education: this.education,
-          publicProfile: this.share,
-          urls: this.urls,
+          sex: this.profileForm.sex,
+          bornInYear: (this.profileForm.bornInYear) ? new Date(this.profileForm.bornInYear).getFullYear() : null,
+          region: this.profileForm.region,
+          education: this.profileForm.education,
+          publicProfile: this.profileForm.share,
+          urls: this.profileForm.urls,
         });
         await this.$router.push({ name: 'user-profile', params: { id: this.userProfile._id } });
       } catch (error) {
@@ -340,6 +184,15 @@ export default {
           this.$refs.form.setErrors(veeErrors);
         } else {
           this.error = this.$t('sign-up.something-went-wrong');
+        }
+      }
+    },
+    updateProfileForm(obj) {
+      // eslint-disable-next-line
+      for (const property in this.profileForm) {
+      // eslint-disable-next-line
+        if (obj.hasOwnProperty(property)) {
+          this.profileForm[property] = obj[property];
         }
       }
     },
