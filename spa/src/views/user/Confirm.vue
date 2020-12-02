@@ -125,7 +125,7 @@ function convertErrors(jsonErrors) {
 }
 
 export default {
-  name: 'confirm',
+  name: 'Confirm',
   components: {
     Checkbox,
     TextInput,
@@ -163,7 +163,6 @@ export default {
   },
   methods: {
     async getProfile(id) {
-      this.$log.debug('[getProfile] ', id);
       if (this.$store.getters.USER_EMAIL !== undefined && this.$store.getters.USER_EMAIL !== null) {
         this.email = this.$store.getters.USER_EMAIL;
         this.nickname = this.$store.getters.USER_NICKNAME;

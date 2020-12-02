@@ -70,7 +70,7 @@ function convertErrors(jsonErrors) {
 }
 
 export default {
-  name: 'sign-up',
+  name: 'UpdateProfile',
   components: {
     ContentLoading,
     ProfileForm,
@@ -105,11 +105,10 @@ export default {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
-        if (this.userProfile.driving.since) {
-          if (this.userProfile.bio.born) {
+        if (this.userProfile.driving) {
+          if (this.userProfile.driving.since) {
             this.profileForm.drivingSince = new Date(this.userProfile.driving.since, 0, 1);
           }
-
           if (this.userProfile.driving.vehicles) {
             this.profileForm.bike = this.userProfile.driving.vehicles.includes('bike');
             this.profileForm.car = this.userProfile.driving.vehicles.includes('car');
@@ -119,6 +118,7 @@ export default {
             this.profileForm.tramway = this.userProfile.driving.vehicles.includes('tramway');
           }
         }
+
         this.profileForm.sex = this.userProfile.bio.sex;
         if (this.userProfile.bio.born) {
           this.profileForm.bornInYear = new Date(this.userProfile.bio.born, 0, 1);

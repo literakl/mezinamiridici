@@ -161,7 +161,7 @@ function convertErrors(jsonErrors) {
 }
 
 export default {
-  name: 'sign-up',
+  name: 'SignUp',
   components: {
     Checkbox,
     TextInput,
