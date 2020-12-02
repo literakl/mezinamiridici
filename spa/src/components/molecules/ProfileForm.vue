@@ -1,7 +1,7 @@
 <template>
   <div>
     <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-    <b-row>
+    <div>
       <Radio
         class="pl-3"
         v-model="share"
@@ -14,7 +14,7 @@
         identifier="private"
         :label="$t('profile.private')"
         name="share-profile"/>
-    </b-row>
+    </div>
 
     <Datepicker
       :label="$t('profile.driving-since-label')"
@@ -29,7 +29,7 @@
     <div>
       <label for="vehicle">{{ $t('profile.vehicles-label') }}</label>
     </div>
-    <b-row>
+    <div>
       <Checkbox
         class="pl-3"
         v-model="bike"
@@ -66,10 +66,10 @@
         :label="$t('profile.vehicles.tramway')"
         name="vehicle"
         identifier="tramway"/>
-    </b-row>
+    </div>
 
     <label class="pt-3" for="sex">{{ $t('profile.sex') }}</label>
-    <b-row>
+    <div>
       <Radio
         class="pl-3"
         v-model="sex"
@@ -82,7 +82,7 @@
         :label="$t('profile.sexes.woman')"
         name="sex"
         identifier="woman"/>
-    </b-row>
+    </div>
 
     <Datepicker
       :label="$t('profile.born')"
@@ -116,7 +116,7 @@
     </div>
 
     <label class="pt-3" for="education">{{ $t('profile.education') }}</label>
-    <b-row class="pb-3">
+    <div class="pb-3">
       <Radio
         class="pl-3"
         v-model="education"
@@ -135,18 +135,18 @@
         :label="$t('profile.educations.university')"
         name="education"
         identifier="university"/>
-    </b-row>
+    </div>
 
     <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
-    <b-row class="pb-2">
+    <div class="pb-2">
       <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
-    </b-row>
-    <b-row class="pb-2">
+    </div>
+    <div class="pb-2">
       <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
-    </b-row>
-    <b-row class="pb-2">
+    </div>
+    <div class="pb-2">
       <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
-    </b-row>
+    </div>
   </div>
 </template>
 
@@ -154,14 +154,13 @@
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
-import { BRow, BFormInput } from 'bootstrap-vue';
+import { BFormInput } from 'bootstrap-vue';
 
 export default {
   components: {
     Datepicker,
     Checkbox,
     Radio,
-    BRow,
     BFormInput,
   },
   props: {
