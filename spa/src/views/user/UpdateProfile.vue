@@ -1,15 +1,8 @@
 <template>
   <div class="pt-3 w-75 m-auto pb-5">
-    <b-row>
-      <b-col>
-        <h2>{{ $t('edit-profile.heading') }}</h2>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <p>{{ $t('edit-profile.body') }}</p>
-      </b-col>
-    </b-row>
+    <h2>{{ $t('edit-profile.heading') }}</h2>
+
+    <p>{{ $t('edit-profile.body') }}</p>
 
     <ContentLoading v-if="!userProfile && !error" type="profile" />
 
@@ -21,15 +14,14 @@
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
-        <b-row class="mb-1">
-          <b-col md="4" sm="12">
-            <Button
-              class="w-100"
-              :disabled="invalid"
-              :value="$t('edit-profile.save-button')"
-              @clicked="submitForm()"/>
-          </b-col>
-        </b-row>
+
+        <div class="col-sm-12 col-md-4">
+          <Button
+            class="w-100"
+            :disabled="invalid"
+            :value="$t('edit-profile.save-button')"
+            @clicked="submitForm()"/>
+        </div>
       </b-form>
     </ValidationObserver>
 
@@ -45,7 +37,7 @@ import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import ProfileForm from '@/components/molecules/ProfileForm.vue';
 import Button from '@/components/atoms/Button.vue';
 import i18n from '@/i18n';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
+import { BForm } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
@@ -84,8 +76,6 @@ export default {
     ProfileForm,
     Button,
     BForm,
-    BRow,
-    BCol,
   },
   data: () => ({
     userProfile: null,
@@ -140,8 +130,6 @@ export default {
         this.profileForm.urls = this.userProfile.bio.urls;
         if (this.profileForm.urls) {
           this.profileForm.urls = this.profileForm.urls.map(x => encodeURI(x));
-          // eslint-disable-next-line no-console
-          console.log(this.profileForm.urls);
         }
         if (!this.profileForm.urls || this.profileForm.urls.length === 0) {
           this.profileForm.urls = ['', '', ''];

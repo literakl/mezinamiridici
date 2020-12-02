@@ -1,15 +1,9 @@
 <template>
   <div class="pt-3 w-75 m-auto pb-5">
-    <b-row>
-      <b-col>
-        <h1>{{ $t('sign-up.heading') }}</h1>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <p>{{ $t('sign-up.body') }}</p>
-      </b-col>
-    </b-row>
+    <h1>{{ $t('sign-up.heading') }}</h1>
+
+    <p>{{ $t('sign-up.body') }}</p>
+
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
         <fieldset :disabled='wholeDisable'>
@@ -79,26 +73,22 @@
           </strong>
         </div>
 
-        <b-row>
-          <b-col md="4" sm="12">
-            <Button
-              class="w-100"
-              :waiting="sending"
-              :disabled="invalid"
-              :value="$t('sign-up.finished-button-label')"
-              @clicked="submitForm()"
-            />
-          </b-col>
-        </b-row>
+        <div class="col-sm-12 col-md-4">
+          <Button
+            class="w-100"
+            :waiting="sending"
+            :disabled="invalid"
+            :value="$t('sign-up.finished-button-label')"
+            @clicked="submitForm()"
+          />
+        </div>
         </fieldset>
       </b-form>
     </ValidationObserver>
 
-    <b-row v-if="success === true">
-      <b-col>
-        <p>{{ $t('sign-up.success-message') }}</p>
-      </b-col>
-    </b-row>
+    <div v-if="success === true">
+      {{ $t('sign-up.success-message') }}
+    </div>
   </div>
 </template>
 
@@ -110,7 +100,7 @@ import Checkbox from '@/components/atoms/Checkbox.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import ProfileForm from '@/components/molecules/ProfileForm.vue';
 import i18n from '@/i18n';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
+import { BForm } from 'bootstrap-vue';
 import Vue from 'vue';
 import store from '../../store';
 
@@ -177,8 +167,6 @@ export default {
     TextInput,
     Button,
     BForm,
-    BRow,
-    BCol,
     ProfileForm,
   },
   props: {
