@@ -33,15 +33,13 @@
               {{ error }}
             </strong>
           </div>
-          <b-row>
-            <b-col md="4" sm=12>
-              <Button
-                class="w-100"
-                :disabled="invalid"
-                :value="$t('sign-in.change-password-button')"
-                @clicked="changePassword"/>
-            </b-col>
-          </b-row>
+          <div class="col-sm-12 col-md-4">
+            <Button
+              class="w-100"
+              :disabled="invalid"
+              :value="$t('sign-in.change-password-button')"
+              @clicked="changePassword"/>
+          </div>
         </div>
       </b-form>
     </ValidationObserver>
@@ -52,7 +50,7 @@
 import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
+import { BForm } from 'bootstrap-vue';
 import i18n from '../../i18n';
 
 configure({
@@ -69,8 +67,6 @@ export default {
     Button,
     TextInput,
     BForm,
-    BRow,
-    BCol,
   },
   data: () => ({
     email: null,
