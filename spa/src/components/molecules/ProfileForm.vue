@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="container">
     <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-    <div>
+    <div class="row">
       <Radio
         class="pl-3"
         v-model="share"
@@ -29,7 +29,7 @@
     <div>
       <label for="vehicle">{{ $t('profile.vehicles-label') }}</label>
     </div>
-    <div>
+    <div class="row">
       <Checkbox
         class="pl-3"
         v-model="bike"
@@ -68,8 +68,10 @@
         identifier="tramway"/>
     </div>
 
-    <label class="pt-3" for="sex">{{ $t('profile.sex') }}</label>
     <div>
+      <label class="pt-3" for="sex">{{ $t('profile.sex') }}</label>
+    </div>
+    <div class="row">
       <Radio
         class="pl-3"
         v-model="sex"
@@ -94,8 +96,10 @@
       :typeable="true"
       name="born"/>
 
-    <label for="region">{{ $t('profile.region') }}</label>
     <div>
+      <label for="region">{{ $t('profile.region') }}</label>
+    </div>
+    <div class="row">
       <select id="region" v-model="region">
         <option value="">{{ $t('sign-up.region-options') }}</option>
         <option value="PRG">{{ $t('profile.regions.PRG') }}</option>
@@ -115,8 +119,10 @@
       </select>
     </div>
 
-    <label class="pt-3" for="education">{{ $t('profile.education') }}</label>
-    <div class="pb-3">
+    <div>
+      <label class="pt-3" for="education">{{ $t('profile.education') }}</label>
+    </div>
+    <div class="row pb-3">
       <Radio
         class="pl-3"
         v-model="education"
@@ -137,7 +143,9 @@
         identifier="university"/>
     </div>
 
-    <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
+    <div>
+      <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
+    </div>
     <div class="pb-2">
       <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
     </div>
@@ -157,6 +165,7 @@ import Radio from '@/components/atoms/Radio.vue';
 import { BFormInput } from 'bootstrap-vue';
 
 export default {
+  name: 'ProfileForm',
   components: {
     Datepicker,
     Checkbox,

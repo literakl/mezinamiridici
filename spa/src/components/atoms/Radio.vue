@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div>
     <b-form-radio
       type="radio"
       :id="identifier"
@@ -10,7 +10,7 @@
       v-model="selected">
         {{label}}
     </b-form-radio>
-  </span>
+  </div>
 </template>
 
 <script>
