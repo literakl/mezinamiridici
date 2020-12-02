@@ -10,7 +10,7 @@
         <div>
           <h2>{{ userProfile.bio.nickname }}</h2>
 
-          <div v-if="userProfile.prefs.public">
+          <div v-if="userProfile.prefs.public && userProfile.bio.region">
             <BIconGeoAlt font-scale="2"></BIconGeoAlt>
             <span>{{$t(`profile.regions.${userProfile.bio.region}`)}}</span>
           </div>
@@ -24,7 +24,7 @@
 
       <b-tabs content-class="mt-3">
         <b-tab :title="$t('profile.tabs.summary')" active>
-          <b-col>
+          <div>
             <div>
               {{ $t('profile.rank-label') }}: {{ $t(`profile.rank.${userProfile.honors.rank}`) }}
             </div>
@@ -58,7 +58,7 @@
                 {{ $t('profile.education') }}: {{ $t('profile.educations.' + userProfile.bio.edu) }}
               </div>
             </dl>
-          </b-col>
+          </div>
         </b-tab>
 
         <b-tab :title="$t('profile.tabs.activity')">
@@ -83,7 +83,7 @@ import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
 import UserActivity from '@/components/organisms/UserActivity.vue';
 import ChangePassword from '@/components/organisms/ChangePassword.vue';
-import { BTabs, BTab, BCol, BAvatar, BIconGeoAlt, BIconLink } from 'bootstrap-vue';
+import { BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink } from 'bootstrap-vue';
 
 export default {
   name: 'profile',
@@ -95,7 +95,6 @@ export default {
     Date,
     BTabs,
     BTab,
-    BCol,
     BAvatar,
     BIconGeoAlt,
     BIconLink,
