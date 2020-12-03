@@ -75,7 +75,6 @@ function createComment(itemId, source, user, parentId, date) {
     itemId,
     parentId: parentId || undefined,
     date,
-    source,
     text,
     up: 0,
     down: 0,
