@@ -45,7 +45,6 @@ module.exports = (app) => {
       const blogId = mongo.generateTimeId();
       await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
-      mongo.storeUserActivity(dbClient, user.userId, blogId, 'create', undefined, undefined);
       logger.debug('Blog inserted');
 
       const blog = await mongo.getBlog(dbClient, undefined, blogId);

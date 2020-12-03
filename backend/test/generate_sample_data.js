@@ -50,7 +50,6 @@ async function generateData() {
     dropCollection(db, 'items');
     dropCollection(db, 'comments');
     dropCollection(db, 'comment_votes');
-    dropCollection(db, 'user_activity');
     await setup(dbClient, api);
     await mongo.setupIndexes(dbClient);
   } catch (e) {

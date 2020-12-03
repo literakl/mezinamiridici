@@ -38,7 +38,6 @@ module.exports = (app) => {
       const comment = createComment(itemId, source, req.identity, parentId, publishDate);
       await dbClient.db().collection('comments').insertOne(comment);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'comment', 'create');
-      mongo.storeUserActivity(dbClient, comment.user.id, itemId, 'comment', undefined, comment._id);
       logger.debug('Comment inserted');
 
       const update = { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } };
@@ -80,7 +79,7 @@ function createComment(itemId, source, user, parentId, date) {
     text,
     up: 0,
     down: 0,
-    user: {
+    author: {
       id: user.userId,
       nickname: user.nickname,
     },

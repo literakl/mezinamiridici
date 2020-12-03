@@ -37,7 +37,6 @@ module.exports = (app) => {
       await insertPollVote(dbClient, pollId, vote, user);
       await incrementPoll(dbClient, pollId, vote);
       await mongo.incrementUserActivityCounter(dbClient, user._id, 'poll', 'vote');
-      mongo.storeUserActivity(dbClient, user._id, pollId, 'vote', vote);
       logger.debug('Vote recorded');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(user._id, pollId)];

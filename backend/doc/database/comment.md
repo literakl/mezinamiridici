@@ -6,14 +6,10 @@
 * up: number of upvotes; required
 * down: number of downvotes; required
 
-## User section
+## Author section
 * id: user id
 * nickname: user nickname
 
 # Comment vote object
 * commentId: id of associated comment object; required, indexed
 * vote: values: 1 for upvote, -1 for downvote
-
-## User section
-* id: user id
-* nickname: user nickname

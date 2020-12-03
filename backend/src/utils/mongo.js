@@ -150,22 +150,6 @@ async function incrementUserActivityCounter(dbClient, userId, type, action) {
   return dbClient.db().collection('users').updateOne({ _id: userId }, update);
 }
 
-function storeUserActivity(dbClient, userId, itemId, action, vote, commentId) {
-  const body = {
-    userId,
-    date: new Date(),
-    itemId,
-    action,
-  };
-  if (commentId) {
-    body.commentId = commentId;
-  }
-  if (vote) {
-    body.vote = vote;
-  }
-  return dbClient.db().collection('user_activity').insertOne(body);
-}
-
 async function getBlog(dbClient, slug, blogId) {
   if (blogId) {
     return dbClient.db().collection('items').findOne({ _id: blogId });
@@ -230,8 +214,6 @@ function setupIndexes(dbClient) {
   db.collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
   db.collection('link_shares').createIndex({ user: 1 });
   db.collection('link_shares').createIndex({ date: 1 });
-  db.collection('user_activity').createIndex({ userId: 1 });
-  db.collection('user_activity').createIndex({ date: 1 });
 }
 
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
@@ -276,5 +258,4 @@ exports.stageId = stageId;
 exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
-exports.storeUserActivity = storeUserActivity;
 exports.incrementUserActivityCounter = incrementUserActivityCounter;

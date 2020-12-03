@@ -11,8 +11,8 @@
 * tags: array of tags
 
 ### Author section
-* nickname: user nickname
 * id: user id
+* nickname: user nickname
 
 ## Data section
 * depends on type of object
