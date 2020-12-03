@@ -8,7 +8,7 @@ const mongo = require('../src/utils/mongo.js');
 const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
 const {
-  api, bff, getAuthHeader, resetHonors,
+  api, getAuthHeader, resetHonors,
 } = require('./testUtils');
 const {
   setup, Leos, Lukas, Jana,
@@ -21,83 +21,77 @@ test('User activity API', async (done) => {
   jest.setTimeout(180000);
 
   // create first poll
-  const firstPoll = {
+  const poll1 = {
     text: 'First question',
     picture: 'picture.png',
   };
-  let response = await api('polls', { method: 'POST', json: firstPoll, headers: getAuthHeader(Leos.jwt) }).json();
+  let response = await api('polls', { method: 'POST', json: poll1, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
-  firstPoll.id = response.data._id;
+  poll1.id = response.data._id;
+  poll1.published = true;
+  response = await api(`polls/${poll1.id}`, { method: 'PATCH', json: poll1, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
 
   // create second poll
-  const secondPoll = {
+  const poll2 = {
     text: 'Second question',
+    picture: 'picture.png',
+  };
+  response = await api('polls', { method: 'POST', json: poll2, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  poll2.id = response.data._id;
+  poll2.published = true;
+  response = await api(`polls/${poll2.id}`, { method: 'PATCH', json: poll2, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+
+  // create third poll, not published
+  const poll3 = {
+    text: 'Third question',
+    picture: 'picture.png',
+  };
+  response = await api('polls', { method: 'POST', json: poll3, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  poll3.id = response.data._id;
+
+  // create fourth poll, published, but different user
+  const poll4 = {
+    text: 'Fourth question',
     picture: 'picture.png',
     author: Jana._id,
   };
-  response = await api('polls', { method: 'POST', json: secondPoll, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api('polls', { method: 'POST', json: poll4, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
-  secondPoll.id = response.data._id;
-
-  // vote in both polls
-  let body = { vote: 'neutral' };
-  response = await bff(`polls/${firstPoll.id}/votes`, { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(response.success).toBeTruthy();
-  body = { vote: 'hate' };
-  response = await bff(`polls/${secondPoll.id}/votes`, { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  poll4.id = response.data._id;
+  poll4.published = true;
+  response = await api(`polls/${poll4.id}`, { method: 'PATCH', json: poll4, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
   // create two comments, different users
-  const commentBody = { source: {
-    time: 1599551274438,
-    version: '2.18.0',
-    blocks: [
-      {
-        type: 'paragraph',
-        data: {
-          text: 'This is test paragraph.',
-        },
-      },
-      {
-        type: 'header',
-        data: {
-          text: 'This is Header.',
-          level: 3,
-        },
-      },
-    ],
-  } };
-  const comment1 = await api(`items/${firstPoll.id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(comment1.success).toBeTruthy();
-  commentBody.text = 'Comment 2';
-  const comment2 = await api(`items/${secondPoll.id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(comment2.success).toBeTruthy();
+  const commentBody = { source: '<h3>This is Header.</h3><p>This is test paragraph.</p>' };
+  response = await api(`items/${poll1.id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  const comment1 = response.data;
 
-  // vote for the comment
-  const voteBody = { vote: 1 };
-  const voteResponse = await api(`comments/${comment2.data.comment._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(voteResponse.success).toBeTruthy();
+  commentBody.text = 'Comment 2';
+  response = await api(`items/${poll2.id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  // const comment2 = response.data;
 
   // todo write blog
 
-  response = await api(`users/${Leos._id}/activity`).json();
+  response = await api(`users/${Leos._id}/activity?type=poll`).json();
   expect(response.success).toBeTruthy();
-  expect(response.data.length).toBe(4);
-  expect(response.data[0].userId).toBe(Leos._id);
-  expect(response.data[0].itemId).toBe(firstPoll.id);
-  expect(response.data[0].action).toBe('vote');
-  expect(response.data[0].info.caption).toBe(firstPoll.text);
-  expect(response.data[1].itemId).toBe(secondPoll.id);
-  expect(response.data[1].action).toBe('vote');
-  expect(response.data[1].info.caption).toBe(secondPoll.text);
-  expect(response.data[2].itemId).toBe(firstPoll.id);
-  expect(response.data[2].info.caption).toBe(firstPoll.text);
-  expect(response.data[2].action).toBe('comment');
-  expect(response.data[2].commentId).toBe(comment1.data.comment._id);
-  expect(response.data[3].itemId).toBe(secondPoll.id);
-  expect(response.data[3].info.caption).toBe(secondPoll.text);
-  expect(response.data[3].action).toBe('vote');
-  expect(response.data[3].commentId).toBe(comment2.data.comment._id);
+  expect(response.data.length).toBe(2);
+  expect(response.data[0]._id).toBe(poll1.id);
+  expect(response.data[0].info.caption).toBe(poll1.text);
+  expect(response.data[1]._id).toBe(poll2.id);
+  expect(response.data[1].info.caption).toBe(poll2.text);
+
+  response = await api(`users/${Leos._id}/activity?type=comment`).json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.length).toBe(1);
+  expect(response.data[0]._id).toBe(comment1.comment._id);
+  expect(response.data[0].text).toBe('This is Header.\n\nThis is test paragraph.');
 
   done();
 });
@@ -105,8 +99,7 @@ test('User activity API', async (done) => {
 beforeEach(async () => {
   await dbClient.db().collection('items').deleteMany({});
   await dbClient.db().collection('polls').deleteMany({});
-  await dbClient.db().collection('poll_votes').deleteMany({});
-  await dbClient.db().collection('user_activity').deleteMany({});
+  await dbClient.db().collection('comments').deleteMany({});
 });
 
 beforeAll(async () => {

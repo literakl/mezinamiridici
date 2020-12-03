@@ -141,6 +141,27 @@ function parseListParams(req, defaultSortField, defaultSortOrder, defaultPageSiz
   return result;
 }
 
+function parseStreamParams(req, defaultPageSize, maxPageSize) {
+  const { start, ps } = req.query;
+  const result = {};
+
+  if (!start) {
+    result.start = 0;
+  } else {
+    result.start = Number(start);
+  }
+
+  if (!ps) {
+    result.pageSize = defaultPageSize;
+  } else if (ps > maxPageSize) {
+    result.pageSize = maxPageSize;
+  } else {
+    result.pageSize = Number(ps);
+  }
+
+  return result;
+}
+
 function parsePollFilterParams(req) {
   const result = {};
   // eslint-disable-next-line no-restricted-syntax
@@ -217,6 +238,7 @@ module.exports.addValidationError = addValidationError;
 module.exports.createError = createError;
 module.exports.createResponse = createResponse;
 module.exports.parseListParams = parseListParams;
+module.exports.parseStreamParams = parseStreamParams;
 module.exports.parsePollFilterParams = parsePollFilterParams;
 module.exports.sendRedirectFound = sendRedirectFound;
 module.exports.parseDate = parseDate;

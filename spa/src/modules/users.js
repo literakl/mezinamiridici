@@ -196,7 +196,9 @@ export default {
     },
     FETCH_USER_ACTIVITY: async (context, payload) => {
       Vue.$log.debug('FETCH_USER_ACTIVITY');
-      const response = await get('API', `/users/${payload.userId}/activity`, context);
+      const { start, size, type } = payload;
+      const url = `/users/${payload.userId}/activity?start=${start}&ps=${size}&type=${type}`;
+      const response = await get('API', url, context);
       context.commit('SET_USER_ACTIVITY', response.data.data);
       return response.data.success;
     },

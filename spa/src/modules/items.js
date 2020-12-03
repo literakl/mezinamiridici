@@ -129,7 +129,7 @@ export default {
       return response.data;
     },
     GET_ITEM_STREAM: async (context, payload) => {
-      Vue.$log.debug(`GET_ITEM_STREAM ${JSON.stringify(payload)}`);
+      Vue.$log.debug('GET_ITEM_STREAM');
       const { start, size, tag } = payload;
       let url = `/item-stream?start=${start}&ps=${size}`;
       if (tag) {
