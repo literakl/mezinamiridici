@@ -40,25 +40,7 @@ test('Comments API', async (done) => {
   expect(comments.data.incomplete).toBeFalsy();
 
   const commentBody = {
-    source: {
-      time: 1599551274438,
-      version: '2.18.0',
-      blocks: [
-        {
-          type: 'paragraph',
-          data: {
-            text: 'This is test paragraph.',
-          },
-        },
-        {
-          type: 'header',
-          data: {
-            text: 'This is Header.',
-            level: 3,
-          },
-        },
-      ],
-    },
+    source: '<h3>This is Header.</h3><p>This is test paragraph.</p>',
     date: dayjs(poll.data.info.date).add(10, 'minute').format(DATE_FORMAT),
   };
   const comment1 = await api(`items/${poll.data._id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();

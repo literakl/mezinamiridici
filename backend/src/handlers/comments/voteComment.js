@@ -29,12 +29,12 @@ module.exports = (app) => {
         return api.sendConflict(res, api.createError('You have already voted.', 'generic.internal-error'));
       }
 
-      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, user: 1, itemId: 1 } });
+      const comment = await dbClient.db().collection('comments').findOne({ _id: commentId }, { projection: { _id: 1, author: 1, itemId: 1 } });
       logger.debug('Item fetched');
       if (!comment || !comment._id) {
         return api.sendNotFound(res, api.createError('Comment not found', 'generic.internal-error'));
       }
-      if (comment.user !== undefined && comment.user.id === req.identity.userId) {
+      if (comment.author !== undefined && comment.author.id === req.identity.userId) {
         return api.sendBadRequest(res, api.createError('You can not vote your own comment.', 'generic.internal-error'));
       }
 
