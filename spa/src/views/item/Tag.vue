@@ -15,14 +15,14 @@
     </vue-word-cloud>
 
     <ContentLoading v-if="! items" type="items"/>
-    <ItemList :tag="tag" v-if="tag"/>
+    <ItemList v-if="tag" :tag="tag"/>
   </div>
 </template>
 
 <script>
 import VueWordCloud from 'vuewordcloud';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
-import ItemList from '@/components/molecules/ItemList.vue';
+import ItemList from '@/components/organisms/ItemList.vue';
 
 export default {
   name: 'Tag',

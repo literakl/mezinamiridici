@@ -62,7 +62,7 @@ configure({
 });
 
 export default {
-  name: 'signin',
+  name: 'ChangePassword',
   components: {
     Button,
     TextInput,

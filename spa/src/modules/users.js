@@ -10,7 +10,6 @@ export default {
     userNickname: null,
     userRole: null,
     userEmail: null,
-    userActivity: null,
   }),
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -19,7 +18,6 @@ export default {
     USER_NICKNAME: state => state.userNickname,
     USER_ROLE: state => state.userRole,
     USER_EMAIL: state => state.userEmail,
-    USER_ACTIVITY: state => state.userActivity,
   },
   mutations: {
     SET_AUTHORIZED: (state, payload) => {
@@ -39,9 +37,6 @@ export default {
     },
     SET_USER_EMAIL: (state, payload) => {
       state.userEmail = payload;
-    },
-    SET_USER_ACTIVITY: (state, payload) => {
-      state.userActivity = payload;
     },
   },
   actions: {
@@ -196,11 +191,10 @@ export default {
     },
     FETCH_USER_ACTIVITY: async (context, payload) => {
       Vue.$log.debug('FETCH_USER_ACTIVITY');
-      const { start, size, type } = payload;
-      const url = `/users/${payload.userId}/activity?start=${start}&ps=${size}&type=${type}`;
+      const { start, size, userId, type } = payload;
+      const url = `/users/${userId}/activity?start=${start}&ps=${size}&type=${type}`;
       const response = await get('API', url, context);
-      context.commit('SET_USER_ACTIVITY', response.data.data);
-      return response.data.success;
+      return response.data.data;
     },
     FETCH_USER_INFO: async (context, payload) => {
       Vue.$log.debug('FETCH_USER_INFO');

@@ -1,111 +1,84 @@
 <template>
-  <b-container fluid="true" class="pt-3 w-100 m-auto">
-    <div id="table">
-      <div class="header">
-        <span class="no">No</span>
-        <span class="date">Date</span>
-        <span class="writer">Action</span>
-        <span class="title">Content</span>
-      </div>
-      <div class="container">
-        <GridLayout
-          ref="ig"
-          :options="{
-            align: 'center',
-            isConstantSize: true,
-            transitionDuration: 0.2,
-            isOverflowScroll: false,
-          }"
-          @append="onAppend"
-          @layout-complete="onLayoutComplete"
-          v-if="activityData"
-        >
-          <div slot="loading">{{ $t('generic.loading-message') }}</div>
-          <div class="post" v-for="item in list" :key="item.key">
-            <span class="no">{{item.key + 1}}</span>
-            <span class="date">{{item.data.date}}</span>
-            <span class="writer">{{item.data.tags}}</span>
-            <span class="title">{{item.data.text}}</span>
-          </div>
-        </GridLayout>
-      </div>
+  <div>
+    xxx
+    <div v-for="item in list" :key="item._id" :groupKey="item.groupKey">
+      aaa
     </div>
-  </b-container>
+    <GridLayout
+      ref="ig"
+      :options="options"
+      :layoutOptions="layoutOptions"
+      @append="onAppend"
+      @layout-complete="onLayoutComplete"
+    >
+      <div v-for="item in list" :key="item._id" :groupKey="item.groupKey">
+        <Date :date="item.info.date" format="dynamicDate" />
+        <router-link :to="{ name: 'blog', params: { slug: item.info.slug, id: item.info.author.id } }">
+          {{ item.info.caption }}
+        </router-link>
+      </div>
+    </GridLayout>
+    zzz
+  </div>
 </template>
 
 <script>
 import { GridLayout } from '@egjs/vue-infinitegrid';
-import { BContainer } from 'bootstrap-vue';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'UserActivity',
   components: {
     GridLayout,
-    BContainer,
+    Date,
   },
   props: {
     userId: String,
   },
-  data: () => ({
-    start: 0,
-    loading: false,
-    activityList: [],
-    list: [],
-  }),
-  computed: {
-    activityData() {
-      return this.$store.getters.USER_ACTIVITY;
-    },
-  },
-  watch: {
-    activityData() {
-      this.activityList = this.getActivityData(this.activityData);
-    },
-    list() {
-      if (this.list.length === this.activityList.length) this.$refs.ig.layout();
-    },
-  },
-  created() {
-    this.$store.dispatch('FETCH_USER_ACTIVITY', { userId: this.userId });
+  data() {
+    return {
+      filter: 'blog',
+      start: 0,
+      pageSize: 10,
+      hasEnded: false,
+      list: [],
+      options: {
+        // isOverflowScroll: false,
+        // useFit: true,
+        // useRecycle: true,
+        isConstantSize: true,
+        horizontal: false,
+        align: 'center',
+        transitionDuration: 0.2,
+      },
+      layoutOptions: {
+        margin: 15,
+        align: 'center',
+      },
+    };
   },
   methods: {
-    getActivityData(data) {
-      const arr = [];
-      data.forEach((item) => {
-        const vote = (item.vote === 1) ? 'up' : 'down';
-        arr.push({
-          text: `${item.info.caption}`,
-          date: new Date(item.date).toLocaleString('cs-CZ'),
-          tags: `${item.action} ${(item.action === 'vote') ? vote : ''}`,
-        });
-      });
-      return arr;
-    },
-    loadItems(groupKey, num) {
-      const items = [];
-      const start = this.start || 0;
-
-      for (let i = 0; i < num; i += 1) {
-        const key = this.start + i;
-        if (key === this.activityData.length) break;
-        items.push({
-          groupKey,
-          key,
-          data: this.activityList[key],
-        });
-      }
-      this.start = start + num;
-
-      return items;
-    },
-    onAppend({ groupKey, startLoading }) {
-      if (this.start > this.activityData.length) {
+    async onAppend({ groupKey, startLoading }) {
+      if (this.$refs.ig.isProcessing()) {
         return;
       }
-      const items = this.loadItems(parseFloat(groupKey || 0) + 1, 5);
+      if (this.hasEnded) {
+        return;
+      }
 
       startLoading();
-      this.list = [...this.list, ...items];
+      const payload = { start: this.start, size: this.pageSize, userId: this.userId, type: this.filter };
+      const items = await this.$store.dispatch('FETCH_USER_ACTIVITY', payload);
+      if (items.length === 0) {
+        this.hasEnded = true;
+        this.$refs.ig.endLoading();
+        return;
+      }
+
+      this.start = this.start + this.pageSize;
+      const newGroupKey = parseFloat(groupKey || 0) + 1;
+      items.forEach((item) => { item.groupKey = newGroupKey; });
+      this.list = this.list.concat(items);
     },
     onLayoutComplete({ isLayout, endLoading }) {
       if (!isLayout) {
@@ -115,67 +88,3 @@ export default {
   },
 };
 </script>
-<style scoped>
- #table span {
-    float: left;
-  }
-  .header {
-    background: #282D37;
-    color: #fff;
-    width: 100%;
-    z-index: 2;
-  }
-  .header span {
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    padding: 5px 10px;
-  }
-  #table span.no {
-    width: 50px;
-    margin-left: 10px;
-  }
-  #table span.writer, #table span.date {
-    float: right;
-    width: 100px;
-  }
-  #table span.date {
-    width: 150px;
-  }
-  #table span.title {
-    float: none;
-    display: block;
-  }
-  .container {
-    width: 100%;
-  }
-  #table .post {
-    border-bottom: 1px solid #ddd;
-    width: 100%;
-  }
-  #table .post span {
-    padding: 15px 10px;
-    color: #333;
-  }
-  #table .post .title {
-    font-weight: bold;
-  }
-  #table .post .date {
-    color: #999;
-  }
-  #table a {
-    text-decoration: none;
-    color: #333;
-  }
-
-  @media (max-width: 600px) {
-    #table span.date {
-      display: none;
-    }
-  }
-  @media (max-width: 380px) {
-    #table span.writer {
-      display: none;
-    }
-  }
-</style>

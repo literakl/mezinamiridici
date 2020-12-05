@@ -7,7 +7,7 @@
 
 <script>
 import HomePoll from '@/components/molecules/HomePoll.vue';
-import ItemList from '@/components/molecules/ItemList.vue';
+import ItemList from '@/components/organisms/ItemList.vue';
 
 export default {
   name: 'home',

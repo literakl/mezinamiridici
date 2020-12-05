@@ -31,7 +31,7 @@ export default {
     return {
       start: 0,
       pageSize: 10,
-      isEnded: false,
+      hasEnded: false,
       list: [],
       options: {
         // isOverflowScroll: false,
@@ -51,7 +51,7 @@ export default {
   watch: {
     tag() {
       this.list = [];
-      this.isEnded = false;
+      this.hasEnded = false;
       this.start = 0;
     },
   },
@@ -60,14 +60,14 @@ export default {
       if (this.$refs.ig.isProcessing()) {
         return;
       }
-      if (this.isEnded) {
+      if (this.hasEnded) {
         return;
       }
 
       startLoading();
       let items = await this.$store.dispatch('GET_ITEM_STREAM', { start: this.start, size: this.pageSize, tag: this.tag });
       if (items.length === 0) {
-        this.isEnded = true;
+        this.hasEnded = true;
         this.$refs.ig.endLoading();
         return;
       }
