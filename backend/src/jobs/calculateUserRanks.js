@@ -83,7 +83,7 @@ const getUsers = async (dbClient, lastId, pageSize = 5) => {
 
 const getCommentRatio = async (dbClient, userId) => {
   const cursor = dbClient.db().collection('comments').aggregate([
-    { $match: { 'user.id': userId } },
+    { $match: { 'author.id': userId } },
     { $group: {
       _id: null,
       count: { $sum: 1 },
