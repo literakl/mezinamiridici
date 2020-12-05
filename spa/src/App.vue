@@ -22,24 +22,24 @@
               <template v-slot:button-content>
                 <BIconPlus scale="2"></BIconPlus>
               </template>
-              <b-dropdown-item :to="{ name: 'create-blog' }">{{ $t('app.new-post') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'create-blog', params: { id: userId } }">{{ $t('app.new-post') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <BIconPersonFill scale="2"></BIconPersonFill>
               </template>
               <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'update-profile'}">{{ $t('app.update-profile') }}</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'update-profile', params: { id: userId }}">{{ $t('app.update-profile') }}</b-dropdown-item>
               <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <BIconInfo scale="2"></BIconInfo>
               </template>
-              <b-dropdown-item href="/h/napoveda">{{ $t('app.help') }}</b-dropdown-item>
-              <b-dropdown-item href="/h/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
-              <b-dropdown-item href="/h/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
-              <b-dropdown-item href="/h/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/napoveda">{{ $t('app.help') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>

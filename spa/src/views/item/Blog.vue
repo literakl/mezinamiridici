@@ -1,19 +1,30 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div v-if="blog" class="pt-3 w-75 m-auto pb-5">
     <h1>{{title}}</h1>
+    <div class="font-weight-lighter">
+      <Date :date="blog.info.date" format="dynamicDate" /> &bull;
+      <ProfileLink :profile="blog.info.author"/> &bull;
+      <a href="#comments">
+        {{ $t('comment.comments') }}: {{blog.comments.count}}
+      </a>
+    </div>
     <div v-html="blogHtml"></div>
     <ShareLink :item="blog" />
-    <Comments v-if="blog.type==='content'" :itemId="blog._id" />
+    <Comments :itemId="blog._id" />
   </div>
 </template>
 
 <script>
 import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
+import Date from '@/components/atoms/Date.vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
 
 export default {
   name: 'blog',
   components: {
+    Date,
+    ProfileLink,
     Comments,
     ShareLink,
   },
@@ -27,7 +38,8 @@ export default {
   },
   watch: {
     blog() {
-      this.setContent(this.blog.data.content);
+      this.blogHtml = this.blog.data.content;
+      document.title = this.blog.info.caption;
     },
   },
   computed: {
@@ -44,11 +56,6 @@ export default {
   },
   created() {
     this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
-  },
-  methods: {
-    setContent(html) {
-      this.blogHtml = html;
-    },
   },
 };
 </script>
