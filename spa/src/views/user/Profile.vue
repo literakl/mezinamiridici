@@ -21,7 +21,6 @@
           </div>
         </div>
       </div>
-      <UserActivity :userId="userProfile._id"/>
 
       <b-tabs content-class="mt-3">
         <b-tab :title="$t('profile.tabs.summary')" active>
@@ -63,6 +62,7 @@
         </b-tab>
 
         <b-tab :title="$t('profile.tabs.activity')">
+          <UserActivity :userId="userProfile._id"/>
         </b-tab>
 
         <b-tab v-if="myProfile" :title="$t('profile.tabs.honors')">

@@ -1,25 +1,18 @@
 <template>
-  <div>
-    xxx
+  <GridLayout
+    ref="ig"
+    :options="options"
+    :layoutOptions="layoutOptions"
+    @append="onAppend"
+    @layout-complete="onLayoutComplete"
+  >
     <div v-for="item in list" :key="item._id" :groupKey="item.groupKey">
-      aaa
+      <Date :date="item.info.date" format="dynamicDate" />
+      <router-link :to="{ name: 'blog', params: { slug: item.info.slug, id: userId } }">
+        {{ item.info.caption }}
+      </router-link>
     </div>
-    <GridLayout
-      ref="ig"
-      :options="options"
-      :layoutOptions="layoutOptions"
-      @append="onAppend"
-      @layout-complete="onLayoutComplete"
-    >
-      <div v-for="item in list" :key="item._id" :groupKey="item.groupKey">
-        <Date :date="item.info.date" format="dynamicDate" />
-        <router-link :to="{ name: 'blog', params: { slug: item.info.slug, id: item.info.author.id } }">
-          {{ item.info.caption }}
-        </router-link>
-      </div>
-    </GridLayout>
-    zzz
-  </div>
+  </GridLayout>
 </template>
 
 <script>
