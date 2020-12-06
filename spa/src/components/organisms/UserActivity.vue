@@ -16,8 +16,8 @@
     </div>
 
     <div v-for="item in list" :key="item._id">
-      <Date :date="item.info.date" format="dynamicDate" /> &nbsp;
-      <router-link :to="getURL(item)">{{ item.info.caption }}</router-link>
+      <Date :date="item.date" format="dynamicDateTime" /> &nbsp;
+      <router-link :to="getURL(item)">{{ item.text }}</router-link>
     </div>
 
     <Button
@@ -25,7 +25,7 @@
       size="sm"
       class="w-25"
       :value="$t('generic.loading-more-button')"
-      @clicked="fetchActivity(true)"
+      @clicked="fetchActivity"
     />
   </div>
 </template>
@@ -56,14 +56,17 @@ export default {
   },
   watch: {
     filter() {
-      this.fetchActivity(false);
+      this.index = 0;
+      this.hasEnded = 0;
+      this.list = [];
+      this.fetchActivity();
     },
   },
   created() {
-    this.fetchActivity(false);
+    this.fetchActivity();
   },
   methods: {
-    async fetchActivity(append) {
+    async fetchActivity() {
       const payload = { start: this.index, size: this.pageSize, userId: this.userId, type: this.filter };
       const items = await this.$store.dispatch('FETCH_USER_ACTIVITY', payload);
       if (items.length === 0) {
@@ -74,10 +77,25 @@ export default {
       }
 
       this.index = this.index + this.pageSize;
-      this.list = (append) ? this.list.concat(items) : items;
+      this.list = this.list.concat(items);
     },
     getURL(item) {
-      return { name: 'blog', params: { slug: item.info.slug, id: this.userId } };
+      if (this.filter === 'comment') {
+        return { name: item.type,
+          params: {
+            slug: item.slug,
+            id: item.userId,
+          },
+          hash: `#${item._id}`,
+        };
+      } else {
+        return { name: 'blog',
+          params: {
+            slug: item.slug,
+            id: item.userId,
+          },
+        };
+      }
     },
   },
 };

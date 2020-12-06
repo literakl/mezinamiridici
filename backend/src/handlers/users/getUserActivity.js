@@ -6,6 +6,7 @@ const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
+const { TRUNCATE_COMMENTS } = process.env || 100;
 
 module.exports = (app) => {
   app.options('/v1/users/:userId/activity', auth.cors);
@@ -28,12 +29,6 @@ module.exports = (app) => {
 
       const list = await getActivity(dbClient, userId, type, req);
       logger.debug('Activity fetched');
-
-      list.forEach((x) => {
-        if (x.text) {
-          x.text = html2text(x.text);
-        }
-      });
 
       return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
@@ -68,6 +63,10 @@ async function getActivity(dbClient, userId, type, req) {
       $project: {
         date: 1,
         text: 1,
+        itemId: 1,
+        'item.type': 1,
+        'item.info.author.id': 1,
+        'item.info.slug': 1,
       },
     });
   } else {
@@ -77,6 +76,7 @@ async function getActivity(dbClient, userId, type, req) {
     });
     pipeline.push({
       $project: {
+        'info.author.id': 1,
         'info.date': 1,
         'info.slug': 1,
         'info.caption': 1,
@@ -84,10 +84,27 @@ async function getActivity(dbClient, userId, type, req) {
     });
   }
 
-  return dbClient.db().collection(table)
+  const list = await dbClient.db().collection(table)
     .aggregate(pipeline)
     .sort({ date: -1 })
     .skip(listParams.start)
     .limit(listParams.pageSize)
     .toArray();
+
+  const result = [];
+  if (type === 'comment') {
+    list.forEach((x) => {
+      const item = { _id: x._id, date: x.date, type: x.item[0].type, userId: x.item[0].info.author.id, slug: x.item[0].info.slug };
+      item.text = html2text(x.text).substring(0, TRUNCATE_COMMENTS);
+      result.push(item);
+    });
+  } else {
+    list.forEach((x) => {
+      const item = { _id: x._id, date: x.info.date, type: 'blog', userId: x.info.author.id, slug: x.info.slug };
+      item.text = html2text(x.info.caption).substring(0, TRUNCATE_COMMENTS);
+      result.push(item);
+    });
+  }
+
+  return result;
 }
