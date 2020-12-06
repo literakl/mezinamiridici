@@ -291,7 +291,7 @@
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
     "tags": "Štítky",
-    "cms": "CMS",
+    "cms": "Stránky",
     "content": "Stránka",
     "create-content": "Nová stránka",
     "edit-content": "Úprava stránky",
@@ -306,14 +306,10 @@
     "edit": {
       "caption-label": "Titulek",
       "slug-label": "URL adresa",
-      "type-label": "Typ",
       "content-label": "Obsah",
-      "article": "Článek",
-      "help": "Nápověda",
-      "content": "Obsah",
       "edit-cms": "Upravit",
       "delete-cms": "Smazat ",
-      "new-cms-heading": "Nový obsah",
+      "new-cms-heading": "Nová stránka",
       "delete-message": "Opravdu chcete tuto stránku smazat?"
     }
   }

@@ -83,7 +83,7 @@ const corsPerRoute = corsMiddleware({
 });
 
 const ROLE_POLL_ADMIN = 'admin:poll';
-const ROLE_CMS_ADMIN = 'admin:cms';
+const ROLE_CMS_ADMIN = 'admin:pages';
 
 module.exports.optional = authenticate(false);
 module.exports.required = authenticate(true);

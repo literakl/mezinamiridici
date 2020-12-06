@@ -169,7 +169,7 @@ async function getPoll(dbClient, pipeline) {
   return processPoll(item);
 }
 
-async function getCMS(dbClient, pipeline) {
+async function getPage(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   return cursor.next();
 }
@@ -245,7 +245,7 @@ exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
 exports.getBlog = getBlog;
 exports.processPoll = processPoll;
-exports.getCMS = getCMS;
+exports.getPage = getPage;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;

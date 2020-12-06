@@ -51,8 +51,8 @@ export default {
       if (this.item.type === 'blog') {
         return { name: 'blog', params: { slug: this.item.info.slug, id: this.item.info.author.id } };
       }
-      if (this.item.type === 'help' || this.item.type === 'article') {
-        return { name: 'content', params: { slug: this.item.info.slug } };
+      if (this.item.type === 'page') {
+        return { name: 'page', params: { slug: this.item.info.slug } };
       }
       return { name: 'home' };
     },
@@ -65,7 +65,7 @@ export default {
       return this.item.type !== 'poll';
     },
     hasDiscussion() {
-      return this.item.type === 'poll' || this.item.type === 'blog' || this.item.type === 'article';
+      return this.item.type === 'poll' || this.item.type === 'blog';
     },
   },
 };

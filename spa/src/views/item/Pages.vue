@@ -45,6 +45,7 @@ import Date from '@/components/atoms/Date.vue';
 import { BButtonGroup, BButton, BCard, BCardBody, BCardFooter } from 'bootstrap-vue';
 
 export default {
+  name: 'Pages',
   components: {
     ProfileLink, Date, BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   },
@@ -56,7 +57,7 @@ export default {
   computed: {
     role() {
       // todo helper to test if user has a role
-      return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[1] === 'admin:cms' : false;
+      return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[1] === 'admin:pages' : false;
     },
   },
   async mounted() {
@@ -86,10 +87,10 @@ export default {
     },
 
     async deleteCMS(item) {
-      await this.$store.dispatch('DELETE_CONTENT', {
+      await this.$store.dispatch('DELETE_PAGE', {
         cmsId: item._id,
       });
-      this.cmsList = await this.$store.dispatch('FETCH_CONTENTS', {});
+      this.cmsList = await this.$store.dispatch('FETCH_PAGES', {});
     },
   },
 };

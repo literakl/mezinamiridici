@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import ContentForm from '@/components/organisms/ContentForm.vue';
+import ContentForm from '@/components/organisms/PageForm.vue';
 
 export default {
-  name: 'CreateContent',
+  name: 'CreatePage',
   components: {
     ContentForm,
   },

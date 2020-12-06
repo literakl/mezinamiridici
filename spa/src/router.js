@@ -136,26 +136,26 @@ export default new Router({
       props: true,
     },
     {
-      path: '/cms/',
+      path: '/o/',
       name: 'cms',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CMS.vue'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Pages'),
     },
     {
       path: '/o/:slug',
       name: 'content',
-      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Content.vue'),
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Page'),
       props: true,
     },
     {
-      path: '/cms/novy',
+      path: '/o/novy',
       name: 'create-content',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CreateContent.vue'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CreatePage'),
       props: true,
     },
     {
       path: '/o/:slug/uprava',
       name: 'edit-content',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/EditContent.vue'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/EditPage'),
       props: true,
     },
     {

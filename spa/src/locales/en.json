@@ -291,25 +291,21 @@
     "not-found": "Page not found",
     "tag": "Tag",
     "tags": "Tags",
-    "cms": "CMS",
-    "content": "Content",
-    "edit-content": "Edit content",
-    "create-content": "Create CMS",
-    "junkyard": "Vrakoviště"
+    "cms": "Pages",
+    "content": "Page",
+    "edit-content": "Edit page",
+    "create-content": "Create page",
+    "junkyard": "Junkyard"
   },
   "cms": {
     "edit": {
       "caption-label": "Caption",
       "slug-label": "Slug",
-      "type-label": "Type",
       "content-label": "Content",
-      "help": "Help",
-      "article": "Article",
-      "content": "Content",
-      "edit-cms": "Edit CMS",
-      "delete-cms": "Delete CMS",
-      "new-cms-heading": "New CMS",
-      "delete-message": "Are you sure to delete this CMS?"
+      "edit-cms": "Edit page",
+      "delete-cms": "Delete page",
+      "new-cms-heading": "New page",
+      "delete-message": "Are you sure to delete this page?"
     }
   },
   "editorjs": {

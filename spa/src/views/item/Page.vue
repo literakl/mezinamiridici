@@ -4,21 +4,18 @@
     <div v-if="content">
       <div v-html="content.data.content"></div>
       <ShareLink :item="content" />
-      <Comments v-if="content.type==='article'" :itemId="content._id" />
     </div>
   </div>
 </template>
 
 <script>
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
-import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 
 export default {
-  name: 'Content',
+  name: 'Page',
   components: {
     ContentLoading,
-    Comments,
     ShareLink,
   },
   props: {
@@ -39,7 +36,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
+    this.$store.dispatch('FETCH_PAGE', { slug: this.slug });
   },
   methods: {
     changeTitle(title) {

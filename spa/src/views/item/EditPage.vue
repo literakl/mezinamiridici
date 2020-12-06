@@ -2,15 +2,15 @@
   <div class="pt-3 w-75 m-auto">
     <h1>{{ $t('cms.edit.edit-cms') }}</h1>
 
-    <ContentForm v-if="cms" :cms="cms" :isCreate="false"/>
+    <ContentForm v-if="page" page="page" :isCreate="false"/>
   </div>
 </template>
 
 <script>
-import ContentForm from '@/components/organisms/ContentForm.vue';
+import ContentForm from '@/components/organisms/PageForm.vue';
 
 export default {
-  name: 'EditContent',
+  name: 'EditPage',
   components: {
     ContentForm,
   },
@@ -18,12 +18,12 @@ export default {
     slug: String,
   },
   computed: {
-    cms() {
+    page() {
       return this.$store.getters.CONTENT;
     },
   },
   created() {
-    this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
+    this.$store.dispatch('FETCH_PAGE', { slug: this.slug });
   },
 };
 </script>

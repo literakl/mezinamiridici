@@ -90,36 +90,36 @@ export default {
       context.commit('SET_BLOG', blog.data.data);
       return blog.data.data;
     },
-    FETCH_CONTENT: async (context, payload) => {
-      Vue.$log.debug(`FETCH_CONTENT ${payload.slug}`);
+    FETCH_PAGE: async (context, payload) => {
+      Vue.$log.debug(`FETCH_PAGE ${payload.slug}`);
       if (context.state.content != null && payload.slug === context.state.content.info.slug) {
         return; // cached value recycled
       }
-      context.commit('SET_CONTENT', null);
-      const cmsData = await get('API', `/content/${payload.slug}`, context);
-      const cms = cmsData.data.data;
-      context.commit('SET_CONTENT', cms);
+      context.commit('SET_PAGE', null);
+      const response = await get('API', `/content/${payload.slug}`, context);
+      const cms = response.data.data;
+      context.commit('SET_PAGE', cms);
     },
-    FETCH_CONTENTS: async (context) => {
-      Vue.$log.debug('FETCH_CONTENTS');
+    FETCH_PAGES: async (context) => {
+      Vue.$log.debug('FETCH_PAGES');
       const response = await get('API', '/content', context);
       return response.data.data;
     },
-    CREATE_CONTENT: async (context, payload) => {
-      Vue.$log.debug('CREATE_CONTENT');
+    CREATE_PAGE: async (context, payload) => {
+      Vue.$log.debug('CREATE_PAGE');
       const cmsData = await post('API', '/content', payload, context);
       return cmsData.data.data;
     },
-    UPDATE_CONTENT: async (context, payload) => {
-      Vue.$log.debug('UPDATE_CONTENT');
+    UPDATE_PAGE: async (context, payload) => {
+      Vue.$log.debug('UPDATE_PAGE');
       const { cmsId } = payload;
       const cmsData = await patch('API', `/content/${cmsId}/`, payload, context);
       const item = cmsData.data.data;
-      context.commit('SET_CONTENT', item);
+      context.commit('SET_PAGE', item);
       return item;
     },
-    DELETE_CONTENT: async (context, payload) => {
-      Vue.$log.debug('DELETE_CONTENT');
+    DELETE_PAGE: async (context, payload) => {
+      Vue.$log.debug('DELETE_PAGE');
       const { cmsId } = payload;
       return deleteApi('API', `/content/${cmsId}/`, {}, context);
     },
