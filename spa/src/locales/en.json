@@ -29,7 +29,8 @@
     "select-picture-title": "Select picture",
     "tag-select-label":"Hash tags",
     "tag-select-placeholder": "Chooose the tag",
-    "loading-message": "Loading .."
+    "loading-message": "Loading ..",
+    "loading-more-button": "Load more"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -178,6 +179,10 @@
       "activity": "Activity",
       "honors": "Honors",
       "settings": "Settings"
+    },
+    "filter": {
+      "posts": "posts",
+      "comments": "comments"
     }
   },
   "poll": {

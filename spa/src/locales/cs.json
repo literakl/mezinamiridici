@@ -29,7 +29,8 @@
     "select-picture-title": "Zvolte obrázek",
     "tag-select-label": "Štítky",
     "tag-select-placeholder": "Zvolte štítek",
-    "loading-message": "Loading .."
+    "loading-message": "Stahuji ...",
+    "loading-more-button": "Další"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -178,6 +179,10 @@
       "activity": "Aktivita",
       "honors": "Úroveň",
       "settings": "Nastavení"
+    },
+    "filter": {
+      "posts": "příspěvky",
+      "comments": "komentáře"
     }
   },
   "poll": {
