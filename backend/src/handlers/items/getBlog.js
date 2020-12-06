@@ -8,7 +8,7 @@ require('../../utils/path_env');
 module.exports = (app) => {
   app.options('/v1/blog', auth.cors);
 
-  app.get('/v1/blog/:slug', auth.required, auth.cors, async (req, res) => {
+  app.get('/v1/blog/:slug', auth.cors, async (req, res) => {
     logger.debug('get blog');
     const { slug } = req.params;
     try {

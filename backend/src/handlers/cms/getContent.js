@@ -31,7 +31,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/v1/content/', auth.optional, async (req, res) => {
+  app.get('/v1/content/', async (req, res) => {
     logger.verbose('get CMS list handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();

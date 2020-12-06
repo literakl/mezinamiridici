@@ -8,7 +8,7 @@ const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 module.exports = (app) => {
   app.options('/bff/items/:tag', auth.cors);
 
-  app.get('/bff/items/:tag', auth.optional, async (req, res) => {
+  app.get('/bff/items/:tag', async (req, res) => {
     logger.verbose('getItems by tag handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();

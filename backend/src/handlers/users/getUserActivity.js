@@ -50,9 +50,20 @@ async function getActivity(dbClient, userId, type, req) {
 
   if (type === 'comment') {
     table = 'comments';
-    pipeline.push({
-      $match: { 'author.id': userId },
-    });
+    pipeline.push(
+      {
+        $match: { 'author.id': userId },
+      },
+      {
+        $lookup:
+          {
+            from: 'items',
+            localField: 'itemId',
+            foreignField: '_id',
+            as: 'item',
+          },
+      },
+    );
     pipeline.push({
       $project: {
         date: 1,
