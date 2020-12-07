@@ -8,7 +8,7 @@ export default {
     itemsByTag: null,
     blog: null,
     itemPictures: [],
-    content: null,
+    page: null,
   }),
   getters: {
     TAGS: state => state.tags,
@@ -16,7 +16,7 @@ export default {
     ITEMS_BY_TAG: state => state.itemsByTag,
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
-    CONTENT: state => state.content,
+    PAGE: state => state.page,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -34,8 +34,8 @@ export default {
     SET_ITEM_PICTURES: (state, payload) => {
       state.itemPictures = payload;
     },
-    SET_CONTENT: (state, payload) => {
-      state.content = payload;
+    SET_PAGE: (state, payload) => {
+      state.page = payload;
     },
   },
   actions: {

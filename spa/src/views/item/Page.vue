@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     content() {
-      const cms = this.$store.getters.CONTENT;
+      const cms = this.$store.getters.PAGE;
       if (cms) this.changeTitle(cms.info.caption);
       return cms;
     },
