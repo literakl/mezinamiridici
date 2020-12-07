@@ -96,24 +96,24 @@ export default {
         return; // cached value recycled
       }
       context.commit('SET_PAGE', null);
-      const response = await get('API', `/content/${payload.slug}`, context);
+      const response = await get('API', `/pages/${payload.slug}`, context);
       const cms = response.data.data;
       context.commit('SET_PAGE', cms);
     },
     FETCH_PAGES: async (context) => {
       Vue.$log.debug('FETCH_PAGES');
-      const response = await get('API', '/content', context);
+      const response = await get('API', '/pages', context);
       return response.data.data;
     },
     CREATE_PAGE: async (context, payload) => {
       Vue.$log.debug('CREATE_PAGE');
-      const cmsData = await post('API', '/content', payload, context);
+      const cmsData = await post('API', '/pages', payload, context);
       return cmsData.data.data;
     },
     UPDATE_PAGE: async (context, payload) => {
       Vue.$log.debug('UPDATE_PAGE');
       const { cmsId } = payload;
-      const cmsData = await patch('API', `/content/${cmsId}/`, payload, context);
+      const cmsData = await patch('API', `/pages/${cmsId}/`, payload, context);
       const item = cmsData.data.data;
       context.commit('SET_PAGE', item);
       return item;
@@ -121,7 +121,7 @@ export default {
     DELETE_PAGE: async (context, payload) => {
       Vue.$log.debug('DELETE_PAGE');
       const { cmsId } = payload;
-      return deleteApi('API', `/content/${cmsId}/`, {}, context);
+      return deleteApi('API', `/pages/${cmsId}/`, {}, context);
     },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');

@@ -61,7 +61,7 @@ export default {
     },
   },
   async mounted() {
-    this.cmsList = await this.$store.dispatch('FETCH_CONTENTS', {});
+    this.cmsList = await this.$store.dispatch('FETCH_PAGES', {});
   },
   methods: {
     confirmDelete(item) {
