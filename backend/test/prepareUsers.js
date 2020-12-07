@@ -3,7 +3,7 @@ const baseYear = 2020, currentYear = new Date().getFullYear(), diff = currentYea
 function fix(year) { return year + diff; }
 
 const Leos = {
-  _id: '1e40v0b1j5',
+  _id: 'leos',
   auth: {
     email: 'leos@email.bud',
     pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',
@@ -20,10 +20,10 @@ const Leos = {
     count: { pollVotes: 0, comments: 4, commentVotes: 0, commentVoteRatio: 25, blogs: 0, shares: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
-  roles: ['admin:poll', 'admin:cms'],
+  roles: ['admin:poll', 'admin:pages'],
 };
 const Jiri = {
-  _id: '1e416vocls',
+  _id: 'jiri',
   auth: {
     email: 'jiri@email.bud',
     pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',
@@ -42,7 +42,7 @@ const Jiri = {
   consent: { terms: new Date(), data: new Date() },
 };
 const Lukas = {
-  _id: '1e4176ttr8',
+  _id: 'lukas',
   auth: {
     email: 'lukas@email.bud',
     pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',
@@ -60,7 +60,7 @@ const Lukas = {
   consent: { terms: new Date(), data: new Date() },
 };
 const Vita = {
-  _id: '1e41795qjw',
+  _id: 'vita',
   auth: {
     email: 'vita@email.bud',
     pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',
@@ -79,7 +79,7 @@ const Vita = {
   consent: { terms: new Date(), data: new Date() },
 };
 const Jana = {
-  _id: '1e417bgivc',
+  _id: 'jana',
   auth: {
     email: 'jana@email.bud',
     pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',
@@ -98,7 +98,7 @@ const Jana = {
   consent: { terms: new Date(), data: new Date() },
 };
 const Bara = {
-  _id: '1e417edlqb',
+  _id: 'bara',
   auth: {
     email: 'bara@email.bud',
     pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',

@@ -50,6 +50,8 @@ async function generateData() {
     dropCollection(db, 'items');
     dropCollection(db, 'comments');
     dropCollection(db, 'comment_votes');
+    dropCollection(db, 'poll_votes');
+    dropCollection(db, 'link_shares');
     await setup(dbClient, api);
     await mongo.setupIndexes(dbClient);
   } catch (e) {
@@ -58,8 +60,8 @@ async function generateData() {
   }
 
   let date = dayjs();
-  const body = {
-    text: lorem.generateWords(7),
+  let body = {
+    text: 'Řidič karavanu se kochá krajinou a brzdí provoz, kde se nedá předjet',
     picture: '/images/stream/ale-sat-UlmLMQC8pJ4-unsplash.jpg',
     tags: ['Car accidents', 'Crossroads', 'Motorbikes'],
     author: Leos._id,
@@ -80,13 +82,13 @@ async function generateData() {
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Bara.jwt) }).json();
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jana.jwt) }).json();
 
-  let commentsCount = random.int(5, 50);
+  let commentsCount = random.int(1, 10);
   for (let i = 0; i < commentsCount; i += 1) {
-    date = date.add(random.int(1, 60), 'minute');
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
     await generateComment(poll.data._id, date, random.int(0, 20));
   }
 
-  body.text = lorem.generateWords(4);
+  body.text = 'Předjíždění dlouhé kolony v protisměru';
   body.picture = '/images/stream/daniel-j-schwarz-GK9mi6_DuRw-unsplash.jpg';
   body.tags = ['Police', 'Crossroads', 'Trucks'];
   body.date = dayjs().subtract(10, 'day').format(DAY_FORMAT);
@@ -104,13 +106,13 @@ async function generateData() {
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
 
-  commentsCount = random.int(5, 50);
+  commentsCount = random.int(1, 10);
   for (let i = 0; i < commentsCount; i += 1) {
-    date = date.add(random.int(1, 60), 'minute');
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
     await generateComment(poll.data._id, date, random.int(0, 20));
   }
 
-  body.text = lorem.generateWords(6);
+  body.text = 'Jízda po tramvajovém pásu, kde to není povoleno';
   body.picture = '/images/stream/vladimir-haltakov-3kywHnYzAn4-unsplash.jpg';
   body.tags = ['Car accidents', 'Pedestrians', 'Trucks', 'Highways'];
   body.date = dayjs().subtract(7, 'day').format(DAY_FORMAT);
@@ -128,13 +130,13 @@ async function generateData() {
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
 
-  commentsCount = random.int(5, 50);
+  commentsCount = random.int(1, 10);
   for (let i = 0; i < commentsCount; i += 1) {
-    date = date.add(random.int(1, 60), 'minute');
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
     await generateComment(poll.data._id, date, random.int(0, 20));
   }
 
-  body.text = lorem.generateWords(9);
+  body.text = 'Jízda v těsném závěsu za kamionem';
   body.picture = '/images/stream/marcus-platt-evVlOOdYw-4-unsplash.jpg';
   body.tags = ['Tramway', 'Bus'];
   body.date = dayjs().subtract(1, 'day').format(DAY_FORMAT);
@@ -145,10 +147,143 @@ async function generateData() {
   voteBody = { vote: 'dislike' };
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
 
-  commentsCount = random.int(5, 50);
+  commentsCount = random.int(1, 10);
   for (let i = 0; i < commentsCount; i += 1) {
-    date = date.add(random.int(1, 60), 'minute');
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
     await generateComment(poll.data._id, date, random.int(0, 20));
+  }
+
+  body = {
+    caption: 'Help',
+    slug: 'napoveda',
+    content: '<h1>Help</h1><p>This site does not need any help</p>',
+  };
+  await api('pages', { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+
+  body = {
+    title: 'Analýza nehody kamiónu s autobusem U Tří křížů',
+    source: randomSource(6),
+    picture: '/images/stream/roman-fox-qoXgaF27zBc-unsplash.jpg',
+    tags: ['Trucks', 'Car accidents'],
+    date: dayjs().subtract(16, 'day').format(DATE_FORMAT),
+  };
+  let blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Nejčastější místa policejních kontrol';
+  body.source = randomSource(4);
+  body.picture = '/images/stream/jack-anstey-XVoyX7l9ocY-unsplash.jpg';
+  body.tags = ['Police'];
+  body.date = dayjs().subtract(13, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Nejnebezpečnější křižovatky Česka';
+  body.source = randomSource(3);
+  body.picture = '/images/stream/sabrina-mazzeo-pz0P5piDQXs-unsplash.jpg';
+  body.tags = ['Crossroads', 'Car accidents'];
+  body.date = dayjs().subtract(9, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 100);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Deset nejhorších chyb při řízení';
+  body.source = randomSource(6);
+  body.picture = '/images/stream/shane-aldendorff-UNo3mR8JyT4-unsplash.jpg';
+  body.date = dayjs().subtract(7, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 100);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Co dělat při poruše na dálnici';
+  body.source = randomSource(2);
+  body.picture = '/images/stream/valik-chernetskyi-OOV0H-jIKTM-unsplash.jpg';
+  body.date = dayjs().subtract(5, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Jak poskytnout první pomoc I';
+  body.source = randomSource(2);
+  body.picture = '/images/stream/abed-ismail-uCdqsulpdT0-unsplash.jpg';
+  body.date = dayjs().subtract(2, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Video šíleného řidiče kamiónu předjíždějícího v křižovatce';
+  body.source = randomSource(2);
+  body.picture = '/images/stream/aceofnet-I3Em9PGzkzw-unsplash.jpg';
+  body.tags = ['Trucks'];
+  body.date = dayjs().subtract(1, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Jak poskytnout první pomoc II';
+  body.source = randomSource(2);
+  body.picture = '/images/stream/vladimir-haltakov-9J4Id8uXcQU-unsplash.jpg';
+  body.date = dayjs().subtract(0, 'day').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Máte kompletní lékarničku dle předpisů?';
+  body.source = randomSource(2);
+  body.picture = '/images/stream/ale-sat-UlmLMQC8pJ4-unsplash.jpg';
+  body.date = dayjs().subtract(2, 'hour').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
+  }
+
+  body.title = 'Vtipné video z parkování';
+  body.source = randomSource(2);
+  body.picture = '/images/stream/alex-h-pflaum-3CW11ymVHJQ-unsplash.jpg';
+  body.date = dayjs().subtract(90, 'minute').format(DATE_FORMAT);
+  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+
+  commentsCount = random.int(1, 10);
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(body.date).add(random.int(1, 60), 'minute');
+    await generateComment(blog.data._id, date, random.int(0, 20));
   }
 
   mongo.close();
@@ -158,7 +293,7 @@ async function generateData() {
 
 async function generateComment(itemId, date, repliesCount) {
   const body = {
-    source: randomSource(),
+    source: randomSource(random.int(1, 10)),
     date: date.format(DATE_FORMAT),
   };
   let user = randomUser();
@@ -170,7 +305,7 @@ async function generateComment(itemId, date, repliesCount) {
   for (let i = 0; i <= repliesCount; i += 1) {
     user = randomUser();
     aDate = aDate.add(random.int(1, 30), 'minute');
-    body.source = randomSource();
+    body.source = randomSource(random.int(1, 5));
     body.date = aDate.format(DATE_FORMAT);
     const reply = await api(`items/${itemId}/comments`, { method: 'POST', json: body, headers: getAuthHeader(user.jwt) }).json();
     await voteComment(reply.data.comment._id, user._id);
@@ -189,40 +324,13 @@ async function voteComment(commentId, authorId) {
   }
 }
 
-function randomText() {
-  if (random.int(0, 100) < 60) {
-    return lorem.generateSentences(random.int(1, 5));
-  } else {
-    return lorem.generateParagraphs(random.int(1, 3));
+function randomSource(paragraphs) {
+  let source = '';
+  for (let i = 0; i < paragraphs;) {
+    source = source.concat('<p>', lorem.generateSentences(random.int(1, 10)), '</p>\n');
+    i += 1;
   }
-}
-
-function randomSource() {
-  return {
-    time: 1599551274438,
-    version: "2.18.0",
-    blocks: [
-      {
-        type:"header",
-        data: {
-          text: randomText(),
-          level: 3
-        }
-      },
-      {
-        type:"paragraph",
-        data: {
-          text: randomText()
-        }
-      },
-      {
-        type:"paragraph",
-        data: {
-          text: randomText(),
-        }
-      }
-    ]
-  }
+  return source;
 }
 
 function randomUser() {
