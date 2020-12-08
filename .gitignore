@@ -30,6 +30,10 @@ yarn-error.log*
 /infrastructure/*.log
 /infrastructure/src/dist/
 /infrastructure/test/coverage
+/backend/.env
+/backend/*.log
+/backend/src/dist/
+/backend/test/coverage
 /spa/.env
 /spa/.env.staging
 /spa/.env.production
