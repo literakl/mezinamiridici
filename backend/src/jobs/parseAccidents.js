@@ -330,11 +330,11 @@ async function saveArticle(dbClient, context, date) {
   const picture = config.pictures[date.dayOfYear() % config.pictures.length];
   const pictureWithPath = `${STREAM_PICTURES_PATH}/${picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
-  const article = await insertItem(dbClient, title, rendered, blogAuthor, pictureWithPath, config.tags);
+  const article = await insertItem(dbClient, title, rendered, blogAuthor, pictureWithPath, config.tags, date.add(1, 'day'));
   console.log(article.result);
 }
 
-function insertItem(dbClient, title, content, author, picture, tags) {
+function insertItem(dbClient, title, content, author, picture, tags, publishDate) {
   const slug = slugify(title, { lower: true, strict: true });
   const blog = {
     _id: mongo.generateTimeId(),
@@ -347,7 +347,7 @@ function insertItem(dbClient, title, content, author, picture, tags) {
       published: true,
       caption: title,
       slug,
-      date: new Date(),
+      date: publishDate.toDate(),
       picture,
       tags,
     },
@@ -382,6 +382,7 @@ function lookupRegion(vusc) {
 }
 
 exports.doRun = doRun;
+exports.saveArticle = saveArticle;
 
 /*
 async function x() {

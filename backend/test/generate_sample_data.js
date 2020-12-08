@@ -5,6 +5,8 @@ const utc = require('dayjs/plugin/utc');
 const { LoremIpsum } = require('lorem-ipsum');
 const random = require('random');
 
+const { saveArticle } = require('../src/jobs/parseAccidents');
+
 dayjs.extend(utc);
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -286,6 +288,9 @@ async function generateData() {
     await generateComment(blog.data._id, date, random.int(0, 20));
   }
 
+  const accidents = generateAccidents();
+  await saveArticle(dbClient, accidents, dayjs('2020-09-09'));
+
   mongo.close();
   server.close();
   logger.info('Server stopped');
@@ -340,4 +345,424 @@ function randomUser() {
 function dropCollection(db, name) {
   db.collection(name).dropIndexes().then(logger.info(`Indexes for ${name} were deleted`)).catch(logger.info(`Indexes for ${name} were not deleted`));
   db.collection(name).drop().then(logger.info(`Collection ${name} was deleted`)).catch(logger.info(`Collection ${name} was not deleted`));
+}
+
+function generateAccidents() {
+  return {
+    lastYear: {
+      day: {
+        count: 213,
+        impact: {
+          deaths: 2,
+          severely: 4,
+          slightly: 41,
+          damage: 11998,
+        },
+        reason: {
+          speed: 46,
+          giveway: 12,
+          passing: 33,
+          mistake: 75,
+          drunk: 47,
+          other: 18,
+        },
+      },
+      week: {
+        count: 213,
+        impact: {
+          deaths: 2,
+          severely: 4,
+          slightly: 41,
+          damage: 11998,
+        },
+        reason: {
+          speed: 46,
+          giveway: 12,
+          passing: 33,
+          mistake: 75,
+          drunk: 47,
+          other: 18,
+        },
+      },
+      month: {
+        count: 2283,
+        impact: {
+          deaths: 12,
+          severely: 39,
+          slightly: 602,
+          damage: 149087,
+        },
+        reason: {
+          speed: 312,
+          giveway: 298,
+          passing: 59,
+          mistake: 1063,
+          drunk: 551,
+          other: 109,
+        },
+      },
+      year: {
+        count: 68675,
+        impact: {
+          deaths: 348,
+          severely: 1333,
+          slightly: 15335,
+          damage: 4268844,
+        },
+        reason: {
+          speed: 8854,
+          giveway: 7656,
+          passing: 991,
+          mistake: 33222,
+          drunk: 17952,
+          other: 2921,
+        },
+      },
+    },
+    thisYear: {
+      day: {
+        count: 312,
+        impact: {
+          deaths: 0,
+          severely: 9,
+          slightly: 78,
+          damage: 20308,
+        },
+        reason: {
+          speed: 20,
+          giveway: 53,
+          passing: 5,
+          mistake: 151,
+          drunk: 83,
+          other: 5,
+        },
+      },
+      week: {
+        count: 1113,
+        impact: {
+          deaths: 0,
+          severely: 34,
+          slightly: 299,
+          damage: 120121,
+        },
+        reason: {
+          speed: 96,
+          giveway: 175,
+          passing: 18,
+          mistake: 532,
+          drunk: 292,
+          other: 29,
+        },
+      },
+      month: {
+        count: 2558,
+        impact: {
+          deaths: 6,
+          severely: 61,
+          slightly: 655,
+          damage: 214720,
+        },
+        reason: {
+          speed: 254,
+          giveway: 359,
+          passing: 35,
+          mistake: 1278,
+          drunk: 632,
+          other: 86,
+        },
+      },
+      year: {
+        count: 62298,
+        impact: {
+          deaths: 334,
+          severely: 1128,
+          slightly: 13913,
+          damage: 3784774,
+        },
+        reason: {
+          speed: 7815,
+          giveway: 7038,
+          passing: 788,
+          mistake: 29784,
+          drunk: 16873,
+          other: 2989,
+        },
+      },
+    },
+    day: {
+      _id: '5fcf17de2ecb6fbeb443c26f',
+      date: '2020-09-07T22:00:00.000Z',
+      regions: [
+        {
+          region: 'PRG',
+          count: 66,
+          impact: {
+            deaths: 0,
+            severely: 1,
+            slightly: 11,
+            damage: 5171,
+          },
+          reason: {
+            speed: 0,
+            giveway: 11,
+            passing: 1,
+            mistake: 22,
+            drunk: 32,
+            other: 0,
+          },
+        },
+        {
+          region: 'SC',
+          count: 38,
+          impact: {
+            deaths: 0,
+            severely: 3,
+            slightly: 3,
+            damage: 3253,
+          },
+          reason: {
+            speed: 3,
+            giveway: 7,
+            passing: 1,
+            mistake: 17,
+            drunk: 10,
+            other: 0,
+          },
+        },
+        {
+          region: 'JC',
+          count: 10,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 7,
+            damage: 477,
+          },
+          reason: {
+            speed: 2,
+            giveway: 1,
+            passing: 1,
+            mistake: 6,
+            drunk: 0,
+            other: 1,
+          },
+        },
+        {
+          region: 'PLS',
+          count: 16,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 7,
+            damage: 645,
+          },
+          reason: {
+            speed: 2,
+            giveway: 1,
+            passing: 0,
+            mistake: 12,
+            drunk: 1,
+            other: 0,
+          },
+        },
+        {
+          region: 'KV',
+          count: 7,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 6,
+            damage: 316,
+          },
+          reason: {
+            speed: 0,
+            giveway: 2,
+            passing: 0,
+            mistake: 3,
+            drunk: 2,
+            other: 0,
+          },
+        },
+        {
+          region: 'UST',
+          count: 38,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 2,
+            damage: 1716,
+          },
+          reason: {
+            speed: 4,
+            giveway: 8,
+            passing: 1,
+            mistake: 15,
+            drunk: 10,
+            other: 1,
+          },
+        },
+        {
+          region: 'LBR',
+          count: 14,
+          impact: {
+            deaths: 0,
+            severely: 1,
+            slightly: 4,
+            damage: 664,
+          },
+          reason: {
+            speed: 2,
+            giveway: 1,
+            passing: 0,
+            mistake: 11,
+            drunk: 0,
+            other: 0,
+          },
+        },
+        {
+          region: 'KH',
+          count: 6,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 1,
+            damage: 823,
+          },
+          reason: {
+            speed: 2,
+            giveway: 1,
+            passing: 0,
+            mistake: 3,
+            drunk: 0,
+            other: 0,
+          },
+        },
+        {
+          region: 'PRD',
+          count: 14,
+          impact: {
+            deaths: 0,
+            severely: 1,
+            slightly: 3,
+            damage: 1127,
+          },
+          reason: {
+            speed: 1,
+            giveway: 2,
+            passing: 1,
+            mistake: 5,
+            drunk: 5,
+            other: 0,
+          },
+        },
+        {
+          region: 'VSC',
+          count: 13,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 3,
+            damage: 912,
+          },
+          reason: {
+            speed: 0,
+            giveway: 1,
+            passing: 0,
+            mistake: 7,
+            drunk: 5,
+            other: 1,
+          },
+        },
+        {
+          region: 'JM',
+          count: 22,
+          impact: {
+            deaths: 0,
+            severely: 1,
+            slightly: 10,
+            damage: 1902,
+          },
+          reason: {
+            speed: 1,
+            giveway: 6,
+            passing: 0,
+            mistake: 11,
+            drunk: 4,
+            other: 0,
+          },
+        },
+        {
+          region: 'OLM',
+          count: 17,
+          impact: {
+            deaths: 0,
+            severely: 0,
+            slightly: 3,
+            damage: 469,
+          },
+          reason: {
+            speed: 2,
+            giveway: 3,
+            passing: 0,
+            mistake: 10,
+            drunk: 2,
+            other: 1,
+          },
+        },
+        {
+          region: 'MS',
+          count: 30,
+          impact: {
+            deaths: 0,
+            severely: 1,
+            slightly: 8,
+            damage: 1180,
+          },
+          reason: {
+            speed: 1,
+            giveway: 4,
+            passing: 0,
+            mistake: 20,
+            drunk: 5,
+            other: 1,
+          },
+        },
+        {
+          region: 'ZLN',
+          count: 21,
+          impact: {
+            deaths: 0,
+            severely: 1,
+            slightly: 10,
+            damage: 1653,
+          },
+          reason: {
+            speed: 0,
+            giveway: 5,
+            passing: 0,
+            mistake: 9,
+            drunk: 7,
+            other: 0,
+          },
+        },
+      ],
+      total: {
+        count: 312,
+        impact: {
+          deaths: 0,
+          severely: 9,
+          slightly: 78,
+          damage: 20308,
+        },
+        reason: {
+          speed: 20,
+          giveway: 53,
+          passing: 5,
+          mistake: 151,
+          drunk: 83,
+          other: 5,
+        },
+      },
+    },
+  };
 }
