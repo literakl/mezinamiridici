@@ -20,10 +20,6 @@ import store from './store';
 import './registerServiceWorker';
 import i18n from './i18n';
 
-// TODO is this neccessary? We import CSS in App.vue
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
