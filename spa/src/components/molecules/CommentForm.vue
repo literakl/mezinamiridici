@@ -68,7 +68,7 @@
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
-    <Button :disabled="sending" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
+    <Button :disabled="sending || empty" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
   </div>
 </template>
 
@@ -138,10 +138,16 @@ export default {
         onUpdate: ({ getJSON, getHTML }) => {
           this.json = getJSON();
           this.html = getHTML();
+          if (this.html.replace(/<[^>]*>/g, '').trim().length > 0) {
+            this.empty = false;
+          } else {
+            this.empty = true;
+          }
         },
       }),
       json: '',
       html: '',
+      empty: true,
     };
   },
   methods: {
