@@ -112,8 +112,8 @@ export default {
     },
     UPDATE_PAGE: async (context, payload) => {
       Vue.$log.debug('UPDATE_PAGE');
-      const { cmsId } = payload;
-      const cmsData = await patch('API', `/pages/${cmsId}/`, payload, context);
+      const { pageId } = payload;
+      const cmsData = await patch('API', `/pages/${pageId}/`, payload, context);
       const item = cmsData.data.data;
       context.commit('SET_PAGE', item);
       return item;

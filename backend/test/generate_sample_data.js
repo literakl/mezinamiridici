@@ -72,6 +72,7 @@ async function generateData() {
   };
   let poll = await api('polls', { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   await api(`polls/${poll.data._id}`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  await generateComments(poll.data._id, body.date);
 
   let voteBody = { vote: 'neutral' };
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
@@ -84,12 +85,6 @@ async function generateData() {
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Bara.jwt) }).json();
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jana.jwt) }).json();
 
-  let commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(poll.data._id, date, random.int(0, 20));
-  }
-
   body.text = 'Předjíždění dlouhé kolony v protisměru';
   body.picture = '/images/stream/daniel-j-schwarz-GK9mi6_DuRw-unsplash.jpg';
   body.tags = ['Police', 'Crossroads', 'Trucks'];
@@ -97,6 +92,7 @@ async function generateData() {
   body.author = Bara._id;
   poll = await api('polls', { method: 'POST', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   await api(`polls/${poll.data._id}`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  await generateComments(poll.data._id, body.date);
 
   voteBody = { vote: 'neutral' };
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Bara.jwt) }).json();
@@ -107,12 +103,6 @@ async function generateData() {
   voteBody = { vote: 'hate' };
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(poll.data._id, date, random.int(0, 20));
-  }
 
   body.text = 'Jízda po tramvajovém pásu, kde to není povoleno';
   body.picture = '/images/stream/vladimir-haltakov-3kywHnYzAn4-unsplash.jpg';
@@ -131,12 +121,7 @@ async function generateData() {
   voteBody = { vote: 'hate' };
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Leos.jwt) }).json();
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Jiri.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(poll.data._id, date, random.int(0, 20));
-  }
+  await generateComments(poll.data._id, body.date);
 
   body.text = 'Jízda v těsném závěsu za kamionem';
   body.picture = '/images/stream/marcus-platt-evVlOOdYw-4-unsplash.jpg';
@@ -170,12 +155,7 @@ async function generateData() {
     date: dayjs().subtract(16, 'day').format(DATE_FORMAT),
   };
   let blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Nejčastější místa policejních kontrol';
   body.source = randomSource(4);
@@ -183,12 +163,7 @@ async function generateData() {
   body.tags = ['Police'];
   body.date = dayjs().subtract(13, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Nejnebezpečnější křižovatky Česka';
   body.source = randomSource(3);
@@ -196,48 +171,28 @@ async function generateData() {
   body.tags = ['Crossroads', 'Car accidents'];
   body.date = dayjs().subtract(9, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 100);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Deset nejhorších chyb při řízení';
   body.source = randomSource(6);
   body.picture = '/images/stream/shane-aldendorff-UNo3mR8JyT4-unsplash.jpg';
   body.date = dayjs().subtract(7, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 100);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Co dělat při poruše na dálnici';
   body.source = randomSource(2);
   body.picture = '/images/stream/valik-chernetskyi-OOV0H-jIKTM-unsplash.jpg';
   body.date = dayjs().subtract(5, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Jak poskytnout první pomoc I';
   body.source = randomSource(2);
   body.picture = '/images/stream/abed-ismail-uCdqsulpdT0-unsplash.jpg';
   body.date = dayjs().subtract(2, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Video šíleného řidiče kamiónu předjíždějícího v křižovatce';
   body.source = randomSource(2);
@@ -245,58 +200,51 @@ async function generateData() {
   body.tags = ['Trucks'];
   body.date = dayjs().subtract(1, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Jak poskytnout první pomoc II';
   body.source = randomSource(2);
   body.picture = '/images/stream/vladimir-haltakov-9J4Id8uXcQU-unsplash.jpg';
   body.date = dayjs().subtract(0, 'day').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Máte kompletní lékarničku dle předpisů?';
   body.source = randomSource(2);
   body.picture = '/images/stream/ale-sat-UlmLMQC8pJ4-unsplash.jpg';
   body.date = dayjs().subtract(2, 'hour').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
-
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
-  }
+  await generateComments(blog.data._id, body.date);
 
   body.title = 'Vtipné video z parkování';
   body.source = randomSource(2);
   body.picture = '/images/stream/alex-h-pflaum-3CW11ymVHJQ-unsplash.jpg';
   body.date = dayjs().subtract(90, 'minute').format(DATE_FORMAT);
   blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  await generateComments(blog.data._id, body.date);
 
-  commentsCount = random.int(1, 10);
-  for (let i = 0; i < commentsCount; i += 1) {
-    date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(blog.data._id, date, random.int(0, 20));
+  date = dayjs().subtract(15, 'day');
+  for (let x = 0; x < 14; x += 1) {
+    const accidents = generateAccidents();
+    await saveArticle(dbClient, accidents, date.add(x, 'day'));
   }
-
-  const accidents = generateAccidents();
-  await saveArticle(dbClient, accidents, dayjs('2020-09-09'));
 
   mongo.close();
   server.close();
   logger.info('Server stopped');
 }
 
-async function generateComment(itemId, date, repliesCount) {
+async function generateComments(itemId, startDate) {
+  // const commentsCount = random.int(1, 10), repliesCount = random.int(0, 20);
+  const commentsCount = 1, repliesCount = 1;
+  let date = startDate;
+  for (let i = 0; i < commentsCount; i += 1) {
+    date = dayjs(date).add(random.int(1, 60), 'minute');
+    await createThread(itemId, date, repliesCount);
+  }
+}
+
+async function createThread(itemId, date, repliesCount) {
   const body = {
     source: randomSource(random.int(1, 10)),
     date: date.format(DATE_FORMAT),
@@ -490,79 +438,77 @@ function generateAccidents() {
       },
     },
     day: {
-      _id: '5fcf17de2ecb6fbeb443c26f',
-      date: '2020-09-07T22:00:00.000Z',
       regions: [
         {
           region: 'PRG',
-          count: 66,
+          count: random.int(50, 70),
           impact: {
-            deaths: 0,
-            severely: 1,
-            slightly: 11,
+            deaths: random.int(1, 5),
+            severely: random.int(1, 30),
+            slightly: random.int(1, 60),
             damage: 5171,
           },
           reason: {
-            speed: 0,
-            giveway: 11,
-            passing: 1,
-            mistake: 22,
-            drunk: 32,
-            other: 0,
+            speed: random.int(1, 10),
+            giveway: random.int(1, 10),
+            passing: random.int(1, 10),
+            mistake: random.int(1, 10),
+            drunk: random.int(1, 10),
+            other: random.int(1, 10),
           },
         },
         {
           region: 'SC',
-          count: 38,
+          count: random.int(20, 30),
           impact: {
-            deaths: 0,
-            severely: 3,
-            slightly: 3,
-            damage: 3253,
+            deaths: random.int(1, 5),
+            severely: random.int(1, 30),
+            slightly: random.int(1, 60),
+            damage: 5171,
           },
           reason: {
-            speed: 3,
-            giveway: 7,
-            passing: 1,
-            mistake: 17,
-            drunk: 10,
-            other: 0,
+            speed: random.int(1, 10),
+            giveway: random.int(1, 10),
+            passing: random.int(1, 10),
+            mistake: random.int(1, 10),
+            drunk: random.int(1, 10),
+            other: random.int(1, 10),
           },
         },
         {
           region: 'JC',
-          count: 10,
+          count: random.int(10, 30),
           impact: {
-            deaths: 0,
-            severely: 0,
-            slightly: 7,
-            damage: 477,
+            deaths: random.int(1, 2),
+            severely: random.int(1, 10),
+            slightly: random.int(1, 30),
+            damage: 5171,
           },
           reason: {
-            speed: 2,
-            giveway: 1,
-            passing: 1,
-            mistake: 6,
-            drunk: 0,
-            other: 1,
+            speed: random.int(1, 10),
+            giveway: random.int(1, 10),
+            passing: random.int(1, 10),
+            mistake: random.int(1, 10),
+            drunk: random.int(1, 10),
+            other: random.int(1, 10),
           },
         },
         {
           region: 'PLS',
-          count: 16,
+          count: random.int(10, 50),
           impact: {
-            deaths: 0,
-            severely: 0,
-            slightly: 7,
-            damage: 645,
+            deaths: random.int(1, 4),
+            severely: random.int(10, 30),
+            slightly: random.int(30, 60),
+            damage: 5171,
           },
           reason: {
-            speed: 2,
-            giveway: 1,
-            passing: 0,
-            mistake: 12,
-            drunk: 1,
-            other: 0,
+            speed: random.int(1, 10),
+            giveway: random.int(1, 10),
+            passing: random.int(1, 10),
+            mistake: random.int(1, 10),
+            drunk: random.int(1, 10),
+            other: random.int(1, 10),
           },
         },
         {

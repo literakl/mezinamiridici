@@ -12,7 +12,7 @@
       <b-card tag="article">
         <b-card-body>
           <h3>
-            <router-link :to="{ name: 'content', params: { slug: item.info.slug }}">
+            <router-link :to="{ name: 'page', params: { slug: item.info.slug }}">
               {{item.info.caption}}
             </router-link>
           </h3>

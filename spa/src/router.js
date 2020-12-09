@@ -142,7 +142,7 @@ export default new Router({
     },
     {
       path: '/o/:slug',
-      name: 'content',
+      name: 'page',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Page'),
       props: true,
     },
