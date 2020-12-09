@@ -58,7 +58,7 @@ function showDateTime(epochMS) {
 }
 
 function sameDay(a, b) {
-  return a.year() === b.year() && a.month() === b.month() && a.day() === b.day();
+  return a.year() === b.year() && a.month() === b.month() && a.date() === b.date();
 }
 
 function getISO(epochMS) {
