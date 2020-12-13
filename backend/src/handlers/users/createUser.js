@@ -123,7 +123,8 @@ const sendVerificationEmail = async (email, token) => {
     to: email,
   };
   const context = {
-    verificationLink: `${WEB_URL}/overeni-uzivatele/${token}`,
+    WEB_URL: process.env.WEB_URL,
+    verificationLink: `${WEB_URL}/p/overeni/${token}`,
   };
   return mailService.sendEmail('confirm_email.json', options, context);
 };

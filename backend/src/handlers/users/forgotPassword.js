@@ -55,7 +55,8 @@ const sendPasswordResetEmail = async (email, token) => {
     to: email,
   };
   const context = {
-    verificationLink: `${process.env.WEB_URL}/nastaveni-hesla/${token}`,
+    WEB_URL: process.env.WEB_URL,
+    verificationLink: `${process.env.WEB_URL}/p/nastaveni-hesla/${token}`,
   };
   return mailService.sendEmail('reset_password.json', options, context);
 };
