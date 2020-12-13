@@ -1,10 +1,5 @@
 .DS_Store
-spa/dist
-**/.aws-sam
 **/node_modules/
-
-spa/tests/e2e/videos/
-spa/tests/e2e/screenshots/
 
 # local env files
 .env.local
@@ -15,22 +10,22 @@ spa/tests/e2e/screenshots/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/backend/*.log
 
 # Editor directories and files
 .idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+spa/dist
+spa/backup/
+spa/tests/e2e/videos/
+spa/tests/e2e/screenshots/
+transfer
 
 #sensitive
 /backend/.env
-/backend/*.log
 /backend/src/dist/
 /backend/test/coverage
+
 /spa/.env
 /spa/.env.staging
 /spa/.env.production
-/spa/backup/
