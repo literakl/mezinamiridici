@@ -9,6 +9,8 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
+const { BLOG_POST_TEST } = process.env || 'production';
+
 module.exports = (app) => {
   app.options('/v1/polls', auth.cors);
 
@@ -33,7 +35,7 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       let user = auth.getIdentity(req.identity);
-      if (author !== undefined && author.length > 0) {
+      if (author !== undefined && author.length > 0 && BLOG_POST_TEST === 'test') {
         user = await mongo.getIdentity(dbClient, author);
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
