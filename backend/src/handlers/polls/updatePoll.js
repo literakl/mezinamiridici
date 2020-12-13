@@ -9,6 +9,11 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
+let { NODE_ENV } = process.env;
+if (!NODE_ENV) {
+  NODE_ENV = 'production';
+}
+
 module.exports = (app) => {
   app.options('/v1/polls/:pollId', auth.cors);
 
@@ -21,13 +26,16 @@ module.exports = (app) => {
     const {
       text, author, date, picture, published, tags,
     } = req.body;
+
     const publishDate = api.parseDate(date, 'YYYY-MM-DD');
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);
     }
+
     if (!text) {
       return api.sendMissingParam(res, 'text');
     }
+
     if (!picture) {
       return api.sendMissingParam(res, 'picture');
     }
@@ -37,7 +45,7 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       let user = auth.getIdentity(req.identity);
-      if (author && author.length > 0) {
+      if (author !== undefined && author.length > 0 && ['development', 'test'].includes(NODE_ENV)) {
         user = await mongo.getIdentity(dbClient, author);
         if (user === null) {
           return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));

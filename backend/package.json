@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "./src/server.js",
   "scripts": {
-    "dev": "nodemon src/start.js",
+    "dev": "NODE_ENV=development nodemon src/start.js",
     "start": "NODE_ENV=production node src/start.js",
     "test": "jest --config jest.config.js --runInBand"
   },

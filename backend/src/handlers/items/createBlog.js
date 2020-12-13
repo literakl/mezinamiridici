@@ -10,8 +10,6 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
-const { BLOG_POST_TEST } = process.env || 'production';
-
 module.exports = (app) => {
   app.options('/v1/blog', auth.cors);
 
@@ -19,7 +17,7 @@ module.exports = (app) => {
     logger.verbose('create blog handler starts');
 
     const {
-      title, source, author, date, picture, tags,
+      title, source, date, picture, tags,
     } = req.body;
     if (!source) {
       return api.sendMissingParam(res, 'source');
@@ -36,14 +34,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      let user = auth.getIdentity(req.identity);
-      if (author !== undefined && author.length > 0 && BLOG_POST_TEST === 'test') {
-        user = await mongo.getIdentity(dbClient, author);
-        if (user === null) {
-          return api.sendBadRequest(res, api.createError(`Author ${author} not found`, 'generic.internal-error'));
-        }
-      }
-
+      const user = auth.getIdentity(req.identity);
       const blogId = mongo.generateTimeId();
       await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
