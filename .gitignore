@@ -26,10 +26,6 @@ yarn-error.log*
 *.sw?
 
 #sensitive
-/infrastructure/.env
-/infrastructure/*.log
-/infrastructure/src/dist/
-/infrastructure/test/coverage
 /backend/.env
 /backend/*.log
 /backend/src/dist/
