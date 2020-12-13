@@ -22,7 +22,7 @@ module.exports = (app) => {
     }
 
     const verificationToken = mongo.generateId(8);
-    const userId = mongo.generateNicknameId(nickname);
+    const userId = generateNicknameId(nickname);
     const dbClient = await mongo.connectToDatabase();
     logger.debug('Mongo connected');
 
@@ -33,8 +33,8 @@ module.exports = (app) => {
       logger.error('Request failed', err);
       if (err.code === 11000) {
         if (err.keyValue) {
-          if (err.keyValue['_id']) {
-            api.addValidationError(result, 'id', 'id is already registered. reset nickname', 'sign-up.id-exists');
+          if (err.keyValue._id) {
+            api.addValidationError(result, 'id', 'id is already registered. Use another nickname', 'sign-up.id-exists');
           }
           if (err.keyValue['auth.email']) {
             api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
@@ -112,6 +112,10 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
   }
 
   return dbClient.db().collection('users').insertOne(userDoc);
+}
+
+function generateNicknameId(nickname) {
+  return nickname.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z]/g, '');
 }
 
 const sendVerificationEmail = async (email, token) => {
