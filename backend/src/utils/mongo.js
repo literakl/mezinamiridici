@@ -226,6 +226,10 @@ function generateTimeId() {
   return id;
 }
 
+function generateNicknameId(nickname) {
+  return nickname.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z]/g, '');
+}
+
 function generateId(idLength = 10) {
   return generate('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', idLength);
 }
@@ -239,6 +243,7 @@ function close() {
 
 exports.connectToDatabase = connectToDatabase;
 exports.generateId = generateId;
+exports.generateNicknameId = generateNicknameId;
 exports.generateTimeId = generateTimeId;
 exports.findUser = findUser;
 exports.getIdentity = getIdentity;

@@ -231,6 +231,22 @@ test('User API', async (done) => {
   expect(info.honors.rank).toBe('novice');
   expect(info.honors.count).toBeDefined();
 
+  //check user id made with nickname
+
+  body = {
+    email: 'cremebrulee@email.bud',
+    password: 'StupidPassword',
+    nickname: 'Crème Brulée12345678/*-+!@#$%^&*()_+=<script>?🤩 Star-Struck',
+    termsAndConditions: true,
+    dataProcessing: true,
+    emails: true,
+  }
+  
+  response = await api('users', { method: 'POST', json: body }).json();
+  jwtData = response.data;
+  let jwtDecodedOther = jwt.decode(jwtData);
+  expect(jwtDecodedOther.userId).toBe('CremeBruleescriptStarStruck');
+
   done();
 });
 

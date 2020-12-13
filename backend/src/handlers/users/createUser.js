@@ -22,7 +22,7 @@ module.exports = (app) => {
     }
 
     const verificationToken = mongo.generateId(8);
-    const userId = mongo.generateTimeId();
+    const userId = mongo.generateNicknameId(nickname);
     const dbClient = await mongo.connectToDatabase();
     logger.debug('Mongo connected');
 
@@ -33,6 +33,9 @@ module.exports = (app) => {
       logger.error('Request failed', err);
       if (err.code === 11000) {
         if (err.keyValue) {
+          if (err.keyValue['_id']) {
+            api.addValidationError(result, 'id', 'id is already registered. reset nickname', 'sign-up.id-exists');
+          }
           if (err.keyValue['auth.email']) {
             api.addValidationError(result, 'email', 'email is already registered', 'sign-up.email-exists');
           }
