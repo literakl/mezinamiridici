@@ -134,10 +134,10 @@ async function generateData() {
   voteBody = { vote: 'dislike' };
   await bff(`polls/${poll.data._id}/votes`, { method: 'POST', json: voteBody, headers: getAuthHeader(Vita.jwt) }).json();
 
-  commentsCount = random.int(1, 10);
+  const commentsCount = random.int(1, 10);
   for (let i = 0; i < commentsCount; i += 1) {
     date = dayjs(body.date).add(random.int(1, 60), 'minute');
-    await generateComment(poll.data._id, date, random.int(0, 20));
+    await createThread(poll.data._id, date, random.int(0, 20));
   }
 
   body = {
