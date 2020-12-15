@@ -151,29 +151,11 @@ export default {
         context.commit('SET_USER_ID', null);
       }
     },
-    CREATE_USER_PROFILE: async (context, payload) => {
-      const body = {
-        email: payload.email,
-        password: payload.password,
-        nickname: payload.nickname,
-        termsAndConditions: payload.termsAndConditions,
-        dataProcessing: payload.dataProcessing,
-        emails: payload.marketing,
-      };
-      return post('API', '/users', body);
-    },
+    CREATE_USER_PROFILE: async (context, payload) => post('API', '/users', payload),
     UPDATE_USER_PROFILE: (context, payload) => {
-      const body = {
-        drivingSince: payload.drivingSince,
-        vehicles: payload.vehicle,
-        sex: payload.sex,
-        born: payload.bornInYear,
-        region: payload.region,
-        education: payload.education,
-        publicProfile: payload.publicProfile,
-        urls: payload.urls,
-      };
-      return patch('API', `/users/${payload.userId}`, body, context, payload.jwt);
+      delete payload.jwt;
+      delete payload.userId;
+      return patch('API', `/users/${payload.userId}`, payload, context, payload.jwt);
     },
     VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
     GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),

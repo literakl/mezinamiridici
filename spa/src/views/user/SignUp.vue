@@ -13,10 +13,11 @@
           :label="$t('profile.email')"
           :placeholder="$t('sign-up.email-hint')"
           name="email"
-          :disabled="emailBoxDisabled"
+          :disabled="socialId"
           type="email"/>
 
         <TextInput
+          v-if="! socialId"
           v-model="password"
           rules="required|min:6"
           :label="$t('profile.password')"
@@ -170,7 +171,6 @@ export default {
     ProfileForm,
   },
   props: {
-    token: String, // TODO is this really used or is it relict?
     presetEmail: String,
     presetPassword: String,
     presetNickname: String,
@@ -203,23 +203,11 @@ export default {
     success: null,
     sending: false,
     wholeDisable: false,
-    emailBoxDisabled: false,
-    tokenUser: null,
   }),
   mounted() {
     if (this.presetEmail) this.email = this.presetEmail;
     if (this.presetPassword) this.password = this.presetPassword;
     if (this.presetNickname) this.nickname = this.presetNickname;
-
-    if (this.token) {
-      this.tokenUser = this.$store.dispatch('SIGN_SOCIAL_USER', `${this.token}`);
-      if (this.tokenUser === true) {
-        this.$router.push('/');
-      }
-      this.email = this.tokenUser.email;
-      this.nickname = this.tokenUser.nickname;
-      this.emailBoxDisabled = true;
-    }
   },
   methods: {
     async submitForm() {
@@ -228,42 +216,29 @@ export default {
       try {
         this.sending = true;
         this.wholeDisable = true;
-        if (this.tokenUser) {
-          // check if it is used and it is correct
-          response = await this.$store.dispatch('UPDATE_SOCIAL_USER', {
-            jwt: this.token,
-            userId: this.tokenUser.userId,
-            email: this.email,
-            nickname: this.nickname,
-            password: this.password,
-            termsAndConditions: this.termsAndConditions,
-            dataProcessing: this.personalDataProcessing,
-            emails: this.emailNotifications,
-          });
-          if (response) {
-            this.$router.push('/');
-          }
-        } else {
-          // TODO pass socialId if set
-          response = await this.$store.dispatch('CREATE_USER_PROFILE', {
-            email: this.email,
-            password: this.password,
-            nickname: this.nickname,
-            termsAndConditions: this.termsAndConditions,
-            dataProcessing: this.personalDataProcessing,
-            emails: this.emailNotifications,
-          });
+        const payload = {
+          email: this.email,
+          nickname: this.nickname,
+          termsAndConditions: this.termsAndConditions,
+          dataProcessing: this.personalDataProcessing,
+          emails: this.emailNotifications,
+        };
+        if (this.password) {
+          payload.password = this.password;
         }
+        if (this.socialId) {
+          payload.socialId = this.socialId;
+        }
+        response = await this.$store.dispatch('CREATE_USER_PROFILE', payload);
         this.sending = false;
         this.wholeDisable = false;
-
-        const { data } = response;
 
         if (!this.personalData) {
           this.success = true;
           return true;
         }
 
+        const { data } = response;
         const token = data.data;
         if (token === undefined) {
           this.error = this.$t('sign-up.something-went-wrong');
@@ -277,9 +252,9 @@ export default {
           jwt: token,
           userId: jwtData.userId,
           drivingSince: (this.profileForm.drivingSince) ? new Date(this.profileForm.drivingSince).getFullYear() : null,
-          vehicle: vehicles,
+          vehicles,
           sex: this.profileForm.sex,
-          bornInYear: (this.profileForm.bornInYear) ? new Date(this.profileForm.bornInYear).getFullYear() : null,
+          born: (this.profileForm.bornInYear) ? new Date(this.profileForm.bornInYear).getFullYear() : null,
           region: this.profileForm.region,
           education: this.profileForm.education,
           publicProfile: this.profileForm.share,

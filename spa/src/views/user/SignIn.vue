@@ -118,7 +118,6 @@ export default {
     password: null,
     signingIn: false,
     error: null,
-    token: null,
   }),
   methods: {
     redirectToSignUp() {
@@ -148,18 +147,16 @@ export default {
       if (this.$auth.isAuthenticated()) {
         this.$auth.logout();
       }
-      this.response = null;
-      this.token = await this.$auth.authenticate(provider);
-      await this.$store.dispatch('SET_SOCIAL', this.token.data);
-      if (!this.token.data.active) {
-        // todo params: email, name, socialId
-        this.$router.push({ name: 'sign-up' });
+      const response = await this.$auth.authenticate(provider);
+      if (response.socialId) {
+        const params = { presetEmail: response.email, presetNickname: response.presetNickname, socialId: response.socialId };
+        await this.$router.push({ name: 'sign-up', params });
       } else {
-        this.$router.push('/');
+        await this.$store.dispatch('SET_SOCIAL', this.response.data);
+        await this.$router.push('/');
       }
     },
   },
-
 };
 </script>
 <style>

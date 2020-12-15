@@ -54,6 +54,7 @@ async function generateData() {
     dropCollection(db, 'comment_votes');
     dropCollection(db, 'poll_votes');
     dropCollection(db, 'link_shares');
+    dropCollection(db, 'social_login');
     await setup(dbClient, api);
     await mongo.setupIndexes(dbClient);
   } catch (e) {

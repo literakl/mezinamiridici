@@ -12,23 +12,41 @@ module.exports = (app) => {
 
   app.post('/v1/users', api.authAPILimits, auth.cors, async (req, res) => {
     logger.verbose('createUser handler starts');
-    // todo if socialId is passed, load it, set active to skip email verification and set social provider, remove social record
     const {
-      email, password, nickname, termsAndConditions, dataProcessing, emails,
+      email,
+      password,
+      nickname,
+      termsAndConditions,
+      dataProcessing,
+      emails,
+      socialId,
     } = req.body;
-    const result = validateParameters(email, password, nickname, termsAndConditions, dataProcessing);
+    const result = validateParameters(socialId, email, password, nickname, termsAndConditions, dataProcessing);
     if (!result.success) {
       logger.debug('validation failed', result);
       return api.sendBadRequest(res, result);
     }
 
-    const verificationToken = mongo.generateId(8);
-    const userId = generateNicknameId(nickname);
     const dbClient = await mongo.connectToDatabase();
     logger.debug('Mongo connected');
 
+    let socialRecord;
+    if (socialId) {
+      socialRecord = await dbClient.db().collection('social_login').findOne({ _id: socialId });
+      if (!socialRecord) {
+        logger.debug(`Registration with invalid socialId ${socialId}`, result);
+        return api.sendBadRequest(res, result);
+      }
+      if (socialRecord.email !== email) {
+        logger.debug(`Registration with different email than in socialId ${socialId}`, result);
+        return api.sendBadRequest(res, result);
+      }
+    }
+
+    const verificationToken = mongo.generateId(8);
+    const userId = generateNicknameId(nickname);
     try {
-      await insertUser(dbClient, userId, email, password, nickname, emails, verificationToken);
+      await insertUser(dbClient, socialRecord, userId, email, password, nickname, emails, verificationToken);
       logger.debug('User created');
     } catch (err) {
       logger.error('Request failed', err);
@@ -58,8 +76,10 @@ module.exports = (app) => {
     }
 
     try {
-      await sendVerificationEmail(email, verificationToken);
-      logger.debug('Email sent');
+      if (!socialId) {
+        await sendVerificationEmail(email, verificationToken);
+        logger.debug('Email sent');
+      }
     } catch (err) {
       console.error('Sending email failed', err);
       return api.sendInternalError(res, api.createError('Failed to send email', 'sign-up.something-went-wrong'));
@@ -70,19 +90,22 @@ module.exports = (app) => {
   });
 };
 
-function insertUser(dbClient, id, email, password, nickname, emails, verificationToken) {
-  const salt = bcrypt.genSaltSync(10);
-  const passwordHash = bcrypt.hashSync(password, salt);
+async function insertUser(dbClient, socialRecord, id, email, password, nickname, emails, verificationToken) {
+  let commandResult;
+  if (socialRecord) {
+    commandResult = await dbClient.db().collection('social_login').deleteOne({ _id: socialRecord._id });
+    if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
+      logger.debug('Social id deleted');
+    } else {
+      logger.error(`Social id ${socialRecord._id} not deleted`);
+    }
+  }
+
   const now = new Date();
   const userDoc = {
     _id: id,
     auth: {
       email,
-      pwdHash: passwordHash,
-      pwdTimestamp: now,
-      active: false,
-      verified: false,
-      verifyToken: verificationToken,
     },
     bio: {
       nickname,
@@ -107,9 +130,23 @@ function insertUser(dbClient, id, email, password, nickname, emails, verificatio
       data: now,
     },
   };
+
   if (emails) {
     userDoc.consent.email = now;
     userDoc.prefs.email = { newsletter: true, summary: 'daily' };
+  }
+
+  if (socialRecord) {
+    userDoc.auth.active = true;
+    userDoc.auth.verified = true;
+    userDoc.auth.linked = [socialRecord.provider];
+  } else {
+    userDoc.auth.active = false;
+    userDoc.auth.verified = false;
+    userDoc.auth.verifyToken = verificationToken;
+    const salt = bcrypt.genSaltSync(10);
+    userDoc.auth.pwdHash = bcrypt.hashSync(password, salt);
+    userDoc.auth.pwdTimestamp = now;
   }
 
   return dbClient.db().collection('users').insertOne(userDoc);
@@ -130,7 +167,7 @@ const sendVerificationEmail = async (email, token) => {
   return mailService.sendEmail('confirm_email.json', options, context);
 };
 
-const validateParameters = (email, password, nickname, termsAndConditions, dataProcessing) => {
+const validateParameters = (socialId, email, password, nickname, termsAndConditions, dataProcessing) => {
   const result = { success: true };
   if (!termsAndConditions) {
     result.success = false;
@@ -144,7 +181,7 @@ const validateParameters = (email, password, nickname, termsAndConditions, dataP
     result.success = false;
     api.addValidationError(result, 'email', 'Missing or invalid email', 'sign-up.email-required');
   }
-  if (!password || password.length < 6) {
+  if (!socialId && (!password || password.length < 6)) {
     result.success = false;
     api.addValidationError(result, 'password', 'Missing or short password', 'sign-up.password-required');
   }

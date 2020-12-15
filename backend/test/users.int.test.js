@@ -9,12 +9,33 @@ const mongo = require('../src/utils/mongo.js');
 const { logger } = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server.js');
+const { handleSocialProviderResponse } = require('../src/handlers/users/socialAction');
 
 const {
   api, bff, getAuthHeader,
 } = require('./testUtils');
 
 let dbClient, server;
+
+class ResponseMock {
+  statusCode;
+
+  headers = [];
+
+  body;
+
+  status(s) {
+    this.statusCode = s;
+  }
+
+  setHeader(header, value) {
+    this.headers.push(`${header}: ${value}`);
+  }
+
+  send(s) {
+    this.body = s;
+  }
+}
 
 test('User API', async (done) => {
   jest.setTimeout(60000);
@@ -246,6 +267,31 @@ test('User API', async (done) => {
   const jwtDecodedOther = jwt.decode(jwtData);
   expect(jwtDecodedOther.userId).toBe('CremeBruleescriptStarStruckLeosLiterak');
 
+  // sign in user via Facebook
+  body = { email: 'leos@literak.bud', name: 'Leoš Literák', provider: 'facebook' };
+  response = handleSocialProviderResponse(body, new ResponseMock());
+  body = {
+    email: 'leos@literak.bud',
+    nickname: 'Leoš Literák',
+    socialId: response.data.socialId,
+    termsAndConditions: true,
+    dataProcessing: true,
+    emails: true,
+  };
+  response = await api('users', { method: 'POST', json: body });
+  expect(response.statusCode).toBe(201);
+  body = {
+    drivingSince: 2007,
+    vehicles: ['car'],
+    sex: 'man',
+    born: 1974,
+    region: 'PRG',
+    education: 'university',
+    publicProfile: false,
+  };
+  response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
+  expect(response.success).toBeTruthy();
+
   done();
 });
 
@@ -273,6 +319,7 @@ test('CORS', async (done) => {
 beforeEach(async () => {
   const db = dbClient.db();
   await db.collection('users').deleteMany({});
+  await db.collection('social_login').deleteMany({});
   await db.collection('comments').deleteMany({});
   await db.collection('items').deleteMany({});
   await db.collection('poll_votes').deleteMany({});

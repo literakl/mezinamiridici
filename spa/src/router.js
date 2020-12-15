@@ -49,11 +49,6 @@ export default new Router({
       props: true,
     },
     {
-      path: '/p/aktivace',
-      name: 'activate',
-      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/Confirm.vue'),
-    },
-    {
       path: '/p/overeni/:token',
       name: 'verify',
       component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/Verify.vue'),
