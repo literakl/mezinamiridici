@@ -152,7 +152,8 @@ export default {
       this.token = await this.$auth.authenticate(provider);
       await this.$store.dispatch('SET_SOCIAL', this.token.data);
       if (!this.token.data.active) {
-        this.$router.push({ name: 'activate' });
+        // todo params: email, name, socialId
+        this.$router.push({ name: 'sign-up' });
       } else {
         this.$router.push('/');
       }

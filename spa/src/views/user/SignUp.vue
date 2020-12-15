@@ -170,9 +170,11 @@ export default {
     ProfileForm,
   },
   props: {
-    token: String,
+    token: String, // TODO is this really used or is it relict?
     presetEmail: String,
     presetPassword: String,
+    presetNickname: String,
+    socialId: String,
   },
   data: () => ({
     email: null,
@@ -207,6 +209,7 @@ export default {
   mounted() {
     if (this.presetEmail) this.email = this.presetEmail;
     if (this.presetPassword) this.password = this.presetPassword;
+    if (this.presetNickname) this.nickname = this.presetNickname;
 
     if (this.token) {
       this.tokenUser = this.$store.dispatch('SIGN_SOCIAL_USER', `${this.token}`);
@@ -226,6 +229,7 @@ export default {
         this.sending = true;
         this.wholeDisable = true;
         if (this.tokenUser) {
+          // check if it is used and it is correct
           response = await this.$store.dispatch('UPDATE_SOCIAL_USER', {
             jwt: this.token,
             userId: this.tokenUser.userId,
@@ -240,6 +244,7 @@ export default {
             this.$router.push('/');
           }
         } else {
+          // TODO pass socialId if set
           response = await this.$store.dispatch('CREATE_USER_PROFILE', {
             email: this.email,
             password: this.password,

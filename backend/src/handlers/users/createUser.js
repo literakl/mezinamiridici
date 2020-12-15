@@ -12,6 +12,7 @@ module.exports = (app) => {
 
   app.post('/v1/users', api.authAPILimits, auth.cors, async (req, res) => {
     logger.verbose('createUser handler starts');
+    // todo if socialId is passed, load it, set active to skip email verification and set social provider, remove social record
     const {
       email, password, nickname, termsAndConditions, dataProcessing, emails,
     } = req.body;

@@ -14,32 +14,52 @@ module.exports = (app) => {
   app.post('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
     logger.verbose('socialLink handler starts');
     let socialProfile;
-    if (req.params.provider === 'google') {
-      socialProfile = await googleAuth(req, res);
-    } else if (req.params.provider === 'twitter') {
-      socialProfile = await twitterAuth(req, res);
-    } else if (req.params.provider === 'facebook') {
-      socialProfile = await facebookAuth(req, res);
+    try {
+      if (req.params.provider === 'google') {
+        socialProfile = await googleAuth(req);
+      } else if (req.params.provider === 'facebook') {
+        socialProfile = await facebookAuth(req);
+      } else if (req.params.provider === 'twitter') {
+        socialProfile = await twitterAuth(req, res);
+      }
+    } catch (error) {
+      logger.error('OAuth dance failed');
+      logger.error(error);
+      return api.sendInternalError(res, error);
     }
 
-    if (socialProfile !== undefined && socialProfile.email !== undefined) {
+    if (socialProfile && socialProfile.email !== undefined) {
       const { email, name } = socialProfile;
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
       const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
 
       if (!user) {
-        logger.debug('User not found');
-        const userId = mongo.generateTimeId();
-        await insertUser(dbClient, userId, email, name, req.params.provider);
-        logger.debug('User created');
-        const token = auth.createToken(userId, name, new Date(), null, false, '1m');
-        return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
+        try {
+          logger.debug('User not found, create one');
+          const userId = mongo.generateTimeId();
+          // TODO save fb login id: id, email, provider
+          await insertUser(dbClient, userId, email, name, req.params.provider);
+          logger.debug('User created');
+          // TODO return email, name and socialId
+          const token = auth.createToken(userId, name, new Date(), null, false, '1m');
+          return api.sendResponse(res, { access_token: token, token_type: 'bearer', email, name, userId, active: false });
+        } catch (error) {
+          logger.error('Failed to create new user');
+          logger.error(error);
+          return api.sendInternalError(res, error);
+        }
       }
 
       if (!user.auth.linked || !user.auth.linked.includes(req.params.provider)) {
-        await addProvider(dbClient, user, req.params.provider);
-        logger.debug('User linked with new provider');
+        try {
+          await addProvider(dbClient, user, req.params.provider);
+          logger.debug('User linked with new provider');
+        } catch (error) {
+          logger.error('Failed to link new social network');
+          logger.error(error);
+          return api.sendInternalError(res, error);
+        }
       }
 
       if (!user.auth.active) {
@@ -49,8 +69,7 @@ module.exports = (app) => {
       }
 
       if (!user.auth.verified) {
-        api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
-        return res;
+        return api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
       }
 
       const token = auth.createTokenFromUser(user);
@@ -59,113 +78,93 @@ module.exports = (app) => {
   });
 };
 
-async function googleAuth(req, res) {
+async function googleAuth(req) {
   logger.verbose('Google authentication starts');
-  try {
-    const requestObject = {
-      method: 'post',
-      url: CREDENTIAL.GOOGLE.TOKEN_URL,
-      data: qs.stringify({
-        code: req.body.code,
-        redirect_uri: req.body.redirectUri,
-        client_id: CREDENTIAL.GOOGLE.CLIENT_ID,
-        client_secret: CREDENTIAL.GOOGLE.CLIENT_SECRET,
-        grant_type: CREDENTIAL.GOOGLE.GRANT_TYPE,
-      }),
+  const requestObject = {
+    method: 'post',
+    url: CREDENTIAL.GOOGLE.TOKEN_URL,
+    data: qs.stringify({
+      code: req.body.code,
+      redirect_uri: req.body.redirectUri,
+      client_id: CREDENTIAL.GOOGLE.CLIENT_ID,
+      client_secret: CREDENTIAL.GOOGLE.CLIENT_SECRET,
+      grant_type: CREDENTIAL.GOOGLE.GRANT_TYPE,
+    }),
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+  };
+
+  const googleToken = await axios(requestObject);
+  if (googleToken.status === 200) {
+    const googleProfileRequestObject = {
+      method: 'get',
+      url: CREDENTIAL.GOOGLE.PROFILE_URL,
       headers: {
-        'content-type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${googleToken.data.access_token}`,
       },
     };
 
-    const googleToken = await axios(requestObject);
-    if (googleToken.status === 200) {
-      const googleProfileRequestObject = {
-        method: 'get',
-        url: CREDENTIAL.GOOGLE.PROFILE_URL,
-        headers: {
-          Authorization: `Bearer ${googleToken.data.access_token}`,
-        },
-      };
-
-      const googleProfile = await axios(googleProfileRequestObject);
-      if (googleProfile.status === 200) {
-        console.log(googleProfile.data);
-        const email = googleProfile.data.emailAddresses[0].value;
-        const name = googleProfile.data.names[0].displayName;
-        return { email, name, provider: 'google' };
-      } else {
-        res.status(500);
-      }
-    } else {
-      res.status(500);
+    const googleProfile = await axios(googleProfileRequestObject);
+    if (googleProfile.status === 200) {
+      console.log(googleProfile.data);
+      const email = googleProfile.data.emailAddresses[0].value;
+      const name = googleProfile.data.names[0].displayName;
+      return { email, name, provider: 'google' };
     }
-  } catch (error) {
-    logger.error('[google auth error]');
-    logger.error(error);
-    res.status(500).json(error);
   }
+  return null;
 }
 
-async function facebookAuth(req, res) {
+async function facebookAuth(req) {
   logger.verbose('Facebook authentication starts');
-  try {
-    const requestObject = {
-      method: 'post',
-      url: CREDENTIAL.FACEBOOK.TOKEN_URL,
-      data: {
-        code: req.body.code,
-        redirect_uri: req.body.redirectUri,
-        client_id: CREDENTIAL.FACEBOOK.CLIENT_ID,
-        client_secret: CREDENTIAL.FACEBOOK.CLIENT_SECRET,
-      },
-      headers: {
-        'content-type': 'application/json',
-      },
-    };
-    const facebookToken = await axios(requestObject);
+  const requestObject = {
+    method: 'post',
+    url: CREDENTIAL.FACEBOOK.TOKEN_URL,
+    data: {
+      code: req.body.code,
+      redirect_uri: req.body.redirectUri,
+      client_id: CREDENTIAL.FACEBOOK.CLIENT_ID,
+      client_secret: CREDENTIAL.FACEBOOK.CLIENT_SECRET,
+    },
+    headers: {
+      'content-type': 'application/json',
+    },
+  };
+  const facebookToken = await axios(requestObject);
 
-    const facebookProfile = await axios.get(CREDENTIAL.FACEBOOK.PROFILE_URL, {
-      params: { access_token: facebookToken.data.access_token },
-    });
-    const { email, name } = facebookProfile.data;
-    return { email, name, provider: 'facebook' };
-  } catch (error) {
-    logger.error('[facebook auth error]');
-    logger.error(error);
-    res.status(500).json(error);
-  }
+  const facebookProfile = await axios.get(CREDENTIAL.FACEBOOK.PROFILE_URL, {
+    params: { access_token: facebookToken.data.access_token },
+  });
+  const { email, name } = facebookProfile.data;
+  return { email, name, provider: 'facebook' };
 }
 
+// eslint-disable-next-line consistent-return
 async function twitterAuth(req, res) {
   logger.verbose('Twitter authentication starts');
-  try {
-    const oauthService = new OAuth.OAuth(
-      CREDENTIAL.TWITTER.REQUEST_URL,
-      CREDENTIAL.TWITTER.ACCESS_URL,
-      CREDENTIAL.TWITTER.CLIENT_ID,
-      CREDENTIAL.TWITTER.CLIENT_SECRET,
-      '1.0A', null,
-      CREDENTIAL.TWITTER.ALGORITHM,
-    );
+  const oauthService = new OAuth.OAuth(
+    CREDENTIAL.TWITTER.REQUEST_URL,
+    CREDENTIAL.TWITTER.ACCESS_URL,
+    CREDENTIAL.TWITTER.CLIENT_ID,
+    CREDENTIAL.TWITTER.CLIENT_SECRET,
+    '1.0A', null,
+    CREDENTIAL.TWITTER.ALGORITHM,
+  );
 
-    if (!req.body.oauth_token) {
-      oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret) => {
-        if (error) {
-          res.status(500).json(error);
-        } else {
-          res.json({
-            oauth_token: oauthToken,
-            oauth_token_secret: oauthTokenSecret,
-          });
-        }
-      });
-    } else {
-      return await getTwitterProfile(req, res, oauthService);
-    }
-  } catch (error) {
-    logger.error('[twitter auth error]');
-    logger.error(error);
-    res.status(500).json(error);
+  if (!req.body.oauth_token) {
+    oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret) => {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        res.json({
+          oauth_token: oauthToken,
+          oauth_token_secret: oauthTokenSecret,
+        });
+      }
+    });
+  } else {
+    return getTwitterProfile(req, res, oauthService);
   }
 }
 

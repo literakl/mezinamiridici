@@ -124,6 +124,8 @@ function convertErrors(jsonErrors) {
   return veeErrors;
 }
 
+// TODO SMAZAT
+
 export default {
   name: 'Confirm',
   components: {
