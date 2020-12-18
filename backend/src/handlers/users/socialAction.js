@@ -18,7 +18,7 @@ async function handleSocialProviderResponse(socialProfile, res) {
       const socialId = mongo.generateTimeId();
       await insertSocialLogin(dbClient, socialId, email, socialProfile.provider);
       logger.debug('User created');
-      return api.sendResponse(res, { email, name, socialId });
+      return api.sendCreated(res, { email, name, socialId });
     } catch (error) {
       logger.error('Failed to store socialId');
       logger.error(error);

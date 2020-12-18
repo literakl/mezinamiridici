@@ -38,7 +38,7 @@ class ResponseMock {
 }
 
 test('User API', async (done) => {
-  jest.setTimeout(60000);
+  jest.setTimeout(120000);
 
   // create user
   let body = {
@@ -53,8 +53,8 @@ test('User API', async (done) => {
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
   let jwtData = response.data;
-  const jwtDecoded = jwt.decode(jwtData);
-  const { userId } = jwtDecoded;
+  let jwtDecoded = jwt.decode(jwtData);
+  let { userId } = jwtDecoded;
   expect(jwtDecoded.nickname).toBe('leos');
 
   // create duplicate user
@@ -269,17 +269,23 @@ test('User API', async (done) => {
 
   // sign in user via Facebook
   body = { email: 'leos@literak.bud', name: 'Leoš Literák', provider: 'facebook' };
-  response = handleSocialProviderResponse(body, new ResponseMock());
+  response = await handleSocialProviderResponse(body, new ResponseMock());
+  expect(response.statusCode).toBe(201);
   body = {
-    email: 'leos@literak.bud',
-    nickname: 'Leoš Literák',
-    socialId: response.data.socialId,
+    email: response.body.email,
+    nickname: response.body.name,
+    socialId: response.body.socialId,
     termsAndConditions: true,
     dataProcessing: true,
     emails: true,
   };
-  response = await api('users', { method: 'POST', json: body });
-  expect(response.statusCode).toBe(201);
+  response = await api('users', { method: 'POST', json: body }).json();
+  expect(response.success).toBeTruthy();
+  jwtData = response.data;
+  jwtDecoded = jwt.decode(jwtData);
+  // eslint-disable-next-line prefer-destructuring
+  userId = jwtDecoded.userId;
+
   body = {
     drivingSince: 2007,
     vehicles: ['car'],
