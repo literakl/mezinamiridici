@@ -125,13 +125,11 @@ export default {
     },
     async signIn() {
       this.signingIn = true;
-
       try {
         await this.$store.dispatch('SIGN_USER_IN', {
           email: this.email,
           password: this.password,
         });
-
         await this.$router.push(this.redirectUrl || '/');
       } catch (error) {
         this.$log.error(error);
@@ -144,14 +142,19 @@ export default {
       }
     },
     async auth(provider) {
+      this.$log.error(`Auth starts ${provider}`);
       if (this.$auth.isAuthenticated()) {
+        this.$log.error('Already authenticated');
         this.$auth.logout();
       }
       const response = await this.$auth.authenticate(provider);
+      this.$log.error(response);
       if (response.socialId) {
-        const params = { presetEmail: response.email, presetNickname: response.presetNickname, socialId: response.socialId };
+        this.$log.error('Has socialId');
+        const params = { presetEmail: response.email, presetNickname: response.name, socialId: response.socialId };
         await this.$router.push({ name: 'sign-up', params });
       } else {
+        this.$log.error('Does not have socialId');
         await this.$store.dispatch('SET_SOCIAL', this.response.data);
         await this.$router.push('/');
       }

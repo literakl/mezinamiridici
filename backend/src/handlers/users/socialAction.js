@@ -4,6 +4,7 @@ const api = require('../../utils/api.js');
 const { logger } = require('../../utils/logging');
 
 async function handleSocialProviderResponse(socialProfile, res) {
+  logger.verbose('socialAction starts');
   const { email, name } = socialProfile;
   const dbClient = await mongo.connectToDatabase();
   logger.debug('Mongo connected');
@@ -17,8 +18,8 @@ async function handleSocialProviderResponse(socialProfile, res) {
       logger.debug('User not found, store socialId');
       const socialId = mongo.generateTimeId();
       await insertSocialLogin(dbClient, socialId, email, socialProfile.provider);
-      logger.debug('User created');
-      return api.sendCreated(res, { email, name, socialId });
+      logger.debug('SocialId created');
+      return api.sendResponse(res, { email, name, socialId });
     } catch (error) {
       logger.error('Failed to store socialId');
       logger.error(error);
