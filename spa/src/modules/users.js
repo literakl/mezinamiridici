@@ -153,9 +153,10 @@ export default {
     },
     CREATE_USER_PROFILE: async (context, payload) => post('API', '/users', payload),
     UPDATE_USER_PROFILE: (context, payload) => {
+      const { userId, jwt } = payload;
       delete payload.jwt;
       delete payload.userId;
-      return patch('API', `/users/${payload.userId}`, payload, context, payload.jwt);
+      return patch('API', `/users/${userId}`, payload, context, jwt);
     },
     VERIFY_USER: (context, payload) => post('API', `/verify/${payload.token}`),
     GET_USER_PROFILE_BY_ID: async (context, payload) => get('API', `/users/${payload.id}`, context),
