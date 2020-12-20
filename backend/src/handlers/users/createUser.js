@@ -93,11 +93,11 @@ module.exports = (app) => {
 async function insertUser(dbClient, socialRecord, id, email, password, nickname, emails, verificationToken) {
   let commandResult;
   if (socialRecord) {
-    commandResult = await dbClient.db().collection('social_login').deleteOne({ _id: socialRecord._id });
-    if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
+    commandResult = await dbClient.db().collection('social_login').deleteMany({ email });
+    if (commandResult.result.ok >= 1 && commandResult.result.n === 1) {
       logger.debug('Social id deleted');
     } else {
-      logger.error(`Social id ${socialRecord._id} not deleted`);
+      logger.error(`Social id ${socialRecord._id} not deleted for email ${email}`);
     }
   }
 
