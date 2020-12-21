@@ -10,7 +10,7 @@ async function handleSocialProviderResponse(socialProfile, res) {
   logger.debug('Mongo connected');
 
   const user = await mongo.findUser(dbClient, { email }, {
-    projection: { auth: 1, 'bio.nickname': 1, roles: 1 },
+    projection: { auth: 1, 'bio.nickname': 1, roles: 1, access_token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' },
   });
 
   if (!user) {
