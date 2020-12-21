@@ -20,5 +20,20 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
+/**
+ * Convert object to string - single level only.
+ * @param obj
+ * @returns {string}
+ */
+function toJSON(obj) {
+  let output = '{\n';
+  Object.keys(obj).forEach((e) => {
+    output = output.concat(`  ${e} = ${obj[e]}\n`);
+  });
+  output = output.concat('}\n');
+  return output;
+}
+
 exports.findLastIndex = findLastIndex;
 exports.escapeRegExp = escapeRegExp;
+exports.toJSON = toJSON;

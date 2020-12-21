@@ -4,16 +4,24 @@ const qs = require('qs');
 const request = require('request-promise');
 
 const api = require('../../utils/api.js');
-const { handleSocialProviderResponse } = require('./socialAction');
+const helpers = require('../../utils/helpers');
 const { logger } = require('../../utils/logging');
 const CREDENTIAL = require('../../utils/social_provider_credential');
+const { handleSocialProviderResponse } = require('./socialAction');
 
 module.exports = (app) => {
   app.options('/v1/auth/:provider');
 
+  app.get('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
+    logger.verbose('socialLink GET handler starts');
+    logger.info(helpers.toJSON(req.query));
+    api.sendResponse(res, {});
+  });
+
   // eslint-disable-next-line consistent-return
   app.post('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
-    logger.verbose('socialLink handler starts');
+    logger.verbose('socialLink POST handler starts');
+    logger.info(helpers.toJSON(req.body));
     let socialProfile;
     try {
       if (req.params.provider === 'google') {
