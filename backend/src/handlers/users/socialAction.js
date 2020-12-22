@@ -10,7 +10,7 @@ async function handleSocialProviderResponse(socialProfile, res) {
   logger.debug('Mongo connected');
 
   const user = await mongo.findUser(dbClient, { email }, {
-    projection: { auth: 1, 'bio.nickname': 1, roles: 1, access_token: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' },
+    projection: { auth: 1, 'bio.nickname': 1, roles: 1 },
   });
 
   if (!user) {
@@ -19,7 +19,7 @@ async function handleSocialProviderResponse(socialProfile, res) {
       const socialId = mongo.generateTimeId();
       await insertSocialLogin(dbClient, socialId, email, socialProfile.provider);
       logger.debug('SocialId created');
-      return api.sendResponse(res, { email, name, socialId });
+      return api.sendResponse(res, { email, name, socialId, access_token: 'abcd' });
     } catch (error) {
       logger.error('Failed to store socialId');
       logger.error(error);
