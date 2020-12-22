@@ -149,7 +149,8 @@ export default {
       }
       const response = await this.$auth.authenticate(provider);
       this.$log.error(response);
-      if (response.socialId) {
+      this.$log.error(response.data);
+      if (response.data.socialId) {
         this.$log.error('Has socialId');
         const params = { presetEmail: response.email, presetNickname: response.name, socialId: response.socialId };
         await this.$router.push({ name: 'sign-up', params });
