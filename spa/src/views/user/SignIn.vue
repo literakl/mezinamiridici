@@ -142,20 +142,18 @@ export default {
       }
     },
     async auth(provider) {
-      this.$log.error(`Auth starts ${provider}`);
+      this.$log.debug(`Auth starts ${provider}`);
       if (this.$auth.isAuthenticated()) {
-        this.$log.error('Already authenticated');
+        this.$log.debug('Already authenticated');
         this.$auth.logout();
       }
       const response = await this.$auth.authenticate(provider);
-      this.$log.error(response);
-      this.$log.error(response.data);
       if (response.data.socialId) {
-        this.$log.error('Has socialId');
-        const params = { presetEmail: response.email, presetNickname: response.name, socialId: response.socialId };
+        this.$log.debug('Has socialId');
+        const params = { presetEmail: response.data.email, presetNickname: response.data.name, socialId: response.data.socialId };
         await this.$router.push({ name: 'sign-up', params });
       } else {
-        this.$log.error('Does not have socialId');
+        this.$log.debug('No socialId');
         await this.$store.dispatch('SET_SOCIAL', this.response.data);
         await this.$router.push('/');
       }

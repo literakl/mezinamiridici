@@ -13,7 +13,7 @@
           :label="$t('profile.email')"
           :placeholder="$t('sign-up.email-hint')"
           name="email"
-          :disabled="socialId"
+          :disabled="socialId !== undefined"
           type="email"/>
 
         <TextInput

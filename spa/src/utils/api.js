@@ -45,6 +45,7 @@ function put(endpoint, url, body, context, jwt) {
 
 function patch(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
+  console.log(headers);
   if (endpoint === 'BFF') {
     return axios.patch(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
   } else {

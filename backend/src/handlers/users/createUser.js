@@ -94,10 +94,14 @@ async function insertUser(dbClient, socialRecord, id, email, password, nickname,
   let commandResult;
   if (socialRecord) {
     commandResult = await dbClient.db().collection('social_login').deleteMany({ email });
-    if (commandResult.result.ok >= 1 && commandResult.result.n === 1) {
-      logger.debug('Social id deleted');
+    if (commandResult.result.ok >= 1) {
+      if (commandResult.result.n === 0) {
+        logger.error(`Social id ${socialRecord._id} not deleted`);
+      } else {
+        logger.debug('Social id deleted');
+      }
     } else {
-      logger.error(`Social id ${socialRecord._id} not deleted for email ${email}`);
+      logger.error(`Social id for email ${email} not deleted because of error`);
     }
   }
 

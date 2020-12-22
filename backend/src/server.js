@@ -15,7 +15,6 @@ require('./handlers/users/resetPassword')(app);
 require('./handlers/users/updateUser')(app);
 require('./handlers/users/validateToken')(app);
 require('./handlers/users/verifyUser')(app);
-require('./handlers/users/activateUser')(app);
 require('./handlers/users/socialLink')(app);
 require('./handlers/users/getUserActivity')(app);
 require('./handlers/polls/createPoll')(app);
