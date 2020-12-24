@@ -96,7 +96,7 @@ export default {
       const response = await post('API', '/authorizeUser', body);
 
       const jwt = response.data.data;
-      return this.dispatch('AFTER_USER_IN', { jwt });
+      return context.dispatch('AFTER_USER_IN', { jwt });
     },
     AFTER_USER_IN: (context, payload) => {
       context.commit('SET_POLL', null);
