@@ -151,7 +151,7 @@ export default {
         const params = { presetEmail: response.data.email, presetNickname: response.data.name, socialId: response.data.socialId };
         await this.$router.push({ name: 'sign-up', params });
       } else {
-        await this.$store.dispatch('SET_SOCIAL', this.data);
+        await this.$store.dispatch('SET_SOCIAL', response.data);
         await this.$router.push('/');
       }
     },

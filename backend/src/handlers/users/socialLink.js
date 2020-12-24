@@ -157,7 +157,7 @@ function getTwitterProfile(req, res, oauthService) {
             .then((profile) => {
               const { email } = profile;
               const { name } = profile;
-              resolve({ email, name });
+              resolve({ email, name, provider: 'twitter' });
             })
             .catch((error2) => {
               reject(error2);

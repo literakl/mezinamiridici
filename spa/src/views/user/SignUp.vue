@@ -2,10 +2,10 @@
   <div class="pt-3 w-75 m-auto pb-5">
     <h1>{{ $t('sign-up.heading') }}</h1>
 
-    <p>{{ $t('sign-up.body') }}</p>
+    <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
+      <b-form @submit.prevent="passes(submitForm)" v-if="! succeeded">
         <fieldset :disabled='wholeDisable'>
         <TextInput
           v-model="email"
@@ -204,6 +204,11 @@ export default {
     sending: false,
     wholeDisable: false,
   }),
+  computed: {
+    succeeded() {
+      return !(this.success === false || this.success === null);
+    },
+  },
   mounted() {
     if (this.presetEmail) this.email = this.presetEmail;
     if (this.presetPassword) this.password = this.presetPassword;
@@ -233,16 +238,24 @@ export default {
         this.sending = false;
         this.wholeDisable = false;
 
-        if (!this.personalData) {
-          this.success = true;
-          return true;
-        }
-
         const { data } = response;
         const token = data.data;
         if (token === undefined) {
           this.error = this.$t('sign-up.something-went-wrong');
           return false;
+        }
+
+        if (this.socialId) {
+          await this.$store.dispatch('AFTER_USER_IN', { jwt: token });
+        }
+
+        if (!this.personalData) {
+          if (this.socialId) {
+            await this.$router.push('/');
+          } else {
+            this.success = true;
+          }
+          return true;
         }
 
         const jwtData = jwtDecode(token);
@@ -260,6 +273,11 @@ export default {
           publicProfile: this.profileForm.share,
           urls: this.profileForm.urls,
         });
+
+        if (this.socialId) {
+          await this.$router.push('/');
+        }
+
         this.success = true;
       } catch (error) {
         this.$log.error(error);

@@ -84,14 +84,11 @@ export default {
       context.commit('SET_USER_EMAIL', payload.email);
     },
     SIGN_USER_IN: async (context, payload) => {
-      context.commit('SET_POLL', null);
-      context.commit('SET_LATEST_POLL', null);
       context.commit('SET_USER_TOKEN', null);
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
       context.commit('SET_USER_ROLE', null);
       context.commit('SET_USER_NICKNAME', null);
-
       const body = {
         email: payload.email,
         password: payload.password,
@@ -99,6 +96,13 @@ export default {
       const response = await post('API', '/authorizeUser', body);
 
       const jwt = response.data.data;
+      return this.dispatch('AFTER_USER_IN', { jwt });
+    },
+    AFTER_USER_IN: (context, payload) => {
+      context.commit('SET_POLL', null);
+      context.commit('SET_LATEST_POLL', null);
+
+      const { jwt } = payload;
       const jwtData = jwtDecode(jwt);
       localStorage.setItem('jwt', jwt);
 
