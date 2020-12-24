@@ -142,19 +142,16 @@ export default {
       }
     },
     async auth(provider) {
-      this.$log.debug(`Auth starts ${provider}`);
       if (this.$auth.isAuthenticated()) {
-        this.$log.debug('Already authenticated');
         this.$auth.logout();
       }
       const response = await this.$auth.authenticate(provider);
       if (response.data.socialId) {
-        this.$log.debug('Has socialId');
+        this.$auth.logout();
         const params = { presetEmail: response.data.email, presetNickname: response.data.name, socialId: response.data.socialId };
         await this.$router.push({ name: 'sign-up', params });
       } else {
-        this.$log.debug('No socialId');
-        await this.$store.dispatch('SET_SOCIAL', this.response.data);
+        await this.$store.dispatch('SET_SOCIAL', this.data);
         await this.$router.push('/');
       }
     },

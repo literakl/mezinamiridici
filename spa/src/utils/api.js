@@ -3,6 +3,31 @@ const axios = require('axios').default;
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
 axios.defaults.headers.patch['Content-Type'] = 'application/json; charset=utf-8';
 
+/*
+axios.interceptors.request.use((x) => {
+  const headers = {
+    ...x.headers.common,
+    ...x.headers[x.method],
+    ...x.headers,
+  };
+
+  ['common', 'get', 'post', 'head', 'put', 'patch', 'delete'].forEach((header) => {
+    delete headers[header];
+  });
+
+  const printable = `${new Date()} | Request: ${x.method.toUpperCase()} | ${x.url} | ${JSON.stringify(x.data)} | ${JSON.stringify(headers)}`;
+  console.log(printable);
+  return x;
+});
+
+
+axios.interceptors.response.use((x) => {
+  const printable = `${new Date()} | Response: ${x.status} | ${JSON.stringify(x.data)}`;
+  console.log(printable);
+  return x;
+});
+*/
+
 const { VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT } = process.env;
 
 function getAuthHeader(context, jwt = undefined, upload) {
@@ -45,7 +70,6 @@ function put(endpoint, url, body, context, jwt) {
 
 function patch(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
-  console.log(headers);
   if (endpoint === 'BFF') {
     return axios.patch(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
   } else {

@@ -40,6 +40,8 @@ Vue.use(VueAuthenticate, {
   tokenName: 'jwt',
   baseUrl: process.env.VUE_APP_API_ENDPOINT,
   storageType: 'localStorage',
+  bindRequestInterceptor() {},
+  bindResponseInterceptor() {},
   providers: {
     facebook: {
       clientId: process.env.VUE_APP_FACEBOOK_CLIENT_ID,

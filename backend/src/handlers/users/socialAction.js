@@ -39,7 +39,7 @@ async function handleSocialProviderResponse(socialProfile, res) {
   }
 
   if (!user.auth.verified) {
-    // TODO set user to verified because we trust social providers they did a verification
+    logger.error(`User ${user._id} not verified! Potential case: registered but not activated account, then social login.`);
     return api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
   }
 
