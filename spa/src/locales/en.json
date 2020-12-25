@@ -291,7 +291,7 @@
     "tag": "Tag",
     "tags": "Tags",
     "cms": "Pages",
-    "content": "Page",
+    "page": "Page",
     "edit-content": "Edit page",
     "create-content": "Create page",
     "junkyard": "Junkyard"
