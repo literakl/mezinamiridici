@@ -1,21 +1,25 @@
 <template>
-  <div class="container">
+  <div class="container centerbox">
     <label for="share-profile">{{ $t('profile.share-profile') }}</label>
-    <div class="row">
+    <div class="field-area">
+    <div class="radio-boxes">
+      <div class="public-box">
       <Radio
         class="pl-3"
         v-model="share"
         identifier="public"
         :label="$t('profile.public')"
-        name="share-profile"/>
+        name="share-profile"/></div>
+      <div class="private-box">
       <Radio
         class="pl-3"
         v-model="share"
         identifier="private"
         :label="$t('profile.private')"
-        name="share-profile"/>
+        name="share-profile"/></div>
     </div>
-
+    </div>
+    <div class="field-area">
     <Datepicker
       :label="$t('profile.driving-since-label')"
       v-model="drivingSince"
@@ -25,7 +29,8 @@
       :disabled-dates="drivingDateScope"
       :typeable="true"
       name="driving-since"/>
-
+    </div>
+    <div class="field-area">
     <div>
       <label for="vehicle">{{ $t('profile.vehicles-label') }}</label>
     </div>
@@ -67,9 +72,10 @@
         name="vehicle"
         identifier="tramway"/>
     </div>
-
+    </div>
+    <div class="field-area">
     <div>
-      <label class="pt-3" for="sex">{{ $t('profile.sex') }}</label>
+      <label class="" for="sex">{{ $t('profile.sex') }}</label>
     </div>
     <div class="row">
       <Radio
@@ -85,7 +91,8 @@
         name="sex"
         identifier="woman"/>
     </div>
-
+    </div>
+    <div class="field-area">
     <Datepicker
       :label="$t('profile.born')"
       v-model="bornInYear"
@@ -95,12 +102,13 @@
       :disabled-dates="bornDateScope"
       :typeable="true"
       name="born"/>
-
+    </div>
+    <div class="field-area">
     <div>
       <label for="region">{{ $t('profile.region') }}</label>
     </div>
-    <div class="row">
-      <select id="region" v-model="region">
+    <div class="row pl-3">
+      <select id="region" class="form-control" v-model="region">
         <option value="">{{ $t('sign-up.region-options') }}</option>
         <option value="PRG">{{ $t('profile.regions.PRG') }}</option>
         <option value="SC">{{ $t('profile.regions.SC') }}</option>
@@ -118,11 +126,12 @@
         <option value="MS">{{ $t('profile.regions.MS') }}</option>
       </select>
     </div>
-
+    </div>
+    <div class="field-area">
     <div>
       <label class="pt-3" for="education">{{ $t('profile.education') }}</label>
     </div>
-    <div class="row pb-3">
+    <div class="row">
       <Radio
         class="pl-3"
         v-model="education"
@@ -142,9 +151,10 @@
         name="education"
         identifier="university"/>
     </div>
-
+    </div>
+    <div class="field-area">
     <div>
-      <label class="pt-3">{{ $t('edit-profile.urls') }}</label>
+      <label>{{ $t('edit-profile.urls') }}</label>
     </div>
     <div class="pb-2">
       <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
@@ -154,6 +164,7 @@
     </div>
     <div class="pb-2">
       <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+    </div>
     </div>
   </div>
 </template>
@@ -250,3 +261,16 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .centerbox{max-width: 700px; margin: 0 auto 20px; box-shadow: var(--big-shadow); padding: 25px 20px; border-radius: 4px 4px 0 0;}
+  .field-area{ margin-bottom: 20px;}
+  .field-area input, .field-area select{ width: 98%}
+  .centerbox label{border-bottom: 1px solid #e2e2e2; display: block; padding: 8px 20px 10px 0px}
+  .radio-boxes{ display: flex;}
+  .public-box, .private-box{ display: block; width: 50%;     border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    margin: 0;
+    padding-right: 25px;}
+
+</style>

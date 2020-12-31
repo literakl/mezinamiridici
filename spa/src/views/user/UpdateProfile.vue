@@ -15,7 +15,7 @@
           {{ error }}
         </div>
 
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-4 m-auto">
           <Button
             class="w-100"
             :disabled="invalid"

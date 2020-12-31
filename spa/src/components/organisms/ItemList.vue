@@ -1,5 +1,6 @@
 <template>
   <GridLayout
+  class="homePosts"
     ref="ig"
     :options="options"
     :layoutOptions="layoutOptions"
@@ -92,9 +93,20 @@ export default {
 };
 </script>
 <style scoped>
+
+.homePosts{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 .item {
-  width: 250px;
+  width: 280px;
   opacity: 1;
+  position: unset!important;
+  height: 330px;
+}
+.item div{
+      height: 310px;
 }
 .item .thumbnail {
   max-height: 300px;

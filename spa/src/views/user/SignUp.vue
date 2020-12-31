@@ -1,12 +1,13 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
-    <h1>{{ $t('sign-up.heading') }}</h1>
+  <div class="pt-3 w-75 m-auto pb-5 centerbox">
+    <h1 class="pt-4">{{ $t('sign-up.heading') }}</h1>
 
     <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="! succeeded">
         <fieldset :disabled='wholeDisable'>
+          <div class="field-area">
         <TextInput
           v-model="email"
           rules="required|email|conflict:email"
@@ -15,7 +16,8 @@
           name="email"
           :disabled="socialId !== undefined"
           type="email"/>
-
+        </div>
+        <div class="field-area">
         <TextInput
           v-if="! socialId"
           v-model="password"
@@ -24,14 +26,16 @@
           :placeholder="$t('sign-up.password-hint')"
           name="password"
           type="password"/>
-
+        </div>
+        <div class="field-area">
         <TextInput
           v-model="nickname"
           rules="required|min:3|conflict:nick"
           :label="$t('profile.nickname')"
           :placeholder="$t('sign-up.nickname-hint')"
           name="nickname"/>
-
+       </div>
+        <div class="field-area">
         <Checkbox
           v-model="personalData"
           :label="$t('sign-up.personal-data')"
@@ -39,8 +43,9 @@
           identifier="personalData"/>
 
         <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
-
-        <h2>{{ $t('sign-up.consents') }}</h2>
+        </div>
+        <div class="field-area">
+        <h5>{{ $t('sign-up.consents') }}</h5>
 
         <div>
           <Checkbox
@@ -67,6 +72,7 @@
             name="email-notifications"
             identifier="emailNotifications"/>
         </div>
+        </div>
 
         <div v-if="error" class="text-danger">
           <strong>
@@ -74,7 +80,7 @@
           </strong>
         </div>
 
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-4 m-auto">
           <Button
             class="w-100"
             :waiting="sending"
@@ -305,3 +311,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.centerbox{max-width: 700px; margin: 0 auto 20px; box-shadow: var(--big-shadow); padding: 25px 20px; border-radius: 4px 4px 0 0;}
+.centerbox h1{ text-align: left;color: rgb(113 193 53);}
+.field-area{ margin-bottom: 20px;}
+.field-area input, .field-area select{ width: 98%!important}
+.centerbox .w-50{ width: 100%!important;}
+</style>

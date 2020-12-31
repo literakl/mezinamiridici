@@ -1,31 +1,31 @@
 <template>
-  <div class="item-div item-hover mb-3">
-    <h4 class="text-center">
+  <div class="mb-3">
+    <h4 class="text-center poolheading">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
       </router-link>
     </h4>
 
-    <div v-if="voted" class="pt-2 pb-2 d-flex justify-content-center">
+    <div v-if="voted" class="pt-2 pb-2 d-flex justify-content-center featured-poll">
       <b-button variant="success" :class="myVoteClass('neutral')" class="m-3">
-        <img src="/images/icons/happy.png" class="pr-2" alt="">
+        <img src="/images/icons/happy.svg" class="" alt="">
         {{ $t('poll.choices.neutral') }}
-        <span class="badge badge-pill badge-light">{{ this.votes.neutral }}%</span>
+        <span class="badge badge-pill badge-white">{{ this.votes.neutral }}%</span>
       </b-button>
       <b-button variant="primary" :class="myVoteClass('trivial')" class="m-3">
-        <img src="/images/icons/ok.png" class="pr-2" alt="">
+        <img src="/images/icons/ok.svg" class="" alt="">
         {{ $t('poll.choices.trivial') }}
-        <span class="badge badge-pill badge-light">{{ this.votes.trivial }}%</span>
+        <span class="badge badge-pill badge-white">{{ this.votes.trivial }}%</span>
       </b-button>
       <b-button variant="warning" :class="myVoteClass('dislike')" class="m-3">
-        <img src="/images/icons/dislike.png" class="pr-2" alt="">
+        <img src="/images/icons/dislike.svg" class="" alt="">
         {{ $t('poll.choices.dislike') }}
-        <span class="badge badge-pill badge-light">{{ this.votes.dislike }}%</span>
+        <span class="badge badge-pill badge-white">{{ this.votes.dislike }}%</span>
       </b-button>
       <b-button variant="danger" :class="myVoteClass('hate')" class="m-3">
-        <img src="/images/icons/angry.png" class="pr-2" alt="">
+        <img src="/images/icons/angry.svg" class="" alt="">
         {{ $t('poll.choices.hate') }}
-        <span class="badge badge-pill badge-light">{{ this.votes.hate }}%</span>
+        <span class="badge badge-pill badge-white">{{ this.votes.hate }}%</span>
       </b-button>
     </div>
 
@@ -33,23 +33,44 @@
       <PollButtons v-on:do-vote="onVote"/>
     </div>
 
-    <div class="mt-3 p-1 pl-3 item-footer">
-      <Date :date="poll.info.date" format="dynamicDate" /> &bull;
-      <ProfileLink :profile="poll.info.author"/> &bull;
-      {{ $t('poll.votes') }}: {{ poll.votes.total }} &bull;
-      <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }, hash: '#comments'}">
+    <div class="mt-3 py-3 mb-5 item-footer">
+      <template>
+        <div class="post-time">
+      <BIconClockFill scale="2"></BIconClockFill>
+      <span class="date"><Date :date="poll.info.date" format="dynamicDate" /></span>
+        </div>
+      </template>
+      <template>
+        <div class="post-author">
+      <BIconPersonCircle scale="2"></BIconPersonCircle>
+      <span><ProfileLink :profile="poll.info.author"/></span>
+       </div>
+      </template>
+      <template>
+        <div class="post-rating">
+      <BIconStarFill scale="2"></BIconStarFill>
+      <span>{{ $t('poll.votes') }}: {{ poll.votes.total }}</span>
+       </div>
+      </template>
+       <template>
+        <div class="post-comments">
+      <BIconChatSquareTextFill scale="2"></BIconChatSquareTextFill>
+      <span><router-link :to="{ name: 'poll', params: { slug: poll.info.slug }, hash: '#comments'}">
         {{ $t('comment.comments') }}: {{ poll.comments.count }}
-      </router-link>
+      </router-link></span>
+       </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+
 import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
-import { BButton } from 'bootstrap-vue';
+import { BButton, BIconPersonCircle, BIconClockFill, BIconStarFill, BIconChatSquareTextFill } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
@@ -58,6 +79,10 @@ export default {
     ProfileLink,
     Date,
     BButton,
+    BIconPersonCircle,
+    BIconClockFill,
+    BIconStarFill,
+    BIconChatSquareTextFill,
   },
   props: {
     poll: Object,
@@ -92,16 +117,144 @@ export default {
 </script>
 
 <style scoped>
+
+.featured-poll button{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    position: relative;
+    max-width: 220px;
+    width: 100%;
+    border-radius: 100px;
+    justify-content: center;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    padding-right: 35px;
+    padding: 0;
+    position: relative;
+    height: 50px;
+    margin: 15px;
+}
+.featured-poll button img{ position: absolute;
+    top: -60px;
+    width: 90px;
+    height: 50px;
+    /* left: auto; */
+    /* right: auto; */
+    display: block;
+    margin: 0 auto;
+    right: 20%;
+    left: 20%;
+}
+.featured-poll button span{
+ width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-white);
+    color: var(--dark-color);
+        position: absolute;
+    left: -5px;
+    font-size: 16px;
+    box-shadow: var(--box-shadow);
+}
 .item-div {
   border-width: 10px;
   border-color: #f1f1f1;
   border-style: solid;
-  box-shadow: #c1c1c1 1px 1px 10px;
+  /* box-shadow: #c1c1c1 1px 1px 10px; */
 }
 .item-footer {
-  background-color: #f1f1f1;
-  font-size: 0.8em;
-  color: #201f27;
-  font-weight: 600;
+     font-size: 1em;
+    color: #201f27;
+    text-align: center;
+    max-width: 550px;
+    margin: 0 auto;
+    font-weight: 400;
+    border-top: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+
 }
+.item-footer span, .item-footer span a, .item-footer a {
+  color: #777A7C;
+}
+.item-footer svg{
+  color: #AEB3B7;
+      margin-right: 15px;
+
+}
+
+.item-footer span a{
+  color: #777A7C;
+  text-decoration: none;
+}
+.poolheading a{
+  font-size: 50px;
+  text-decoration: none;
+  color: var(--dark-color);
+  margin: 40px 0 55px;
+    display: block;
+}
+
+
+@media (max-width: 1220px) {
+  .featured-poll button{
+          font-size: 15px;
+          width: 180px;
+     }
+  .featured-poll button span{
+      width: 30px;
+      height: 30px;
+  }
+}
+@media (max-width: 992px) {
+  .featured-poll button img{
+      left: 0;
+      right: 0;
+    }
+     .featured-poll button span{
+    top: 38px;
+  }
+   .featured-poll button {margin: 50px 0px!important;width: 133px; margin: 45px 0!important;
+    }
+}
+@media (max-width: 767px) {
+  .featured-poll { flex-wrap: wrap; justify-content: space-around!important;     padding: 0 20px;
+    }
+    .poolheading a{
+    font-size: 30px;
+    margin: 40px 0 35px;
+    }
+    .item-footer{
+      flex-wrap: wrap;
+      font-size:14px
+    }
+    .item-footer svg{
+    font-size: 10px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+}
+  .post-time svg, .post-author svg, .post-rating svg, .post-comments svg{
+    display: block;
+    margin: 0 auto 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .featured-poll { padding: 0 0px;
+    }
+    .item {
+    width: 100%;}
+}
+
+@media (max-width: 480px) {
+   .item {
+    width: 100%;}
+}
+
 </style>

@@ -1,3 +1,45 @@
 //https://github.com/twbs/bootstrap/blob/8fa0d3010112dca5dd6dd501173415856001ba8b/scss/_variables.scss#L782-L808
 $gray-900: #212529 !default;
 $primary: $gray-900;
+:root,
+html[theme="default"] {
+  --text-color: #222222;
+  --text-color-light: #949494;
+  --body-color: #f2f2f2;
+  --color-white: #fff;
+  --color-green: #008751;
+  --color-darkgreen: #077247;
+  --bg-light: #ecf7fb;
+  --dark-color: #343A40!important;
+  --red-color: rgb(158, 5, 5);
+  --pinkbg-light: rgba(242, 0, 145, .2);
+  --pinkbg-sharp: rgb(242, 0, 145);
+  --pinkBorder: #d90082;
+
+  --primary-bt-color: #2d4989;
+
+  --theme-blue: #53a1ff;
+  --box-shadow: -2px 2px 3px rgba(57, 73, 76, 0.1);
+  --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
+  --inside-padding: 18px 25px;
+  --shadow-color: 57, 73, 76;
+  --shadow-color-active: rgba(var(--shadow-color), 0.25);
+  --drop-shadow: 0 1px 6px rgba(var(--shadow-color), 0.35);
+  --drop-shadow-active: 0 2px 10px 1px rgba(var(--shadow-color), 0.4),
+  0 1px 2px rgba(var(--shadow-color), 0.25);
+}
+
+
+body{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+}
+.rightmenu{
+  li{
+    a{ display: flex; align-items: center;
+      svg{     font-size: 14px!important; margin-right: 10px;}
+    }
+    :hover{ color: var(--color-white)!important;}
+  }
+
+}

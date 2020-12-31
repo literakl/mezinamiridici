@@ -1,23 +1,24 @@
 <template>
   <div class="m-auto item-div item-hover">
+    <router-link :to="link">
+      <b-img :src="item.info.picture"></b-img>
+    </router-link>
     <h4>
       <router-link :to="link">
         {{ item.info.caption }}
       </router-link>
     </h4>
-    <router-link :to="link">
-      <b-img :src="item.info.picture"></b-img>
-    </router-link>
-    <div class="mt-3 p-1 pl-3 item-footer">
-      <Date :date="item.info.date" format="dynamicDate" />
-      <template v-if="showAuthor">&bull; <ProfileLink :profile="item.info.author"/></template>
-      <template v-if="item.type === 'poll'">&bull; {{ $t('poll.votes') }}: {{item.votes_count}}</template>
+    <div class="py-2 px-3 item-footer">
+      <span class="data"><Date :date="item.info.date" format="dynamicDate" /></span>
+      <div class="bottom-links">
+      <template v-if="showAuthor"><span><BIconPersonCircle></BIconPersonCircle> <ProfileLink :profile="item.info.author"/></span></template>
+      <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{item.votes_count}}</template>
       <template v-if="hasDiscussion">
-        &bull;
-        <router-link :to="commentLink">
+        <span><BIconChatTextFill></BIconChatTextFill> <router-link :to="commentLink">
           {{ $t('comment.comments') }}: {{item.comments.count}}
-        </router-link>
+        </router-link></span>
       </template>
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +27,7 @@
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import { deepCopy } from '@/utils/api';
-import { BImg } from 'bootstrap-vue';
+import { BImg, BIconPersonCircle, BIconChatTextFill } from 'bootstrap-vue';
 
 export default {
   name: 'ItemBox',
@@ -34,6 +35,8 @@ export default {
     Date,
     ProfileLink,
     BImg,
+    BIconPersonCircle,
+    BIconChatTextFill,
   },
   props: {
     item: Object,
@@ -71,30 +74,41 @@ export default {
 };
 </script>
 <style scoped>
-  img {
-    width:100%;
-  }
-  .item-div {
-    border-width: 10px;
-    border-color: #f1f1f1;
-    border-style: solid;
-    box-shadow: #c1c1c1 1px 1px 10px;
-  }
-  .item-hover {
-    cursor:pointer;
-    transition: 0.2s ease;
-  }
-  .item-hover:hover {
-    transform: translateX(-2px) translateY(-2px) scale(1.03);
-  }
-  .item-hover:active {
-    transform: translateX(-1px) translateY(-1px) scale(1.01);
-  }
-  .item-div h4 {}
-  .item-footer {
-    background-color: #f1f1f1;
-    font-size: 0.8em;
-    color: #201f27;
-    font-weight: 600;
-  }
+img {
+  width:100%;
+}
+.item-div {
+  /* border-width: 10px; */
+  border-color: #f1f1f1;
+  border-style: solid;
+  box-shadow: #c1c1c1 1px 1px 10px;
+  position: relative;
+}
+.item-hover {
+  cursor:pointer;
+  transition: 0.2s ease;
+}
+.item-hover:hover {
+  transform: translateX(-2px) translateY(-2px) scale(1.03);
+}
+.item-hover:active {
+  transform: translateX(-1px) translateY(-1px) scale(1.01);
+}
+.item-div h4 { text-align: center;}
+
+.item-div h4 a {height: 95px; color: var(--dark-color); text-align: center; font-size: 17px; padding: 25px 15px; display: block;}
+.item-footer {
+  border-top: 1px solid #ddd;
+  display: flex;
+  font-size: 0.8em;
+  color: #201f27;
+  font-weight: 600;
+}
+.item-footer span.data {position: absolute; top: 0; background: rgba(129, 215, 66, 0.9); padding: 3px 10px; color: var(--color-white);}
+.item-footer:hover span.data{ opacity: 1;}
+
+.bottom-links{ display: flex; width: 100%;justify-content: space-between;}
+.bottom-links span a { font-weight: 400; color:#777A7C!important;}
+.bottom-links span svg { color:#777A7C}
+
 </style>
