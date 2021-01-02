@@ -5,14 +5,14 @@
     <div class="radio-boxes">
       <div class="public-box">
       <Radio
-        class="pl-3"
+        class=""
         v-model="share"
         identifier="public"
         :label="$t('profile.public')"
         name="share-profile"/></div>
       <div class="private-box">
       <Radio
-        class="pl-3"
+        class=""
         v-model="share"
         identifier="private"
         :label="$t('profile.private')"
@@ -20,15 +20,15 @@
     </div>
     </div>
     <div class="field-area">
-    <Datepicker
-      :label="$t('profile.driving-since-label')"
-      v-model="drivingSince"
-      format="yyyy"
-      minimumView="year"
-      type="number"
-      :disabled-dates="drivingDateScope"
-      :typeable="true"
-      name="driving-since"/>
+        <Datepicker
+        :label="$t('profile.driving-since-label')"
+          v-model="drivingSince"
+          format="yyyy"
+          minimumView="year"
+          type="number"
+          :disabled-dates="drivingDateScope"
+          :typeable="true"
+          name="driving-since"/>
     </div>
     <div class="field-area">
     <div>
@@ -129,7 +129,7 @@
     </div>
     <div class="field-area">
     <div>
-      <label class="pt-3" for="education">{{ $t('profile.education') }}</label>
+      <label for="education">{{ $t('profile.education') }}</label>
     </div>
     <div class="row">
       <Radio
@@ -157,13 +157,13 @@
       <label>{{ $t('edit-profile.urls') }}</label>
     </div>
     <div class="pb-2">
-      <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+      <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class=""></b-form-input>
     </div>
     <div class="pb-2">
-      <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+      <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')" class=""></b-form-input>
     </div>
     <div class="pb-2">
-      <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class="w-50"></b-form-input>
+      <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')" class=""></b-form-input>
     </div>
     </div>
   </div>
@@ -262,15 +262,45 @@ export default {
 };
 </script>
 <style scoped>
-  .centerbox{max-width: 700px; margin: 0 auto 20px; box-shadow: var(--big-shadow); padding: 25px 20px; border-radius: 4px 4px 0 0;}
-  .field-area{ margin-bottom: 20px;}
-  .field-area input, .field-area select{ width: 98%}
-  .centerbox label{border-bottom: 1px solid #e2e2e2; display: block; padding: 8px 20px 10px 0px}
-  .radio-boxes{ display: flex;}
-  .public-box, .private-box{ display: block; width: 50%;     border: 1px solid #ddd;
-    padding: 15px;
+  .centerbox{
+    max-width: 700px;
+    margin: 0 auto 20px;
+    box-shadow: var(--big-shadow);
+    padding: 25px 20px;
+    border-radius: 4px 4px 0 0;
+  }
+  .field-area{
+    margin-bottom: 20px;
+  }
+  .field-area input{
+    width:100%;
+  }
+  .field-area .w-50{
+    width: 100%!important;
+  }
+  .field-area select{
+    width: 98%;
+  }
+  .centerbox label{
+    display: block;
+    font-weight: 400;
+    color: #000;
+  }
+  .radio-boxes{
+    display: flex;
+  }
+  .public-box, .private-box{
+    display: block;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
     text-align: center;
     margin: 0;
-    padding-right: 25px;}
-
+    margin-right: 10px;
+  }
+  @media (max-width: 600px) {
+    .public-box, .private-box{
+      margin-right: 0px;
+    }
+  }
 </style>

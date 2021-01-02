@@ -3,24 +3,20 @@
     <header>
       <b-navbar toggleable="sm" type="dark" variant="dark">
         <b-navbar-brand href="/">
-          <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top">
+          <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand">
         </b-navbar-brand>
-
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="d-none d-sm-block">
-            <div class="d-inline-flex flex-column">
+            <div class="d-inline-flex flex-column title-tag">
               <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
               <span class="text-white">{{ $t('app.slogan') }}</span>
             </div>
           </b-navbar-nav>
-
           <b-navbar-nav class="ml-auto align-items-center rightmenu">
             <b-nav-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in-up') }}</b-nav-item>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
-
                 <BIconPencilSquare scale="2"></BIconPencilSquare>
                 POST
               </template>

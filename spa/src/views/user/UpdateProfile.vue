@@ -1,23 +1,19 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
-    <h2>{{ $t('edit-profile.heading') }}</h2>
-
-    <p>{{ $t('edit-profile.body') }}</p>
-
+  <div class="pt-5 w-75 m-auto pb-5">
+    <div class="hero-head text-center">
+      <h2>{{ $t('edit-profile.heading') }}</h2>
+      <p>{{ $t('edit-profile.body') }}</p>
+    </div>
     <ContentLoading v-if="!userProfile && !error" type="profile" />
-
     <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
-
         <ProfileForm :formData="profileForm" @update="updateProfileForm"/>
-
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
-
         <div class="col-sm-12 col-md-4 m-auto">
           <Button
-            class="w-100"
+            class="w-100 green"
             :disabled="invalid"
             :value="$t('edit-profile.save-button')"
             @clicked="submitForm()"/>
@@ -187,3 +183,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.green{
+  background: var(--color-green);
+  border: 0; color: #fff;
+}
+
+</style>

@@ -100,13 +100,11 @@ export default {
   justify-content: space-between;
 }
 .item {
-  width: 280px;
+  width: 255px;
   opacity: 1;
-  position: unset!important;
-  height: 330px;
 }
 .item div{
-      height: 310px;
+  height: 310px;
 }
 .item .thumbnail {
   max-height: 300px;
@@ -134,5 +132,11 @@ export default {
   line-height: 50px;
   text-align: center;
   font-weight: bold;
+}
+@media (max-width: 767px) {
+.homePosts{
+  justify-content: flex-start;
+  flex-direction: column;
+  }
 }
 </style>

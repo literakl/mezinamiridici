@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3">
+  <div class="mb-3 forlogedin">
     <h4 class="text-center poolheading">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
@@ -36,7 +36,7 @@
     <div class="mt-3 py-3 mb-5 item-footer">
       <template>
         <div class="post-time">
-      <BIconClockFill scale="2"></BIconClockFill>
+      <BIconCalendarRange scale="2"></BIconCalendarRange>
       <span class="date"><Date :date="poll.info.date" format="dynamicDate" /></span>
         </div>
       </template>
@@ -54,7 +54,7 @@
       </template>
        <template>
         <div class="post-comments">
-      <BIconChatSquareTextFill scale="2"></BIconChatSquareTextFill>
+      <BIconChatTextFill scale="2"></BIconChatTextFill>
       <span><router-link :to="{ name: 'poll', params: { slug: poll.info.slug }, hash: '#comments'}">
         {{ $t('comment.comments') }}: {{ poll.comments.count }}
       </router-link></span>
@@ -70,7 +70,7 @@ import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
-import { BButton, BIconPersonCircle, BIconClockFill, BIconStarFill, BIconChatSquareTextFill } from 'bootstrap-vue';
+import { BButton, BIconPersonCircle, BIconCalendarRange, BIconStarFill, BIconChatTextFill } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
@@ -80,9 +80,9 @@ export default {
     Date,
     BButton,
     BIconPersonCircle,
-    BIconClockFill,
+    BIconCalendarRange,
     BIconStarFill,
-    BIconChatSquareTextFill,
+    BIconChatTextFill,
   },
   props: {
     poll: Object,
@@ -135,9 +135,11 @@ export default {
     height: 50px;
     margin: 15px;
 }
+.featured-poll button.btn-success img{width: 70px;
+    height: 50px;}
 .featured-poll button img{ position: absolute;
     top: -60px;
-    width: 90px;
+    width: 55px;
     height: 50px;
     /* left: auto; */
     /* right: auto; */
@@ -169,7 +171,7 @@ export default {
      font-size: 1em;
     color: #201f27;
     text-align: center;
-    max-width: 550px;
+    max-width: 650px;
     margin: 0 auto;
     font-weight: 400;
     border-top: 1px solid #E6E6E6;
@@ -185,21 +187,26 @@ export default {
 }
 .item-footer svg{
   color: #AEB3B7;
-      margin-right: 15px;
-
+  margin-right: 15px;
+  font-size: 11px;
+}
+.post-time, .post-author, .post-rating, .post-comments{
+  display: flex;
+  align-items: center;
 }
 
 .item-footer span a{
   color: #777A7C;
   text-decoration: none;
 }
-.poolheading a{
+.forlogedin .poolheading a{
   font-size: 50px;
   text-decoration: none;
   color: var(--dark-color);
   margin: 40px 0 55px;
     display: block;
 }
+.poolheading a:hover{ color: #007bff;}
 
 
 @media (max-width: 1220px) {
@@ -220,41 +227,51 @@ export default {
      .featured-poll button span{
     top: 38px;
   }
-   .featured-poll button {margin: 50px 0px!important;width: 133px; margin: 45px 0!important;
+   .featured-poll button {margin: 50px 0px!important;width: 133px; margin: 45px 10px!important;
     }
 }
 @media (max-width: 767px) {
   .featured-poll { flex-wrap: wrap; justify-content: space-around!important;     padding: 0 20px;
-    }
-    .poolheading a{
-    font-size: 30px;
-    margin: 40px 0 35px;
-    }
-    .item-footer{
-      flex-wrap: wrap;
-      font-size:14px
-    }
-    .item-footer svg{
-    font-size: 10px;
-    margin-right: 0px;
-    margin-bottom: 10px;
-}
+  }
+  .poolheading a{
+  font-size: 30px;
+  margin: 40px 0 35px;
+  }
+  .item-footer{
+    flex-wrap: wrap;
+    font-size:14px
+  }
+  .item-footer svg{
+  font-size: 10px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  }
   .post-time svg, .post-author svg, .post-rating svg, .post-comments svg{
     display: block;
     margin: 0 auto 10px;
   }
+
+  .post-time, .post-author, .post-rating, .post-comments {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 600px) {
-  .featured-poll { padding: 0 0px;
-    }
-    .item {
-    width: 100%;}
+  .featured-poll {
+    padding: 0 0px;
+  }
+  .item {
+    width: 100%;
+  }
+  .item-footer {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 480px) {
-   .item {
-    width: 100%;}
+  .item {
+    width: 100%;
+  }
 }
 
 </style>
