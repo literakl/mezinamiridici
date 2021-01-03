@@ -15,7 +15,8 @@
       <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{item.votes_count}}</template>
       <template v-if="hasDiscussion">
         <span><BIconChatTextFill></BIconChatTextFill> <router-link :to="commentLink">
-          {{ $t('comment.comments') }}: {{item.comments.count}}
+          <!-- {{ $t('comment.comments') }}:  -->
+          {{item.comments.count}}
         </router-link></span>
       </template>
       </div>
@@ -82,6 +83,7 @@ img {
   border-style: solid;
   box-shadow: #c1c1c1 1px 1px 10px;
   position: relative;
+  border: 0;
 }
 .item-hover {
   cursor:pointer;
@@ -93,6 +95,7 @@ img {
 .item-hover:active {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
 }
+.item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;}
 .item-div h4 { text-align: center;}
 
 .item-div h4 a {
@@ -100,24 +103,22 @@ img {
   color: var(--dark-color);
   text-align: center;
   font-size: 17px;
-  padding: 25px 15px;
+      padding: 32px 10px 10px;
   display: block;
+      display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
-.item-footer {
-  border-top: 1px solid rgb(238, 238, 238);
-  display: flex;
-  font-size: 0.8em;
-  color: #201f27;
-  font-weight: 600;
-  align-items: center;
-  height: 53px;
-}
+
 .item-footer span.data {
   position: absolute;
-  top: 0;
-  background: rgba(129, 215, 66, 0.9);
+  font-size: 12px;
+  font-weight: 400;
+      right: 0;
+    top: 151px;
+  background: #fff;
   padding: 3px 10px;
-  color: var(--color-white);
+  color:#777A7C;
 }
 .item-footer:hover span.data{
   opacity: 1;
@@ -126,14 +127,18 @@ img {
   display: flex;
   width: 100%;
   justify-content: space-between;
-}
-.bottom-links span a {
   font-weight: 400;
-  color:#AEB3B7!important;
+  font-size: 14px;
+}
+.bottom-links a {
+  font-weight: 400;
 }
 .bottom-links span svg {
   color:#AEB3B7;
   font-size: 16px;
 }
 
+@media (max-width: 767px) {
+  .forlogedin .poolheading a { font-size: 24px;}
+}
 </style>

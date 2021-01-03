@@ -2,9 +2,9 @@
   <div>
     <header>
       <b-navbar toggleable="sm" type="dark" variant="dark">
-        <b-navbar-brand href="/">
+        <b-nav-link href="/" class="brand-pic">
           <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand">
-        </b-navbar-brand>
+        </b-nav-link>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="d-none d-sm-block">
@@ -54,7 +54,7 @@
 <script>
 import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare,
   BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem,
-  BNavbarToggle, BNavbarBrand, BCollapse, BNavItem } from 'bootstrap-vue';
+  BNavbarToggle, BCollapse, BNavItem } from 'bootstrap-vue';
 
 export default {
   name: 'App',
@@ -67,7 +67,6 @@ export default {
     BNavItemDropdown,
     BDropdownItem,
     BNavbarToggle,
-    BNavbarBrand,
     BCollapse,
     BNavItem,
   },

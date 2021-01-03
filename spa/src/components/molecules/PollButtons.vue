@@ -1,9 +1,9 @@
 <template>
       <div class="normal-poll">
         <div class="heading-area">
-          <h4 class="text-center pb-3">{{ $t('poll.your-opinion') }}</h4>
+          <h4 class="text-center pb-2">{{ $t('poll.your-opinion') }}</h4>
         </div>
-        <div class="pt-2 pb-2 d-flex justify-content-center featured-poll">
+        <div class="d-flex justify-content-center featured-poll">
         <b-button variant="success" v-on:click="voted('neutral')">
           <img src="/images/icons/happy.svg" class="" alt="">
           {{ $t('poll.choices.neutral') }}
@@ -45,6 +45,7 @@ export default {
 </script>
 
 <style scoped>
+/* Logged in Poll css */
 .normal-poll{
     justify-content: center;
     width: 100%;
@@ -56,52 +57,64 @@ export default {
   font-size: 14px;
   text-transform: uppercase;
   border-bottom: 1px solid #ddd;
-  max-width: 200px;
-  margin: 0 auto 50px;
+  max-width: 170px;
+  margin: 0 auto 30px;
+  background: #f7f7f7;
+  padding: 10px 0 0 0;
+  color: #afafaf;
 }
 .featured-poll{
   display: flex;
 }
 .featured-poll button{
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  position: relative;
-  max-width: 220px;
-  width: 100%;
-  border-radius: 100px;
-  justify-content: center;
-  text-align: center;
-  box-shadow: var(--box-shadow);
-  padding-right: 35px;
-  padding: 0;
-  position: relative;
-  height: 50px;
-  margin: 15px;
+ display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    position: relative;
+    max-width: 200px;
+    width: 100%;
+    /* border-radius: 100px; */
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    padding-right: 35px;
+    padding: 0;
+    position: relative;
+    height: 50px;
+    margin: 15px;
+    font-size: 14px;
+    font-weight: 400;
 }
 .featured-poll button.btn-success img{
-  width: 70px;
-  height: 50px;
+  width: 60px;
+  height: 40px;
+  top: -38px;
 }
 .featured-poll button img{ position: absolute;
-  top: -60px;
-  width: 55px;
-  height: 50px;
-  display: block;
-  margin: 0 auto;
+ top: -42px;
+    width: 48px;
+    height: 43px;
+    /* left: auto; */
+    /* right: auto; */
+    display: block;
+    margin: 0 auto;
+    right: 20%;
+    left: 20%;
 }
 .featured-poll button span{
- width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-white);
-  color: var(--dark-color);
-  position: absolute;
-  left: -5px;
-  font-size: 16px;
-  box-shadow: var(--box-shadow);
+ width: 32px;
+    height: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:rgba(255, 255, 255, .7);
+    color: var(--dark-color);
+    position: absolute;
+    left: 7px;
+    font-size: 13px;
+    box-shadow: var(--big-shadow);
+    border-radius: 3px;
+    top: 11px;
 }
 .item-div {
   border-width: 10px;
@@ -157,10 +170,13 @@ export default {
     top: 38px;
   }
   .featured-poll button {
-    margin: 50px 0px!important;
-    width: 133px;
-    margin: 45px 10px!important;
+    width: 115px;
+    margin: 35px 5px 30px!important;
+    font-size: 14px;
   }
+}
+@media (max-width: 812px) {
+
 }
 @media (max-width: 767px) {
   .featured-poll {
@@ -169,8 +185,8 @@ export default {
     padding: 0 20px;
   }
   .poolheading a{
-    font-size: 30px;
-    margin: 40px 0 35px;
+    font-size: 24px;
+    margin: 0px 0 15px;
   }
   .item-footer{
     flex-wrap: wrap;
@@ -187,6 +203,9 @@ export default {
   }
   .post-time, .post-author, .post-rating, .post-comments {
     flex-direction: column;
+  }
+  .heading-area {
+    margin-top: 0px;
   }
 }
 @media (max-width: 600px) {

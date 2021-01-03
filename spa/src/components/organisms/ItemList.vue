@@ -104,10 +104,10 @@ export default {
   opacity: 1;
 }
 .item div{
-  height: 310px;
+  height: 300px;
 }
 .item .thumbnail {
-  max-height: 300px;
+  max-height: 290px;
   overflow: hidden;
   border-radius: 8px;
 }
