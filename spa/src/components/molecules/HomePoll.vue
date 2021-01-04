@@ -133,7 +133,7 @@ export default {
     padding: 0;
     position: relative;
     height: 50px;
-    margin: 15px 0;
+    margin: 15px 15px 5px;
     font-size: 14px;
     font-weight: 400;
 }

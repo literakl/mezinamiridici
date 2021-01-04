@@ -5,10 +5,12 @@
     </router-link>
     <h4>
       <router-link :to="link">
+        <!-- <div v-if="item.info.length<23">{{ item.info.caption }}</div>
+        <div v-else>{{ item.info.caption.substring(0, 23)+ "..." }}</div> -->
         {{ item.info.caption }}
       </router-link>
     </h4>
-    <div class="py-2 px-3 item-footer">
+    <div class="py-2 px-2 item-footer">
       <span class="data"><Date :date="item.info.date" format="dynamicDate" /></span>
       <div class="bottom-links">
       <template v-if="showAuthor"><span><BIconPersonCircle></BIconPersonCircle> <ProfileLink :profile="item.info.author"/></span></template>
@@ -96,28 +98,38 @@ img {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
 }
 .item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;}
-.item-div h4 { text-align: center;}
-
+.item-div h4 { text-align: center; height: 66px; overflow: hidden;}
+.item-div:hover h4 {
+    height: 110px;
+}
+.item-div:hover h4, .item-footer {
+  position: absolute;
+    width: 100%;
+    bottom: 0;
+}
 .item-div h4 a {
-  height: 95px;
+  height: 75px;
   color: var(--dark-color);
   text-align: center;
   font-size: 17px;
-      padding: 32px 10px 10px;
+  padding: 25px 10px 10px;
   display: block;
-      display: flex;
-    align-items: flex-start;
-    justify-content: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: justify;
+  text-overflow: ellipsis;
 }
+.item-div h4 a:hover { text-decoration: none;}
 
 .item-footer span.data {
   position: absolute;
   font-size: 12px;
   font-weight: 400;
-      right: 0;
-    top: 151px;
+  right: 0;
+      top: -81px;
   background: #fff;
-  padding: 3px 10px;
+  padding: 0px 10px;
   color:#777A7C;
 }
 .item-footer:hover span.data{
@@ -129,6 +141,9 @@ img {
   justify-content: space-between;
   font-weight: 400;
   font-size: 14px;
+  border-top: 1px solid #ddd;
+  align-items: center;
+  padding-top: 4px;
 }
 .bottom-links a {
   font-weight: 400;

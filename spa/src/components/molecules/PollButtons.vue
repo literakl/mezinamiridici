@@ -51,7 +51,7 @@ export default {
     width: 100%;
 }
 .heading-area{
-  margin-top: -20px;
+  margin-top: -40px;
 }
 .heading-area h4{
   font-size: 14px;
@@ -59,7 +59,7 @@ export default {
   border-bottom: 1px solid #ddd;
   max-width: 170px;
   margin: 0 auto 30px;
-  background: #f7f7f7;
+  /* background: #f7f7f7; */
   padding: 10px 0 0 0;
   color: #afafaf;
 }

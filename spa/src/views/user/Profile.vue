@@ -3,6 +3,7 @@
     <ContentLoading v-if="!userProfile" type="profile" />
     <div v-if="userProfile">
       <div class="mb-3">
+        <div class="prof-header">
         <div class="mr-3">
           <b-avatar size="5rem"></b-avatar>
         </div>
@@ -19,6 +20,7 @@
             <BIconLink/>
             <a :href="item" rel="nofollow">{{item}}</a>
           </div>
+        </div>
         </div>
       </div>
 
@@ -142,3 +144,10 @@ export default {
 };
 
 </script>
+<style scoped>
+.prof-header{
+  display: flex;
+  background: #ddd;
+  padding: 20px;
+}
+</style>
