@@ -270,7 +270,7 @@ export default {
     border-radius: 4px 4px 0 0;
   }
   .field-area{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   .field-area input{
     width:100%;
@@ -284,18 +284,16 @@ export default {
   .centerbox label{
     display: block;
     font-weight: 400;
-    color: #000;
   }
   .radio-boxes{
     display: flex;
   }
   .public-box, .private-box{
-    display: block;
-    border-radius: 6px;
+        display: block;
+    border-radius: 3px;
     border: 1px solid #ddd;
-    padding: 8px 15px;
+    padding: 2px 10px;
     text-align: center;
-    margin: 0;
     margin-right: 10px;
   }
   @media (max-width: 600px) {

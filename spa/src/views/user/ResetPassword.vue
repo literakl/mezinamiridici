@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="pt-3 w-75 m-auto pb-5 centerbox">
     <b-row>
       <b-col>
         <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
@@ -104,3 +104,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.centerbox{
+  max-width:500px;
+  margin: 0 auto 20px;
+  box-shadow: var(--big-shadow);
+  padding: 25px 20px;
+  border-radius: 4px 4px 0 0;
+}
+</style>

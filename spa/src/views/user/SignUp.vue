@@ -1,6 +1,8 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5 centerbox">
-    <h2 class="pt-4">{{ $t('sign-up.heading') }}</h2>
+  <div class="pt-3 mt-5 border w-75 centerbox">
+    <div class="head-area">
+      <h2>{{ $t('sign-up.heading') }}</h2>
+    </div>
     <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="! succeeded">
@@ -310,8 +312,13 @@ export default {
   padding: 25px 20px;
   border-radius: 4px 4px 0 0;
 }
+.head-area{ padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center;}
+
 .field-area{
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.field-area label span{
+  font-size: 14px;
 }
 .field-area input, .field-area select{
   width: 98%!important;
@@ -320,8 +327,11 @@ export default {
   width: 100%!important;
 }
 .green{
-  background: var(--color-green);
-  border: 0; color: #fff;
+    background: var(--color-green);
+    border: 0;
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 </style>

@@ -1,13 +1,14 @@
 <template>
   <ValidationObserver ref="form" v-slot="{ passes, invalid }">
     <b-form @submit.prevent="passes(signIn)">
-      <div class="w-50 mt-5 ml-auto mr-auto border rounded">
+      <div class="w-50 mt-5 ml-auto mr-auto border rounded centerbox">
         <b-row class="w-85 m-auto pb-1">
           <b-col>
-            <h2>{{ $t('sign-in.sign-in-heading') }}</h2>
-
+            <div class="head-area">
+              <h2>{{ $t('sign-in.sign-in-heading') }}</h2>
+            </div>
             <div>{{ message }}</div>
-
+            <div class="field-area">
             <TextInput
               v-model="email"
               rules="required|email"
@@ -17,7 +18,8 @@
               name="email"
               type="email"
             />
-
+            </div>
+            <div class="field-area">
             <TextInput
               v-model="password"
               rules="required"
@@ -27,8 +29,9 @@
               name="password"
               type="password"
             />
+            </div>
 
-            <div class="w-100 d-flex flex-row-reverse">
+            <div class="w-100 d-flex flex-row-reverse mb-3 forgot-link">
               <router-link :to="{ name: 'forgotten' }">
                 {{ $t('sign-in.forgot-password-link')}}
               </router-link>
@@ -44,13 +47,14 @@
         <b-row class="w-85 m-auto pb-2">
           <b-col>
             <Button
-              class="w-100 btn btn-block"
+              class="w-100 btn blue"
               :disabled="invalid"
               :value="$t('sign-in.sign-in-button')"
               @clicked="signIn"/>
-
+          </b-col>
+          <b-col>
             <Button
-              class="w-100 btn btn-block"
+              class="btn btn-block green"
               :value="$t('sign-in.sign-up-button')"
               id="signin__sign-up-button"
               @clicked="redirectToSignUp"/>
@@ -58,7 +62,7 @@
         </b-row>
         <b-row class="w-85 m-auto pb-2">
           <b-col>
-            <div class="d-flex justify-content-center">{{ $t('sign-in.or') }}</div>
+            <div class="d-flex justify-content-center text-uppercase">{{ $t('sign-in.or') }}</div>
           </b-col>
         </b-row>
         <b-row class="w-85 m-auto pb-2">
@@ -159,26 +163,58 @@ export default {
 };
 </script>
 <style>
+.centerbox{
+  max-width: 700px;
+  margin: 0 auto 20px;
+  -webkit-box-shadow: var(--big-shadow);
+  box-shadow: var(--big-shadow);
+  padding: 25px 20px;
+  border-radius: 4px 4px 0 0;
+}
+.head-area{ padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center;}
+.head-area button{
+  background: transparent;
+  padding: 10px;
+  border: 0;
+  width: 100px;
+  font-size: 14px;
+}
+.head-area h2{
+  font-size: 20px;
+  margin-bottom: 0;
+  padding-bottom: 0px;
+}
+
+.field-area{
+  margin-bottom: 10px;
+}
+.forgot-link{
+  font-size: 14px;
+}
+
 .btn {
-  font-weight: bold;
+   font-weight: 500;
+    font-size: 14px;
   border-radius: 2px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
 }
 .btn-facebook {
   color: #fff;
   background-color: #3b5998;
-  border: 1px solid #335190;
+  border: 0px solid #335190;
 }
 .btn-facebook:hover,
 .btn-facebook:focus {
   color: #fff;
   background-color: #294786;
+  border: 0;
 }
 
 .btn-twitter {
   color: #fff;
   background-color: #00aced;
-  border: 1px solid #009fdb;
+  border: 0px solid #009fdb;
+
 }
 .btn-twitter:hover,
 .btn-twitter:focus {
@@ -190,10 +226,43 @@ export default {
   color: #fff;
   background-color: #dd4b39;
   border: 1px solid #d54331;
+  border: 0;
+
 }
 .btn-google-plus:hover,
 .btn-google-plus:focus {
   color: #fff;
   background-color: #cb3927;
+  border: 0;
+}
+.blue{
+        color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: 400;
+    font-size: 14px;
+}
+.blue:hover{
+  color: #fff;
+  background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.green{
+    background: var(--color-green);
+    border: 0;
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+}
+.green:hover{
+    color: #fff;
+      background-color: #218838;
+    border-color: #1e7e34;
+}
+@media (max-width: 767px) {
+  .centerbox{
+    width:90%!important
+  }
 }
 </style>

@@ -1,29 +1,33 @@
 <template>
   <div>
-    <div class="row pb-3">
+    <div class="container">
+      <div class="row pb-3">
       <Radio
-        class="pl-3"
+        class="post-box mr-3"
         v-model="filter"
         :label="$t('profile.filter.posts')"
         name="filter"
         identifier="blog"/>
       <Radio
-        class="pl-3"
+        class="comment-box"
         v-model="filter"
         :label="$t('profile.filter.comments')"
         name="filter"
         identifier="comment"/>
+      </div>
     </div>
 
-    <div v-for="item in list" :key="item._id">
-      <Date :date="item.date" format="dynamicDateTime" /> &nbsp;
-      <router-link :to="getURL(item)">{{ item.text }}</router-link>
-    </div>
+    <ul class="post-list">
+      <li v-for="item in list" :key="item._id">
+        <Date :date="item.date" format="dynamicDateTime" />
+        <router-link :to="getURL(item)">{{ item.text }}</router-link>
+      </li>
+    </ul>
 
     <Button
       v-if="!hasEnded"
       size="sm"
-      class="w-25"
+      class="w-25 mt-3"
       :value="$t('generic.loading-more-button')"
       @clicked="fetchActivity"
     />
@@ -100,3 +104,25 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .post-box, .comment-box{    display: block;
+    border-radius: 3px;
+    border: 1px solid #f3f3f3;
+    padding: 2px 10px;
+    text-align: center;
+}
+.post-list{ padding: 0; margin: 0;}
+.post-list li{list-style-type: none;
+    display: flex;
+    border-bottom: 1px solid #f3f3f3;
+    padding: 5px 10px;
+    margin-bottom: 3px;
+    font-size: 14px;}
+.post-list li span{ max-width: 150px; color: #777A7C;  color: var(--text-color-light);
+    width: 100%;}
+    .post-list li a{ font-weight: 400;}
+    .post-list li a:hover{ text-decoration: none;}
+
+    .post-list li:hover{ transition: 0.2s ease;transform: translateX(-2px) translateY(-2px) scale(1.03);}
+
+</style>

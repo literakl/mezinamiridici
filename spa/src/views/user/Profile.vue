@@ -1,76 +1,77 @@
 <template>
   <div class="pt-3 w-75 m-auto pb-5">
     <ContentLoading v-if="!userProfile" type="profile" />
-    <div v-if="userProfile">
-      <div class="mb-3">
+    <div v-if="userProfile" class="profile-wrap">
+      <div class="prof-header-wrap mr-3">
         <div class="prof-header">
-        <div class="mr-3">
-          <b-avatar size="5rem"></b-avatar>
+          <div class="">
+            <b-avatar size="5rem"></b-avatar>
+          </div>
+           <h2>{{ userProfile.bio.nickname }}</h2>
         </div>
-
-        <div>
-          <h2>{{ userProfile.bio.nickname }}</h2>
-
-          <div v-if="userProfile.prefs.public && userProfile.bio.region">
-            <BIconGeoAlt font-scale="2"></BIconGeoAlt>
+        <div class="user-details">
+          <div v-if="userProfile.prefs.public && userProfile.bio.region" class="name-regions">
+            <BIconGeoAlt font-scale="1"></BIconGeoAlt>
             <span>{{$t(`profile.regions.${userProfile.bio.region}`)}}</span>
           </div>
-
-          <div v-for="(item, inx) in userProfile.bio.urls" :key="inx" class="mx-2">
+          <div v-for="(item, inx) in userProfile.bio.urls" :key="inx" class="links">
             <BIconLink/>
             <a :href="item" rel="nofollow">{{item}}</a>
           </div>
         </div>
-        </div>
       </div>
-
-      <b-tabs content-class="mt-3">
+      <b-tabs content-class="my-3" class="no-padding">
         <b-tab :title="$t('profile.tabs.summary')" active>
-          <div>
-            <div>
+          <div class="profile-area-top">
+            <div class="rank head-block">
+                  <BIconAward scale="2"></BIconAward>
               {{ $t('profile.rank-label') }}: {{ $t(`profile.rank.${userProfile.honors.rank}`) }}
             </div>
-            <div>
+            <div class="bio-date head-block">
+              <BIconPersonCircle scale="2"></BIconPersonCircle>
               {{ $t('profile.member-since-label') }}: <Date :date="userProfile.bio.registered" format="dynamicDate" />
             </div>
+          </div>
             <dl v-if="showProfile">
               <template v-if="userProfile.driving">
-                <div v-if="userProfile.driving.since">
-                  {{ $t('profile.driving-since-label') }}: {{userProfile.driving.since}}
-                </div>
+                <div class="more-details">
+                  <div v-if="userProfile.driving.since" class="head-block">
+                    <BIconJoystick scale="2"></BIconJoystick>
+                    {{ $t('profile.driving-since-label') }}: {{userProfile.driving.since}}
+                  </div>
 
-                <div v-if="vehicles">
-                  {{ $t('profile.vehicles-label') }}: {{vehicles}}
+                  <div v-if="vehicles" class="head-block">
+                    <BIconTruck scale="2"></BIconTruck>
+                    {{ $t('profile.vehicles-label') }}: {{vehicles}}
+                  </div>
                 </div>
               </template>
-
-              <div v-if="userProfile.bio.sex">
-                {{ $t('profile.sex') }}: {{ $t('profile.sexes.' + userProfile.bio.sex) }}
-              </div>
-
-              <div v-if="userProfile.bio.born">
-                {{ $t('profile.born') }}: {{userProfile.bio.born}}
-              </div>
-
-              <div v-if="userProfile.bio.region">
-                {{ $t('profile.region') }}: {{ $t('profile.regions.' + userProfile.bio.region) }}
-              </div>
-
-              <div v-if="userProfile.bio.edu">
-                {{ $t('profile.education') }}: {{ $t('profile.educations.' + userProfile.bio.edu) }}
-              </div>
+                <div class="more-details">
+                  <div v-if="userProfile.bio.sex" class="head-block">
+                    <BIconPersonFill scale="2"></BIconPersonFill>
+                    {{ $t('profile.sex') }}: {{ $t('profile.sexes.' + userProfile.bio.sex) }}
+                  </div>
+                  <div v-if="userProfile.bio.born" class="head-block">
+                    <BIconPersonCheck scale="2"></BIconPersonCheck>
+                    {{ $t('profile.born') }}: {{userProfile.bio.born}}
+                  </div>
+                  <div v-if="userProfile.bio.region" class="head-block">
+                    <BIconGeoAlt font-scale="2"></BIconGeoAlt>
+                    {{ $t('profile.region') }}: {{ $t('profile.regions.' + userProfile.bio.region) }}
+                  </div>
+                  <div v-if="userProfile.bio.edu" class="head-block">
+                    <BIconPen scale="2"></BIconPen>
+                    {{ $t('profile.education') }}: {{ $t('profile.educations.' + userProfile.bio.edu) }}
+                  </div>
+                </div>
             </dl>
-          </div>
         </b-tab>
-
         <b-tab :title="$t('profile.tabs.activity')">
           <UserActivity :userId="userProfile._id"/>
         </b-tab>
-
         <b-tab v-if="myProfile" :title="$t('profile.tabs.honors')">
           <HonorsProgress v-if="myProfile" :user="userProfile"/>
         </b-tab>
-
         <b-tab v-if="myProfile" :title="$t('profile.tabs.settings')">
           <ChangePassword />
         </b-tab>
@@ -85,7 +86,7 @@ import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
 import UserActivity from '@/components/organisms/UserActivity.vue';
 import ChangePassword from '@/components/organisms/ChangePassword.vue';
-import { BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink } from 'bootstrap-vue';
+import { BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink, BIconAward, BIconPersonCircle, BIconJoystick, BIconTruck, BIconPersonFill, BIconPersonCheck, BIconPen } from 'bootstrap-vue';
 
 export default {
   name: 'profile',
@@ -100,6 +101,13 @@ export default {
     BAvatar,
     BIconGeoAlt,
     BIconLink,
+    BIconAward,
+    BIconPersonCircle,
+    BIconJoystick,
+    BIconTruck,
+    BIconPersonFill,
+    BIconPersonCheck,
+    BIconPen,
   },
   props: {
     id: String,
@@ -145,9 +153,80 @@ export default {
 
 </script>
 <style scoped>
+.prof-header-wrap{    max-width: 25%;
+    width: 100%;}
+.profile-wrap{ display: flex;}
 .prof-header{
   display: flex;
-  background: #ddd;
-  padding: 20px;
+  align-items: center;
+  /* background: #fbfbfb; */
+  padding: 8px 0;
+  border-bottom: 2px solid #f3f3f3;
+  border-radius: 5px 5px 0 0;
+  justify-content: flex-start;
+}
+.prof-header h2{
+ font-size: 20px;
+ margin: 5px 0 0 10px;
+ padding: 0;
+}
+
+.user-details {     width: 100%;
+    margin-top: 40px;}
+
+.user-details svg{ font-size: 20px!important;color: #AEB3B7;}
+.profile-area-top, .more-details{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 100%;
+}
+.head-block, .more-details div{
+  height: 70px;
+  border:1px solid #f1f1f1;
+  background: #fff;
+  box-shadow: #c1c1c1 1px 1px 10px;
+  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--dark-color);
+  font-size: 15px;
+  font-weight: 400;
+}
+.head-block svg{
+  width: 70px;
+  color: #AEB3B7;
+}
+.name-regions{ display: flex; justify-content: flex-start;margin-top: 20px;margin-bottom: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 9px; }
+.name-regions svg{ width: 40px;}
+.links{display: flex; justify-content: flex-start; margin-bottom: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 9px; }
+.links svg{    width: 40px;
+    }
+@media (max-width: 992px) {
+  .prof-header h2{
+    font-size: 16px;
+  }
+  .prof-header-wrap{
+    max-width: 100%;
+  }
+  .profile-wrap {
+    flex-direction: column;
+  }
+    .user-details{
+   margin-top: 0;
+    display: flex;
+    margin-bottom: 20px;
+        padding: 10px 0;
+}
+
+.name-regions, .links{
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border: 0;
+}
+
+
 }
 </style>
