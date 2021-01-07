@@ -27,7 +27,7 @@
     <Button
       v-if="!hasEnded"
       size="sm"
-      class="w-25 mt-3"
+      class="mt-3"
       :value="$t('generic.loading-more-button')"
       @clicked="fetchActivity"
     />
@@ -124,5 +124,9 @@ export default {
     .post-list li a:hover{ text-decoration: none;}
 
     .post-list li:hover{ transition: 0.2s ease;transform: translateX(-2px) translateY(-2px) scale(1.03);}
-
+@media (max-width: 500px) {
+  .post-list li{
+        flex-direction: column;
+  }
+}
 </style>

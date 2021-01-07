@@ -116,10 +116,16 @@ export default {
   width: 100%!important;
 }
 .pass-change button {
-  width: 30%;
   font-size: 14px;
   margin: 0 auto;
 }
 .pass-change label { font-size: 14px;}
+
 .field-area { margin-bottom: 15px; font-size: 14px;}
+  @media (max-width: 767px) {
+    .pass-change button { width: 50%; font-size: 14px;}
+  }
+  @media (max-width: 500px) {
+    .pass-change button { width: 100%; font-size: 14px;}
+  }
 </style>
