@@ -1,14 +1,17 @@
 <template>
   <div v-if="blog" class="pt-3 w-75 m-auto pb-5">
-    <h1>{{title}}</h1>
-    <div class="font-weight-lighter">
-      <Date :date="blog.info.date" format="dynamicDate" /> &bull;
-      <ProfileLink :profile="blog.info.author"/> &bull;
-      <a href="#comments">
-        {{ $t('comment.comments') }}: {{blog.comments.count}}
-      </a>
+    <div class="post-details-wrap">
+
+     <div class="post-details">
+        <span><BIconCalendarRange scale="1"></BIconCalendarRange><Date :date="blog.info.date" format="dynamicDate" /></span>
+        <span><BIconPersonCircle scale="1"></BIconPersonCircle><ProfileLink :profile="blog.info.author"/></span>
+        <span><BIconChatTextFill scale="1"></BIconChatTextFill><a href="#comments">
+          {{ $t('comment.comments') }}: {{blog.comments.count}}
+        </a></span>
+      </div>
+      <h2>{{title}}</h2>
     </div>
-    <div v-html="blogHtml"></div>
+    <div class="gredient-gray p3" v-html="blogHtml"></div>
     <ShareLink :item="blog" />
     <Comments :itemId="blog._id" />
   </div>
@@ -19,6 +22,7 @@ import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
+import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill } from 'bootstrap-vue';
 
 export default {
   name: 'blog',
@@ -27,6 +31,9 @@ export default {
     ProfileLink,
     Comments,
     ShareLink,
+    BIconPersonCircle,
+    BIconCalendarRange,
+    BIconChatTextFill,
   },
   props: {
     slug: String,
@@ -60,8 +67,34 @@ export default {
 };
 </script>
 <style>
+.post-details-wrap{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-flow: column-reverse;
+}
+.post-details-wrap .post-details{
+ width: 100%;
+    display: flex;
+    /* flex-direction: column; */
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px;
+}
+.post-details span{
+  padding: 5px 8px;
+}
+.post-details span:last-child{
+  border: 0;
+}
+.post-details span span{ border: 0; padding: 0;}
+.post-details span svg{
+    color: var(--text-color-light);
+    margin-right: 10px;
+}
   img {
-    width:100%;
+    /* width:100%; */
   }
   blockquote {
     display: block;

@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto">
+  <div class="pt-3 w-75 m-auto test">
     <div class="mb-2 d-flex flex-row-reverse">
       <b-button-group>
         <b-button v-if="role" :to="{ name: 'create-poll'}" variant="outline-primary">

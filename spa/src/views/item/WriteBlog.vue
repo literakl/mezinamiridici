@@ -1,128 +1,130 @@
 <template>
   <div class="pt-3 w-75 m-auto">
-    <TextInput
-      v-model="title"
-      :label="$t('blog.form.title-label')"
-      :placeholder="$t('blog.form.title-placeholder')"
-      class="pb-3 w-100"/>
+    <div class="write-post-wrap">
+      <div class="text-area">
+        <TextInput
+          v-model="title"
+          :label="$t('blog.form.title-label')"
+          :placeholder="$t('blog.form.title-placeholder')"
+          class="write-blog"/>
 
-      <div class="editor">
-      <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-        <div class="menubar">
-          <button class="menubar__button" @click="commands.undo">
-            <icon name="undo" />
-          </button>
+        <div class="editor">
+            <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+              <div class="menubar">
+                <button class="menubar__button" @click="commands.undo">
+                  <icon name="undo" />
+                </button>
 
-          <button class="menubar__button" @click="commands.redo">
-            <icon name="redo" />
-          </button>
+                <button class="menubar__button" @click="commands.redo">
+                  <icon name="redo" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-            <icon name="bold" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
+                  <icon name="bold" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
-            <icon name="italic" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
+                  <icon name="italic" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
-            <icon name="strike" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
+                  <icon name="strike" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
-            <icon name="underline" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
+                  <icon name="underline" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
-            H2
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
+                  H2
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">
-            H3
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">
+                  H3
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
-            <icon name="ul" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
+                  <icon name="ul" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
-            <icon name="ol" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
+                  <icon name="ol" />
+                </button>
 
-          <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
-            <icon name="quote" />
-          </button>
+                <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
+                  <icon name="quote" />
+                </button>
 
-          <button class="menubar__button" @click="commands.horizontal_rule">
-            <icon name="hr" />
-          </button>
+                <button class="menubar__button" @click="commands.horizontal_rule">
+                  <icon name="hr" />
+                </button>
 
-          <button class="menubar-button" @click="showImageModal(commands.image)">
-              <Icon name="image"/>
-          </button>
+                <button class="menubar-button" @click="showImageModal(commands.image)">
+                    <Icon name="image"/>
+                </button>
 
-          <button class="menubar__button" @click="commands.createTable({rowsCount: 2, colsCount: 2, withHeaderRow: false })">
-            <icon name="table" />
-          </button>
+                <button class="menubar__button" @click="commands.createTable({rowsCount: 2, colsCount: 2, withHeaderRow: false })">
+                  <icon name="table" />
+                </button>
 
-          <span v-if="isActive.table()">
-            <button class="menubar__button" @click="commands.deleteTable">
-              <icon name="delete_table" />
-            </button>
-            <button class="menubar__button" @click="commands.addColumnBefore">
-              <icon name="add_col_before" />
-            </button>
-            <button class="menubar__button" @click="commands.addColumnAfter">
-              <icon name="add_col_after" />
-            </button>
-            <button class="menubar__button" @click="commands.deleteColumn">
-              <icon name="delete_col" />
-            </button>
-            <button class="menubar__button" @click="commands.addRowBefore">
-              <icon name="add_row_before" />
-            </button>
-            <button class="menubar__button" @click="commands.addRowAfter">
-              <icon name="add_row_after" />
-            </button>
-            <button class="menubar__button" @click="commands.deleteRow">
-              <icon name="delete_row" />
-            </button>
-            <button class="menubar__button" @click="commands.toggleCellMerge">
-              <icon name="combine_cells" />
-            </button>
-          </span>
+                <span v-if="isActive.table()">
+                  <button class="menubar__button" @click="commands.deleteTable">
+                    <icon name="delete_table" />
+                  </button>
+                  <button class="menubar__button" @click="commands.addColumnBefore">
+                    <icon name="add_col_before" />
+                  </button>
+                  <button class="menubar__button" @click="commands.addColumnAfter">
+                    <icon name="add_col_after" />
+                  </button>
+                  <button class="menubar__button" @click="commands.deleteColumn">
+                    <icon name="delete_col" />
+                  </button>
+                  <button class="menubar__button" @click="commands.addRowBefore">
+                    <icon name="add_row_before" />
+                  </button>
+                  <button class="menubar__button" @click="commands.addRowAfter">
+                    <icon name="add_row_after" />
+                  </button>
+                  <button class="menubar__button" @click="commands.deleteRow">
+                    <icon name="delete_row" />
+                  </button>
+                  <button class="menubar__button" @click="commands.toggleCellMerge">
+                    <icon name="combine_cells" />
+                  </button>
+                </span>
+              </div>
+            </editor-menu-bar>
+
+            <editor-menu-bubble class="menububble" :editor="editor" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
+              <div
+                class="menububble"
+                :class="{ 'is-active': menu.isActive }"
+                :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+              >
+
+                <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
+                  <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu"/>
+                  <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
+                    <icon name="remove" />
+                  </button>
+                </form>
+
+                <template v-else>
+                  <button
+                    class="menububble__button"
+                    @click="showLinkMenu(getMarkAttrs('link'))"
+                    :class="{ 'is-active': isActive.link() }"
+                  >
+                    <span>{{ isActive.link() ? 'Update Link' : 'Add Link'}}</span>
+                    <icon name="link" />
+                  </button>
+                </template>
+
+              </div>
+            </editor-menu-bubble>
+            <editor-content class="editor__content" :editor="editor" />
         </div>
-      </editor-menu-bar>
-
-      <editor-menu-bubble class="menububble" :editor="editor" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
-        <div
-          class="menububble"
-          :class="{ 'is-active': menu.isActive }"
-          :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-        >
-
-          <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
-            <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu"/>
-            <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
-              <icon name="remove" />
-            </button>
-          </form>
-
-          <template v-else>
-            <button
-              class="menububble__button"
-              @click="showLinkMenu(getMarkAttrs('link'))"
-              :class="{ 'is-active': isActive.link() }"
-            >
-              <span>{{ isActive.link() ? 'Update Link' : 'Add Link'}}</span>
-              <icon name="link" />
-            </button>
-          </template>
-
-        </div>
-      </editor-menu-bubble>
-      <editor-content class="editor__content" :editor="editor" />
-
     </div>
     <TagSelector @changeTags="tagSelect" :formTags="tags"/>
 
@@ -131,6 +133,7 @@
     <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
 
     <input type="file" ref="fileUploadInput" style="display:none;"/>
+  </div>
   </div>
 </template>
 
@@ -321,12 +324,20 @@ export default {
 </script>
 
 <style>
+.text-area{ display: flex; width: 100%;flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+.text-area input{margin-bottom: 20px; width: 100%; display: flex; border:0;border-bottom: 2px solid #ddd; font-size: 22px; border-radius: 0;}
+.text-area input:focus{ border-color:#333;}
   .ProseMirror {
     border: #dddddd solid 1px;
     padding: 10px;
   }
+  .editor{
+    width:100%;
+  }
   .ProseMirror img {
-    width: 100%;
+    /* width: 100%; */
   }
   blockquote {
     display: block;

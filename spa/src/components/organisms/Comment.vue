@@ -1,54 +1,61 @@
 <template>
-  <div :id="comment._id" class="border border-secondary rounded mb-2 p-1">
-    <div class="font-weight-light border-bottom">
-      <Date :date="this.comment.date" format="dynamicDate" /> &bull;
+  <div :id="comment._id" class="mb-3 comment-wrap">
+    <div class="author-det">
+      <span>
+        <BIconClock scale="1"></BIconClock>
+      <Date :date="this.comment.date" format="dynamicDate" />
+      </span>
+      <span>
+      <BIconPersonCircle scale="1"></BIconPersonCircle>
       <ProfileLink :profile="comment.author"/>
-    </div>
-
-    <div class="pt-2 pb-2">
-      <span v-html="comment.text"></span>
-    </div>
-
-    <div>
-      <b-button v-on:click="reply" class="mr-1" variant="outline-secondary" size="sm">
-        <BIconChat aria-hidden="true"></BIconChat>
-        {{ $t('comment.reply') }}
-      </b-button>
-
-      <span :id="`upvotes_${comment._id}`">
-        <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
-          <BIconHandThumbsUp aria-hidden="true"></BIconHandThumbsUp>
-          {{ comment.up }}
-        </b-button>
       </span>
+    </div>
+    <div class="comments">
+      <div class="pt-2 pb-2">
+        <span v-html="comment.text"></span>
+      </div>
 
-      <span :id="`downvotes_${comment._id}`">
-        <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
-          {{ comment.down }}
-          <BIconHandThumbsDown aria-hidden="true"></BIconHandThumbsDown>
+      <div class="comment-buttons">
+        <b-button v-on:click="reply" class="mr-1" variant="outline-secondary" size="sm">
+          <BIconChat aria-hidden="true"></BIconChat>
+          {{ $t('comment.reply') }}
         </b-button>
-      </span>
 
-      <b-popover :target="`upvotes_${comment._id}`" triggers="hover" placement="top">
-        <div v-for="vote in upvotes" v-bind:key="vote._id">
-          <ProfileLink :profile="vote.user" :show-user-info="false"/>
-        </div>
-      </b-popover>
+        <span :id="`upvotes_${comment._id}`">
+          <b-button :disabled="!canVote" v-on:click="upvote" class="mr-1" variant="outline-secondary" size="sm">
+            <BIconHandThumbsUp aria-hidden="true"></BIconHandThumbsUp>
+            {{ comment.up }}
+          </b-button>
+        </span>
 
-      <b-popover :target="`downvotes_${comment._id}`" triggers="hover" placement="top">
-        <div v-for="vote in downvotes" v-bind:key="vote._id">
-          <ProfileLink :profile="vote.user" :show-user-info="false"/>
-        </div>
-      </b-popover>
+        <span :id="`downvotes_${comment._id}`">
+          <b-button :disabled="!canVote" v-on:click="downvote" class="mr-2" variant="outline-secondary" size="sm">
+            {{ comment.down }}
+            <BIconHandThumbsDown aria-hidden="true"></BIconHandThumbsDown>
+          </b-button>
+        </span>
 
-      <b-button v-if="!comment.parentId"  v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
-        <BIconArrowClockwise aria-hidden="true"></BIconArrowClockwise>
-      </b-button>
+        <b-popover :target="`upvotes_${comment._id}`" triggers="hover" placement="top">
+          <div v-for="vote in upvotes" v-bind:key="vote._id">
+            <ProfileLink :profile="vote.user" :show-user-info="false"/>
+          </div>
+        </b-popover>
 
-      <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
-        <BIconArrowsExpand v-if="collapsed"  aria-hidden="true"></BIconArrowsExpand>
-        <BIconArrowsCollapse v-if="!collapsed"  aria-hidden="true"></BIconArrowsCollapse>
-      </b-button>
+        <b-popover :target="`downvotes_${comment._id}`" triggers="hover" placement="top">
+          <div v-for="vote in downvotes" v-bind:key="vote._id">
+            <ProfileLink :profile="vote.user" :show-user-info="false"/>
+          </div>
+        </b-popover>
+
+        <b-button v-if="!comment.parentId"  v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
+          <BIconArrowClockwise aria-hidden="true"></BIconArrowClockwise>
+        </b-button>
+
+        <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
+          <BIconArrowsExpand v-if="collapsed"  aria-hidden="true"></BIconArrowsExpand>
+          <BIconArrowsCollapse v-if="!collapsed"  aria-hidden="true"></BIconArrowsCollapse>
+        </b-button>
+      </div>
     </div>
 
     <div v-if="replying">
@@ -60,7 +67,7 @@
 <script>
 import { BIconChat, BIconHandThumbsUp, BIconHandThumbsDown,
   BIconArrowClockwise, BIconArrowsExpand, BIconArrowsCollapse,
-  BButton, BPopover } from 'bootstrap-vue';
+  BButton, BPopover, BIconPersonCircle, BIconClock } from 'bootstrap-vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -79,6 +86,8 @@ export default {
     BIconArrowsCollapse,
     BButton,
     BPopover,
+    BIconPersonCircle,
+    BIconClock,
   },
   props: {
     itemId: String,
@@ -159,21 +168,70 @@ export default {
 </script>
 
 <style>
-  .popover-body {
-    max-height: 250px;
-    overflow-y: auto;
-    white-space:pre-wrap;
-  }
-  blockquote {
-    display: block;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 40px;
-    background-color: whitesmoke;
-    padding: 20px;
-    font-style: italic;
-    overflow-wrap: anywhere;
-  }
+
+.comment-wrap{ display: flex; width: 100%;}
+.author-det{    width: 12%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 14px;
+  font-weight: 400;
+  max-height: 50px;
+  background: #f9f9f9;
+  padding: 5px 8px;
+  margin-top: 20px;
+  position: relative;
+}
+.author-det:after{
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #f9f9f9;
+        right: -15px;
+    transform: rotate(90deg);
+}
+.author-det span{
+  color: var(--text-color-light);
+}
+.author-det span svg{
+  margin-right:5px;
+  color: var(--text-color-light);
+}
+.comments{
+  width: 88%;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+}
+.comment-buttons button{
+  border: 1px solid #ddd;
+  color: var(--text-color-light);
+}
+.comment-buttons button:hover{
+  background: #fff;
+  color: var(--text-color);
+   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-color: #ddd;
+
+}
+.popover-body {
+  max-height: 250px;
+  overflow-y: auto;
+  white-space:pre-wrap;
+}
+blockquote {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 40px;
+  background-color: whitesmoke;
+  padding: 20px;
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
   blockquote p {
     font-style: normal;
     font-weight: bold;
@@ -214,4 +272,28 @@ export default {
   tbody tr td:first-child {
       border-left: none;
   }
+@media (max-width: 1200px) {
+.comment-wrap{ flex-direction: column;}
+.author-det {
+    width: 100%;
+    flex-direction: row;
+    margin-top: 0px;
+}
+.author-det span {
+    margin-right: 10px;
+}
+.author-det:after {
+    right: 2px;
+    transform: rotate(180deg);
+    bottom: -10px;
+}
+.comments {
+    width: 100%;
+}
+}
+@media (max-width: 767px) {
+.comment__child {
+    margin-left: 15px;
+}
+}
 </style>

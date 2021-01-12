@@ -1,6 +1,5 @@
 <template>
-  <div class="mb-2">
-
+  <div class="mb-2 myclass">
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
@@ -15,7 +14,6 @@
 
           </b-form-group>
         </ValidationProvider>
-
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
 
           <b-form-group id="date-group" :label="$t('poll.forms.date-label')" label-for="date">

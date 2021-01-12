@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-2 chart-area">
     <column-chart :data="chartData" :colors="['#007bffff', '#28a745ff']" :suffix="suffix" height="200px"></column-chart>
   </div>
 </template>

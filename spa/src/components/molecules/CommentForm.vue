@@ -68,7 +68,7 @@
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
-    <Button :disabled="sending || empty" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
+     <span class="send-comment-btn"><Button :disabled="sending || empty" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/></span>
   </div>
 </template>
 
@@ -188,11 +188,25 @@ export default {
 </script>
 
 <style>
+.comment-box .container-fluid{
+  padding: 0;
+}
   .ProseMirror {
     border: #dddddd solid 1px;
     padding: 10px;
+    height: 150px;
   }
   .ProseMirror img{
+    width: 100%;
+  }
+  .send-comment-btn{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  .send-comment-btn button{
+    max-width: 150px;
     width: 100%;
   }
 </style>

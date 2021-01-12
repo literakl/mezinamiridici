@@ -19,7 +19,7 @@
 
     <ul class="post-list">
       <li v-for="item in list" :key="item._id">
-        <Date :date="item.date" format="dynamicDateTime" />
+        <span><BIconClock font-scale="1"></BIconClock> <Date :date="item.date" format="dynamicDateTime" /></span>
         <router-link :to="getURL(item)">{{ item.text }}</router-link>
       </li>
     </ul>
@@ -38,6 +38,7 @@
 import Date from '@/components/atoms/Date.vue';
 import Button from '@/components/atoms/Button.vue';
 import Radio from '@/components/atoms/Radio.vue';
+import { BIconClock } from 'bootstrap-vue';
 
 export default {
   name: 'UserActivity',
@@ -45,6 +46,7 @@ export default {
     Button,
     Radio,
     Date,
+    BIconClock,
   },
   props: {
     userId: String,
@@ -105,28 +107,46 @@ export default {
 };
 </script>
 <style scoped>
-  .post-box, .comment-box{    display: block;
-    border-radius: 3px;
-    border: 1px solid #f3f3f3;
-    padding: 2px 10px;
-    text-align: center;
+.post-box, .comment-box{    display: block;
+  border-radius: 3px;
+  border: 1px solid #f3f3f3;
+  padding: 2px 10px;
+  text-align: center;
 }
 .post-list{ padding: 0; margin: 0;}
-.post-list li{list-style-type: none;
-    display: flex;
-    border-bottom: 1px solid #f3f3f3;
-    padding: 5px 10px;
-    margin-bottom: 3px;
-    font-size: 14px;}
-.post-list li span{ max-width: 150px; color: #777A7C;  color: var(--text-color-light);
-    width: 100%;}
-    .post-list li a{ font-weight: 400;}
-    .post-list li a:hover{ text-decoration: none;}
+.post-list li, .comment-box li{list-style-type: none;
+  display: flex;
+  border-bottom: 1px solid #f3f3f3;
+  margin-bottom: 3px;
+  font-size: 15px;
+  box-shadow: #c1c1c1 1px 1px 10px;
+  min-height: 55px;
+  display: flex;
+  align-items: flex-start;
+  padding: 15px 20px;
+  z-index: 1;
+  height: auto;
+}
+.post-list li span, .comment-box li span{
+  max-width: 150px;
+  color: var(--text-color-light);
+  width: 100%;
+}
+.post-list li a, .comment-box li a{
+  font-weight: 400;
+}
+.post-list li a:hover, .comment-box li a:hover{
+  text-decoration: none;
+}
 
-    .post-list li:hover{ transition: 0.2s ease;transform: translateX(-2px) translateY(-2px) scale(1.03);}
+.post-list li:hover, .comment-box li:hover{
+  background: white;
+  z-index: 2; transition: 0.2s ease;transform:
+  translateX(-2px) translateY(-2px) scale(1.03);
+}
 @media (max-width: 500px) {
-  .post-list li{
-        flex-direction: column;
+  .post-list li, .comment-box li{
+    flex-direction: column;
   }
 }
 </style>

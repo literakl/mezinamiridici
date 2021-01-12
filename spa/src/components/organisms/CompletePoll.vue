@@ -1,10 +1,11 @@
 <template>
-  <div>
-    <PollHeading :item="item"/>
-
-    <div v-if="voted" class="pt-2 pb-2">
-      <VotesChart :votes="item.votes" v-bind:voted="voted"/>
-      <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
+  <div class="complete">
+    <div class="poll-heading">
+      <PollHeading :item="item"/>
+    </div>
+    <div v-if="voted" class="pt-2 pb-2 chart-wrap">
+      <div class="vote-chart"><VotesChart :votes="item.votes" v-bind:voted="voted"/></div>
+      <div class="comparision-wrap"><PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons></div>
     </div>
 
     <div v-if="!voted" class="m-auto pt-3 pb-3">
@@ -79,4 +80,5 @@ export default {
     border-color: var(--danger);
     background-color: var(--danger);
   }
+
 </style>

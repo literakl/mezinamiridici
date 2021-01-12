@@ -1,24 +1,30 @@
 <template>
-  <div id="scroll">
-    {{ $t('poll.analysis.comparison') }}
-    <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'muzi_zeny' } }">
-      {{ $t('poll.analysis.men_women') }}
-    </router-link>,
-    <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'auto_kamion' } }">
-      {{ $t('poll.analysis.car_truck') }}
-    </router-link>,
-    <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'auto_motorka' } }">
-      {{ $t('poll.analysis.car_bike') }}
-    </router-link>,
-    <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'zajic_zkuseny' } }">
-      {{ $t('poll.analysis.unseasoned_veteran') }}
-    </router-link>,
-    <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'praha_brno' } }">
-      {{ $t('poll.analysis.praha_brno') }}
-    </router-link>,
-    <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'vlastni' } }">
-      {{ $t('poll.analysis.custom') }}
-    </router-link>
+  <div id="scroll" class="comparison-box">
+    <div  class="comparison-list">
+      <h6>{{ $t('poll.analysis.comparison') }}</h6>
+      <ul>
+        <li><router-link :to="{ name: 'analyse-poll', params: { slug, type: 'muzi_zeny' } }">
+          {{ $t('poll.analysis.men_women') }}
+        </router-link></li>
+        <li><router-link :to="{ name: 'analyse-poll', params: { slug, type: 'auto_kamion' } }">
+          {{ $t('poll.analysis.car_truck') }}
+        </router-link></li>
+        <li><router-link :to="{ name: 'analyse-poll', params: { slug, type: 'auto_motorka' } }">
+          {{ $t('poll.analysis.car_bike') }}
+        </router-link></li>
+        <li><router-link :to="{ name: 'analyse-poll', params: { slug, type: 'zajic_zkuseny' } }">
+          {{ $t('poll.analysis.unseasoned_veteran') }}
+        </router-link></li>
+        <li><router-link :to="{ name: 'analyse-poll', params: { slug, type: 'praha_brno' } }">
+          {{ $t('poll.analysis.praha_brno') }}
+        </router-link></li>
+      </ul>
+    </div>
+    <div class="custombtn">
+      <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'vlastni' } }">
+        {{ $t('poll.analysis.custom') }}
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -30,3 +36,98 @@ export default {
   },
 };
 </script>
+<style scoped>
+.comparison-box{
+  display: flex;
+      padding: 15px 0;
+}
+.comparison-list{
+  display: flex;
+    flex-wrap: wrap;
+  width: 90%;
+  align-items: center;
+  justify-content: flex-start;
+}
+.comparison-list h6{
+  margin: 0 15px 0 0;
+  padding: 0;
+}
+.comparison-list ul{
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+.comparison-list ul li{
+    list-style-type: none;
+    font-size: 14px;
+    margin-right: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.comparison-list ul li a{ font-weight: 400;
+ border: 1px solid #f3f3f3;
+    border-radius: 0px;
+    padding: 4px 10px;
+}
+.comparison-list ul li a:hover{ text-decoration: none;}
+.comparison-list ul li a.router-link-active{ background: #fff;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+color: var(--text-color);
+position: relative;
+}
+
+
+.comparison-list ul li a.router-link-active:after{
+  content: "";
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid  var(--text-color);
+  top: -6px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+
+.custombtn{
+  width: 10%;
+      text-align: right;
+}
+.custombtn a{
+  background:#28a745;
+  text-align: center;
+  color: white;
+  width:100%;
+  padding: 4px 10px;
+  font-weight: 400;
+  font-size: 14px;
+  border-radius: .25rem;
+}
+.custombtn a:hover{
+  text-decoration: none;
+}
+.custombtn a.router-link-active{
+  background:  #007bff;
+  color: var(--color-white);
+  position: relative;
+}
+.custombtn a.router-link-active:after{
+   content: "";
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid  var(--color-white);
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  bottom: 0px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+</style>

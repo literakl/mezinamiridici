@@ -1,5 +1,5 @@
 <template>
-  <div class="" id="comments">
+  <div class="comment-area" id="comments">
     <h3>{{ $t('comment.discussion') }}</h3>
 
     <div v-if="signedIn">
@@ -18,7 +18,7 @@
         <!-- nacist odpovedi v-if="comment.replies === undefined" -->
       </div>
 <!--    </div>-->
-    <Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" />
+   <span class="load-comments"><Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" /></span>
   </div>
 </template>
 
@@ -86,3 +86,27 @@ export default {
   },
 };
 </script>
+<style scoped>
+
+.comment-area{
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);}
+.comment-area h3{
+    font-size: 22px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+@media (max-width: 450px) {
+
+
+  .comment-area{
+    padding: 0;
+  }
+   .comment-area h3{ padding:10px 15px;}
+  }
+</style>

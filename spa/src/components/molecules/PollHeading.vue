@@ -1,33 +1,38 @@
 <template>
   <b-container>
     <b-row align-v="center" align-h="center">
-      <b-col sm="1" v-if="item.siblings">
+      <b-col sm="1" v-if="item.siblings" class="prevbtn">
         <b-button v-if="item.siblings.older" :to="link(item.siblings.older)" variant="secondary">
           <BIconChevronDoubleLeft font-scale="2"></BIconChevronDoubleLeft>
         </b-button>
       </b-col>
-      <b-col sm="auto">
+      <b-col sm="auto" class="center-box">
         <div class="item-div item-hover mb-3">
-          <h4>
+          <h4 class="text-center poolheading">
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
               {{item.info.caption}}
             </router-link>
           </h4>
-          <div class="mt-3 p-1 pl-3 item-footer">
-            <Date :date="this.item.info.date" format="dynamicDate" />  &bull;
-            <ProfileLink :profile="this.item.info.author"/> &bull;
-            {{ $t('poll.votes') }}: {{item.votes.total}} &bull;
-            <router-link :to="{ name: 'poll', params: { slug: item.info.slug }, hash: '#comments'}">
-              {{ $t('comment.comments') }}: {{item.comments.count}}
-            </router-link>
+          <div class="item-footer">
+            <div class="post-details">
+            <div class="post-time"><BIconCalendarRange scale="2"></BIconCalendarRange><span class="date"><Date :date="this.item.info.date" format="dynamicDate" /></span></div>
+            <div class="post-author"><BIconPersonCircle scale="2"></BIconPersonCircle><span><ProfileLink :profile="this.item.info.author"/></span></div>
+            <div class="post-rating"><BIconStarFill scale="2"></BIconStarFill><span> {{item.votes.total}}</span></div>
+            <div class="post-comments"><BIconChatTextFill scale="2"></BIconChatTextFill><span>
+               {{item.comments.count}}
+            </span>
+            </div>
+            </div>
+            <div class="post-tags">
             <template v-if="hasTags">
-              &bull;
+              <BIconTags scale="2"></BIconTags>
               <TagList :tags="tags"/>
             </template>
+            </div>
           </div>
         </div>
       </b-col>
-      <b-col sm="1" v-if="item.siblings">
+      <b-col sm="1" v-if="item.siblings" class="nextbtn">
         <b-button v-if="item.siblings.newer" :to="link(item.siblings.newer)" variant="secondary">
           <BIconChevronDoubleRight font-scale="2"></BIconChevronDoubleRight>
         </b-button>
@@ -37,7 +42,7 @@
 </template>
 
 <script>
-import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BContainer, BRow, BCol, BButton } from 'bootstrap-vue';
+import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BContainer, BRow, BCol, BButton, BIconPersonCircle, BIconCalendarRange, BIconStarFill, BIconChatTextFill, BIconTags } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
@@ -54,6 +59,11 @@ export default {
     BRow,
     BCol,
     BButton,
+    BIconPersonCircle,
+    BIconCalendarRange,
+    BIconStarFill,
+    BIconChatTextFill,
+    BIconTags,
   },
   props: {
     item: Object,
@@ -79,18 +89,109 @@ export default {
   },
 };
 </script>
-
 <style scoped>
+.poolheading a{
+  font-size: 32px;
+  text-decoration: none;
+  color: var(--dark-color);
+  margin: 10px 0 20px;
+  display: block;
+}
+.poolheading a:hover{
+  color: #007bff;
+}
+.center-box{
+  max-width: 890px;
+  width: 100%;
+}
 .item-div {
-  border-width: 10px;
-  border-color: #f1f1f1;
-  border-style: solid;
-  box-shadow: #c1c1c1 1px 1px 10px;
+  max-width: 890px;
+  width: 100%;
+  position: relative;
+  border: 0;
+}
+.post-details{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.post-time {
+  color: #777A7C;
 }
 .item-footer {
-  background-color: #f1f1f1;
+  background-color: #fff;
+  padding: 10px 20px;
   font-size: 0.8em;
-  color: #201f27;
+  color: #777A7C;
   font-weight: 600;
+  box-shadow: var(--drop-shadow-two);
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+
+}
+.item-footer a {
+  color: #777A7C;
+
+}
+.item-footer svg{
+  color: #AEB3B7;
+  margin-right: 15px;
+  font-size: 11px;
+}
+.post-time, .post-author, .post-rating, .post-comments{
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+}
+.post-comments a {
+  color: #007bff!important;
+}
+.item-footer span a{
+  color: #777A7C;
+  text-decoration: none;
+}
+.post-tags{
+  /* padding-top: 20px; */
+      display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.post-tags a{
+  font-weight: 400;
+    padding: 3px 10px;
+    background: #f9f9f9;
+    margin: 0 2px 0 0;
+}
+.prevbtn a, .nextbtn a{
+  border-radius: 100px;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  color: #AEB3B7 !important;
+}
+
+@media (max-width: 767px) {
+  .poolheading a{
+    font-size: 22px;
+  }
+}
+@media (max-width: 600px) {
+.post-time, .post-author, .post-rating, .post-comments{
+  flex-direction: column;
+}
+.item-footer svg{
+  margin-right: 0;
+      margin-bottom: 10px;
+}
+.post-tags{
+      display: flex;
+      flex-wrap: wrap;
+}
+.post-tags svg{ margin-right: 15px;}
 }
 </style>

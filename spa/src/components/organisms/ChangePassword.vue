@@ -101,11 +101,10 @@ export default {
 </script>
 <style scoped>
 .pass-change{
-  /* max-width: 700px; */
   width: 100%;
   margin: 0 auto;
    box-shadow: #c1c1c1 1px 1px 10px;
-   padding: 15px;
+  padding: 15px 20px;
 }
 .pass-change h3{
   font-size: 20px;

@@ -1,9 +1,9 @@
 <template>
-  <div class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
-    <ContentLoading v-if="! poll" type="poll" />
-    <CompletePoll v-if="poll" />
-    <ShareLink :item="poll" />
-    <Comments v-if="poll" :itemId="poll._id" />
+  <div class="single-post-wrap pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
+    <div class="poll-content"><ContentLoading v-if="! poll" type="poll"/></div>
+    <div class="completed-poll-wrap"><CompletePoll v-if="poll"/></div>
+    <div class="share-links-wrap"><ShareLink :item="poll"/></div>
+    <div class="comment-wrap"><Comments v-if="poll" :itemId="poll._id"/></div>
   </div>
 </template>
 

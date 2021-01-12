@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="share-box">
     {{ $t('generic.share-link') }}:
-    <b-button @click="shareLink('twitter')" class="mr-2 p-0" v-html="twitter" variant="transparent" />
-    <b-button @click="shareLink('facebook')" class="mr-2 p-0" v-html="facebook" variant="transparent" />
-    <b-button @click="shareLink('messenger')" class="mr-2 p-0" v-html="messenger" variant="transparent" />
-    <b-button @click="shareLink('whatsapp')" class="mr-2 p-0" v-html="whatsapp" variant="transparent" />
+    <b-button @click="shareLink('twitter')" class="p-0" v-html="twitter" variant="transparent" />
+    <b-button @click="shareLink('facebook')" class="p-0" v-html="facebook" variant="transparent" />
+    <b-button @click="shareLink('messenger')" class="p-0" v-html="messenger" variant="transparent" />
+    <b-button @click="shareLink('whatsapp')" class="p-0" v-html="whatsapp" variant="transparent" />
     <b-button @click="shareLink('email')" class="p-0" v-html="email" variant="transparent" />
   </div>
 </template>
@@ -45,3 +45,25 @@ export default {
   },
 };
 </script>
+<style scoped>
+.share-box{
+  position: fixed;
+  right: 0;
+  width: 55px;
+  top: 30%;
+  text-align: center;
+  background: #fff;
+  box-shadow: var(--big-shadow);
+  display: flex;
+  border: 1px solid #ddd;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px 0 0 10px;
+  font-size: 12px;
+  box-shadow: none;
+  background: white;
+  z-index: 100;
+}
+.share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; }
+</style>

@@ -77,9 +77,9 @@ export default {
 };
 </script>
 <style scoped>
-img {
+/* img {
   width:100%;
-}
+} */
 .item-div {
   border-color: #f1f1f1;
   border-style: solid;
@@ -97,7 +97,7 @@ img {
 .item-hover:active {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
 }
-.item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;}
+.item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;width: 100%;}
 .item-div h4 { text-align: center; height: 66px; overflow: hidden;}
 .item-div:hover h4 {
     height: 110px;

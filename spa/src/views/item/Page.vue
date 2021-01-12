@@ -1,8 +1,8 @@
 <template>
-  <div class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
+  <div class="test pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
     <ContentLoading v-if="! content" type="cms" />
     <div v-if="content">
-      <div v-html="content.data.content"></div>
+      <div v-html="content.data.content" class="post-content"></div>
       <ShareLink :item="content" />
     </div>
   </div>
