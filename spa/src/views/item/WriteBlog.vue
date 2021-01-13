@@ -126,11 +126,16 @@
             <editor-content class="editor__content" :editor="editor" />
         </div>
     </div>
-    <TagSelector @changeTags="tagSelect" :formTags="tags"/>
+    <div class="bottom-wrap">
+      <div class="tags-area">
+        <TagSelector @changeTags="tagSelect" :formTags="tags"/>
+      </div>
+      <div class="image-area">
+        <SelectPicture :currentPath="picture" @changePath="changePath"/>
+      </div>
+      <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
+    </div>
 
-    <SelectPicture :currentPath="picture" @changePath="changePath"/>
-
-    <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
 
     <input type="file" ref="fileUploadInput" style="display:none;"/>
   </div>
@@ -327,17 +332,26 @@ export default {
 .text-area{ display: flex; width: 100%;flex-direction: column;
     justify-content: center;
     align-items: center; }
-.text-area input{margin-bottom: 20px; width: 100%; display: flex; border:0;border-bottom: 2px solid #ddd; font-size: 22px; border-radius: 0;}
-.text-area input:focus{ border-color:#333;}
+.text-area input{margin-bottom: 20px; width: 100%; display: flex; border: 0; border-bottom: 2px solid #ddd; font-size: 22px; border-radius: 0;}
+.text-area input:focus{ border-bottom: 2px solid #ced4da; }
   .ProseMirror {
     border: #dddddd solid 1px;
     padding: 10px;
   }
   .editor{
     width:100%;
+    margin-bottom: 15px;
   }
-  .ProseMirror img {
-    /* width: 100%; */
+  .bottom-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tags-area{
+    width: 60%;
+  }
+  .image-area{
+    width: 30%;
   }
   blockquote {
     display: block;
@@ -402,7 +416,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  $color-black: #000000;
+  $color-black: #AEB3B7;
   $color-white: #ffffff;
   $color-grey: #dddddd;
 
@@ -415,11 +429,10 @@ export default {
     padding: .2rem .5rem;
     margin-right: .2rem;
     border-radius: 3px;
+    opacity: 0.5;
     cursor: pointer;
 
-    &.is-active {
-      background-color: rgba($color-black,.1);
-    }
+
   }
 
   .actions {
@@ -493,4 +506,31 @@ export default {
   .editor{
     position:relative;
   }
+  .menubar{}
+@media (max-width: 1100px) {
+  .write-blog{
+    width: 100%!important;
+  }
+}
+@media (max-width: 992px) {
+  .bottom-wrap{
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 600px) {
+  .bottom-wrap{
+    flex-direction: column;
+  }
+  .tags-area {
+    width: 100%;
+}
+.image-area {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+}
 </style>

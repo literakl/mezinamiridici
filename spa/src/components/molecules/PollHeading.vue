@@ -1,12 +1,12 @@
 <template>
   <b-container>
-    <b-row align-v="center" align-h="center">
-      <b-col sm="1" v-if="item.siblings" class="prevbtn">
+    <b-row class="pollheader">
+      <b-col v-if="item.siblings" class="prevbtn">
         <b-button v-if="item.siblings.older" :to="link(item.siblings.older)" variant="secondary">
           <BIconChevronDoubleLeft font-scale="2"></BIconChevronDoubleLeft>
         </b-button>
       </b-col>
-      <b-col sm="auto" class="center-box">
+      <b-col class="center-box">
         <div class="item-div item-hover mb-3">
           <h4 class="text-center poolheading">
             <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
@@ -32,7 +32,7 @@
           </div>
         </div>
       </b-col>
-      <b-col sm="1" v-if="item.siblings" class="nextbtn">
+      <b-col v-if="item.siblings" class="nextbtn">
         <b-button v-if="item.siblings.newer" :to="link(item.siblings.newer)" variant="secondary">
           <BIconChevronDoubleRight font-scale="2"></BIconChevronDoubleRight>
         </b-button>
@@ -90,6 +90,15 @@ export default {
 };
 </script>
 <style scoped>
+.pollheader{
+  flex-wrap: nowrap;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+}
+.pollheader .center-box{ width: 100%; padding: 0;}
 .poolheading a{
   font-size: 32px;
   text-decoration: none;
@@ -100,12 +109,8 @@ export default {
 .poolheading a:hover{
   color: #007bff;
 }
-.center-box{
-  max-width: 890px;
-  width: 100%;
-}
 .item-div {
-  max-width: 890px;
+  /* max-width: 890px; */
   width: 100%;
   position: relative;
   border: 0;
@@ -163,6 +168,9 @@ export default {
     background: #f9f9f9;
     margin: 0 2px 0 0;
 }
+.prevbtn{ max-width:50px; position: absolute; left: 0; z-index: 1; background: #fff; padding: 0;}
+.nextbtn{ max-width:50px; position: absolute; right: 0; z-index: 1; background: #fff;padding: 0;}
+.center-box{max-width: 100%; margin: 0 auto;}
 .prevbtn a, .nextbtn a{
   border-radius: 100px;
   height: 50px;
@@ -176,9 +184,18 @@ export default {
 }
 
 @media (max-width: 767px) {
+    .pollheader{
+        margin-bottom: 30px;
+  }
   .poolheading a{
     font-size: 22px;
   }
+  .prevbtn {
+  bottom: -20px;
+}
+.nextbtn {
+  bottom: -20px;
+}
 }
 @media (max-width: 600px) {
 .post-time, .post-author, .post-rating, .post-comments{
@@ -193,5 +210,10 @@ export default {
       flex-wrap: wrap;
 }
 .post-tags svg{ margin-right: 15px;}
+
+}
+@media (max-width: 600px) {
+
+
 }
 </style>

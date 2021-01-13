@@ -96,7 +96,10 @@ position: relative;
 
 .custombtn{
   width: 10%;
-      text-align: right;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .custombtn a{
   background:#28a745;
@@ -129,5 +132,22 @@ position: relative;
   margin: 0 auto;
   left: 0;
   right: 0;
+}
+@media (max-width: 767px) {
+  .comparison-list{
+    width: 80%;
+  }
+  .custombtn{
+    width: 20%;
+        display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 450px) {
+  .comparison-box{
+    flex-direction: column;
+  }
+  .comparison-list, .custombtn{ width: 100%;}
+  .comparison-list ul li { margin-bottom: 5px;}
 }
 </style>
