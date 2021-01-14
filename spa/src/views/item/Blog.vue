@@ -72,18 +72,24 @@ export default {
   width: 100%;
   flex-direction: column;
   flex-flow: column-reverse;
+  -moz-box-shadow: inset 0 0 10px #fffcf3;
+  -webkit-box-shadow: inset 0 0 10px #fffcf3;
+  box-shadow: inset 0px 10px 10px #fffcf3;
 }
 .post-details-wrap .post-details{
  width: 100%;
     display: flex;
     /* flex-direction: column; */
     font-size: 14px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #f3f3f3;
+    border-bottom: 1px solid #f3f3f3;
     border-radius: 0px;
 }
 .post-details span{
   padding: 5px 8px;
+}
+.post-details svg{
+  font-size: 16px;
 }
 .post-details span:last-child{
   border: 0;

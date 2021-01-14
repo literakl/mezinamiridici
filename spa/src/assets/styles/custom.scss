@@ -35,11 +35,11 @@ body{
 p, label{
     font-size: 14px;
 }
+label{ font-weight: 300;}
 a:hover{
     text-decoration: none;
 }
-textarea, input:focus, button:focus, a:focus {
-    overflow: auto;
+textarea, input:focus, button:focus {
     outline: none;
 
     -webkit-box-shadow: none;
@@ -48,11 +48,7 @@ textarea, input:focus, button:focus, a:focus {
 
     resize: none; /*remove the resize handle on the bottom right*/
     box-shadow: none!important;
-    -moz-outline-style: none;
-    -webkit-transition: all 0.30s ease-in-out;
-  -moz-transition: all 0.30s ease-in-out;
-  -ms-transition: all 0.30s ease-in-out;
-  -o-transition: all 0.30s ease-in-out;
+
 }
 input[type="text"], input[type="password"], textarea, select {
     outline: none;
@@ -73,10 +69,21 @@ svg{ color: var(--text-color-light);}
 }
 .rightmenu{
     li{
-        a{ display: flex; align-items: center; font-size: 14px;
-            svg{     font-size: 12px!important; margin-right: 10px; color: #ffc107!important;}
+        a{
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+
+            svg{
+                font-size: 12px!important;
+                margin-right: 10px;
+                color: #ffc107;
+            }
+
+
+        } a:hover, a:hover svg{
+            color: var(--color-white)!important;
         }
-        :hover{ color: var(--color-white)!important;}
         ul.dropdown-menu{
             li {
                 a{

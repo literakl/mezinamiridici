@@ -182,17 +182,18 @@ export default {
   padding: 5px 8px;
   margin-top: 20px;
   position: relative;
+  border-right: 2px solid #dddddd;
 }
 .author-det:after{
   position: absolute;
-  content: "";
+  /* content: ""; */
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid #f9f9f9;
-        right: -15px;
-    transform: rotate(90deg);
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #f9f9f9;
+  right: -15px;
+  transform: rotate(90deg);
 }
 .author-det span{
   color: var(--text-color-light);

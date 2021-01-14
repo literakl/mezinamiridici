@@ -104,7 +104,6 @@ export default {
   text-decoration: none;
   color: var(--dark-color);
   margin: 10px 0 20px;
-  display: block;
 }
 .poolheading a:hover{
   color: #007bff;

@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2 myclass">
+  <div class="mb-2 poll-form">
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
@@ -157,3 +157,6 @@ export default {
   },
 };
 </script>
+<style scoped>
+.d-block{ font-weight: 300;}
+</style>
