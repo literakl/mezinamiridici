@@ -133,6 +133,17 @@ position: relative;
   left: 0;
   right: 0;
 }
+ @media (min-width: 1920px) {
+.comparison-list h6{
+  font-size: 20px;
+}
+.comment-area h3 {
+    font-size: 28px;
+}
+.custombtn a{
+  font-size: 19px;
+}
+}
 @media (max-width: 767px) {
   .comparison-list{
     width: 80%;

@@ -162,6 +162,7 @@ export default {
  border: 0;
  font-weight: 300;
 }
+.pollslist-box .card-footer .btn-group span{ margin-right: 0;}
 @media (max-width: 767px) {
  .pollslist-box .card-footer span{
     display: flex;

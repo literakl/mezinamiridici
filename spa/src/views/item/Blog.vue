@@ -117,12 +117,13 @@ export default {
     font-weight: bold;
   }
 
-  table {
-      width: 100%;
-      height: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-  }
+.gredient-gray table{
+  font-size: 14px;
+}
+.gredient-gray h2, .gredient-gray h3{
+  font-size: 22px;
+}
+
   table {
       border: 1px solid #DBDBE2;
       border-radius: 3px;
@@ -130,6 +131,7 @@ export default {
       height: 100%;
       width: 100%;
       box-sizing: border-box;
+      font-size: 14px;
   }
   td {
       border: 1px solid #DBDBE2;
@@ -159,4 +161,8 @@ export default {
   tbody tr td:first-child {
       border-left: none;
   }
+    @media (min-width: 1920px) {
+    .gredient-gray table{ font-size: 18px!important;}
+
+}
 </style>

@@ -48,7 +48,7 @@
       </template>
       <template>
         <div class="post-rating">
-      <BIconStarFill scale="2"></BIconStarFill>
+      <BIconCollection scale="2"></BIconCollection>
       <span>{{ $t('poll.votes') }}: {{ poll.votes.total }}</span>
        </div>
       </template>
@@ -70,7 +70,7 @@ import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
-import { BButton, BIconPersonCircle, BIconCalendarRange, BIconStarFill, BIconChatTextFill } from 'bootstrap-vue';
+import { BButton, BIconPersonCircle, BIconCalendarRange, BIconCollection, BIconChatTextFill } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
@@ -81,7 +81,7 @@ export default {
     BButton,
     BIconPersonCircle,
     BIconCalendarRange,
-    BIconStarFill,
+    BIconCollection,
     BIconChatTextFill,
   },
   props: {
@@ -217,6 +217,21 @@ export default {
     display: block;
 }
 .poolheading a:hover{ color: #007bff;}
+
+@media (min-width: 1920px) {
+
+  .featured-poll button{
+        height: 60px;
+        font-size: 20px;
+            max-width: 250px;
+  }
+  .featured-poll button span{
+    width: 40px;
+    height: 32px;
+    font-size: 17px;
+        top: 14px;
+  }
+}
 
 
 @media (max-width: 1220px) {

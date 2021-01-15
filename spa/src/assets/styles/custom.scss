@@ -39,6 +39,7 @@ label{ font-weight: 300;}
 a:hover{
     text-decoration: none;
 }
+
 textarea, input:focus, button:focus {
     outline: none;
 
@@ -144,11 +145,30 @@ svg{ color: var(--text-color-light);}
     }
 }
 .no-padding{
-
     width: 100%;
 }
+.post-content > h1{
+    font-size: 2rem;
+    padding: 0 0 25px 0;
+  }
 
 .prof-header .b-avatar{  background-color: transparent; border: 1px solid #ddd; color: #AEB3B7!important;}
+@media (min-width: 1920px) {
+    p, a, button, li, span{ font-size: 20px}
+svg{ font-size: 20px;}
+.title-tag h2 a{ font-size: 36px!important;}
+.title-tag span {
+    font-size: 18px;
+}
+.brand-pic img {
+    width: 100%;
+    margin-right: 15px;
+}
+.rightmenu li a{
+    font-size: 20px;
+}
+
+}
 @media (max-width: 992px) {
 
 .prof-header .b-avatar {

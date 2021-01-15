@@ -11,6 +11,8 @@
       </router-link>
     </h4>
     <div class="py-2 px-2 item-footer">
+ <span class="forpolls"></span>
+    <span class="dailystats"></span>
       <span class="data"><Date :date="item.info.date" format="dynamicDate" /></span>
       <div class="bottom-links">
       <template v-if="showAuthor"><span><BIconPersonCircle></BIconPersonCircle> <ProfileLink :profile="item.info.author"/></span></template>
@@ -121,6 +123,25 @@ export default {
   text-overflow: ellipsis;
 }
 .item-div h4 a:hover { text-decoration: none;}
+.forpolls{
+  position: absolute;
+  height: 9px;
+  background: rgb(191 229 200 / 1);
+  top: -90px;
+  width: 6%;
+  left: 5px;
+  border-radius: 0 6px 6px 0;
+}
+.dailystats{
+  position: absolute;
+  height: 9px;
+  background: rgb(179 216 255 / 1);
+  top: -100px;
+  width: 8.5%;
+  left: 5px;
+  border-radius: 0 6px 6px 0;
+}
+
 
 .item-footer span.data {
   position: absolute;
@@ -152,7 +173,21 @@ export default {
   color:#AEB3B7;
   font-size: 16px;
 }
-
+@media (min-width: 1920px) {
+  .item-div h4 a{
+    font-size: 20px;
+    padding: 15px 10px 10px
+  }
+  .item-footer span.data{
+    top: -96px;
+  }
+  .item-footer span.data span{
+    font-size: 18px!important;
+  }
+  .bottom-links span svg{
+    font-size: 20px;
+  }
+}
 @media (max-width: 767px) {
   .forlogedin .poolheading a { font-size: 24px;}
 }

@@ -53,8 +53,8 @@ export default {
   top: 30%;
   text-align: center;
   background: #fff;
-  box-shadow: var(--big-shadow);
-  display: flex;
+
+
   border: 1px solid #ddd;
   padding: 10px;
   flex-direction: column;
@@ -66,4 +66,18 @@ export default {
   z-index: 100;
 }
 .share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; }
+.share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
+@media (min-width: 1920px) {
+.share-box{ position: static;
+ display: flex;
+     align-items: center;
+    justify-content: space-between;
+ flex-direction: row;
+  width: 250px;
+   box-shadow: var(--big-shadow);
+   border-radius:10px 10px 0 0;
+       font-size: 18px;
+       margin: 0 0 0 auto;
+}
+}
 </style>

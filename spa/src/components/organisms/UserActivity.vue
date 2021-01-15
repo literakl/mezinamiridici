@@ -113,7 +113,7 @@ export default {
   padding: 2px 10px;
   text-align: center;
 }
-.post-list{ padding: 0; margin: 0;}
+.post-list{ padding: 0; margin: 0; min-height: 450px;}
 .post-list li, .comment-box li{list-style-type: none;
   display: flex;
   border-bottom: 1px solid #f3f3f3;
@@ -143,6 +143,11 @@ export default {
   background: white;
   z-index: 2; transition: 0.2s ease;transform:
   translateX(-2px) translateY(-2px) scale(1.03);
+}
+@media (min-width: 1920px) {
+    .post-list li span, .comment-box li span{
+    max-width: 210px
+    }
 }
 @media (max-width: 500px) {
   .post-list li, .comment-box li{

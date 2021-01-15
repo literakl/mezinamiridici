@@ -4,10 +4,11 @@
     <div v-if="userProfile" class="profile-wrap">
       <div class="prof-header-wrap mr-3">
         <div class="prof-header">
+           <b-avatar size="5rem"></b-avatar>
           <div class="">
-            <b-avatar size="5rem"></b-avatar>
-          </div>
+            <span class="edit-btn"><BIconPencilSquare scale="2"></BIconPencilSquare></span>
            <h2>{{ userProfile.bio.nickname }}</h2>
+           </div>
         </div>
         <div class="user-details">
           <div v-if="userProfile.prefs.public && userProfile.bio.region" class="name-regions">
@@ -86,7 +87,7 @@ import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
 import UserActivity from '@/components/organisms/UserActivity.vue';
 import ChangePassword from '@/components/organisms/ChangePassword.vue';
-import { BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink, BIconAward, BIconPersonCircle, BIconJoystick, BIconTruck, BIconPersonFill, BIconPersonCheck, BIconPen } from 'bootstrap-vue';
+import { BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink, BIconAward, BIconPersonCircle, BIconJoystick, BIconTruck, BIconPersonFill, BIconPersonCheck, BIconPen, BIconPencilSquare } from 'bootstrap-vue';
 
 export default {
   name: 'profile',
@@ -108,6 +109,7 @@ export default {
     BIconPersonFill,
     BIconPersonCheck,
     BIconPen,
+    BIconPencilSquare,
   },
   props: {
     id: String,
@@ -164,7 +166,14 @@ export default {
   border-bottom: 2px solid #f3f3f3;
   border-radius: 5px 5px 0 0;
   justify-content: flex-start;
+  position: relative;
 }
+.prof-header div{ display: flex;flex-direction: column;}
+.edit-btn {  font-size: 14px;    position: absolute;
+    top: 13px;
+    right: 20px;}
+.edit-btn svg{ font-size: 9px; margin-left: 10px; display: block;}
+.edit-btn svg:hover{ cursor: pointer; color: #007bff;}
 .prof-header h2{
  font-size: 20px;
  margin: 5px 0 0 10px;
@@ -199,12 +208,18 @@ export default {
   color: #AEB3B7;
 }
 .head-block span{ color: var(--text-color-light); padding: 5px;}
-.head-block span.label{ width: 150px; color: var(--text-color);}
+.head-block span.label{ min-width: 150px; color: var(--text-color);}
 .name-regions{ display: flex; justify-content: flex-start;margin-top: 20px;margin-bottom: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 9px; }
 .name-regions svg{ width: 40px;}
 .links{display: flex; justify-content: flex-start; margin-bottom: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 9px; }
 .links svg{    width: 40px;
     }
+
+@media (min-width: 1920px) {
+      .head-block span.label{
+    min-width: 200px
+    }
+}
 @media (max-width: 992px) {
   .prof-header h2{
     font-size: 16px;

@@ -17,7 +17,7 @@
             <div class="post-details">
             <div class="post-time"><BIconCalendarRange scale="2"></BIconCalendarRange><span class="date"><Date :date="this.item.info.date" format="dynamicDate" /></span></div>
             <div class="post-author"><BIconPersonCircle scale="2"></BIconPersonCircle><span><ProfileLink :profile="this.item.info.author"/></span></div>
-            <div class="post-rating"><BIconStarFill scale="2"></BIconStarFill><span> {{item.votes.total}}</span></div>
+            <div class="post-rating"><img src="/images/icons/vote-icon.svg" class="" alt=""><span> {{item.votes.total}}</span></div>
             <div class="post-comments"><BIconChatTextFill scale="2"></BIconChatTextFill><span>
                {{item.comments.count}}
             </span>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BContainer, BRow, BCol, BButton, BIconPersonCircle, BIconCalendarRange, BIconStarFill, BIconChatTextFill, BIconTags } from 'bootstrap-vue';
+import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BContainer, BRow, BCol, BButton, BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconTags } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
@@ -61,7 +61,6 @@ export default {
     BButton,
     BIconPersonCircle,
     BIconCalendarRange,
-    BIconStarFill,
     BIconChatTextFill,
     BIconTags,
   },
@@ -107,6 +106,18 @@ export default {
 }
 .poolheading a:hover{
   color: #007bff;
+}
+.post-rating img{
+  width: 22px;
+  height: 20px;
+  margin-right: 8px;
+}
+.post-rating svg{
+  position: relative;
+}
+.post-rating:before{
+  content: "";
+  position: absolute;
 }
 .item-div {
   /* max-width: 890px; */
@@ -180,6 +191,14 @@ export default {
   background-color: transparent;
   border: 1px solid #ddd;
   color: #AEB3B7 !important;
+}
+
+ @media (min-width: 1920px) {
+    p, a, button, li, span{ font-size: 20px}
+    h3{ font-size: 26px;}
+    .item-footer{
+      max-width: 900px;
+    }
 }
 
 @media (max-width: 767px) {
