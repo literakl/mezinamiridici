@@ -61,6 +61,7 @@
        </div>
       </template>
     </div>
+
   </div>
 </template>
 
@@ -117,6 +118,17 @@ export default {
 </script>
 
 <style scoped>
+.temp-wrapper{ }
+.temp-wrapper p{
+  color:#0d0c22;font-weight:400;line-height:1.4;font-size:16px!important;word-break:normal;margin:0 0 10px;padding:0
+}
+.button{
+  color:#fff;font-weight:bold;text-align:left;line-height:1.4;text-decoration:none;font-size:16px;display:inline-block;border-radius:8px;margin:0;padding:15px 24px;border:0 solid #ea4c89
+}
+.temphead{}
+.resetpass{
+  width:100%;
+}
 
 .featured-poll button{
     display: flex;

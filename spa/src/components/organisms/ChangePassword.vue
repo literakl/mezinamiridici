@@ -3,7 +3,6 @@
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(changePassword)">
         <h3>{{ $t('sign-in.change-password-heading') }}</h3>
-
         <div class="field-area">
           <TextInput
             v-model="email"

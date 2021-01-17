@@ -59,6 +59,9 @@ input[type="text"], input[type="password"], textarea, select {
     outline: none;
 }
 svg{ color: var(--text-color-light);}
+.text-danger{
+    font-size: 14px;
+}
 .gredient-gray{
     background: #fefefe;
   padding: 25px;

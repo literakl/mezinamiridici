@@ -313,7 +313,6 @@ export default {
   border-radius: 4px 4px 0 0;
 }
 .head-area{ padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center;}
-
 .field-area{
   margin-bottom: 10px;
 }
