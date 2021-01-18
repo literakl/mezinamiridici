@@ -51,5 +51,11 @@ export default {
 .pages-wrap{
   height: 95px;
 }
+@media (max-width: 1200px) {
+  .first-com-box{
+    flex-direction: column;
+  }
+
+}
 
 </style>

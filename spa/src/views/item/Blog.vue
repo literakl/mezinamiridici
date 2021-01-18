@@ -11,7 +11,9 @@
       </div>
       <h2>{{title}}</h2>
     </div>
-    <div class="gredient-gray p3" v-html="blogHtml"></div>
+    <div style="overflow-x:auto;">
+      <div class="gredient-gray p3" v-html="blogHtml"></div>
+    </div>
     <ShareLink :item="blog" />
     <Comments :itemId="blog._id" />
   </div>
@@ -123,7 +125,6 @@ export default {
 .gredient-gray h2, .gredient-gray h3{
   font-size: 22px;
 }
-
   table {
       border: 1px solid #DBDBE2;
       border-radius: 3px;
@@ -162,7 +163,7 @@ export default {
       border-left: none;
   }
     @media (min-width: 1920px) {
-    .gredient-gray table{ font-size: 18px!important;}
+    .gredient-gray table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
 
 }
 </style>

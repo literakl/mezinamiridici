@@ -296,8 +296,8 @@ blockquote {
     flex-direction: column;
   }
   .gredient-gray table{
-    overflow-x: scroll;
-    scroll-behavior: smooth;
+    /* overflow-x: scroll;
+    scroll-behavior: smooth; */
   }
   .comment-wrap{
     flex-direction: column;

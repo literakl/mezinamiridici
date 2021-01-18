@@ -65,10 +65,13 @@ svg{ color: var(--text-color-light);}
 .gredient-gray{
     background: #fefefe;
   padding: 25px;
-  /* box-shadow: 0px 10px 5px #888, 0px -10px 5px #888; */
   background-image: linear-gradient(180deg,rgba(255,255,255,0) 0%,rgb(251 251 251 / 85%) 100%);
 }
 .brand-pic{
+    margin: 0;
+    padding: 0;
+    display: block;
+    a{ padding: 0;}
     img{ width: 85%;}
 }
 .rightmenu{

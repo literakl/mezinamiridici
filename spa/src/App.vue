@@ -2,9 +2,9 @@
   <div>
     <header>
       <b-navbar toggleable="sm" type="dark" variant="dark">
-        <b-nav-link href="/" class="brand-pic">
+        <b-nav-item href="/" class="brand-pic">
           <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand">
-        </b-nav-link>
+        </b-nav-item>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="d-none d-sm-block">
