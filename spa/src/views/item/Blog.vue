@@ -118,7 +118,6 @@ export default {
     font-style: normal;
     font-weight: bold;
   }
-
 .gredient-gray table{
   font-size: 14px;
 }

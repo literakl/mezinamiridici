@@ -34,7 +34,6 @@
                 <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
                   <icon name="underline" />
                 </button>
-
                 <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
                   H2
                 </button>

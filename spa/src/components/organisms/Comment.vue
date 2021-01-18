@@ -172,7 +172,11 @@ export default {
 
 <style>
 
-.comment-wrap{ display: flex; width: 100%;flex-direction: column;}
+.comment-wrap{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
 .first-com-box{
    display: flex;
    width: 100%;
