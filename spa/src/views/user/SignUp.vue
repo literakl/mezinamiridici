@@ -86,7 +86,7 @@
         </fieldset>
       </b-form>
     </ValidationObserver>
-    <div v-if="success === true">
+    <div class="success-msg" v-if="success === true">
       {{ $t('sign-up.success-message') }}
     </div>
   </div>
@@ -312,7 +312,27 @@ export default {
   padding: 25px 20px;
   border-radius: 4px 4px 0 0;
 }
-.head-area{ padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center;}
+.head-area{
+  padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  /* padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center; */
+
+  }
+.head-area h2 {
+    font-size: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0px;
+}
 .field-area{
   margin-bottom: 10px;
 }
@@ -331,6 +351,9 @@ export default {
     color: #fff;
     font-weight: 400;
     font-size: 14px;
+}
+.success-msg{
+  font-size: 15px;
 }
 
 </style>

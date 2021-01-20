@@ -1,252 +1,330 @@
-        <div style="overflow-x:auto;">
-          <table cellspacing="0" cellpadding="0" border="0" width="100%" style="width:100.0%" class="table table-hover table-sm table-bordered">
-            <tr>
-              <td>
-                <table cellspacing="0" cellpadding="0" border="0">
-                  <tr>
-                    <td>
-                      <a href="{{WEB_URL}}">
-                        <img border="0" width="80" height="80" style="background:#eeecf9;border-radius:10px;padding:2pt 1pt 3pt;" src="cid:budlogo">
-                        </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p style="font: size 1.4rem;;line-height: 21px;font-family:Arial,Geneva,Tahoma,sans-serif,Poppin; padding: 14pt 12pt; margin: 0;margin-top:25px;text-align:left;">
-                        Přinášíme vám aktuální statistiky nehod za předchozí den a srovnání se stejným období letoška a loňska.
-                        Prosíme, jezděte opatrně, neriskujte a počítejte s chybami ostatních řidičů. Ať se vám tato statistika vyhýbá!
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table>
-                  <tr>
-                    <td>
-                      <span style="font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;font-weight:bold;color:white;background: #007bff;display:inline-block;padding:10pt 15pt;">{{#each day.regions}}</span>
-                      <span style="background:#28a745;font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;font-weight:bold;color:white;display:inline-block;padding:10pt 15pt;">{{/each}}</span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div style="overflow-x:auto;">
-          <table cellspacing="0" cellpadding="0" border="0" width="100%" style="width:100.0%" class="table table-hover table-sm table-bordered">
-            <tr>
-              <td>
-                <div align="center">
-                  <table border="1" cellpadding="0" cellspacing="0" width="650"  style="border-collapse: collapse;width:487.5pt;background:white;border:solid #ddd 6.0pt;" >
-                    <thead>
-                      <tr style="font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;font-size:1rem; font-weight:bold;">
-                        <th style="margin:0;color:#201f27; text-align: left; padding: 10pt 6pt;" scope="col">Kraj</th>
-                        <th scope="col">
-                          <img src="/images/icons/crash.png" width="48" height="48" title="Nehod">
-                        </th>
-                        <th scope="col" style=" padding: 10pt 6pt;">
-                          <img src="/images/icons/tombstone.png" width="48" height="48" title="Úmrtí">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/ambulance.png" width="48" height="48" title="Těžkých zranění">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/minor_injuries.png" width="48" height="48" title="Lehkých zranění">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/reason_speed.png" width="48" height="48" title="Rychlost">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/reason_give_way.png" width="48" height="48" title="Přednost v jízdě">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/reason_passing.png" width="48" height="48" title="Předjíždění">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/reason_drunk.png" width="48" height="48" title="Návykové látky">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/reason_mistake.png" width="48" height="48" title="Nesprávná jízda">
-                        </th>
-                        <th scope="col">
-                          <img src="/images/icons/reason_other.png" width="48" height="48" title="Jiný důvod">
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr style="font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;font-size:0.9rem;">
-                        <td style="padding: 10pt 6pt; text-align: left;">{{ lookup ../REGIONS this.region }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.count }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.impact.deaths }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.impact.severely }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.impact.slightly }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.reason.speed }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.reason.giveway }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.reason.passing }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.reason.drunk }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.reason.mistake }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ this.reason.other }}</td>
-                      </tr>
-                    <tr style="font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;font-size:0.9rem;">
-                        <td style="padding: 0pt 6pt; text-align: left;">Celkem</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.count }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.impact.deaths }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.impact.severely }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.impact.slightly }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.reason.speed }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.reason.giveway }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.reason.passing }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.reason.drunk }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.reason.mistake }}</td>
-                        <td style="padding: 10pt 6pt; text-align: center;">{{ day.total.reason.other }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <h2 style="font-size: 1.4rem;;line-height: 21px;font-family:Arial,Geneva,Tahoma,sans-serif,Poppin; padding: 10pt 12pt; margin: 0;margin-top:25px;background: #007bff; color: white;">Srovnání s loňským rokem</h2>
-        <div style="overflow-x:auto;">
-        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="width:100.0%" class="table table-hover table-sm table-bordered">
-          <tr>
-            <td>
-              <div align="center">
-              <table border="1" cellspacing="0" cellpadding="0" width="650" style="font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;border-collapse: collapse;width:487.5pt;background:white;border:solid #ddd 6.0pt"  class="table table-hover table-sm table-bordered text-center" >
-                <thead>
-                  <tr style="font-size:1rem; font-weight:bold;text-align:center">
-                    <th>&nbsp;</th>
-                    <th style="margin:0;color:#201f27; text-align: center; padding: 10pt 6pt;" colspan="2" scope="col">
-                      <img src="/images/icons/crash.png" width="48" height="48" alt="Počet nehod">
-                    </th>
-                    <th colspan="2" scope="col">
-                      <img src="/images/icons/tombstone.png" width="48" height="48" alt="Počet úmrtí">
-                    </th>
-                    <th colspan="2" scope="col">
-                      <img src="/images/icons/ambulance.png" width="48" height="48" alt="Počet těžkých zranění">
-                    </th>
-                    <th colspan="2" scope="col">
-                      <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="Počet lehkých zranění">
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>&nbsp;</th>
-                    <th style="margin:0;color:#201f27; text-align: center; padding: 8pt 6pt;" scope="col">{{ lastYearValue }}</th>
-                    <th scope="col">{{ thisYearValue }}</th>
-                    <th scope="col">{{ lastYearValue }}</th>
-                    <th scope="col">{{ thisYearValue }}</th>
-                    <th scope="col">{{ lastYearValue }}</th>
-                    <th scope="col">{{ thisYearValue }}</th>
-                    <th scope="col">{{ lastYearValue }}</th>
-                    <th scope="col">{{ thisYearValue }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Tento den</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.day.count }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.day.count }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.day.impact.deaths }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.day.impact.deaths }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.day.impact.severely }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.day.impact.severely }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.day.impact.slightly }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.day.impact.slightly }}</td>
-                  </tr>
-                  <tr>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Tento měsíc</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.month.count }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.month.count }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.month.impact.deaths }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.month.impact.deaths }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.month.impact.severely }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.month.impact.severely }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.month.impact.slightly }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.month.impact.slightly }}</td>
-                  </tr>
-                  <tr>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Tento rok</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.year.count }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.year.count }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.year.impact.deaths }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.year.impact.deaths }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.year.impact.severely }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.year.impact.severely }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ lastYear.year.impact.slightly }}</td>
-                    <td style="margin:0;color:#201f27; text-align: center; padding: 4pt 6pt;">{{ thisYear.year.impact.slightly }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
-            </td>
-          </tr>
-        </table>
+<style>
 
-        </div>
-        <h3 style="font-size: 1.4rem;;line-height: 21px;font-family:Arial,Geneva,Tahoma,sans-serif,Poppin; padding: 10pt 12pt; margin: 0;margin-top:25px;background: #007bff; color: white;">Legenda</h3>
-        <div style="overflow-x:auto;">
-          <table cellspacing="0" cellpadding="0" border="0"  width="100%" style="width:100%; margin-left:auto; margin-right: auto;" class="table table-hover table-sm table-bordered">
+  .stats-result{
+    margin: 0;
+    border-top: 3px solid #ddd;
+    border-left: 3px solid #ddd;
+    border-right: 3px solid #ddd;
+    border-bottom: 3px solid #ddd;
+
+    overflow-x: auto; background-color: #fff; padding: 0px;
+  }
+  .stats-wrap h2
+{
+    font-size: 1.2rem;
+    line-height: 21px;
+    padding: 7pt 12pt;
+    margin: 0;
+    margin-top: 25px;
+    background: #e6eaef;
+    color: #656b6f;
+    border-radius: 4px 4px 0 0;
+}
+.stats-result table tr td{ vertical-align: middle;}
+.stats-result table tr th{ vertical-align: middle;}
+</style>
+
+<div class="stats-wrap">
+  <p>
+    Přinášíme vám aktuální statistiky nehod za předchozí den a srovnání se stejným období letoška a loňska.
+    Prosíme, jezděte opatrně, neriskujte a počítejte s chybami ostatních řidičů. Ať se vám tato statistika vyhýbá!
+  </p>
+  <h2>Current statistics</h2>
+  <div style="overflow-x:auto;" class="stats-result table-responsive">
+    <table class="table table-hover table-sm table-bordered text-center">
+
+      <thead>
+        <tr>
+          <th scope="col">Kraj</th>
+          <th scope="col">
+            <img src="/images/icons/crash.png" width="48" height="48" title="Nehod">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/tombstone.png" width="48" height="48" title="Úmrtí">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/ambulance.png" width="48" height="48" title="Těžkých zranění">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/minor_injuries.png" width="48" height="48" title="Lehkých zranění">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/reason_speed.png" width="48" height="48" title="Rychlost">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/reason_give_way.png" width="48" height="48" title="Přednost v jízdě">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/reason_passing.png" width="48" height="48" title="Předjíždění">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/reason_drunk.png" width="48" height="48" title="Návykové látky">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/reason_mistake.png" width="48" height="48" title="Nesprávná jízda">
+          </th>
+          <th scope="col">
+            <img src="/images/icons/reason_other.png" width="48" height="48" title="Jiný důvod">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each day.regions}}
+        <tr>
+          <td>{{ lookup ../REGIONS this.region }}</td>
+          <td>{{ this.count }}</td>
+          <td>{{ this.impact.deaths }}</td>
+          <td>{{ this.impact.severely }}</td>
+          <td>{{ this.impact.slightly }}</td>
+          <td>{{ this.reason.speed }}</td>
+          <td>{{ this.reason.giveway }}</td>
+          <td>{{ this.reason.passing }}</td>
+          <td>{{ this.reason.drunk }}</td>
+          <td>{{ this.reason.mistake }}</td>
+          <td>{{ this.reason.other }}</td>
+        </tr>
+      {{/each}}
+        <tr>
+          <td>Celkem</td>
+          <td>{{ day.total.count }}</td>
+          <td>{{ day.total.impact.deaths }}</td>
+          <td>{{ day.total.impact.severely }}</td>
+          <td>{{ day.total.impact.slightly }}</td>
+          <td>{{ day.total.reason.speed }}</td>
+          <td>{{ day.total.reason.giveway }}</td>
+          <td>{{ day.total.reason.passing }}</td>
+          <td>{{ day.total.reason.drunk }}</td>
+          <td>{{ day.total.reason.mistake }}</td>
+          <td>{{ day.total.reason.other }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+  <h2>Srovnání s loňským rokem</h2>
+  <div style="overflow-x:auto;" class="stats-result table-responsive">
+    <table class="table table-hover table-sm table-bordered text-center">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th colspan="2" scope="col">
+            <img src="/images/icons/crash.png" width="48" height="48" alt="Počet nehod">
+          </th>
+          <th colspan="2" scope="col">
+            <img src="/images/icons/tombstone.png" width="48" height="48" alt="Počet úmrtí">
+          </th>
+          <th colspan="2" scope="col">
+            <img src="/images/icons/ambulance.png" width="48" height="48" alt="Počet těžkých zranění">
+          </th>
+          <th colspan="2" scope="col">
+            <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="Počet lehkých zranění">
+          </th>
+        </tr>
+        <tr>
+          <th>&nbsp;</th>
+          <th scope="col">{{ lastYearValue }}</th>
+          <th scope="col">{{ thisYearValue }}</th>
+          <th scope="col">{{ lastYearValue }}</th>
+          <th scope="col">{{ thisYearValue }}</th>
+          <th scope="col">{{ lastYearValue }}</th>
+          <th scope="col">{{ thisYearValue }}</th>
+          <th scope="col">{{ lastYearValue }}</th>
+          <th scope="col">{{ thisYearValue }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tento den</td>
+          <td>{{ lastYear.day.count }}</td>
+          <td>{{ thisYear.day.count }}</td>
+          <td>{{ lastYear.day.impact.deaths }}</td>
+          <td>{{ thisYear.day.impact.deaths }}</td>
+          <td>{{ lastYear.day.impact.severely }}</td>
+          <td>{{ thisYear.day.impact.severely }}</td>
+          <td>{{ lastYear.day.impact.slightly }}</td>
+          <td>{{ thisYear.day.impact.slightly }}</td>
+        </tr>
+        <tr>
+          <td>Tento měsíc</td>
+          <td>{{ lastYear.month.count }}</td>
+          <td>{{ thisYear.month.count }}</td>
+          <td>{{ lastYear.month.impact.deaths }}</td>
+          <td>{{ thisYear.month.impact.deaths }}</td>
+          <td>{{ lastYear.month.impact.severely }}</td>
+          <td>{{ thisYear.month.impact.severely }}</td>
+          <td>{{ lastYear.month.impact.slightly }}</td>
+          <td>{{ thisYear.month.impact.slightly }}</td>
+        </tr>
+        <tr>
+          <td>Tento rok</td>
+          <td>{{ lastYear.year.count }}</td>
+          <td>{{ thisYear.year.count }}</td>
+          <td>{{ lastYear.year.impact.deaths }}</td>
+          <td>{{ thisYear.year.impact.deaths }}</td>
+          <td>{{ lastYear.year.impact.severely }}</td>
+          <td>{{ thisYear.year.impact.severely }}</td>
+          <td>{{ lastYear.year.impact.slightly }}</td>
+          <td>{{ thisYear.year.impact.slightly }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <style>
+    .lagend-details{
+      padding: 0;
+    margin: 0;
+    }
+    .lagend-details li div{
+      display: none;
+    }
+    .lagend-details li{
+      position: relative;
+      display: block;
+    }
+    .lagend-details li span{
+      padding: 5px 20px;
+    display: inline-block;
+    margin: 20px 0 0 0;
+    background: #e6eaef;
+    color: #656b6f;
+    font-weight: 500;
+    font-size: 1.1rem;
+    }
+    .lagend-details li span:hover, .lagend-details li span:active{
+      cursor: pointer;
+      background-color:#28a745;
+      color:#fff;
+      box-shadow: #c1c1c1 1px 1px 10px;
+    }
+    .lagend-details li:active div, .lagend-details li:hover div {
+      display: block;
+    position: absolute;
+    max-width: 500px;
+    width: 100%;
+    z-index: 1;
+    border: 3px solid #ddd!important;
+    }
+    .lagend-details li:hover span,  .lagend-details li span:active{
+      background-color:#28a745;
+      color: #fff;
+    }
+    .lagend-details li div.stats-result{
+     border: 0;
+    }
+    </style>
+    <ul class="lagend-details">
+      <li>
+        <span>Legenda</span>
+        <div style="overflow-x:auto;" class="stats-result table-responsive">
+          <table class="table table-hover table-sm table-bordered text-center">
             <tr>
               <td>
-                <div align="center">
-                  <table border="1" cellspacing="0" cellpadding="0" width="100%" style="width:100%;font-family:Arial,Geneva,Tahoma,sans-serif,Poppin;border-collapse: collapse;background:white;border:solid #ddd 6.0pt"  class="table table-hover table-sm table-bordered text-center" >
-                  <tr>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/crash.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Počet nehod</td>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/tombstone.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Počet úmrtí</td>
-                  </tr>
-                  <tr>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/ambulance.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Počet těžkých zranění</td>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Počet lehkých zranění</td>
-                  </tr>
-                  <tr>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/reason_speed.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Nepřiměřená rychlost</td>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Nedání přednosti v jízdě</td>
-                  </tr>
-                  <tr>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/reason_passing.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Nesprávné předjíždění</td>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Pod vlivem návykových látek</td>
-                  </tr>
-                  <tr>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Nesprávný způsob jízdy</td>
-                    <td align="center" style="padding: 10px 15px 10px 15px;text-align: center;">
-                      <img src="/images/icons/reason_other.png" width="48" height="48" alt="">
-                    </td>
-                    <td style="margin:0;color:#201f27; text-align: left; padding:4pt 10px 4px 10pt;">Jiná příčina</td>
-                  </tr>
-                </table>
-                </div>
+                <img src="/images/icons/crash.png" width="48" height="48" alt="">
               </td>
+              <td>Počet nehod</td>
+              <td>
+                <img src="/images/icons/tombstone.png" width="48" height="48" alt="">
+              </td>
+              <td>Počet úmrtí</td>
+            </tr>
+            <tr>
+              <td>
+                <img src="/images/icons/ambulance.png" width="48" height="48" alt="">
+              </td>
+              <td>Počet těžkých zranění</td>
+              <td>
+                <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="">
+              </td>
+              <td>Počet lehkých zranění</td>
+            </tr>
+            <tr>
+              <td>
+                <img src="/images/icons/reason_speed.png" width="48" height="48" alt="">
+              </td>
+              <td>Nepřiměřená rychlost</td>
+              <td>
+                <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="">
+              </td>
+              <td>Nedání přednosti v jízdě</td>
+            </tr>
+            <tr>
+              <td>
+                <img src="/images/icons/reason_passing.png" width="48" height="48" alt="">
+              </td>
+              <td>Nesprávné předjíždění</td>
+              <td>
+                <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="">
+              </td>
+              <td>Pod vlivem návykových látek</td>
+            </tr>
+            <tr>
+              <td>
+                <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="">
+              </td>
+              <td>Nesprávný způsob jízdy</td>
+              <td>
+                <img src="/images/icons/reason_other.png" width="48" height="48" alt="">
+              </td>
+              <td>Jiná příčina</td>
             </tr>
           </table>
         </div>
+      </li>
+    </ul>
+  <!-- <h2>Legenda</h2>
+  <div style="overflow-x:auto;" class="stats-result table-responsive">
+    <table class="table table-hover table-sm table-bordered text-center">
+      <tr>
+        <td>
+          <img src="/images/icons/crash.png" width="48" height="48" alt="">
+        </td>
+        <td>Počet nehod</td>
+        <td>
+          <img src="/images/icons/tombstone.png" width="48" height="48" alt="">
+        </td>
+        <td>Počet úmrtí</td>
+      </tr>
+      <tr>
+        <td>
+          <img src="/images/icons/ambulance.png" width="48" height="48" alt="">
+        </td>
+        <td>Počet těžkých zranění</td>
+        <td>
+          <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="">
+        </td>
+        <td>Počet lehkých zranění</td>
+      </tr>
+      <tr>
+        <td>
+          <img src="/images/icons/reason_speed.png" width="48" height="48" alt="">
+        </td>
+        <td>Nepřiměřená rychlost</td>
+        <td>
+          <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="">
+        </td>
+        <td>Nedání přednosti v jízdě</td>
+      </tr>
+      <tr>
+        <td>
+          <img src="/images/icons/reason_passing.png" width="48" height="48" alt="">
+        </td>
+        <td>Nesprávné předjíždění</td>
+        <td>
+          <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="">
+        </td>
+        <td>Pod vlivem návykových látek</td>
+      </tr>
+      <tr>
+        <td>
+          <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="">
+        </td>
+        <td>Nesprávný způsob jízdy</td>
+        <td>
+          <img src="/images/icons/reason_other.png" width="48" height="48" alt="">
+        </td>
+        <td>Jiná příčina</td>
+      </tr>
+    </table>
+  </div> -->
+</div>

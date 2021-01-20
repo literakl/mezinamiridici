@@ -11,9 +11,7 @@
       </div>
       <h2>{{title}}</h2>
     </div>
-    <div style="overflow-x:auto;">
       <div class="gredient-gray p3" v-html="blogHtml"></div>
-    </div>
     <ShareLink :item="blog" />
     <Comments :itemId="blog._id" />
   </div>
