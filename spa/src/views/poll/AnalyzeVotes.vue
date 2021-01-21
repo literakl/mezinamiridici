@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex-wrap pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
+  <div class="container analyze-vote pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
     <div class="row">
       <div class="col">
         <ContentLoading v-if="! item" type="poll"/>
@@ -22,13 +22,13 @@
       </div>
     </div>
     <div class="row" v-if="this.type === 'vlastni'">
-      <div class="col-sm-6">
-        <b-card :header="captions[0]" header-bg-variant="primary" header-text-variant="white">
+      <div class="col-sm-12 col-md-6 col-lg-6 campbox-one">
+        <b-card :header="captions[0]">
           <SeriesForm :group="forms[0]" id="1" />
         </b-card>
       </div>
-      <div class="col-sm-6">
-        <b-card :header="captions[1]" header-bg-variant="success" header-text-variant="white">
+      <div class="col-sm-12 col-md-6 col-lg-6 campbox-two">
+        <b-card :header="captions[1]">
           <SeriesForm :group="forms[1]" id="2" />
         </b-card>
       </div>
@@ -205,3 +205,33 @@ export default {
   },
 };
 </script>
+<style>
+.campbox-two .card-header
+{
+      font-size: 1.2rem;
+    font-weight: 500;
+
+    background: rgb(191 229 200 / 1)!important;
+    color: #656b6f!important;
+    border-radius: 4px 4px 0 0;
+    text-transform: uppercase;
+}
+.campbox-one .card-header{
+      background: rgb(179 216 255 / 1);
+       font-size: 1.2rem;
+    font-weight: 500;
+     color: #656b6f!important;
+    border-radius: 4px 4px 0 0;
+    text-transform: uppercase;
+
+}
+.campbox-two .card-body, .campbox-one .card-body{
+   padding: 1.2rem;
+}
+
+ @media (max-width: 420px) {
+  .campbox-two .card-body{
+    padding: 1rem 0.5rem;
+  }
+}
+</style>

@@ -1,8 +1,10 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="pt-3 mt-5 border w-75 centerbox">
     <b-row>
       <b-col>
-        <h1>{{ $t(('sign-up.verify-heading')) }}</h1>
+        <div class="head-area">
+          <h2>{{ $t(('sign-up.verify-heading')) }}</h2>
+        </div>
       </b-col>
     </b-row>
     <b-row>
@@ -51,3 +53,33 @@ export default {
   },
 };
 </script>
+<style scoped>
+.centerbox{
+  max-width:500px;
+  margin: 0 auto 20px;
+  box-shadow: var(--big-shadow);
+  padding: 25px 20px;
+  border-radius: 4px 4px 0 0;
+}
+.head-area{
+  padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  /* padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center; */
+
+  }
+.head-area h2 {
+    font-size: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0px;
+}
+</style>

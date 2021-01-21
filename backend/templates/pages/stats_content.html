@@ -174,13 +174,18 @@
     .lagend-details{
       padding: 0;
     margin: 0;
+    display: flex;
     }
     .lagend-details li div{
       display: none;
     }
     .lagend-details li{
       position: relative;
-      display: block;
+    display: flex;
+    max-width: 200px;
+    width: 300px;
+    /* display: flex; */
+    overflow-x: visible;
     }
     .lagend-details li span{
       padding: 5px 20px;
@@ -190,6 +195,9 @@
     color: #656b6f;
     font-weight: 500;
     font-size: 1.1rem;
+    max-width: 200px;
+    text-align: center;
+    width: 100%;
     }
     .lagend-details li span:hover, .lagend-details li span:active{
       cursor: pointer;
@@ -201,9 +209,12 @@
       display: block;
     position: absolute;
     max-width: 500px;
-    width: 100%;
+    width: 400px;
     z-index: 1;
     border: 3px solid #ddd!important;
+    right: -400px;
+    top: auto;
+    bottom: 0%;
     }
     .lagend-details li:hover span,  .lagend-details li span:active{
       background-color:#28a745;

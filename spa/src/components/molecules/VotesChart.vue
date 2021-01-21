@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inside">
     <bar-chart v-if="horizontal" :data="chartData" :colors="[colors]" suffix="%" height="100px"></bar-chart>
     <column-chart v-if="!horizontal" :data="chartData" :colors="[colors]" suffix="%" height="200px"></column-chart>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto">
+  <div class="pt-3 mt-5 border w-75 centerbox">
     <div class="write-post-wrap">
       <div class="text-area">
         <TextInput
@@ -131,8 +131,9 @@
       </div>
       <div class="image-area">
         <SelectPicture :currentPath="picture" @changePath="changePath"/>
-      </div>
       <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
+
+      </div>
     </div>
 
 
@@ -328,14 +329,23 @@ export default {
 </script>
 
 <style>
-.text-area{ display: flex; width: 100%;flex-direction: column;
-    justify-content: center;
-    align-items: center; }
+.centerbox{
+  max-width:600px;
+  margin: 0 auto 20px;
+  box-shadow: var(--big-shadow);
+  padding: 25px 20px;
+  border-radius: 4px 4px 0 0;
+}
+
+.text-area .w-50{
+  width: 100%!important;
+}
 .text-area input{margin-bottom: 20px; width: 100%; display: flex; border: 0; border-bottom: 2px solid #ddd; font-size: 22px; border-radius: 0;}
 .text-area input:focus{ border-bottom: 2px solid #ced4da; }
   .ProseMirror {
     border: #dddddd solid 1px;
     padding: 10px;
+        min-height: 100px;
   }
   .editor{
     width:100%;
@@ -345,13 +355,23 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
   }
   .tags-area{
-    width: 60%;
+    width: 100%;
   }
   .image-area{
-    width: 30%;
+        width: 60%;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
   }
+.tags-area div {
+    border-radius: 0;
+}
+.tags-area div div {
+  height: 150px;
+}
   blockquote {
     display: block;
     margin-top: 1em;

@@ -192,6 +192,9 @@ export default {
   border: 1px solid #ddd;
   color: #AEB3B7 !important;
 }
+.prevbtn a.btn:active, .nextbtn a.btn:active{
+  background: transparent;
+}
 
  @media (min-width: 1920px) {
     p, a, button, li, span{ font-size: 20px}
@@ -231,7 +234,13 @@ export default {
 
 }
 @media (max-width: 600px) {
-
+ .nextbtn{
+   width: 40px;
+ }
+.prevbtn a, .nextbtn a{
+    height: 40px;
+    width: 40px;
+}
 
 }
 </style>
