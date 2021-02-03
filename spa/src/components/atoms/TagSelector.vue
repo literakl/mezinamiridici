@@ -70,6 +70,9 @@ export default {
 };
 </script>
 <style scoped>
+.centerbox{
+  width:auto!important;
+}
 .tagslist li span{
   font-weight: 300;
   font-size: 14px;

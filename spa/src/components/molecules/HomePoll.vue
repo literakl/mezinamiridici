@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3 forlogedin">
+  <div class="mb-3 notlogedin">
     <h4 class="text-center poolheading">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
@@ -118,14 +118,18 @@ export default {
 </script>
 
 <style scoped>
-.temp-wrapper{ }
 .temp-wrapper p{
-  color:#0d0c22;font-weight:400;line-height:1.4;font-size:16px!important;word-break:normal;margin:0 0 10px;padding:0
+  color:var(--text-color);
+  font-weight:400;
+  line-height:1.4;
+  font-size:16px!important;
+  word-break:normal;
+  margin:0 0 10px;
+  padding:0
 }
 .button{
   color:#fff;font-weight:bold;text-align:left;line-height:1.4;text-decoration:none;font-size:16px;display:inline-block;border-radius:8px;margin:0;padding:15px 24px;border:0 solid #ea4c89
 }
-.temphead{}
 .resetpass{
   width:100%;
 }
@@ -182,7 +186,7 @@ export default {
 }
 .item-div {
   border-width: 10px;
-  border-color: #f1f1f1;
+  border-color: #dee0e1;
   border-style: solid;
   /* box-shadow: #c1c1c1 1px 1px 10px; */
 }
@@ -221,15 +225,17 @@ export default {
   color: #777A7C;
   text-decoration: none;
 }
-.forlogedin .poolheading a{
+.notlogedin .poolheading a{
   font-size: 32px;
   text-decoration: none;
-  color: var(--dark-color);
-  margin: 10px 0 50px;
+  margin: 10px 0 40px;
     display: block;
+    color: var(--text-color);
+    text-align: center;
 }
-.poolheading a:hover{ color: #007bff;}
-
+.notlogedin .poolheading a:hover{
+  color: var(--link-blue);
+}
 @media (min-width: 1920px) {
 
   .featured-poll button{
@@ -279,12 +285,13 @@ export default {
     justify-content: space-around!important;
     padding: 0 20px;
   }
-  .forlogedin .poolheading a {
-      font-size: 24px;
+  .notlogedin .poolheading a {
+      font-size: 22px;
       margin: 0px 0 15px;
+      padding:0 15px;
   }
   .featured-poll button{
-    width: 115px;
+    width: 155px;
    margin: 35px 5px 30px!important;
     font-size: 14px;
   }
@@ -315,12 +322,12 @@ export default {
   }
 }
 
-@media (max-width: 667px) {
+/* @media (max-width: 667px) {
   .featured-poll button{
     width: 105px;
     font-size: 13px;
   }
-}
+} */
 
 @media (max-width: 600px) {
   .featured-poll {

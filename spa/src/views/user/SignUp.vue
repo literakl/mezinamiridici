@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 mt-5 border w-75 centerbox">
+  <div class="mt-5 border centerbox">
     <div class="head-area">
       <h2>{{ $t('sign-up.heading') }}</h2>
     </div>
@@ -306,10 +306,10 @@ export default {
 </script>
 <style scoped>
 .centerbox{
-  max-width:500px;
+  max-width:700px;
   margin: 0 auto 20px;
   box-shadow: var(--big-shadow);
-  padding: 25px 20px;
+      padding: 25px 35px;
   border-radius: 4px 4px 0 0;
 }
 .head-area{

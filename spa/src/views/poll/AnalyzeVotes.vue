@@ -12,8 +12,8 @@
           </div>
 
           <PredefinedComparisons :slug="slug"></PredefinedComparisons>
-          <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1">
-            <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="pt-2">
+          <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1" class="showcase-wrap">
+            <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="shocase">
               <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
               <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
             </b-form-radio-group>
@@ -228,7 +228,10 @@ export default {
 .campbox-two .card-body, .campbox-one .card-body{
    padding: 1.2rem;
 }
-
+.showcase-wrap{
+      padding: 15px 5px 15px 15px;
+}
+.showcase-wrap legend{ font-weight: 500;}
  @media (max-width: 420px) {
   .campbox-two .card-body{
     padding: 1rem 0.5rem;

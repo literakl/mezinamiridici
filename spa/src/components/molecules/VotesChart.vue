@@ -45,3 +45,8 @@ export default {
   },
 };
 </script>
+<style>
+.inside{
+  max-width: 100%; padding: 0 35px; margin: 0 auto;
+}
+</style>

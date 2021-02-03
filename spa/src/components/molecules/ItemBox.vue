@@ -11,8 +11,9 @@
       </router-link>
     </h4>
     <div class="py-2 px-2 item-footer">
- <span class="forpolls"></span>
-    <span class="dailystats"></span>
+      <span class="no-prob"></span>
+      <span class="trival-trouble"></span>
+      <span class="donot-like"></span>
       <span class="data"><Date :date="item.info.date" format="dynamicDate" /></span>
       <div class="bottom-links">
       <template v-if="showAuthor"><span><BIconPersonCircle></BIconPersonCircle> <ProfileLink :profile="item.info.author"/></span></template>
@@ -94,11 +95,11 @@ export default {
   transition: 0.2s ease;
 }
 .item-hover:hover {
-  transform: translateX(-2px) translateY(-2px) scale(1.03);
+  /* transform: translateX(-2px) translateY(-2px) scale(1.03); */
 }
-.item-hover:active {
+/* .item-hover:active {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
-}
+} */
 .item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;width: 100%;}
 .item-div h4 { text-align: center; height: 66px; overflow: hidden;}
 .item-div:hover h4 {
@@ -123,25 +124,33 @@ export default {
   text-overflow: ellipsis;
 }
 .item-div h4 a:hover { text-decoration: none;}
-.forpolls{
+.no-prob{
   position: absolute;
   height: 9px;
-  background: rgb(191 229 200 / 1);
+  background: rgb(191 229 200);
   top: -90px;
   width: 6%;
   left: 5px;
   border-radius: 0 6px 6px 0;
 }
-.dailystats{
+.trival-trouble{
   position: absolute;
   height: 9px;
-  background: rgb(179 216 255 / 1);
-  top: -100px;
+  background: rgb(179 216 255);
+  top: -110px;
   width: 8.5%;
   left: 5px;
   border-radius: 0 6px 6px 0;
 }
-
+.donot-like{
+  position: absolute;
+  height: 9px;
+  background: rgb(255 237 181/1);
+  top: -100px;
+  width: 10.5%;
+  left: 5px;
+  border-radius: 0 6px 6px 0;
+}
 
 .item-footer span.data {
   position: absolute;
@@ -190,5 +199,8 @@ export default {
 }
 @media (max-width: 767px) {
   .forlogedin .poolheading a { font-size: 24px;}
+  .item-div h4 {
+    height: 118px;
+}
 }
 </style>

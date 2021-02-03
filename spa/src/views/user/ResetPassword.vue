@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 mt-5 border centerbox">
+  <div class="mt-5 border centerbox">
     <b-row>
       <b-col>
         <div class="head-area">
@@ -108,7 +108,7 @@ export default {
 </script>
 <style scoped>
 .centerbox{
-  max-width:500px;
+  max-width:700px;
   margin: 0 auto 20px;
   box-shadow: var(--big-shadow);
   padding: 25px 20px;

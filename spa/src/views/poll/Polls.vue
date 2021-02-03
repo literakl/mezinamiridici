@@ -27,7 +27,7 @@
                {{item.comments.count}}
             </router-link></span>
             <span v-if="! item.info.published">
-               &bull; {{ $t('generic.not-published') }}
+               <BIconXOctagon scale='1'></BIconXOctagon> {{ $t('generic.not-published') }}
             </span>
           </div>
           <b-button-group>
@@ -47,7 +47,7 @@
 <script>
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
-import { BButtonGroup, BButton, BCard, BCardBody, BCardFooter, BIconPlusCircle, BIconCalendarRange, BIconPersonCircle, BIconStarFill, BIconChatTextFill, BIconPencilSquare, BIconTrash } from 'bootstrap-vue';
+import { BButtonGroup, BButton, BCard, BCardBody, BCardFooter, BIconPlusCircle, BIconCalendarRange, BIconPersonCircle, BIconStarFill, BIconChatTextFill, BIconPencilSquare, BIconTrash, BIconXOctagon } from 'bootstrap-vue';
 
 export default {
   components: {
@@ -65,6 +65,7 @@ export default {
     BIconChatTextFill,
     BIconPencilSquare,
     BIconTrash,
+    BIconXOctagon,
   },
   data() {
     return {

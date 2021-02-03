@@ -1,19 +1,24 @@
 <template>
-  <div v-if="blog" class="pt-3 w-75 m-auto pb-5">
+  <div v-if="blog" class="blog-posts pt-3 m-auto pb-5">
     <div class="post-details-wrap">
-
-     <div class="post-details">
-        <span><BIconCalendarRange scale="1"></BIconCalendarRange><Date :date="blog.info.date" format="dynamicDate" /></span>
-        <span><BIconPersonCircle scale="1"></BIconPersonCircle><ProfileLink :profile="blog.info.author"/></span>
-        <span><BIconChatTextFill scale="1"></BIconChatTextFill><a href="#comments">
-          {{ $t('comment.comments') }}: {{blog.comments.count}}
-        </a></span>
+      <div class="container">
+        <div class="row">
+          <div class="hero-details">
+            <h1>{{title}}</h1>
+          </div>
+          <div class="post-details">
+            <div class="post-author"><BIconPersonCircle scale="1"></BIconPersonCircle><ProfileLink :profile="blog.info.author"/></div>
+            <div class="post-time"><BIconCalendarRange scale="1"></BIconCalendarRange><Date :date="blog.info.date" format="dynamicDate" /></div>
+            <div class="post-comments"><BIconChatTextFill scale="1"></BIconChatTextFill><a href="#comments">
+               {{blog.comments.count}}
+            </a></div>
+          </div>
+          <div class="post-content p3" v-html="blogHtml"></div>
+          <ShareLink :item="blog" />
+          <Comments :itemId="blog._id" />
+        </div>
       </div>
-      <h2>{{title}}</h2>
     </div>
-      <div class="gredient-gray p3" v-html="blogHtml"></div>
-    <ShareLink :item="blog" />
-    <Comments :itemId="blog._id" />
   </div>
 </template>
 
@@ -67,41 +72,58 @@ export default {
 };
 </script>
 <style>
+.blog-posts{
+  max-width: 71%;
+  margin: 0 auto;
+}
 .post-details-wrap{
   display: flex;
   width: 100%;
   flex-direction: column;
   flex-flow: column-reverse;
-  -moz-box-shadow: inset 0 0 10px #fffcf3;
+  /* -moz-box-shadow: inset 0 0 10px #fffcf3;
   -webkit-box-shadow: inset 0 0 10px #fffcf3;
-  box-shadow: inset 0px 10px 10px #fffcf3;
+  box-shadow: inset 0px 10px 10px #fffcf3; */
 }
-.post-details-wrap .post-details{
- width: 100%;
+.post-details-wrap h1{
+  font-size: 21px;
+    text-decoration: none;
+    color: var(--dark-color);
+    margin: 0px 0 10px;
+}
+.post-details-wrap .post-details, .post-details-wrap .hero-details{
+   width: 94%;
+   margin: 0 auto;
     display: flex;
     /* flex-direction: column; */
     font-size: 14px;
-    border-top: 1px solid #f3f3f3;
-    border-bottom: 1px solid #f3f3f3;
     border-radius: 0px;
 }
-.post-details span{
-  padding: 5px 8px;
+.post-details-wrap .post-content{
+   width: 94%;
+   margin: 0 auto;
 }
-.post-details svg{
-  font-size: 16px;
+.post-details{
+  border-bottom: 1px solid #dee0e1;
+  margin-bottom: 20px!important;
+      padding: 0px 0px 5px;
 }
 .post-details span:last-child{
   border: 0;
 }
-.post-details span span{ border: 0; padding: 0;}
-.post-details span svg{
-    color: var(--text-color-light);
-    margin-right: 10px;
+
+.post-time, .post-author, .post-comments
+{
+  display: flex;
+      align-items: center;
+    font-weight: 400;
+     margin-right: 15px;
+     color: #777A7C;
 }
-  img {
-    /* width:100%; */
-  }
+.post-details div svg{
+    margin-right: 8px;
+}
+
   blockquote {
     display: block;
     margin-top: 1em;
@@ -116,29 +138,30 @@ export default {
     font-style: normal;
     font-weight: bold;
   }
-.gredient-gray table{
+.post-content table{
   font-size: 14px;
 }
-.gredient-gray h2, .gredient-gray h3{
-  font-size: 22px;
+.post-content h2, .post-content h3{
+  font-size: 18px;
+  color: var(--text-color);
 }
-  table {
+ .post-content table {
       border: 1px solid #DBDBE2;
       border-radius: 3px;
       position: relative;
-      height: 100%;
+      /* height: 100%; */
       width: 100%;
       box-sizing: border-box;
       font-size: 14px;
   }
-  td {
+  .post-content table tr th {vertical-align: middle;}
+.post-content table tr td {
       border: 1px solid #DBDBE2;
-      padding: 0;
-      vertical-align: top;
+      vertical-align: middle;
   }
   td div{
       padding: 10px;
-      height: 100%;
+      /* height: 100%; */
   }
   .tc-table__inp {
       outline: none;
@@ -160,7 +183,7 @@ export default {
       border-left: none;
   }
     @media (min-width: 1920px) {
-    .gredient-gray table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
+    .post-content table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
 
 }
 </style>

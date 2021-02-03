@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 mt-5 pb-5 border centerbox">
+  <div class="mt-5 border centerbox">
     <div class="head-area">
     <h2>{{ $t('sign-in.forgot-password-heading') }}</h2>
     </div>
@@ -22,7 +22,7 @@
           </div>
 
               <Button
-                class="mt-1"
+                class="reset-btn"
                 :waiting="sending"
                 :value="$t('sign-in.reset-password-button')"
                 @clicked="forgotPassword"/>
@@ -89,10 +89,10 @@ export default {
 </script>
 <style scoped>
 .centerbox{
-  max-width:500px;
+  max-width:700px;
   margin: 0 auto 20px;
   box-shadow: var(--big-shadow);
-  padding: 25px 20px;
+  padding: 25px 35px;
   border-radius: 4px 4px 0 0;
 }
 
@@ -120,4 +120,13 @@ export default {
 .field-area .w-50 input{ width: 100%; font-size: 14px;}
 
 .align-center{ display: flex; height: 100%; width: 100%; align-items: center; justify-content: center;}
+.reset-btn{
+  display: flex;
+  max-width: 220px;
+  margin: 0 auto;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 </style>

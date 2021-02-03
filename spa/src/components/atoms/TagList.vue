@@ -23,11 +23,25 @@ export default {
     justify-content: flex-start;
 }
 .post-tags a{
-  font-weight: 400;
+  font-weight:300;
     padding: 3px 10px;
-    background: #f9f9f9;
+    background: #f7f7f8;
     margin: 0 2px 0 0;
+        font-size: 13px;
+        color:#636466;
+        border-radius:3px;
 }
+.post-tags a:hover{
+  color:var(--link-color)
+}
+
+ @media (min-width: 1920px) {
+   .post-tags a{ font-size:16px}
+   .item-footer svg {
+
+    font-size: 22px;
+}
+ }
 @media (max-width: 600px) {
 .post-tags{
       display: flex;

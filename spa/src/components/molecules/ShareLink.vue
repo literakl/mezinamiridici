@@ -1,6 +1,5 @@
 <template>
   <div class="share-box">
-    {{ $t('generic.share-link') }}:
     <b-button @click="shareLink('twitter')" class="p-0" v-html="twitter" variant="transparent" />
     <b-button @click="shareLink('facebook')" class="p-0" v-html="facebook" variant="transparent" />
     <b-button @click="shareLink('messenger')" class="p-0" v-html="messenger" variant="transparent" />
@@ -48,18 +47,16 @@ export default {
 <style scoped>
 .share-box{
   position: fixed;
-  right: 0;
+  left: 0;
   width: 55px;
   top: 30%;
   text-align: center;
   background: #fff;
-
-
   border: 1px solid #ddd;
   padding: 10px;
   flex-direction: column;
   justify-content: center;
-  border-radius: 10px 0 0 10px;
+  border-radius: 0 10px 10px 0px;
   font-size: 12px;
   box-shadow: none;
   background: white;
@@ -68,16 +65,23 @@ export default {
 .share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; }
 .share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
 @media (min-width: 1920px) {
-.share-box{ position: static;
- display: flex;
-     align-items: center;
+.share-box{
+    display: flex;
+    align-items: center;
     justify-content: space-between;
- flex-direction: row;
-  width: 250px;
-   box-shadow: var(--big-shadow);
-   border-radius:10px 10px 0 0;
-       font-size: 18px;
-       margin: 0 0 0 auto;
+    width: 80px;
+    box-shadow: var(--big-shadow);
+    font-size: 18px;
+    margin: 0 0 0 auto;
+  }
+}
+@media (max-width: 992px) {
+.share-box{
+  right: 0;
+  left: unset;
+}
+.share-box{
+  border-radius: 10px 0 0 10px;
 }
 }
 </style>

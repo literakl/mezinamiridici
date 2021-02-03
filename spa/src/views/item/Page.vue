@@ -49,7 +49,7 @@ export default {
 </script>
 <style scoped>
 .pages-wrap{
-  height: 95px;
+
 }
 @media (max-width: 1200px) {
   .first-com-box{

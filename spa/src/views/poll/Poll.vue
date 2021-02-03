@@ -1,5 +1,5 @@
 <template>
-  <div class="single-post-wrap pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
+  <div class="single-post-wrap pt-3 ml-auto mr-auto mt-auto mb-5">
     <div class="poll-content"><ContentLoading v-if="! poll" type="poll"/></div>
     <div class="completed-poll-wrap"><CompletePoll v-if="poll"/></div>
     <div class="share-links-wrap"><ShareLink :item="poll"/></div>
@@ -50,3 +50,8 @@ export default {
   },
 };
 </script>
+<style>
+.single-post-wrap{
+  max-width: 71%;
+}
+</style>

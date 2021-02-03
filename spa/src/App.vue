@@ -5,8 +5,8 @@
         <b-nav-item href="/" class="brand-pic">
           <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand">
         </b-nav-item>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-collapse id="nav-collapse" is-nav>
+        <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
+        <!-- <b-collapse id="nav-collapse" is-nav> -->
           <b-navbar-nav class="d-none d-sm-block">
             <div class="d-inline-flex flex-column title-tag">
               <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
@@ -42,7 +42,7 @@
               <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
-        </b-collapse>
+        <!-- </b-collapse> -->
       </b-navbar>
     </header>
     <main>
@@ -54,7 +54,7 @@
 <script>
 import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare,
   BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem,
-  BNavbarToggle, BCollapse, BNavItem } from 'bootstrap-vue';
+  BNavItem } from 'bootstrap-vue';
 
 export default {
   name: 'App',
@@ -66,8 +66,7 @@ export default {
     BNavbarNav,
     BNavItemDropdown,
     BDropdownItem,
-    BNavbarToggle,
-    BCollapse,
+    // BNavbarToggle,
     BNavItem,
   },
   computed: {

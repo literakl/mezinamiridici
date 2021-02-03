@@ -3,15 +3,17 @@ $gray-900: #212529 !default;
 $primary: $gray-900;
 :root,
 html[theme="default"] {
-  --text-color: #222222;
+  --text-color: #343A40;
   --text-color-light: #949494;
+  --link-color:#777A7C;
+  --link-blue: #2e69ff;
   --body-color: #f2f2f2;
   --color-white: #fff;
   --color-green: #28a745;
   --color-darkgreen: #077247;
   --color-lightgreen: rgba(129, 215, 66, 0.9);
   --bg-light: #ecf7fb;
-  --dark-color: #343A40!important;
+  --dark-color: #131518!important;
   --red-color: rgb(158, 5, 5);
   --pinkbg-light: rgba(242, 0, 145, .2);
   --pinkbg-sharp: rgb(242, 0, 145);
@@ -36,10 +38,11 @@ p, label{
     font-size: 14px;
 }
 label{ font-weight: 300;}
-a:hover{
-    text-decoration: none;
+a{
+    color: var(--link-color);
 }
-
+a:hover{ color: var(--link-blue); text-decoration: none;}
+button:active{ background: transparent!important; color: var(--link-color)!important;}
 textarea, input:focus, button:focus {
     outline: none;
 
@@ -58,7 +61,10 @@ input[type="text"], input[type="password"], textarea, select {
 *:focus {
     outline: none;
 }
-svg{ color: var(--text-color-light);}
+svg{
+    // color: var(--text-color-light);
+    color: #aeb3b7;
+}
 .text-danger{
     font-size: 14px;
 }
@@ -71,18 +77,18 @@ svg{ color: var(--text-color-light);}
     margin: 0;
     padding: 0;
     display: block;
-    a{ padding: 0;}
-    img{ width: 85%;}
+    a{ padding: 0; width: 60px;}
+    img{ width: 100%;}
 }
 .rightmenu{
     li{
         a{
             display: flex;
             align-items: center;
-            font-size: 14px;
+            font-size: 16px;
 
             svg{
-                font-size: 12px!important;
+                font-size: 10px!important;
                 margin-right: 10px;
                 color: #ffc107;
             }
@@ -91,13 +97,13 @@ svg{ color: var(--text-color-light);}
         } a:hover, a:hover svg{
             color: var(--color-white)!important;
         }
-        ul.dropdown-menu{
+        ul.dropdown-menu{ border-radius: 0;
             li {
-                a{
-                    :hover{  background-color: #f8f9fa;}
+                a{ padding:5px 15px;background-color: transparent!important; font-size: 14px;;
+                    :hover{  background-color: #f8f9fa!important;}
                     :active{ color: #fff;}
                 }
-                :hover { color: #333!important;background-color: #f8f9fa;}
+                :hover { color: var(--text-color-light)!important;background-color: #f8f9fa;}
                 :focus
                 :active {
                     color: #333!important;
@@ -107,17 +113,16 @@ svg{ color: var(--text-color-light);}
         }
     }
 }
-.nav-brand {
-    img.brand{
-        width: 75%;
-    }
-}
+
 .title-tag{
+    margin: 0 0 0 10px;
     h2{
-        font-size: 29px;
+        font-size: 23px;
+        margin:0;
+        text-transform: uppercase;
     }
     span{
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 
@@ -204,4 +209,25 @@ svg{ font-size: 20px;}
 
 }
 }
+@media (max-width: 575px) {
 
+.rightmenu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    position: relative;
+}
+.navbar-nav .dropdown-menu {
+    position: absolute;
+    left: 0;
+    float: none;
+}
+.rightmenu li:last-child .dropdown-menu {
+    right: 0;
+    left: unset;
+}
+.rightmenu li a {
+    padding: 0 6px!important;
+}
+
+}

@@ -119,7 +119,7 @@ export default {
 </script>
 <style scoped>
 .required-star{
-  color: red;
+  color: var(--red-color);
 }
 
 </style>

@@ -94,21 +94,31 @@ export default {
   border-radius: 4px;
   background: white;
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-  width: 100%;
+   width: 94%;
+  margin:0 auto;
 }
 .comment-area h3{
-    font-size: 22px;
+    font-size: 18px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
     margin-bottom: 10px;
+    color: var(--text-color);
   }
+
+@media (max-width: 767px) {
+  .comment__child {
+    margin-left: 20px;
+}
+}
 
 @media (max-width: 450px) {
 
 
   .comment-area{
-    padding: 0;
+    padding: 10px;
+    width: 100%;
   }
+
    .comment-area h3{ padding:10px 15px;}
   }
 </style>

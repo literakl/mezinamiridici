@@ -39,12 +39,11 @@ export default {
 <style scoped>
 .comparison-box{
   display: flex;
-      padding: 15px 0;
+      padding: 15px 5px 15px 35px;
 }
 .comparison-list{
   display: flex;
     flex-wrap: wrap;
-  width: 90%;
   align-items: center;
   justify-content: flex-start;
 }
@@ -70,6 +69,7 @@ export default {
  border: 1px solid #f3f3f3;
     border-radius: 0px;
     padding: 4px 10px;
+    font-weight: 300;
 }
 .comparison-list ul li a:hover{ text-decoration: none;}
 .comparison-list ul li a.router-link-active{ background: #fff;
@@ -82,11 +82,14 @@ position: relative;
 .comparison-list ul li a.router-link-active:after{
   content: "";
   position: absolute;
-  width: 0px;
-  height: 0px;
-  border-left: 5px solid transparent;
+  /* width: 0px;
+  height: 0px; */
+  /* border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid  var(--text-color);
+  border-bottom: 5px solid  var(--link-blue); */
+  border-bottom: 2px solid  var(--link-blue);
+  bottom: -3px;
+
   top: -6px;
   margin: 0 auto;
   left: 0;
@@ -102,14 +105,17 @@ position: relative;
   justify-content: center;
 }
 .custombtn a{
-  background:#28a745;
+  background:var(--color-white);
   text-align: center;
-  color: white;
+  color: #636466;
   width:100%;
   padding: 4px 10px;
   font-weight: 400;
   font-size: 14px;
-  border-radius: .25rem;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    -webkit-box-shadow: #c1c1c1 1px 1px 10px;
+    box-shadow: #c1c1c1 1px 1px 10px;
 }
 .custombtn a:hover{
   text-decoration: none;
@@ -118,6 +124,7 @@ position: relative;
   background:  #007bff;
   color: var(--color-white);
   position: relative;
+  border-radius: 3px;
 }
 .custombtn a.router-link-active:after{
    content: "";

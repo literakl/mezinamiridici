@@ -1,9 +1,7 @@
 <template>
       <div class="normal-poll">
-        <div class="heading-area">
-          <h4 class="text-center pb-2">{{ $t('poll.your-opinion') }}</h4>
-        </div>
-        <div class="d-flex justify-content-center featured-poll">
+        <div class="featured-poll">
+          <h4 class="pb-2">{{ $t('poll.your-opinion') }}</h4>
         <b-button variant="success" v-on:click="voted('neutral')">
           <img src="/images/icons/happy.svg" class="" alt="">
           {{ $t('poll.choices.neutral') }}
@@ -47,24 +45,30 @@ export default {
 <style scoped>
 /* Logged in Poll css */
 .normal-poll{
+  display: flex;
     justify-content: center;
     width: 100%;
 }
 .heading-area{
   margin-top: -40px;
 }
-.heading-area h4{
-  font-size: 14px;
-  text-transform: uppercase;
-  border-bottom: 1px solid #ddd;
-  max-width: 170px;
-  margin: 0 auto 30px;
-  /* background: #f7f7f7; */
-  padding: 10px 0 0 0;
-  color: #afafaf;
+.featured-poll h4{
+     font-size: 18px;
+    text-transform: uppercase;
+    padding: 20px 0 0 28px;
+  color: var(--text-color);
 }
 .featured-poll{
-  display: flex;
+      display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.def-btns{
+      display: flex;
+          width: 78%;
+    margin: 0 auto;
+
 }
 .featured-poll button{
  display: flex;
@@ -80,7 +84,7 @@ export default {
     padding-right: 35px;
     padding: 0;
     position: relative;
-    height: 50px;
+    height: 40px;
     margin: 15px;
     font-size: 14px;
     font-weight: 400;
@@ -170,9 +174,12 @@ export default {
     top: 38px;
   }
   .featured-poll button {
-    width: 115px;
+        width: 105px;
     margin: 35px 5px 30px!important;
-    font-size: 14px;
+    font-size: 13px;
+  }
+  .featured-poll h4{
+    padding: 0;
   }
 }
 @media (max-width: 812px) {
@@ -182,7 +189,10 @@ export default {
   .featured-poll {
     flex-wrap: wrap;
     justify-content: space-around!important;
-    padding: 0 20px;
+    padding: 0 10px;
+  }
+  .featured-poll button {
+        width: 185px;
   }
   .poolheading a{
     font-size: 24px;
@@ -207,6 +217,11 @@ export default {
   .heading-area {
     margin-top: 0px;
   }
+  .featured-poll h4{
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    text-align: center;
+  }
 }
 @media (max-width: 600px) {
   .featured-poll {
@@ -223,6 +238,9 @@ export default {
 @media (max-width: 480px) {
   .item {
     width: 100%;
+  }
+  .featured-poll button {
+        width: 145px;
   }
 }
 </style>

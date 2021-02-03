@@ -54,7 +54,7 @@
                   <BIconEmojiSunglasses></BIconEmojiSunglasses>
                 </b-button>
 
-                <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" style="float:right;">
+                <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" class="closebtn">
                   <BIconXCircle></BIconXCircle>
                 </b-button>
               </div>
@@ -194,7 +194,7 @@ export default {
   .ProseMirror {
     border: #dddddd solid 1px;
     padding: 10px;
-    height: 150px;
+    min-height: 150px;
   }
   .ProseMirror img{
     width: 100%;
@@ -208,6 +208,9 @@ export default {
   .send-comment-btn button{
     max-width: 150px;
     width: 100%;
+  }
+  .closebtn{
+    float: right;
   }
 </style>
 
@@ -232,6 +235,10 @@ export default {
       background-color: rgba($color-black,.1);
     }
   }
+  .menubar button{
+    box-shadow: none;
+  }
+  .menubar button svg{ color:var(--text-color)}
   .actions {
     max-width: 30rem;
     margin: 0 auto 2rem auto;

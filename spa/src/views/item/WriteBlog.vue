@@ -330,7 +330,7 @@ export default {
 
 <style>
 .centerbox{
-  max-width:600px;
+  max-width:700px;
   margin: 0 auto 20px;
   box-shadow: var(--big-shadow);
   padding: 25px 20px;

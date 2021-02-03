@@ -138,5 +138,15 @@ export default {
   justify-content: flex-start;
   flex-direction: column;
   }
+  .item {
+  max-width: 767px;
+  width: 100%;
+  opacity: 1;
+  padding: 0 15px;
+}
+.item div{
+  height: auto;
+}
+
 }
 </style>
