@@ -1,6 +1,6 @@
 <template>
   <div class="pt-5 w-75 m-auto pb-5">
-    <div class="hero-head text-center">
+    <div class="hero-head">
       <h2>{{ $t('edit-profile.heading') }}</h2>
       <p>{{ $t('edit-profile.body') }}</p>
     </div>
@@ -184,6 +184,14 @@ export default {
 };
 </script>
 <style scoped>
+.hero-head{
+  max-width: 700px;
+      margin: 0 auto;
+}
+.hero-head h2{
+      font-size: 22px;
+
+}
 .green{
   background: var(--color-green);
   border: 0; color: #fff;

@@ -3,6 +3,14 @@
     <router-link :to="link">
       <b-img :src="item.info.picture"></b-img>
     </router-link>
+    <div class="overlap-actions">
+      <div class="result-bars">
+        <span class="no-prob"></span>
+        <span class="trival-trouble"></span>
+        <span class="donot-like"></span>
+      </div>
+      <span class="data"><Date :date="item.info.date" format="dynamicDate" /></span>
+    </div>
     <h4>
       <router-link :to="link">
         <!-- <div v-if="item.info.length<23">{{ item.info.caption }}</div>
@@ -11,10 +19,7 @@
       </router-link>
     </h4>
     <div class="py-2 px-2 item-footer">
-      <span class="no-prob"></span>
-      <span class="trival-trouble"></span>
-      <span class="donot-like"></span>
-      <span class="data"><Date :date="item.info.date" format="dynamicDate" /></span>
+
       <div class="bottom-links">
       <template v-if="showAuthor"><span><BIconPersonCircle></BIconPersonCircle> <ProfileLink :profile="item.info.author"/></span></template>
       <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{item.votes_count}}</template>
@@ -87,7 +92,7 @@ export default {
   border-color: #f1f1f1;
   border-style: solid;
   box-shadow: #c1c1c1 1px 1px 10px;
-  position: relative;
+
   border: 0;
 }
 .item-hover {
@@ -101,63 +106,85 @@ export default {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
 } */
 .item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;width: 100%;}
-.item-div h4 { text-align: center; height: 66px; overflow: hidden;}
+.item-div h4 { text-align: center; height: 63px; margin: 0; overflow: hidden;}
 .item-div:hover h4 {
-    height: 110px;
+    /* height: 110px; */
+}
+.item-footer{
+  position: relative;
 }
 .item-div:hover h4, .item-footer {
-  position: absolute;
+  /* position: absolute; */
     width: 100%;
     bottom: 0;
 }
 .item-div h4 a {
-  height: 75px;
+  /* height: 75px; */
   color: var(--dark-color);
   text-align: center;
-  font-size: 17px;
-  padding: 25px 10px 10px;
+  font-size: 16px;
+  padding: 22px 10px 0px;
   display: block;
   display: flex;
   align-items: flex-start;
-  justify-content: center;
-  text-align: justify;
+  justify-content: flex-start;
+  text-align: left;
   text-overflow: ellipsis;
 }
 .item-div h4 a:hover { text-decoration: none;}
+.overlap-actions{
+      position: relative;
+}
+
+.result-bars{
+      position: absolute;
+    display: block;
+    width: 100%;
+    top: -35px;
+    left:4px;
+}
+.result-bars span{ margin-top: 1px;}
+
 .no-prob{
-  position: absolute;
+  /* position: absolute;
+  top: 143px; */
   height: 9px;
   background: rgb(191 229 200);
-  top: -90px;
-  width: 6%;
+  width: 7%;
   left: 5px;
   border-radius: 0 6px 6px 0;
+  display: block;
 }
+
 .trival-trouble{
-  position: absolute;
+  /* position: absolute;
+  top: 123px; */
   height: 9px;
   background: rgb(179 216 255);
-  top: -110px;
-  width: 8.5%;
+  width: 4.5%;
   left: 5px;
   border-radius: 0 6px 6px 0;
+  display: block;
+
 }
 .donot-like{
-  position: absolute;
+  /* position: absolute;
+  top: 133px; */
   height: 9px;
   background: rgb(255 237 181/1);
-  top: -100px;
   width: 10.5%;
   left: 5px;
   border-radius: 0 6px 6px 0;
+  display: block;
+
 }
 
-.item-footer span.data {
-  position: absolute;
+span.data {
+      position: absolute;
+    right: 0px;
   font-size: 12px;
   font-weight: 400;
   right: 0;
-      top: -81px;
   background: #fff;
   padding: 0px 10px;
   color:#777A7C;
@@ -173,7 +200,7 @@ export default {
   font-size: 14px;
   border-top: 1px solid #ddd;
   align-items: center;
-  padding-top: 4px;
+  padding-top: 10px;
 }
 .bottom-links a {
   font-weight: 400;
@@ -196,11 +223,14 @@ export default {
   .bottom-links span svg{
     font-size: 20px;
   }
+  .item{
+    width: 400px;
+  }
 }
 @media (max-width: 767px) {
   .forlogedin .poolheading a { font-size: 24px;}
   .item-div h4 {
-    height: 118px;
+    height: auto;
 }
 }
 </style>

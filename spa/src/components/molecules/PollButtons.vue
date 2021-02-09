@@ -55,7 +55,7 @@ export default {
 .featured-poll h4{
      font-size: 18px;
     text-transform: uppercase;
-    padding: 20px 0 0 28px;
+    padding: 16px 0 0 0px;
   color: var(--text-color);
 }
 .featured-poll{
@@ -192,7 +192,7 @@ export default {
     padding: 0 10px;
   }
   .featured-poll button {
-        width: 185px;
+        width: 45%;
   }
   .poolheading a{
     font-size: 24px;

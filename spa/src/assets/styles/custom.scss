@@ -4,7 +4,7 @@ $primary: $gray-900;
 :root,
 html[theme="default"] {
   --text-color: #343A40;
-  --text-color-light: #949494;
+  --text-color-light: #656565;
   --link-color:#777A7C;
   --link-blue: #2e69ff;
   --body-color: #f2f2f2;
@@ -33,11 +33,39 @@ html[theme="default"] {
 body{
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
+    font-size: 0.875rem;
+    color: #333;
 }
-p, label{
+
+input:focus {
+    outline-offset: 0;
+  }
+input[type="date"]::-moz-clear {
+    display: none;
+  }
+p{
     font-size: 14px;
 }
-label{ font-weight: 300;}
+label, input[type="text"], input[type="date"], select{
+    font-size: 14px!important;
+    font-weight: 300!important;
+}
+input[type="date"]::-webkit-calendar-picker-indicator{
+    background: transparent;
+    bottom: 0;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+input{
+    font-size: 14px!important;
+    font-weight: 300!important;
+}
+label{ font-weight: 300; }
 a{
     color: var(--link-color);
 }
@@ -146,9 +174,10 @@ svg{
         a{
             border-radius: 0;
             color: var(--text-color-light);
+            font-size: 14px;
         }.active{
             color: #333;
-            font-weight: 500;
+            font-weight: 400;
             border-radius: 3px;
             border: 1px solid #ddd;
             box-shadow: #c1c1c1 1px 1px 10px;
@@ -159,8 +188,7 @@ svg{
     width: 100%;
 }
 .post-content > h1{
-    font-size: 2rem;
-    padding: 0 0 25px 0;
+    font-size: 21px;
   }
 
 .prof-header .b-avatar{  background-color: transparent; border: 1px solid #ddd; color: #AEB3B7!important;}
@@ -170,6 +198,9 @@ svg{ font-size: 20px;}
 .title-tag h2 a{ font-size: 36px!important;}
 .title-tag span {
     font-size: 18px;
+}
+.brand-pic a{
+    width: 90px;
 }
 .brand-pic img {
     width: 100%;
@@ -228,6 +259,9 @@ svg{ font-size: 20px;}
 }
 .rightmenu li a {
     padding: 0 6px!important;
+}
+.rightmenu li ul.dropdown-menu li a{
+    padding: 5px 15px!important;
 }
 
 }

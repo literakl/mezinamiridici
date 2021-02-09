@@ -1,4 +1,5 @@
 <template>
+
   <div class="comment-area" id="comments">
     <h3>{{ $t('comment.discussion') }}</h3>
 
@@ -20,6 +21,7 @@
 <!--    </div>-->
    <span class="load-comments"><Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" /></span>
   </div>
+
 </template>
 
 <script>
@@ -94,8 +96,8 @@ export default {
   border-radius: 4px;
   background: white;
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-   width: 94%;
   margin:0 auto;
+  width:100%
 }
 .comment-area h3{
     font-size: 18px;

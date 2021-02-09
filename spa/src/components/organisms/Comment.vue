@@ -340,6 +340,9 @@ blockquote {
     .item-footer svg{
     font-size: 14px;
 }
+.comments p {
+    line-height: 28px;
+}
  .comment-buttons button{ font-size: 20px;}
 }
 @media (max-width: 1200px) {

@@ -139,7 +139,7 @@ export default {
     flex-direction: row-reverse;
     align-items: center;
     position: relative;
-    max-width: 220px;
+    max-width: 210px;
     width: 100%;
     /* border-radius: 100px; */
     justify-content: center;
@@ -154,13 +154,13 @@ export default {
     font-weight: 400;
 }
 .featured-poll button.btn-success img{
-  width: 60px;
+  width: 50px;
   height: 40px;
   top: -38px;
 }
 .featured-poll button img{ position: absolute;
    top: -42px;
-    width: 48px;
+    width: 43px;
     height: 43px;
     /* left: auto; */
     /* right: auto; */
@@ -226,7 +226,7 @@ export default {
   text-decoration: none;
 }
 .notlogedin .poolheading a{
-  font-size: 32px;
+  font-size: 24px;
   text-decoration: none;
   margin: 10px 0 40px;
     display: block;
@@ -237,7 +237,9 @@ export default {
   color: var(--link-blue);
 }
 @media (min-width: 1920px) {
-
+.notlogedin .poolheading a {
+    font-size: 28px;
+}
   .featured-poll button{
         height: 60px;
         font-size: 20px;
@@ -291,9 +293,10 @@ export default {
       padding:0 15px;
   }
   .featured-poll button{
-    width: 155px;
-   margin: 35px 5px 30px!important;
+        max-width: 50%;
+    margin: 35px 5px 30px!important;
     font-size: 14px;
+    width: 40%;
   }
   .featured-poll button span{
       top: -30px;
@@ -344,6 +347,9 @@ export default {
 @media (max-width: 480px) {
   .item {
     width: 100%;
+  }
+  .featured-poll button{
+    width: 40%;
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto">
+  <div class="pt-3 centerbox m-auto">
     <div class="mb-2 d-flex flex-row-reverse action-btn">
       <b-button-group>
         <b-button v-if="role" :to="{ name: 'create-content'}" variant="btn btn-primary">
@@ -99,13 +99,17 @@ export default {
 };
 </script>
 <style scoped>
+.centerbox{
+  max-width:1235px;
+  margin: 0 auto;
+}
 .action-btn a{ font-size: 14px;}
 .action-btn a svg{ color: #fff;}
 .pagelist-box{
   box-shadow:  0 1px 6px rgba(var(--shadow-color), 0.35);
   margin-bottom: 10px;
 }
-.pagelist-box h3{ font-size: 22px;}
+.pagelist-box h3{ font-size: 18px;}
 .pagelist-box .card-footer{
   display: flex;
   justify-content: space-between;

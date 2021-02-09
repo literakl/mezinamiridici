@@ -2,13 +2,13 @@
   <div v-if="user.honors.rank !== 'expert'" class="mb-3">
     <ul v-if="user.honors.rank === 'novice'" class="ranks-list">
       <li>
-        <BIconAward font-scale="2"></BIconAward>
+        <BIconAward scale="1.5"></BIconAward>
         {{ $t('profile.honors.next-rank-label') }}: {{ $t('profile.rank.student') }}
       </li>
       <li>
           <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="pollVotesCount >= 1" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="pollVotesCount >= 1" scale="1" class="my-auto" />
           <b-progress v-if="pollVotesCount < 1" :value="pollVotesCount" max="1" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
@@ -36,7 +36,7 @@
     </ul>
     <ul v-if="user.honors.rank === 'student'" class="ranks-list">
       <li>
-        <BIconAward font-scale="2"></BIconAward>
+        <BIconAward font-scale="1"></BIconAward>
         {{ $t('profile.honors.next-rank-label') }}: {{ $t('profile.rank.graduate') }}
       </li>
       <li>
@@ -82,35 +82,35 @@
       <li>
         <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="pollVotesCount >= 10" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="pollVotesCount >= 10" scale="1" class="my-auto" />
           <b-progress v-if="pollVotesCount < 10" :value="pollVotesCount" max="10" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.blogs-label') }}:</span>
         <div>
-        <BIconCheck2Circle v-if="blogsCount >= 10" font-scale="1" class="my-auto" />
+        <BIconCheck2Circle v-if="blogsCount >= 10" scale="1" class="my-auto" />
         <b-progress v-if="blogsCount < 10" :value="blogsCount" max="10" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.comments-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="commentsCount >= 100" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentsCount >= 100" scale="1" class="my-auto" />
           <b-progress v-if="commentsCount < 100" :value="commentsCount" max="100" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.comment-ratio-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="commentVoteRatio >= 80" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentVoteRatio >= 80" scale="1" class="my-auto" />
           <b-progress v-if="commentVoteRatio < 80" :value="commentVoteRatio" max="80" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.sharing-weeks-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="sharingWeeksCount >= 10" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="sharingWeeksCount >= 10" scale="1" class="my-auto" />
           <b-progress v-if="sharingWeeksCount < 10" :value="sharingWeeksCount" max="10" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
@@ -177,11 +177,10 @@ export default {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: var(--dark-color);
-  font-size: 15px;
-  font-weight: 400;
+  color: var(--link-color);
+  font-weight: 300;
   margin: 0;
-      padding: 0 20px;
+   padding: 15px 20px;
 }
 .ranks-list li:first-child{
   min-height: auto;
@@ -192,9 +191,9 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  color: var(--dark-color);
 }
 .ranks-list li svg{
-  font-size: 20px;
   margin-right: 10px;
   color: #AEB3B7;
 }

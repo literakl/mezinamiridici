@@ -46,42 +46,40 @@ export default {
 </script>
 <style scoped>
 .share-box{
-  position: fixed;
-  left: 0;
-  width: 55px;
+  position: absolute;
+  left: -45px;
+  width: 45px;
   top: 30%;
   text-align: center;
   background: #fff;
   border: 1px solid #ddd;
-  padding: 10px;
   flex-direction: column;
   justify-content: center;
-  border-radius: 0 10px 10px 0px;
+  border-radius: 4px;
   font-size: 12px;
   box-shadow: none;
   background: white;
   z-index: 100;
+  padding-top: 3px;
 }
-.share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; }
+.share-box button{ width:100%; text-align:center; display:block; margin-bottom: 5px; border-bottom:1px solid #ddd;}
+.share-box button:last-child{
+  border-bottom: 0; margin-bottom: 0;
+}
+.share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; padding-bottom: 4px!important; }
 .share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
 @media (min-width: 1920px) {
 .share-box{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 80px;
-    box-shadow: var(--big-shadow);
-    font-size: 18px;
-    margin: 0 0 0 auto;
+
   }
 }
 @media (max-width: 992px) {
 .share-box{
-  right: 0;
+  right: 66px;
   left: unset;
-}
-.share-box{
-  border-radius: 10px 0 0 10px;
+  border-radius: 0px 10px 10px 0px;
 }
 }
+
+
 </style>

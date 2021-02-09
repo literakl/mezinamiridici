@@ -1,8 +1,7 @@
 <template>
-  <div v-if="blog" class="blog-posts pt-3 m-auto pb-5">
+  <div v-if="blog" class="blog-posts pt-3 m-auto">
     <div class="post-details-wrap">
-      <div class="container">
-        <div class="row">
+        <div class="">
           <div class="hero-details">
             <h1>{{title}}</h1>
           </div>
@@ -13,11 +12,14 @@
                {{blog.comments.count}}
             </a></div>
           </div>
-          <div class="post-content p3" v-html="blogHtml"></div>
-          <ShareLink :item="blog" />
+            <div class="post-content p3" v-html="blogHtml"></div>
+             <div class="content-wrap">
+            <div class="share-links-wrap">
+              <ShareLink :item="blog" />
+            </div>
           <Comments :itemId="blog._id" />
+          </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -73,7 +75,7 @@ export default {
 </script>
 <style>
 .blog-posts{
-  max-width: 71%;
+  max-width: 1235px;
   margin: 0 auto;
 }
 .post-details-wrap{
@@ -92,7 +94,7 @@ export default {
     margin: 0px 0 10px;
 }
 .post-details-wrap .post-details, .post-details-wrap .hero-details{
-   width: 94%;
+   width: 100%;
    margin: 0 auto;
     display: flex;
     /* flex-direction: column; */
@@ -100,7 +102,7 @@ export default {
     border-radius: 0px;
 }
 .post-details-wrap .post-content{
-   width: 94%;
+   width: 100%;
    margin: 0 auto;
 }
 .post-details{
@@ -116,7 +118,7 @@ export default {
 {
   display: flex;
       align-items: center;
-    font-weight: 400;
+    font-weight: 300;
      margin-right: 15px;
      color: #777A7C;
 }
@@ -182,8 +184,31 @@ export default {
   tbody tr td:first-child {
       border-left: none;
   }
+  .post-details-wrap .share-box{
+  left: 0;
+}
+.share-links-wrap{
+  position:fixed;
+      margin-left: -44px;
+}
+
+.content-wrap{
+  position:relative;
+}
     @media (min-width: 1920px) {
     .post-content table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
 
 }
+    @media (max-width: 1230px) {
+.post-details-wrap{
+  padding: 0 55px;
+}
+    }
+    @media (max-width: 992px) {
+
+.share-links-wrap{
+  right: 55px;
+
+}
+    }
 </style>

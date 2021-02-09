@@ -4,15 +4,15 @@
     <div v-if="userProfile" class="profile-wrap">
       <div class="prof-header-wrap mr-3">
         <div class="prof-header">
-           <b-avatar size="5rem"></b-avatar>
-          <div class="">
-            <span class="edit-btn"><BIconPencilSquare scale="2"></BIconPencilSquare></span>
+           <b-avatar size="3rem"></b-avatar>
+          <div class="nickname-row">
            <h2>{{ userProfile.bio.nickname }}</h2>
+           <span class="edit-btn"><BIconPencilSquare scale="1.5"></BIconPencilSquare></span>
            </div>
         </div>
         <div class="user-details">
           <div v-if="userProfile.prefs.public && userProfile.bio.region" class="name-regions">
-            <BIconGeoAlt font-scale="1"></BIconGeoAlt>
+            <BIconGeoAlt scale="1"></BIconGeoAlt>
             <span>{{$t(`profile.regions.${userProfile.bio.region}`)}}</span>
           </div>
           <div v-for="(item, inx) in userProfile.bio.urls" :key="inx" class="links">
@@ -25,11 +25,11 @@
         <b-tab :title="$t('profile.tabs.summary')" active>
           <div class="profile-area-top">
             <div class="rank head-block">
-              <BIconAward scale="2"></BIconAward>
+              <BIconAward scale="1"></BIconAward>
               <span class="label">{{ $t('profile.rank-label') }}:</span> <span> {{ $t(`profile.rank.${userProfile.honors.rank}`) }}</span>
             </div>
             <div class="bio-date head-block">
-              <BIconPersonCircle scale="2"></BIconPersonCircle>
+              <BIconPersonCircle scale="1"></BIconPersonCircle>
               <span class="label">{{ $t('profile.member-since-label') }}:</span> <span> <Date :date="userProfile.bio.registered" format="dynamicDate" /></span>
             </div>
           </div>
@@ -37,31 +37,31 @@
               <template v-if="userProfile.driving">
                 <div class="more-details">
                   <div v-if="userProfile.driving.since" class="head-block">
-                    <BIconJoystick scale="2"></BIconJoystick>
+                    <BIconJoystick scale="1"></BIconJoystick>
                     <span class="label">{{ $t('profile.driving-since-label') }}:</span> <span> {{userProfile.driving.since}}</span>
                   </div>
 
                   <div v-if="vehicles" class="head-block">
-                    <BIconTruck scale="2"></BIconTruck>
+                    <BIconTruck scale="1"></BIconTruck>
                     <span class="label">{{ $t('profile.vehicles-label') }}:</span> <span> {{vehicles}}</span>
                   </div>
                 </div>
               </template>
                 <div class="more-details">
                   <div v-if="userProfile.bio.sex" class="head-block">
-                    <BIconPersonFill scale="2"></BIconPersonFill>
+                    <BIconPersonFill scale="1"></BIconPersonFill>
                     <span class="label">{{ $t('profile.sex') }}:</span> <span> {{ $t('profile.sexes.' + userProfile.bio.sex) }}</span>
                   </div>
                   <div v-if="userProfile.bio.born" class="head-block">
-                    <BIconPersonCheck scale="2"></BIconPersonCheck>
+                    <BIconPersonCheck scale="1"></BIconPersonCheck>
                     <span class="label">{{ $t('profile.born') }}:</span> <span> {{userProfile.bio.born}}</span>
                   </div>
                   <div v-if="userProfile.bio.region" class="head-block">
-                    <BIconGeoAlt font-scale="2"></BIconGeoAlt>
+                    <BIconGeoAlt font-scale="1"></BIconGeoAlt>
                     <span class="label">{{ $t('profile.region') }}:</span> <span> {{ $t('profile.regions.' + userProfile.bio.region) }}</span>
                   </div>
                   <div v-if="userProfile.bio.edu" class="head-block">
-                    <BIconPen scale="2"></BIconPen>
+                    <BIconPen scale="1"></BIconPen>
                     <span class="label">{{ $t('profile.education') }}:</span> <span> {{ $t('profile.educations.' + userProfile.bio.edu) }}</span>
                   </div>
                 </div>
@@ -155,35 +155,50 @@ export default {
 
 </script>
 <style scoped>
-.prof-header-wrap{    max-width: 25%;
-    width: 100%;}
-.profile-wrap{ display: flex;}
+.prof-header-wrap{
+  max-width: 25%;
+  width: 100%;
+}
+.profile-wrap{
+  display: flex;
+  max-width: 1235px;
+  margin: 0 auto;
+}
 .prof-header{
   display: flex;
   align-items: center;
-  /* background: #fbfbfb; */
-  padding: 8px 0;
+  padding: 0 0 8px 0;
   border-bottom: 2px solid #f3f3f3;
   border-radius: 5px 5px 0 0;
   justify-content: flex-start;
   position: relative;
 }
-.prof-header div{ display: flex;flex-direction: column;}
-.edit-btn {  font-size: 14px;    position: absolute;
-    top: 13px;
-    right: 20px;}
-.edit-btn svg{ font-size: 9px; margin-left: 10px; display: block;}
-.edit-btn svg:hover{ cursor: pointer; color: #007bff;}
-.prof-header h2{
- font-size: 20px;
- margin: 5px 0 0 10px;
- padding: 0;
+.prof-header div{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  width: 100%;
 }
-
-.user-details {     width: 100%;
-    margin-top: 40px;}
-
-.user-details svg{ font-size: 20px!important;color: #AEB3B7;}
+.edit-btn svg{
+  font-size: 12px;
+  display: block;
+}
+.edit-btn svg:hover{
+  cursor: pointer;
+  color: #007bff;
+}
+.prof-header h2{
+  font-size: 16px;
+  margin: 5px 0 0 10px;
+  padding: 0;
+}
+.user-details {
+  width: 100%;
+  margin-top: 20px;
+}
+.user-details svg{
+  color: #AEB3B7;
+}
 .profile-area-top, .more-details{
   display: flex;
   justify-content: space-around;
@@ -191,7 +206,6 @@ export default {
   width: 100%;
 }
 .head-block, .more-details div{
-  height: 70px;
   border:1px solid #f1f1f1;
   background: #fff;
   box-shadow: #c1c1c1 1px 1px 10px;
@@ -199,36 +213,58 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  color: var(--dark-color);
-  font-size: 15px;
   font-weight: 400;
+  padding: 15px 20px;
 }
-.head-block svg{
-  width: 70px;
-  color: #AEB3B7;
+.head-block span{
+  color: var(--text-color-light);
+  padding: 5px;
 }
-.head-block span{ color: var(--text-color-light); padding: 5px;}
-.head-block span.label{ min-width: 150px; color: var(--text-color);}
-.name-regions{ display: flex; justify-content: flex-start;margin-top: 20px;margin-bottom: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 9px; }
-.name-regions svg{ width: 40px;}
-.links{display: flex; justify-content: flex-start; margin-bottom: 10px; border-bottom: 1px solid #f3f3f3; padding-bottom: 9px; }
-.links svg{    width: 40px;
-    }
+.head-block span.label{
+  min-width: 150px;
+  /* color: var(--link-color); */
+  font-weight: 300;
+}
+.name-regions{
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f3f3f3;
+  padding-bottom: 9px;
+  align-items: center;
+  color: var(--link-color);
+}
+.name-regions svg{
+  width: 40px;
+}
+.links{
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f3f3f3;
+  padding-bottom: 9px;
+  align-items: center;
+  color: var(--link-color);
+}
+.links svg{
+  width: 40px;
+}
 
 @media (min-width: 1920px) {
-      .head-block span.label{
+  .head-block span.label{
     min-width: 200px
-    }
+  }
 }
 @media (max-width: 992px) {
+  .profile-wrap {
+    flex-direction: column;
+  }
   .prof-header h2{
     font-size: 16px;
   }
   .prof-header-wrap{
     max-width: 100%;
-  }
-  .profile-wrap {
-    flex-direction: column;
   }
   .user-details{
     margin-top: 0;
@@ -245,6 +281,9 @@ export default {
 }
 @media (max-width: 767px) {
   .user-details{ flex-wrap: wrap;}
+  .profile-wrap {
+    padding: 0 15px;
+  }
 }
 @media (max-width: 575px) {
   .head-block{

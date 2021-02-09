@@ -1,6 +1,6 @@
 <template>
-  <b-container>
-    <b-row class="pollheader">
+  <div>
+    <div class="pollheader">
       <b-col v-if="item.siblings" class="prevbtn">
         <b-button v-if="item.siblings.older" :to="link(item.siblings.older)" variant="secondary">
           <BIconChevronDoubleLeft font-scale="2"></BIconChevronDoubleLeft>
@@ -44,12 +44,12 @@
           <BIconChevronDoubleRight font-scale="2"></BIconChevronDoubleRight>
         </b-button>
       </b-col>
-    </b-row>
-  </b-container>
+    </div>
+  </div>
 </template>
 
 <script>
-import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BContainer, BRow, BCol, BButton, BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconTags } from 'bootstrap-vue';
+import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BCol, BButton, BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconTags } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
@@ -62,8 +62,6 @@ export default {
     TagList,
     BIconChevronDoubleLeft,
     BIconChevronDoubleRight,
-    BContainer,
-    BRow,
     BCol,
     BButton,
     BIconPersonCircle,
@@ -103,7 +101,6 @@ export default {
   justify-content: center;
   position: relative;
   padding: 0;
-  max-width: 96%;
 }
 .pollheader .center-box{ width: 100%; padding: 0;}
 .poolheading{
@@ -183,7 +180,7 @@ export default {
 .post-time, .post-author, .post-rating, .post-comments{
   display: flex;
   align-items: center;
-  font-weight: 400;
+  font-weight:300;
 }
 .post-comments a {
   color: #007bff!important;
@@ -193,8 +190,8 @@ export default {
   text-decoration: none;
 }
 
-.prevbtn{ max-width:40px; position: absolute; left: -60px; z-index: 1; background: #fff; padding: 0;}
-.nextbtn{ max-width:40px; position: absolute; right:-60px; z-index: 1; background: #fff;padding: 0;}
+.prevbtn{ max-width:40px; position: absolute; left: -50px; top:0; z-index: 1; background: #fff; padding: 0;}
+.nextbtn{ max-width:40px; position: absolute; right:-50px; top:0; z-index: 1; background: #fff;padding: 0;}
 .center-box{max-width: 100%; margin: 0 auto;}
 .prevbtn a, .nextbtn a{
   border-radius: 100px;
@@ -221,8 +218,19 @@ export default {
       max-width: 350px;
     }
     .poolheading a{
-    font-size: 24px;
+    font-size: 26px;
     }
+}
+
+@media (max-width: 992px) {
+
+  .nextbtn{
+      right: -44px;
+          top: 0px;
+}
+.prevbtn{
+  left:-50px;
+}
 }
 
 @media (max-width: 767px) {
@@ -242,9 +250,7 @@ export default {
 }
 }
 @media (max-width: 600px) {
-.post-time, .post-author, .post-rating, .post-comments{
-  /* flex-direction: column; */
-}
+
 .item-footer svg{
   /* margin-right: 0;
       margin-bottom: 10px; */

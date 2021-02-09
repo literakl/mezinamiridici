@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t('generic.tag-select-label')">
+  <b-form-group class="title" :label="$t('generic.tag-select-label')">
     <b-form-tags v-model="tagList" size="lg" add-on-change no-outer-focus class="mb-0">
       <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
         <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2 tagslist">
@@ -70,6 +70,10 @@ export default {
 };
 </script>
 <style scoped>
+.title{
+  font-size:14px;
+  font-weight:300
+}
 .centerbox{
   width:auto!important;
 }

@@ -52,6 +52,20 @@ export default {
 </script>
 <style>
 .single-post-wrap{
-  max-width: 71%;
+  max-width: 1235px;
+    margin: 0 auto;
+}
+.share-links-wrap{
+  position: fixed;
+  width: 100%;
+}
+@media (max-width: 1280px) {
+.single-post-wrap{
+    padding: 0 55px;}
+}
+@media (max-width: 767px) {
+  .share-links-wrap{
+    top: 347px;;
+  }
 }
 </style>

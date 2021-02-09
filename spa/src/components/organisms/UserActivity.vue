@@ -118,7 +118,6 @@ export default {
   display: flex;
   border-bottom: 1px solid #f3f3f3;
   margin-bottom: 3px;
-  font-size: 15px;
   box-shadow: #c1c1c1 1px 1px 10px;
   min-height: 55px;
   display: flex;
@@ -132,9 +131,7 @@ export default {
   color: var(--text-color-light);
   width: 100%;
 }
-.post-list li a, .comment-box li a{
-  font-weight: 400;
-}
+
 .post-list li a:hover, .comment-box li a:hover{
   text-decoration: none;
 }

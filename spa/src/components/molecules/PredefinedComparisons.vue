@@ -18,17 +18,18 @@
         <li><router-link :to="{ name: 'analyse-poll', params: { slug, type: 'praha_brno' } }">
           {{ $t('poll.analysis.praha_brno') }}
         </router-link></li>
+        <li class="custombtn">
+          <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'vlastni' } }">
+            {{ $t('poll.analysis.custom') }}
+          </router-link>
+        </li>
       </ul>
-    </div>
-    <div class="custombtn">
-      <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'vlastni' } }">
-        {{ $t('poll.analysis.custom') }}
-      </router-link>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'PredefinedComparisons',
   props: {
@@ -38,8 +39,7 @@ export default {
 </script>
 <style scoped>
 .comparison-box{
-  display: flex;
-      padding: 15px 5px 15px 35px;
+      padding:20px 0px;
 }
 .comparison-list{
   display: flex;
@@ -98,7 +98,6 @@ position: relative;
 
 
 .custombtn{
-  width: 10%;
   text-align: right;
   display: flex;
   align-items: center;
@@ -108,7 +107,6 @@ position: relative;
   background:var(--color-white);
   text-align: center;
   color: #636466;
-  width:100%;
   padding: 4px 10px;
   font-weight: 400;
   font-size: 14px;
@@ -142,7 +140,7 @@ position: relative;
 }
  @media (min-width: 1920px) {
 .comparison-list h6{
-  font-size: 20px;
+  font-size: 22px;
 }
 .comment-area h3 {
     font-size: 28px;
@@ -151,21 +149,20 @@ position: relative;
   font-size: 19px;
 }
 }
+@media (max-width: 1024px) {
+  .comparison-list ul li { margin-bottom: 5px;}
+
+}
 @media (max-width: 767px) {
   .comparison-list{
     width: 80%;
   }
-  .custombtn{
-    width: 20%;
-        display: flex;
-    align-items: center;
-  }
+
 }
 @media (max-width: 450px) {
   .comparison-box{
     flex-direction: column;
   }
   .comparison-list, .custombtn{ width: 100%;}
-  .comparison-list ul li { margin-bottom: 5px;}
 }
 </style>

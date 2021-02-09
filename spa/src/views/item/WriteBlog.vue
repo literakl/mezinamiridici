@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 mt-5 border w-75 centerbox">
+  <div class="pt-3 mt-5 border centerbox">
     <div class="write-post-wrap">
       <div class="text-area">
         <TextInput
@@ -361,10 +361,10 @@ export default {
     width: 100%;
   }
   .image-area{
-        width: 60%;
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
+            width: 100%;
+       justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
   }
 .tags-area div {
     border-radius: 0;

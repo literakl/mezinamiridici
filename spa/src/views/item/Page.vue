@@ -1,6 +1,6 @@
 <template>
-<div class="pages-wrap gredient-gray">
-  <div class="test pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
+<div class="pages-wrap">
+  <div class="pt-3 ml-auto mr-auto mt-auto mb-5">
     <ContentLoading v-if="! content" type="cms" />
     <div v-if="content">
       <div v-html="content.data.content" class="post-content"></div>
@@ -49,8 +49,10 @@ export default {
 </script>
 <style scoped>
 .pages-wrap{
-
+  max-width:1235px;
+  margin: 0 auto;
 }
+
 @media (max-width: 1200px) {
   .first-com-box{
     flex-direction: column;

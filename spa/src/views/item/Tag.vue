@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 mt-5 border w-75 centerbox">
+  <div class="pt-3 mt-5 border centerbox">
     <vue-word-cloud
       style="width: 100%; min-height:250px;border: 5px dashed #e6eaef!important;border-bottom-width: 10px!important;"
       :words="tags"
@@ -82,6 +82,8 @@ export default {
   box-shadow: var(--big-shadow);
   padding: 25px 20px;
   border-radius: 4px 4px 0 0;
+  max-width: 1235px;
+  margin:0 auto;
 }
 .tags{
 }

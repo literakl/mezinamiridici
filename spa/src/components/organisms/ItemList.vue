@@ -97,17 +97,19 @@ export default {
 .homePosts{
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .item {
   width: 255px;
   opacity: 1;
 }
 .item div{
-  height: 275px;
+  height: 270px;
 }
 .item .thumbnail {
-  max-height: 275px;
+  max-height: 270px;
   overflow: hidden;
   border-radius: 8px;
 }
