@@ -2,7 +2,7 @@
 <div class="pages-wrap">
   <div class="pt-3 ml-auto mr-auto mt-auto mb-5">
     <ContentLoading v-if="! content" type="cms" />
-    <div v-if="content">
+    <div v-if="content" class="page-content-wrap">
       <div v-html="content.data.content" class="post-content"></div>
       <ShareLink :item="content" />
     </div>
@@ -52,11 +52,18 @@ export default {
   max-width:1235px;
   margin: 0 auto;
 }
+.page-content-wrap{
+  position: relative;
+}
+.page-content-wrap .share-box { position:unset}
 
-@media (max-width: 1200px) {
+@media (max-width: 1235px) {
   .first-com-box{
     flex-direction: column;
   }
+.page-content-wrap{
+  padding: 0 15px;
+}
 
 }
 

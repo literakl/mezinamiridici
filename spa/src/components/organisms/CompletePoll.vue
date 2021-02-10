@@ -80,5 +80,8 @@ export default {
     border-color: var(--danger);
     background-color: var(--danger);
   }
+  @media (max-width: 1235px) {
+     .vote-chart{ padding: 0 10px;}
+}
 
 </style>

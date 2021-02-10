@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="pt-3 m-auto pb-5">
     <ContentLoading v-if="!userProfile" type="profile" />
     <div v-if="userProfile" class="profile-wrap">
       <div class="prof-header-wrap mr-3">

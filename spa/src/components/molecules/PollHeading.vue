@@ -222,14 +222,29 @@ export default {
     }
 }
 
+ @media (max-width: 1352px) {
+   .pollheader{
+     display: flex;
+     padding: 0 15px;
+   }
+   .prevbtn{
+     position: unset;
+     margin-right: 15px;
+
+   } .nextbtn {
+     position: unset;
+     margin-left: 15px;
+   }
+ }
+
 @media (max-width: 992px) {
 
   .nextbtn{
-      right: -44px;
+      right: 0px;
           top: 0px;
 }
 .prevbtn{
-  left:-50px;
+  left:0px;
 }
 }
 
@@ -247,6 +262,9 @@ export default {
 .nextbtn {
   bottom: 0px;
   top:40%;
+}
+.pollheader{
+  padding: 0 10px;
 }
 }
 @media (max-width: 600px) {

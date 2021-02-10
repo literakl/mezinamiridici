@@ -190,6 +190,7 @@ export default {
 .share-links-wrap{
   position:fixed;
       margin-left: -44px;
+      z-index: 1;
 }
 
 .content-wrap{
@@ -199,9 +200,9 @@ export default {
     .post-content table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
 
 }
-    @media (max-width: 1230px) {
+    @media (max-width: 1235px) {
 .post-details-wrap{
-  padding: 0 55px;
+  padding: 0 15px;
 }
     }
     @media (max-width: 992px) {

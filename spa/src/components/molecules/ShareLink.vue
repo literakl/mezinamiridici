@@ -73,9 +73,16 @@ export default {
 
   }
 }
+
+@media (max-width: 1235px) {
+
+  .share-box {
+    left: 0;
+}
+}
 @media (max-width: 992px) {
 .share-box{
-  right: 66px;
+  right: 0px;
   left: unset;
   border-radius: 0px 10px 10px 0px;
 }

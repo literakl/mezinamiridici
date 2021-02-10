@@ -149,6 +149,11 @@ position: relative;
   font-size: 19px;
 }
 }
+@media (max-width: 1235px) {
+  .comparison-box{
+        padding: 20px 15px;
+  }
+}
 @media (max-width: 1024px) {
   .comparison-list ul li { margin-bottom: 5px;}
 

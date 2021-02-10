@@ -3,7 +3,7 @@
     <div class="poll-content"><ContentLoading v-if="! poll" type="poll"/></div>
     <div class="completed-poll-wrap"><CompletePoll v-if="poll"/></div>
     <div class="share-links-wrap"><ShareLink :item="poll"/></div>
-    <div class="comment-wrap"><Comments v-if="poll" :itemId="poll._id"/></div>
+    <div class="comment-outer"><Comments v-if="poll" :itemId="poll._id"/></div>
   </div>
 </template>
 
@@ -58,14 +58,25 @@ export default {
 .share-links-wrap{
   position: fixed;
   width: 100%;
+   z-index: 1;
 }
 @media (max-width: 1280px) {
 .single-post-wrap{
-    padding: 0 55px;}
+    padding: 0px;
+    }
+  .comment-outer{
+    padding: 0px 15px 0 40px;
+  }
+}
+@media (max-width: 992px) {
+.comment-outer{
+    padding: 0px 15px 0 15px;
+  }
 }
 @media (max-width: 767px) {
   .share-links-wrap{
     top: 347px;;
   }
+
 }
 </style>

@@ -345,18 +345,15 @@ blockquote {
 }
  .comment-buttons button{ font-size: 20px;}
 }
-@media (max-width: 1200px) {
+
+@media (max-width: 1235px) {
   .first-com-box{
     flex-direction: column;
-  }
-  .gredient-gray table{
-    /* overflow-x: scroll;
-    scroll-behavior: smooth; */
   }
   .comment-wrap{
     flex-direction: column;
   }
-  .author-det {
+   .author-det {
     width: 100%;
     flex-direction: row;
     margin-top: 0px;
@@ -374,9 +371,13 @@ blockquote {
     width: 100%;
   }
 }
+
+@media (max-width: 1200px) {
+}
 @media (max-width: 767px) {
 .comment__child {
     margin-left: 15px;
 }
+
 }
 </style>
