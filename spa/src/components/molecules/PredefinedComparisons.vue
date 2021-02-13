@@ -127,19 +127,16 @@ position: relative;
 .custombtn a.router-link-active:after{
    content: "";
   position: absolute;
-  width: 0px;
-  height: 0px;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid  var(--color-white);
-  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   bottom: 0px;
   margin: 0 auto;
   left: 0;
   right: 0;
 }
  @media (min-width: 1920px) {
-.comparison-list h6{
+/* .comparison-list h6{
   font-size: 22px;
 }
 .comment-area h3 {
@@ -147,7 +144,7 @@ position: relative;
 }
 .custombtn a{
   font-size: 19px;
-}
+} */
 }
 @media (max-width: 1235px) {
   .comparison-box{
@@ -168,6 +165,6 @@ position: relative;
   .comparison-box{
     flex-direction: column;
   }
-  .comparison-list, .custombtn{ width: 100%;}
+  .comparison-list{ width: 100%;}
 }
 </style>

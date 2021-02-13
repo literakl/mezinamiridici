@@ -194,9 +194,9 @@ export default {
   align-items: flex-start;
   font-size: 13px;
   font-weight: 400;
-  background: #f7f7f8;
-  padding: 5px 15px;
-  border-radius: 6px 6px 0 0;
+  /* background: #f7f7f8; */
+  padding: 5px 0px;
+  /* border-radius: 6px 6px 0 0; */
   margin-top: 5px;
   position: relative;
 
@@ -224,8 +224,8 @@ export default {
 }
 .comments{
   width: 100%;
-  border: 1px solid #ddd;
-  padding: 10px 15px;
+  /* border: 1px solid #ddd; */
+  padding: 0px 19px;
 }
 .comments p{
   color:var(--dark-color);
@@ -336,14 +336,14 @@ blockquote {
   }
 
   @media (min-width: 1920px) {
-    p, a, button, li, span{ font-size: 20px}
-    .item-footer svg{
+    /* p, a, button, li, span{ font-size: 20px} */
+    /* .item-footer svg{
     font-size: 14px;
 }
 .comments p {
     line-height: 28px;
 }
- .comment-buttons button{ font-size: 20px;}
+ .comment-buttons button{ font-size: 20px;} */
 }
 
 @media (max-width: 1235px) {
@@ -352,6 +352,9 @@ blockquote {
   }
   .comment-wrap{
     flex-direction: column;
+  }
+  .comment-area{
+    padding: 25px;
   }
    .author-det {
     width: 100%;

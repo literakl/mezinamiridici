@@ -1,5 +1,5 @@
 <template>
-  <div class="container analyze-vote pt-3 w-75 ml-auto mr-auto mt-auto mb-5">
+  <div class="analyze-vote pt-3 ml-auto mr-auto mt-auto mb-5">
     <div class="row">
       <div class="col">
         <ContentLoading v-if="! item" type="poll"/>
@@ -206,6 +206,10 @@ export default {
 };
 </script>
 <style>
+.analyze-vote {
+  max-width:1235px;
+  margin:0 auto;
+}
 .campbox-two .card-header
 {
       font-size: 1.2rem;
@@ -231,10 +235,34 @@ export default {
 .showcase-wrap{
       padding: 15px 5px 15px 15px;
 }
+.showcase-wrap .form-row{
+  align-items: center;
+}
 .showcase-wrap legend{ font-weight: 500;}
+@media (max-width: 1235px) {
+  .campbox-one{
+    padding-left: 25px;
+  }
+  .campbox-two{
+    padding-right: 10px;
+  }
+ }
+
+@media (max-width: 767px) {
+  .campbox-one{
+     padding-right: 10px;
+  }
+  .campbox-two{
+    padding-left: 25px;
+  }
+}
+
  @media (max-width: 420px) {
   .campbox-two .card-body{
     padding: 1rem 0.5rem;
   }
+  .showcase-wrap{
+      padding: 5px 5px 5px 15px;
+}
 }
 </style>

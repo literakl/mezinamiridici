@@ -1,4 +1,5 @@
 <template>
+<div class="share-links-wrap">
   <div class="share-box">
     <b-button @click="shareLink('twitter')" class="p-0" v-html="twitter" variant="transparent" />
     <b-button @click="shareLink('facebook')" class="p-0" v-html="facebook" variant="transparent" />
@@ -6,6 +7,7 @@
     <b-button @click="shareLink('whatsapp')" class="p-0" v-html="whatsapp" variant="transparent" />
     <b-button @click="shareLink('email')" class="p-0" v-html="email" variant="transparent" />
   </div>
+</div>
 </template>
 
 <script>
@@ -45,11 +47,20 @@ export default {
 };
 </script>
 <style scoped>
+.share-links-wrap{
+        /* max-width: 1349px; */
+    margin: 0 auto;
+    position: fixed;
+    top: 40%;
+    bottom: 40%;
+    transform: translate(-55px, -50%);
+    z-index:1;
+}
 .share-box{
-  position: absolute;
-  left: -45px;
-  width: 45px;
-  top: 30%;
+  /* position: fixed; */
+  left: 15px;
+  width: 46px;
+  top: 190px;
   text-align: center;
   background: #fff;
   border: 1px solid #ddd;
@@ -70,21 +81,28 @@ export default {
 .share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
 @media (min-width: 1920px) {
 .share-box{
-
+    /* position:fixed;
+    left:0; */
   }
 }
 
 @media (max-width: 1235px) {
-
-  .share-box {
-    left: 0;
+.share-links-wrap{
+    transform: translate(-5px, -50%);
 }
 }
 @media (max-width: 992px) {
 .share-box{
   right: 0px;
+      width: 36px;
   left: unset;
-  border-radius: 0px 10px 10px 0px;
+}
+
+.share-box svg{ width: 20px;}
+.share-links-wrap{
+  right: 0;
+  left:unset;
+  transform: translate(-0px, -50%);
 }
 }
 

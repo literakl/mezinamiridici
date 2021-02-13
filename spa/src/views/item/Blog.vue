@@ -14,9 +14,7 @@
           </div>
             <div class="post-content p3" v-html="blogHtml"></div>
              <div class="content-wrap">
-            <div class="share-links-wrap">
-              <ShareLink :item="blog" />
-            </div>
+            <ShareLink :item="blog" />
           <Comments :itemId="blog._id" />
           </div>
         </div>
@@ -86,6 +84,7 @@ export default {
   /* -moz-box-shadow: inset 0 0 10px #fffcf3;
   -webkit-box-shadow: inset 0 0 10px #fffcf3;
   box-shadow: inset 0px 10px 10px #fffcf3; */
+  position: relative;
 }
 .post-details-wrap h1{
   font-size: 21px;
@@ -185,30 +184,26 @@ export default {
       border-left: none;
   }
   .post-details-wrap .share-box{
-  left: 0;
-}
-.share-links-wrap{
-  position:fixed;
-      margin-left: -44px;
-      z-index: 1;
+  /* left: 0; */
 }
 
+
 .content-wrap{
-  position:relative;
+  /* position:relative; */
 }
     @media (min-width: 1920px) {
     .post-content table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
-
+    .post-details-wrap h1{ font-size: 26px}
 }
     @media (max-width: 1235px) {
 .post-details-wrap{
-  padding: 0 15px;
+  padding: 0 40px;
 }
     }
     @media (max-width: 992px) {
 
 .share-links-wrap{
-  right: 55px;
+  /* right: 55px; */
 
 }
     }

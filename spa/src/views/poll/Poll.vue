@@ -2,7 +2,7 @@
   <div class="single-post-wrap pt-3 ml-auto mr-auto mt-auto mb-5">
     <div class="poll-content"><ContentLoading v-if="! poll" type="poll"/></div>
     <div class="completed-poll-wrap"><CompletePoll v-if="poll"/></div>
-    <div class="share-links-wrap"><ShareLink :item="poll"/></div>
+    <ShareLink :item="poll"/>
     <div class="comment-outer"><Comments v-if="poll" :itemId="poll._id"/></div>
   </div>
 </template>
@@ -55,11 +55,8 @@ export default {
   max-width: 1235px;
     margin: 0 auto;
 }
-.share-links-wrap{
-  position: fixed;
-  width: 100%;
-   z-index: 1;
-}
+
+
 @media (max-width: 1280px) {
 .single-post-wrap{
     padding: 0px;
@@ -75,7 +72,7 @@ export default {
 }
 @media (max-width: 767px) {
   .share-links-wrap{
-    top: 347px;;
+    /* top: 347px; */
   }
 
 }

@@ -100,13 +100,13 @@ export default {
   transition: 0.2s ease;
 }
 .item-hover:hover {
-  /* transform: translateX(-2px) translateY(-2px) scale(1.03); */
+  transform: translateX(-2px) translateY(-2px) scale(1.03);
 }
 /* .item-hover:active {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
 } */
 .item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;width: 100%;}
-.item-div h4 { text-align: center; height: 63px; margin: 0; overflow: hidden;}
+.item-div h4 { text-align: center; height: 55px; margin: 0; overflow: hidden;}
 .item-div:hover h4 {
     /* height: 110px; */
 }
@@ -123,7 +123,7 @@ export default {
   color: var(--dark-color);
   text-align: center;
   font-size: 16px;
-  padding: 22px 10px 0px;
+  padding: 16px 10px 18px 10px;
   display: block;
   display: flex;
   align-items: flex-start;
@@ -180,14 +180,15 @@ export default {
 }
 
 span.data {
-      position: absolute;
-    right: 0px;
+  position: absolute;
+  right: 0px;
   font-size: 12px;
   font-weight: 400;
   right: 0;
   background: #fff;
   padding: 0px 10px;
   color:#777A7C;
+  top:-20px;
 }
 .item-footer:hover span.data{
   opacity: 1;
@@ -210,15 +211,11 @@ span.data {
   font-size: 16px;
 }
 @media (min-width: 1920px) {
-  .item-div h4 a{
-    font-size: 20px;
-    padding: 15px 10px 10px
-  }
-  .item-footer span.data{
-    top: -96px;
+  span.data{
+    top: -24px;
   }
   .item-footer span.data span{
-    font-size: 18px!important;
+    font-size: 14px!important;
   }
   .bottom-links span svg{
     font-size: 20px;

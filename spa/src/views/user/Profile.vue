@@ -255,6 +255,15 @@ export default {
   .head-block span.label{
     min-width: 200px
   }
+  .prof-header h2{
+    font-size:18px;
+  }
+
+}
+@media (max-width: 1235px) {
+ .profile-wrap {
+     padding: 0 15px;
+   }
 }
 @media (max-width: 992px) {
   .profile-wrap {

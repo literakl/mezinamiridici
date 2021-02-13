@@ -355,5 +355,10 @@ export default {
 .success-msg{
   font-size: 15px;
 }
+@media (max-width: 500px) {
+  .centerbox{
+        padding: 25px 16px;
+  }
+}
 
 </style>

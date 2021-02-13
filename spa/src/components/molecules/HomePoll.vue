@@ -1,10 +1,6 @@
 <template>
   <div class="mb-3 notlogedin">
-    <h4 class="text-center poolheading">
-      <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
-        {{ poll.info.caption }}
-      </router-link>
-    </h4>
+
 
     <div v-if="voted" class="d-flex justify-content-center featured-poll">
       <b-button variant="success" :class="myVoteClass('neutral')" class="m-3">
@@ -27,7 +23,62 @@
         {{ $t('poll.choices.hate') }}
         <span class="badge badge-pill badge-white">{{ this.votes.hate }}%</span>
       </b-button>
+
+
     </div>
+ <div class="poll-success">
+   <h4 class="poolheading">
+      <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
+        {{ poll.info.caption }}
+      </router-link>
+    </h4>
+        <ul>
+            <li>
+              <div class="np-status">
+                <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
+                <span class="status-img"><img src="/images/icons/happy.svg" class="" alt=""></span>
+                <div class="progress-bar-outer">
+                  <div class="progress-bar">
+                    <span class="progress-bar-fill-green" v-bind:style="{ width: ['33%'] }"><i>{{ this.votes.neutral }}%</i></span>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="traval-trouble-status">
+                <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
+                <span class="status-img"><img src="/images/icons/ok.svg" class="" alt=""></span>
+                <div class="progress-bar-outer">
+                  <div class="progress-bar">
+                    <span class="progress-bar-fill-blue" style="width: 11%;"><i>11%</i></span>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="dislike-status">
+                <span class="title-status">{{ $t('poll.choices.dislike') }}</span>
+                <span class="status-img"><img src="/images/icons/dislike.svg" class="" alt=""></span>
+                <div class="progress-bar-outer">
+                  <div class="progress-bar">
+                    <span class="progress-bar-fill-yellow" style="width: 56%;"><i>56%</i></span>
+                  </div>
+                </div>
+              </div>
+            </li>
+             <li>
+              <div class="angry-status">
+                <span class="title-status">{{ $t('poll.choices.hate') }}</span>
+                <span class="status-img"><img src="/images/icons/angry.svg" class="" alt=""></span>
+                <div class="progress-bar-outer">
+                  <div class="progress-bar">
+                    <span class="progress-bar-fill-red" style="width: 13.8%;"><i>13.8 %</i></span>
+                  </div>
+                </div>
+              </div>
+            </li>
+        </ul>
+      </div>
 
     <div v-if="!voted" class="d-flex justify-content-center">
       <PollButtons v-on:do-vote="onVote"/>
@@ -118,6 +169,81 @@ export default {
 </script>
 
 <style scoped>
+.poll-success {
+  max-width: 1065px;
+  margin: 0 auto;
+}
+.poll-success ul{
+  padding:0;
+  margin:0;
+}
+.poll-success ul li{
+  list-style-type: none;
+  font-style: 14px;
+  font-weight:400;
+}
+.poll-success ul li img{
+  width: 43px;
+  height: 43px;
+  margin-left:10px;
+}
+.poll-success ul li:first-child img{ width: 50px;
+  height: 40px;}
+.progress-bar-outer {
+  width: 100%;
+}
+.progress-bar {
+  width: 100%;
+  background-color: #f7f7f7;
+  padding: 3px;
+  border-radius: 0px;
+}
+
+.progress-bar-fill-green {
+  display: block;
+  height: 22px;
+  background-color: #28a745;
+  border-radius: 0px;
+  transition: width 500ms ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+      align-items: center;
+}
+.progress-bar-fill-green i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
+.progress-bar-fill-blue {
+  display: block;
+  height: 22px;
+  background-color: #007bff;
+  border-radius: 0px;
+  transition: width 500ms ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+      align-items: center;
+}
+.progress-bar-fill-blue i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
+
+.progress-bar-fill-yellow {
+  display: block;
+  height: 22px;
+  background-color: #ffc107;
+  border-radius: 0px;
+  transition: width 500ms ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+      align-items: center;
+}
+.progress-bar-fill-yellow i { padding-right: 15px; font-size: 14px; color: #212529; font-weight: 500; font-style: normal;}
+.progress-bar-fill-red {
+  display: block;
+  height: 22px;
+  background-color: #dc3545;
+  border-radius: 0px;
+  transition: width 500ms ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+      align-items: center;
+}
+.progress-bar-fill-red i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
 .temp-wrapper p{
   color:var(--text-color);
   font-weight:400;
@@ -133,7 +259,9 @@ export default {
 .resetpass{
   width:100%;
 }
-
+.featured-poll {
+  display: none!important;
+}
 .featured-poll button{
     display: flex;
     flex-direction: row-reverse;
@@ -188,10 +316,9 @@ export default {
   border-width: 10px;
   border-color: #dee0e1;
   border-style: solid;
-  /* box-shadow: #c1c1c1 1px 1px 10px; */
+  box-shadow: #c1c1c1 1px 1px 10px;
 }
 .item-footer {
-    /* display: none; */
      font-size: .9em;
     color: #201f27;
     text-align: center;
@@ -228,10 +355,12 @@ export default {
 .notlogedin .poolheading a{
   font-size: 24px;
   text-decoration: none;
-  margin: 10px 0 40px;
+  /* margin: 10px 0 40px; */
+  margin: 10px 0 15px;
+
     display: block;
     color: var(--text-color);
-    text-align: center;
+    text-align: left;
 }
 .notlogedin .poolheading a:hover{
   color: var(--link-blue);
@@ -242,13 +371,13 @@ export default {
 }
   .featured-poll button{
         height: 60px;
-        font-size: 20px;
-            max-width: 250px;
+        font-size: 18px;
+            max-width: 240px;
   }
   .featured-poll button span{
     width: 40px;
     height: 32px;
-    font-size: 17px;
+    /* font-size: 17px; */
         top: 14px;
   }
 }
@@ -267,6 +396,15 @@ export default {
     left: -2px;
   }
 }
+
+
+@media (max-width: 1065px) {
+
+  .poll-success {
+    padding: 0 15px;
+  }
+}
+
 @media (max-width: 992px) {
  .featured-poll button img{
     left: 0;
@@ -280,6 +418,9 @@ export default {
     margin: 35px 5px 30px!important;
     font-size: 14px;
   }
+  .notlogedin .poolheading a{
+    margin-bottom: 20px;
+  }
 }
 @media (max-width: 767px) {
   .featured-poll {
@@ -290,7 +431,7 @@ export default {
   .notlogedin .poolheading a {
       font-size: 22px;
       margin: 0px 0 15px;
-      padding:0 15px;
+      /* padding:0 15px; */
   }
   .featured-poll button{
         max-width: 50%;
@@ -323,6 +464,12 @@ export default {
   .post-time, .post-author, .post-rating, .post-comments {
     flex-direction: column;
   }
+  .progress-bar-fill-red i,
+.progress-bar-fill-yellow i,
+.progress-bar-fill-blue i,
+.progress-bar-fill-green i {
+  padding-right:5px;
+}
 }
 
 /* @media (max-width: 667px) {

@@ -155,6 +155,11 @@ export default {
   color: #777A7C;
   text-decoration: none;
 }
+@media (min-width: 1920px) {
+  .featured-poll button{
+    font-size: 18px;
+  }
+}
 @media (max-width: 1220px) {
   .featured-poll button{
     font-size: 15px;

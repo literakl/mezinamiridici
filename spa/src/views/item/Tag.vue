@@ -85,6 +85,4 @@ export default {
   max-width: 1235px;
   margin:0 auto;
 }
-.tags{
-}
 </style>

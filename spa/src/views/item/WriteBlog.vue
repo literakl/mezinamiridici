@@ -330,7 +330,7 @@ export default {
 
 <style>
 .centerbox{
-  max-width:700px;
+  max-width:1235px;
   margin: 0 auto 20px;
   box-shadow: var(--big-shadow);
   padding: 25px 20px;
@@ -526,6 +526,11 @@ export default {
     position:relative;
   }
   .menubar{}
+@media (max-width: 1235px) {
+  .centerbox{
+
+  }
+}
 @media (max-width: 1100px) {
   .write-blog{
     width: 100%!important;

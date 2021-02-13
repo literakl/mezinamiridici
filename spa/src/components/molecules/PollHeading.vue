@@ -212,10 +212,10 @@ export default {
 }
 
  @media (min-width: 1920px) {
-    p, a, button, li, span{ font-size: 20px}
-    h3{ font-size: 26px;}
+    /* p, a, button, li, span{ font-size: 20px}
+    h3{ font-size: 26px;} */
     .item-footer{
-      max-width: 350px;
+      /* max-width: 350px; */
     }
     .poolheading a{
     font-size: 26px;
