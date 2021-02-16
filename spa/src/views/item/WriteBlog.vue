@@ -525,10 +525,10 @@ export default {
   .editor{
     position:relative;
   }
-  .menubar{}
 @media (max-width: 1235px) {
   .centerbox{
-
+    margin-right:40px;
+    margin-left:40px;
   }
 }
 @media (max-width: 1100px) {

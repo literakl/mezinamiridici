@@ -1,6 +1,6 @@
 <template>
-  <div class="container centerbox">
-    <label for="share-profile">{{ $t('profile.share-profile') }}</label>
+  <div class="centerbox">
+    <label class="d-label" for="share-profile">{{ $t('profile.share-profile') }}</label>
     <div class="field-area">
     <div class="radio-boxes">
       <div class="public-box">
@@ -32,7 +32,7 @@
     </div>
     <div class="field-area">
     <div>
-      <label for="vehicle">{{ $t('profile.vehicles-label') }}</label>
+      <label for="vehicle" class="d-label">{{ $t('profile.vehicles-label') }}</label>
     </div>
     <div class="row">
       <Checkbox
@@ -75,7 +75,7 @@
     </div>
     <div class="field-area">
     <div>
-      <label class="" for="sex">{{ $t('profile.sex') }}</label>
+      <label class="d-label" for="sex">{{ $t('profile.sex') }}</label>
     </div>
     <div class="row">
       <Radio
@@ -105,7 +105,7 @@
     </div>
     <div class="field-area">
     <div>
-      <label for="region">{{ $t('profile.region') }}</label>
+      <label class="d-label" for="region">{{ $t('profile.region') }}</label>
     </div>
     <div class="row pl-3">
       <select id="region" class="form-control" v-model="region">
@@ -129,7 +129,7 @@
     </div>
     <div class="field-area">
     <div>
-      <label for="education">{{ $t('profile.education') }}</label>
+      <label class="d-label" for="education">{{ $t('profile.education') }}</label>
     </div>
     <div class="row">
       <Radio
@@ -154,7 +154,7 @@
     </div>
     <div class="field-area">
     <div>
-      <label>{{ $t('edit-profile.urls') }}</label>
+      <label class="d-label">{{ $t('edit-profile.urls') }}</label>
     </div>
     <div class="pb-2">
       <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')" class=""></b-form-input>
@@ -265,8 +265,7 @@ export default {
   .centerbox{
     max-width: 700px;
     margin: 0 auto 20px;
-    box-shadow: var(--big-shadow);
-    padding: 25px 20px;
+    padding: 25px 35px;
     border-radius: 4px 4px 0 0;
   }
   .field-area{
@@ -289,16 +288,18 @@ export default {
     display: flex;
   }
   .public-box, .private-box{
-        display: block;
+    display: block;
     border-radius: 3px;
-    border: 1px solid #ddd;
-    padding: 2px 10px;
+    padding: 2px 0px;
     text-align: center;
     margin-right: 10px;
   }
-  @media (max-width: 600px) {
-    .public-box, .private-box{
-      margin-right: 0px;
-    }
+  .d-label{
+    font-weight: 300!important;
+    color: #000;
+  }
+  .d-label div{
+    font-weight: 300!important;
+    color: #000;
   }
 </style>

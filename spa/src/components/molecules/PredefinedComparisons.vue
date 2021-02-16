@@ -20,7 +20,7 @@
         </router-link></li>
         <li class="custombtn">
           <router-link :to="{ name: 'analyse-poll', params: { slug, type: 'vlastni' } }">
-            {{ $t('poll.analysis.custom') }}
+            {{ $t('poll.analysis.custom') }} <BIconGear scale='1'></BIconGear>
           </router-link>
         </li>
       </ul>
@@ -29,14 +29,20 @@
 </template>
 
 <script>
+import { BIconGear } from 'bootstrap-vue';
 
 export default {
   name: 'PredefinedComparisons',
+  components: {
+    BIconGear,
+  },
   props: {
     slug: String,
   },
 };
+
 </script>
+
 <style scoped>
 .comparison-box{
       padding:20px 0px;
@@ -48,7 +54,7 @@ export default {
   justify-content: flex-start;
 }
 .comparison-list h6{
-  margin: 0 15px 0 0;
+  margin-right:15px;
   padding: 0;
 }
 .comparison-list ul{
@@ -73,9 +79,7 @@ export default {
 }
 .comparison-list ul li a:hover{ text-decoration: none;}
 .comparison-list ul li a.router-link-active{ background: #fff;
-  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-color: var(--text-color);
-position: relative;
+position: relative; color:var(--tect-color);    font-weight: 400;
 }
 
 
@@ -87,7 +91,7 @@ position: relative;
   /* border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid  var(--link-blue); */
-  border-bottom: 2px solid  var(--link-blue);
+  border-bottom:3px solid  var(--theme-primary);
   bottom: -3px;
 
   top: -6px;
@@ -111,9 +115,7 @@ position: relative;
   font-weight: 400;
   font-size: 14px;
     border-radius: 3px;
-    border: 1px solid #ddd;
-    -webkit-box-shadow: #c1c1c1 1px 1px 10px;
-    box-shadow: #c1c1c1 1px 1px 10px;
+
 }
 .custombtn a:hover{
   text-decoration: none;
@@ -135,17 +137,7 @@ position: relative;
   left: 0;
   right: 0;
 }
- @media (min-width: 1920px) {
-/* .comparison-list h6{
-  font-size: 22px;
-}
-.comment-area h3 {
-    font-size: 28px;
-}
-.custombtn a{
-  font-size: 19px;
-} */
-}
+
 @media (max-width: 1235px) {
   .comparison-box{
         padding: 20px 15px;

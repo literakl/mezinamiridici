@@ -102,24 +102,25 @@ export default {
 .item-hover:hover {
   transform: translateX(-2px) translateY(-2px) scale(1.03);
 }
-/* .item-hover:active {
-  transform: translateX(-1px) translateY(-1px) scale(1.01);
-} */
-.item-div img { box-shadow: var(--big-shadow); border: 5px solid #fff;width: 100%;}
-.item-div h4 { text-align: center; height: 55px; margin: 0; overflow: hidden;}
-.item-div:hover h4 {
-    /* height: 110px; */
+.item-div img {
+  box-shadow: var(--big-shadow);
+  border: 5px solid #fff;
+  width: 100%;
+}
+.item-div h4 {
+  text-align: center;
+  height: 55px;
+  margin: 0;
+  overflow: hidden;
 }
 .item-footer{
   position: relative;
 }
 .item-div:hover h4, .item-footer {
-  /* position: absolute; */
     width: 100%;
     bottom: 0;
 }
 .item-div h4 a {
-  /* height: 75px; */
   color: var(--dark-color);
   text-align: center;
   font-size: 16px;
@@ -131,23 +132,24 @@ export default {
   text-align: left;
   text-overflow: ellipsis;
 }
-.item-div h4 a:hover { text-decoration: none;}
+.item-div h4 a:hover {
+  text-decoration: none;
+}
 .overlap-actions{
-      position: relative;
+  position: relative;
 }
-
 .result-bars{
-      position: absolute;
-    display: block;
-    width: 100%;
-    top: -35px;
-    left:4px;
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: -35px;
+  left:4px;
 }
-.result-bars span{ margin-top: 1px;}
+.result-bars span{
+  margin-top: 1px;
+}
 
 .no-prob{
-  /* position: absolute;
-  top: 143px; */
   height: 9px;
   background: rgb(191 229 200);
   width: 7%;
@@ -157,8 +159,6 @@ export default {
 }
 
 .trival-trouble{
-  /* position: absolute;
-  top: 123px; */
   height: 9px;
   background: rgb(179 216 255);
   width: 4.5%;
@@ -168,15 +168,12 @@ export default {
 
 }
 .donot-like{
-  /* position: absolute;
-  top: 133px; */
   height: 9px;
   background: rgb(255 237 181/1);
   width: 10.5%;
   left: 5px;
   border-radius: 0 6px 6px 0;
   display: block;
-
 }
 
 span.data {
@@ -207,8 +204,7 @@ span.data {
   font-weight: 400;
 }
 .bottom-links span svg {
-  color:#AEB3B7;
-  font-size: 16px;
+
 }
 @media (min-width: 1920px) {
   span.data{
@@ -225,7 +221,6 @@ span.data {
   }
 }
 @media (max-width: 767px) {
-  .forlogedin .poolheading a { font-size: 24px;}
   .item-div h4 {
     height: auto;
 }

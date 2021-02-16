@@ -169,9 +169,24 @@ export default {
 </script>
 
 <style scoped>
+.np-status, .traval-trouble-status, .dislike-status, .angry-status{
+  display: flex;
+  align-items: center;
+}
+.np-status span,  .traval-trouble-status span, .dislike-status span, .angry-status span{
+  margin-right: 15px;
+}
+.np-status span.status-img{
+ margin-right: 11px;
+}
+.title-status{
+  max-width: 100px;
+      width: 100%;
+}
 .poll-success {
-  max-width: 1065px;
+  max-width: 1062px;
   margin: 0 auto;
+  padding: 0 0 0 10 px;
 }
 .poll-success ul{
   padding:0;
@@ -179,16 +194,22 @@ export default {
 }
 .poll-success ul li{
   list-style-type: none;
-  font-style: 14px;
+  font-size: 14px;
   font-weight:400;
 }
 .poll-success ul li img{
-  width: 43px;
-  height: 43px;
+  width: 38px;
+  height: 38px;
   margin-left:10px;
 }
-.poll-success ul li:first-child img{ width: 50px;
-  height: 40px;}
+.poll-success ul li:first-child{
+  flex: 1 1 100%;
+}
+.poll-success ul li:first-child img{
+  width: 45px;
+  height: 35px;
+  margin-left: 7px;
+}
 .progress-bar-outer {
   width: 100%;
 }
@@ -366,26 +387,21 @@ export default {
   color: var(--link-blue);
 }
 @media (min-width: 1920px) {
-.notlogedin .poolheading a {
-    font-size: 28px;
-}
+
   .featured-poll button{
-        height: 60px;
-        font-size: 18px;
-            max-width: 240px;
+    height: 60px;
+    max-width: 240px;
   }
   .featured-poll button span{
     width: 40px;
     height: 32px;
-    /* font-size: 17px; */
-        top: 14px;
+    top: 14px;
   }
 }
 
 
 @media (max-width: 1220px) {
   .featured-poll button{
-    font-size: 15px;
     width: 180px;
     height: 40px;
   }
@@ -429,7 +445,7 @@ export default {
     padding: 0 20px;
   }
   .notlogedin .poolheading a {
-      font-size: 22px;
+      /* font-size: 22px; */
       margin: 0px 0 15px;
       /* padding:0 15px; */
   }
@@ -489,6 +505,10 @@ export default {
   .item-footer {
     font-size: 12px;
   }
+  .np-status, .traval-trouble-status, .dislike-status, .angry-status {
+    flex-basis: 100px;
+    flex-wrap: wrap;
+}
 }
 
 @media (max-width: 480px) {

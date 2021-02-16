@@ -151,7 +151,6 @@ export default {
 .item-footer {
   background-color: #fff;
   padding: 10px 0px 5px;
-  /* font-size: 0.8em; */
   color: #777A7C;
   font-weight: 600;
   margin: 0px 0;
@@ -211,21 +210,9 @@ export default {
   font-size: 140%!important;
 }
 
- @media (min-width: 1920px) {
-    /* p, a, button, li, span{ font-size: 20px}
-    h3{ font-size: 26px;} */
-    .item-footer{
-      /* max-width: 350px; */
-    }
-    .poolheading a{
-    font-size: 26px;
-    }
-}
-
  @media (max-width: 1352px) {
    .pollheader{
      display: flex;
-     padding: 0 15px;
    }
    .prevbtn{
      position: unset;
@@ -252,9 +239,6 @@ export default {
     .pollheader{
         margin-bottom: 0px;
   }
-  .poolheading a{
-    font-size: 22px;
-  }
   .prevbtn {
   bottom: 0px;
   top:40%;
@@ -269,10 +253,6 @@ export default {
 }
 @media (max-width: 600px) {
 
-.item-footer svg{
-  /* margin-right: 0;
-      margin-bottom: 10px; */
-}
 .post-tags{
       display: flex;
       flex-wrap: wrap;
@@ -282,10 +262,7 @@ export default {
 
 .poolheading{
     margin: 0;
-    line-height: 18px;
-}
-.poolheading a {
-    font-size: 18px;
+    /* line-height: 18px; */
 }
 }
 @media (max-width: 600px) {

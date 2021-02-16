@@ -1,13 +1,13 @@
 <template>
   <ValidationObserver ref="form" v-slot="{ passes, invalid }">
     <b-form @submit.prevent="passes(signIn)">
-      <div class="w-50 mt-5 ml-auto mr-auto border rounded centerbox">
+      <div class="mt-5 border rounded centerbox">
         <b-row class="w-85 m-auto pb-1">
           <b-col>
             <div class="head-area">
               <h2>{{ $t('sign-in.sign-in-heading') }}</h2>
+              <div>{{ message }}</div>
             </div>
-            <div>{{ message }}</div>
             <div class="field-area">
             <TextInput
               v-model="email"
@@ -165,13 +165,19 @@ export default {
 <style>
 .centerbox{
   max-width: 700px;
+  width: 100%;
   margin: 0 auto 20px;
-  -webkit-box-shadow: var(--big-shadow);
-  box-shadow: var(--big-shadow);
   padding: 25px 20px;
   border-radius: 4px 4px 0 0;
 }
-.head-area{ padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center;}
+.head-area{
+  padding-bottom:0px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 .head-area button{
   background: transparent;
   padding: 10px;
@@ -181,10 +187,10 @@ export default {
 }
 .head-area h2{
   font-size: 20px;
-  margin-bottom: 0;
-  padding-bottom: 0px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
 }
-
 .field-area{
   margin-bottom: 10px;
 }
@@ -260,9 +266,11 @@ export default {
       background-color: #218838;
     border-color: #1e7e34;
 }
-@media (max-width: 767px) {
+@media (max-width: 700px) {
   .centerbox{
-    width:90%!important
+    margin:0 35px;
+    width:auto
   }
 }
+
 </style>

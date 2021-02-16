@@ -102,12 +102,11 @@ export default {
 .pass-change{
   width: 100%;
   margin: 0 auto;
-   box-shadow: #c1c1c1 1px 1px 10px;
-  padding: 15px 20px 20px;
+  padding: 0px 0px 20px;
 }
 .pass-change h3{
-  font-size: 18px;
-  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  border-bottom: 0px solid #ddd;
   padding-bottom: 10px;
 }
 .pass-change .w-50 {

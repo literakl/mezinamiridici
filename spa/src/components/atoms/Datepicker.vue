@@ -131,7 +131,7 @@ export default {
 </script>
 <style scoped>
 .d-label{
-  font-weight: 400;
+  font-weight: 300;
   color: #000;
 }
 </style>

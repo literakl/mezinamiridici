@@ -146,6 +146,13 @@ export default {
  border: 0;
  font-weight: 300;
 }
+@media (max-width: 1235px) {
+.centerbox{
+  max-width:1235px;
+  margin: 0 35px!important;
+}
+}
+
 @media (max-width: 660px) {
 
 .pagelist-box .card-footer{

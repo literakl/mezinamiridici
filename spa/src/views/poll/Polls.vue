@@ -1,5 +1,5 @@
 <template>
-  <div class="centerbox pt-3 w-75 m-auto">
+  <div class="centerbox pt-3 m-auto">
     <div class="mb-2 d-flex flex-row-reverse action-btn">
       <b-button-group>
         <b-button v-if="role" :to="{ name: 'create-poll'}" variant="btn btn-primary">
@@ -132,9 +132,6 @@ export default {
   background: rgb(134 134 134 / 3%);
   padding: 8px 15px;
 }
-.pollslist-box .card-footer svg{
-  /* margin-right: 5px; */
-}
 .pollslist-box .card-footer div{ display: flex;}
 .pollslist-box .card-footer div span{ margin-right: 15px; font-size: 14px;}
 .pollslist-box .card-footer span span{ margin-right: 0;display: inline-block;}
@@ -168,6 +165,9 @@ export default {
  font-weight: 300;
 }
 .pollslist-box .card-footer .btn-group span{ margin-right: 0;}
+@media (max-width: 1235px) {
+  .centerbox{ margin:0 35px!important;}
+}
 @media (max-width: 767px) {
  .pollslist-box .card-footer span{
     display: flex;

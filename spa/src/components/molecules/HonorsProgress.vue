@@ -161,26 +161,17 @@ export default {
 }
 .ranks-list li{
   list-style-type: none;
-  margin-bottom: 10px;
-  min-height: 50px;
-  border: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
   background: #fff;
-  -webkit-box-shadow: #c1c1c1 1px 1px 10px;
-  box-shadow: #c1c1c1 1px 1px 10px;
   text-align: left;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content:  flex-start;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   color: var(--link-color);
   font-weight: 300;
   margin: 0;
-   padding: 15px 20px;
+  padding: 8px 0px;
+  font-size:14px;
 }
 .ranks-list li:first-child{
   min-height: auto;
@@ -203,7 +194,6 @@ export default {
   @media (max-width: 600px) {
   .ranks-list li:first-child{ flex-direction: row;}
   .ranks-list li{
-        padding:20px;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;

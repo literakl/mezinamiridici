@@ -80,10 +80,7 @@ export default {
 .share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; padding-bottom: 4px!important; }
 .share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
 @media (min-width: 1920px) {
-.share-box{
-    /* position:fixed;
-    left:0; */
-  }
+
 }
 
 @media (max-width: 1235px) {

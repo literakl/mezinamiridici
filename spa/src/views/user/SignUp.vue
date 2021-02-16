@@ -2,8 +2,8 @@
   <div class="mt-5 border centerbox">
     <div class="head-area">
       <h2>{{ $t('sign-up.heading') }}</h2>
+      <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
     </div>
-    <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="! succeeded">
         <fieldset :disabled='wholeDisable'>
@@ -41,7 +41,9 @@
           :label="$t('sign-up.personal-data')"
           name="personal-data"
           identifier="personalData"/>
-        <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
+        </div>
+        <div class="prof-form-wrap">
+          <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
         </div>
         <div class="field-area">
         <h5>{{ $t('sign-up.consents') }}</h5>
@@ -308,30 +310,22 @@ export default {
 .centerbox{
   max-width:700px;
   margin: 0 auto 20px;
-  box-shadow: var(--big-shadow);
       padding: 25px 35px;
   border-radius: 4px 4px 0 0;
 }
 .head-area{
-  padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  /* padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center; */
-
+  padding-bottom:0px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   }
 .head-area h2 {
-    font-size: 20px;
-    margin-bottom: 0;
-    padding-bottom: 0px;
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
 }
 .field-area{
   margin-bottom: 10px;
@@ -355,10 +349,19 @@ export default {
 .success-msg{
   font-size: 15px;
 }
-@media (max-width: 500px) {
-  .centerbox{
-        padding: 25px 16px;
+.prof-form-wrap .centerbox{
+  box-shadow: none;
+  padding: 0;
+}
+@media (max-width: 700px) {
+  .centerbox, .hero-head{
+    margin-right:35px;
+    margin-left:35px;
+  }
+.prof-form-wrap .centerbox{
+  margin: 0
   }
 }
+
 
 </style>

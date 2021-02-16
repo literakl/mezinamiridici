@@ -1,6 +1,6 @@
 <template>
-  <div class="pt-5 w-75 m-auto pb-5">
-    <div class="hero-head">
+  <div class="mt-5 border rounded update-profile">
+    <div class="head-area">
       <h2>{{ $t('edit-profile.heading') }}</h2>
       <p>{{ $t('edit-profile.body') }}</p>
     </div>
@@ -184,17 +184,44 @@ export default {
 };
 </script>
 <style scoped>
-.hero-head{
-  max-width: 700px;
-      margin: 0 auto;
+.update-profile{
+  max-width:700px;
+  margin: 0 auto;
+  padding: 25px 35px;
+  width: 100%;
 }
-.hero-head h2{
-      font-size: 22px;
-
+.update-profile .centerbox{ padding: 0}
+.head-area{
+  padding-bottom:10px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.head-area button{
+  background: transparent;
+  padding: 10px;
+  border: 0;
+  width: 100px;
+  font-size: 14px;
+}
+.head-area h2{
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
 }
 .green{
   background: var(--color-green);
   border: 0; color: #fff;
+}
+@media (max-width: 700px) {
+  .update-profile{
+    margin-right:35px;
+    margin-left:35px;
+    width:auto;
+  }
 }
 
 </style>

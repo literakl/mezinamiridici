@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="container">
-      <div class="row pb-3">
+    <div class="selectors">
       <Radio
         class="post-box mr-3"
         v-model="filter"
@@ -14,7 +13,6 @@
         :label="$t('profile.filter.comments')"
         name="filter"
         identifier="comment"/>
-      </div>
     </div>
 
     <ul class="post-list">
@@ -107,24 +105,27 @@ export default {
 };
 </script>
 <style scoped>
+.selectors{
+  display: flex;
+  margin-bottom:10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .post-box, .comment-box{    display: block;
-  border-radius: 3px;
-  border: 1px solid #f3f3f3;
-  padding: 2px 10px;
-  text-align: center;
+
 }
 .post-list{ padding: 0; margin: 0; min-height: 450px;}
 .post-list li, .comment-box li{list-style-type: none;
   display: flex;
   border-bottom: 1px solid #f3f3f3;
   margin-bottom: 3px;
-  box-shadow: #c1c1c1 1px 1px 10px;
-  min-height: 55px;
+  /* box-shadow: #c1c1c1 1px 1px 10px; */
   display: flex;
   align-items: flex-start;
-  padding: 15px 20px;
+  padding: 8px 0px;
   z-index: 1;
-  height: auto;
+  font-size: 14px;
 }
 .post-list li span, .comment-box li span{
   max-width: 150px;
@@ -139,7 +140,7 @@ export default {
 .post-list li:hover, .comment-box li:hover{
   background: white;
   z-index: 2; transition: 0.2s ease;transform:
-  translateX(-2px) translateY(-2px) scale(1.03);
+  translateX(-2px) translateY(-2px) scale(1.01);
 }
 @media (min-width: 1920px) {
     .post-list li span, .comment-box li span{

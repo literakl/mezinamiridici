@@ -1,5 +1,5 @@
 <template>
-  <div class="analyze-vote pt-3 ml-auto mr-auto mt-auto mb-5">
+  <div class="analyze-vote pt-3 mb-5">
     <div class="row">
       <div class="col">
         <ContentLoading v-if="! item" type="poll"/>
@@ -212,17 +212,14 @@ export default {
 }
 .campbox-two .card-header
 {
-      font-size: 1.2rem;
     font-weight: 500;
-
     background: rgb(191 229 200 / 1)!important;
     color: #656b6f!important;
     border-radius: 4px 4px 0 0;
     text-transform: uppercase;
 }
 .campbox-one .card-header{
-      background: rgb(179 216 255 / 1);
-       font-size: 1.2rem;
+    background: rgb(179 216 255 / 1);
     font-weight: 500;
      color: #656b6f!important;
     border-radius: 4px 4px 0 0;
@@ -240,6 +237,9 @@ export default {
 }
 .showcase-wrap legend{ font-weight: 500;}
 @media (max-width: 1235px) {
+  .analyze-vote {
+  margin:0 35px;
+}
   .campbox-one{
     padding-left: 25px;
   }

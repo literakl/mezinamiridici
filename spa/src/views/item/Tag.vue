@@ -85,4 +85,9 @@ export default {
   max-width: 1235px;
   margin:0 auto;
 }
+ @media (max-width: 1920px) {
+.centerbox{
+  margin: 0 35px 20px;
+  }
+}
 </style>

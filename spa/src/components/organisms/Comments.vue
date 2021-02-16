@@ -91,11 +91,6 @@ export default {
 <style scoped>
 
 .comment-area{
-  /* padding: 25px; */
-  /* border: 1px solid #ddd; */
-  /* border-radius: 4px; */
-  /* background: white; */
-  /* box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
   margin:0 auto;
   width:100%
 }

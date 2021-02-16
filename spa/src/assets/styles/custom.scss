@@ -3,6 +3,7 @@ $gray-900: #212529 !default;
 $primary: $gray-900;
 :root,
 html[theme="default"] {
+    --theme-primary: #dcb90b;
   --text-color: #343A40;
   --text-color-light: #656565;
   --link-color:#777A7C;
@@ -31,14 +32,42 @@ html[theme="default"] {
     --drop-shadow-two: #c1c1c1 1px 1px 10px;
 
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body{
+    margin: 0;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 0.875rem;
+    font-size: 1rem;
     color: #333;
 }
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+  display: block;
+}
+[tabindex="-1"]:focus:not(:focus-visible) {
+    outline: 0 !important;
+}
 
+input,
+button,
+select,
+optgroup,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
 input:focus {
     outline-offset: 0;
   }
@@ -67,6 +96,10 @@ input{
     font-size: 14px!important;
     font-weight: 300!important;
 }
+textarea {
+    overflow: auto;
+    resize: vertical;
+  }
 label{ font-weight: 300; }
 a{
     color: var(--link-color);
@@ -93,7 +126,9 @@ input[type="text"], input[type="password"], textarea, select {
 }
 svg{
     // color: var(--text-color-light);
-    color: #aeb3b7;
+    color: #8899a7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 .text-danger{
     font-size: 14px;
@@ -115,12 +150,12 @@ svg{
         a{
             display: flex;
             align-items: center;
-            font-size: 16px;
-
+            font-size: 15px;
+            color: var(--theme-primary)!important;
             svg{
                 font-size: 10px!important;
                 margin-right: 10px;
-                color: #ffc107;
+                color: var(--theme-primary);
             }
 
 
@@ -129,7 +164,7 @@ svg{
         }
         ul.dropdown-menu{ border-radius: 0;
             li {
-                a{ padding:5px 15px;background-color: transparent!important; font-size: 14px;;
+                a{ padding:5px 15px;background-color: transparent!important; font-size: 14px; color: var(--text-color)!important;
                     :hover{  background-color: #f8f9fa!important;}
                     :active{ color: #fff;}
                 }
@@ -171,18 +206,23 @@ svg{
     padding: 0!important;
 }
 
-.no-padding ul.nav-tabs{ border: 0;
+.no-padding ul.nav-tabs{
      li{
         a{
             border-radius: 0;
             color: var(--text-color-light);
             font-size: 14px;
-        }.active{
-            color: #333;
+
+        }
+        :hover{ border: 1px solid transparent;}
+        .active{
             font-weight: 400;
             border-radius: 3px;
-            border: 1px solid #ddd;
-            box-shadow: #c1c1c1 1px 1px 10px;
+            border-left: 1px solid transparent;
+            border-right: 1px solid transparent;
+            border-top: 1px solid transparent;
+            border-bottom: 3px solid var(--theme-primary);
+            // box-shadow: #c1c1c1 1px 1px 10px;
         }
     }
 }
@@ -195,15 +235,13 @@ svg{
 
 .prof-header .b-avatar{  background-color: transparent; border: 1px solid #ddd; color: #AEB3B7!important;}
 @media (min-width: 1920px) {
-    p, button, li{ font-size: 16px}
-    span{ font-size: 15px}
-    a{ font-size: 15px}
+    // p, button, li{ font-size: 16px}
+    // span{ font-size: 15px}
+    // a{ font-size: 15px}
 
 
 svg{ font-size: 20px;}
 
-.title-tag h2 a{ font-size: 32px!important;}
-.title-tag span {font-size: 15px;}
 .brand-pic a{
     width: 90px;
 }
@@ -211,13 +249,6 @@ svg{ font-size: 20px;}
     width: 100%;
     margin-right: 15px;
 }
-.rightmenu li a{
-    font-size: 20px;
-}
-.no-padding ul.nav-tabs li a{
-    font-size: 17px;
- }
-
 }
 @media (max-width: 992px) {
 
@@ -232,21 +263,18 @@ svg{ font-size: 20px;}
     .brand-pic{ width: 50px;
         img{width: 90%;}
     }
-    .title-tag {padding-right: 10px;
-        h2 {
-           a {
-               font-size: 22px;
-           }
-        }
-        span{ font-size: 12px;}
+    .title-tag {
+        padding-right: 10px;
     }
-
-    .no-padding ul.nav-tabs li a{ padding: 10px; font-size: 13px;}
-.w-75{
-    max-width: 100%;
-    width: 100%!important;
-
-}
+    .no-padding ul.nav-tabs{ border-color: #f3f3f3;
+    li{
+        a{ padding: .5rem 1rem;}
+    }
+    }
+    .w-75 {
+        max-width: 100%;
+        width: 100% !important;
+    }
 }
 @media (max-width: 575px) {
 
@@ -272,6 +300,11 @@ svg{ font-size: 20px;}
 .rightmenu li ul.dropdown-menu li a{
     padding: 5px 15px!important;
 
+}
+.no-padding ul.nav-tabs{ border-color: #f3f3f3;
+    li{
+        a{ font-size: 13px; padding: .5rem 0.5rem;}
+    }
 }
 
 }

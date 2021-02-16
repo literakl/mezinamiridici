@@ -139,8 +139,18 @@ export default {
     font-style: normal;
     font-weight: bold;
   }
+  .post-content table thead:first-child tr{ background: #fafbf2;}
+
+.post-content table thead tr{
+ background: transparent
+}
+.post-content table:before{
+  content: '';
+  overflow-x: auto;
+}
 .post-content table{
   font-size: 14px;
+
 }
 .post-content h2, .post-content h3{
   font-size: 18px;
@@ -155,7 +165,9 @@ export default {
       box-sizing: border-box;
       font-size: 14px;
   }
-  .post-content table tr th {vertical-align: middle;}
+.post-content table tr th {
+  vertical-align: middle;
+}
 .post-content table tr td {
       border: 1px solid #DBDBE2;
       vertical-align: middle;
@@ -183,28 +195,10 @@ export default {
   tbody tr td:first-child {
       border-left: none;
   }
-  .post-details-wrap .share-box{
-  /* left: 0; */
-}
 
-
-.content-wrap{
-  /* position:relative; */
+@media (max-width: 1235px) {
+  .post-details-wrap{
+    padding: 0 35px;
+  }
 }
-    @media (min-width: 1920px) {
-    .post-content table{ font-size: 18px!important; overflow-x: auto; border: red 1px solid;}
-    .post-details-wrap h1{ font-size: 26px}
-}
-    @media (max-width: 1235px) {
-.post-details-wrap{
-  padding: 0 40px;
-}
-    }
-    @media (max-width: 992px) {
-
-.share-links-wrap{
-  /* right: 55px; */
-
-}
-    }
 </style>

@@ -57,23 +57,11 @@ export default {
 }
 
 
-@media (max-width: 1280px) {
+@media (max-width: 1235px) {
 .single-post-wrap{
-    padding: 0px;
-    }
-  .comment-outer{
-    padding: 0px 15px 0 40px;
-  }
+    padding: 0 35px;
 }
-@media (max-width: 992px) {
-.comment-outer{
-    padding: 0px 15px 0 15px;
-  }
 }
 @media (max-width: 767px) {
-  .share-links-wrap{
-    /* top: 347px; */
-  }
-
 }
 </style>

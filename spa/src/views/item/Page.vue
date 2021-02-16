@@ -58,13 +58,12 @@ export default {
 .page-content-wrap .share-box { position:unset}
 
 @media (max-width: 1235px) {
+  .pages-wrap{
+  margin: 0 35px;
+}
   .first-com-box{
     flex-direction: column;
   }
-.page-content-wrap{
-  padding: 0 15px;
-}
-
 }
 
 </style>

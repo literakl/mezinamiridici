@@ -18,9 +18,9 @@ export default {
 <style scoped>
 .post-tags{
   padding-top: 20px;
-      display: flex;
-    align-items: center;
-    justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 .post-tags a{
   font-weight:300;
@@ -36,10 +36,9 @@ export default {
 }
 
  @media (min-width: 1920px) {
-   .post-tags a{ font-size:16px}
    .item-footer svg {
 
-    font-size: 22px;
+    font-size: 20px;
 }
  }
 @media (max-width: 600px) {

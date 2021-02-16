@@ -224,8 +224,7 @@ export default {
 }
 .comments{
   width: 100%;
-  /* border: 1px solid #ddd; */
-  padding: 0px 19px;
+  /* padding: 0px 19px; */
 }
 .comments p{
   color:var(--dark-color);
@@ -353,9 +352,6 @@ blockquote {
   .comment-wrap{
     flex-direction: column;
   }
-  .comment-area{
-    padding: 25px;
-  }
    .author-det {
     width: 100%;
     flex-direction: row;
@@ -375,8 +371,6 @@ blockquote {
   }
 }
 
-@media (max-width: 1200px) {
-}
 @media (max-width: 767px) {
 .comment__child {
     margin-left: 15px;

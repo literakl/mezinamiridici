@@ -108,17 +108,24 @@ export default {
 </script>
 <style scoped>
 .centerbox{
-  max-width:700px;
+   max-width:700px;
   margin: 0 auto 20px;
-  box-shadow: var(--big-shadow);
-  padding: 25px 20px;
+      padding: 25px 35px;
   border-radius: 4px 4px 0 0;
 }
-.head-area{ padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center;}
-.head-area h2{
-    font-size: 20px;
-    margin-bottom: 0;
-    padding-bottom: 0px;
+.head-area{
+  padding-bottom:0px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  }
+.head-area h2 {
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
 }
 .field-area{
   margin-bottom: 10px;
@@ -141,5 +148,11 @@ export default {
 }
 .errormsg{
   font-size: 14px;
+}
+@media (max-width: 700px) {
+  .centerbox, .hero-head{
+    margin-right:35px;
+    margin-left:35px;
+  }
 }
 </style>

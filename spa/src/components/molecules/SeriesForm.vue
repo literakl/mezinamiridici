@@ -137,12 +137,8 @@ export default {
 </script>
 
 <style>
-  .align-nicely {
-    /* display: grid;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); */
-  }
+  .group-one { font-size: 14px;}
+  .group-one .input-group-text{font-size: 14px;}
   fieldset.label{
     display: flex;
   }
@@ -169,7 +165,6 @@ export default {
   .group-one .form-row{
     flex-direction: column;
   }
-  .group-one input{ font-size: 14px;}
    .group-one .form-row select{ color: var(--text-color-light);}
   .group-one .input-group-text{
 font-size: 14px;
