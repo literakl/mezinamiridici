@@ -1,118 +1,63 @@
 <template>
-  <div class="mb-3 notlogedin">
-
-
-    <div v-if="voted" class="d-flex justify-content-center featured-poll">
-      <b-button variant="success" :class="myVoteClass('neutral')" class="m-3">
-        <img src="/images/icons/happy.svg" class="" alt="">
-        {{ $t('poll.choices.neutral') }}
-        <span class="badge badge-pill badge-white">{{ this.votes.neutral }}%</span>
-      </b-button>
-      <b-button variant="primary" :class="myVoteClass('trivial')" class="m-3">
-        <img src="/images/icons/ok.svg" class="" alt="">
-        {{ $t('poll.choices.trivial') }}
-        <span class="badge badge-pill badge-white">{{ this.votes.trivial }}%</span>
-      </b-button>
-      <b-button variant="warning" :class="myVoteClass('dislike')" class="m-3">
-        <img src="/images/icons/dislike.svg" class="" alt="">
-        {{ $t('poll.choices.dislike') }}
-        <span class="badge badge-pill badge-white">{{ this.votes.dislike }}%</span>
-      </b-button>
-      <b-button variant="danger" :class="myVoteClass('hate')" class="m-3">
-        <img src="/images/icons/angry.svg" class="" alt="">
-        {{ $t('poll.choices.hate') }}
-        <span class="badge badge-pill badge-white">{{ this.votes.hate }}%</span>
-      </b-button>
-
-
-    </div>
- <div class="poll-success">
-   <h4 class="poolheading">
+  <div class="mb-3">
+    <h4 class="pollheading">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
       </router-link>
     </h4>
-        <ul>
-            <li>
-              <div class="np-status">
-                <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
-                <span class="status-img"><img src="/images/icons/happy.svg" class="" alt=""></span>
-                <div class="progress-bar-outer">
-                  <div class="progress-bar">
-                    <span class="progress-bar-fill-green" v-bind:style="{ width: ['33%'] }"><i>{{ this.votes.neutral }}%</i></span>
-                  </div>
-                </div>
+
+    <div v-if="voted" class="poll-success">
+      <ul>
+        <li>
+          <div class="np-status">
+            <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
+            <span class="status-img"><img src="/images/icons/happy.svg" class="" alt=""></span>
+            <div class="progress-bar-outer">
+              <div class="progress-bar">
+                <span class="progress-bar-fill-green" v-bind:style="{ width: ['33%'] }"><i>{{ this.votes.neutral }}%</i></span>
               </div>
-            </li>
-            <li>
-              <div class="traval-trouble-status">
-                <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
-                <span class="status-img"><img src="/images/icons/ok.svg" class="" alt=""></span>
-                <div class="progress-bar-outer">
-                  <div class="progress-bar">
-                    <span class="progress-bar-fill-blue" style="width: 11%;"><i>11%</i></span>
-                  </div>
-                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="traval-trouble-status">
+            <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
+            <span class="status-img"><img src="/images/icons/ok.svg" class="" alt=""></span>
+            <div class="progress-bar-outer">
+              <div class="progress-bar">
+                <span class="progress-bar-fill-blue" style="width: 11%;"><i>11%</i></span>
               </div>
-            </li>
-            <li>
-              <div class="dislike-status">
-                <span class="title-status">{{ $t('poll.choices.dislike') }}</span>
-                <span class="status-img"><img src="/images/icons/dislike.svg" class="" alt=""></span>
-                <div class="progress-bar-outer">
-                  <div class="progress-bar">
-                    <span class="progress-bar-fill-yellow" style="width: 56%;"><i>56%</i></span>
-                  </div>
-                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="dislike-status">
+            <span class="title-status">{{ $t('poll.choices.dislike') }}</span>
+            <span class="status-img"><img src="/images/icons/dislike.svg" class="" alt=""></span>
+            <div class="progress-bar-outer">
+              <div class="progress-bar">
+                <span class="progress-bar-fill-yellow" style="width: 56%;"><i>56%</i></span>
               </div>
-            </li>
-             <li>
-              <div class="angry-status">
-                <span class="title-status">{{ $t('poll.choices.hate') }}</span>
-                <span class="status-img"><img src="/images/icons/angry.svg" class="" alt=""></span>
-                <div class="progress-bar-outer">
-                  <div class="progress-bar">
-                    <span class="progress-bar-fill-red" style="width: 13.8%;"><i>13.8 %</i></span>
-                  </div>
-                </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="angry-status">
+            <span class="title-status">{{ $t('poll.choices.hate') }}</span>
+            <span class="status-img"><img src="/images/icons/angry.svg" class="" alt=""></span>
+            <div class="progress-bar-outer">
+              <div class="progress-bar">
+                <span class="progress-bar-fill-red" style="width: 13.8%;"><i>13.8 %</i></span>
               </div>
-            </li>
-        </ul>
-      </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 
     <div v-if="!voted" class="d-flex justify-content-center">
       <PollButtons v-on:do-vote="onVote"/>
     </div>
-
-    <div class="mt-3 py-3 mb-5 item-footer" style="display:none;">
-      <template>
-        <div class="post-time">
-      <BIconCalendarRange scale="2"></BIconCalendarRange>
-      <span class="date"><Date :date="poll.info.date" format="dynamicDate" /></span>
-        </div>
-      </template>
-      <template>
-        <div class="post-author">
-      <BIconPersonCircle scale="2"></BIconPersonCircle>
-      <span><ProfileLink :profile="poll.info.author"/></span>
-       </div>
-      </template>
-      <template>
-        <div class="post-rating">
-      <BIconCollection scale="2"></BIconCollection>
-      <span>{{ $t('poll.votes') }}: {{ poll.votes.total }}</span>
-       </div>
-      </template>
-       <template>
-        <div class="post-comments">
-      <BIconChatTextFill scale="2"></BIconChatTextFill>
-      <span><router-link :to="{ name: 'poll', params: { slug: poll.info.slug }, hash: '#comments'}">
-        {{ $t('comment.comments') }}: {{ poll.comments.count }}
-      </router-link></span>
-       </div>
-      </template>
-    </div>
-
   </div>
 </template>
 
@@ -120,21 +65,13 @@
 
 import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
-import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import Date from '@/components/atoms/Date.vue';
-import { BButton, BIconPersonCircle, BIconCalendarRange, BIconCollection, BIconChatTextFill } from 'bootstrap-vue';
+import { BButton } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
   components: {
     PollButtons,
-    ProfileLink,
-    Date,
     BButton,
-    BIconPersonCircle,
-    BIconCalendarRange,
-    BIconCollection,
-    BIconChatTextFill,
   },
   props: {
     poll: Object,
@@ -186,7 +123,7 @@ export default {
 .poll-success {
   max-width: 1062px;
   margin: 0 auto;
-  padding: 0 0 0 10 px;
+  padding: 0 0 0 10px;
 }
 .poll-success ul{
   padding:0;
@@ -373,7 +310,7 @@ export default {
   color: #777A7C;
   text-decoration: none;
 }
-.notlogedin .poolheading a{
+.pollheading a{
   font-size: 24px;
   text-decoration: none;
   /* margin: 10px 0 40px; */
@@ -383,7 +320,7 @@ export default {
     color: var(--text-color);
     text-align: left;
 }
-.notlogedin .poolheading a:hover{
+.pollheading a:hover{
   color: var(--link-blue);
 }
 @media (min-width: 1920px) {
@@ -434,7 +371,7 @@ export default {
     margin: 35px 5px 30px!important;
     font-size: 14px;
   }
-  .notlogedin .poolheading a{
+  .pollheading a{
     margin-bottom: 20px;
   }
 }
@@ -444,7 +381,7 @@ export default {
     justify-content: space-around!important;
     padding: 0 20px;
   }
-  .notlogedin .poolheading a {
+  .pollheading a {
       /* font-size: 22px; */
       margin: 0px 0 15px;
       /* padding:0 15px; */

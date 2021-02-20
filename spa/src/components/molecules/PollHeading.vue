@@ -13,7 +13,7 @@
                 <TagList :tags="tags"/>
               </template>
             </div>
-            <h4 class="poolheading">
+            <h4 class="pollheading">
                <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
                   {{item.info.caption}}
                 </router-link>
@@ -103,10 +103,10 @@ export default {
   padding: 0;
 }
 .pollheader .center-box{ width: 100%; padding: 0;}
-.poolheading{
+.pollheading{
   margin: 0;
 }
-.poolheading a{
+.pollheading a{
   font-size:21px;
   text-decoration: none;
   color: var(--text-color);
@@ -260,7 +260,7 @@ export default {
 }
 .post-tags svg{ margin-right: 15px;}
 
-.poolheading{
+.pollheading{
     margin: 0;
     /* line-height: 18px; */
 }
