@@ -248,4 +248,9 @@ export default {
         width: 145px;
   }
 }
+@media (max-width: 360px) {
+  .featured-poll button {
+        width: 122px;
+  }
+}
 </style>

@@ -186,7 +186,7 @@ export default {
 .poll-success {
   max-width: 1062px;
   margin: 0 auto;
-  padding: 0 0 0 10 px;
+  padding: 0 0 0 10px;
 }
 .poll-success ul{
   padding:0;

@@ -100,7 +100,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 0;
+
 }
 .pollheader .center-box{ width: 100%; padding: 0;}
 .poolheading{
@@ -247,9 +247,7 @@ export default {
   bottom: 0px;
   top:40%;
 }
-.pollheader{
-  padding: 0 10px;
-}
+
 }
 @media (max-width: 600px) {
 
@@ -264,14 +262,17 @@ export default {
     margin: 0;
     /* line-height: 18px; */
 }
+.pollheader{
+  padding: 0 0px;
+}
 }
 @media (max-width: 600px) {
  .nextbtn{
-   width: 40px;
+   width: 35px;
  }
 .prevbtn a, .nextbtn a{
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
 }
 
 }
