@@ -1,25 +1,25 @@
 <template>
-      <div class="normal-poll">
-        <div class="featured-poll">
-          <h4 class="pb-2">{{ $t('poll.your-opinion') }}</h4>
-        <b-button variant="success" v-on:click="voted('neutral')">
-          <img src="/images/icons/happy.svg" class="" alt="">
-          {{ $t('poll.choices.neutral') }}
-        </b-button>
-        <b-button variant="primary" v-on:click="voted('trivial')">
-          <img src="/images/icons/ok.svg" class="" alt="">
-          {{ $t('poll.choices.trivial') }}
-        </b-button>
-        <b-button variant="warning" v-on:click="voted('dislike')">
-          <img src="/images/icons/dislike.svg" class="" alt="">
-          {{ $t('poll.choices.dislike') }}
-        </b-button>
-        <b-button variant="danger" v-on:click="voted('hate')">
-          <img src="/images/icons/angry.svg" class="" alt="">
-          {{ $t('poll.choices.hate') }}
-        </b-button>
-        </div>
-      </div>
+  <div class="normal-poll">
+    <div class="featured-poll">
+      <h4 class="pb-2">{{ $t('poll.your-opinion') }}</h4>
+      <b-button variant="success" v-on:click="voted('neutral')">
+        <img src="/images/icons/happy.svg" class="" alt="">
+        {{ $t('poll.choices.neutral') }}
+      </b-button>
+      <b-button variant="primary" v-on:click="voted('trivial')">
+        <img src="/images/icons/ok.svg" class="" alt="">
+        {{ $t('poll.choices.trivial') }}
+      </b-button>
+      <b-button variant="warning" v-on:click="voted('dislike')">
+        <img src="/images/icons/dislike.svg" class="" alt="">
+        {{ $t('poll.choices.dislike') }}
+      </b-button>
+      <b-button variant="danger" v-on:click="voted('hate')">
+        <img src="/images/icons/angry.svg" class="" alt="">
+        {{ $t('poll.choices.hate') }}
+      </b-button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -199,7 +199,7 @@ export default {
   .featured-poll button {
         width: 45%;
   }
-  .poolheading a{
+  .pollheading a{
     font-size: 24px;
     margin: 0px 0 15px;
   }
