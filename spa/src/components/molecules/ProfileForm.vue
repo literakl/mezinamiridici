@@ -278,28 +278,33 @@ export default {
     width: 100%!important;
   }
   .field-area select{
-    width: 98%;
+    width: calc(100% - 2%);
   }
   .centerbox label{
     display: block;
-    font-weight: 400;
+    /* font-weight: 400; */
   }
   .radio-boxes{
     display: flex;
   }
   .public-box, .private-box{
     display: block;
-    border-radius: 3px;
+    /* border-radius: 3px;
     padding: 2px 0px;
-    text-align: center;
+    text-align: center; */
     margin-right: 10px;
   }
-  .d-label{
+  /* .d-label{
     font-weight: 300!important;
     color: #000;
   }
   .d-label div{
     font-weight: 300!important;
     color: #000;
+  } */
+  @media (max-width: 700px) {
+  .field-area select{
+    width: calc(100% - 5%);
   }
+}
 </style>

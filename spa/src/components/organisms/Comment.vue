@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="repling-box">
+    <div class="replying-box">
       <div v-if="replying">
         <CommentForm :isShow="replying" :itemId="itemId" :parent="replyId" :commentId="comment._id" @dismiss="dismiss"/>
       </div>
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style>
-
+/* Comments Inside Css Start */
 .comment-wrap{
   display: flex;
  width: 100%;
@@ -188,29 +188,27 @@ export default {
    align-items: flex-start;
    flex-direction: column;
 }
-.author-det{    width: 100%;
+.author-det{
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   font-size: 13px;
   font-weight: 400;
-  /* background: #f7f7f8; */
   padding: 5px 0px;
-  /* border-radius: 6px 6px 0 0; */
   margin-top: 5px;
   position: relative;
 
 }
 .author-det:after{
-  position: absolute;
-  /* content: ""; */
+  /* position: absolute;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 10px solid #f9f9f9;
   right: -15px;
-  transform: rotate(90deg);
+  transform: rotate(90deg); */
 }
 .author-det span{
   margin-right: 10px;
@@ -224,7 +222,6 @@ export default {
 }
 .comments{
   width: 100%;
-  /* padding: 0px 19px; */
 }
 .comments p{
   color:var(--dark-color);
@@ -236,12 +233,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-      padding-top: 10px;
+  padding-top: 10px;
 
 }
 .comment-buttons div{
-      display: flex;
-      align-items: center;
+  display: flex;
+  align-items: center;
 }
 .comment-buttons button{
   border: 0px solid #ddd;
@@ -249,10 +246,10 @@ export default {
   padding: 0px;
   margin-right: 10px!important;
   font-weight: 400;
-      font-size: 13px;
-display: flex;
-      align-items: center;
-      box-shadow: none;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
 }
 .act-btn button svg{
   margin-right: 0px!important;
@@ -287,57 +284,57 @@ blockquote {
   font-style: italic;
   overflow-wrap: anywhere;
 }
-  blockquote p {
-    font-style: normal;
-    font-weight: bold;
-  }
+blockquote p {
+  font-style: normal;
+  font-weight: bold;
+}
 
-  table {
-     /* display: block!important;
+table {
+    /* display: block!important;
 
-    overflow-x: auto!important;
-    width: 100%!important;
-    height: 100%!important; */
-    width: 100%!important;
-    font-size: 14px!important;
-  }
-  /* table {
-      border: 1px solid #DBDBE2;
-      border-radius: 3px;
-      position: relative;
-      height: 100%;
-      width: 100%;
-      box-sizing: border-box;
-  } */
-  th{
-    vertical-align: middle;
-  }
-  td {
-      border: 1px solid #DBDBE2;
-      padding: 0;
-      vertical-align: top;
-  }
-  td div{
-      padding: 10px;
-      /* height: 100%; */
-  }
-  tbody tr:first-child td {
-      border-top: none;
-  }
-  tbody tr:last-child td {
-      border-bottom: none;
-  }
-  tbody tr td:last-child {
-      border-right: none;
-  }
-  tbody tr td:first-child {
-      border-left: none;
-  }
+  overflow-x: auto!important;
+  width: 100%!important;
+  height: 100%!important; */
+  width: 100%!important;
+  font-size: 14px!important;
+}
+/* table {
+    border: 1px solid #DBDBE2;
+    border-radius: 3px;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+} */
+th{
+  vertical-align: middle;
+}
+td {
+    border: 1px solid #DBDBE2;
+    padding: 0;
+    vertical-align: top;
+}
+td div{
+    padding: 10px;
+    /* height: 100%; */
+}
+tbody tr:first-child td {
+    border-top: none;
+}
+tbody tr:last-child td {
+    border-bottom: none;
+}
+tbody tr td:last-child {
+    border-right: none;
+}
+tbody tr td:first-child {
+    border-left: none;
+}
 
-  @media (min-width: 1920px) {
-    /* p, a, button, li, span{ font-size: 20px} */
-    /* .item-footer svg{
-    font-size: 14px;
+@media (min-width: 1920px) {
+  /* p, a, button, li, span{ font-size: 20px} */
+  /* .item-footer svg{
+  font-size: 14px;
 }
 .comments p {
     line-height: 28px;
@@ -362,9 +359,9 @@ blockquote {
     margin-right: 10px;
   }
   .author-det:after {
-    right: 2px;
+    /* right: 2px;
     transform: rotate(180deg);
-    bottom: -10px;
+    bottom: -10px; */
   }
   .comments {
     width: 100%;

@@ -10,8 +10,8 @@
       <ul>
         <li>
           <div class="np-status">
+            <span class="status-img"><img src="/images/icons/happy.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
-            <span class="status-img"><img src="/images/icons/happy.svg" class="" alt=""></span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
                 <span class="progress-bar-fill-green" v-bind:style="{ width: ['33%'] }"><i>{{ this.votes.neutral }}%</i></span>
@@ -21,8 +21,8 @@
         </li>
         <li>
           <div class="traval-trouble-status">
+            <span class="status-img"><img src="/images/icons/ok.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
-            <span class="status-img"><img src="/images/icons/ok.svg" class="" alt=""></span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
                 <span class="progress-bar-fill-blue" style="width: 11%;"><i>11%</i></span>
@@ -32,8 +32,8 @@
         </li>
         <li>
           <div class="dislike-status">
+            <span class="status-img"><img src="/images/icons/dislike.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.dislike') }}</span>
-            <span class="status-img"><img src="/images/icons/dislike.svg" class="" alt=""></span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
                 <span class="progress-bar-fill-yellow" style="width: 56%;"><i>56%</i></span>
@@ -43,8 +43,8 @@
         </li>
         <li>
           <div class="angry-status">
+            <span class="status-img"><img src="/images/icons/angry.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.hate') }}</span>
-            <span class="status-img"><img src="/images/icons/angry.svg" class="" alt=""></span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
                 <span class="progress-bar-fill-red" style="width: 13.8%;"><i>13.8 %</i></span>
@@ -65,13 +65,11 @@
 
 import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
-import { BButton } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
   components: {
     PollButtons,
-    BButton,
   },
   props: {
     poll: Object,
@@ -137,7 +135,7 @@ export default {
 .poll-success ul li img{
   width: 38px;
   height: 38px;
-  margin-left:10px;
+  margin-left:0px;
 }
 .poll-success ul li:first-child{
   flex: 1 1 100%;
@@ -145,7 +143,7 @@ export default {
 .poll-success ul li:first-child img{
   width: 45px;
   height: 35px;
-  margin-left: 7px;
+  margin-left: -3px;
 }
 .progress-bar-outer {
   width: 100%;
@@ -217,17 +215,13 @@ export default {
 .resetpass{
   width:100%;
 }
-.featured-poll {
-  display: none!important;
-}
 .featured-poll button{
-    display: flex;
+    /* display: flex;
     flex-direction: row-reverse;
     align-items: center;
     position: relative;
     max-width: 210px;
     width: 100%;
-    /* border-radius: 100px; */
     justify-content: center;
     text-align: center;
     box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
@@ -237,26 +231,25 @@ export default {
     height: 50px;
     margin: 15px 15px 5px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 400; */
 }
 .featured-poll button.btn-success img{
-  width: 50px;
+  /* width: 50px;
   height: 40px;
-  top: -38px;
+  top: -38px; */
 }
-.featured-poll button img{ position: absolute;
+.featured-poll button img{
+  /* position: absolute;
    top: -42px;
     width: 43px;
     height: 43px;
-    /* left: auto; */
-    /* right: auto; */
     display: block;
     margin: 0 auto;
     right: 20%;
-    left: 20%;
+    left: 20%; */
 }
 .featured-poll button span{
-    width: 32px;
+    /* width: 32px;
     height: 27px;
     display: flex;
     align-items: center;
@@ -268,7 +261,7 @@ export default {
     font-size: 13px;
     box-shadow: var(--big-shadow);
     border-radius: 3px;
-    top: 11px;
+    top: 11px; */
 }
 .item-div {
   border-width: 10px;
@@ -281,14 +274,13 @@ export default {
     color: #201f27;
     text-align: center;
     max-width: 380px;
-    margin: 0 auto;
+    margin: 0 auto 20px auto;
     font-weight: 400;
     border-top: 0px solid #E6E6E6;
     border-bottom: 0px solid #E6E6E6;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 20px;
 
 }
 .post-time {
@@ -310,22 +302,25 @@ export default {
   color: #777A7C;
   text-decoration: none;
 }
+.pollheading {
+  max-width: 1076px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
 .pollheading a{
   font-size: 24px;
   text-decoration: none;
-  /* margin: 10px 0 40px; */
   margin: 10px 0 15px;
-
-    display: block;
-    color: var(--text-color);
-    text-align: left;
+  display: block;
+  color: var(--text-color);
+  text-align: left;
 }
 .pollheading a:hover{
   color: var(--link-blue);
 }
 @media (min-width: 1920px) {
 
-  .featured-poll button{
+  /* .featured-poll button{
     height: 60px;
     max-width: 240px;
   }
@@ -333,12 +328,12 @@ export default {
     width: 40px;
     height: 32px;
     top: 14px;
-  }
+  } */
 }
 
 
 @media (max-width: 1220px) {
-  .featured-poll button{
+  /* .featured-poll button{
     width: 180px;
     height: 40px;
   }
@@ -347,7 +342,7 @@ export default {
     height: 30px;
     top: -22px;
     left: -2px;
-  }
+  } */
 }
 
 
@@ -359,7 +354,7 @@ export default {
 }
 
 @media (max-width: 992px) {
- .featured-poll button img{
+ /* .featured-poll button img{
     left: 0;
     right: 0;
   }
@@ -373,20 +368,18 @@ export default {
   }
   .pollheading a{
     margin-bottom: 20px;
-  }
+  } */
 }
 @media (max-width: 767px) {
-  .featured-poll {
+  /* .featured-poll {
     flex-wrap: wrap;
     justify-content: space-around!important;
     padding: 0 20px;
-  }
+  } */
   .pollheading a {
-      /* font-size: 22px; */
       margin: 0px 0 15px;
-      /* padding:0 15px; */
   }
-  .featured-poll button{
+  /* .featured-poll button{
         max-width: 50%;
     margin: 35px 5px 30px!important;
     font-size: 14px;
@@ -400,7 +393,7 @@ export default {
   }
   .featured-poll button.btn-success img{
     width: 50px;
-  }
+  } */
   .item-footer{
     flex-wrap: wrap;
     font-size:14px
@@ -418,24 +411,17 @@ export default {
     flex-direction: column;
   }
   .progress-bar-fill-red i,
-.progress-bar-fill-yellow i,
-.progress-bar-fill-blue i,
-.progress-bar-fill-green i {
-  padding-right:5px;
-}
-}
-
-/* @media (max-width: 667px) {
-  .featured-poll button{
-    width: 105px;
-    font-size: 13px;
+  .progress-bar-fill-yellow i,
+  .progress-bar-fill-blue i,
+  .progress-bar-fill-green i {
+    padding-right:5px;
   }
-} */
+}
 
 @media (max-width: 600px) {
-  .featured-poll {
+  /* .featured-poll {
     padding: 0 0px;
-  }
+  } */
   .item {
     width: 100%;
   }
@@ -452,9 +438,9 @@ export default {
   .item {
     width: 100%;
   }
-  .featured-poll button{
+  /* .featured-poll button{
     width: 40%;
-  }
+  } */
 }
 
 </style>

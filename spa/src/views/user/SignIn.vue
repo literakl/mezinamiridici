@@ -197,7 +197,6 @@ export default {
 .forgot-link{
   font-size: 14px;
 }
-
 .btn {
    font-weight: 500;
     font-size: 14px;
@@ -215,12 +214,10 @@ export default {
   background-color: #294786;
   border: 0;
 }
-
 .btn-twitter {
   color: #fff;
   background-color: #00aced;
   border: 0px solid #009fdb;
-
 }
 .btn-twitter:hover,
 .btn-twitter:focus {
@@ -233,7 +230,6 @@ export default {
   background-color: #dd4b39;
   border: 1px solid #d54331;
   border: 0;
-
 }
 .btn-google-plus:hover,
 .btn-google-plus:focus {
@@ -242,34 +238,35 @@ export default {
   border: 0;
 }
 .blue{
-        color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
-    font-weight: 400;
-    font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  font-weight: 400;
+  font-size: 14px;
 }
 .blue:hover{
   color: #fff;
   background-color: #0069d9;
-    border-color: #0062cc;
+  border-color: #0062cc;
 }
 
 .green{
-    background: var(--color-green);
-    border: 0;
-    color: #fff;
-    font-weight: 400;
-    font-size: 14px;
+  background: var(--color-green);
+  border: 0;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
 }
 .green:hover{
-    color: #fff;
-      background-color: #218838;
-    border-color: #1e7e34;
+  color: #fff;
+  background-color: #218838;
+  border-color: #1e7e34;
 }
 @media (max-width: 700px) {
   .centerbox{
     margin:0 35px;
-    width:auto
+    width:auto;
+    padding:25px 5px;
   }
 }
 

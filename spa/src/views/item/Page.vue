@@ -52,18 +52,18 @@ export default {
   max-width:1235px;
   margin: 0 auto;
 }
-.page-content-wrap{
+/* .page-content-wrap{
   position: relative;
-}
-.page-content-wrap .share-box { position:unset}
+} */
+/* .page-content-wrap .share-box { position:unset} */
 
 @media (max-width: 1235px) {
   .pages-wrap{
   margin: 0 35px;
 }
-  .first-com-box{
+  /* .first-com-box{
     flex-direction: column;
-  }
+  } */
 }
 
 </style>

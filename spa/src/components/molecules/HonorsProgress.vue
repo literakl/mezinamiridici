@@ -191,17 +191,13 @@ export default {
 .ranks-list li span{ width:35%}
 .ranks-list li div{ width:100%!important}
 
-  @media (max-width: 600px) {
+@media (max-width: 600px) {
   .ranks-list li:first-child{ flex-direction: row;}
   .ranks-list li{
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
   }
-.ranks-list li span{ width:100%}
-
-
-  }
-
-
+  .ranks-list li span{ width:100%}
+}
 </style>

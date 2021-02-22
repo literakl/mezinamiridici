@@ -45,89 +45,82 @@ export default {
 
 <style scoped>
 .comparison-box{
-      padding:20px 0px;
+  padding:20px 0px;
 }
 .comparison-list{
   display: flex;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
 }
 .comparison-list h6{
   margin-right:15px;
-  padding: 0;
 }
 .comparison-list ul{
   padding: 0;
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-
 }
 .comparison-list ul li{
-    list-style-type: none;
-    font-size: 14px;
-    margin-right: 5px;
-    display: flex;
-    flex-wrap: wrap;
+  list-style-type: none;
+  font-size: 14px;
+  margin-right: 5px;
+  display: flex;
+  flex-wrap: wrap;
 }
-.comparison-list ul li a{ font-weight: 400;
- border: 1px solid #f3f3f3;
-    border-radius: 0px;
-    padding: 4px 10px;
-    font-weight: 300;
+.comparison-list ul li a{
+  border: 1px solid #f3f3f3;
+  border-radius: 0px;
+  padding: 4px 10px;
+  font-weight: 300;
 }
-.comparison-list ul li a:hover{ text-decoration: none;}
-.comparison-list ul li a.router-link-active{ background: #fff;
-position: relative; color:var(--tect-color);    font-weight: 400;
+.comparison-list ul li a:hover{
+  text-decoration: none;
 }
-
+.comparison-list ul li a.router-link-active{
+  background: #fff;
+  position: relative;
+  color:var(--tect-color);
+  font-weight: 400;
+}
 
 .comparison-list ul li a.router-link-active:after{
   content: "";
   position: absolute;
-  /* width: 0px;
-  height: 0px; */
-  /* border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid  var(--link-blue); */
   border-bottom:3px solid  var(--theme-primary);
   bottom: -3px;
-
   top: -6px;
   margin: 0 auto;
   left: 0;
   right: 0;
 }
-
-
 .custombtn{
-  text-align: right;
+  /* text-align: right;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
 }
 .custombtn a{
-  background:var(--color-white);
+  /* background:var(--color-white);
   text-align: center;
   color: #636466;
   padding: 4px 10px;
   font-weight: 400;
   font-size: 14px;
-    border-radius: 3px;
-
+  border-radius: 3px; */
 }
 .custombtn a:hover{
-  text-decoration: none;
+  /* text-decoration: none; */
 }
 .custombtn a.router-link-active{
-  background:  #007bff;
+  /* background:  #007bff;
   color: var(--color-white);
   position: relative;
-  border-radius: 3px;
+  border-radius: 3px; */
 }
 .custombtn a.router-link-active:after{
-   content: "";
+   /* content: "";
   position: absolute;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
@@ -135,23 +128,21 @@ position: relative; color:var(--tect-color);    font-weight: 400;
   bottom: 0px;
   margin: 0 auto;
   left: 0;
-  right: 0;
+  right: 0; */
 }
 
 @media (max-width: 1235px) {
   .comparison-box{
-        padding: 20px 15px;
+    padding: 20px 0px;
   }
 }
 @media (max-width: 1024px) {
   .comparison-list ul li { margin-bottom: 5px;}
-
 }
 @media (max-width: 767px) {
   .comparison-list{
     width: 80%;
   }
-
 }
 @media (max-width: 450px) {
   .comparison-box{

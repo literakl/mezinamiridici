@@ -89,33 +89,29 @@ export default {
 };
 </script>
 <style scoped>
-
+/* Comment Outer Full Area  */
 .comment-area{
   margin:0 auto;
   width:100%
 }
 .comment-area h3{
-    font-size: 18px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    color: var(--text-color);
-  }
+  font-size: 18px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
 
 @media (max-width: 767px) {
   .comment__child {
     margin-left: 20px;
-}
+  }
 }
 
 @media (max-width: 450px) {
-
-
   .comment-area{
-    padding: 10px;
     width: 100%;
   }
-
-   .comment-area h3{ padding:10px 15px;}
-  }
+  .comment-area h3{ padding:10px 0px;}
+}
 </style>

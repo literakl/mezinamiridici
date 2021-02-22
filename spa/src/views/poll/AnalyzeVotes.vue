@@ -3,14 +3,11 @@
     <div class="row">
       <div class="col">
         <ContentLoading v-if="! item" type="poll"/>
-
         <template v-if="item">
           <PollHeading :item="item"/>
-
           <div v-if="! inProgress">
             <SeriesBarChart :series="groups" :captions="captions" :absolute-values="absoluteValues"/>
           </div>
-
           <PredefinedComparisons :slug="slug"></PredefinedComparisons>
           <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1" class="showcase-wrap">
             <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="shocase">
@@ -224,19 +221,19 @@ export default {
      color: #656b6f!important;
     border-radius: 4px 4px 0 0;
     text-transform: uppercase;
-
 }
 .campbox-two .card-body, .campbox-one .card-body{
    padding: 1.2rem;
 }
 .showcase-wrap{
-      padding: 15px 5px 15px 15px;
+      padding: 5px 0px 5px 0px;
 }
 .showcase-wrap .form-row{
   align-items: center;
 }
 .showcase-wrap legend{ font-weight: 500;}
 @media (max-width: 1235px) {
+
   .analyze-vote {
   margin:0 35px;
 }
@@ -250,10 +247,13 @@ export default {
 
 @media (max-width: 767px) {
   .campbox-one{
-     padding-right: 10px;
+     padding-right: 15px;
+    padding-left: 15px;
+
   }
   .campbox-two{
-    padding-left: 25px;
+    padding-right: 15px;
+    padding-left: 15px;
   }
 }
 
@@ -261,8 +261,5 @@ export default {
   .campbox-two .card-body{
     padding: 1rem 0.5rem;
   }
-  .showcase-wrap{
-      padding: 5px 5px 5px 15px;
-}
 }
 </style>

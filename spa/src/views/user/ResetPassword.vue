@@ -153,6 +153,7 @@ export default {
   .centerbox, .hero-head{
     margin-right:35px;
     margin-left:35px;
+    padding:25px 20px;
   }
 }
 </style>

@@ -48,16 +48,14 @@ export default {
 </script>
 <style scoped>
 .share-links-wrap{
-        /* max-width: 1349px; */
-    margin: 0 auto;
-    position: fixed;
-    top: 40%;
-    bottom: 40%;
-    transform: translate(-55px, -50%);
-    z-index:1;
+  margin: 0 auto;
+  position: fixed;
+  top: 40%;
+  bottom: 40%;
+  transform: translate(-55px, -50%);
+  z-index:1;
 }
 .share-box{
-  /* position: fixed; */
   left: 15px;
   width: 46px;
   top: 190px;
@@ -79,29 +77,25 @@ export default {
 }
 .share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; padding-bottom: 4px!important; }
 .share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
-@media (min-width: 1920px) {
-
-}
 
 @media (max-width: 1235px) {
 .share-links-wrap{
-    transform: translate(-5px, -50%);
+  transform: translate(-45px, -50%);
 }
+.share-box button.p-0 svg{ font-size: 20px; width:20px; height: 20px;}
 }
 @media (max-width: 992px) {
 .share-box{
   right: 0px;
-      width: 36px;
+  width: 36px;
   left: unset;
 }
-
 .share-box svg{ width: 20px;}
-.share-links-wrap{
-  right: 0;
-  left:unset;
-  transform: translate(-0px, -50%);
+  .share-links-wrap{
+    right: 0;
+    left:unset;
+    transform: translate(-0px, -50%);
+  }
 }
-}
-
 
 </style>

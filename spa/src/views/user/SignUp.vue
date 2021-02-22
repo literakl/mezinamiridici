@@ -310,7 +310,7 @@ export default {
 .centerbox{
   max-width:700px;
   margin: 0 auto 20px;
-      padding: 25px 35px;
+  padding: 25px 35px;
   border-radius: 4px 4px 0 0;
 }
 .head-area{
@@ -340,11 +340,11 @@ export default {
   width: 100%!important;
 }
 .green{
-    background: var(--color-green);
-    border: 0;
-    color: #fff;
-    font-weight: 400;
-    font-size: 14px;
+  background: var(--color-green);
+  border: 0;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
 }
 .success-msg{
   font-size: 15px;
@@ -357,9 +357,10 @@ export default {
   .centerbox, .hero-head{
     margin-right:35px;
     margin-left:35px;
+    padding:25px 20px;
   }
-.prof-form-wrap .centerbox{
-  margin: 0
+  .prof-form-wrap .centerbox{
+    margin: 0;
   }
 }
 

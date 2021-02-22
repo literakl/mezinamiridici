@@ -4,6 +4,7 @@
       <b-img :src="item.info.picture"></b-img>
     </router-link>
     <div class="overlap-actions">
+      <!-- Item box Result Bars  -->
       <div class="result-bars">
         <span class="no-prob"></span>
         <span class="trival-trouble"></span>
@@ -13,19 +14,15 @@
     </div>
     <h4>
       <router-link :to="link">
-        <!-- <div v-if="item.info.length<23">{{ item.info.caption }}</div>
-        <div v-else>{{ item.info.caption.substring(0, 23)+ "..." }}</div> -->
         {{ item.info.caption }}
       </router-link>
     </h4>
     <div class="py-2 px-2 item-footer">
-
       <div class="bottom-links">
       <template v-if="showAuthor"><span><BIconPersonCircle></BIconPersonCircle> <ProfileLink :profile="item.info.author"/></span></template>
       <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{item.votes_count}}</template>
       <template v-if="hasDiscussion">
         <span><BIconChatTextFill></BIconChatTextFill> <router-link :to="commentLink">
-          <!-- {{ $t('comment.comments') }}:  -->
           {{item.comments.count}}
         </router-link></span>
       </template>
@@ -85,9 +82,7 @@ export default {
 };
 </script>
 <style scoped>
-/* img {
-  width:100%;
-} */
+
 .item-div {
   border-color: #f1f1f1;
   border-style: solid;
@@ -138,6 +133,7 @@ export default {
 .overlap-actions{
   position: relative;
 }
+/* Item box Results Bars for Home infinite posts */
 .result-bars{
   position: absolute;
   display: block;
@@ -165,7 +161,6 @@ export default {
   left: 5px;
   border-radius: 0 6px 6px 0;
   display: block;
-
 }
 .donot-like{
   height: 9px;
@@ -175,7 +170,6 @@ export default {
   border-radius: 0 6px 6px 0;
   display: block;
 }
-
 span.data {
   position: absolute;
   right: 0px;
@@ -200,18 +194,13 @@ span.data {
   align-items: center;
   padding-top: 10px;
 }
-.bottom-links a {
-  font-weight: 400;
-}
-.bottom-links span svg {
 
-}
 @media (min-width: 1920px) {
   span.data{
-    top: -24px;
+    top: -20px;
   }
   .item-footer span.data span{
-    font-size: 14px!important;
+    font-size: 13px!important;
   }
   .bottom-links span svg{
     font-size: 20px;

@@ -19,12 +19,6 @@
                 </router-link>
             </h4>
         <div class="item-div item-hover mb-4">
-            <!-- <div class="user-details">
-              <div>
-                <span><BIconPersonCircle scale="1"></BIconPersonCircle></span>
-                <span><ProfileLink :profile="this.item.info.author"/>  <Date :date="this.item.info.date" format="dynamicDate" /></span>
-              </div>
-            </div> -->
           <div class="item-footer">
             <div class="post-details">
             <div class="post-author"><BIconPersonCircle scale="1"></BIconPersonCircle><span><ProfileLink :profile="this.item.info.author"/></span></div>
@@ -94,15 +88,18 @@ export default {
 };
 </script>
 <style scoped>
+/* Poll Page Css Start */
 .pollheader{
   flex-wrap: nowrap;
   margin: 0 auto;
   align-items: center;
   justify-content: center;
   position: relative;
-
 }
-.pollheader .center-box{ width: 100%; padding: 0;}
+.pollheader .center-box{
+  width: 100%;
+  padding: 0;
+}
 .pollheading{
   margin: 0;
 }
@@ -112,7 +109,6 @@ export default {
   color: var(--text-color);
   margin: 10px 0 0px;
 }
-
 .post-rating img{
     width: 17px;
     height: 16px;
@@ -126,7 +122,6 @@ export default {
   position: absolute;
 }
 .item-div {
-  /* max-width: 890px; */
   width: 100%;
   position: relative;
   border: 0;
@@ -144,25 +139,26 @@ export default {
 .post-tags{
   display: flex;
   flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 }
-.post-tags svg{ margin-right: 8px;}
+.post-tags svg{
+  margin-right: 8px;
+}
 .item-footer {
   background-color: #fff;
   padding: 10px 0px 5px;
   color: #777A7C;
   font-weight: 600;
   margin: 0px 0;
-      max-width: 280px;
+  max-width: 280px;
 }
 .item-footer a {
   color: #777A7C;
-
 }
 .item-footer svg{
-      margin-right: 8px;
-    font-size: 15px;
+  margin-right: 8px;
+  font-size: 15px;
 }
 .user-details{
   display: flex;
@@ -182,7 +178,7 @@ export default {
   font-weight:300;
 }
 .post-comments a {
-  color: #007bff!important;
+  /* color: #007bff!important; */
 }
 .item-footer span a{
   color: #777A7C;
@@ -210,25 +206,25 @@ export default {
   font-size: 140%!important;
 }
 
- @media (max-width: 1352px) {
-   .pollheader{
-     display: flex;
-   }
-   .prevbtn{
-     position: unset;
-     margin-right: 15px;
+@media (max-width: 1352px) {
+  .pollheader{
+    display: flex;
+  }
+  .prevbtn{
+    position: unset;
+    margin-right: 15px;
 
-   } .nextbtn {
-     position: unset;
-     margin-left: 15px;
-   }
- }
+  } .nextbtn {
+    position: unset;
+    margin-left: 15px;
+  }
+}
 
 @media (max-width: 992px) {
 
-  .nextbtn{
-      right: 0px;
-          top: 0px;
+.nextbtn{
+  right: 0px;
+  top: 0px;
 }
 .prevbtn{
   left:0px;
@@ -236,31 +232,28 @@ export default {
 }
 
 @media (max-width: 767px) {
-    .pollheader{
-        margin-bottom: 0px;
+  .pollheader{
+    margin-bottom: 0px;
   }
   .prevbtn {
-  bottom: 0px;
-  top:40%;
-}
-.nextbtn {
-  bottom: 0px;
-  top:40%;
-}
-
+    bottom: 0px;
+    top:40%;
+  }
+  .nextbtn {
+    bottom: 0px;
+    top:40%;
+  }
 }
 @media (max-width: 600px) {
 
 .post-tags{
-      display: flex;
-      flex-wrap: wrap;
-
+  display: flex;
+  flex-wrap: wrap;
 }
 .post-tags svg{ margin-right: 15px;}
 
 .pollheading{
     margin: 0;
-    /* line-height: 18px; */
 }
 .pollheader{
   padding: 0 0px;
@@ -271,18 +264,18 @@ export default {
    width: 35px;
  }
 .prevbtn a, .nextbtn a{
-    height: 35px;
-    width: 35px;
+  height: 35px;
+  width: 35px;
 }
 
 }
 @media (max-width: 350px) {
   .post-time, .post-author, .post-rating, .post-comments{
-  flex-direction: column;
-}
-.item-footer svg, .post-rating img{
-  margin-right: 0;
-      margin-bottom: 10px;
-}
+    flex-direction: column;
+  }
+  .item-footer svg, .post-rating img{
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 }
 </style>

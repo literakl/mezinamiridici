@@ -42,7 +42,6 @@
 import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-// import {} from 'bootstrap-vue';
 import i18n from '../../i18n';
 
 configure({
@@ -139,6 +138,8 @@ export default {
   .centerbox, .hero-head{
     margin-right:35px;
     margin-left:35px;
+  padding:25px 20px;
+
   }
 }
 </style>

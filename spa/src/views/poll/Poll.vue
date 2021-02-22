@@ -53,15 +53,12 @@ export default {
 <style>
 .single-post-wrap{
   max-width: 1235px;
-    margin: 0 auto;
+  margin: 0 auto;
 }
-
-
 @media (max-width: 1235px) {
-.single-post-wrap{
+  .single-post-wrap{
     padding: 0 35px;
+  }
 }
-}
-@media (max-width: 767px) {
-}
+
 </style>

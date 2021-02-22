@@ -69,16 +69,16 @@ export default {
   font-size:14px;
   font-weight:300
 }
-  .item-thumb {
-    width:200px;
-    height:120px;
-    cursor:pointer;
-    transition: 0.5s ease;
-  }
-  .item-thumb:hover {
-    transform: translateX(-2px) translateY(-2px) scale(1.03);
-  }
-  .item-thumb:active {
-    transform: translateX(-1px) translateY(-1px) scale(1.01);
-  }
+.item-thumb {
+  width:200px;
+  height:120px;
+  cursor:pointer;
+  transition: 0.5s ease;
+}
+.item-thumb:hover {
+  transform: translateX(-2px) translateY(-2px) scale(1.03);
+}
+.item-thumb:active {
+  transform: translateX(-1px) translateY(-1px) scale(1.01);
+}
 </style>

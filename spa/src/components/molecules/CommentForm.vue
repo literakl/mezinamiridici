@@ -218,8 +218,6 @@ export default {
   $color-black: #000000;
   $color-white: #ffffff;
   $color-grey: #dddddd;
-
-
   .menubar__button{
     font-weight: 700;
     display: -webkit-inline-box;

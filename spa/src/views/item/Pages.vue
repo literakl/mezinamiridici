@@ -157,6 +157,7 @@ export default {
 
 .pagelist-box .card-footer{
 flex-direction: column;
+align-items: flex-start;
 }
 
 }

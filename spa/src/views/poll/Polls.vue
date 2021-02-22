@@ -138,16 +138,14 @@ export default {
 .pollslist-box .card-footer span a{
   display: inline-block;
 }
-
 .pollslist-box .card-footer svg {
   margin-right: 5px;
-      font-size: 16px;
 }
 .pollslist-box .card-footer .btn-group button{
- font-size: 14px;
- padding: 0;
- border: 0;
- font-weight: 300;
+  font-size: 14px;
+  padding: 0;
+  border: 0;
+  font-weight: 300;
 }
 .pollslist-box .card-footer .btn-group button:hover, .pollslist-box .card-footer .btn-group button:focus{
   background: transparent;
@@ -158,18 +156,18 @@ export default {
   color: var(--text-color);
 }
 .pollslist-box .card-footer .btn-group a{
- font-size: 14px;
- margin-right: 10px;
- padding: 0;
- border: 0;
- font-weight: 300;
+  font-size: 14px;
+  margin-right: 10px;
+  padding: 0;
+  border: 0;
+  font-weight: 300;
 }
 .pollslist-box .card-footer .btn-group span{ margin-right: 0;}
-@media (max-width: 1235px) {
-  .centerbox{ margin:0 35px!important;}
-}
-@media (max-width: 767px) {
- .pollslist-box .card-footer span{
+  @media (max-width: 1235px) {
+    .centerbox{ margin:0 35px!important;}
+  }
+  @media (max-width: 767px) {
+  .pollslist-box .card-footer span{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -177,36 +175,34 @@ export default {
   .pollslist-box .card-footer span svg{
     margin-right: 0;
   }
-.pagelist-box .card-footer{
-flex-direction: column;
-}
-
+  .pagelist-box .card-footer{
+    flex-direction: column;
+  }
 }
 @media (max-width: 480px) {
-
   .pollslist-box .card-footer div{
-      width: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-.pollslist-box .card-footer span{
-  flex-direction: row;
-}
-.pollslist-box .card-footer span svg{
-  margin-right: 5px;
-}
-.pollslist-box .card-footer{
-  align-items: flex-start;
-}
+  }
+  .pollslist-box .card-footer span{
+    flex-direction: row;
+  }
+  .pollslist-box .card-footer span svg{
+    margin-right: 5px;
+  }
+  .pollslist-box .card-footer{
+    align-items: flex-start;
+  }
 }
 @media (max-width: 390px) {
   .pollslist-box .card-footer{
     flex-direction: column;
   }
    .card-footer .btn-group{
-     display: flex;
-     flex-direction: column;
-   }
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

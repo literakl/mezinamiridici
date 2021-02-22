@@ -53,12 +53,6 @@
           <b-form-checkbox value="van">{{ $t('profile.vehicles.van') }}</b-form-checkbox>
           </div>
         </b-form-checkbox-group>
-        <!-- <b-form-select :id="`vehicle${id}`"
-                       v-model="group.vehicles"
-                       :options="vehicleOptions"
-                       multiple :select-size="3"
-                       class="align-nicely">
-        </b-form-select> -->
       </b-form-group>
       <b-form-group :label="$t('poll.analysis.regions')" label-cols-sm="4">
         <b-form-checkbox-group id="regions" v-model="group.edu" name="regions" class="align-nicely col-two">
@@ -80,12 +74,6 @@
             <b-form-checkbox value="ZLN">{{ $t('profile.regions.ZLN') }}</b-form-checkbox>
             <b-form-checkbox value="MS">{{ $t('profile.regions.MS') }}</b-form-checkbox>
           </div>
-        <!-- <b-form-select :id="`region${id}`"
-                       v-model="group.region"
-                       :options="regionOptions"
-                       multiple :select-size="3"
-                       class="">
-        </b-form-select> -->
           </b-form-checkbox-group>
       </b-form-group>
       </div>
@@ -108,29 +96,6 @@ export default {
   },
   data() {
     return {
-      // vehicleOptions: [
-      //   { value: 'bike', text: this.$t('profile.vehicles.bike') },
-      //   { value: 'bus', text: this.$t('profile.vehicles.bus') },
-      //   { value: 'car', text: this.$t('profile.vehicles.car') },
-      //   { value: 'truck', text: this.$t('profile.vehicles.truck') },
-      //   { value: 'van', text: this.$t('profile.vehicles.van') },
-      // ],
-      // regionOptions: [
-      //   { value: 'PRG', text: this.$t('profile.regions.PRG') },
-      //   { value: 'SC', text: this.$t('profile.regions.SC') },
-      //   { value: 'JC', text: this.$t('profile.regions.JC') },
-      //   { value: 'PLS', text: this.$t('profile.regions.PLS') },
-      //   { value: 'KV', text: this.$t('profile.regions.KV') },
-      //   { value: 'UST', text: this.$t('profile.regions.UST') },
-      //   { value: 'LBR', text: this.$t('profile.regions.LBR') },
-      //   { value: 'KH', text: this.$t('profile.regions.KH') },
-      //   { value: 'PRD', text: this.$t('profile.regions.PRD') },
-      //   { value: 'VSC', text: this.$t('profile.regions.VSC') },
-      //   { value: 'JM', text: this.$t('profile.regions.JM') },
-      //   { value: 'OLM', text: this.$t('profile.regions.OLM') },
-      //   { value: 'ZLN', text: this.$t('profile.regions.ZLN') },
-      //   { value: 'MS', text: this.$t('profile.regions.MS') },
-      // ],
     };
   },
 };

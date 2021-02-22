@@ -221,6 +221,7 @@ export default {
     margin-right:35px;
     margin-left:35px;
     width:auto;
+    padding: 25px 20px
   }
 }
 

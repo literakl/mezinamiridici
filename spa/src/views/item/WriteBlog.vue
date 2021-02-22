@@ -332,7 +332,6 @@ export default {
 .centerbox{
   max-width:1235px;
   margin: 0 auto 20px;
-  box-shadow: var(--big-shadow);
   padding: 25px 20px;
   border-radius: 4px 4px 0 0;
 }
@@ -343,95 +342,95 @@ export default {
 .text-area input{margin-bottom: 20px; width: 100%; display: flex; border: 0; border-bottom: 2px solid #ddd; font-size: 22px; border-radius: 0;}
 .text-area input:focus{ border-bottom: 2px solid #ced4da; }
   .ProseMirror {
-    border: #dddddd solid 1px;
-    padding: 10px;
-        min-height: 100px;
-  }
-  .editor{
-    width:100%;
-    margin-bottom: 15px;
-  }
-  .bottom-wrap{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-  }
-  .tags-area{
-    width: 100%;
-  }
-  .image-area{
-            width: 100%;
-       justify-content: flex-start;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  border: #dddddd solid 1px;
+  padding: 10px;
+      min-height: 100px;
+}
+.editor{
+  width:100%;
+  margin-bottom: 15px;
+}
+.bottom-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.tags-area{
+  width: 100%;
+}
+.image-area{
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .tags-area div {
     border-radius: 0;
 }
 .tags-area div div {
   height: 150px;
 }
-  blockquote {
-    display: block;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 40px;
-    background-color: whitesmoke;
-    padding: 20px;
-    font-style: italic;
-    overflow-wrap: anywhere;
-  }
-  blockquote p {
-    font-style: normal;
-    font-weight: bold;
-  }
-  .has-focus {
-    border-radius: 3px;
-    box-shadow: 0 0 0 3px #3ea4ffe6;
-  }
-  table {
-      width: 100%;
-      height: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-  }
-  table {
-      border: 1px solid #DBDBE2;
-      border-radius: 3px;
-      position: relative;
-      height: 100%;
-      width: 100%;
-      box-sizing: border-box;
-  }
-  td {
-      border: 1px solid #DBDBE2;
-      padding: 0;
-      vertical-align: top;
-  }
-  td div{
-      padding: 10px;
-      height: 100%;
-  }
-  .tc-table__inp {
-      outline: none;
-      flex-grow: 100;
-      min-height: 1.5em;
-      height: 100%;
-      overflow: hidden;
-  }
-  tbody tr:first-child td {
-      border-top: none;
-  }
-  tbody tr:last-child td {
-      border-bottom: none;
-  }
-  tbody tr td:last-child {
-      border-right: none;
-  }
-  tbody tr td:first-child {
-      border-left: none;
-  }
+blockquote {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 40px;
+  background-color: whitesmoke;
+  padding: 20px;
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+blockquote p {
+  font-style: normal;
+  font-weight: bold;
+}
+.has-focus {
+  border-radius: 3px;
+  box-shadow: 0 0 0 3px #3ea4ffe6;
+}
+table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+table {
+  border: 1px solid #DBDBE2;
+  border-radius: 3px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+td {
+  border: 1px solid #DBDBE2;
+  padding: 0;
+  vertical-align: top;
+}
+td div{
+  padding: 10px;
+  height: 100%;
+}
+.tc-table__inp {
+  outline: none;
+  flex-grow: 100;
+  min-height: 1.5em;
+  height: 100%;
+  overflow: hidden;
+}
+tbody tr:first-child td {
+  border-top: none;
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+tbody tr td:last-child {
+  border-right: none;
+}
+tbody tr td:first-child {
+  border-left: none;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -450,8 +449,6 @@ export default {
     border-radius: 3px;
     opacity: 0.5;
     cursor: pointer;
-
-
   }
 
   .actions {
@@ -527,8 +524,8 @@ export default {
   }
 @media (max-width: 1235px) {
   .centerbox{
-    margin-right:40px;
-    margin-left:40px;
+    margin-right:35px;
+    margin-left:35px;
   }
 }
 @media (max-width: 1100px) {

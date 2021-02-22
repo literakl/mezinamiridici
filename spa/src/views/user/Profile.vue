@@ -10,10 +10,6 @@
               </div>
             </div>
             <div class="user-details">
-              <!-- <div v-if="userProfile.prefs.public && userProfile.bio.region" class="name-regions">
-                <BIconGeoAlt scale="1"></BIconGeoAlt>
-                <span>{{$t(`profile.regions.${userProfile.bio.region}`)}}</span>
-              </div> -->
               <ul class="links">
                 <li v-for="(item, inx) in userProfile.bio.urls" :key="inx">
                   <BIconLink/><a :href="item" rel="nofollow">{{item}}</a>
@@ -155,13 +151,13 @@ export default {
 
 </script>
 <style scoped>
+/* User Profile Style */
 .profile-wrap{
   display: flex;
   flex-direction: column;
   max-width: 1235px;
   margin: 0 auto;
 }
-
 .prof-header-wrap{
   max-width: 100%;
   width: 100%;
@@ -200,9 +196,9 @@ export default {
 .user-details {
   width: 100%;
   font-size: 14px;
-      display: flex;
-   border-bottom: 2px solid #f3f3f3;
-        padding-bottom: 20px;
+  display: flex;
+  border-bottom: 2px solid #f3f3f3;
+  padding-bottom: 20px;
 }
 .profile-area-top, .more-details{
   display: flex;
@@ -271,8 +267,8 @@ export default {
 }
 @media (max-width: 1235px) {
  .profile-wrap {
-     padding: 0 35px;
-   }
+    padding: 0 35px;
+  }
 }
 @media (max-width: 992px) {
   .profile-wrap {
@@ -301,24 +297,31 @@ export default {
   .profile-wrap {
     padding: 0 15px;
   }
+  .links{
+    flex-wrap:wrap;
+  }
+  .links a{
+    margin-right: 15px;
+  }
+  .links li { margin-left: 0;}
 }
 @media (max-width: 420px) {
   .head-block{
-        padding: 10px 0;
+    padding: 10px 0;
   }
   .head-block span{ padding: 0;}
   .head-block, .more-details div{
-          height: unset;
-            align-items: center;
-            flex-direction: column
+    height: unset;
+    align-items: center;
+    flex-direction: column
   }
   .head-block svg{
     display: block;
     margin-bottom: 10px;
 }
-.head-block span.label {
+  .head-block span.label {
     text-align: center;
-}
+  }
 }
 
 </style>
