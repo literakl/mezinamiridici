@@ -189,11 +189,11 @@ export default {
   margin: 0 auto;
   padding: 25px 35px;
   width: 100%;
+  border-radius: 4px;
 }
 .update-profile .centerbox{ padding: 0}
 .head-area{
   padding-bottom:10px;
-  margin-bottom:10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

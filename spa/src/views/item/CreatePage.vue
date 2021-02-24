@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 center-box">
+  <div class="mt-5 border centerbox">
     <div class="head-area">
     <h2>{{ $t('cms.edit.new-cms-heading') }}</h2>
     </div>
@@ -18,33 +18,30 @@ export default {
 };
 </script>
 <style scoped>
-.center-box{
-  background-color: #fff;
-  padding: 20px 20px;
-  font-size: 0.8em;
-  color: #777A7C;
-  font-weight: 600;
-  box-shadow: var(--drop-shadow-two);
-     max-width: 700px;
+.centerbox{
+  max-width: 700px;
+  padding: 25px 35px;
   margin: 0 auto 30px auto;
 }
 .head-area{
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+  padding-bottom:0px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
-.center-box h2{
-  margin: 0;
-  font-size: 22px;
-  color: var(--text-color);
+.head-area h2{
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
+}
+@media (max-width: 700px) {
+  .centerbox{
+    margin-right: 35px;
+    margin-left: 35px;
+    padding: 25px 20px;
+  }
 }
 </style>

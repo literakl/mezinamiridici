@@ -79,18 +79,18 @@ export default {
 .share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
 
 @media (max-width: 1235px) {
-.share-links-wrap{
-  transform: translate(-45px, -50%);
-}
-.share-box button.p-0 svg{ font-size: 20px; width:20px; height: 20px;}
+  .share-links-wrap{
+    transform: translate(-45px, -50%);
+  }
+  .share-box button.p-0 svg{ font-size: 20px; width:20px; height: 20px;}
 }
 @media (max-width: 992px) {
-.share-box{
-  right: 0px;
-  width: 36px;
-  left: unset;
-}
-.share-box svg{ width: 20px;}
+  .share-box{
+    right: 0px;
+    width: 36px;
+    left: unset;
+  }
+  .share-box svg{ width: 20px;}
   .share-links-wrap{
     right: 0;
     left:unset;

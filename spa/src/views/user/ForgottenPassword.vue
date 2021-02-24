@@ -5,7 +5,7 @@
     <p v-if="passwordReset !== true">{{ $t('sign-in.email-reset-description') }}</p>
     </div>
     <div v-if="!passwordReset">
-      <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+      <ValidationObserver ref="form" v-slot="{ passes }">
         <form @submit.prevent="passes(signIn)">
         <fieldset :disabled='wholeDisable'>
           <div v-if="passwordReset === false">
@@ -91,7 +91,7 @@ export default {
   max-width:700px;
   margin: 0 auto 20px;
   padding: 25px 35px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
 }
 
 .head-area{

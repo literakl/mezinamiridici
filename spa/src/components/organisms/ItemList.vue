@@ -1,6 +1,6 @@
 <template>
   <GridLayout
-  class="homePosts"
+  class="home-posts"
     ref="ig"
     :options="options"
     :layoutOptions="layoutOptions"
@@ -94,7 +94,7 @@ export default {
 </script>
 <style scoped>
 
-.homePosts{
+.home-posts{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -136,7 +136,7 @@ export default {
   font-weight: bold;
 }
 @media (max-width: 767px) {
-.homePosts{
+.home-posts{
   justify-content: flex-start;
   flex-direction: column;
   }

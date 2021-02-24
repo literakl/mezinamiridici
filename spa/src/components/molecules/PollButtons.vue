@@ -49,9 +49,6 @@ export default {
   justify-content: center;
   width: 100%;
 }
-.heading-area{
-  margin-top: -40px;
-}
 .normal-poll-inside h4{
   font-size: 16px;
   text-transform: uppercase;
@@ -65,10 +62,8 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .normal-poll-inside button{
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
   position: relative;
   max-width: 200px;
@@ -76,9 +71,7 @@ export default {
   justify-content: center;
   text-align: center;
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  padding-right: 35px;
   padding: 0;
-  position: relative;
   height: 40px;
   margin: 15px;
   font-size: 14px;
@@ -113,51 +106,7 @@ export default {
   border-radius: 3px;
   top: 11px;
 }
-.item-div {
-  border-width: 10px;
-  border-color: #f1f1f1;
-  border-style: solid;
-}
-.item-footer {
-  font-size: 1em;
-  color: #201f27;
-  text-align: center;
-  max-width: 550px;
-  margin: 0 auto 30px;
-  font-weight: 400;
-  border-top: 1px solid #E6E6E6;
-  border-bottom: 1px solid #E6E6E6;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.item-footer span, .item-footer span a, .item-footer a {
-  color: #777A7C;
-}
-.item-footer svg{
-  color: #AEB3B7;
-  margin-right: 15px;
-  font-size: 11px;
-}
-.post-time, .post-author, .post-rating, .post-comments{
-  display: flex;
-  align-items: center;
-}
-.item-footer span a{
-  color: #777A7C;
-  text-decoration: none;
-}
-
-@media (max-width: 1220px) {
-  .normal-poll-inside button{
-    font-size: 15px;
-    width: 180px;
-  }
-  .normal-poll-inside button span{
-    width: 30px;
-    height: 30px;
-  }
-}
+/* Default Poll Buttons Css End */
 @media (max-width: 992px) {
   .normal-poll-inside button img{
     left: 0;
@@ -184,29 +133,6 @@ export default {
   .normal-poll-inside button {
         width: 45%;
   }
-  .pollheading a{
-    font-size: 24px;
-    margin: 0px 0 15px;
-  }
-  .item-footer{
-    flex-wrap: wrap;
-    font-size:14px
-  }
-  .item-footer svg{
-    font-size: 10px;
-    margin-right: 0px;
-    margin-bottom: 10px;
-  }
-  .post-time svg, .post-author svg, .post-rating svg, .post-comments svg{
-    display: block;
-    margin: 0 auto 10px;
-  }
-  .post-time, .post-author, .post-rating, .post-comments {
-    flex-direction: column;
-  }
-  .heading-area {
-    margin-top: 0px;
-  }
   .normal-poll-inside h4{
     flex-wrap: wrap;
     flex-basis: 100%;
@@ -220,20 +146,11 @@ export default {
   .normal-poll-inside {
     padding: 0 0px;
   }
-  .item {
-    width: 100%;
-    }
-  .item-footer {
-    font-size: 12px;
-  }
 }
 
 @media (max-width: 480px) {
-  .item {
-    width: 100%;
-  }
   .normal-poll-inside button {
-        width: 145px;
+    width: 145px;
   }
 }
 @media (max-width: 360px) {

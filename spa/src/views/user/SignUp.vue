@@ -311,7 +311,7 @@ export default {
   max-width:700px;
   margin: 0 auto 20px;
   padding: 25px 35px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
 }
 .head-area{
   padding-bottom:0px;

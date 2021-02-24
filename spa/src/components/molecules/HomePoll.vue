@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3">
-    <h4 class="pollheading">
+    <h4 class="poll-heading">
       <router-link :to="{ name: 'poll', params: { slug: poll.info.slug }}">
         {{ poll.info.caption }}
       </router-link>
@@ -104,6 +104,7 @@ export default {
 </script>
 
 <style scoped>
+/* Poll Buttons Horizantal Align Center  */
 .np-status, .traval-trouble-status, .dislike-status, .angry-status{
   display: flex;
   align-items: center;
@@ -118,6 +119,7 @@ export default {
   max-width: 100px;
       width: 100%;
 }
+/* Voted Poll Success Progress Bars Css Start */
 .poll-success {
   max-width: 1062px;
   margin: 0 auto;
@@ -153,112 +155,40 @@ export default {
   background-color: #f7f7f7;
   padding: 3px;
   border-radius: 0px;
+  transition: width 500ms ease-in-out;
+  text-align: right;
 }
-
+.progress-bar i{
+  padding-right: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+}
 .progress-bar-fill-green {
   display: block;
-  height: 22px;
   background-color: #28a745;
-  border-radius: 0px;
-  transition: width 500ms ease-in-out;
-  display: flex;
-  justify-content: flex-end;
-      align-items: center;
 }
-.progress-bar-fill-green i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
 .progress-bar-fill-blue {
   display: block;
-  height: 22px;
   background-color: #007bff;
-  border-radius: 0px;
-  transition: width 500ms ease-in-out;
-  display: flex;
-  justify-content: flex-end;
-      align-items: center;
 }
-.progress-bar-fill-blue i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
-
 .progress-bar-fill-yellow {
   display: block;
-  height: 22px;
   background-color: #ffc107;
-  border-radius: 0px;
-  transition: width 500ms ease-in-out;
-  display: flex;
-  justify-content: flex-end;
-      align-items: center;
 }
-.progress-bar-fill-yellow i { padding-right: 15px; font-size: 14px; color: #212529; font-weight: 500; font-style: normal;}
+.progress-bar-fill-yellow i { color: #212529;}
 .progress-bar-fill-red {
   display: block;
-  height: 22px;
   background-color: #dc3545;
-  border-radius: 0px;
-  transition: width 500ms ease-in-out;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
 }
-.progress-bar-fill-red i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
-.temp-wrapper p{
-  color:var(--text-color);
-  font-weight:400;
-  line-height:1.4;
-  font-size:16px!important;
-  word-break:normal;
-  margin:0 0 10px;
-  padding:0
-}
-.button{
-  color:#fff;font-weight:bold;text-align:left;line-height:1.4;text-decoration:none;font-size:16px;display:inline-block;border-radius:8px;margin:0;padding:15px 24px;border:0 solid #ea4c89
-}
-.resetpass{
-  width:100%;
-}
-.item-div {
-  border-width: 10px;
-  border-color: #dee0e1;
-  border-style: solid;
-  box-shadow: #c1c1c1 1px 1px 10px;
-}
-.item-footer {
-  font-size: .9em;
-  color: #201f27;
-  text-align: center;
-  max-width: 380px;
-  margin: 0 auto 20px auto;
-  font-weight: 400;
-  border-top: 0px solid #E6E6E6;
-  border-bottom: 0px solid #E6E6E6;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.post-time {
-  color: #777A7C;
-}
-.item-footer svg{
-  color: #AEB3B7;
-  margin-right: 15px;
-  font-size: 11px;
-}
-.post-time, .post-author, .post-rating, .post-comments{
-  display: flex;
-  align-items: center;
-}
-.post-comments a {
-  color: #007bff!important;
-}
-.item-footer span a{
-  color: #777A7C;
-  text-decoration: none;
-}
-.pollheading {
+/* Voted Poll Success Progress Bars Css End */
+
+.poll-heading {
   max-width: 1076px;
   padding: 0 15px;
   margin: 0 auto;
 }
-.pollheading a{
+.poll-heading a{
   font-size: 24px;
   text-decoration: none;
   margin: 10px 0 15px;
@@ -266,62 +196,29 @@ export default {
   color: var(--text-color);
   text-align: left;
 }
-.pollheading a:hover{
+.poll-heading a:hover{
   color: var(--link-blue);
 }
-
 @media (max-width: 1065px) {
   .poll-success {
     padding: 0 15px;
   }
 }
-
-
 @media (max-width: 767px) {
-  .pollheading a {
+  .poll-heading a {
     margin: 0px 0 15px;
   }
-  .item-footer{
-    flex-wrap: wrap;
-    font-size:14px
-  }
-  .item-footer svg{
-    font-size: 10px;
-    margin-right: 0px;
-    margin-bottom: 10px;
-  }
-  .post-time svg, .post-author svg, .post-rating svg, .post-comments svg{
-    display: block;
-    margin: 0 auto 10px;
-  }
-  .post-time, .post-author, .post-rating, .post-comments {
-    flex-direction: column;
-  }
-  .progress-bar-fill-red i,
-  .progress-bar-fill-yellow i,
-  .progress-bar-fill-blue i,
-  .progress-bar-fill-green i {
+  .progress-bar i {
     padding-right:5px;
   }
 }
-
-@media (max-width: 600px) {
-  .item {
-    width: 100%;
-  }
-  .item-footer {
-    font-size: 12px;
-  }
-  .np-status, .traval-trouble-status, .dislike-status, .angry-status {
+@media (max-width: 550px) {
+.np-status, .traval-trouble-status, .dislike-status, .angry-status {
     flex-basis: 100px;
     flex-wrap: wrap;
   }
-}
-
-@media (max-width: 480px) {
-  .item {
-    width: 100%;
+  .poll-success{
+    margin-bottom: 20px;
   }
 }
-
 </style>

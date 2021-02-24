@@ -102,19 +102,19 @@ export default {
 </script>
 
 <style>
-  .group-one { font-size: 14px;}
-  .group-one .input-group-text{font-size: 14px;}
-  fieldset.label{
-    display: flex;
+.group-one { font-size: 14px;}
+.group-one .input-group-text{font-size: 14px;}
+fieldset.label{
+  display: flex;
+}
+  .campbox-one{
+    margin-bottom: 15px;
   }
-   .campbox-one{
-     margin-bottom: 15px;
-   }
-   .group-one .form-row{
-     align-items: flex-start;
-   }
-  .group-one .form-row .col-sm-4 {
-    padding: 0px 5px 5px;
+  .group-one .form-row{
+    align-items: flex-start;
+  }
+.group-one .form-row .col-sm-4 {
+  padding: 0px 5px 5px;
 }
 .col-two{
   display: flex;
@@ -122,7 +122,7 @@ export default {
 .col-two div{
   width: 48%;
 }
-  @media (max-width: 1050px) {
+@media (max-width: 1050px) {
   .group-one .form-row .col-sm-4{
     width: 100%!important;
         max-width: 100%!important;
@@ -130,9 +130,9 @@ export default {
   .group-one .form-row{
     flex-direction: column;
   }
-   .group-one .form-row select{ color: var(--text-color-light);}
+  .group-one .form-row select{ color: var(--text-color-light);}
   .group-one .input-group-text{
-font-size: 14px;
+    font-size: 14px;
   }
-  }
+}
 </style>

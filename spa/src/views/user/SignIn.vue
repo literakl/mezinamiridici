@@ -168,7 +168,7 @@ export default {
   width: 100%;
   margin: 0 auto 20px;
   padding: 25px 20px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
 }
 .head-area{
   padding-bottom:0px;

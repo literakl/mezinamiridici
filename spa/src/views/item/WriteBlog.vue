@@ -7,7 +7,6 @@
           :label="$t('blog.form.title-label')"
           :placeholder="$t('blog.form.title-placeholder')"
           class="write-blog"/>
-
         <div class="editor">
             <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
               <div class="menubar">
@@ -330,7 +329,7 @@ export default {
   max-width:1235px;
   margin: 0 auto 20px;
   padding: 25px 20px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
 }
 
 .text-area .w-50{

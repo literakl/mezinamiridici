@@ -18,7 +18,6 @@ html[theme="default"] {
   --box-shadow: -2px 2px 3px rgba(57, 73, 76, 0.1);
   --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
   --inside-padding: 18px 25px;
-
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -30,21 +29,7 @@ body{
     font-size: 1rem;
     color: #333;
 }
-article,
-aside,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-nav,
-section {
-  display: block;
-}
-[tabindex="-1"]:focus:not(:focus-visible) {
-    outline: 0 !important;
-}
+
 
 input,
 button,
@@ -122,11 +107,7 @@ svg{
 .text-danger{
     font-size: 14px;
 }
-.gredient-gray{
-    background: #fefefe;
-    padding: 25px;
-    background-image: linear-gradient(180deg,rgba(255,255,255,0) 0%,rgb(251 251 251 / 85%) 100%);
-}
+
 .brand-pic{
     margin: 0;
     padding: 0;
@@ -220,7 +201,6 @@ svg{
     font-size: 21px;
   }
 
-.prof-header .b-avatar{  background-color: transparent; border: 1px solid #ddd; color: #AEB3B7!important;}
 @media (min-width: 1920px) {
     svg{ font-size: 17px;}
     .brand-pic a{
@@ -231,13 +211,7 @@ svg{
         margin-right: 15px;
     }
 }
-@media (max-width: 992px) {
-    .prof-header .b-avatar {
-        margin-top: 0px;
-        width: 50px!important;
-        height: 50px!important;
-    }
-}
+
 @media (max-width: 767px) {
     h2{ font-size: 1.3rem;}
     .brand-pic{ width: 50px;

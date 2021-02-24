@@ -147,29 +147,38 @@ export default {
  font-weight: 300;
 }
 @media (max-width: 1235px) {
-.centerbox{
-  max-width:1235px;
-  margin: 0 35px!important;
-}
+  .centerbox{
+    max-width:1235px;
+    margin: 0 35px!important;
+  }
 }
 
 @media (max-width: 660px) {
-
-.pagelist-box .card-footer{
-flex-direction: column;
-align-items: flex-start;
-}
+  .pagelist-box .card-footer{
+    align-items: flex-start;
+  }
 
 }
-@media (max-width: 376px) {
+@media (max-width: 540px) {
   .pagelist-box .card-footer span{
     display: flex;
+    flex-direction: column;
+    margin: 0 4px 0 0;
+  }
+  .pagelist-box .card-footer span span{
+    margin-right: 0;
   }
   .pagelist-box .card-footer div{
-      width: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
-}
+  }
+  .pagelist-box .card-footer svg{
+      display: block;
+      text-align: center;
+      justify-content: center;
+      margin: 0 auto;
+  }
 }
  </style>

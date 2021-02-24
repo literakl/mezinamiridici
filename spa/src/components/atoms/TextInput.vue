@@ -13,7 +13,7 @@
         :for="name">
         <div v-if="label">
           <span>{{ label }}</span>
-          <span v-if="required" class="required-star"> *</span>
+          <span v-if="required" class="text-danger"> *</span>
         </div>
       </label>
       <b-form-input
@@ -117,9 +117,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.required-star{
-  color: var(--red-color);
-}
-
-</style>

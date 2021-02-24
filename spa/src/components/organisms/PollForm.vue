@@ -157,9 +157,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.poll-form .col-form-label{
-  font-size: 50px;
-}
-.d-block{ font-weight: 300;}
-</style>

@@ -167,7 +167,6 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 0 8px 0;
-  border-radius: 5px 5px 0 0;
   justify-content: flex-start;
   position: relative;
 }
@@ -184,7 +183,7 @@ export default {
 }
 .edit-btn svg:hover{
   cursor: pointer;
-  color: #007bff;
+  color: var(--link-blue);
 }
 .prof-header h2{
   font-size: 20px;
@@ -192,6 +191,13 @@ export default {
   padding: 0;
   display: flex;
   align-items: center;
+}
+.prof-header .b-avatar{
+  width: 50px!important;
+  height: 50px!important;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  color: #AEB3B7!important;
 }
 .user-details {
   width: 100%;
@@ -270,6 +276,7 @@ export default {
     padding: 0 35px;
   }
 }
+
 @media (max-width: 992px) {
   .profile-wrap {
     flex-direction: column;

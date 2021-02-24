@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pollheader">
+    <div class="poll-header">
       <b-col v-if="item.siblings" class="prevbtn">
         <b-button v-if="item.siblings.older" :to="link(item.siblings.older)" variant="secondary">
           <BIconChevronDoubleLeft font-scale="2"></BIconChevronDoubleLeft>
@@ -89,14 +89,14 @@ export default {
 </script>
 <style scoped>
 /* Poll Page Css Start */
-.pollheader{
+.poll-header{
   flex-wrap: nowrap;
   margin: 0 auto;
   align-items: center;
   justify-content: center;
   position: relative;
 }
-.pollheader .center-box{
+.poll-header .center-box{
   width: 100%;
   padding: 0;
 }
@@ -110,8 +110,8 @@ export default {
   margin: 10px 0 0px;
 }
 .post-rating img{
-    width: 17px;
-    height: 16px;
+    width: 16px;
+    height: 15px;
     margin-right: 8px;
 }
 .post-rating svg{
@@ -160,18 +160,6 @@ export default {
   margin-right: 8px;
   font-size: 15px;
 }
-.user-details{
-  display: flex;
-  justify-content:flex-start
-}
-.user-details div{
-  background-color: #fff;
-  padding: 10px 20px;
-  font-size: 0.8em;
-  color: #777A7C;
-  font-weight: 600;
-  box-shadow: var(--drop-shadow-two);
-}
 .post-time, .post-author, .post-rating, .post-comments{
   display: flex;
   align-items: center;
@@ -205,7 +193,7 @@ export default {
 }
 
 @media (max-width: 1352px) {
-  .pollheader{
+  .poll-header{
     display: flex;
   }
   .prevbtn{
@@ -230,7 +218,7 @@ export default {
 }
 
 @media (max-width: 767px) {
-  .pollheader{
+  .poll-header{
     margin-bottom: 0px;
   }
   .prevbtn {
@@ -253,7 +241,7 @@ export default {
 .pollheading{
     margin: 0;
 }
-.pollheader{
+.poll-header{
   padding: 0 0px;
 }
 }

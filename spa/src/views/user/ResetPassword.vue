@@ -108,10 +108,10 @@ export default {
 </script>
 <style scoped>
 .centerbox{
-   max-width:700px;
+  max-width:700px;
   margin: 0 auto 20px;
-      padding: 25px 35px;
-  border-radius: 4px 4px 0 0;
+  padding: 25px 35px;
+  border-radius: 4px;
 }
 .head-area{
   padding-bottom:0px;
@@ -140,11 +140,11 @@ export default {
   width: 100%!important;
 }
 .green{
-    background: var(--color-green);
-    border: 0;
-    color: #fff;
-    font-weight: 400;
-    font-size: 14px;
+  background: var(--color-green);
+  border: 0;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
 }
 .errormsg{
   font-size: 14px;
