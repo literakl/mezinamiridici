@@ -132,11 +132,8 @@
       <div class="image-area">
         <SelectPicture :currentPath="picture" @changePath="changePath"/>
       <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
-
       </div>
     </div>
-
-
     <input type="file" ref="fileUploadInput" style="display:none;"/>
   </div>
   </div>

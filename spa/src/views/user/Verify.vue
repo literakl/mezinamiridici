@@ -74,8 +74,6 @@ export default {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-  /* padding-bottom:10px; margin-bottom:10px;border-bottom: 1px solid #ddd; display: flex;     justify-content: space-between;     align-items: center; */
-
   }
 .head-area h2 {
     font-size: 20px;

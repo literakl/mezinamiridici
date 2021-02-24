@@ -84,7 +84,6 @@ export default {
   color:var(--tect-color);
   font-weight: 400;
 }
-
 .comparison-list ul li a.router-link-active:after{
   content: "";
   position: absolute;
@@ -94,41 +93,6 @@ export default {
   margin: 0 auto;
   left: 0;
   right: 0;
-}
-.custombtn{
-  /* text-align: right;
-  display: flex;
-  align-items: center;
-  justify-content: center; */
-}
-.custombtn a{
-  /* background:var(--color-white);
-  text-align: center;
-  color: #636466;
-  padding: 4px 10px;
-  font-weight: 400;
-  font-size: 14px;
-  border-radius: 3px; */
-}
-.custombtn a:hover{
-  /* text-decoration: none; */
-}
-.custombtn a.router-link-active{
-  /* background:  #007bff;
-  color: var(--color-white);
-  position: relative;
-  border-radius: 3px; */
-}
-.custombtn a.router-link-active:after{
-   /* content: "";
-  position: absolute;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid  var(--color-white);
-  bottom: 0px;
-  margin: 0 auto;
-  left: 0;
-  right: 0; */
 }
 
 @media (max-width: 1235px) {

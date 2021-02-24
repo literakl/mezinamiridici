@@ -198,23 +198,12 @@ export default {
   padding: 5px 0px;
   margin-top: 5px;
   position: relative;
-
-}
-.author-det:after{
-  /* position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #f9f9f9;
-  right: -15px;
-  transform: rotate(90deg); */
 }
 .author-det span{
   margin-right: 10px;
-      display: flex;
-    align-items: center;
-    color: var(--link-color)
+  display: flex;
+  align-items: center;
+  color: var(--link-color)
 }
 .author-det span svg{
   margin-right:5px;
@@ -226,7 +215,6 @@ export default {
 .comments p{
   color:var(--dark-color);
   line-height:22px;
-
 }
 .comment-buttons{
   border-top: 1px solid #dee0e1;
@@ -234,7 +222,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
-
 }
 .comment-buttons div{
   display: flex;
@@ -290,22 +277,10 @@ blockquote p {
 }
 
 table {
-    /* display: block!important;
-
-  overflow-x: auto!important;
-  width: 100%!important;
-  height: 100%!important; */
   width: 100%!important;
   font-size: 14px!important;
 }
-/* table {
-    border: 1px solid #DBDBE2;
-    border-radius: 3px;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-} */
+
 th{
   vertical-align: middle;
 }
@@ -316,7 +291,6 @@ td {
 }
 td div{
     padding: 10px;
-    /* height: 100%; */
 }
 tbody tr:first-child td {
     border-top: none;
@@ -329,17 +303,6 @@ tbody tr td:last-child {
 }
 tbody tr td:first-child {
     border-left: none;
-}
-
-@media (min-width: 1920px) {
-  /* p, a, button, li, span{ font-size: 20px} */
-  /* .item-footer svg{
-  font-size: 14px;
-}
-.comments p {
-    line-height: 28px;
-}
- .comment-buttons button{ font-size: 20px;} */
 }
 
 @media (max-width: 1235px) {
@@ -358,20 +321,14 @@ tbody tr td:first-child {
   .author-det span {
     margin-right: 10px;
   }
-  .author-det:after {
-    /* right: 2px;
-    transform: rotate(180deg);
-    bottom: -10px; */
-  }
   .comments {
     width: 100%;
   }
 }
 
 @media (max-width: 767px) {
-.comment__child {
-    margin-left: 15px;
-}
-
+  .comment__child {
+      margin-left: 15px;
+  }
 }
 </style>

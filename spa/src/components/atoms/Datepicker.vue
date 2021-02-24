@@ -6,7 +6,7 @@
     :vid="vid"
     :rules="rules"
     :name="name || label"
-    v-slot="{ errors, required, ariaInput, ariaMsg }">
+    v-slot="{ errors, required, ariaMsg }">
     <div class="">
       <label
         @click="$refs.input.focus()"

@@ -139,7 +139,7 @@ export default {
   display: block;
   width: 100%;
   top: -35px;
-  left:4px;
+  left:5px;
 }
 .result-bars span{
   margin-top: 1px;

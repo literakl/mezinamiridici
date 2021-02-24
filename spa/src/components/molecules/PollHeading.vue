@@ -177,9 +177,7 @@ export default {
   align-items: center;
   font-weight:300;
 }
-.post-comments a {
-  /* color: #007bff!important; */
-}
+
 .item-footer span a{
   color: #777A7C;
   text-decoration: none;

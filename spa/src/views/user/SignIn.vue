@@ -37,7 +37,7 @@
               </router-link>
             </div>
 
-            <div v-if="error">
+            <div v-if="error" class="text-danger">
               <strong>
                 {{ error }}
               </strong>

@@ -145,10 +145,9 @@ export default {
   width: 100%;
   opacity: 1;
   padding: 0 15px;
-}
-.item div{
-  height: auto;
-}
-
+  }
+  .item div{
+    height: auto;
+  }
 }
 </style>

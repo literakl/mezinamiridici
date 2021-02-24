@@ -309,18 +309,8 @@ export default {
   .head-block{
     padding: 10px 0;
   }
-  .head-block span{ padding: 0;}
   .head-block, .more-details div{
     height: unset;
-    align-items: center;
-    flex-direction: column
-  }
-  .head-block svg{
-    display: block;
-    margin-bottom: 10px;
-}
-  .head-block span.label {
-    text-align: center;
   }
 }
 

@@ -57,7 +57,7 @@ export default {
 }
 .share-box{
   left: 15px;
-  width: 46px;
+  width: 40px;
   top: 190px;
   text-align: center;
   background: #fff;
@@ -71,7 +71,7 @@ export default {
   z-index: 100;
   padding-top: 3px;
 }
-.share-box button{ width:100%; text-align:center; display:block; margin-bottom: 5px; border-bottom:1px solid #ddd;}
+.share-box button{ width:100%; text-align:center; display:block; margin-bottom: 5px; border-bottom:1px solid #ddd;border-radius: 0;}
 .share-box button:last-child{
   border-bottom: 0; margin-bottom: 0;
 }

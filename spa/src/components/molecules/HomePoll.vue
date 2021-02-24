@@ -197,7 +197,7 @@ export default {
   transition: width 500ms ease-in-out;
   display: flex;
   justify-content: flex-end;
-      align-items: center;
+  align-items: center;
 }
 .progress-bar-fill-red i { padding-right: 15px; font-size: 14px; font-weight: 500; font-style: normal;}
 .temp-wrapper p{
@@ -215,54 +215,6 @@ export default {
 .resetpass{
   width:100%;
 }
-.featured-poll button{
-    /* display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    position: relative;
-    max-width: 210px;
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    padding-right: 35px;
-    padding: 0;
-    position: relative;
-    height: 50px;
-    margin: 15px 15px 5px;
-    font-size: 14px;
-    font-weight: 400; */
-}
-.featured-poll button.btn-success img{
-  /* width: 50px;
-  height: 40px;
-  top: -38px; */
-}
-.featured-poll button img{
-  /* position: absolute;
-   top: -42px;
-    width: 43px;
-    height: 43px;
-    display: block;
-    margin: 0 auto;
-    right: 20%;
-    left: 20%; */
-}
-.featured-poll button span{
-    /* width: 32px;
-    height: 27px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-     background:rgba(255, 255, 255, .7);
-    color: var(--dark-color);
-    position: absolute;
-    left: 7px;
-    font-size: 13px;
-    box-shadow: var(--big-shadow);
-    border-radius: 3px;
-    top: 11px; */
-}
 .item-div {
   border-width: 10px;
   border-color: #dee0e1;
@@ -270,18 +222,17 @@ export default {
   box-shadow: #c1c1c1 1px 1px 10px;
 }
 .item-footer {
-     font-size: .9em;
-    color: #201f27;
-    text-align: center;
-    max-width: 380px;
-    margin: 0 auto 20px auto;
-    font-weight: 400;
-    border-top: 0px solid #E6E6E6;
-    border-bottom: 0px solid #E6E6E6;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
+  font-size: .9em;
+  color: #201f27;
+  text-align: center;
+  max-width: 380px;
+  margin: 0 auto 20px auto;
+  font-weight: 400;
+  border-top: 0px solid #E6E6E6;
+  border-bottom: 0px solid #E6E6E6;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 .post-time {
   color: #777A7C;
@@ -318,82 +269,18 @@ export default {
 .pollheading a:hover{
   color: var(--link-blue);
 }
-@media (min-width: 1920px) {
-
-  /* .featured-poll button{
-    height: 60px;
-    max-width: 240px;
-  }
-  .featured-poll button span{
-    width: 40px;
-    height: 32px;
-    top: 14px;
-  } */
-}
-
-
-@media (max-width: 1220px) {
-  /* .featured-poll button{
-    width: 180px;
-    height: 40px;
-  }
-  .featured-poll button span{
-    width: 30px;
-    height: 30px;
-    top: -22px;
-    left: -2px;
-  } */
-}
-
 
 @media (max-width: 1065px) {
-
   .poll-success {
     padding: 0 15px;
   }
 }
 
-@media (max-width: 992px) {
- /* .featured-poll button img{
-    left: 0;
-    right: 0;
-  }
-  .featured-poll button span{
-    top: 38px;
-  }
-  .featured-poll button {
-    width: 115px;
-    margin: 35px 5px 30px!important;
-    font-size: 14px;
-  }
-  .pollheading a{
-    margin-bottom: 20px;
-  } */
-}
+
 @media (max-width: 767px) {
-  /* .featured-poll {
-    flex-wrap: wrap;
-    justify-content: space-around!important;
-    padding: 0 20px;
-  } */
   .pollheading a {
-      margin: 0px 0 15px;
+    margin: 0px 0 15px;
   }
-  /* .featured-poll button{
-        max-width: 50%;
-    margin: 35px 5px 30px!important;
-    font-size: 14px;
-    width: 40%;
-  }
-  .featured-poll button span{
-      top: -30px;
-    }
-  .featured-poll button img{
-    width: 40px;
-  }
-  .featured-poll button.btn-success img{
-    width: 50px;
-  } */
   .item-footer{
     flex-wrap: wrap;
     font-size:14px
@@ -419,9 +306,6 @@ export default {
 }
 
 @media (max-width: 600px) {
-  /* .featured-poll {
-    padding: 0 0px;
-  } */
   .item {
     width: 100%;
   }
@@ -431,16 +315,13 @@ export default {
   .np-status, .traval-trouble-status, .dislike-status, .angry-status {
     flex-basis: 100px;
     flex-wrap: wrap;
-}
+  }
 }
 
 @media (max-width: 480px) {
   .item {
     width: 100%;
   }
-  /* .featured-poll button{
-    width: 40%;
-  } */
 }
 
 </style>

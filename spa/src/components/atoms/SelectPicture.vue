@@ -1,7 +1,6 @@
 <template>
   <b-form-group class="title" :label="$t('generic.select-picture-label')">
     <b-img thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
-
     <b-modal id="thumbs-list" v-model="showSelector" :title="$t('generic.select-picture-title')"
              size="xl" centered scrollable :hide-footer="true">
       <b-img

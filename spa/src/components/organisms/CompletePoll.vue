@@ -57,28 +57,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-//TODO. Is this really useful? I cannot find a difference, when I delete these classes.
-
-  // .btn.btn-primary:active:hover, .btn.btn-primary:hover {
-  //   border-color: var(--primary);
-  //   background-color: var(--primary);
-  // }
-
-  // .btn.btn-success:active:hover, .btn.btn-success:hover {
-  //   border-color: var(--success);
-  //   background-color: var(--success);
-  // }
-
-  // .btn.btn-warning:active:hover, .btn.btn-warning:hover {
-  //   border-color: var(--warning);
-  //   background-color: var(--warning);
-  // }
-
-  // .btn.btn-danger:active:hover, .btn.btn-danger:hover {
-  //   border-color: var(--danger);
-  //   background-color: var(--danger);
-  // }
-
-</style>

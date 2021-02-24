@@ -65,11 +65,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-/* .def-btns{
-  display: flex;
-  width: 78%;
-  margin: 0 auto;
-} */
 
 .normal-poll-inside button{
   display: flex;
@@ -152,11 +147,7 @@ export default {
   color: #777A7C;
   text-decoration: none;
 }
-/* @media (min-width: 1920px) {
-  .normal-poll-inside button{
-    font-size: 18px;
-  }
-} */
+
 @media (max-width: 1220px) {
   .normal-poll-inside button{
     font-size: 15px;
@@ -220,6 +211,9 @@ export default {
     flex-wrap: wrap;
     flex-basis: 100%;
     text-align: center;
+  }
+  .normal-poll{
+    padding-top: 0px!important;
   }
 }
 @media (max-width: 600px) {
