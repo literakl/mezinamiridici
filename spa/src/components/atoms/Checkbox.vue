@@ -5,7 +5,7 @@
     :vid="vid"
     :rules="rules"
     :name="name || label"
-    v-slot="{ errors, required }">
+    v-slot="{ errors }">
     <b-form-checkbox
       :class="{ 'border-gray-700': !errors[0], 'border-red-600': errors[0] }"
       :id="identifier"

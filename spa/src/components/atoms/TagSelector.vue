@@ -1,8 +1,8 @@
 <template>
-  <b-form-group :label="$t('generic.tag-select-label')">
+  <b-form-group class="title" :label="$t('generic.tag-select-label')">
     <b-form-tags v-model="tagList" size="lg" add-on-change no-outer-focus class="mb-0">
       <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
-        <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
+        <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2 tagslist">
           <li v-for="tag in tags" :key="tag" class="list-inline-item">
             <b-form-tag
               @remove="removeTag(tag)"
@@ -69,3 +69,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.title{
+  font-size:14px;
+  font-weight:300
+}
+.centerbox{
+  width:auto!important;
+}
+.tagslist li span{
+  font-weight: 300;
+  font-size: 14px;
+  background: #fff;
+  box-shadow: var(--drop-shadow-two);
+  color: var(--text-color);
+}
+.tagslist li span button{
+  font-weight: 300;
+  font-size: 14px;
+}
+</style>

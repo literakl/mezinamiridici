@@ -1,18 +1,17 @@
 <template>
   <ValidationProvider
     mode="eager"
-    class="w-50"
     tag="div"
     :vid="vid"
     :rules="rules"
     :name="name || label"
-    v-slot="{ errors, required, ariaInput, ariaMsg }">
+    v-slot="{ errors, required, ariaMsg }">
     <div>
       <label
         @click="$refs.input.focus()"
         :for="name">
         <div v-if="label">
-          <span>{{ label }}</span>
+          <span class="d-label">{{ label }}</span>
           <span>{{ required ? ' *' : '' }}</span>
         </div>
       </label>
@@ -129,3 +128,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.d-label {
+  font-weight: 300;
+  color: #000;
+}
+</style>

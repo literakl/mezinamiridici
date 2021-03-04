@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t('generic.select-picture-label')">
+  <b-form-group class="title" :label="$t('generic.select-picture-label')">
     <b-img thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
 
     <b-modal id="thumbs-list" v-model="showSelector" :title="$t('generic.select-picture-title')"
@@ -65,7 +65,11 @@ export default {
 </script>
 
 <style scoped>
-  .item-thumb {
+.title {
+  font-size:14px;
+  font-weight:300
+}
+.item-thumb {
     width:200px;
     height:120px;
     cursor:pointer;

@@ -13,7 +13,7 @@
         :for="name">
         <div v-if="label">
           <span>{{ label }}</span>
-          <span v-if="required"> *</span>
+          <span v-if="required" class="text-danger"> *</span>
         </div>
       </label>
       <b-form-input
