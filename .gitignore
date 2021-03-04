@@ -29,3 +29,5 @@ transfer
 /spa/.env
 /spa/.env.staging
 /spa/.env.production
+
+.SRC2
