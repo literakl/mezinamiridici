@@ -14,7 +14,7 @@
             <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
-                <span class="progress-bar-fill-green" v-bind:style="{ width: ['33%'] }"><i>{{ this.votes.neutral }}%</i></span>
+                <span class="progress-bar-fill-green" v-bind:style="{ 'width' :  this.votes.neutral.length  }"><i>{{ this.votes.neutral }}%</i></span>
               </div>
             </div>
           </div>
@@ -25,7 +25,7 @@
             <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
-                <span class="progress-bar-fill-blue" style="width: 11%;"><i>11%</i></span>
+                <span class="progress-bar-fill-blue" :style="{'width' : this.votes.trivial + '%'}" ><i>{{this.votes.trivial}}</i></span>
               </div>
             </div>
           </div>
@@ -77,6 +77,7 @@ export default {
   data() {
     return {
       voting: false,
+      percentage: 0,
     };
   },
   computed: {
@@ -99,6 +100,7 @@ export default {
       });
       this.voting = false;
     },
+
   },
 };
 </script>

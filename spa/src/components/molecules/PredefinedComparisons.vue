@@ -55,6 +55,7 @@ export default {
 }
 .comparison-list h6{
   margin-right:15px;
+  margin-bottom:0;
 }
 .comparison-list ul{
   padding: 0;
@@ -100,13 +101,17 @@ export default {
     padding: 20px 0px;
   }
 }
-@media (max-width: 1024px) {
-  .comparison-list ul li { margin-bottom: 5px;}
+@media (max-width: 992px) {
+  .comparison-list h6{
+    margin-bottom:10px;
+  }
 }
 @media (max-width: 767px) {
   .comparison-list{
     width: 80%;
   }
+  .comparison-list ul li { margin-bottom: 5px;}
+
 }
 @media (max-width: 450px) {
   .comparison-box{
