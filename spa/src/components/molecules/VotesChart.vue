@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inside">
     <bar-chart v-if="horizontal" :data="chartData" :colors="[colors]" suffix="%" height="100px"></bar-chart>
     <column-chart v-if="!horizontal" :data="chartData" :colors="[colors]" suffix="%" height="200px"></column-chart>
   </div>
@@ -45,3 +45,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.inside {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+</style>

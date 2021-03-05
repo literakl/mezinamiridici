@@ -106,19 +106,19 @@ export default {
 
 <style scoped>
 /* Poll Buttons Horizantal Align Center  */
-.np-status, .traval-trouble-status, .dislike-status, .angry-status{
+.np-status, .traval-trouble-status, .dislike-status, .angry-status {
   display: flex;
   align-items: center;
 }
-.np-status span,  .traval-trouble-status span, .dislike-status span, .angry-status span{
+.np-status span,  .traval-trouble-status span, .dislike-status span, .angry-status span {
   margin-right: 15px;
 }
-.np-status span.status-img{
+.np-status span.status-img {
  margin-right: 11px;
 }
-.title-status{
+.title-status {
   max-width: 100px;
-      width: 100%;
+  width: 100%;
 }
 /* Voted Poll Success Progress Bars Css Start */
 .poll-success {
@@ -126,24 +126,24 @@ export default {
   margin: 0 auto;
   padding: 0 0 0 10px;
 }
-.poll-success ul{
+.poll-success ul {
   padding:0;
   margin:0;
 }
-.poll-success ul li{
+.poll-success ul li {
   list-style-type: none;
   font-size: 14px;
   font-weight:400;
 }
-.poll-success ul li img{
+.poll-success ul li img {
   width: 38px;
   height: 38px;
   margin-left:0px;
 }
-.poll-success ul li:first-child{
+.poll-success ul li:first-child {
   flex: 1 1 100%;
 }
-.poll-success ul li:first-child img{
+.poll-success ul li:first-child img {
   width: 45px;
   height: 35px;
   margin-left: -3px;
@@ -159,7 +159,7 @@ export default {
   transition: width 500ms ease-in-out;
   text-align: right;
 }
-.progress-bar i{
+.progress-bar i {
   padding-right: 15px;
   font-size: 14px;
   font-weight: 500;
@@ -177,7 +177,9 @@ export default {
   display: block;
   background-color: #ffc107;
 }
-.progress-bar-fill-yellow i { color: #212529;}
+.progress-bar-fill-yellow i {
+  color: #212529;
+}
 .progress-bar-fill-red {
   display: block;
   background-color: #dc3545;
@@ -189,7 +191,7 @@ export default {
   padding: 0 15px;
   margin: 0 auto;
 }
-.poll-heading a{
+.poll-heading a {
   font-size: 24px;
   text-decoration: none;
   margin: 10px 0 15px;
@@ -197,7 +199,7 @@ export default {
   color: var(--text-color);
   text-align: left;
 }
-.poll-heading a:hover{
+.poll-heading a:hover {
   color: var(--link-blue);
 }
 @media (max-width: 1065px) {
@@ -214,11 +216,11 @@ export default {
   }
 }
 @media (max-width: 550px) {
-.np-status, .traval-trouble-status, .dislike-status, .angry-status {
+  .np-status, .traval-trouble-status, .dislike-status, .angry-status {
     flex-basis: 100px;
     flex-wrap: wrap;
   }
-  .poll-success{
+  .poll-success {
     margin-bottom: 20px;
   }
 }
