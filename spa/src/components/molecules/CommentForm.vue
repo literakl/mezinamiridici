@@ -54,7 +54,7 @@
                   <BIconEmojiSunglasses></BIconEmojiSunglasses>
                 </b-button>
 
-                <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" style="float:right;">
+                <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" class="closebtn">
                   <BIconXCircle></BIconXCircle>
                 </b-button>
               </div>
@@ -68,7 +68,7 @@
     <b-alert v-model="error" variant="danger" dismissible>
       {{ $t('generic.internal-error') }}
     </b-alert>
-    <Button :disabled="sending || empty" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/>
+    <span class="send-comment-btn"><Button :disabled="sending || empty" class="mt-2" size="sm" :value="$t('comment.send-button')" @clicked="send"/></span>
   </div>
 </template>
 
@@ -188,12 +188,29 @@ export default {
 </script>
 
 <style>
+  .comment-box .container-fluid {
+    padding: 0;
+  }
   .ProseMirror {
     border: #dddddd solid 1px;
     padding: 10px;
+    min-height: 150px;
   }
-  .ProseMirror img{
+  .ProseMirror img {
     width: 100%;
+  }
+  .send-comment-btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  .send-comment-btn button {
+    max-width: 150px;
+    width: 100%;
+  }
+  .closebtn {
+    float: right;
   }
 </style>
 
@@ -202,8 +219,7 @@ export default {
   $color-white: #ffffff;
   $color-grey: #dddddd;
 
-
-  .menubar__button{
+  .menubar__button {
     font-weight: 700;
     display: -webkit-inline-box;
     background: transparent;
@@ -217,6 +233,12 @@ export default {
     &.is-active {
       background-color: rgba($color-black,.1);
     }
+  }
+  .menubar button {
+    box-shadow: none;
+  }
+  .menubar button svg {
+    color:var(--text-color)
   }
   .actions {
     max-width: 30rem;
