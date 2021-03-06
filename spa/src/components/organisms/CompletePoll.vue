@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="complete">
     <PollHeading :item="item"/>
 
-    <div v-if="voted" class="pt-2 pb-2">
-      <VotesChart :votes="item.votes" v-bind:voted="voted"/>
-      <PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons>
+    <div v-if="voted" class="pt-2 pb-2 chart-wrap">
+      <div class="vote-chart"><VotesChart :votes="item.votes" v-bind:voted="voted"/></div>
+      <div class="comparision-wrap"><PredefinedComparisons :slug="item.info.slug"></PredefinedComparisons></div>
     </div>
 
     <div v-if="!voted" class="m-auto pt-3 pb-3">
@@ -56,27 +56,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-//TODO. Is this really useful? I cannot find a difference, when I delete these classes.
-
-  .btn.btn-primary:active:hover, .btn.btn-primary:hover {
-    border-color: var(--primary);
-    background-color: var(--primary);
-  }
-
-  .btn.btn-success:active:hover, .btn.btn-success:hover {
-    border-color: var(--success);
-    background-color: var(--success);
-  }
-
-  .btn.btn-warning:active:hover, .btn.btn-warning:hover {
-    border-color: var(--warning);
-    background-color: var(--warning);
-  }
-
-  .btn.btn-danger:active:hover, .btn.btn-danger:hover {
-    border-color: var(--danger);
-    background-color: var(--danger);
-  }
-</style>

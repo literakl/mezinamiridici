@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="pass-change">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(changePassword)">
         <h3>{{ $t('sign-in.change-password-heading') }}</h3>
-
-        <div>
+        <div class="field-area">
           <TextInput
             v-model="email"
             rules="email"
             :label="$t('profile.email')"
             name="email"
             type="email"/>
-
+        </div>
+        <div class="field-area">
           <TextInput
             v-model="currentPassword"
             rules="required"
@@ -19,7 +19,8 @@
             name="current-password"
             type="password"
           />
-
+        </div>
+        <div class="field-area">
           <TextInput
             v-model="newPassword"
             rules="required|min:6"
@@ -27,20 +28,17 @@
             name="new-password"
             type="password"
           />
-
           <div v-if="error">
             <strong class="text-error">
               {{ error }}
             </strong>
           </div>
-          <div class="col-sm-12 col-md-4">
-            <Button
-              class="w-100"
-              :disabled="invalid"
-              :value="$t('sign-in.change-password-button')"
-              @clicked="changePassword"/>
-          </div>
         </div>
+        <Button
+          class="mt-1"
+          :disabled="invalid"
+          :value="$t('sign-in.change-password-button')"
+          @clicked="changePassword"/>
       </b-form>
     </ValidationObserver>
   </div>
@@ -100,3 +98,31 @@ export default {
   },
 };
 </script>
+<style scoped>
+.pass-change{
+  width: 100%;
+  margin: 0 auto;
+  padding: 0px 0px 20px;
+}
+.pass-change h3{
+  font-size: 14px;
+  border-bottom: 0px solid #ddd;
+  padding-bottom: 10px;
+}
+.pass-change .w-50 {
+  width: 100%!important;
+}
+.pass-change button {
+  font-size: 14px;
+  margin: 0 auto;
+}
+.pass-change label { font-size: 14px;}
+
+.field-area { margin-bottom: 15px; font-size: 14px;}
+@media (max-width: 767px) {
+  .pass-change button { width: 50%; font-size: 14px;}
+}
+@media (max-width: 500px) {
+  .pass-change button { width: 100%; font-size: 14px;}
+}
+</style>

@@ -1,6 +1,5 @@
 <template>
-  <div class="mb-2">
-
+  <div class="mb-2 poll-form">
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">

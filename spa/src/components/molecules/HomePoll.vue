@@ -10,7 +10,7 @@
       <ul>
         <li>
           <div class="np-status">
-            <span class="status-img"><img src="/images/icons/happy.png" alt=""></span>
+            <span class="status-img"><img src="/images/icons/happy.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
@@ -21,7 +21,7 @@
         </li>
         <li>
           <div class="traval-trouble-status">
-            <span class="status-img"><img src="/images/icons/ok.png" alt=""></span>
+            <span class="status-img"><img src="/images/icons/ok.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
@@ -32,7 +32,7 @@
         </li>
         <li>
           <div class="dislike-status">
-            <span class="status-img"><img src="/images/icons/dislike.png" alt=""></span>
+            <span class="status-img"><img src="/images/icons/dislike.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.dislike') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
@@ -43,7 +43,7 @@
         </li>
         <li>
           <div class="angry-status">
-            <span class="status-img"><img src="/images/icons/angry.png" alt=""></span>
+            <span class="status-img"><img src="/images/icons/angry.svg" alt=""></span>
             <span class="title-status">{{ $t('poll.choices.hate') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">

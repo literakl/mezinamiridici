@@ -3,19 +3,19 @@
     <div class="normal-poll-inside">
       <h4 class="pb-2">{{ $t('poll.your-opinion') }}</h4>
       <b-button variant="success" v-on:click="voted('neutral')">
-        <img src="/images/icons/happy.png" alt="">
+        <img src="/images/icons/happy.svg" alt="">
         {{ $t('poll.choices.neutral') }}
       </b-button>
       <b-button variant="primary" v-on:click="voted('trivial')">
-        <img src="/images/icons/ok.png" alt="">
+        <img src="/images/icons/ok.svg" alt="">
         {{ $t('poll.choices.trivial') }}
       </b-button>
       <b-button variant="warning" v-on:click="voted('dislike')">
-        <img src="/images/icons/dislike.png" alt="">
+        <img src="/images/icons/dislike.svg" alt="">
         {{ $t('poll.choices.dislike') }}
       </b-button>
       <b-button variant="danger" v-on:click="voted('hate')">
-        <img src="/images/icons/angry.png" alt="">
+        <img src="/images/icons/angry.svg" alt="">
         {{ $t('poll.choices.hate') }}
       </b-button>
     </div>

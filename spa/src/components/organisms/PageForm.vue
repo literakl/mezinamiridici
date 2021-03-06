@@ -31,8 +31,7 @@
               id="content" name="content" aria-describedby="text-errors"
               rows="10" max-rows="50"
               :placeholder="$t('cms.edit.content-label')"
-              v-model="form.content" :state="getValidationState(validationContext)"
-            >
+              v-model="form.content" :state="getValidationState(validationContext)">
             </b-form-textarea>
 
             <b-form-invalid-feedback id="content-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>

@@ -1,5 +1,6 @@
 <template>
   <GridLayout
+    class="home-posts"
     ref="ig"
     :options="options"
     :layoutOptions="layoutOptions"
@@ -92,12 +93,23 @@ export default {
 };
 </script>
 <style scoped>
+
+.home-posts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 1280px;
+  margin: 0 auto;
+}
 .item {
-  width: 250px;
+  width: 255px;
   opacity: 1;
 }
+.item div {
+  height: 270px;
+}
 .item .thumbnail {
-  max-height: 300px;
+  max-height: 270px;
   overflow: hidden;
   border-radius: 8px;
 }
@@ -122,5 +134,20 @@ export default {
   line-height: 50px;
   text-align: center;
   font-weight: bold;
+}
+@media (max-width: 767px) {
+  .home-posts {
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+  .item {
+    max-width: 767px;
+    width: 100%;
+    opacity: 1;
+    padding: 0 15px;
+  }
+  .item div {
+    height: auto;
+  }
 }
 </style>

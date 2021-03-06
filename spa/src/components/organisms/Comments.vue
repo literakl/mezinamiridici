@@ -1,5 +1,5 @@
 <template>
-  <div class="" id="comments">
+  <div class="comment-area" id="comments">
     <h3>{{ $t('comment.discussion') }}</h3>
 
     <div v-if="signedIn">
@@ -8,17 +8,15 @@
 
     <!-- Novejsi reload button -->
 
-<!--    <div v-if="comments.length">-->
-      <div v-for="comment in comments" v-bind:key="comment._id">
-        <Comment :itemId="itemId" :comment="comment" :collapseId="getCollapseId(comment)" />
-        <b-collapse :id="`replies_${comment._id}`" visible>
-          <Replies v-if="comment.replies && comment.replies.length > 0" :itemId="itemId" :comment="comment" />
-        </b-collapse>
-
-        <!-- nacist odpovedi v-if="comment.replies === undefined" -->
-      </div>
-<!--    </div>-->
-    <Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" />
+    <div v-for="comment in comments" v-bind:key="comment._id">
+      <Comment :itemId="itemId" :comment="comment" :collapseId="getCollapseId(comment)" />
+      <b-collapse :id="`replies_${comment._id}`" visible>
+        <Replies v-if="comment.replies && comment.replies.length > 0" :itemId="itemId" :comment="comment" />
+      </b-collapse>
+    </div>
+    <span class="load-comments">
+      <Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" />
+    </span>
   </div>
 </template>
 
@@ -86,3 +84,32 @@ export default {
   },
 };
 </script>
+<style scoped>
+/* Comment Outer Full Area  */
+.comment-area {
+  margin:0 auto;
+  width:100%
+}
+.comment-area h3 {
+  font-size: 18px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+@media (max-width: 767px) {
+  .comment__child {
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 450px) {
+  .comment-area {
+    width: 100%;
+  }
+  .comment-area h3 {
+    padding:10px 0px;
+  }
+}
+</style>
