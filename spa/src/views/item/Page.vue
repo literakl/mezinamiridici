@@ -1,9 +1,11 @@
 <template>
-  <div class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
-    <ContentLoading v-if="! content" type="cms" />
-    <div v-if="content">
-      <div v-html="content.data.content"></div>
-      <ShareLink :item="content" />
+  <div class="pages-wrap">
+    <div class="pt-3 ml-auto mr-auto mt-auto mb-5">
+    <ContentLoading v-if="!content" type="cms" />
+      <div v-if="content" class="page-content-wrap">
+        <div v-html="content.data.content" class="post-content"></div>
+        <ShareLink :item="content" />
+      </div>
     </div>
   </div>
 </template>
@@ -45,3 +47,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.pages-wrap {
+  max-width:1235px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1235px) {
+  .pages-wrap {
+    margin: 0 35px;
+  }
+}
+
+</style>

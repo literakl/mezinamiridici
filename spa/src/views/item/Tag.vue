@@ -1,20 +1,24 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="pt-3 mt-5 centerbox">
     <vue-word-cloud
-      style="width: 100%; height: 240px;"
+      style="font-family:fantasy;width:100%;min-height:250px;border: 5px dashed #e6eaef!important;border-bottom-width: 10px!important;"
       :words="tags"
-      :color="([, weight]) => weight > 5 ? 'DeepPink' : weight > 3 ? 'RoyalBlue' : 'Indigo'"
+      :color="([, weight]) => weight > 5 ? '#ffc107' : weight > 3 ? 'RoyalBlue' : 'Indigo'"
       font-family="fantasy"
       :spacing="0.1"
+      class="tags"
       >
       <template slot-scope="{text, weight, word}">
-        <div :title="weight" style="cursor: pointer;" @click="onTagClick(word)">
-          {{ text }}
+        <div>
+          <div :title="weight" style="cursor: pointer;" @click="onTagClick(word)">
+            <div>{{ text }}</div>
+          </div>
         </div>
       </template>
     </vue-word-cloud>
-
-    <ContentLoading v-if="! items" type="items"/>
+    <div class="items-with-tags mt-4">
+      <ContentLoading v-if="!items" type="items"/>
+    </div>
     <ItemList v-if="tag" :tag="tag"/>
   </div>
 </template>
@@ -74,3 +78,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.centerbox {
+  max-width: 1235px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (max-width: 1235px) {
+ .centerbox {
+   width:91%;
+ }
+}
+</style>

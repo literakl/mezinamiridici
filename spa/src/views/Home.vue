@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="pt-3 m-auto pb-5">
     <HomePoll v-if="poll" :poll="poll"/>
     <ItemList :exceptItem="poll"/>
   </div>
