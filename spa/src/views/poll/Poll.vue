@@ -1,9 +1,15 @@
 <template>
-  <div class="pt-3 ml-auto mr-auto mt-auto mb-5 w-75">
-    <ContentLoading v-if="! poll" type="poll" />
-    <CompletePoll v-if="poll" />
+  <div class="single-post-wrap pt-3 ml-auto mr-auto mt-auto mb-5">
+    <div class="poll-content">
+      <ContentLoading v-if="!poll" type="poll"/>
+    </div>
+    <div class="completed-poll-wrap">
+      <CompletePoll v-if="poll"/>
+    </div>
     <ShareLink :item="poll" />
-    <Comments v-if="poll" :itemId="poll._id" />
+    <div class="comment-outer">
+      <Comments v-if="poll" :itemId="poll._id"/>
+    </div>
   </div>
 </template>
 
@@ -50,3 +56,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.single-post-wrap {
+  max-width: 1235px;
+  margin: 0 auto;
+}
+@media (max-width: 1235px) {
+  .single-post-wrap{
+    padding: 0 35px;
+  }
+}
+
+</style>
