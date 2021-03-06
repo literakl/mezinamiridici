@@ -1,72 +1,82 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
-    <h1>{{ $t('sign-up.heading') }}</h1>
-
-    <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
-
+  <div class="mt-5 border centerbox">
+    <div class="head-area">
+      <h2>{{ $t('sign-up.heading') }}</h2>
+      <p v-if="! succeeded">{{ $t('sign-up.body') }}</p>
+    </div>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(submitForm)" v-if="! succeeded">
         <fieldset :disabled='wholeDisable'>
-        <TextInput
-          v-model="email"
-          rules="required|email|conflict:email"
-          :label="$t('profile.email')"
-          :placeholder="$t('sign-up.email-hint')"
-          name="email"
-          :disabled="socialId !== undefined"
-          type="email"/>
+          <div class="field-area">
+            <TextInput
+              v-model="email"
+              rules="required|email|conflict:email"
+              :label="$t('profile.email')"
+              :placeholder="$t('sign-up.email-hint')"
+              name="email"
+              :disabled="socialId !== undefined"
+              type="email"/>
+          </div>
 
-        <TextInput
-          v-if="! socialId"
-          v-model="password"
-          rules="required|min:6"
-          :label="$t('profile.password')"
-          :placeholder="$t('sign-up.password-hint')"
-          name="password"
-          type="password"/>
+          <div class="field-area">
+            <TextInput
+              v-if="! socialId"
+              v-model="password"
+              rules="required|min:6"
+              :label="$t('profile.password')"
+              :placeholder="$t('sign-up.password-hint')"
+              name="password"
+              type="password"/>
+          </div>
 
-        <TextInput
-          v-model="nickname"
-          rules="required|min:3|conflict:nick"
-          :label="$t('profile.nickname')"
-          :placeholder="$t('sign-up.nickname-hint')"
-          name="nickname"/>
+          <div class="field-area">
+            <TextInput
+              v-model="nickname"
+              rules="required|min:3|conflict:nick"
+              :label="$t('profile.nickname')"
+              :placeholder="$t('sign-up.nickname-hint')"
+              name="nickname"/>
+          </div>
 
-        <Checkbox
-          v-model="personalData"
-          :label="$t('sign-up.personal-data')"
-          name="personal-data"
-          identifier="personalData"/>
+          <div class="field-area">
+            <Checkbox
+              v-model="personalData"
+              :label="$t('sign-up.personal-data')"
+              name="personal-data"
+              identifier="personalData"/>
+          </div>
 
-        <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
+          <div class="prof-form-wrap">
+            <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
+          </div>
+          <div class="field-area">
+            <h5>{{ $t('sign-up.consents') }}</h5>
+            <div>
+              <Checkbox
+                v-model="termsAndConditions"
+                :rules="{ required: { allowFalse: false} }"
+                :label="$t('profile.terms')"
+                name="terms"
+                identifier="termsAndConditions"/>
+            </div>
 
-        <h2>{{ $t('sign-up.consents') }}</h2>
+            <div>
+              <Checkbox
+                v-model="personalDataProcessing"
+                :rules="{ required: { allowFalse: false} }"
+                :label="$t('profile.processing')"
+                name="processing"
+                identifier="personalDataProcessing"/>
+            </div>
 
-        <div>
-          <Checkbox
-            v-model="termsAndConditions"
-            :rules="{ required: { allowFalse: false} }"
-            :label="$t('profile.terms')"
-            name="terms"
-            identifier="termsAndConditions"/>
-        </div>
-
-        <div>
-          <Checkbox
-            v-model="personalDataProcessing"
-            :rules="{ required: { allowFalse: false} }"
-            :label="$t('profile.processing')"
-            name="processing"
-            identifier="personalDataProcessing"/>
-        </div>
-
-        <div>
-          <Checkbox
-            v-model="emailNotifications"
-            :label="$t('sign-up.notifications-label')"
-            name="email-notifications"
-            identifier="emailNotifications"/>
-        </div>
+            <div>
+              <Checkbox
+                v-model="emailNotifications"
+                :label="$t('sign-up.notifications-label')"
+                name="email-notifications"
+                identifier="emailNotifications"/>
+            </div>
+          </div>
 
         <div v-if="error" class="text-danger">
           <strong>
@@ -74,7 +84,7 @@
           </strong>
         </div>
 
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-4 m-auto">
           <Button
             class="w-100"
             :waiting="sending"
@@ -87,7 +97,7 @@
       </b-form>
     </ValidationObserver>
 
-    <div v-if="success === true">
+    <div class="success-msg" v-if="success === true">
       {{ $t('sign-up.success-message') }}
     </div>
   </div>
@@ -305,3 +315,63 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.centerbox {
+  max-width:700px;
+  margin: 0 auto 20px;
+  padding: 25px 35px;
+  border-radius: 4px;
+}
+.head-area {
+  padding-bottom:0px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  }
+.head-area h2 {
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
+}
+.field-area {
+  margin-bottom: 10px;
+}
+.field-area label span {
+  font-size: 14px;
+}
+.field-area input, .field-area select {
+  width: 98%!important;
+}
+.centerbox .w-50 {
+  width: 100%!important;
+}
+.green {
+  background: var(--color-green);
+  border: 0;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+}
+.success-msg {
+  font-size: 15px;
+}
+.prof-form-wrap .centerbox {
+  box-shadow: none;
+  padding: 0;
+}
+@media (max-width: 700px) {
+  .centerbox, .hero-head {
+    margin-right:35px;
+    margin-left:35px;
+    padding:25px 20px;
+  }
+  .prof-form-wrap .centerbox {
+    margin: 0;
+  }
+}
+
+</style>

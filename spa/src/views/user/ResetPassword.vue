@@ -1,8 +1,10 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="mt-5 border centerbox">
     <b-row>
       <b-col>
-        <h1>{{ $t('sign-in.reset-password-heading') }}</h1>
+        <div class="head-area">
+          <h2>{{ $t('sign-in.reset-password-heading') }}</h2>
+        </div>
       </b-col>
     </b-row>
     <b-row>
@@ -13,34 +15,35 @@
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
       <b-form @submit.prevent="passes(resetPassword)">
-        <TextInput
-          v-model="email"
-          :label="$t('profile.email')"
-          name="email"
-          type="email"/>
+        <div class="field-area">
+          <TextInput
+            v-model="email"
+            :label="$t('profile.email')"
+            name="email"
+            type="email"/>
+        </div>
+        <div class="field-area">
+          <TextInput
+            v-model="newPassword"
+            rules="required|min:6"
+            :label="$t('sign-in.new-password')"
+            name="new-password"
+            type="password"
+          />
+        </div>
 
-        <TextInput
-          v-model="newPassword"
-          rules="required|min:6"
-          :label="$t('sign-in.new-password')"
-          name="new-password"
-          type="password"
-        />
-
-        <div v-if="error">
+        <div v-if="error" class="errormsg">
           <strong class="text-danger">
             {{ error }}
           </strong>
         </div>
-        <b-row>
-          <b-col md="4" sm="12">
-            <Button
-              class="w-100"
-              :disabled="invalid"
-              :value="$t('sign-in.change-password-button')"
-              @clicked="resetPassword"/>
-          </b-col>
-        </b-row>
+        <div class="m-auto">
+          <Button
+            class="w-100 green"
+            :disabled="invalid"
+            :value="$t('sign-in.change-password-button')"
+            @clicked="resetPassword"/>
+        </div>
       </b-form>
     </ValidationObserver>
   </div>
@@ -104,3 +107,55 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.centerbox {
+  max-width:700px;
+  margin: 0 auto 20px;
+  padding: 25px 35px;
+  border-radius: 4px;
+}
+.head-area {
+  padding-bottom:0px;
+  margin-bottom:10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.head-area h2 {
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  width:100%;
+  padding: 0 0 15px 0;
+}
+.field-area {
+  margin-bottom: 10px;
+}
+.field-area label span {
+  font-size: 14px;
+}
+.field-area input, .field-area select {
+  width: 98%!important;
+}
+.centerbox .w-50 {
+  width: 100%!important;
+}
+.green {
+  background: var(--color-green);
+  border: 0;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+}
+.errormsg {
+  font-size: 14px;
+}
+@media (max-width: 700px) {
+  .centerbox, .hero-head {
+    margin-right:35px;
+    margin-left:35px;
+    padding:25px 20px;
+  }
+}
+</style>

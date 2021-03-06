@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3 w-75 m-auto pb-5">
+  <div class="mt-5 pt-3 pb-5 border centerbox">
     <b-row>
       <b-col>
         <h1>{{ $t('generic.not-found-caption') }}</h1>
@@ -21,3 +21,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.centerbox {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 25px 35px;
+  width: 100%;
+}
+.centerbox h1 {
+  font-size: 21px;
+}
+.centerbox img {
+  width: 100%;
+}
+</style>
