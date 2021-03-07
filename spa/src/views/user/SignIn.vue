@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+  <ValidationObserver ref="form" v-slot="{ passes }">
     <b-form @submit.prevent="passes(signIn)">
       <div class="mt-5 border rounded centerbox">
         <b-row class="w-85 m-auto pb-1">
@@ -47,7 +47,7 @@
         <b-row class="w-85 m-auto pb-2">
           <b-col>
             <Button
-              class="w-100 btn blue"
+              class="w-100 btn btn-block blue"
               :disabled="invalid"
               :value="$t('sign-in.sign-in-button')"
               @clicked="signIn"/>
@@ -123,6 +123,15 @@ export default {
     signingIn: false,
     error: null,
   }),
+  computed: {
+    invalid() {
+      if (/\w+@\w+/gi.test(this.email) && this.password) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+  },
   methods: {
     redirectToSignUp() {
       this.$router.push({ name: 'sign-up', params: { presetEmail: this.email, presetPassword: this.password } });
@@ -203,6 +212,7 @@ export default {
   font-size: 14px;
   border-radius: 2px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+  cursor: pointer;
 }
 .btn-facebook {
   color: #fff;

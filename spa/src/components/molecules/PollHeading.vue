@@ -35,7 +35,7 @@
               </div>
               <div class="post-comments">
                 <BIconChatTextFill scale="1"></BIconChatTextFill>
-                <span>{{item.comments.count}}</span>
+                <router-link to="#comments"><span>{{item.comments.count}}</span></router-link>
               </div>
             </div>
           </div>
