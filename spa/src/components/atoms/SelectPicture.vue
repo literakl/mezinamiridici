@@ -1,6 +1,7 @@
 <template>
   <b-form-group class="title" :label="$t('generic.select-picture-label')">
     <b-img thumbnail :src="currentPath" class="item-thumb" @click="showModal"></b-img>
+
     <b-modal id="thumbs-list" v-model="showSelector" :title="$t('generic.select-picture-title')"
              size="xl" centered scrollable :hide-footer="true">
       <b-img
@@ -22,7 +23,9 @@ import { BFormGroup, BImg, BModal } from 'bootstrap-vue';
 export default {
   name: 'SelectPicture',
   components: {
-    BFormGroup, BImg, BModal,
+    BFormGroup,
+    BImg,
+    BModal,
   },
   props: {
     currentPath: String,
@@ -64,19 +67,22 @@ export default {
 </script>
 
 <style scoped>
-.title{
-  font-size:14px;
-  font-weight:300
+.title {
+  font-size: 14px;
+  font-weight: 300
 }
+
 .item-thumb {
-  width:200px;
-  height:120px;
-  cursor:pointer;
+  width: 200px;
+  height: 120px;
+  cursor: pointer;
   transition: 0.5s ease;
 }
+
 .item-thumb:hover {
   transform: translateX(-2px) translateY(-2px) scale(1.03);
 }
+
 .item-thumb:active {
   transform: translateX(-1px) translateY(-1px) scale(1.01);
 }

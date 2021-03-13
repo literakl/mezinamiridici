@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+  <ValidationObserver ref="form" v-slot="{ passes }">
     <b-form @submit.prevent="passes(signIn)">
       <div class="mt-5 border rounded centerbox">
         <b-row class="w-85 m-auto pb-1">
@@ -9,31 +9,31 @@
               <div>{{ message }}</div>
             </div>
             <div class="field-area">
-            <TextInput
-              v-model="email"
-              rules="required|email"
-              class="w-100"
-              :label="$t('profile.email')"
-              :placeholder="$t('sign-in.email-placeholder')"
-              name="email"
-              type="email"
-            />
+              <TextInput
+                v-model="email"
+                rules="required|email"
+                class="w-100"
+                :label="$t('profile.email')"
+                :placeholder="$t('sign-in.email-placeholder')"
+                name="email"
+                type="email"
+              />
             </div>
             <div class="field-area">
-            <TextInput
-              v-model="password"
-              rules="required"
-              class="w-100"
-              :label="$t('profile.password')"
-              :placeholder="$t('sign-in.password-placeholder')"
-              name="password"
-              type="password"
-            />
+              <TextInput
+                v-model="password"
+                rules="required"
+                class="w-100"
+                :label="$t('profile.password')"
+                :placeholder="$t('sign-in.password-placeholder')"
+                name="password"
+                type="password"
+              />
             </div>
 
             <div class="w-100 d-flex flex-row-reverse mb-3 forgot-link">
               <router-link :to="{ name: 'forgotten' }">
-                {{ $t('sign-in.forgot-password-link')}}
+                {{ $t('sign-in.forgot-password-link') }}
               </router-link>
             </div>
 
@@ -47,7 +47,7 @@
         <b-row class="w-85 m-auto pb-2">
           <b-col>
             <Button
-              class="w-100 btn blue"
+              class="w-100 btn btn-block blue"
               :disabled="invalid"
               :value="$t('sign-in.sign-in-button')"
               @clicked="signIn"/>
@@ -123,9 +123,24 @@ export default {
     signingIn: false,
     error: null,
   }),
+  computed: {
+    invalid() {
+      if (/\w+@\w+/gi.test(this.email) && this.password) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+  },
   methods: {
     redirectToSignUp() {
-      this.$router.push({ name: 'sign-up', params: { presetEmail: this.email, presetPassword: this.password } });
+      this.$router.push({
+        name: 'sign-up',
+        params: {
+          presetEmail: this.email,
+          presetPassword: this.password,
+        },
+      });
     },
     async signIn() {
       this.signingIn = true;
@@ -152,8 +167,15 @@ export default {
       const response = await this.$auth.authenticate(provider);
       if (response.data.socialId) {
         this.$auth.logout();
-        const params = { presetEmail: response.data.email, presetNickname: response.data.name, socialId: response.data.socialId };
-        await this.$router.push({ name: 'sign-up', params });
+        const params = {
+          presetEmail: response.data.email,
+          presetNickname: response.data.name,
+          socialId: response.data.socialId,
+        };
+        await this.$router.push({
+          name: 'sign-up',
+          params,
+        });
       } else {
         await this.$store.dispatch('SET_SOCIAL', response.data);
         await this.$router.push('/');
@@ -162,63 +184,75 @@ export default {
   },
 };
 </script>
-<style>
-.centerbox{
+
+<style scoped>
+.centerbox {
   max-width: 700px;
   width: 100%;
   margin: 0 auto 20px;
   padding: 25px 20px;
   border-radius: 4px;
 }
-.head-area{
-  padding-bottom:0px;
-  margin-bottom:10px;
+
+.head-area {
+  padding-bottom: 0;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
-.head-area button{
+
+.head-area button {
   background: transparent;
   padding: 10px;
   border: 0;
   width: 100px;
   font-size: 14px;
 }
-.head-area h2{
+
+.head-area h2 {
   font-size: 20px;
   border-bottom: 1px solid #ddd;
-  width:100%;
+  width: 100%;
   padding: 0 0 15px 0;
 }
-.field-area{
+
+.field-area {
   margin-bottom: 10px;
 }
-.forgot-link{
+
+.forgot-link {
   font-size: 14px;
 }
+
 .btn {
-   font-weight: 500;
-    font-size: 14px;
+  font-weight: 500;
+  font-size: 14px;
   border-radius: 2px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+  cursor: pointer;
 }
+
 .btn-facebook {
   color: #fff;
   background-color: #3b5998;
-  border: 0px solid #335190;
+  border: 0 solid #335190;
 }
+
 .btn-facebook:hover,
 .btn-facebook:focus {
   color: #fff;
   background-color: #294786;
   border: 0;
 }
+
 .btn-twitter {
   color: #fff;
   background-color: #00aced;
-  border: 0px solid #009fdb;
+  border: 0 solid #009fdb;
 }
+
 .btn-twitter:hover,
 .btn-twitter:focus {
   color: #fff;
@@ -228,45 +262,49 @@ export default {
 .btn-google-plus {
   color: #fff;
   background-color: #dd4b39;
-  border: 1px solid #d54331;
   border: 0;
 }
+
 .btn-google-plus:hover,
 .btn-google-plus:focus {
   color: #fff;
   background-color: #cb3927;
   border: 0;
 }
-.blue{
+
+.blue {
   color: #fff;
   background-color: #007bff;
   border-color: #007bff;
   font-weight: 400;
   font-size: 14px;
 }
-.blue:hover{
+
+.blue:hover {
   color: #fff;
   background-color: #0069d9;
   border-color: #0062cc;
 }
 
-.green{
+.green {
   background: var(--color-green);
   border: 0;
   color: #fff;
   font-weight: 400;
   font-size: 14px;
 }
-.green:hover{
+
+.green:hover {
   color: #fff;
   background-color: #218838;
   border-color: #1e7e34;
 }
+
 @media (max-width: 700px) {
-  .centerbox{
-    margin:0 35px;
-    width:auto;
-    padding:25px 5px;
+  .centerbox {
+    margin: 0 35px;
+    width: auto;
+    padding: 25px 5px;
   }
 }
 

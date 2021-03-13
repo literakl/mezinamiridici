@@ -1,13 +1,13 @@
 <template>
   <span>
     <router-link :to="{ name: 'user-profile', params: { id: profile.id }}" :id="id">
-      {{profile.nickname}}
+      {{ profile.nickname }}
     </router-link>
     <b-popover v-if="showUserInfo" @show="onShow" :target="id" triggers="hover" placement="top" delay="150">
       <template v-slot:title><span v-if="userInfo">{{ userInfo.bio.nickname }}</span></template>
       <template v-slot:default v-if="userInfo">
         <div>
-          {{ $t('profile.member-since-label') }}: <Date :date="userInfo.bio.registered" format="dynamicDate" />
+          {{ $t('profile.member-since-label') }}: <Date :date="userInfo.bio.registered" format="dynamicDate"/>
         </div>
         <div>
           {{ $t('profile.rank-label') }}: {{ $t(`profile.rank.${userInfo.honors.rank}`) }}

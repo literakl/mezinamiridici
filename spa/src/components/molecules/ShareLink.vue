@@ -1,13 +1,13 @@
 <template>
-<div class="share-links-wrap">
-  <div class="share-box">
-    <b-button @click="shareLink('twitter')" class="p-0" v-html="twitter" variant="transparent" />
-    <b-button @click="shareLink('facebook')" class="p-0" v-html="facebook" variant="transparent" />
-    <b-button @click="shareLink('messenger')" class="p-0" v-html="messenger" variant="transparent" />
-    <b-button @click="shareLink('whatsapp')" class="p-0" v-html="whatsapp" variant="transparent" />
-    <b-button @click="shareLink('email')" class="p-0" v-html="email" variant="transparent" />
+  <div class="share-links-wrap">
+    <div class="share-box">
+      <b-button @click="shareLink('twitter')" class="p-0" v-html="twitter" variant="transparent"/>
+      <b-button @click="shareLink('facebook')" class="p-0" v-html="facebook" variant="transparent"/>
+      <b-button @click="shareLink('messenger')" class="p-0" v-html="messenger" variant="transparent"/>
+      <b-button @click="shareLink('whatsapp')" class="p-0" v-html="whatsapp" variant="transparent"/>
+      <b-button @click="shareLink('email')" class="p-0" v-html="email" variant="transparent"/>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -46,21 +46,22 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.share-links-wrap{
+.share-links-wrap {
   margin: 0 auto;
   position: fixed;
   top: 40%;
   bottom: 40%;
   transform: translate(-55px, -50%);
-  z-index:1;
+  z-index: 1;
 }
-.share-box{
+
+.share-box {
   left: 15px;
   width: 40px;
   top: 190px;
   text-align: center;
-  background: #fff;
   border: 1px solid #ddd;
   flex-direction: column;
   justify-content: center;
@@ -71,29 +72,60 @@ export default {
   z-index: 100;
   padding-top: 3px;
 }
-.share-box button{ width:100%; text-align:center; display:block; margin-bottom: 5px; border-bottom:1px solid #ddd;border-radius: 0;}
-.share-box button:last-child{
-  border-bottom: 0; margin-bottom: 0;
+
+.share-box button {
+  width: 100%;
+  text-align: center;
+  display: block;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
 }
-.share-box button.p-0{color:#AEB3B7; fill:#AEB3B7; box-shadow: none; padding-bottom: 4px!important; }
-.share-box button.p-0:hover{color:#b9cbda; fill:#b9cbda; box-shadow: none; }
+
+.share-box button:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.share-box button.p-0 {
+  color: #AEB3B7;
+  fill: #AEB3B7;
+  box-shadow: none;
+  padding-bottom: 4px !important;
+}
+
+.share-box button.p-0:hover {
+  color: #b9cbda;
+  fill: #b9cbda;
+  box-shadow: none;
+}
 
 @media (max-width: 1235px) {
-  .share-links-wrap{
+  .share-links-wrap {
     transform: translate(-45px, -50%);
   }
-  .share-box button.p-0 svg{ font-size: 20px; width:20px; height: 20px;}
+
+  .share-box button.p-0 svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
 }
+
 @media (max-width: 992px) {
-  .share-box{
-    right: 0px;
+  .share-box {
+    right: 0;
     width: 36px;
     left: unset;
   }
-  .share-box svg{ width: 20px;}
-  .share-links-wrap{
+
+  .share-box svg {
+    width: 20px;
+  }
+
+  .share-links-wrap {
     right: 0;
-    left:unset;
+    left: unset;
     transform: translate(-0px, -50%);
   }
 }

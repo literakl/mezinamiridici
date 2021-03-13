@@ -6,7 +6,7 @@
     :disabled="disabled"
     variant="warning">
     <b-spinner v-if="waiting"></b-spinner>
-    <span v-if="waiting===false">{{value}}</span>
+    <span v-if="waiting===false">{{ value }}</span>
   </b-button>
 </template>
 
@@ -16,7 +16,8 @@ import { BButton, BSpinner } from 'bootstrap-vue';
 export default {
   name: 'Button',
   components: {
-    BButton, BSpinner,
+    BButton,
+    BSpinner,
   },
   props: {
     value: String,

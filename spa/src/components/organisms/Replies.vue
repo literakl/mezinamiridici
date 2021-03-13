@@ -1,7 +1,7 @@
 <template>
   <div class="comment__child">
     <div v-for="reply in replies" v-bind:key="reply._id">
-      <Comment :itemId="itemId" :comment="reply" />
+      <Comment :itemId="itemId" :comment="reply"/>
     </div>
     <Button v-if="!comment.allShown" :value="$t('comment.show-all')" @clicked="showAll()"
             size="sm" class="mb-2"
@@ -25,7 +25,8 @@ export default {
   },
   computed: {
     replies() {
-      return this.$store.getters.GET_REPLIES(this.comment._id).map(id => this.$store.getters.GET_COMMENT(id));
+      return this.$store.getters.GET_REPLIES(this.comment._id)
+        .map(id => this.$store.getters.GET_COMMENT(id));
     },
   },
   methods: {

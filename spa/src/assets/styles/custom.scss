@@ -1,28 +1,30 @@
 //https://github.com/twbs/bootstrap/blob/8fa0d3010112dca5dd6dd501173415856001ba8b/scss/_variables.scss#L782-L808
 $gray-900: #212529 !default;
 $primary: $gray-900;
+
 :root,
 html[theme="default"] {
     --theme-primary: #dcb90b;
-  --text-color: #343A40;
-  --text-color-light: #656565;
-  --link-color:#777A7C;
-  --link-blue: #2e69ff;
-  --body-color: #f2f2f2;
-  --color-white: #fff;
-  --color-green: #28a745;
-  --color-darkgreen: #077247;
-  --color-lightgreen: rgba(129, 215, 66, 0.9);
-  --bg-light: #ecf7fb;
-  --dark-color: #131518!important;
-  --box-shadow: -2px 2px 3px rgba(57, 73, 76, 0.1);
-  --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
-  --inside-padding: 18px 25px;
+    --text-color: #343A40;
+    --text-color-light: #656565;
+    --link-color:#777A7C;
+    --link-blue: #2e69ff;
+    --body-color: #f2f2f2;
+    --color-white: #fff;
+    --color-green: #28a745;
+    --color-darkgreen: #077247;
+    --color-lightgreen: rgba(129, 215, 66, 0.9);
+    --bg-light: #ecf7fb;
+    --dark-color: #131518!important;
+    --box-shadow: -2px 2px 3px rgba(57, 73, 76, 0.1);
+    --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
+    --inside-padding: 18px 25px;
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-body{
+
+body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
@@ -30,31 +32,35 @@ body{
     color: #333;
 }
 
-
 input,
 button,
 select,
 optgroup,
 textarea {
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
+
 input:focus {
     outline-offset: 0;
-  }
+}
+
 input[type="date"]::-moz-clear {
     display: none;
-  }
-p{
+}
+
+p {
     font-size: 14px;
 }
-label, input[type="text"], input[type="date"], select{
+
+label, input[type="text"], input[type="date"], select {
     font-size: 14px!important;
     font-weight: 300!important;
 }
-input[type="date"]::-webkit-calendar-picker-indicator{
+
+input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
     bottom: 0;
     cursor: pointer;
@@ -65,20 +71,35 @@ input[type="date"]::-webkit-calendar-picker-indicator{
     top: 0;
     width: auto;
 }
-input{
+
+input {
     font-size: 14px!important;
     font-weight: 300!important;
 }
+
 textarea {
     overflow: auto;
     resize: vertical;
-  }
-label{ font-weight: 300; }
-a{
+}
+
+label { 
+    font-weight: 300; 
+}
+
+a {
     color: var(--link-color);
 }
-a:hover{ color: var(--link-blue); text-decoration: none;}
-button:active{ background: transparent!important; color: var(--link-color)!important;}
+
+a:hover{ 
+    color: var(--link-blue); 
+    text-decoration: none;
+}
+
+button:active { 
+    background: transparent!important; 
+    color: var(--link-color)!important;
+}
+
 textarea, input:focus, button:focus {
     outline: none;
     -webkit-box-shadow: none;
@@ -87,58 +108,76 @@ textarea, input:focus, button:focus {
     resize: none; /*remove the resize handle on the bottom right*/
     box-shadow: none!important;
 }
+
 input[type="text"], input[type="password"], textarea, select {
     outline: none;
     box-shadow: none!important;
 }
+
 *:focus {
     outline: none;
 }
-button.btn-warning{
+
+button.btn-warning {
     padding-left: 20px !important;
     padding-right: 20px !important;
     font-size: 13px;
 }
-svg{
+
+svg {
     color: #aeb3b7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.text-danger{
+
+.text-danger {
     font-size: 14px;
 }
 
-.brand-pic{
+.brand-pic {
     margin: 0;
     padding: 0;
     display: block;
     a{ padding: 0; width: 60px;}
     img{ width: 100%;}
 }
-.rightmenu{
-    li{
-        a{
+
+.rightmenu {
+    li {
+        a {
             display: flex;
             align-items: center;
             font-size: 15px;
             color: var(--theme-primary)!important;
-            svg{
+            svg {
                 font-size: 10px!important;
                 margin-right: 10px;
                 color: var(--theme-primary);
             }
 
 
-        } a:hover, a:hover svg{
+        } a:hover, a:hover svg {
             color: var(--color-white)!important;
         }
-        ul.dropdown-menu{ border-radius: 0;
+        ul.dropdown-menu { 
+            border-radius: 0;
             li {
-                a{ padding:5px 15px;background-color: transparent!important; font-size: 14px; color: var(--text-color)!important;
-                    :hover{  background-color: #f8f9fa!important;}
-                    :active{ color: #fff;}
+                a { 
+                    padding:5px 15px;
+                    background-color: transparent!important; 
+                    font-size: 14px; 
+                    color: var(--text-color)!important;
+                    :hover {  
+                        background-color: #f8f9fa!important;
+                    }
+                    :active { 
+                        color: #fff;
+                    }
                 }
-                :hover { color: var(--text-color-light)!important;background-color: #f8f9fa;}
+                :hover {
+                    color: var(--text-color-light)!important;
+                    background-color: #f8f9fa;
+                }
                 :focus
                 :active {
                     color: #333!important;
@@ -148,43 +187,51 @@ svg{
     }
 }
 
-.title-tag{
+.title-tag {
     margin: 0 0 0 10px;
-    h2{
+    h2 {
         font-size: 23px;
         margin:0;
         text-transform: uppercase;
     }
-    span{
+    span {
         font-size: 12px;
     }
 }
 
-.no-padding .card-header{
+.no-padding .card-header {
     padding: 0!important;
     li {
-        a{ color: #333;border-bottom: 1px solid #ddd;}
-        a.active{ border-radius: 0; font-weight: 400;
+        a { 
+            color: #333;
+            border-bottom: 1px solid #ddd;
         }
-        :active{
+        a.active { 
+            border-radius: 0; 
+            font-weight: 400;
+        }
+        :active {
             background-color: #f8f9fa;
         }
     }
 }
-.no-padding .card-header:first-child{
+
+.no-padding .card-header:first-child {
     padding: 0!important;
 }
 
-.no-padding ul.nav-tabs{
-     li{
-        a{
+.no-padding ul.nav-tabs {
+     li {
+        a {
             border-radius: 0;
             color: var(--text-color-light);
             font-size: 14px;
 
         }
-        :hover{ border: 1px solid transparent;}
-        .active{
+        :hover{ 
+            border: 1px solid transparent;
+        }
+        .active {
             font-weight: 400;
             border-radius: 3px;
             border-left: 1px solid transparent;
@@ -194,16 +241,20 @@ svg{
         }
     }
 }
-.no-padding{
+
+.no-padding {
     width: 100%;
 }
-.post-content > h1{
+
+.post-content > h1 {
     font-size: 21px;
-  }
+}
 
 @media (min-width: 1920px) {
-    svg{ font-size: 17px;}
-    .brand-pic a{
+    svg { 
+        font-size: 17px;
+    }
+    .brand-pic a {
         width: 90px;
     }
     .brand-pic img {
@@ -213,25 +264,34 @@ svg{
 }
 
 @media (max-width: 767px) {
-    h2{ font-size: 1.3rem;}
-    .brand-pic{ width: 50px;
-        img{width: 90%;}
+    h2 { 
+        font-size: 1.3rem;
+    }
+    .brand-pic { 
+        width: 50px;
+        img { 
+            width: 90%;
+        }
     }
     .title-tag {
         padding-right: 10px;
     }
-    .no-padding ul.nav-tabs{ border-color: #f3f3f3;
-    li{
-        a{ padding: .5rem 1rem;}
-    }
+    .no-padding ul.nav-tabs { 
+        border-color: #f3f3f3;
+        li {
+            a { 
+                padding: .5rem 1rem;
+            }
+        }
     }
     .w-75 {
         max-width: 100%;
         width: 100% !important;
     }
 }
+
 @media (max-width: 575px) {
-    .rightmenu{
+    .rightmenu {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -250,14 +310,17 @@ svg{
         padding: 0 6px!important;
         font-size: 14px;
     }
-    .rightmenu li ul.dropdown-menu li a{
+    .rightmenu li ul.dropdown-menu li a {
         padding: 5px 15px!important;
 
     }
-    .no-padding ul.nav-tabs{ border-color: #f3f3f3;
-        li{
-            a{ font-size: 13px; padding: .5rem 0.5rem;}
+    .no-padding ul.nav-tabs { 
+        border-color: #f3f3f3;
+        li {
+            a { 
+                font-size: 13px; 
+                padding: .5rem 0.5rem;
+            }
         }
     }
-
 }

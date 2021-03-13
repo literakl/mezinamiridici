@@ -1,13 +1,12 @@
 <template>
   <ValidationProvider
     mode="eager"
-    class=""
     tag="div"
     :vid="vid"
     :rules="rules"
     :name="name || label"
     v-slot="{ errors, required, ariaMsg }">
-    <div class="">
+    <div>
       <label
         @click="$refs.input.focus()"
         :for="name">
@@ -18,18 +17,18 @@
       </label>
 
       <datepicker
-      :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
-      :id="name"
-      v-model="innerValue"
-      :format="format"
-      :minimum-view="minimumView"
-      :bootstrap-styling="true"
-      :disabled-dates="disabledDates"
-      :required="required"
-      :type="type"
-      :typeable="true"
-      ref="input"
-      :name="name"/>
+        :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"
+        :id="name"
+        v-model="innerValue"
+        :format="format"
+        :minimum-view="minimumView"
+        :bootstrap-styling="true"
+        :disabled-dates="disabledDates"
+        :required="required"
+        :type="type"
+        :typeable="true"
+        ref="input"
+        :name="name"/>
 
       <div
         class="p-1 text-danger"
@@ -129,8 +128,9 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.d-label{
+.d-label {
   font-weight: 300;
   color: #000;
 }

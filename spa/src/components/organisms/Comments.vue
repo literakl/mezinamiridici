@@ -1,27 +1,23 @@
 <template>
-
   <div class="comment-area" id="comments">
     <h3>{{ $t('comment.discussion') }}</h3>
 
     <div v-if="signedIn">
-      <CommentForm :isShow="true" :itemId="itemId" />
+      <CommentForm :isShow="true" :itemId="itemId"/>
     </div>
 
     <!-- Novejsi reload button -->
 
-<!--    <div v-if="comments.length">-->
-      <div v-for="comment in comments" v-bind:key="comment._id">
-        <Comment :itemId="itemId" :comment="comment" :collapseId="getCollapseId(comment)" />
-        <b-collapse :id="`replies_${comment._id}`" visible>
-          <Replies v-if="comment.replies && comment.replies.length > 0" :itemId="itemId" :comment="comment" />
-        </b-collapse>
-
-        <!-- nacist odpovedi v-if="comment.replies === undefined" -->
-      </div>
-<!--    </div>-->
-   <span class="load-comments"><Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)" /></span>
+    <div v-for="comment in comments" v-bind:key="comment._id">
+      <Comment :itemId="itemId" :comment="comment" :collapseId="getCollapseId(comment)"/>
+      <b-collapse :id="`replies_${comment._id}`" visible>
+        <Replies v-if="comment.replies && comment.replies.length > 0" :itemId="itemId" :comment="comment"/>
+      </b-collapse>
+    </div>
+    <span class="load-comments">
+      <Button v-if="incomplete" :value="$t('comment.load-more')" size="sm" @clicked="loadMoreComments(itemId)"/>
+    </span>
   </div>
-
 </template>
 
 <script>
@@ -59,7 +55,11 @@ export default {
   },
   watch: {
     comments() {
-      if (this.addedId !== '') setTimeout(() => { this.$scrollTo(document.getElementById(this.addedId), 500, { easing: 'ease' }); }, 700);
+      if (this.addedId !== '') {
+        setTimeout(() => {
+          this.$scrollTo(document.getElementById(this.addedId), 500, { easing: 'ease' });
+        }, 700);
+      }
     },
   },
   async created() {
@@ -68,7 +68,9 @@ export default {
   mounted() {
     const { hash } = this.$route;
     if (this.$route.hash) {
-      setTimeout(() => { window.location.href = hash; }, 1000);
+      setTimeout(() => {
+        window.location.href = hash;
+      }, 1000);
     }
   },
   destroyed() {
@@ -90,11 +92,12 @@ export default {
 </script>
 <style scoped>
 /* Comment Outer Full Area  */
-.comment-area{
-  margin:0 auto;
-  width:100%
+.comment-area {
+  margin: 0 auto;
+  width: 100%
 }
-.comment-area h3{
+
+.comment-area h3 {
   font-size: 18px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
@@ -109,9 +112,12 @@ export default {
 }
 
 @media (max-width: 450px) {
-  .comment-area{
+  .comment-area {
     width: 100%;
   }
-  .comment-area h3{ padding:10px 0px;}
+
+  .comment-area h3 {
+    padding: 10px 0;
+  }
 }
 </style>

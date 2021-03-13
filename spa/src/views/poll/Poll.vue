@@ -1,9 +1,15 @@
 <template>
   <div class="single-post-wrap pt-3 ml-auto mr-auto mt-auto mb-5">
-    <div class="poll-content"><ContentLoading v-if="! poll" type="poll"/></div>
-    <div class="completed-poll-wrap"><CompletePoll v-if="poll"/></div>
+    <div class="poll-content">
+      <ContentLoading v-if="!poll" type="poll"/>
+    </div>
+    <div class="completed-poll-wrap">
+      <CompletePoll v-if="poll"/>
+    </div>
     <ShareLink :item="poll"/>
-    <div class="comment-outer"><Comments v-if="poll" :itemId="poll._id"/></div>
+    <div class="comment-outer">
+      <Comments v-if="poll" :itemId="poll._id"/>
+    </div>
   </div>
 </template>
 
@@ -45,18 +51,22 @@ export default {
   },
   methods: {
     changeTitle(title) {
-      setTimeout(() => { document.title += `\xa0\xa0-\xa0\xa0${title}`; }, 10);
+      setTimeout(() => {
+        document.title += `\xa0\xa0-\xa0\xa0${title}`;
+      }, 10);
     },
   },
 };
 </script>
-<style>
-.single-post-wrap{
+
+<style scoped>
+.single-post-wrap {
   max-width: 1235px;
   margin: 0 auto;
 }
+
 @media (max-width: 1235px) {
-  .single-post-wrap{
+  .single-post-wrap {
     padding: 0 35px;
   }
 }

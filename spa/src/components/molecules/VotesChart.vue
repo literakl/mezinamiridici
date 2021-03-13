@@ -45,9 +45,11 @@ export default {
   },
 };
 </script>
-<style>
-.inside{
-  max-width: 100%; margin: 0 auto;
+
+<style scoped>
+.inside {
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 </style>

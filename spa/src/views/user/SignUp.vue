@@ -8,86 +8,95 @@
       <b-form @submit.prevent="passes(submitForm)" v-if="! succeeded">
         <fieldset :disabled='wholeDisable'>
           <div class="field-area">
-        <TextInput
-          v-model="email"
-          rules="required|email|conflict:email"
-          :label="$t('profile.email')"
-          :placeholder="$t('sign-up.email-hint')"
-          name="email"
-          :disabled="socialId !== undefined"
-          type="email"/>
-        </div>
-        <div class="field-area">
-        <TextInput
-          v-if="! socialId"
-          v-model="password"
-          rules="required|min:6"
-          :label="$t('profile.password')"
-          :placeholder="$t('sign-up.password-hint')"
-          name="password"
-          type="password"/>
-        </div>
-        <div class="field-area">
-        <TextInput
-          v-model="nickname"
-          rules="required|min:3|conflict:nick"
-          :label="$t('profile.nickname')"
-          :placeholder="$t('sign-up.nickname-hint')"
-          name="nickname"/>
-       </div>
-        <div class="field-area">
-        <Checkbox
-          v-model="personalData"
-          :label="$t('sign-up.personal-data')"
-          name="personal-data"
-          identifier="personalData"/>
-        </div>
-        <div class="prof-form-wrap">
-          <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
-        </div>
-        <div class="field-area">
-        <h5>{{ $t('sign-up.consents') }}</h5>
-        <div>
-          <Checkbox
-            v-model="termsAndConditions"
-            :rules="{ required: { allowFalse: false} }"
-            :label="$t('profile.terms')"
-            name="terms"
-            identifier="termsAndConditions"/>
-        </div>
-        <div>
-          <Checkbox
-            v-model="personalDataProcessing"
-            :rules="{ required: { allowFalse: false} }"
-            :label="$t('profile.processing')"
-            name="processing"
-            identifier="personalDataProcessing"/>
-        </div>
-        <div>
-          <Checkbox
-            v-model="emailNotifications"
-            :label="$t('sign-up.notifications-label')"
-            name="email-notifications"
-            identifier="emailNotifications"/>
-        </div>
-        </div>
-        <div v-if="error" class="text-danger">
-          <strong>
-            {{ error }}
-          </strong>
-        </div>
-        <div class="col-sm-12 col-md-4 m-auto">
-          <Button
-            class="w-100 green"
-            :waiting="sending"
-            :disabled="invalid"
-            :value="$t('sign-up.finished-button-label')"
-            @clicked="submitForm()"
-          />
-        </div>
+            <TextInput
+              v-model="email"
+              rules="required|email|conflict:email"
+              :label="$t('profile.email')"
+              :placeholder="$t('sign-up.email-hint')"
+              name="email"
+              :disabled="socialId !== undefined"
+              type="email"/>
+          </div>
+
+          <div class="field-area">
+            <TextInput
+              v-if="! socialId"
+              v-model="password"
+              rules="required|min:6"
+              :label="$t('profile.password')"
+              :placeholder="$t('sign-up.password-hint')"
+              name="password"
+              type="password"/>
+          </div>
+
+          <div class="field-area">
+            <TextInput
+              v-model="nickname"
+              rules="required|min:3|conflict:nick"
+              :label="$t('profile.nickname')"
+              :placeholder="$t('sign-up.nickname-hint')"
+              name="nickname"/>
+          </div>
+
+          <div class="field-area">
+            <Checkbox
+              v-model="personalData"
+              :label="$t('sign-up.personal-data')"
+              name="personal-data"
+              identifier="personalData"/>
+          </div>
+
+          <div class="prof-form-wrap">
+            <ProfileForm :formData="profileForm" @update="updateProfileForm" v-if="personalData"/>
+          </div>
+          <div class="field-area">
+            <h5>{{ $t('sign-up.consents') }}</h5>
+            <div>
+              <Checkbox
+                v-model="termsAndConditions"
+                :rules="{ required: { allowFalse: false} }"
+                :label="$t('profile.terms')"
+                name="terms"
+                identifier="termsAndConditions"/>
+            </div>
+
+            <div>
+              <Checkbox
+                v-model="personalDataProcessing"
+                :rules="{ required: { allowFalse: false} }"
+                :label="$t('profile.processing')"
+                name="processing"
+                identifier="personalDataProcessing"/>
+            </div>
+
+            <div>
+              <Checkbox
+                v-model="emailNotifications"
+                :label="$t('sign-up.notifications-label')"
+                name="email-notifications"
+                identifier="emailNotifications"/>
+            </div>
+          </div>
+
+          <div v-if="error" class="text-danger">
+            <strong>
+              {{ error }}
+            </strong>
+          </div>
+
+          <div class="col-sm-12 col-md-4 m-auto">
+            <Button
+              class="w-100"
+              :waiting="sending"
+              :disabled="invalid"
+              :value="$t('sign-up.finished-button-label')"
+              @clicked="submitForm()"
+            />
+          </div>
         </fieldset>
       </b-form>
     </ValidationObserver>
+
     <div class="success-msg" v-if="success === true">
       {{ $t('sign-up.success-message') }}
     </div>
@@ -297,7 +306,7 @@ export default {
     updateProfileForm(obj) {
       // eslint-disable-next-line
       for (const property in this.profileForm) {
-      // eslint-disable-next-line
+        // eslint-disable-next-line
         if (obj.hasOwnProperty(property)) {
           this.profileForm[property] = obj[property];
         }
@@ -306,63 +315,74 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.centerbox{
-  max-width:700px;
+.centerbox {
+  max-width: 700px;
   margin: 0 auto 20px;
   padding: 25px 35px;
   border-radius: 4px;
 }
-.head-area{
-  padding-bottom:0px;
-  margin-bottom:10px;
+
+.head-area {
+  padding-bottom: 0;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  }
+}
+
 .head-area h2 {
   font-size: 20px;
   border-bottom: 1px solid #ddd;
-  width:100%;
+  width: 100%;
   padding: 0 0 15px 0;
 }
-.field-area{
+
+.field-area {
   margin-bottom: 10px;
 }
-.field-area label span{
+
+.field-area label span {
   font-size: 14px;
 }
-.field-area input, .field-area select{
-  width: 98%!important;
+
+.field-area input, .field-area select {
+  width: 98% !important;
 }
-.centerbox .w-50{
-  width: 100%!important;
+
+.centerbox .w-50 {
+  width: 100% !important;
 }
-.green{
+
+.green {
   background: var(--color-green);
   border: 0;
   color: #fff;
   font-weight: 400;
   font-size: 14px;
 }
-.success-msg{
+
+.success-msg {
   font-size: 15px;
 }
-.prof-form-wrap .centerbox{
+
+.prof-form-wrap .centerbox {
   box-shadow: none;
   padding: 0;
 }
+
 @media (max-width: 700px) {
-  .centerbox, .hero-head{
-    margin-right:35px;
-    margin-left:35px;
-    padding:25px 20px;
+  .centerbox, .hero-head {
+    margin-right: 35px;
+    margin-left: 35px;
+    padding: 25px 20px;
   }
-  .prof-form-wrap .centerbox{
+
+  .prof-form-wrap .centerbox {
     margin: 0;
   }
 }
-
 
 </style>

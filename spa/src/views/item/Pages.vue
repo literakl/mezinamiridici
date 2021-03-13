@@ -14,14 +14,20 @@
         <b-card-body>
           <h3>
             <router-link :to="{ name: 'page', params: { slug: item.info.slug }}">
-              {{item.info.caption}}
+              {{ item.info.caption }}
             </router-link>
           </h3>
         </b-card-body>
-        <b-card-footer class="">
+        <b-card-footer>
           <div>
-            <span><BIconClock scale="1"></BIconClock><Date :date="item.info.date" format="dynamicDate" /></span>
-            <span><BIconPersonCircle scale="1"></BIconPersonCircle><ProfileLink :profile="item.info.author"/></span>
+            <span>
+              <BIconClock scale="1"></BIconClock>
+              <Date :date="item.info.date" format="dynamicDate"/>
+            </span>
+            <span>
+              <BIconPersonCircle scale="1"></BIconPersonCircle>
+              <ProfileLink :profile="item.info.author"/>
+            </span>
             <span v-if="! item.info.published">
                 &bull; {{ $t('generic.not-published') }}
             </span>
@@ -45,12 +51,27 @@
 <script>
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
-import { BButtonGroup, BButton, BCard, BCardBody, BCardFooter, BIconPersonCircle, BIconClock, BIconPencilSquare, BIconTrash, BIconFileEarmarkBreak } from 'bootstrap-vue';
+import {
+  BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
+  BIconPersonCircle, BIconClock, BIconPencilSquare,
+  BIconTrash, BIconFileEarmarkBreak,
+} from 'bootstrap-vue';
 
 export default {
   name: 'Pages',
   components: {
-    ProfileLink, Date, BButtonGroup, BButton, BCard, BCardBody, BCardFooter, BIconPersonCircle, BIconClock, BIconPencilSquare, BIconTrash, BIconFileEarmarkBreak,
+    ProfileLink,
+    Date,
+    BButtonGroup,
+    BButton,
+    BCard,
+    BCardBody,
+    BCardFooter,
+    BIconPersonCircle,
+    BIconClock,
+    BIconPencilSquare,
+    BIconTrash,
+    BIconFileEarmarkBreak,
   },
   data() {
     return {
@@ -98,87 +119,110 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.centerbox{
-  max-width:1235px;
+.centerbox {
+  max-width: 1235px;
   margin: 0 auto;
 }
-.action-btn a{ font-size: 14px;}
-.action-btn a svg{ color: #fff;}
-.pagelist-box{
-  box-shadow:  0 1px 6px rgba(var(--shadow-color), 0.35);
+
+.action-btn a {
+  font-size: 14px;
+}
+
+.action-btn a svg {
+  color: #fff;
+}
+
+.pagelist-box {
+  box-shadow: 0 1px 6px rgba(var(--shadow-color), 0.35);
   margin-bottom: 10px;
 }
-.pagelist-box h3{ font-size: 18px;}
-.pagelist-box .card-footer{
+
+.pagelist-box h3 {
+  font-size: 18px;
+}
+
+.pagelist-box .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top:0px solid #ddd;
+  border-top: 0 solid #ddd;
   background: rgb(134 134 134 / 3%);
   padding: 8px 15px;
 }
-.pagelist-box .card-footer svg{
+
+.pagelist-box .card-footer svg {
   margin-right: 5px;
 }
-.pagelist-box .card-footer span span{
+
+.pagelist-box .card-footer span span {
   margin-right: 15px;
   font-size: 14px;
 }
-.pagelist-box .card-footer .btn-group button{
- font-size: 14px;
- padding: 0;
- border: 0;
- font-weight: 300;
+
+.pagelist-box .card-footer .btn-group button {
+  font-size: 14px;
+  padding: 0;
+  border: 0;
+  font-weight: 300;
 }
-.pagelist-box .card-footer .btn-group button:hover, .pagelist-box .card-footer .btn-group button:focus{
+
+.pagelist-box .card-footer .btn-group button:hover, .pagelist-box .card-footer .btn-group button:focus {
   background: transparent;
   color: var(--text-color);
 }
-.pagelist-box .card-footer .btn-group a:hover, .pagelist-box .card-footer .btn-group a:focus{
+
+.pagelist-box .card-footer .btn-group a:hover, .pagelist-box .card-footer .btn-group a:focus {
   background: transparent;
   color: var(--text-color);
 }
-.pagelist-box .card-footer .btn-group a{
- font-size: 14px;
- margin-right: 10px;
- padding: 0;
- border: 0;
- font-weight: 300;
+
+.pagelist-box .card-footer .btn-group a {
+  font-size: 14px;
+  margin-right: 10px;
+  padding: 0;
+  border: 0;
+  font-weight: 300;
 }
+
 @media (max-width: 1235px) {
-  .centerbox{
-    max-width:1235px;
-    margin: 0 35px!important;
+  .centerbox {
+    max-width: 1235px;
+    margin: 0 35px !important;
   }
 }
 
 @media (max-width: 660px) {
-  .pagelist-box .card-footer{
+  .pagelist-box .card-footer {
     align-items: flex-start;
   }
 
 }
+
 @media (max-width: 540px) {
-  .pagelist-box .card-footer span{
+  .pagelist-box .card-footer span {
     display: flex;
     flex-direction: column;
     margin: 0 4px 0 0;
   }
-  .pagelist-box .card-footer span span{
+
+  .pagelist-box .card-footer span span {
     margin-right: 0;
   }
-  .pagelist-box .card-footer div{
+
+  .pagelist-box .card-footer div {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
   }
-  .pagelist-box .card-footer svg{
-      display: block;
-      text-align: center;
-      justify-content: center;
-      margin: 0 auto;
+
+  .pagelist-box .card-footer svg {
+    display: block;
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
   }
 }
- </style>
+</style>

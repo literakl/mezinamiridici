@@ -8,7 +8,7 @@
       ref="radio"
       @click.native="updateRadio()"
       v-model="selected">
-        {{label}}
+      {{ label }}
     </b-form-radio>
   </div>
 </template>

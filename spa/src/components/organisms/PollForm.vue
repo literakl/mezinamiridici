@@ -18,8 +18,8 @@
 
           <b-form-group id="date-group" :label="$t('poll.forms.date-label')" label-for="date">
             <b-form-datepicker v-model="form.date" @context="onContext"
-            :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }" locale="cs"
-            aria-describedby="date-errors" :state="getValidationState(validationContext)">
+                               :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }" locale="cs"
+                               aria-describedby="date-errors" :state="getValidationState(validationContext)">
             </b-form-datepicker>
 
             <b-form-invalid-feedback id="date-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -50,7 +50,7 @@
           name="published"
           class="mb-3"
         >
-          {{$t('poll.forms.published-label')}}
+          {{ $t('poll.forms.published-label') }}
         </b-form-checkbox>
 
         <div v-if="error" class="text-danger">
@@ -110,7 +110,11 @@ export default {
     }
   },
   methods: {
-    getValidationState({ dirty, validated, valid = null }) {
+    getValidationState({
+      dirty,
+      validated,
+      valid = null,
+    }) {
       return dirty || validated ? valid : null;
     },
     tagSelect(tags) {
@@ -140,7 +144,10 @@ export default {
 
       try {
         const item = await this.$store.dispatch(message, body);
-        await this.$router.push({ name: 'poll', params: { slug: item.info.slug } });
+        await this.$router.push({
+          name: 'poll',
+          params: { slug: item.info.slug },
+        });
       } catch (error) {
         this.$log.error(error);
         if (error.response && error.response.data && error.response.data.errors) {
