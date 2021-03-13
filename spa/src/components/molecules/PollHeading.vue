@@ -27,7 +27,7 @@
               </div>
               <div class="post-time">
                 <BIconCalendarRange scale="1"></BIconCalendarRange>
-                <span class="date"><Date :date="this.item.info.date" format="dynamicDate" /></span>
+                <span><Date :date="this.item.info.date" format="dynamicDate" /></span>
               </div>
               <div class="post-rating">
                 <img src="/images/icons/vote-icon.svg" alt="">

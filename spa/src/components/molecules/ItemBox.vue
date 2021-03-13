@@ -3,13 +3,16 @@
     <router-link :to="link">
       <b-img :src="item.info.picture"></b-img>
     </router-link>
-    <div class="overlap-actions">
+    <div class="picture-actions">
       <div v-if="item.type === 'poll'" class="poll-symbol">
         <span class="poll-neutral"></span>
         <span class="poll-trival"></span>
         <span class="poll-dislike"></span>
       </div>
-      <span class="date"><Date :date="item.info.date" format="dynamicDate"/></span>
+      <span v-if="item.info.author.id === 'leos'" class="picture-overlay overlay-left">
+        {{ $t('generic.own-content') }}
+      </span>
+      <span class="picture-overlay overlay-right"><Date :date="item.info.date" format="dynamicDate"/></span>
     </div>
     <h4>
       <router-link :to="link">
@@ -22,8 +25,8 @@
         <template v-if="item.type === 'poll'">{{ $t('poll.votes') }}: {{ item.votes_count }}</template>
         <template v-if="hasDiscussion">
           <span>
-            <BIconChatTextFill></BIconChatTextFill>
             <router-link :to="commentLink">
+              <BIconChatTextFill></BIconChatTextFill>
               {{ item.comments.count }}
             </router-link>
           </span>
@@ -148,7 +151,7 @@ export default {
   text-decoration: none;
 }
 
-.overlap-actions {
+.picture-actions {
   position: relative;
 }
 
@@ -191,19 +194,22 @@ export default {
   display: block;
 }
 
-span.date {
+span.picture-overlay {
   position: absolute;
   font-size: 12px;
   font-weight: 400;
-  right: 0;
   background: #fff;
   padding: 0 10px;
   color: #777A7C;
   top: -20px;
 }
 
-.item-footer:hover span.date {
-  opacity: 1;
+span.overlay-left {
+  left: 0;
+}
+
+span.overlay-right {
+  right: 0;
 }
 
 .bottom-links {
@@ -218,12 +224,8 @@ span.date {
 }
 
 @media (min-width: 1920px) {
-  span.date {
+  span.picture-overlay {
     top: -20px;
-  }
-
-  .item-footer span.date span {
-    font-size: 13px !important;
   }
 
   .bottom-links span svg {

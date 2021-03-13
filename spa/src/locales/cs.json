@@ -30,7 +30,8 @@
     "tag-select-label": "Štítky",
     "tag-select-placeholder": "Zvolte štítek",
     "loading-message": "Stahuji ...",
-    "loading-more-button": "Další"
+    "loading-more-button": "Další",
+    "own-content": "Redakce"
   },
   "sign-in": {
     "email-placeholder": "Email",

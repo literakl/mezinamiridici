@@ -30,7 +30,8 @@
     "tag-select-label":"Hash tags",
     "tag-select-placeholder": "Chooose the tag",
     "loading-message": "Loading ..",
-    "loading-more-button": "Load more"
+    "loading-more-button": "Load more",
+    "own-content": "Redakce"
   },
   "sign-in": {
     "email-placeholder": "Email",
