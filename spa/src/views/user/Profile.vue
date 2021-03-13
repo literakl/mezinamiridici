@@ -1,21 +1,25 @@
 <template>
   <div class="pt-3 m-auto pb-5">
-    <ContentLoading v-if="!userProfile" type="profile" />
+    <ContentLoading v-if="!userProfile" type="profile"/>
     <div v-if="userProfile" class="profile-wrap">
       <div class="prof-header-wrap">
         <div class="prof-header">
           <b-avatar size="5rem"></b-avatar>
           <div class="nickname-row">
-            <h2>{{ userProfile.bio.nickname }} <router-link :to="{ name: 'update-profile', params: { id: id }}"><span class="edit-btn"><BIconPencilSquare scale="1.6"></BIconPencilSquare></span></router-link></h2>
+            <h2>{{ userProfile.bio.nickname }}
+              <router-link :to="{ name: 'update-profile', params: { id: id }}"><span class="edit-btn"><BIconPencilSquare scale="1.6"></BIconPencilSquare></span>
+              </router-link>
+            </h2>
           </div>
         </div>
-         <div class="user-details">
-            <ul class="links">
-              <li v-for="(item, inx) in userProfile.bio.urls" :key="inx">
-                <BIconLink/><a :href="item" rel="nofollow">{{item}}</a>
-              </li>
-            </ul>
-          </div>
+        <div class="user-details">
+          <ul class="links">
+            <li v-for="(item, inx) in userProfile.bio.urls" :key="inx">
+              <BIconLink/>
+              <a :href="item" rel="nofollow">{{ item }}</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <b-tabs content-class="my-3" class="no-padding">
@@ -27,7 +31,7 @@
             </div>
             <div class="bio-date head-block">
               <BIconPersonCircle scale="1"></BIconPersonCircle>
-              <span class="label">{{ $t('profile.member-since-label') }}:</span> <span> <Date :date="userProfile.bio.registered" format="dynamicDate" /></span>
+              <span class="label">{{ $t('profile.member-since-label') }}:</span> <span> <Date :date="userProfile.bio.registered" format="dynamicDate"/></span>
             </div>
           </div>
           <div v-if="showProfile">
@@ -35,12 +39,12 @@
               <div class="more-details">
                 <div v-if="userProfile.driving.since" class="head-block">
                   <BIconJoystick scale="1"></BIconJoystick>
-                  <span class="label">{{ $t('profile.driving-since-label') }}:</span> <span> {{userProfile.driving.since}}</span>
+                  <span class="label">{{ $t('profile.driving-since-label') }}:</span> <span> {{ userProfile.driving.since }}</span>
                 </div>
 
                 <div v-if="vehicles" class="head-block">
                   <BIconTruck scale="1"></BIconTruck>
-                  <span class="label">{{ $t('profile.vehicles-label') }}:</span> <span> {{vehicles}}</span>
+                  <span class="label">{{ $t('profile.vehicles-label') }}:</span> <span> {{ vehicles }}</span>
                 </div>
               </div>
             </template>
@@ -51,7 +55,7 @@
               </div>
               <div v-if="userProfile.bio.born" class="head-block">
                 <BIconPersonCheck scale="1"></BIconPersonCheck>
-                <span class="label">{{ $t('profile.born') }}:</span> <span> {{userProfile.bio.born}}</span>
+                <span class="label">{{ $t('profile.born') }}:</span> <span> {{ userProfile.bio.born }}</span>
               </div>
               <div v-if="userProfile.bio.region" class="head-block">
                 <BIconGeoAlt font-scale="1"></BIconGeoAlt>
@@ -74,7 +78,7 @@
         </b-tab>
 
         <b-tab v-if="myProfile" :title="$t('profile.tabs.settings')">
-          <ChangePassword />
+          <ChangePassword/>
         </b-tab>
       </b-tabs>
     </div>
@@ -87,9 +91,11 @@ import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
 import UserActivity from '@/components/organisms/UserActivity.vue';
 import ChangePassword from '@/components/organisms/ChangePassword.vue';
-import { BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink,
+import {
+  BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink,
   BIconAward, BIconPersonCircle, BIconJoystick, BIconTruck,
-  BIconPersonFill, BIconPersonCheck, BIconPen, BIconPencilSquare } from 'bootstrap-vue';
+  BIconPersonFill, BIconPersonCheck, BIconPen, BIconPencilSquare,
+} from 'bootstrap-vue';
 
 export default {
   name: 'profile',
@@ -165,11 +171,13 @@ export default {
   max-width: 1235px;
   margin: 0 auto;
 }
+
 .prof-header-wrap {
   max-width: 100%;
   width: 100%;
-  margin-right: 0%;
+  margin-right: 0;
 }
+
 .prof-header {
   display: flex;
   align-items: center;
@@ -177,21 +185,25 @@ export default {
   justify-content: flex-start;
   position: relative;
 }
+
 .prof-header div {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
+
 .edit-btn svg {
   font-size: 12px;
   display: block;
   margin-left: 15px;
 }
+
 .edit-btn svg:hover {
   cursor: pointer;
   color: var(--link-blue);
 }
+
 .prof-header h2 {
   font-size: 20px;
   margin: 5px 0 0 10px;
@@ -199,13 +211,15 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .prof-header .b-avatar {
-  width: 50px!important;
-  height: 50px!important;
+  width: 50px !important;
+  height: 50px !important;
   background-color: transparent;
   border: 1px solid #ddd;
-  color: #AEB3B7!important;
+  color: #AEB3B7 !important;
 }
+
 .user-details {
   width: 100%;
   font-size: 14px;
@@ -213,21 +227,23 @@ export default {
   border-bottom: 2px solid #f3f3f3;
   padding-bottom: 20px;
 }
+
 .profile-area-top, .more-details {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
   width: 100%;
 }
+
 .head-block, .more-details div {
-  border-bottom:1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
   background: #fff;
   text-align: left;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   font-weight: 400;
-  padding: 8px 0px;
+  padding: 8px 0;
   font-size: 14px;
 }
 
@@ -236,39 +252,47 @@ export default {
   padding: 0;
   font-weight: 300;
 }
+
 .head-block span.label {
   min-width: 150px;
   font-weight: 300;
   padding-left: 10px;
   padding-right: 10px;
 }
+
 .name-regions {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   color: var(--link-color);
 }
+
 .name-regions svg {
   margin-right: 10px;
 }
+
 .links {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   list-style-type: none;
-  padding:0;
+  padding: 0;
   margin: 0;
 }
+
 .links li:first-child {
   margin-left: 0;
 }
+
 .links li {
   color: var(--link-color);
   margin-left: 15px;
 }
+
 .links li a {
-  font-size:13px;
+  font-size: 13px;
 }
+
 .links svg {
   margin-right: 10px;
 }
@@ -278,8 +302,9 @@ export default {
     min-width: 200px
   }
 }
+
 @media (max-width: 1235px) {
- .profile-wrap {
+  .profile-wrap {
     padding: 0 35px;
   }
 }
@@ -288,17 +313,21 @@ export default {
   .profile-wrap {
     flex-direction: column;
   }
+
   .prof-header h2 {
     font-size: 16px;
   }
+
   .prof-header-wrap {
     max-width: 100%;
   }
+
   .user-details {
     margin-top: 0;
     display: flex;
     padding: 10px 0;
   }
+
   .name-regions, .links {
     margin-top: 0;
     margin-bottom: 0;
@@ -306,27 +335,34 @@ export default {
     border: 0;
   }
 }
+
 @media (max-width: 767px) {
   .user-details {
     flex-wrap: wrap;
   }
+
   .profile-wrap {
     padding: 0 15px;
   }
+
   .links {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
   }
+
   .links a {
     margin-right: 15px;
   }
+
   .links li {
     margin-left: 0;
   }
 }
+
 @media (max-width: 420px) {
   .head-block {
     padding: 10px 0;
   }
+
   .head-block, .more-details div {
     height: unset;
   }

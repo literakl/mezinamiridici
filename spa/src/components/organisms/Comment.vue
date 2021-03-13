@@ -8,7 +8,7 @@
         </span>
         <span>
           <BIconClock scale="1"></BIconClock>
-          <Date :date="this.comment.date" format="dynamicDate" />
+          <Date :date="this.comment.date" format="dynamicDate"/>
         </span>
 
       </div>
@@ -52,13 +52,13 @@
           </div>
 
           <div class="act-btn">
-            <b-button v-if="!comment.parentId"  v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
+            <b-button v-if="!comment.parentId" v-on:click="reload" class="mr-2" variant="outline-secondary" size="sm">
               <BIconArrowClockwise aria-hidden="true"></BIconArrowClockwise>
             </b-button>
 
             <b-button v-if="collapseId" v-on:click="collapse" variant="outline-secondary" size="sm" class="float-right">
-              <BIconArrowsExpand v-if="collapsed"  aria-hidden="true"></BIconArrowsExpand>
-              <BIconArrowsCollapse v-if="!collapsed"  aria-hidden="true"></BIconArrowsCollapse>
+              <BIconArrowsExpand v-if="collapsed" aria-hidden="true"></BIconArrowsExpand>
+              <BIconArrowsCollapse v-if="!collapsed" aria-hidden="true"></BIconArrowsCollapse>
             </b-button>
           </div>
         </div>
@@ -73,9 +73,11 @@
 </template>
 
 <script>
-import { BIconChat, BIconHandThumbsUp, BIconHandThumbsDown,
+import {
+  BIconChat, BIconHandThumbsUp, BIconHandThumbsDown,
   BIconArrowClockwise, BIconArrowsExpand, BIconArrowsCollapse,
-  BButton, BPopover, BIconPersonCircle, BIconClock } from 'bootstrap-vue';
+  BButton, BPopover, BIconPersonCircle, BIconClock,
+} from 'bootstrap-vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -140,7 +142,10 @@ export default {
     },
     async upvote() {
       if (!this.$store.getters.IS_AUTHORIZED) {
-        await this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        await this.$router.push({
+          name: 'sign-in',
+          params: { redirectUrl: this.$route.fullPath },
+        });
         return;
       }
       if (this.voted) return;
@@ -153,7 +158,10 @@ export default {
     },
     async downvote() {
       if (!this.$store.getters.IS_AUTHORIZED) {
-        await this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        await this.$router.push({
+          name: 'sign-in',
+          params: { redirectUrl: this.$route.fullPath },
+        });
         return;
       }
       if (this.voted) return;
@@ -166,7 +174,10 @@ export default {
     },
     reply() {
       if (!this.$store.getters.IS_AUTHORIZED) {
-        this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        this.$router.push({
+          name: 'sign-in',
+          params: { redirectUrl: this.$route.fullPath },
+        });
         return;
       }
       this.replying = !this.replying;
@@ -181,14 +192,16 @@ export default {
   display: flex;
   width: 100%;
   flex-direction: column;
-  margin:0 auto;
+  margin: 0 auto;
 }
+
 .first-com-box {
-   display: flex;
-   width: 100%;
-   align-items: flex-start;
-   flex-direction: column;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  flex-direction: column;
 }
+
 .author-det {
   width: 100%;
   display: flex;
@@ -196,27 +209,32 @@ export default {
   align-items: flex-start;
   font-size: 13px;
   font-weight: 400;
-  padding: 5px 0px;
+  padding: 5px 0;
   margin-top: 5px;
   position: relative;
 }
+
 .author-det span {
   margin-right: 10px;
   display: flex;
   align-items: center;
   color: var(--link-color)
 }
+
 .author-det span svg {
-  margin-right:5px;
+  margin-right: 5px;
   font-size: 15px;
 }
+
 .comments {
   width: 100%;
 }
+
 .comments p {
-  color:var(--dark-color);
-  line-height:22px;
+  color: var(--dark-color);
+  line-height: 22px;
 }
+
 .comment-buttons {
   border-top: 1px solid #dee0e1;
   display: flex;
@@ -224,44 +242,53 @@ export default {
   justify-content: space-between;
   padding-top: 10px;
 }
+
 .comment-buttons div {
   display: flex;
   align-items: center;
 }
+
 .comment-buttons button {
-  border: 0px solid #ddd;
+  border: 0 solid #ddd;
   color: var(--link-color);
-  padding: 0px;
-  margin-right: 10px!important;
+  padding: 0;
+  margin-right: 10px !important;
   font-weight: 400;
   font-size: 13px;
   display: flex;
   align-items: center;
   box-shadow: none;
 }
+
 .act-btn button svg {
-  margin-right: 0px!important;
+  margin-right: 0 !important;
 }
+
 .act-btn button:last-child {
-  margin-right: 0px!important;
+  margin-right: 0 !important;
 }
+
 .comment-buttons button svg {
-  margin-right:5px;
+  margin-right: 5px;
 }
+
 .comment-buttons button.btn-outline-secondary.disabled, .btn-outline-secondary:disabled {
   color: var(--link-color);
   opacity: 1;
 }
+
 .comment-buttons button:hover {
   background: #fff;
   color: var(--text-color);
   border-color: #ddd;
 }
+
 .popover-body {
   max-height: 250px;
   overflow-y: auto;
-  white-space:pre-wrap;
+  white-space: pre-wrap;
 }
+
 blockquote {
   display: block;
   margin-top: 1em;
@@ -272,36 +299,43 @@ blockquote {
   font-style: italic;
   overflow-wrap: anywhere;
 }
+
 blockquote p {
   font-style: normal;
   font-weight: bold;
 }
 
 table {
-  width: 100%!important;
-  font-size: 14px!important;
+  width: 100% !important;
+  font-size: 14px !important;
 }
 
 th {
   vertical-align: middle;
 }
+
 td {
   border: 1px solid #DBDBE2;
   padding: 0;
   vertical-align: top;
 }
+
 td div {
   padding: 10px;
 }
+
 tbody tr:first-child td {
   border-top: none;
 }
+
 tbody tr:last-child td {
   border-bottom: none;
 }
+
 tbody tr td:last-child {
   border-right: none;
 }
+
 tbody tr td:first-child {
   border-left: none;
 }
@@ -310,18 +344,22 @@ tbody tr td:first-child {
   .first-com-box {
     flex-direction: column;
   }
+
   .comment-wrap {
     flex-direction: column;
   }
-   .author-det {
+
+  .author-det {
     width: 100%;
     flex-direction: row;
-    margin-top: 0px;
+    margin-top: 0;
     border-right: 0;
   }
+
   .author-det span {
     margin-right: 10px;
   }
+
   .comments {
     width: 100%;
   }

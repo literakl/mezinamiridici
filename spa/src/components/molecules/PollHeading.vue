@@ -15,7 +15,7 @@
         </div>
         <h4 class="pollheading">
           <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
-            {{item.info.caption}}
+            {{ item.info.caption }}
           </router-link>
         </h4>
         <div class="item-div item-hover mb-4">
@@ -27,15 +27,15 @@
               </div>
               <div class="post-time">
                 <BIconCalendarRange scale="1"></BIconCalendarRange>
-                <span><Date :date="this.item.info.date" format="dynamicDate" /></span>
+                <span><Date :date="this.item.info.date" format="dynamicDate"/></span>
               </div>
               <div class="post-rating">
                 <img src="/images/icons/vote-icon.svg" alt="">
-                <span> {{item.votes.total}}</span>
+                <span> {{ item.votes.total }}</span>
               </div>
               <div class="post-comments">
                 <BIconChatTextFill scale="1"></BIconChatTextFill>
-                <router-link to="#comments"><span>{{item.comments.count}}</span></router-link>
+                <router-link to="#comments"><span>{{ item.comments.count }}</span></router-link>
               </div>
             </div>
           </div>
@@ -51,7 +51,16 @@
 </template>
 
 <script>
-import { BIconChevronDoubleLeft, BIconChevronDoubleRight, BCol, BButton, BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconTags } from 'bootstrap-vue';
+import {
+  BIconChevronDoubleLeft,
+  BIconChevronDoubleRight,
+  BCol,
+  BButton,
+  BIconPersonCircle,
+  BIconCalendarRange,
+  BIconChatTextFill,
+  BIconTags,
+} from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import TagList from '@/components/atoms/TagList.vue';
@@ -99,62 +108,74 @@ export default {
 <style scoped>
 
 /* Poll Page Css Start */
-.poll-header{
+.poll-header {
   flex-wrap: nowrap;
   margin: 0 auto;
   align-items: center;
   justify-content: center;
   position: relative;
 }
-.poll-header .center-box{
+
+.poll-header .center-box {
   width: 100%;
   padding: 0;
 }
-.pollheading{
+
+.pollheading {
   margin: 0;
 }
-.pollheading a{
-  font-size:21px;
+
+.pollheading a {
+  font-size: 21px;
   text-decoration: none;
   color: var(--text-color);
   margin: 10px 0 0px;
 }
-.post-rating img{
-    width: 16px;
-    height: 15px;
-    margin-right: 8px;
+
+.post-rating img {
+  width: 16px;
+  height: 15px;
+  margin-right: 8px;
 }
-.post-rating svg{
+
+.post-rating svg {
   position: relative;
 }
-.post-rating:before{
+
+.post-rating:before {
   content: "";
   position: absolute;
 }
+
 .item-div {
   width: 100%;
   position: relative;
   border: 0;
   border-bottom: 1px solid #dee0e1;
 }
-.post-details{
+
+.post-details {
   display: flex;
   justify-content: space-between;
   width: 100%;
   font-size: 13px;
 }
+
 .post-time {
   color: #777A7C;
 }
-.post-tags{
+
+.post-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 10px;
 }
-.post-tags svg{
+
+.post-tags svg {
   margin-right: 8px;
 }
+
 .item-footer {
   background-color: #fff;
   padding: 10px 0px 5px;
@@ -163,24 +184,29 @@ export default {
   margin: 0px 0;
   max-width: 280px;
 }
+
 .item-footer a {
   color: #777A7C;
 }
-.item-footer svg{
+
+.item-footer svg {
   margin-right: 8px;
   font-size: 15px;
 }
-.post-time, .post-author, .post-rating, .post-comments{
+
+.post-time, .post-author, .post-rating, .post-comments {
   display: flex;
   align-items: center;
-  font-weight:300;
+  font-weight: 300;
 }
-.item-footer span a{
+
+.item-footer span a {
   color: #777A7C;
   text-decoration: none;
 }
+
 .prevbtn {
-  max-width:40px;
+  max-width: 40px;
   position: absolute;
   left: -50px;
   top: 0;
@@ -188,19 +214,22 @@ export default {
   background: #fff;
   padding: 0;
 }
+
 .nextbtn {
-  max-width:40px;
+  max-width: 40px;
   position: absolute;
-  right:-50px;
-  top:0;
+  right: -50px;
+  top: 0;
   z-index: 1;
   background: #fff;
   padding: 0;
 }
+
 .center-box {
   max-width: 100%;
   margin: 0 auto;
 }
+
 .prevbtn a, .nextbtn a {
   border-radius: 100px;
   height: 40px;
@@ -212,34 +241,40 @@ export default {
   border: 1px solid #ddd;
   color: #AEB3B7 !important;
 }
+
 .prevbtn a.btn:active, .nextbtn a.btn:active {
   background: transparent;
 }
+
 .prevbtn a svg, .nextbtn a svg {
-  font-size: 140%!important;
+  font-size: 140% !important;
 }
 
 @media (max-width: 1352px) {
-  .poll-header{
+  .poll-header {
     display: flex;
   }
-  .prevbtn{
+
+  .prevbtn {
     position: unset;
     margin-right: 15px;
 
-  } .nextbtn {
+  }
+
+  .nextbtn {
     position: unset;
     margin-left: 15px;
   }
 }
 
 @media (max-width: 992px) {
-  .nextbtn{
+  .nextbtn {
     right: 0px;
     top: 0px;
   }
-  .prevbtn{
-    left:0px;
+
+  .prevbtn {
+    left: 0px;
   }
 }
 
@@ -247,42 +282,53 @@ export default {
   .poll-header {
     margin-bottom: 0px;
   }
+
   .prevbtn {
     bottom: 0px;
-    top:40%;
+    top: 40%;
   }
+
   .nextbtn {
     bottom: 0px;
-    top:40%;
+    top: 40%;
   }
 }
+
 @media (max-width: 600px) {
-  .post-tags{
+  .post-tags {
     display: flex;
     flex-wrap: wrap;
   }
-  .post-tags svg{ margin-right: 15px;}
+
+  .post-tags svg {
+    margin-right: 15px;
+  }
 
   .pollheading {
-      margin: 0;
+    margin: 0;
   }
+
   .poll-header {
     padding: 0 0px;
   }
 }
+
 @media (max-width: 600px) {
   .nextbtn {
     width: 35px;
   }
+
   .prevbtn a, .nextbtn a {
     height: 35px;
     width: 35px;
   }
 }
+
 @media (max-width: 350px) {
   .post-time, .post-author, .post-rating, .post-comments {
     flex-direction: column;
   }
+
   .item-footer svg, .post-rating img {
     margin-right: 0;
     margin-bottom: 10px;

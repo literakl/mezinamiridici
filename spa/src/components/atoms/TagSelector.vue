@@ -9,7 +9,8 @@
               :title="tag"
               :disabled="disabled"
               variant="info"
-            >{{ tag }}</b-form-tag>
+            >{{ tag }}
+            </b-form-tag>
           </li>
         </ul>
         <b-form-select
@@ -71,21 +72,24 @@ export default {
 </script>
 
 <style scoped>
-.title{
-  font-size:14px;
-  font-weight:300
+.title {
+  font-size: 14px;
+  font-weight: 300
 }
-.centerbox{
-  width:auto!important;
+
+.centerbox {
+  width: auto !important;
 }
-.tagslist li span{
+
+.tagslist li span {
   font-weight: 300;
   font-size: 14px;
   background: #fff;
   box-shadow: var(--drop-shadow-two);
   color: var(--text-color);
 }
-.tagslist li span button{
+
+.tagslist li span button {
   font-weight: 300;
   font-size: 14px;
 }

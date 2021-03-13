@@ -83,7 +83,11 @@ export default {
     }
   },
   methods: {
-    getValidationState({ dirty, validated, valid = null }) {
+    getValidationState({
+      dirty,
+      validated,
+      valid = null,
+    }) {
       return dirty || validated ? valid : null;
     },
     async onSubmit() {
@@ -103,7 +107,10 @@ export default {
 
       try {
         const item = await this.$store.dispatch(message, body);
-        await this.$router.push({ name: 'page', params: { slug: item.info.slug } });
+        await this.$router.push({
+          name: 'page',
+          params: { slug: item.info.slug },
+        });
       } catch (error) {
         this.$log.error(error);
         if (error.response && error.response.data && error.response.data.errors) {

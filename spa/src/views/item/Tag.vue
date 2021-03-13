@@ -7,7 +7,7 @@
       font-family="fantasy"
       :spacing="0.1"
       class="tags"
-      >
+    >
       <template slot-scope="{text, weight, word}">
         <div>
           <div :title="weight" style="cursor: pointer;" @click="onTagClick(word)">
@@ -63,7 +63,9 @@ export default {
     this.$store.dispatch('FETCH_TAG_CLOUD');
     if (this.tag) {
       this.$store.dispatch('FETCH_ITEMS_BY_TAG', this.tag);
-      setTimeout(() => { document.title += `\xa0\xa0-\xa0\xa0${this.tag}`; }, 10);
+      setTimeout(() => {
+        document.title += `\xa0\xa0-\xa0\xa0${this.tag}`;
+      }, 10);
     }
   },
   methods: {
@@ -73,7 +75,10 @@ export default {
       }
     },
     onTagClick(tag) {
-      this.$router.push({ name: 'tag', params: { tag: tag[0] } });
+      this.$router.push({
+        name: 'tag',
+        params: { tag: tag[0] },
+      });
     },
   },
 };
@@ -85,9 +90,10 @@ export default {
   margin: 0 auto;
   width: 100%;
 }
+
 @media (max-width: 1235px) {
- .centerbox {
-   width:91%;
- }
+  .centerbox {
+    width: 91%;
+  }
 }
 </style>

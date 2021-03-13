@@ -4,7 +4,7 @@
       <b-button v-for="(emoji, index) in emojiArray" v-bind:key="index"
                 v-on:click="addEmoji(index)"
                 variant="outline" size="sm">
-        {{emoji}}
+        {{ emoji }}
       </b-button>
     </b-popover>
 
@@ -15,42 +15,42 @@
             <editor-menu-bar v-if="isShow" :editor="editor" v-slot="{ commands, isActive }">
               <div class="menubar">
                 <button class="menubar__button" @click="commands.undo">
-                  <icon name="undo" />
+                  <icon name="undo"/>
                 </button>
 
                 <button class="menubar__button" @click="commands.redo">
-                  <icon name="redo" />
+                  <icon name="redo"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-                  <icon name="bold" />
+                  <icon name="bold"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
-                  <icon name="italic" />
+                  <icon name="italic"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
-                  <icon name="strike" />
+                  <icon name="strike"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
-                  <icon name="underline" />
+                  <icon name="underline"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
-                  <icon name="ul" />
+                  <icon name="ul"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
-                  <icon name="ol" />
+                  <icon name="ol"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
-                  <icon name="quote" />
+                  <icon name="quote"/>
                 </button>
 
-                <b-button class="menubar__button"  :id="`emojis_${commentId}`" variant="outline" size="sm">
+                <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline" size="sm">
                   <BIconEmojiSunglasses></BIconEmojiSunglasses>
                 </b-button>
 
@@ -59,7 +59,7 @@
                 </b-button>
               </div>
             </editor-menu-bar>
-            <editor-content v-if="isShow" :editor="editor" />
+            <editor-content v-if="isShow" :editor="editor"/>
           </b-col>
         </b-row>
       </b-container>
@@ -135,10 +135,14 @@ export default {
           new History(),
         ],
         content: '',
-        onUpdate: ({ getJSON, getHTML }) => {
+        onUpdate: ({
+          getJSON,
+          getHTML,
+        }) => {
           this.json = getJSON();
           this.html = getHTML();
-          if (this.html.replace(/<[^>]*>/g, '').trim().length > 0) {
+          if (this.html.replace(/<[^>]*>/g, '')
+            .trim().length > 0) {
             this.empty = false;
           } else {
             this.empty = true;
@@ -188,76 +192,87 @@ export default {
 </script>
 
 <style>
-  .comment-box .container-fluid {
-    padding: 0;
-  }
-  .ProseMirror {
-    border: #dddddd solid 1px;
-    padding: 10px;
-    min-height: 150px;
-  }
-  .ProseMirror img {
-    width: 100%;
-  }
-  .send-comment-btn {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-  }
-  .send-comment-btn button {
-    max-width: 150px;
-    width: 100%;
-  }
-  .closebtn {
-    float: right;
-  }
+.comment-box .container-fluid {
+  padding: 0;
+}
+
+.ProseMirror {
+  border: #dddddd solid 1px;
+  padding: 10px;
+  min-height: 150px;
+}
+
+.ProseMirror img {
+  width: 100%;
+}
+
+.send-comment-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.send-comment-btn button {
+  max-width: 150px;
+  width: 100%;
+}
+
+.closebtn {
+  float: right;
+}
 </style>
 
 <style lang="scss" scoped>
-  $color-black: #000000;
-  $color-white: #ffffff;
-  $color-grey: #dddddd;
+$color-black: #000000;
+$color-white: #ffffff;
+$color-grey: #dddddd;
 
-  .menubar__button {
-    font-weight: 700;
-    display: -webkit-inline-box;
-    background: transparent;
-    border: 0;
-    color: $color-black;
-    padding: .2rem .5rem;
-    margin-right: .2rem;
-    border-radius: 3px;
-    cursor: pointer;
+.menubar__button {
+  font-weight: 700;
+  display: -webkit-inline-box;
+  background: transparent;
+  border: 0;
+  color: $color-black;
+  padding: .2rem .5rem;
+  margin-right: .2rem;
+  border-radius: 3px;
+  cursor: pointer;
 
-    &.is-active {
-      background-color: rgba($color-black,.1);
-    }
+  &.is-active {
+    background-color: rgba($color-black, .1);
   }
-  .menubar button {
-    box-shadow: none;
+}
+
+.menubar button {
+  box-shadow: none;
+}
+
+.menubar button svg {
+  color: var(--text-color)
+}
+
+.actions {
+  max-width: 30rem;
+  margin: 0 auto 2rem auto;
+}
+
+.export {
+  max-width: 30rem;
+  margin: 0 auto 2rem auto;
+
+  pre {
+    padding: 1rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background: rgba($color-black, 0.05);
+    color: rgba($color-black, 0.8);
   }
-  .menubar button svg {
-    color:var(--text-color)
+
+  code {
+    display: block;
+    white-space: pre-wrap;
   }
-  .actions {
-    max-width: 30rem;
-    margin: 0 auto 2rem auto;
-  }
-  .export {
-    max-width: 30rem;
-    margin: 0 auto 2rem auto;
-    pre {
-      padding: 1rem;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      background: rgba($color-black, 0.05);
-      color: rgba($color-black, 0.8);
-    }
-    code {
-      display: block;
-      white-space: pre-wrap;
-    }
-  }
+}
 </style>

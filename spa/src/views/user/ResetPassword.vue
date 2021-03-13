@@ -110,37 +110,44 @@ export default {
 
 <style scoped>
 .centerbox {
-  max-width:700px;
+  max-width: 700px;
   margin: 0 auto 20px;
   padding: 25px 35px;
   border-radius: 4px;
 }
+
 .head-area {
-  padding-bottom:0px;
-  margin-bottom:10px;
+  padding-bottom: 0;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .head-area h2 {
   font-size: 20px;
   border-bottom: 1px solid #ddd;
-  width:100%;
+  width: 100%;
   padding: 0 0 15px 0;
 }
+
 .field-area {
   margin-bottom: 10px;
 }
+
 .field-area label span {
   font-size: 14px;
 }
+
 .field-area input, .field-area select {
-  width: 98%!important;
+  width: 98% !important;
 }
+
 .centerbox .w-50 {
-  width: 100%!important;
+  width: 100% !important;
 }
+
 .green {
   background: var(--color-green);
   border: 0;
@@ -148,14 +155,16 @@ export default {
   font-weight: 400;
   font-size: 14px;
 }
+
 .errormsg {
   font-size: 14px;
 }
+
 @media (max-width: 700px) {
   .centerbox, .hero-head {
-    margin-right:35px;
-    margin-left:35px;
-    padding:25px 20px;
+    margin-right: 35px;
+    margin-left: 35px;
+    padding: 25px 20px;
   }
 }
 </style>

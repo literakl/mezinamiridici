@@ -6,7 +6,7 @@
     <div class="completed-poll-wrap">
       <CompletePoll v-if="poll"/>
     </div>
-    <ShareLink :item="poll" />
+    <ShareLink :item="poll"/>
     <div class="comment-outer">
       <Comments v-if="poll" :itemId="poll._id"/>
     </div>
@@ -51,7 +51,9 @@ export default {
   },
   methods: {
     changeTitle(title) {
-      setTimeout(() => { document.title += `\xa0\xa0-\xa0\xa0${title}`; }, 10);
+      setTimeout(() => {
+        document.title += `\xa0\xa0-\xa0\xa0${title}`;
+      }, 10);
     },
   },
 };
@@ -62,8 +64,9 @@ export default {
   max-width: 1235px;
   margin: 0 auto;
 }
+
 @media (max-width: 1235px) {
-  .single-post-wrap{
+  .single-post-wrap {
     padding: 0 35px;
   }
 }

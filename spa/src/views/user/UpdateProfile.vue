@@ -4,7 +4,7 @@
       <h2>{{ $t('edit-profile.heading') }}</h2>
       <p>{{ $t('edit-profile.body') }}</p>
     </div>
-    <ContentLoading v-if="!userProfile && !error" type="profile" />
+    <ContentLoading v-if="!userProfile && !error" type="profile"/>
     <ValidationObserver ref="form" v-slot="{ passes, invalid }" v-if="userProfile">
       <b-form @submit.prevent="passes(submitForm)" v-if="success === false || success === null">
         <ProfileForm :formData="profileForm" @update="updateProfileForm"/>
@@ -161,7 +161,10 @@ export default {
           publicProfile: this.profileForm.share,
           urls: this.profileForm.urls,
         });
-        await this.$router.push({ name: 'user-profile', params: { id: this.userProfile._id } });
+        await this.$router.push({
+          name: 'user-profile',
+          params: { id: this.userProfile._id },
+        });
       } catch (error) {
         this.$log.error(error);
         this.success = false;
@@ -176,7 +179,7 @@ export default {
     updateProfileForm(obj) {
       // eslint-disable-next-line
       for (const property in this.profileForm) {
-      // eslint-disable-next-line
+        // eslint-disable-next-line
         if (obj.hasOwnProperty(property)) {
           this.profileForm[property] = obj[property];
         }
@@ -188,22 +191,25 @@ export default {
 
 <style scoped>
 .update-profile {
-  max-width:700px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 25px 35px;
   width: 100%;
   border-radius: 4px;
 }
+
 .update-profile .centerbox {
   padding: 0;
 }
+
 .head-area {
-  padding-bottom:10px;
+  padding-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .head-area button {
   background: transparent;
   padding: 10px;
@@ -211,21 +217,25 @@ export default {
   width: 100px;
   font-size: 14px;
 }
+
 .head-area h2 {
   font-size: 20px;
   border-bottom: 1px solid #ddd;
-  width:100%;
+  width: 100%;
   padding: 0 0 15px 0;
 }
+
 .green {
   background: var(--color-green);
-  border: 0; color: #fff;
+  border: 0;
+  color: #fff;
 }
+
 @media (max-width: 700px) {
   .update-profile {
-    margin-right:35px;
-    margin-left:35px;
-    width:auto;
+    margin-right: 35px;
+    margin-left: 35px;
+    width: auto;
     padding: 25px 20px
   }
 }

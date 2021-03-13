@@ -6,9 +6,9 @@
         {{ $t('profile.honors.next-rank-label') }}: {{ $t('profile.rank.student') }}
       </li>
       <li>
-          <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
+        <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="pollVotesCount >= 1" scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="pollVotesCount >= 1" scale="1" class="my-auto"/>
           <b-progress v-if="pollVotesCount < 1" :value="pollVotesCount" max="1" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
@@ -16,14 +16,14 @@
         <span class="mr-2">{{ $t('profile.honors.comments-label') }}:</span>
         <div>
           <b-progress v-if="commentsCount < 1" :value="commentsCount" max="1" class="w-25 my-auto" show-value></b-progress>
-          <BIconCheck2Circle v-if="commentsCount >= 1" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentsCount >= 1" font-scale="1" class="my-auto"/>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.comment-votes-label') }}:</span>
         <div>
           <b-progress v-if="commentVotesCount < 1" :value="commentVotesCount" max="1" class="w-25 my-auto" show-value></b-progress>
-          <BIconCheck2Circle v-if="commentVotesCount >= 1" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentVotesCount >= 1" font-scale="1" class="my-auto"/>
         </div>
       </li>
       <li>
@@ -45,21 +45,21 @@
       <li>
         <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="pollVotesCount >= 3" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="pollVotesCount >= 3" font-scale="1" class="my-auto"/>
           <b-progress v-if="pollVotesCount < 3" :value="pollVotesCount" max="3" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.blogs-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="blogsCount >= 1" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="blogsCount >= 1" font-scale="1" class="my-auto"/>
           <b-progress v-if="blogsCount < 1" :value="blogsCount" max="1" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.comment-ratio-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="commentVoteRatio >= 66" font-scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentVoteRatio >= 66" font-scale="1" class="my-auto"/>
           <b-progress v-if="commentVoteRatio < 66" :value="commentVoteRatio" max="66" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
@@ -82,35 +82,35 @@
       <li>
         <span class="mr-2">{{ $t('profile.honors.poll-votes-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="pollVotesCount >= 10" scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="pollVotesCount >= 10" scale="1" class="my-auto"/>
           <b-progress v-if="pollVotesCount < 10" :value="pollVotesCount" max="10" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.blogs-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="blogsCount >= 10" scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="blogsCount >= 10" scale="1" class="my-auto"/>
           <b-progress v-if="blogsCount < 10" :value="blogsCount" max="10" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.comments-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="commentsCount >= 100" scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentsCount >= 100" scale="1" class="my-auto"/>
           <b-progress v-if="commentsCount < 100" :value="commentsCount" max="100" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.comment-ratio-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="commentVoteRatio >= 80" scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="commentVoteRatio >= 80" scale="1" class="my-auto"/>
           <b-progress v-if="commentVoteRatio < 80" :value="commentVoteRatio" max="80" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
       <li>
         <span class="mr-2">{{ $t('profile.honors.sharing-weeks-label') }}:</span>
         <div>
-          <BIconCheck2Circle v-if="sharingWeeksCount >= 10" scale="1" class="my-auto" />
+          <BIconCheck2Circle v-if="sharingWeeksCount >= 10" scale="1" class="my-auto"/>
           <b-progress v-if="sharingWeeksCount < 10" :value="sharingWeeksCount" max="10" class="w-25 my-auto" show-value></b-progress>
         </div>
       </li>
@@ -127,7 +127,9 @@ export default {
     user: Object,
   },
   components: {
-    BIconCheck2Circle, BProgress, BIconAward,
+    BIconCheck2Circle,
+    BProgress,
+    BIconAward,
   },
   computed: {
     sharesCount() {
@@ -156,25 +158,27 @@ export default {
 </script>
 
 <style scoped>
-.ranks-list{
+.ranks-list {
   margin: 0;
   padding: 0;
 }
-.ranks-list li{
+
+.ranks-list li {
   list-style-type: none;
   border-bottom: 1px solid #f1f1f1;
   background: #fff;
   text-align: left;
   display: flex;
-  justify-content:  flex-start;
+  justify-content: flex-start;
   align-items: center;
   color: var(--link-color);
   font-weight: 300;
   margin: 0;
   padding: 8px 0px;
-  font-size:14px;
+  font-size: 14px;
 }
-.ranks-list li:first-child{
+
+.ranks-list li:first-child {
   min-height: auto;
   font-weight: 400;
   padding: 0px 0 10px;
@@ -185,20 +189,33 @@ export default {
   align-items: center;
   color: var(--dark-color);
 }
-.ranks-list li svg{
+
+.ranks-list li svg {
   margin-right: 10px;
   color: #AEB3B7;
 }
-.ranks-list li span{ width:35%}
-.ranks-list li div{ width:100%!important}
+
+.ranks-list li span {
+  width: 35%
+}
+
+.ranks-list li div {
+  width: 100% !important
+}
 
 @media (max-width: 600px) {
-  .ranks-list li:first-child{ flex-direction: row;}
-  .ranks-list li{
+  .ranks-list li:first-child {
+    flex-direction: row;
+  }
+
+  .ranks-list li {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
   }
-  .ranks-list li span{ width:100%}
+
+  .ranks-list li span {
+    width: 100%
+  }
 }
 </style>

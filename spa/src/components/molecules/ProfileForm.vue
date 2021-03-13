@@ -263,35 +263,43 @@ export default {
 </script>
 
 <style scoped>
-  .centerbox {
-    max-width: 700px;
-    margin: 0 auto 20px;
-    padding: 25px 35px;
-    border-radius: 4px 4px 0 0;
-  }
-  .field-area {
-    margin-bottom: 10px;
-  }
-  .field-area input {
-    width:100%;
-  }
-  .field-area .w-50 {
-    width: 100%!important;
-  }
-  .field-area select {
-    width: calc(100% - 2%);
-  }
-  .centerbox label {
-    display: block;
-  }
-  .radio-boxes {
-    display: flex;
-  }
-  .public-box, .private-box {
-    display: block;
-    margin-right: 10px;
-  }
-  @media (max-width: 700px) {
+.centerbox {
+  max-width: 700px;
+  margin: 0 auto 20px;
+  padding: 25px 35px;
+  border-radius: 4px 4px 0 0;
+}
+
+.field-area {
+  margin-bottom: 10px;
+}
+
+.field-area input {
+  width: 100%;
+}
+
+.field-area .w-50 {
+  width: 100% !important;
+}
+
+.field-area select {
+  width: calc(100% - 2%);
+}
+
+.centerbox label {
+  display: block;
+}
+
+.radio-boxes {
+  display: flex;
+}
+
+.public-box, .private-box {
+  display: block;
+  margin-right: 10px;
+}
+
+@media (max-width: 700px) {
   .field-area select {
     width: calc(100% - 5%);
   }

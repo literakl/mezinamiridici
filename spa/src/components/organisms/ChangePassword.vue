@@ -99,30 +99,47 @@ export default {
 };
 </script>
 <style scoped>
-.pass-change{
+.pass-change {
   width: 100%;
   margin: 0 auto;
-  padding: 0px 0px 20px;
+  padding: 0 0 20px;
 }
-.pass-change h3{
+
+.pass-change h3 {
   font-size: 14px;
-  border-bottom: 0px solid #ddd;
+  border-bottom: 0 solid #ddd;
   padding-bottom: 10px;
 }
+
 .pass-change .w-50 {
-  width: 100%!important;
+  width: 100% !important;
 }
+
 .pass-change button {
   font-size: 14px;
   margin: 0 auto;
 }
-.pass-change label { font-size: 14px;}
 
-.field-area { margin-bottom: 15px; font-size: 14px;}
-@media (max-width: 767px) {
-  .pass-change button { width: 50%; font-size: 14px;}
+.pass-change label {
+  font-size: 14px;
 }
+
+.field-area {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .pass-change button {
+    width: 50%;
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 500px) {
-  .pass-change button { width: 100%; font-size: 14px;}
+  .pass-change button {
+    width: 100%;
+    font-size: 14px;
+  }
 }
 </style>

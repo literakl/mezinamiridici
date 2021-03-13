@@ -33,7 +33,7 @@
 
             <div class="w-100 d-flex flex-row-reverse mb-3 forgot-link">
               <router-link :to="{ name: 'forgotten' }">
-                {{ $t('sign-in.forgot-password-link')}}
+                {{ $t('sign-in.forgot-password-link') }}
               </router-link>
             </div>
 
@@ -134,7 +134,13 @@ export default {
   },
   methods: {
     redirectToSignUp() {
-      this.$router.push({ name: 'sign-up', params: { presetEmail: this.email, presetPassword: this.password } });
+      this.$router.push({
+        name: 'sign-up',
+        params: {
+          presetEmail: this.email,
+          presetPassword: this.password,
+        },
+      });
     },
     async signIn() {
       this.signingIn = true;
@@ -161,8 +167,15 @@ export default {
       const response = await this.$auth.authenticate(provider);
       if (response.data.socialId) {
         this.$auth.logout();
-        const params = { presetEmail: response.data.email, presetNickname: response.data.name, socialId: response.data.socialId };
-        await this.$router.push({ name: 'sign-up', params });
+        const params = {
+          presetEmail: response.data.email,
+          presetNickname: response.data.name,
+          socialId: response.data.socialId,
+        };
+        await this.$router.push({
+          name: 'sign-up',
+          params,
+        });
       } else {
         await this.$store.dispatch('SET_SOCIAL', response.data);
         await this.$router.push('/');
@@ -180,14 +193,16 @@ export default {
   padding: 25px 20px;
   border-radius: 4px;
 }
+
 .head-area {
-  padding-bottom:0px;
-  margin-bottom:10px;
+  padding-bottom: 0;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .head-area button {
   background: transparent;
   padding: 10px;
@@ -195,18 +210,22 @@ export default {
   width: 100px;
   font-size: 14px;
 }
+
 .head-area h2 {
   font-size: 20px;
   border-bottom: 1px solid #ddd;
-  width:100%;
+  width: 100%;
   padding: 0 0 15px 0;
 }
+
 .field-area {
   margin-bottom: 10px;
 }
+
 .forgot-link {
   font-size: 14px;
 }
+
 .btn {
   font-weight: 500;
   font-size: 14px;
@@ -214,22 +233,26 @@ export default {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
   cursor: pointer;
 }
+
 .btn-facebook {
   color: #fff;
   background-color: #3b5998;
-  border: 0px solid #335190;
+  border: 0 solid #335190;
 }
+
 .btn-facebook:hover,
 .btn-facebook:focus {
   color: #fff;
   background-color: #294786;
   border: 0;
 }
+
 .btn-twitter {
   color: #fff;
   background-color: #00aced;
-  border: 0px solid #009fdb;
+  border: 0 solid #009fdb;
 }
+
 .btn-twitter:hover,
 .btn-twitter:focus {
   color: #fff;
@@ -239,15 +262,16 @@ export default {
 .btn-google-plus {
   color: #fff;
   background-color: #dd4b39;
-  border: 1px solid #d54331;
   border: 0;
 }
+
 .btn-google-plus:hover,
 .btn-google-plus:focus {
   color: #fff;
   background-color: #cb3927;
   border: 0;
 }
+
 .blue {
   color: #fff;
   background-color: #007bff;
@@ -255,6 +279,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
 }
+
 .blue:hover {
   color: #fff;
   background-color: #0069d9;
@@ -268,16 +293,18 @@ export default {
   font-weight: 400;
   font-size: 14px;
 }
+
 .green:hover {
   color: #fff;
   background-color: #218838;
   border-color: #1e7e34;
 }
+
 @media (max-width: 700px) {
   .centerbox {
-    margin:0 35px;
-    width:auto;
-    padding:25px 5px;
+    margin: 0 35px;
+    width: auto;
+    padding: 25px 5px;
   }
 }
 

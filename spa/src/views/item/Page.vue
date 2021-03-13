@@ -1,10 +1,10 @@
 <template>
   <div class="pages-wrap">
     <div class="pt-3 ml-auto mr-auto mt-auto mb-5">
-    <ContentLoading v-if="!content" type="cms" />
+      <ContentLoading v-if="!content" type="cms"/>
       <div v-if="content" class="page-content-wrap">
         <div v-html="content.data.content" class="post-content"></div>
-        <ShareLink :item="content" />
+        <ShareLink :item="content"/>
       </div>
     </div>
   </div>
@@ -42,7 +42,9 @@ export default {
   },
   methods: {
     changeTitle(title) {
-      setTimeout(() => { document.title = title; }, 10);
+      setTimeout(() => {
+        document.title = title;
+      }, 10);
     },
   },
 };
@@ -50,7 +52,7 @@ export default {
 
 <style scoped>
 .pages-wrap {
-  max-width:1235px;
+  max-width: 1235px;
   margin: 0 auto;
 }
 

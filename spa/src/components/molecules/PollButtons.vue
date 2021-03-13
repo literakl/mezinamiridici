@@ -33,7 +33,10 @@ export default {
   methods: {
     voted(vote) {
       if (!this.$store.getters.IS_AUTHORIZED) {
-        this.$router.push({ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } });
+        this.$router.push({
+          name: 'sign-in',
+          params: { redirectUrl: this.$route.fullPath }
+        });
       } else {
         this.$emit('do-vote', vote);
       }
@@ -49,12 +52,14 @@ export default {
   justify-content: center;
   width: 100%;
 }
+
 .normal-poll-inside h4 {
   font-size: 16px;
   text-transform: uppercase;
   padding: 16px 0 0 0px;
   color: var(--text-color);
 }
+
 /* Default Poll Buttons Css Start */
 .normal-poll-inside {
   display: flex;
@@ -62,6 +67,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .normal-poll-inside button {
   display: flex;
   align-items: center;
@@ -70,18 +76,20 @@ export default {
   width: 100%;
   justify-content: center;
   text-align: center;
-  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 0;
   height: 40px;
   margin: 15px;
   font-size: 14px;
   font-weight: 400;
 }
+
 .normal-poll-inside button.btn-success img {
   width: 60px;
   height: 40px;
   top: -38px;
 }
+
 .normal-poll-inside button img {
   position: absolute;
   top: -42px;
@@ -92,13 +100,14 @@ export default {
   right: 20%;
   left: 20%;
 }
+
 .normal-poll-inside button span {
   width: 32px;
   height: 27px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background:rgba(255, 255, 255, .7);
+  background: rgba(255, 255, 255, .7);
   color: var(--dark-color);
   position: absolute;
   left: 7px;
@@ -107,42 +116,51 @@ export default {
   border-radius: 3px;
   top: 11px;
 }
+
 /* Default Poll Buttons Css End */
 @media (max-width: 992px) {
   .normal-poll-inside button img {
     left: 0;
     right: 0;
   }
+
   .normal-poll-inside button span {
     top: 38px;
   }
+
   .normal-poll-inside button {
     width: 105px;
-    margin: 35px 5px 30px!important;
+    margin: 35px 5px 30px !important;
     font-size: 13px;
   }
-  .normal-poll-inside h4{
+
+  .normal-poll-inside h4 {
     padding: 0;
   }
 }
+
 @media (max-width: 767px) {
   .normal-poll-inside {
     flex-wrap: wrap;
-    justify-content: space-around!important;
+    justify-content: space-around !important;
     padding: 0 10px;
   }
+
   .normal-poll-inside button {
     width: 45%;
   }
+
   .normal-poll-inside h4 {
     flex-wrap: wrap;
     flex-basis: 100%;
     text-align: center;
   }
+
   .normal-poll {
-    padding-top: 0px!important;
+    padding-top: 0px !important;
   }
 }
+
 @media (max-width: 600px) {
   .normal-poll-inside {
     padding: 0 0px;
@@ -154,6 +172,7 @@ export default {
     width: 145px;
   }
 }
+
 @media (max-width: 360px) {
   .normal-poll-inside button {
     width: 122px;

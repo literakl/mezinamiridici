@@ -57,7 +57,10 @@ export default {
     },
   },
   methods: {
-    async onAppend({ groupKey, startLoading }) {
+    async onAppend({
+      groupKey,
+      startLoading,
+    }) {
       if (this.$refs.ig.isProcessing()) {
         return;
       }
@@ -66,7 +69,11 @@ export default {
       }
 
       startLoading();
-      let items = await this.$store.dispatch('GET_ITEM_STREAM', { start: this.start, size: this.pageSize, tag: this.tag });
+      let items = await this.$store.dispatch('GET_ITEM_STREAM', {
+        start: this.start,
+        size: this.pageSize,
+        tag: this.tag,
+      });
       if (items.length === 0) {
         this.hasEnded = true;
         this.$refs.ig.endLoading();
@@ -78,10 +85,15 @@ export default {
         items = items.filter(item => item._id !== this.exceptItem._id);
       }
       const newGroupKey = parseFloat(groupKey || 0) + 1;
-      items.forEach((item) => { item.groupKey = newGroupKey; });
+      items.forEach((item) => {
+        item.groupKey = newGroupKey;
+      });
       this.list = this.list.concat(items);
     },
-    onLayoutComplete({ isLayout, endLoading }) {
+    onLayoutComplete({
+      isLayout,
+      endLoading,
+    }) {
       if (!isLayout) {
         endLoading();
       }
@@ -101,32 +113,39 @@ export default {
   max-width: 1280px;
   margin: 0 auto;
 }
+
 .item {
   width: 255px;
   opacity: 1;
 }
+
 .item div {
   height: 270px;
 }
+
 .item .thumbnail {
   max-height: 270px;
   overflow: hidden;
   border-radius: 8px;
 }
+
 .item .thumbnail img {
   width: 100%;
   border-radius: 8px;
 }
+
 .item .info {
   margin-top: 10px;
   font-weight: bold;
   color: #777;
 }
+
 .item.animate {
   transition: opacity ease 1s;
   transition-delay: 0.2s;
   opacity: 1;
 }
+
 .loading {
   position: absolute;
   width: 100%;
@@ -135,17 +154,20 @@ export default {
   text-align: center;
   font-weight: bold;
 }
+
 @media (max-width: 767px) {
   .home-posts {
     justify-content: flex-start;
     flex-direction: column;
   }
+
   .item {
     max-width: 767px;
     width: 100%;
     opacity: 1;
     padding: 0 15px;
   }
+
   .item div {
     height: auto;
   }

@@ -23,12 +23,12 @@
     <div class="row" v-if="this.type === 'vlastni'">
       <div class="col-sm-12 col-md-6 col-lg-6 campbox-one">
         <b-card :header="captions[0]">
-          <SeriesForm :group="forms[0]" id="1" />
+          <SeriesForm :group="forms[0]" id="1"/>
         </b-card>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-6 campbox-two">
         <b-card :header="captions[1]">
-          <SeriesForm :group="forms[1]" id="2" />
+          <SeriesForm :group="forms[1]" id="2"/>
         </b-card>
       </div>
     </div>
@@ -68,7 +68,13 @@ export default {
   },
   data: () => ({
     groups: [{}, {}],
-    forms: [{ region: [], vehicles: [] }, { region: [], vehicles: [] }],
+    forms: [{
+      region: [],
+      vehicles: [],
+    }, {
+      region: [],
+      vehicles: [],
+    }],
     captions: null,
     queries: null,
     absoluteValues: false,
@@ -82,11 +88,12 @@ export default {
   },
   created() {
     this.parseType(this.type);
-    this.$store.dispatch('GET_POLL', { slug: this.slug }).then(() => {
-      if (this.queries) {
-        this.runQueries(this.item._id, this.queries);
-      }
-    });
+    this.$store.dispatch('GET_POLL', { slug: this.slug })
+      .then(() => {
+        if (this.queries) {
+          this.runQueries(this.item._id, this.queries);
+        }
+      });
   },
   async beforeRouteUpdate(to, from, next) {
     if (from.params.slug !== to.params.slug) {
@@ -156,14 +163,18 @@ export default {
         this.inProgress = true;
         const promises = [];
         for (let i = 0; i < queries.length; i += 1) {
-          promises.push(this.$store.dispatch('GET_POLL_VOTES', { id, query: queries[i] }));
+          promises.push(this.$store.dispatch('GET_POLL_VOTES', {
+            id,
+            query: queries[i],
+          }));
         }
-        Promise.all(promises).then((values) => {
-          for (let i = 0; i < values.length; i += 1) {
-            this.groups[i] = values[i].data.data;
-          }
-          this.inProgress = false;
-        });
+        Promise.all(promises)
+          .then((values) => {
+            for (let i = 0; i < values.length; i += 1) {
+              this.groups[i] = values[i].data.data;
+            }
+            this.inProgress = false;
+          });
       } catch (err) {
         this.$log.error(err);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -207,57 +218,69 @@ export default {
 
 <style scoped>
 .analyze-vote {
-  max-width:1235px;
-  margin:0 auto;
+  max-width: 1235px;
+  margin: 0 auto;
 }
+
 .campbox-two .card-header {
   font-weight: 500;
-  background: rgb(191 229 200 / 1)!important;
-  color: #656b6f!important;
+  background: rgb(191 229 200) !important;
+  color: #656b6f !important;
   border-radius: 4px 4px 0 0;
   text-transform: uppercase;
 }
+
 .campbox-one .card-header {
-  background: rgb(179 216 255 / 1);
+  background: rgb(179 216 255);
   font-weight: 500;
-  color: #656b6f!important;
+  color: #656b6f !important;
   border-radius: 4px 4px 0 0;
   text-transform: uppercase;
 }
+
 .campbox-two .card-body, .campbox-one .card-bod {
   padding: 1.2rem;
 }
-.showcase-wrap{
-  padding: 5px 0px 5px 0px;
+
+.showcase-wrap {
+  padding: 5px 0 5px 0;
 }
-.showcase-wrap .form-row{
+
+.showcase-wrap .form-row {
   align-items: center;
 }
+
 .showcase-wrap legend {
   font-weight: 500;
 }
+
 @media (max-width: 1235px) {
   .analyze-vote {
-    margin:0 35px;
+    margin: 0 35px;
   }
+
   .campbox-one {
     padding-left: 25px;
   }
+
   .campbox-two {
     padding-right: 10px;
   }
 }
+
 @media (max-width: 767px) {
   .campbox-one {
     padding-right: 15px;
     padding-left: 15px;
   }
+
   .campbox-two {
     padding-right: 15px;
     padding-left: 15px;
   }
 }
- @media (max-width: 420px) {
+
+@media (max-width: 420px) {
   .campbox-two .card-body {
     padding: 1rem 0.5rem;
   }

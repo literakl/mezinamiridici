@@ -54,27 +54,27 @@
               <b-form-checkbox value="van">{{ $t('profile.vehicles.van') }}</b-form-checkbox>
             </div>
           </b-form-checkbox-group>
-      </b-form-group>
-       <b-form-group :label="$t('poll.analysis.regions')" label-cols-sm="4">
-        <b-form-checkbox-group id="regions" v-model="group.edu" name="regions" class="align-nicely col-two">
-          <div>
-            <b-form-checkbox value="PRG">{{ $t('profile.regions.PRG') }}</b-form-checkbox>
-            <b-form-checkbox value="SC">{{ $t('profile.regions.SC') }}</b-form-checkbox>
-            <b-form-checkbox value="JC">{{ $t('profile.regions.JC') }}</b-form-checkbox>
-            <b-form-checkbox value="PLS">{{ $t('profile.regions.PLS') }}</b-form-checkbox>
-            <b-form-checkbox value="KV">{{ $t('profile.regions.KV') }}</b-form-checkbox>
-            <b-form-checkbox value="UST">{{ $t('profile.regions.UST') }}</b-form-checkbox>
-            <b-form-checkbox value="LBR">{{ $t('profile.regions.LBR') }}</b-form-checkbox>
-          </div>
-          <div>
-            <b-form-checkbox value="KH">{{ $t('profile.regions.KH') }}</b-form-checkbox>
-            <b-form-checkbox value="PRD">{{ $t('profile.regions.PRD') }}</b-form-checkbox>
-            <b-form-checkbox value="VSC">{{ $t('profile.regions.VSC') }}</b-form-checkbox>
-            <b-form-checkbox value="JM">{{ $t('profile.regions.JM') }}</b-form-checkbox>
-            <b-form-checkbox value="OLM">{{ $t('profile.regions.OLM') }}</b-form-checkbox>
-            <b-form-checkbox value="ZLN">{{ $t('profile.regions.ZLN') }}</b-form-checkbox>
-            <b-form-checkbox value="MS">{{ $t('profile.regions.MS') }}</b-form-checkbox>
-          </div>
+        </b-form-group>
+        <b-form-group :label="$t('poll.analysis.regions')" label-cols-sm="4">
+          <b-form-checkbox-group id="regions" v-model="group.edu" name="regions" class="align-nicely col-two">
+            <div>
+              <b-form-checkbox value="PRG">{{ $t('profile.regions.PRG') }}</b-form-checkbox>
+              <b-form-checkbox value="SC">{{ $t('profile.regions.SC') }}</b-form-checkbox>
+              <b-form-checkbox value="JC">{{ $t('profile.regions.JC') }}</b-form-checkbox>
+              <b-form-checkbox value="PLS">{{ $t('profile.regions.PLS') }}</b-form-checkbox>
+              <b-form-checkbox value="KV">{{ $t('profile.regions.KV') }}</b-form-checkbox>
+              <b-form-checkbox value="UST">{{ $t('profile.regions.UST') }}</b-form-checkbox>
+              <b-form-checkbox value="LBR">{{ $t('profile.regions.LBR') }}</b-form-checkbox>
+            </div>
+            <div>
+              <b-form-checkbox value="KH">{{ $t('profile.regions.KH') }}</b-form-checkbox>
+              <b-form-checkbox value="PRD">{{ $t('profile.regions.PRD') }}</b-form-checkbox>
+              <b-form-checkbox value="VSC">{{ $t('profile.regions.VSC') }}</b-form-checkbox>
+              <b-form-checkbox value="JM">{{ $t('profile.regions.JM') }}</b-form-checkbox>
+              <b-form-checkbox value="OLM">{{ $t('profile.regions.OLM') }}</b-form-checkbox>
+              <b-form-checkbox value="ZLN">{{ $t('profile.regions.ZLN') }}</b-form-checkbox>
+              <b-form-checkbox value="MS">{{ $t('profile.regions.MS') }}</b-form-checkbox>
+            </div>
           </b-form-checkbox-group>
         </b-form-group>
       </div>
@@ -83,21 +83,29 @@
 </template>
 
 <script>
-import { BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox,
-  BFormCheckboxGroup, BInputGroupAppend, BInputGroupText } from 'bootstrap-vue';
+import {
+  BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox,
+  BFormCheckboxGroup, BInputGroupAppend, BInputGroupText,
+} from 'bootstrap-vue';
 
 export default {
   name: 'SeriesForm',
   components: {
-    BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox, BFormCheckboxGroup, BInputGroupAppend, BInputGroupText,
+    BFormGroup,
+    BForm,
+    BInputGroup,
+    BFormInput,
+    BFormCheckbox,
+    BFormCheckboxGroup,
+    BInputGroupAppend,
+    BInputGroupText,
   },
   props: {
     group: Object,
     id: String,
   },
   data() {
-    return {
-    };
+    return {};
   },
 };
 </script>
@@ -106,38 +114,49 @@ export default {
 .group-one {
   font-size: 14px;
 }
+
 .group-one .input-group-text {
   font-size: 14px;
 }
+
 fieldset.label {
   display: flex;
 }
+
 .campbox-one {
   margin-bottom: 15px;
 }
+
 .group-one .form-row {
   align-items: flex-start;
 }
+
 .group-one .form-row .col-sm-4 {
   padding: 0px 5px 5px;
 }
+
 .col-two {
   display: flex;
 }
+
 .col-two div {
   width: 48%;
 }
+
 @media (max-width: 1050px) {
   .group-one .form-row .col-sm-4 {
-    width: 100%!important;
-    max-width: 100%!important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
+
   .group-one .form-row {
     flex-direction: column;
   }
+
   .group-one .form-row select {
     color: var(--text-color-light);
   }
+
   .group-one .input-group-text {
     font-size: 14px;
   }
