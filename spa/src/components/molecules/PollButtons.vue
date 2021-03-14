@@ -35,7 +35,7 @@ export default {
       if (!this.$store.getters.IS_AUTHORIZED) {
         this.$router.push({
           name: 'sign-in',
-          params: { redirectUrl: this.$route.fullPath }
+          params: { redirectUrl: this.$route.fullPath },
         });
       } else {
         this.$emit('do-vote', vote);
