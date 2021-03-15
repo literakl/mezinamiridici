@@ -46,7 +46,7 @@
           <b-button-group>
             <b-button v-if="role" :to="{ name: 'edit-poll', params: { slug: item.info.slug }}" variant="outline-primary">
               <span>
-                <BIconPencilSquare scale="1"></BIconPencilSquare>{ $t('poll.forms.edit-poll') }}
+                <BIconPencilSquare scale="1"></BIconPencilSquare>{{ $t('poll.forms.edit-poll') }}
               </span>
             </b-button>
             <b-button v-if="role" @click="confirmDelete(item)" variant="outline-primary">
