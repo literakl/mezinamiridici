@@ -1,7 +1,7 @@
 <template>
-  <div class="normal-poll pt-4">
-    <div class="normal-poll-inside">
-      <h4 class="pb-2">{{ $t('poll.your-opinion') }}</h4>
+  <div class="normal-poll pt-1">
+    <div class="text-center normal-poll-inside">
+    <h4 class="pb-2 mb-3">{{ $t('poll.your-opinion') }}</h4>
       <b-button variant="success" v-on:click="voted('neutral')">
         <img src="/images/icons/happy.svg" alt="">
         {{ $t('poll.choices.neutral') }}
@@ -52,22 +52,21 @@ export default {
   justify-content: center;
   width: 100%;
 }
-
-.normal-poll-inside h4 {
+/* Default Poll Buttons Css Start */
+.normal-poll-inside {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.normal-poll-inside > h4 {
+  flex: 1 0 100%;
   font-size: 16px;
   text-transform: uppercase;
   padding: 16px 0 0 0px;
   color: var(--text-color);
 }
-
-/* Default Poll Buttons Css Start */
-.normal-poll-inside {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
 .normal-poll-inside button {
   display: flex;
   align-items: center;

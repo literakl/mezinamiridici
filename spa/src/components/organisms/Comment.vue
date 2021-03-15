@@ -259,7 +259,6 @@ export default {
   align-items: center;
   box-shadow: none;
 }
-
 .act-btn button svg {
   margin-right: 0 !important;
 }

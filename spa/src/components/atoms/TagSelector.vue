@@ -85,7 +85,6 @@ export default {
   font-weight: 300;
   font-size: 14px;
   background: #fff;
-  box-shadow: var(--drop-shadow-two);
   color: var(--text-color);
 }
 

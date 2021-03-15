@@ -120,15 +120,15 @@ export default {
 }
 
 .title-status {
-  max-width: 100px;
+  max-width: 125px;
   width: 100%;
 }
 
 /* Voted Poll Success Progress Bars Css Start */
 .poll-success {
-  max-width: 1062px;
+  max-width: 915px;
   margin: 0 auto;
-  padding: 0 0 0 10px;
+  padding: 10px 0 0 10px
 }
 
 .poll-success ul {
@@ -213,10 +213,10 @@ export default {
 .poll-heading a {
   font-size: 24px;
   text-decoration: none;
-  margin: 10px 0 15px;
+  margin: 10px 0 0px;
   display: block;
   color: var(--text-color);
-  text-align: left;
+  text-align: center;
 }
 
 .poll-heading a:hover {

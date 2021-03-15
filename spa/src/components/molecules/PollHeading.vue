@@ -7,12 +7,6 @@
         </b-button>
       </b-col>
       <b-col class="center-box">
-        <div class="post-tags">
-          <template v-if="hasTags">
-            <BIconTags scale="1"></BIconTags>
-            <TagList :tags="tags"/>
-          </template>
-        </div>
         <h4 class="pollheading">
           <router-link :to="{ name: 'poll', params: { slug: item.info.slug }}">
             {{ item.info.caption }}
@@ -37,6 +31,13 @@
                 <BIconChatTextFill scale="1"></BIconChatTextFill>
                 <router-link to="#comments"><span>{{ item.comments.count }}</span></router-link>
               </div>
+              <div class="post-tags" v-if="hasTags">
+                <BIconTags scale="1"></BIconTags>
+                <router-link v-for="tag in tags" :key="tag" :to="{ name: 'tag', params: { tag: tag } }">
+                  #{{ tag }}
+                </router-link>
+              </div>
+
             </div>
           </div>
         </div>
@@ -63,14 +64,12 @@ import {
 } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
-import TagList from '@/components/atoms/TagList.vue';
 
 export default {
   name: 'PollHeading',
   components: {
     ProfileLink,
     Date,
-    TagList,
     BIconChevronDoubleLeft,
     BIconChevronDoubleRight,
     BCol,
@@ -156,7 +155,8 @@ export default {
 
 .post-details {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   width: 100%;
   font-size: 13px;
 }
@@ -165,28 +165,21 @@ export default {
   color: #777A7C;
 }
 
-.post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.post-tags svg {
-  margin-right: 8px;
-}
-
 .item-footer {
   background-color: #fff;
   padding: 10px 0px 5px;
   color: #777A7C;
   font-weight: 600;
   margin: 0px 0;
-  max-width: 280px;
+  width: 100%;
 }
 
 .item-footer a {
   color: #777A7C;
+  font-weight: 400;
+}
+.item-footer a:hover {
+  color: var(--link-blue);
 }
 
 .item-footer svg {
@@ -197,7 +190,16 @@ export default {
 .post-time, .post-author, .post-rating, .post-comments {
   display: flex;
   align-items: center;
-  font-weight: 300;
+  font-weight: 400;
+  margin-right: 20px;
+}
+
+.post-tags a{
+    padding: 1px 10px;
+    background: #f7f7f8;
+    margin: 0 2px 0 0;
+    font-size: 13px;
+    border-radius: 3px;
 }
 
 .item-footer span a {
@@ -295,15 +297,6 @@ export default {
 }
 
 @media (max-width: 600px) {
-  .post-tags {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .post-tags svg {
-    margin-right: 15px;
-  }
-
   .pollheading {
     margin: 0;
   }

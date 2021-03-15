@@ -128,7 +128,7 @@ export default {
 .post-time, .post-author, .post-comments {
   display: flex;
   align-items: center;
-  font-weight: 300;
+  font-weight: 400;
   margin-right: 15px;
   color: #777A7C;
 }

@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div v-if="!voted" class="m-auto pt-3 pb-3">
+    <div v-if="!voted" class="m-auto pt-0 pb-3">
       <PollButtons v-on:do-vote="onVote"/>
     </div>
 

@@ -135,7 +135,6 @@ export default {
 }
 
 .pagelist-box {
-  box-shadow: 0 1px 6px rgba(var(--shadow-color), 0.35);
   margin-bottom: 10px;
 }
 
@@ -148,7 +147,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-top: 0 solid #ddd;
-  background: rgb(134 134 134 / 3%);
+  background: rgba(134, 134, 134, 0.1);
   padding: 8px 15px;
 }
 

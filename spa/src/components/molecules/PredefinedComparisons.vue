@@ -90,7 +90,7 @@ export default {
   border: 1px solid #f3f3f3;
   border-radius: 0;
   padding: 4px 10px;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .comparison-list ul li a:hover {
