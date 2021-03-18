@@ -155,6 +155,15 @@ export default {
 .pollslist-box h3 {
   font-size: 18px;
 }
+.pollslist-box .card{
+ border-color: #ddd;
+}
+.pollslist-box .card-body {
+ padding: 10px;
+}
+.pollslist-box .card-body .card-body{
+ padding: 0;
+}
 
 .pollslist-box .card-footer {
   display: flex;

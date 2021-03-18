@@ -137,6 +137,15 @@ export default {
 .pagelist-box {
   margin-bottom: 10px;
 }
+.pagelist-box .card{
+ border-color: #ddd;
+}
+.pagelist-box .card-body {
+ padding: 10px;
+}
+.pagelist-box .card-body .card-body{
+ padding: 0;
+}
 
 .pagelist-box h3 {
   font-size: 18px;

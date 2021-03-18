@@ -99,8 +99,7 @@ export default {
 
 .comment-area h3 {
   font-size: 18px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   margin-bottom: 10px;
   color: var(--text-color);
 }
