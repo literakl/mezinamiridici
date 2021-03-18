@@ -1,29 +1,32 @@
 <style>
 
-  .stats-result{
-    margin: 0;
-    border-top: 3px solid #ddd;
-    border-left: 3px solid #ddd;
-    border-right: 3px solid #ddd;
-    border-bottom: 3px solid #ddd;
-
-    overflow-x: auto; background-color: #fff; padding: 0px;
-  }
-  .stats-wrap h2
-{
-    font-size: 1.2rem;
-    line-height: 21px;
-    padding: 7pt 12pt;
-    margin: 0;
-    margin-top: 25px;
-    background: #e6eaef;
-    color: #656b6f;
-    border-radius: 4px 4px 0 0;
+.stats-result {
+  margin: 0;
+  border-top: 3px solid #ddd;
+  border-left: 3px solid #ddd;
+  border-right: 3px solid #ddd;
+  border-bottom: 3px solid #ddd;
+  overflow: auto;
+  background-color: #fff; 
+  padding: 0px;
 }
-.stats-result table tr td{ vertical-align: middle;}
-.stats-result table tr th{ vertical-align: middle; background: linear-gradient(
-45deg
-, var(--color-darkgreen) 10%, var(--blue-theme) 90%);}
+.stats-wrap h2 {
+  font-size: 1.2rem;
+  line-height: 21px;
+  padding: 7pt 12pt;
+  margin: 0;
+  margin-top: 25px;
+  background: #e6eaef;
+  color: #656b6f;
+  border-radius: 4px 4px 0 0;
+}
+.stats-result table tr td { 
+  vertical-align: middle;
+}
+.stats-result table tr th { 
+  vertical-align: middle; 
+  background: linear-gradient(45deg, var(--color-darkgreen) 10%, var(--blue-theme) 90%);
+}
 </style>
 
 <div class="stats-wrap">
@@ -32,41 +35,71 @@
     Prosíme, jezděte opatrně, neriskujte a počítejte s chybami ostatních řidičů. Ať se vám tato statistika vyhýbá!
   </p>
   <h2>Current statistics</h2>
-  <div style="overflow-x:auto;" class="stats-result table-responsive">
+  <div class="stats-result table-responsive">
     <table class="table table-hover table-sm table-bordered text-center">
 
       <thead>
         <tr>
           <th scope="col">Kraj</th>
           <th scope="col">
-            <img src="/images/icons/crash.png" width="48" height="48" title="Nehod">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet nehod</span></span>
+              <img src="/images/icons/crash.png" width="48" height="48" alt="Počet nehod">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/tombstone.png" width="48" height="48" title="Úmrtí">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet úmrtí</span></span>
+              <img src="/images/icons/tombstone.png" width="48" height="48" alt="Počet úmrtí">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/ambulance.png" width="48" height="48" title="Těžkých zranění">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet těžkých zranění</span></span>
+              <img src="/images/icons/ambulance.png" width="48" height="48" alt="Počet těžkých zranění">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/minor_injuries.png" width="48" height="48" title="Lehkých zranění">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet lehkých zranění</span></span>
+              <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="Počet lehkých zranění">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/reason_speed.png" width="48" height="48" title="Rychlost">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Nepřiměřená rychlost</span></span>
+              <img src="/images/icons/reason_speed.png" width="48" height="48" alt="Nepřiměřená rychlost">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/reason_give_way.png" width="48" height="48" title="Přednost v jízdě">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Nedání přednosti v jízdě</span></span>
+              <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="Nedání přednosti v jízdě">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/reason_passing.png" width="48" height="48" title="Předjíždění">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Nesprávné předjížděn</span></span>
+              <img src="/images/icons/reason_passing.png" width="48" height="48" alt="Nesprávné předjížděn">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/reason_drunk.png" width="48" height="48" title="Návykové látky">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Pod vlivem návykových látek</span></span>
+              <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="Pod vlivem návykových látek">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/reason_mistake.png" width="48" height="48" title="Nesprávná jízda">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Nesprávný způsob jízdy</span></span>
+              <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="Nesprávný způsob jízdy">
+            </span>
           </th>
           <th scope="col">
-            <img src="/images/icons/reason_other.png" width="48" height="48" title="Jiný důvod">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Jiná příčina</span></span>
+              <img src="/images/icons/reason_other.png" width="48" height="48" alt="Jiná příčina">
+            </span>
           </th>
         </tr>
       </thead>
@@ -111,16 +144,28 @@
         <tr>
           <th>&nbsp;</th>
           <th colspan="2" scope="col">
-            <img src="/images/icons/crash.png" width="48" height="48" alt="Počet nehod">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet nehod</span></span>
+              <img src="/images/icons/crash.png" width="48" height="48" alt="Počet nehod">
+            </span>
           </th>
           <th colspan="2" scope="col">
-            <img src="/images/icons/tombstone.png" width="48" height="48" alt="Počet úmrtí">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet úmrtí</span></span>
+              <img src="/images/icons/tombstone.png" width="48" height="48" alt="Počet úmrtí">
+            </span>
           </th>
           <th colspan="2" scope="col">
-            <img src="/images/icons/ambulance.png" width="48" height="48" alt="Počet těžkých zranění">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet těžkých zranění</span></span>
+              <img src="/images/icons/ambulance.png" width="48" height="48" alt="Počet těžkých zranění">
+            </span>
           </th>
           <th colspan="2" scope="col">
-            <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="Počet lehkých zranění">
+            <span class="category-container" aria-haspopup="true" tabIndex="0">
+              <span class="tooltip-box"><span class="tiptext">Počet lehkých zranění</span></span>
+              <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="Počet lehkých zranění">
+            </span>
           </th>
         </tr>
         <tr>
@@ -172,180 +217,51 @@
       </tbody>
     </table>
   </div>
-  <style>
-    .lagend-details{
-      padding: 0;
-    margin: 0;
-    display: flex;
-    margin-bottom: 20px;
-    }
-    .lagend-details li div{
-      display: none;
-    }
-    .lagend-details li{
-      position: relative;
-    display: flex;
-    max-width: 200px;
-    width: 300px;
-    /* display: flex; */
-    overflow-x: visible;
-    }
-    .lagend-details li span{
-      padding: 5px 20px;
-    display: inline-block;
-    margin: 20px 0 0 0;
-    background: #e6eaef;
-    color: #656b6f;
-    font-weight: 500;
-    font-size: 1.1rem;
-    max-width: 200px;
-    text-align: center;
-    width: 100%;
-    }
-    .lagend-details li span:hover, .lagend-details li span:active{
-      cursor: pointer;
-      background-color:#28a745;
-      color:#fff;
-      box-shadow: #c1c1c1 1px 1px 10px;
-    }
-    .lagend-details li:active div, .lagend-details li:hover div {
-      display: block;
-    position: absolute;
-    max-width: 500px;
-    width: 400px;
-    z-index: 1;
-    border: 3px solid #ddd!important;
-    top: 56px;
-    }
-    .lagend-details li:hover span,  .lagend-details li span:active{
-      background-color:#28a745;
-      color: #fff;
-    }
-    .lagend-details li div.stats-result{
-     border: 0;
-    }
-    @media (max-width: 767px) {
-
-      .lagend-details li:active div, .lagend-details li:hover div {
-    top: unset;
-    bottom: 0%;
-    left: 0;
-    width: 320px;
-    }
-    }
-    </style>
-    <ul class="lagend-details">
-      <li>
-        <span>Legenda</span>
-        <div style="overflow-x:auto;" class="stats-result table-responsive">
-          <table class="table table-hover table-sm table-bordered text-center">
-            <tr>
-              <td>
-                <img src="/images/icons/crash.png" width="48" height="48" alt="">
-              </td>
-              <td>Počet nehod</td>
-              <td>
-                <img src="/images/icons/tombstone.png" width="48" height="48" alt="">
-              </td>
-              <td>Počet úmrtí</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/images/icons/ambulance.png" width="48" height="48" alt="">
-              </td>
-              <td>Počet těžkých zranění</td>
-              <td>
-                <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="">
-              </td>
-              <td>Počet lehkých zranění</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/images/icons/reason_speed.png" width="48" height="48" alt="">
-              </td>
-              <td>Nepřiměřená rychlost</td>
-              <td>
-                <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="">
-              </td>
-              <td>Nedání přednosti v jízdě</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/images/icons/reason_passing.png" width="48" height="48" alt="">
-              </td>
-              <td>Nesprávné předjíždění</td>
-              <td>
-                <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="">
-              </td>
-              <td>Pod vlivem návykových látek</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="">
-              </td>
-              <td>Nesprávný způsob jízdy</td>
-              <td>
-                <img src="/images/icons/reason_other.png" width="48" height="48" alt="">
-              </td>
-              <td>Jiná příčina</td>
-            </tr>
-          </table>
-        </div>
-      </li>
-    </ul>
-  <!-- <h2>Legenda</h2>
-  <div style="overflow-x:auto;" class="stats-result table-responsive">
-    <table class="table table-hover table-sm table-bordered text-center">
-      <tr>
-        <td>
-          <img src="/images/icons/crash.png" width="48" height="48" alt="">
-        </td>
-        <td>Počet nehod</td>
-        <td>
-          <img src="/images/icons/tombstone.png" width="48" height="48" alt="">
-        </td>
-        <td>Počet úmrtí</td>
-      </tr>
-      <tr>
-        <td>
-          <img src="/images/icons/ambulance.png" width="48" height="48" alt="">
-        </td>
-        <td>Počet těžkých zranění</td>
-        <td>
-          <img src="/images/icons/minor_injuries.png" width="48" height="48" alt="">
-        </td>
-        <td>Počet lehkých zranění</td>
-      </tr>
-      <tr>
-        <td>
-          <img src="/images/icons/reason_speed.png" width="48" height="48" alt="">
-        </td>
-        <td>Nepřiměřená rychlost</td>
-        <td>
-          <img src="/images/icons/reason_give_way.png" width="48" height="48" alt="">
-        </td>
-        <td>Nedání přednosti v jízdě</td>
-      </tr>
-      <tr>
-        <td>
-          <img src="/images/icons/reason_passing.png" width="48" height="48" alt="">
-        </td>
-        <td>Nesprávné předjíždění</td>
-        <td>
-          <img src="/images/icons/reason_drunk.png" width="48" height="48" alt="">
-        </td>
-        <td>Pod vlivem návykových látek</td>
-      </tr>
-      <tr>
-        <td>
-          <img src="/images/icons/reason_mistake.png" width="48" height="48" alt="">
-        </td>
-        <td>Nesprávný způsob jízdy</td>
-        <td>
-          <img src="/images/icons/reason_other.png" width="48" height="48" alt="">
-        </td>
-        <td>Jiná příčina</td>
-      </tr>
-    </table>
-  </div> -->
+  <br>
 </div>
+
+<style>
+  .category-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip-box {
+    opacity: 0;
+    width: 10rem;
+    transition: opacity 0.25s linear;
+    text-align: center;
+    color: #fff;
+    position: absolute !important;
+    left: calc(50% - 5rem);
+    z-index: 100;
+    top: 50px;
+    box-sizing: border-box;
+  }
+  
+  .tooltip-box .tiptext:hover {
+    opacity: 0;
+  }
+  
+  .tooltip-box .tiptext {
+    width: 100%;
+    background-color: #fbfbfb;
+    color: grey;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    border-radius: 5px;
+    padding: 5px 5px;
+    box-shadow: 0 4px 2px -2px rgb(203, 206, 212, 0.8);
+    user-select: none;
+    display: block;
+  }
+  
+  .category-container:hover .tooltip-box, 
+  .category-container:active .tooltip-box, 
+  .category-container:focus .tooltip-box {
+    opacity: 1;
+  }
+  
+  </style>
