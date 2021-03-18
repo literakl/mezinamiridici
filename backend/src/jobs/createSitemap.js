@@ -31,7 +31,7 @@ async function makeUrls() {
 
     if (!items.length) {
         console.log("No items received! Exiting.");
-        exit(0);
+        return process.exit(0);
     }
 
     const lastModifiedDate = getLastModified(items);
