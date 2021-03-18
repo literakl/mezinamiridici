@@ -9,7 +9,7 @@
         <span class="poll-trival"></span>
         <span class="poll-dislike"></span>
       </div>
-      <span v-if="item.info.author.id === 'leos'" class="picture-overlay overlay-left">
+      <span v-if="item.info.author.id === 'leos' || item.info.editorial" class="picture-overlay overlay-left">
         {{ $t('generic.own-content') }}
       </span>
       <span class="picture-overlay overlay-right"><Date :date="item.info.date" format="dynamicDate"/></span>
