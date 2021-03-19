@@ -19,9 +19,8 @@ async function createSitemap() {
         _content: links
     }, xmlOptions);
   
-    fs.writeFile("../../../spa/public/sitemap.xml", sitemap, err => {
+    fs.writeFile(`${process.env.SITEMAP_PATH}sitemap.xml`, sitemap, err => {
         if (err) return console.log(err);
-        console.log("Sitemap created");
         jobLogger.info("Sitemap created.", { label: "createSitemap" });
     });
 }
@@ -76,17 +75,16 @@ async function makeUrls() {
         }
     ];
 
-    items.forEach(item => {
+    for (item of items) {
         let slug;
         if (item.type === "poll") {
             slug = "/ankety/";
         } else if (item.type === "blog" || item.type === "page") {
             slug = `/p/${item.info.author.id}/b/`
+        } else {
+            continue;
         }
 
-        if (slug === undefined) {
-            console.log(item);
-        }
         urlList.push({
             url: [
                 { loc: `https://beta.mezinamiridici.cz${slug}${item.info.slug}` },
@@ -94,7 +92,7 @@ async function makeUrls() {
                 { lastMod: item.info.date.toISOString() },
             ]
         });
-    });
+    };
 
     return urlList;
 }
