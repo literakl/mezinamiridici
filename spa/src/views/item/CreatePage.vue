@@ -20,8 +20,9 @@ export default {
 
 <style scoped>
 .centerbox {
-  max-width: 700px;
+  max-width: 1235px;
   padding: 25px 35px;
+  border-radius: 4px;
   margin: 0 auto 30px auto;
 }
 
