@@ -1,5 +1,10 @@
 <template>
   <div class="pt-3 centerbox m-auto">
+    <b-form inline>
+      <b-form-input id="manage-editorial" class="mr-2 mb-1" v-model="editorialUrl" :state="null" placeholder="Enter link or article name..."></b-form-input>
+      <b-button variant="danger" class="mb-1" @click="manageEditorial()">Manage Editorial</b-button>
+    </b-form>
+
     <div class="mb-2 d-flex flex-row-reverse action-btn">
       <b-button-group>
         <b-button v-if="role" :to="{ name: 'create-content'}" variant="btn btn-primary">
@@ -54,7 +59,7 @@ import Date from '@/components/atoms/Date.vue';
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPersonCircle, BIconClock, BIconPencilSquare,
-  BIconTrash, BIconFileEarmarkBreak,
+  BIconTrash, BIconFileEarmarkBreak, BFormInput, BForm,
 } from 'bootstrap-vue';
 
 export default {
@@ -72,10 +77,13 @@ export default {
     BIconPencilSquare,
     BIconTrash,
     BIconFileEarmarkBreak,
+    BFormInput,
+    BForm,
   },
   data() {
     return {
       cmsList: null,
+      editorialUrl: null,
     };
   },
   computed: {
@@ -116,14 +124,35 @@ export default {
       });
       this.cmsList = await this.$store.dispatch('FETCH_PAGES', {});
     },
+
+    async manageEditorial() {
+      if (!this.editorialUrl) return;
+
+      const splitUrl = this.editorialUrl.split('/');
+      const slug = splitUrl[splitUrl.length - 1] ? splitUrl[splitUrl.length - 1].toLowerCase() : splitUrl[splitUrl.length - 2].toLowerCase();
+
+      let blog;
+      try {
+        blog = await this.$store.dispatch('FETCH_PAGE', { slug });
+      } catch (error) {
+        console.log(error.response.status);
+      }
+      console.log(blog);
+    },
   },
 };
 </script>
 
 <style scoped>
+
 .centerbox {
   max-width: 1235px;
   margin: 0 auto;
+}
+
+#manage-editorial {
+  width: 40vw;
+  min-width: 175px;
 }
 
 .action-btn a {
@@ -196,10 +225,14 @@ export default {
   .pagelist-box .card-footer {
     align-items: flex-start;
   }
-
 }
 
 @media (max-width: 540px) {
+  #manage-editorial {
+    width: 100%;
+    margin-right: 0 !important;
+  }
+
   .pagelist-box .card-footer span {
     display: flex;
     flex-direction: column;

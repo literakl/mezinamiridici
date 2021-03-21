@@ -93,12 +93,13 @@ export default {
     FETCH_PAGE: async (context, payload) => {
       Vue.$log.debug(`FETCH_PAGE ${payload.slug}`);
       if (context.state.content != null && payload.slug === context.state.content.info.slug) {
-        return; // cached value recycled
+        return undefined; // cached value recycled
       }
       context.commit('SET_PAGE', null);
       const response = await get('API', `/pages/${payload.slug}`, context);
       const cms = response.data.data;
       context.commit('SET_PAGE', cms);
+      return cms;
     },
     FETCH_PAGES: async (context) => {
       Vue.$log.debug('FETCH_PAGES');
