@@ -51,7 +51,7 @@ module.exports = (app) => {
     const {
       flag,
     } = req.body;
-    if (typeof flag === 'boolean') {
+    if (typeof flag !== 'boolean') {
       return api.sendMissingParam(res, 'flag');
     }
 

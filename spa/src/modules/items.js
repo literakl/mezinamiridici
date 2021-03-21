@@ -139,5 +139,10 @@ export default {
       const response = await get('API', url, context);
       return response.data.data;
     },
+    TOGGLE_EDITORIAL: async (context, payload) => {
+      Vue.$log.debug('TOGGLE_EDITORIAL');
+      const response = await patch('API', `/blog/${payload.id}/editorial`, payload, context);
+      return response.data;
+    },
   },
 };

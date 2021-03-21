@@ -1,10 +1,6 @@
+// TODO; Refactor out the hardcoded strings
 <template>
   <div class="pt-3 centerbox m-auto">
-    <b-form inline>
-      <b-form-input id="manage-editorial" class="mr-2 mb-1" v-model="editorialUrl" :state="null" placeholder="Enter link or article name..."></b-form-input>
-      <b-button variant="danger" class="mb-1" @click="manageEditorial()">Manage Editorial</b-button>
-    </b-form>
-
     <div class="mb-2 d-flex flex-row-reverse action-btn">
       <b-button-group>
         <b-button v-if="role" :to="{ name: 'create-content'}" variant="btn btn-primary">
@@ -13,6 +9,39 @@
         </b-button>
       </b-button-group>
     </div>
+
+    <b-form inline>
+      <b-form-input
+        id="manage-editorial"
+        class="mr-2 mb-2"
+        v-model="editorialUrl"
+        :state="editorialValid"
+        placeholder="Enter link or article name..."
+        aria-describedby="input-live-help input-feedback"
+        trim
+        ></b-form-input>
+      <b-button variant="danger" class="mb-2" @click="manageEditorial()">Manage Editorial</b-button>
+    </b-form>
+    <div id="input-error" v-if="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <b-card v-if="selectedBlog" class="mb-2 border border-danger shadow-sm">
+      <b-card-body>
+        <div class="row w-100">
+          <span class="col-5"><h5>Title</h5></span>
+          <span class="col-5"><h5>Url</h5></span>
+          <span class="col-2"><h5>Editorial</h5></span>
+          <span class="col-5">{{ selectedBlog.info.caption }}</span>
+          <span class="col-5"><a :href="selectedBlogUrl">{{ selectedBlogUrl }}</a></span>
+          <span class="col-2">
+            <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0" v-model="isEditorial" @change="toggleEditorial()">
+              <b-badge pill variant="success" :class="{ 'success-badge': true, 'badge-visible': badgeVisible }">Saved.</b-badge>
+            </b-form-checkbox>
+          </span>
+        </div>
+      </b-card-body>
+    </b-card>
 
     <div v-for="item in cmsList" :key="item._id" class="pagelist-box">
       <b-card tag="article">
@@ -59,7 +88,7 @@ import Date from '@/components/atoms/Date.vue';
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPersonCircle, BIconClock, BIconPencilSquare,
-  BIconTrash, BIconFileEarmarkBreak, BFormInput, BForm,
+  BIconTrash, BIconFileEarmarkBreak, BFormInput, BForm, BFormCheckbox, BBadge,
 } from 'bootstrap-vue';
 
 export default {
@@ -79,17 +108,32 @@ export default {
     BIconFileEarmarkBreak,
     BFormInput,
     BForm,
+    BFormCheckbox,
+    BBadge,
   },
   data() {
     return {
       cmsList: null,
       editorialUrl: null,
+      editorialValid: null,
+      errorMessage: '',
+      selectedBlog: null,
+      isEditorial: false,
+      badgeVisible: false,
     };
   },
   computed: {
     role() {
       // todo helper to test if user has a role
       return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[1] === 'admin:pages' : false;
+    },
+    selectedBlogUrl() {
+      return `${document.location.origin}/p/${this.selectedBlog.info.author.id}/b/${this.selectedBlog.info.slug}`;
+    },
+  },
+  watch: {
+    selectedBlog(value) {
+      this.isEditorial = value && value.info.editorial;
     },
   },
   async mounted() {
@@ -126,6 +170,9 @@ export default {
     },
 
     async manageEditorial() {
+      this.errorMessage = '';
+      this.editorialValid = null;
+      this.selectedBlog = null;
       if (!this.editorialUrl) return;
 
       const splitUrl = this.editorialUrl.split('/');
@@ -135,9 +182,39 @@ export default {
       try {
         blog = await this.$store.dispatch('FETCH_PAGE', { slug });
       } catch (error) {
-        console.log(error.response.status);
+        if (error.response.status === 404) {
+          this.errorMessage = 'Entered item not found!';
+          this.editorialValid = false;
+          return;
+        }
       }
-      console.log(blog);
+      if (blog.type !== 'blog') {
+        this.errorMessage = 'Entered item is not a blog!';
+        this.editorialValid = false;
+        return;
+      }
+      this.selectedBlog = blog;
+    },
+
+    async toggleEditorial() {
+      console.log(this.isEditorial);
+      const payload = {
+        flag: this.isEditorial,
+        id: this.selectedBlog._id,
+      };
+
+      const response = await this.$store.dispatch('TOGGLE_EDITORIAL', payload);
+
+      if (response.success === true) {
+        this.displaySuccessBadge();
+      }
+    },
+
+    displaySuccessBadge() {
+      this.badgeVisible = true;
+      setTimeout(() => {
+        this.badgeVisible = false;
+      }, 1000);
     },
   },
 };
@@ -153,6 +230,24 @@ export default {
 #manage-editorial {
   width: 40vw;
   min-width: 175px;
+}
+
+#input-error {
+  color: red;
+  font-size: 0.9rem;
+}
+
+.border-danger {
+  border-width: 2px !important;;
+}
+
+.success-badge {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.badge-visible {
+  opacity: 1;
 }
 
 .action-btn a {
