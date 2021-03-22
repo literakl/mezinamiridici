@@ -195,8 +195,6 @@ export default {
 }
 
 .post-tags a{
-    padding: 1px 10px;
-    background: #f7f7f8;
     margin: 0 2px 0 0;
     font-size: 13px;
     border-radius: 3px;

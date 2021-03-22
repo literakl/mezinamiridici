@@ -50,7 +50,7 @@
                   <icon name="quote"/>
                 </button>
 
-                <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline" size="sm">
+                <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline">
                   <BIconEmojiSunglasses></BIconEmojiSunglasses>
                 </b-button>
 
@@ -197,9 +197,11 @@ export default {
 }
 
 .ProseMirror {
-  border: #dddddd solid 1px;
   padding: 10px;
-  min-height: 150px;
+  min-height: 250px;
+  border-left: #ddd solid 1px;
+  border-right: #ddd solid 1px;
+  border-bottom: #ddd solid 1px;
 }
 
 .ProseMirror img {
@@ -244,8 +246,39 @@ $color-grey: #dddddd;
   }
 }
 
+.menubar{
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 4px 5px;
+    border-radius: 4px 4px 0 0;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
 .menubar button {
-  box-shadow: none;
+ font-weight: 700;
+   background: #f1f0ed;
+  border: 0;
+  padding: .2rem .5rem;
+  margin-right: .2rem;
+  border-radius: 3px;
+  opacity: 1;
+  cursor: pointer;
+}
+.menubar__button:hover {
+   background: #b9b8b5;
+}
+.menubar__button.is-active {
+  border-bottom: 3px solid var(--theme-primary);
 }
 
 .menubar button svg {

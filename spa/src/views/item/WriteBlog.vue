@@ -1,10 +1,9 @@
 <template>
-  <div class="pt-3 mt-5 border centerbox">
+  <div class="mt-4 centerbox">
     <div class="write-post-wrap">
       <div class="text-area">
         <TextInput
           v-model="title"
-          :label="$t('blog.form.title-label')"
           :placeholder="$t('blog.form.title-placeholder')"
           class="write-blog"/>
 
@@ -59,7 +58,7 @@
                 <icon name="hr"/>
               </button>
 
-              <button class="menubar-button" @click="showImageModal(commands.image)">
+              <button class="menubar__button" @click="showImageModal(commands.image)">
                 <Icon name="image"/>
               </button>
 
@@ -333,8 +332,7 @@ export default {
 .centerbox {
   max-width: 1235px;
   margin: 0 auto 20px;
-  padding: 25px 20px;
-  border-radius: 4px;
+  padding:0px;
 }
 
 .text-area .w-50 {
@@ -347,8 +345,9 @@ export default {
   display: flex;
   border: 0;
   border-bottom: 2px solid #ddd;
-  font-size: 22px;
+  font-size: 18px!important;
   border-radius: 0;
+  padding: 0;
 }
 
 .text-area input:focus {
@@ -358,7 +357,7 @@ export default {
 .ProseMirror {
   border: #dddddd solid 1px;
   padding: 10px;
-  min-height: 100px;
+  min-height: 250px;
 }
 
 .editor {
@@ -366,11 +365,24 @@ export default {
   margin-bottom: 15px;
 }
 
+.menubar{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 4px 5px;
+  border-radius: 4px 4px 0 0;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 0px solid #ddd;
+}
+
 .bottom-wrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-direction:column;
 }
 
 .tags-area {
@@ -386,6 +398,8 @@ export default {
 
 .tags-area div {
   border-radius: 0;
+  border: 0;
+  padding: 0;
 }
 
 .tags-area div div {
@@ -410,7 +424,7 @@ blockquote p {
 
 .has-focus {
   border-radius: 3px;
-  box-shadow: 0 0 0 3px #3ea4ffe6;
+  box-shadow: 0 0 0 3px #f5f5f5;
 }
 
 table {
@@ -472,17 +486,20 @@ $color-grey: #dddddd;
 
 .menubar__button {
   font-weight: 700;
-  display: -webkit-inline-box;
-  background: transparent;
+   background: #f1f0ed;
   border: 0;
-  color: $color-black;
   padding: .2rem .5rem;
   margin-right: .2rem;
   border-radius: 3px;
-  opacity: 0.5;
+  opacity: 1;
   cursor: pointer;
 }
-
+.menubar__button:hover {
+   background: #b9b8b5;
+}
+.menubar__button.is-active {
+  border-bottom: 3px solid var(--theme-primary);
+}
 .actions {
   max-width: 30rem;
   margin: 0 auto 2rem auto;
@@ -514,25 +531,28 @@ $color-grey: #dddddd;
 .menububble__button {
   display: -webkit-inline-box;
   display: inline-flex;
-  background: transparent;
+  // background: transparent;
+  background: #f1f0ed;
   border: 0;
   padding: .2rem .5rem;
   margin-right: .2rem;
   border-radius: 3px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .menububble__form {
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
-  align-items: center;
+     align-items: flex-start;
 }
 
 .menububble__input {
   font: inherit;
   border: none;
   background: transparent;
+  font-size: 14px!important;
 }
 
 .menububble.is-active {
@@ -546,7 +566,7 @@ $color-grey: #dddddd;
   display: flex;
   z-index: 20;
   background: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   padding: .3rem;
   margin-bottom: .5rem;
   -webkit-transform: translateX(-50%);
@@ -555,8 +575,8 @@ $color-grey: #dddddd;
   opacity: 0;
   -webkit-transition: opacity .2s, visibility .2s;
   transition: opacity .2s, visibility .2s;
-  border: solid 1px gray;
-  box-shadow: 1px 1px 8px grey;
+  border: solid 1px #ddd;
+  box-shadow: 1px 1px 8px #ddd;
 }
 
 .editor {

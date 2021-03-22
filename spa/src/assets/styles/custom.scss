@@ -82,21 +82,21 @@ textarea {
     resize: vertical;
 }
 
-label { 
-    font-weight: 300; 
+label {
+    font-weight: 300;
 }
 
 a {
     color: var(--link-color);
 }
 
-a:hover{ 
-    color: var(--link-blue); 
+a:hover{
+    color: var(--link-blue);
     text-decoration: none;
 }
 
-button:active { 
-    background: transparent!important; 
+button:active {
+    background: transparent!important;
     color: var(--link-color)!important;
 }
 
@@ -159,23 +159,18 @@ svg {
         } a:hover, a:hover svg {
             color: var(--color-white)!important;
         }
-        ul.dropdown-menu { 
+        ul.dropdown-menu {
             border-radius: 0;
             li {
-                a { 
+                a {
                     padding:5px 15px;
-                    background-color: transparent!important; 
-                    font-size: 14px; 
+                    background-color: transparent!important;
+                    font-size: 14px;
                     color: var(--text-color)!important;
-                    :hover {  
-                        background-color: #f8f9fa!important;
-                    }
-                    :active { 
-                        color: #fff;
-                    }
+
                 }
                 :hover {
-                    color: var(--text-color-light)!important;
+                    color: var(--link-blue)!important;
                     background-color: #f8f9fa;
                 }
                 :focus
@@ -202,12 +197,12 @@ svg {
 .no-padding .card-header {
     padding: 0!important;
     li {
-        a { 
+        a {
             color: #333;
             border-bottom: 1px solid #ddd;
         }
-        a.active { 
-            border-radius: 0; 
+        a.active {
+            border-radius: 0;
             font-weight: 400;
         }
         :active {
@@ -228,7 +223,7 @@ svg {
             font-size: 14px;
 
         }
-        :hover{ 
+        :hover{
             border: 1px solid transparent;
         }
         .active {
@@ -249,9 +244,12 @@ svg {
 .post-content > h1 {
     font-size: 21px;
 }
-
+.wrap-analyze-showcase .form-row legend{
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 @media (min-width: 1920px) {
-    svg { 
+    svg {
         font-size: 17px;
     }
     .brand-pic a {
@@ -264,22 +262,22 @@ svg {
 }
 
 @media (max-width: 767px) {
-    h2 { 
+    h2 {
         font-size: 1.3rem;
     }
-    .brand-pic { 
+    .brand-pic {
         width: 50px;
-        img { 
+        img {
             width: 90%;
         }
     }
     .title-tag {
         padding-right: 10px;
     }
-    .no-padding ul.nav-tabs { 
+    .no-padding ul.nav-tabs {
         border-color: #f3f3f3;
         li {
-            a { 
+            a {
                 padding: .5rem 1rem;
             }
         }
@@ -314,11 +312,11 @@ svg {
         padding: 5px 15px!important;
 
     }
-    .no-padding ul.nav-tabs { 
+    .no-padding ul.nav-tabs {
         border-color: #f3f3f3;
         li {
-            a { 
-                font-size: 13px; 
+            a {
+                font-size: 13px;
                 padding: .5rem 0.5rem;
             }
         }
