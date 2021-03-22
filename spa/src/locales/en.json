@@ -306,6 +306,13 @@
       "delete-cms": "Delete page",
       "new-cms-heading": "New page",
       "delete-message": "Are you sure to delete this page?"
+    },
+    "editorial": {
+      "search-label": "Manage Editorial",
+      "title": "Title",
+      "url": "Url",
+      "editorial-label": "Editorial",
+      "saved-label": "Saved."
     }
   },
   "editorjs": {

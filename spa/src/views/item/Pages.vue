@@ -20,25 +20,31 @@
         aria-describedby="input-live-help input-feedback"
         trim
         ></b-form-input>
-      <b-button variant="danger" class="mb-2" @click="manageEditorial()">Manage Editorial</b-button>
+      <b-button variant="danger" class="mb-2" @click="manageEditorial()">{{ $t('cms.editorial.search-label') }}</b-button>
     </b-form>
     <div id="input-error" v-if="errorMessage">
       {{ errorMessage }}
     </div>
 
     <b-card v-if="selectedBlog" class="mb-2 border border-danger shadow-sm">
-      <b-card-body>
-        <div class="row w-100">
-          <span class="col-5"><h5>Title</h5></span>
-          <span class="col-5"><h5>Url</h5></span>
-          <span class="col-2"><h5>Editorial</h5></span>
-          <span class="col-5">{{ selectedBlog.info.caption }}</span>
-          <span class="col-5"><a :href="selectedBlogUrl">{{ selectedBlogUrl }}</a></span>
-          <span class="col-2">
-            <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0" v-model="isEditorial" @change="toggleEditorial()">
-              <b-badge pill variant="success" :class="{ 'success-badge': true, 'badge-visible': badgeVisible }">Saved.</b-badge>
-            </b-form-checkbox>
-          </span>
+      <b-card-body class="editorial">
+        <div class="row mx-0 d-flex flex-row">
+          <div class="d-flex flex-column col-md-5 mb-2">
+            <span><h5>{{ $t('cms.editorial.title') }}</h5></span>
+            <span>{{ selectedBlog.info.caption }}</span>
+          </div>
+          <div class="d-flex flex-column col-md-5 mb-2">
+            <span><h5>{{ $t('cms.editorial.url') }}</h5></span>
+            <span><a :href="selectedBlogUrl">{{ selectedBlogUrl }}</a></span>
+          </div>
+          <div class="d-flex flex-column col-md-2 mb-2">
+            <span><h5>{{ $t('cms.editorial.editorial-label') }}</h5></span>
+            <span>
+              <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0" v-model="isEditorial" @change="toggleEditorial()">
+                <b-badge pill variant="success" :class="{ 'success-badge': true, 'badge-visible': badgeVisible }">{{ $t('cms.editorial.saved-label') }}</b-badge>
+              </b-form-checkbox>
+            </span>
+          </div>
         </div>
       </b-card-body>
     </b-card>
@@ -197,7 +203,6 @@ export default {
     },
 
     async toggleEditorial() {
-      console.log(this.isEditorial);
       const payload = {
         flag: this.isEditorial,
         id: this.selectedBlog._id,
@@ -313,6 +318,11 @@ export default {
   .centerbox {
     max-width: 1235px;
     margin: 0 35px !important;
+  }
+
+  .editorial {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
