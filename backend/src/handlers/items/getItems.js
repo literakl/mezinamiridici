@@ -31,7 +31,11 @@ module.exports = (app) => {
 function getItems(dbClient, req) {
   const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);
   const { tag } = req.query;
-  const query = { 'info.published': true, type: { $ne: 'page' } };
+  const query = {
+    'info.published': true,
+    type: { $in: ['blog', 'poll'] },
+    // 'info.date': { $lte: new Date() }, TODO
+  };
   if (tag) {
     query['info.tags'] = tag;
   }

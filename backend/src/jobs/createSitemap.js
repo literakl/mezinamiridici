@@ -3,132 +3,115 @@ const fs = require('fs');
 const { jobLogger } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 
-async function createSitemap() {
-    const links = await makeUrls();
+require('../utils/path_env');
 
-    const xmlOptions = {
-        header: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
-    };
-  
-    let sitemap = toXML({
-        _name: 'urlset',
-        _attrs: {
-            xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
-            "xmlns:xhtml": "http://www.w3.org/1999/xhtml"
-        },
-        _content: links
-    }, xmlOptions);
-  
-    fs.writeFile(`${process.env.SITEMAP_PATH}sitemap.xml`, sitemap, err => {
-        if (err) return console.log(err);
-        jobLogger.info("Sitemap created.", { label: "createSitemap" });
-    });
+const { WEB_URL, SITEMAP_PATH } = process.env;
+
+// TODO split to multiple files when the sitemap is about to reach the limit
+// TODO max 50,000 URLs and must not exceed 50MB uncompressed
+async function createSitemap() {
+  const links = await fetchURLs();
+  const sitemap = toXML({
+    _name: 'urlset',
+    _attrs: {
+      xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9',
+      'xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
+    },
+    _content: links,
+  }, {
+    header: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+  });
+
+  // TODO could it die with out of memory one day?
+  // TODO I would favour not to use external library and print each item as XML manually
+  fs.writeFile(`${SITEMAP_PATH}sitemap.xml`, sitemap, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      jobLogger.info('Sitemap created.', { label: 'createSitemap' });
+    }
+  });
 }
 
-async function makeUrls() {
-    const items = await getItems();
+async function fetchURLs() {
+  const items = await getItems();
+  if (!items.length) {
+    jobLogger.warn('No items received! Exiting.');
+    return process.exit(1);
+  }
 
-    if (!items.length) {
-        console.log("No items received! Exiting.");
-        return process.exit(0);
+  const urlList = [
+    {
+      url: [
+        { loc: WEB_URL },
+      ],
+    },
+  ];
+
+  items.forEach((item) => {
+    let slug;
+    if (item.type === 'blog') {
+      slug = `/p/${item.info.author.id}/b/`;
+    } else if (item.type === 'poll') {
+      slug = '/ankety/';
+    } else if (item.type === 'page') {
+      slug = '/o/';
+    } else {
+      return;
     }
 
-    const lastModifiedDate = getLastModified(items);
+    urlList.push({
+      url: [
+        { loc: `${WEB_URL}${slug}${item.info.slug}` },
+        { lastMod: computeDate(item) },
+      ],
+    });
+  });
 
-    const urlList = [
-        {
-            url: [
-                { loc: "https://beta.mezinamiridici.cz/" },
-                { priority: 1 },
-                { lastMod: lastModifiedDate.toISOString() },
-            ]
-        },
-        {
-            url: [
-                { loc: "https://beta.mezinamiridici.cz/prihlaseni" },
-                { priority: 0.5 },
-            ]
-        },
-        {
-            url: [
-                { loc: "https://beta.mezinamiridici.cz/o/napoveda" },
-                { priority: 0.7 },
-            ]
-        },
-        {
-            url: [
-                { loc: "https://beta.mezinamiridici.cz/o/mise" },
-                { priority: 0.6 },
-            ]
-        },
-        {
-            url: [
-                { loc: "https://beta.mezinamiridici.cz/o/kontakt" },
-                { priority: 0.7 },
-            ]
-        },
-        {
-            url: [
-                { loc: "https://beta.mezinamiridici.cz/o/reklama" },
-                { priority: 0.6 }
-            ]
-        }
-    ];
-
-    for (item of items) {
-        let slug;
-        if (item.type === "poll") {
-            slug = "/ankety/";
-        } else if (item.type === "blog" || item.type === "page") {
-            slug = `/p/${item.info.author.id}/b/`
-        } else {
-            continue;
-        }
-
-        urlList.push({
-            url: [
-                { loc: `https://beta.mezinamiridici.cz${slug}${item.info.slug}` },
-                { priority: 1 },
-                { lastMod: item.info.date.toISOString() },
-            ]
-        });
-    };
-
-    return urlList;
+  return urlList;
 }
 
 async function getItems() {
+  jobLogger.info('Connecting to database', { label: 'createSitemap' });
+  const dbClient = await mongo.connectToDatabase();
 
-    jobLogger.info('Connecting to database', { label: 'createSitemap' });
-    const dbClient = await mongo.connectToDatabase();
-
-    let items;
-    try {
-        items = await dbClient.db()
-                        .collection("items")
-                        .find(
-                            { "info.published": true }, 
-                            { projection: { _id: 0, "info.slug": 1, "info.date": 1, type: 1, "info.author.id": 1 }}
-                        ).toArray();
-    } catch (err) {
-        console.error(err);
-    } 
-
-    dbClient.close();
+  let items;
+  try {
+    items = await dbClient.db()
+      .collection('items')
+      .find(
+        {
+          type: { $in: ['blog', 'page', 'poll'] },
+          'info.published': true,
+          // 'info.date': { $lte: new Date() }, TODO
+        },
+        {
+          projection: {
+            _id: 0,
+            type: 1,
+            'info.slug': 1,
+            'info.date': 1,
+            'info.author.id': 1,
+            'comments.last': 1,
+          },
+        },
+      )
+      .toArray();
     return items;
+  } catch (err) {
+    jobLogger.error(err);
+    return [];
+  } finally {
+    dbClient.close();
+  }
 }
 
-// Get the last time a new post is added
-function getLastModified(items) {
-    let lastModified = null;
-
-    for (let i = 0; i < items.length; i++) {
-        if (items[i].info.date > lastModified) {
-            lastModified = items[i].info.date;
-        }
-    }
-
-    return lastModified;
+function computeDate(item) {
+  if (item.comments.last) {
+    return item.comments.last.toISOString();
+  } else {
+    return item.info.date.toISOString();
+  }
 }
 
 exports.createSitemap = createSitemap;
