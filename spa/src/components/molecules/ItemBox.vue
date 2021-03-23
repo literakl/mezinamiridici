@@ -9,7 +9,7 @@
         <span class="poll-trival"></span>
         <span class="poll-dislike"></span>
       </div>
-      <span v-if="item.info.author.id === 'leos'" class="picture-overlay overlay-left">
+      <span v-if="item.info.author.id === 'leos' || item.info.editorial" class="picture-overlay overlay-left">
         {{ $t('generic.own-content') }}
       </span>
       <span class="picture-overlay overlay-right"><Date :date="item.info.date" format="dynamicDate"/></span>
@@ -103,6 +103,7 @@ export default {
 .item-div {
   box-shadow: #c1c1c1 1px 1px 10px;
   border: 0 solid #f1f1f1;
+  position: relative;
 }
 
 .item-hover {
@@ -206,7 +207,7 @@ span.picture-overlay {
 
 span.overlay-left {
   left: 0;
-  top: -155px;
+  top: 0px!important;
 }
 
 span.overlay-right {

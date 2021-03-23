@@ -7,7 +7,7 @@ NPM=0
 
 while [[ "$#" -gt 0 ]]; do
  case $1 in
-  -d | -destination) DEST="/home/bud/$2"; shift ;;
+  -d | --destination) DEST="/home/bud/$2"; shift ;;
   -b | --backend) BACKEND=1 ;;
   -f | --frontend) FRONTEND=1 ;;
   -n | --npm) NPM=1 ;;
@@ -67,3 +67,4 @@ if [ ! "$BACKEND" == 0 ]; then
   npm install
  fi
 fi
+

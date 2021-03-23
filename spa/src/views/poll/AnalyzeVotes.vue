@@ -11,12 +11,14 @@
           </div>
 
           <PredefinedComparisons :slug="slug"></PredefinedComparisons>
-          <b-form-group :label="this.$t('poll.analysis.display_label')" label-cols="3" label-cols-md="1">
-            <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="showcase">
-              <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
-              <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
-            </b-form-radio-group>
-          </b-form-group>
+          <div class="wrap-analyze-showcase">
+            <b-form-group class="labelssss" :label="this.$t('poll.analysis.display_label')" label-cols="1">
+              <b-form-radio-group id="radio-group-2" v-model="absoluteValues" class="showcase">
+                <b-form-radio :value="true">{{ $t('poll.analysis.values') }}</b-form-radio>
+                <b-form-radio :value="false">{{ $t('poll.analysis.percents') }}</b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+          </div>
         </template>
       </div>
     </div>
@@ -222,6 +224,12 @@ export default {
   margin: 0 auto;
 }
 
+.wrap-analyze-showcase .form-row {
+  align-items: center;
+}
+.wrap-analyze-showcase legend{
+  padding: 0;
+}
 .campbox-two .card-header {
   font-weight: 500;
   background: rgb(191 229 200) !important;
@@ -245,14 +253,14 @@ export default {
 .showcase-wrap {
   padding: 5px 0 5px 0;
 }
-
+/*
 .showcase-wrap .form-row {
   align-items: center;
 }
 
 .showcase-wrap legend {
   font-weight: 500;
-}
+} */
 
 @media (max-width: 1235px) {
   .analyze-vote {

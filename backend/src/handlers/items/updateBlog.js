@@ -39,6 +39,36 @@ module.exports = (app) => {
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
     }
   });
+
+  app.options('/v1/blog/:blogId/editorial', auth.cors);
+
+  app.patch('/v1/blog/:blogId/editorial', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+    logger.verbose('set editorial blog handler starts');
+    const { blogId } = req.params;
+    if (!blogId) {
+      return api.sendMissingParam(res, 'blogId');
+    }
+    const {
+      flag,
+    } = req.body;
+    if (typeof flag === 'boolean') {
+      return api.sendMissingParam(res, 'flag');
+    }
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      logger.debug('Mongo connected');
+
+      const query = { $set: { 'info.editorial': flag } };
+      await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
+      logger.debug('Blog updated');
+
+      return api.sendResponse(res, api.createResponse());
+    } catch (err) {
+      logger.error('Request failed', err);
+      return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
+    }
+  });
 };
 
 function prepareUpdateQuery(source, title, picture, tags) {

@@ -2,6 +2,7 @@
   <div>
     <b-form>
       <div class="group-one">
+        <span class="reset-icon"><BIconArrowClockwise scale='1.5'></BIconArrowClockwise></span>
         <b-form-group :label="$t('poll.analysis.driving_time')" label-cols-sm="4">
           <b-input-group class="mb-1">
             <b-form-input :aria-label="$t('poll.analysis.from')" :placeholder="$t('poll.analysis.from')"
@@ -85,7 +86,7 @@
 <script>
 import {
   BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox,
-  BFormCheckboxGroup, BInputGroupAppend, BInputGroupText,
+  BFormCheckboxGroup, BInputGroupAppend, BInputGroupText, BIconArrowClockwise,
 } from 'bootstrap-vue';
 
 export default {
@@ -99,6 +100,7 @@ export default {
     BFormCheckboxGroup,
     BInputGroupAppend,
     BInputGroupText,
+    BIconArrowClockwise,
   },
   props: {
     group: Object,
@@ -113,6 +115,23 @@ export default {
 <style scoped>
 .group-one {
   font-size: 14px;
+}
+
+.reset-icon{
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  opacity: 0.7;
+}
+
+.reset-icon:hover{
+  cursor: pointer;
+  opacity: 1;
+}
+
+.reset-icon > svg{
+  font-weight: bold;
+  color: #656b6f !important;
 }
 
 .group-one .input-group-text {

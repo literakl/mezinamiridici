@@ -1,10 +1,9 @@
 <template>
-  <div class="pt-3 mt-5 border centerbox">
+  <div class="mt-4 centerbox">
     <div class="write-post-wrap">
       <div class="text-area">
         <TextInput
           v-model="title"
-          :label="$t('blog.form.title-label')"
           :placeholder="$t('blog.form.title-placeholder')"
           class="write-blog"
         />
@@ -112,8 +111,7 @@ export default {
 .centerbox {
   max-width: 1235px;
   margin: 0 auto 20px;
-  padding: 25px 20px;
-  border-radius: 4px;
+  padding:0px;
 }
 
 .text-area .w-50 {
@@ -123,7 +121,7 @@ export default {
 .ProseMirror {
   border: #dddddd solid 1px;
   padding: 10px;
-  min-height: 100px;
+  min-height: 250px;
 }
 
 .editor {
@@ -131,11 +129,24 @@ export default {
   margin-bottom: 15px;
 }
 
+.menubar{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 4px 5px;
+  border-radius: 4px 4px 0 0;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 0px solid #ddd;
+}
+
 .bottom-wrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-direction:column;
 }
 
 .tags-area {
@@ -151,6 +162,8 @@ export default {
 
 .tags-area div {
   border-radius: 0;
+  border: 0;
+  padding: 0;
 }
 
 .tags-area div div {
