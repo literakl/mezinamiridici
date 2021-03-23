@@ -20,6 +20,16 @@
               {{ blog.comments.count }}
             </a>
           </div>
+          <div>
+            <b-link v-if="!blog.info.editorial" v-on:click="toggleEditorial">
+              <BIconShieldPlus scale="1"></BIconShieldPlus>
+              {{ $t('blog.editorial.mark') }}
+            </b-link>
+            <b-link v-if="blog.info.editorial" v-on:click="toggleEditorial">
+              <BIconShieldMinus scale="1"></BIconShieldMinus>
+              {{ $t('blog.editorial.unmark') }}
+            </b-link>
+          </div>
         </div>
 
         <div class="post-content p3" v-html="blogHtml"></div>
@@ -37,18 +47,21 @@ import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill } from 'bootstrap-vue';
+import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconShieldPlus, BIconShieldMinus, BLink } from 'bootstrap-vue';
 
 export default {
   name: 'blog',
   components: {
-    Date,
-    ProfileLink,
-    Comments,
-    ShareLink,
-    BIconPersonCircle,
+    BLink,
     BIconCalendarRange,
     BIconChatTextFill,
+    BIconShieldPlus,
+    BIconShieldMinus,
+    BIconPersonCircle,
+    Comments,
+    Date,
+    ProfileLink,
+    ShareLink,
   },
   props: {
     slug: String,
@@ -78,6 +91,11 @@ export default {
   },
   created() {
     this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
+  },
+  methods: {
+    async toggleEditorial() {
+      await this.$store.dispatch('TOGGLE_EDITORIAL');
+    },
   },
 };
 </script>

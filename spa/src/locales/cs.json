@@ -263,6 +263,10 @@
       "title-label": "Titulek",
       "title-placeholder": "Název příspěvku",
       "save-button": "Uložit"
+    },
+    "editorial": {
+      "mark": "Nastav Redakci",
+      "unmark": "Zruš Redakci"
     }
   },
   "page-title": {
@@ -311,13 +315,6 @@
       "delete-cms": "Smazat ",
       "new-cms-heading": "Nová stránka",
       "delete-message": "Opravdu chcete tuto stránku smazat?"
-    },
-    "editorial": {
-      "search-label": "Manage Editorial",
-      "title": "Title",
-      "url": "Url",
-      "editorial-label": "Editorial",
-      "saved-label": "Saved."
     }
   }
 }
