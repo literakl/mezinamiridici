@@ -20,18 +20,7 @@
             <b-form-invalid-feedback id="slug-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-form-group>
         </ValidationProvider>
-        <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
-          <b-form-group id="content-group" :label="$t('cms.edit.content-label')" label-for="content">
-            <b-form-textarea
-              class="textarea"
-              id="content" name="content" aria-describedby="text-errors"
-              rows="10" max-rows="50"
-              :placeholder="$t('cms.edit.content-label')"
-              v-model="form.content" :state="getValidationState(validationContext)">
-            </b-form-textarea>
-            <b-form-invalid-feedback id="content-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-          </b-form-group>
-        </ValidationProvider>
+        <Editor :blog="form.content" @changeBlog="changeBlog"/>
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
@@ -42,7 +31,8 @@
 </template>
 
 <script>
-import { BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton, BFormTextarea } from 'bootstrap-vue';
+import { BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton } from 'bootstrap-vue';
+import Editor from '@/components/molecules/Editor.vue';
 
 export default {
   name: 'ContentForm',
@@ -52,7 +42,7 @@ export default {
     BFormInput,
     BFormInvalidFeedback,
     BButton,
-    BFormTextarea,
+    Editor,
   },
   props: {
     isCreate: Boolean,
@@ -62,19 +52,23 @@ export default {
     form: {
       caption: '',
       slug: '',
-      content: '',
+      content: null,
       context: null,
     },
     error: null,
+    html: '',
   }),
   mounted() {
     if (!this.isCreate) {
       this.form.caption = this.page.info.caption;
       this.form.slug = this.page.info.slug;
-      this.form.content = this.page.data.content;
+      this.form.content = this.page;
     }
   },
   methods: {
+    changeBlog(blg) {
+      this.html = blg;
+    },
     getValidationState({
       dirty,
       validated,
@@ -87,7 +81,7 @@ export default {
       const body = {
         caption: this.form.caption,
         slug: this.form.slug.replaceAll('/', ''),
-        content: this.form.content,
+        content: this.html,
       };
 
       if (this.isCreate) {

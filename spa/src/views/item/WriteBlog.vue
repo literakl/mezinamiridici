@@ -5,177 +5,32 @@
         <TextInput
           v-model="title"
           :placeholder="$t('blog.form.title-placeholder')"
-          class="write-blog"/>
-
-        <div class="editor">
-          <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-            <div class="menubar">
-              <button class="menubar__button" @click="commands.undo">
-                <icon name="undo"/>
-              </button>
-
-              <button class="menubar__button" @click="commands.redo">
-                <icon name="redo"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-                <icon name="bold"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
-                <icon name="italic"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
-                <icon name="strike"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
-                <icon name="underline"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
-                H2
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">
-                H3
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
-                <icon name="ul"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
-                <icon name="ol"/>
-              </button>
-
-              <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
-                <icon name="quote"/>
-              </button>
-
-              <button class="menubar__button" @click="commands.horizontal_rule">
-                <icon name="hr"/>
-              </button>
-
-              <button class="menubar__button" @click="showImageModal(commands.image)">
-                <Icon name="image"/>
-              </button>
-
-              <button class="menubar__button" @click="commands.createTable({rowsCount: 2, colsCount: 2, withHeaderRow: false })">
-                <icon name="table"/>
-              </button>
-
-              <span v-if="isActive.table()">
-                <button class="menubar__button" @click="commands.deleteTable">
-                  <icon name="delete_table"/>
-                </button>
-                <button class="menubar__button" @click="commands.addColumnBefore">
-                  <icon name="add_col_before"/>
-                </button>
-                <button class="menubar__button" @click="commands.addColumnAfter">
-                  <icon name="add_col_after"/>
-                </button>
-                <button class="menubar__button" @click="commands.deleteColumn">
-                  <icon name="delete_col"/>
-                </button>
-                <button class="menubar__button" @click="commands.addRowBefore">
-                  <icon name="add_row_before"/>
-                </button>
-                <button class="menubar__button" @click="commands.addRowAfter">
-                  <icon name="add_row_after"/>
-                </button>
-                <button class="menubar__button" @click="commands.deleteRow">
-                  <icon name="delete_row"/>
-                </button>
-                <button class="menubar__button" @click="commands.toggleCellMerge">
-                  <icon name="combine_cells"/>
-                </button>
-              </span>
-            </div>
-          </editor-menu-bar>
-
-          <editor-menu-bubble class="menububble" :editor="editor" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
-            <div
-              class="menububble"
-              :class="{ 'is-active': menu.isActive }"
-              :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-            >
-
-              <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
-                <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu"/>
-                <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
-                  <icon name="remove"/>
-                </button>
-              </form>
-
-              <template v-else>
-                <button
-                  class="menububble__button"
-                  @click="showLinkMenu(getMarkAttrs('link'))"
-                  :class="{ 'is-active': isActive.link() }"
-                >
-                  <span>{{ isActive.link() ? 'Update Link' : 'Add Link' }}</span>
-                  <icon name="link"/>
-                </button>
-              </template>
-
-            </div>
-          </editor-menu-bubble>
-          <editor-content class="editor__content" :editor="editor"/>
-        </div>
+          class="write-blog"
+        />
+        <Editor :blog="blog" @changeBlog="changeBlog"/>
       </div>
       <div class="bottom-wrap">
         <div class="tags-area">
-          <TagSelector @changeTags="tagSelect" :formTags="tags"/>
+          <TagSelector @changeTags="tagSelect" :formTags="tags" />
         </div>
         <div class="image-area">
-          <SelectPicture :currentPath="picture" @changePath="changePath"/>
-          <b-button variant="primary" @click="saveBlog">{{ $t('blog.form.save-button') }}</b-button>
+          <SelectPicture :currentPath="picture" @changePath="changePath" />
+          <b-button variant="primary" @click="saveBlog">{{
+            $t("blog.form.save-button")
+          }}</b-button>
         </div>
       </div>
-      <input type="file" ref="fileUploadInput" style="display:none;"/>
     </div>
   </div>
 </template>
 
 <script>
-import Icon from '@/components/atoms/EditorIcon.vue';
-import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
-import {
-  Blockquote,
-  HardBreak,
-  Heading,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  Bold,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-  Focus,
-} from 'tiptap-extensions';
-import Image from '@/utils/editorImage';
-
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
-import store from '@/store';
 import TagSelector from '@/components/atoms/TagSelector.vue';
 import { BButton } from 'bootstrap-vue';
+import Editor from '@/components/molecules/Editor.vue';
 
-async function upload(file) {
-  const formData = new FormData();
-  formData.append('image', file);
-  const res = await store.dispatch('UPLOAD_IMAGE', formData);
-  return res.data.url;
-}
 
 export default {
   components: {
@@ -183,10 +38,7 @@ export default {
     TextInput,
     TagSelector,
     BButton,
-    Icon,
-    EditorContent,
-    EditorMenuBar,
-    EditorMenuBubble,
+    Editor,
   },
   props: {
     slug: String,
@@ -197,41 +49,7 @@ export default {
       title: '',
       picture: '',
       tags: [],
-      editor: new Editor({
-        extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new HardBreak(),
-          new Heading({ levels: [2, 3] }),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new Link(),
-          new Bold(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
-          new Image(null, null, upload),
-          new Table({
-            resizable: true,
-          }),
-          new TableHeader(),
-          new TableCell(),
-          new TableRow(),
-          new Focus({
-            className: 'has-focus',
-            nested: false,
-          }),
-        ],
-        content: '',
-        onUpdate: ({ getHTML }) => {
-          this.html = getHTML();
-        },
-      }),
       html: 'Update content to see changes',
-      linkUrl: null,
-      linkMenuIsActive: true,
     };
   },
   computed: {
@@ -244,7 +62,6 @@ export default {
       this.title = this.blog.info.caption;
       this.picture = this.blog.info.picture;
       this.tags = this.blog.info.tags;
-      this.setContent(this.blog.data.content);
     },
   },
   methods: {
@@ -271,38 +88,14 @@ export default {
         });
       }
     },
+    changeBlog(blg) {
+      this.html = blg;
+    },
     tagSelect(tags) {
       this.tags = tags;
     },
     changePath(path) {
       this.picture = path;
-    },
-    showImageModal(command) {
-      this.$refs.fileUploadInput.click();
-      this.$refs.fileUploadInput.command = command;
-    },
-    clearContent() {
-      this.editor.clearContent(true);
-      this.editor.focus();
-    },
-    setContent(json) {
-      this.editor.setContent(json, true);
-      this.editor.focus();
-    },
-    showLinkMenu(attrs) {
-      this.linkUrl = attrs.href;
-      this.linkMenuIsActive = true;
-      this.$nextTick(() => {
-        this.$refs.linkInput.focus();
-      });
-    },
-    hideLinkMenu() {
-      this.linkUrl = null;
-      this.linkMenuIsActive = false;
-    },
-    setLinkUrl(command, url) {
-      command({ href: url });
-      this.hideLinkMenu();
     },
   },
   created() {
@@ -311,20 +104,6 @@ export default {
       this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
     }
   },
-  mounted() {
-    window.addEventListener('load', () => {
-      this.$refs.fileUploadInput.addEventListener('change', async (event) => {
-        if (event.target.files && event.target.files[0]) {
-          const src = await upload(event.target.files[0]);
-          event.target.command({ src });
-          event.target.command = null;
-        }
-      });
-    });
-  },
-  beforeDestroy() {
-    this.editor.destroy();
-  },
 };
 </script>
 
@@ -332,7 +111,7 @@ export default {
 .centerbox {
   max-width: 1235px;
   margin: 0 auto 20px;
-  padding:0px;
+  padding:0;
 }
 
 .text-area .w-50 {
@@ -480,7 +259,7 @@ tbody tr td:first-child {
 </style>
 
 <style lang="scss" scoped>
-$color-black: #AEB3B7;
+$color-black: #aeb3b7;
 $color-white: #ffffff;
 $color-grey: #dddddd;
 
