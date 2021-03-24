@@ -73,6 +73,7 @@ export default {
   },
   watch: {
     blog() {
+      console.log(this.blog.info);
       this.blogHtml = this.blog.data.content;
       document.title = this.blog.info.caption;
     },

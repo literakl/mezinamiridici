@@ -147,8 +147,10 @@ export default {
         flag: editorial,
         id: blog._id,
       };
+      console.log(payload);
       await patch('API', `/blog/${payload.id}/editorial`, payload, context);
       blog.info.editorial = editorial;
+      console.log(blog);
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);
     },
