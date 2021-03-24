@@ -111,13 +111,6 @@ export default {
     changePath(path) {
       this.picture = path;
     },
-    getValidationState({
-      dirty,
-      validated,
-      valid = null,
-    }) {
-      return dirty || validated ? valid : null;
-    },
   },
   created() {
     if (this.$route.name === 'update-blog') {
