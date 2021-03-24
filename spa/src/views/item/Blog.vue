@@ -21,11 +21,11 @@
             </a>
           </div>
           <div>
-            <b-link v-if="!blog.info.editorial" v-on:click="toggleEditorial">
+            <b-link v-if="!editorial" v-on:click="toggleEditorial">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.editorial.mark') }}
             </b-link>
-            <b-link v-if="blog.info.editorial" v-on:click="toggleEditorial">
+            <b-link v-if="editorial" v-on:click="toggleEditorial">
               <BIconShieldMinus scale="1"></BIconShieldMinus>
               {{ $t('blog.editorial.unmark') }}
             </b-link>
@@ -88,6 +88,9 @@ export default {
         txt = this.blog.info.caption;
       }
       return txt;
+    },
+    editorial() {
+      return this.blog.info.editorial;
     },
   },
   created() {
