@@ -262,7 +262,8 @@
     "form": {
       "title-label": "Title",
       "title-placeholder": "Blog post title",
-      "save-button": "Save"
+      "save-button": "Save",
+      "required-field": "This field is required."
     }
   },
   "page-title":{

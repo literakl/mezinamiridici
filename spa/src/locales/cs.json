@@ -262,7 +262,8 @@
     "form": {
       "title-label": "Titulek",
       "title-placeholder": "Název příspěvku",
-      "save-button": "Uložit"
+      "save-button": "Uložit",
+      "required-field": "This field is required."
     }
   },
   "page-title": {
