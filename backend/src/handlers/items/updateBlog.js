@@ -36,14 +36,14 @@ module.exports = (app) => {
       return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to update blog', 'sign-in.something-went-wrong'));
     }
   });
 
   app.options('/v1/blog/:blogId/editorial', auth.cors);
 
   app.patch('/v1/blog/:blogId/editorial', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
-    logger.verbose('set editorial blog handler starts');
+    logger.verbose('mark blog as editorial handler starts');
     const { blogId } = req.params;
     if (!blogId) {
       return api.sendMissingParam(res, 'blogId');
@@ -61,12 +61,12 @@ module.exports = (app) => {
 
       const query = { $set: { 'info.editorial': flag } };
       await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
-      logger.debug('Blog updated');
+      logger.debug(`Updated an editorial flag to ${flag} for blog ${blogId}`);
 
       return api.sendResponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to set an editorial flag', 'sign-in.something-went-wrong'));
     }
   });
 };

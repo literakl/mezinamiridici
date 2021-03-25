@@ -31,7 +31,7 @@
     "tag-select-placeholder": "Chooose the tag",
     "loading-message": "Loading ..",
     "loading-more-button": "Load more",
-    "own-content": "Redakce"
+    "own-content": "Editorial"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -264,6 +264,10 @@
       "title-placeholder": "Blog post title",
       "save-button": "Save",
       "required-field": "This field is required."
+    },
+    "editorial": {
+      "mark": "Set editorial",
+      "unmark": "Unset editorial"
     }
   },
   "page-title":{
@@ -307,13 +311,6 @@
       "delete-cms": "Delete page",
       "new-cms-heading": "New page",
       "delete-message": "Are you sure to delete this page?"
-    },
-    "editorial": {
-      "search-label": "Manage Editorial",
-      "title": "Title",
-      "url": "Url",
-      "editorial-label": "Editorial",
-      "saved-label": "Saved."
     }
   },
   "editorjs": {
