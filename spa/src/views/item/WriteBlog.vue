@@ -1,25 +1,32 @@
 <template>
   <div class="mt-4 centerbox">
     <div class="write-post-wrap">
-      <div class="text-area">
-        <TextInput
-          v-model="title"
-          :placeholder="$t('blog.form.title-placeholder')"
-          class="write-blog"
-        />
-        <Editor :blog="blog" @changeBlog="changeBlog"/>
-      </div>
-      <div class="bottom-wrap">
-        <div class="tags-area">
-          <TagSelector @changeTags="tagSelect" :formTags="tags" />
+      <ValidationObserver ref="observer" v-slot="{ invalid }">
+        <div class="text-area">
+          <ValidationProvider v-slot="validationContext">
+            <TextInput
+              v-model="title"
+              :placeholder="$t('blog.form.title-placeholder')"
+              class="write-blog"
+              :rules="{ required: true }"
+            />
+            <b-form-invalid-feedback id="text-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+          </ValidationProvider>
+          <Editor :blog="blog" @changeBlog="changeBlog" :rules="isRequired"/>
+          <b-form-invalid-feedback id="text-errors" :state="isRequired">{{ $t('blog.form.required-field') }}</b-form-invalid-feedback>
         </div>
-        <div class="image-area">
-          <SelectPicture :currentPath="picture" @changePath="changePath" />
-          <b-button variant="primary" @click="saveBlog">{{
-            $t("blog.form.save-button")
-          }}</b-button>
+        <div class="bottom-wrap">
+          <div class="tags-area">
+            <TagSelector @changeTags="tagSelect" :formTags="tags" />
+          </div>
+          <div class="image-area">
+            <SelectPicture :currentPath="picture" @changePath="changePath" />
+            <b-button variant="primary" :disabled="invalid || !isRequired" @click="saveBlog">{{
+              $t("blog.form.save-button")
+            }}</b-button>
+          </div>
         </div>
-      </div>
+      </ValidationObserver>
     </div>
   </div>
 </template>
@@ -28,7 +35,7 @@
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-import { BButton } from 'bootstrap-vue';
+import { BButton, BFormInvalidFeedback } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
 
 
@@ -39,6 +46,7 @@ export default {
     TagSelector,
     BButton,
     Editor,
+    BFormInvalidFeedback,
   },
   props: {
     slug: String,
@@ -49,12 +57,18 @@ export default {
       title: '',
       picture: '',
       tags: [],
-      html: 'Update content to see changes',
+      html: '',
     };
   },
   computed: {
     blog() {
       return this.$store.getters.BLOG;
+    },
+    isRequired() {
+      if (this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html)) { // <x...>y...</x...>
+        return true;
+      }
+      return false;
     },
   },
   watch: {

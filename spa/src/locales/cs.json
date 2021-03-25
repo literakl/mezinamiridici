@@ -262,6 +262,8 @@
     "form": {
       "title-label": "Titulek",
       "title-placeholder": "Název příspěvku",
+      "save-button": "Uložit",
+      "required-field": "This field is required."
       "save-button": "Uložit"
     },
     "editorial": {
