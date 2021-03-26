@@ -22,7 +22,7 @@ module.exports = (app) => {
       logger.debug('Item fetched');
 
       if (!item) {
-        return api.sendNotFound(res, api.createError());
+        return api.sendNotFound(res, api.createError('Page not found', 'generic.not-found-caption'));
       }
       return api.sendCreated(res, api.createResponse(item));
     } catch (err) {

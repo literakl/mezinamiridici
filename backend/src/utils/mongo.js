@@ -175,9 +175,11 @@ async function getPage(dbClient, pipeline) {
 }
 
 function processPoll(item) {
-  item.votes = item.data.votes;
-  delete item.data.votes;
-  item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
+  if (item.data.votes) {
+    item.votes = item.data.votes;
+    delete item.data.votes;
+    item.votes.total = item.votes.neutral + item.votes.trivial + item.votes.dislike + item.votes.hate;
+  }
   if (item.me && item.me[0]) {
     item.my_vote = item.me[0].vote;
   }

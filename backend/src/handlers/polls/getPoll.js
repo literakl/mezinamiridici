@@ -45,7 +45,7 @@ module.exports = (app) => {
       logger.debug('Item fetched');
 
       if (!item) {
-        return api.sendNotFound(res, api.createError());
+        return api.sendNotFound(res, api.createError('Poll not found'));
       }
 
       const older = mongo.getNeighbourhItem(dbClient, 'poll', item.info.date, true).next();

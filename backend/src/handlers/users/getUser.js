@@ -96,6 +96,10 @@ module.exports = (app) => {
 
       const user = await mongo.findUser(dbClient, { userId }, { projection: { 'bio.nickname': 1, 'bio.registered': 1, honors: 1 } });
       logger.debug('User fetched');
+
+      if (!user) {
+        return api.sendNotFound(res, api.createError('User not found', 'profile.user-not-found'));
+      }
       return api.sendResponse(res, api.createResponse(user));
     } catch (err) {
       logger.error('Request failed', err);
