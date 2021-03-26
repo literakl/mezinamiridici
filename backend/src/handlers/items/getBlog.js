@@ -18,6 +18,9 @@ module.exports = (app) => {
       const blog = await mongo.getBlog(dbClient, slug, undefined);
       logger.debug('Blog fetched');
 
+      if (!blog) {
+        return api.sendNotFound(res, api.createError('Blog not found', 'generic.not-found-caption'));
+      }
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {
       logger.error('Request failed', err);

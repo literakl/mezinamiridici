@@ -17,8 +17,8 @@ module.exports = (app) => {
       const list = await getItems(dbClient, req);
       logger.debug('Item fetched');
 
-      if (!list) {
-        return api.sendNotFound(res, api.createError());
+      if (!list.length) {
+        return api.sendNotFound(res, api.createError('No items with that tag exists'));
       }
 
       return api.sendCreated(res, api.createResponse(list));
