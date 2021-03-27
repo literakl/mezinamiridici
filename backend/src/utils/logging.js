@@ -68,7 +68,7 @@ let appLogger;
 const mongoLogger = createLogger({
   format: combine(appendFullTimestamp(), mongoCSVFormat),
   transports: [
-    new transports.File({ filename: 'mongo.log' }),
+    new transports.File({ filename: 'mongo.csv' }),
   ],
 });
 
