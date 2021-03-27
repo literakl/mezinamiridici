@@ -60,7 +60,10 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const query = { $set: { 'info.editorial': flag } };
-      await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
+      await Promise.all([
+        dbClient.db().collection('items').updateOne({ _id: blogId }, query),
+        mongo.logAdminActions(dbClient, req.identity.userId, 'toggle editorial', blogId, { flag }),
+      ]);
       logger.debug(`Updated an editorial flag to ${flag} for blog ${blogId}`);
 
       return api.sendResponse(res, api.createResponse());
