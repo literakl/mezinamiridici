@@ -1,5 +1,6 @@
 const generate = require('nanoid/generate');
 const { MongoClient } = require('mongodb');
+const dayjs = require('dayjs');
 
 const { logger, mongoLogger } = require('./logging');
 require('./path_env');
@@ -18,7 +19,7 @@ function connectToDatabase() {
   }
 
   logger.debug('Get a new Mongo instance from database');
-  const start = new Date();
+  const start = dayjs();
   return MongoClient.connect(MONGODB_URI, {
     poolSize: MONGO_POOL || 5,
     connectTimeoutMS: MONGO_CONNECT_TIMEOUT_MS || 10000,
@@ -209,8 +210,9 @@ function close() {
 }
 
 function spent(start) {
-  return new Date().getMilliseconds() - start.getMilliseconds();
+  return dayjs().diff(start);
 }
+
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
 const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
 function stageLimit(n) { return { $limit: n }; }
