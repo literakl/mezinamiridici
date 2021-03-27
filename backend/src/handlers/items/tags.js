@@ -12,7 +12,6 @@ module.exports = (app) => {
     logger.verbose('getItems by tag handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const list = await getItems(dbClient, req);
       logger.debug('Item fetched');

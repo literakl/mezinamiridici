@@ -16,7 +16,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const [ commandResult ] = await Promise.all([
         dbClient.db().collection('items').deleteOne({ _id: pollId }),

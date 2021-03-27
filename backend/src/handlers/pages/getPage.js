@@ -15,7 +15,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const pipeline = [mongo.stageSlug(slug)];
       const item = await mongo.getPage(dbClient, pipeline);
@@ -35,7 +34,6 @@ module.exports = (app) => {
     logger.verbose('Get pages handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const list = await getPages(dbClient, req);
       logger.debug('Pages fetched');

@@ -17,7 +17,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const { currentPassword, newPassword } = req.body;
       if (!newPassword || newPassword.length < 6) {

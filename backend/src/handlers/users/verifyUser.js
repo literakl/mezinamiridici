@@ -12,7 +12,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const user = await mongo.findUser(dbClient, { token }, { projection: { auth: 1 } });
       logger.debug('User fetched');

@@ -25,7 +25,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const query = prepareUpdateQuery(source, title, picture, tags);
       await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
@@ -57,7 +56,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const query = { $set: { 'info.editorial': flag } };
       await Promise.all([

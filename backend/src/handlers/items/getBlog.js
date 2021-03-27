@@ -13,7 +13,6 @@ module.exports = (app) => {
     const { slug } = req.params;
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const blog = await mongo.getBlog(dbClient, slug, undefined);
       logger.debug('Blog fetched');

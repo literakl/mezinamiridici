@@ -13,7 +13,6 @@ module.exports = (app) => {
     logger.verbose('getPolls handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const list = await getItems(dbClient, req);
       logger.debug('Items fetched');

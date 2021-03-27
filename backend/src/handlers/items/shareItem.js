@@ -29,7 +29,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const url = createURL(service, path);
       await insertShare(dbClient, itemId, userId, service, publishDate);

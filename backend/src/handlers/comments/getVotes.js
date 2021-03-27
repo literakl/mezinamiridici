@@ -14,7 +14,6 @@ module.exports = (app) => {
     }
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const votes = await dbClient.db().collection('comment_votes').find({ commentId }, { projection: { _id: 0, commentId: 0 } }).toArray();
       logger.debug('Comments fetched');

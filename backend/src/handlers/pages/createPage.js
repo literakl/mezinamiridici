@@ -23,7 +23,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const user = auth.getIdentity(req.identity);
       const pageId = mongo.generateTimeId();

@@ -25,7 +25,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const list = await getActivity(dbClient, userId, type, req);
       logger.debug('Activity fetched');

@@ -21,7 +21,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const query = { itemId, parentId: { $exists: false } };
       if (listParams.lastResult) {
@@ -93,7 +92,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const query = {
         $or: [

@@ -15,7 +15,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const items = await getItems(dbClient, req);
       logger.debug('Items fetched');

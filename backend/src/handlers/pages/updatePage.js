@@ -30,7 +30,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const query = prepareUpdateQuery(caption, slug, content);
       await Promise.all([

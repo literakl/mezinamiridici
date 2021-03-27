@@ -22,7 +22,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const commentVote = await dbClient.db().collection('comment_votes').findOne({ commentId, 'user.id': req.identity.userId });
       if (commentVote && commentVote.vote !== undefined) {

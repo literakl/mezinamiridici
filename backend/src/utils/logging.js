@@ -2,12 +2,22 @@ const { stringify } = require('flatted/cjs');
 const { createLogger, format, transports } = require('winston');
 
 const { NODE_ENV } = process.env;
+
 const { combine, printf } = format;
+
 const myFormat = printf((info) => {
   let output = info.timestamp;
   if (info.label) output += ` [${info.label}] `;
   output += `[${info.level}]: `;
   output += (info.message === Object(info.message)) ? stringify(info.message) : info.message;
+  return output;
+});
+
+const mongoCSVFormat = printf((info) => {
+  let output = `${info.timestamp},${info.time},${info.operation},${info.result},${(info.collection) ? info.collection : ''},`;
+  if (info.message) {
+    output += (info.message === Object(info.message)) ? stringify(info.message) : info.message;
+  }
   return output;
 });
 
@@ -52,7 +62,22 @@ const appendShortTimestamp = format((info) => {
   return info;
 });
 
-let appLogger, jobLogger;
+let appLogger;
+
+// TODO externalize winston logger configuration
+const mongoLogger = createLogger({
+  format: combine(appendFullTimestamp(), mongoCSVFormat),
+  transports: [
+    new transports.File({ filename: 'mongo.log' }),
+  ],
+});
+
+const jobLogger = createLogger({
+  format: combine(appendFullTimestamp(), myFormat),
+  transports: [
+    new transports.File({ filename: 'jobs.log', level: 'debug' }),
+  ],
+});
 
 if (NODE_ENV === 'test') {
   appLogger = createLogger({
@@ -62,8 +87,6 @@ if (NODE_ENV === 'test') {
       new transports.File({ filename: 'test.log' }),
     ],
   });
-
-  jobLogger = appLogger;
 } else {
   appLogger = createLogger({
     level: 'debug',
@@ -77,19 +100,13 @@ if (NODE_ENV === 'test') {
     ],
   });
 
-  if (NODE_ENV !== 'production') { // todo check condition
+  if (NODE_ENV === 'development') {
     appLogger.add(new transports.Console({
       format: combine(appendShortTimestamp(), myFormat),
     }));
   }
-
-  jobLogger = createLogger({
-    format: combine(appendFullTimestamp(), myFormat),
-    transports: [
-      new transports.File({ filename: 'jobs.log', level: 'debug' }),
-    ],
-  });
 }
 
 exports.logger = appLogger;
 exports.jobLogger = jobLogger;
+exports.mongoLogger = mongoLogger;

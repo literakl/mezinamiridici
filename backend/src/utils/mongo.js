@@ -1,102 +1,61 @@
 const generate = require('nanoid/generate');
 const { MongoClient } = require('mongodb');
 
-const { logger } = require('./logging');
+const { logger, mongoLogger } = require('./logging');
 require('./path_env');
 
-const { MONGODB_URI, TIME_ID_CHARS } = process.env;
+const { MONGODB_URI, MONGO_POOL, MONGO_CONNECT_TIMEOUT_MS, TIME_ID_CHARS } = process.env;
 const TIME_ID_CHARS_INT = parseInt(TIME_ID_CHARS || '1', 10);
-logger.info(`Mongo is configured to connect ${MONGODB_URI}`);
 let cachedDb = null;
 
-const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
-const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
-function stageLimit(n) { return { $limit: n }; }
-function stageId(id) { return { $match: { _id: id } }; }
-function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
-function stageTag(tag) { return { 'info.tags': { $in: [tag] } }; }
-function stageMyPollVote(userId, pollId) {
-  if (pollId) {
-    return {
-      $lookup: {
-        from: 'poll_votes',
-        pipeline: [
-          {
-            $match: {
-              $and: [
-                { item: pollId },
-                { user: userId },
-              ],
-            },
-          },
-          { $project: { _id: 0, vote: '$vote' } },
-        ],
-        as: 'me',
-      },
-    };
-  }
-  return {
-    $lookup: {
-      from: 'poll_votes',
-      let: { poll_id: '$_id' },
-      pipeline: [
-        {
-          $match: {
-            $and: [
-              { $expr: { $eq: ['$item', '$$poll_id'] } },
-              { user: userId },
-            ],
-          },
-        },
-        { $project: { _id: 0, vote: '$vote' } },
-      ],
-      as: 'me',
-    },
-  };
-}
-function stageCommentVotes() {
-  return {
-    $lookup: {
-      from: 'comment_votes',
-      localField: '_id',
-      foreignField: 'commentId',
-      as: 'votes',
-    },
-  };
-}
-function stageReduceCommentData() {
-  return {
-    $project: {
-      itemId: 0,
-      source: 0,
-      'votes._id': 0,
-      'votes.commentId': 0,
-    },
-  };
-}
+logger.info(`Mongo is configured to connect ${MONGODB_URI}`); // TODO mask the password
 
 // TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
-  logger.debug('Connect to mongo database');
-
   if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
-    logger.debug('Using cached database instance');
+    logger.debug('Using cached Mongo instance');
     return Promise.resolve(cachedDb);
   }
 
+  logger.debug('Get a new Mongo instance from database');
+  const start = new Date();
   return MongoClient.connect(MONGODB_URI, {
+    poolSize: MONGO_POOL || 5,
+    connectTimeoutMS: MONGO_CONNECT_TIMEOUT_MS || 10000,
     useUnifiedTopology: true,
     useNewUrlParser: true,
   })
     .then((db) => {
+      mongoLogger.log({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
       logger.debug('Successful connect');
       cachedDb = db;
       return cachedDb;
     })
     .catch((err) => {
+      mongoLogger.log({ time: spent(start), operation: 'connect', result: false, collection: undefined, level: 'info', message: null });
       logger.error('Connection error occurred: ', err);
       throw err;
     });
+}
+
+async function findOne(dbClient, collection, query) {
+  const start = new Date();
+  try {
+    const response = await dbClient.db().collection(collection).findOne(query);
+    mongoLogger.log({
+      time: spent(start),
+      operation: 'findOne',
+      result: true,
+      collection,
+      level: 'info',
+      message: query,
+    });
+
+    return response;
+  } catch (err) {
+    mongoLogger.log({ time: spent(start), operation: 'findOne', result: false, collection, level: 'info', message: query });
+    throw err;
+  }
 }
 
 function findUser(dbClient, params, projection) {
@@ -249,9 +208,79 @@ function close() {
   }
 }
 
+function spent(start) {
+  return new Date().getMilliseconds() - start.getMilliseconds();
+}
+const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
+const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
+function stageLimit(n) { return { $limit: n }; }
+function stageId(id) { return { $match: { _id: id } }; }
+function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
+function stageTag(tag) { return { 'info.tags': { $in: [tag] } }; }
+function stageMyPollVote(userId, pollId) {
+  if (pollId) {
+    return {
+      $lookup: {
+        from: 'poll_votes',
+        pipeline: [
+          {
+            $match: {
+              $and: [
+                { item: pollId },
+                { user: userId },
+              ],
+            },
+          },
+          { $project: { _id: 0, vote: '$vote' } },
+        ],
+        as: 'me',
+      },
+    };
+  }
+  return {
+    $lookup: {
+      from: 'poll_votes',
+      let: { poll_id: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $and: [
+              { $expr: { $eq: ['$item', '$$poll_id'] } },
+              { user: userId },
+            ],
+          },
+        },
+        { $project: { _id: 0, vote: '$vote' } },
+      ],
+      as: 'me',
+    },
+  };
+}
+function stageCommentVotes() {
+  return {
+    $lookup: {
+      from: 'comment_votes',
+      localField: '_id',
+      foreignField: 'commentId',
+      as: 'votes',
+    },
+  };
+}
+function stageReduceCommentData() {
+  return {
+    $project: {
+      itemId: 0,
+      source: 0,
+      'votes._id': 0,
+      'votes.commentId': 0,
+    },
+  };
+}
+
 exports.connectToDatabase = connectToDatabase;
 exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
+exports.findOne = findOne;
 exports.findUser = findUser;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;

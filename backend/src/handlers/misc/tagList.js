@@ -22,7 +22,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const tagWeights = await dbClient.db().collection('items').aggregate([
         { $unwind: '$info.tags' },

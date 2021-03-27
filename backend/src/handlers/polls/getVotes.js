@@ -9,7 +9,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const list = await getVotes(dbClient, pollId, req).toArray();
       logger.debug('Votes fetched');

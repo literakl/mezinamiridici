@@ -18,7 +18,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const user = await mongo.findUser(dbClient, { userId }, { projection: { auth: 0, 'prefs.email': 0, consent: 0 } });
       logger.debug('User fetched');
@@ -45,7 +44,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
       logger.debug('User fetched');
@@ -67,7 +65,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const user = await mongo.findUser(dbClient, { nickname }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
       logger.debug('User fetched');
@@ -92,7 +89,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const user = await mongo.findUser(dbClient, { userId }, { projection: { 'bio.nickname': 1, 'bio.registered': 1, honors: 1 } });
       logger.debug('User fetched');

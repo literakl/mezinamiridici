@@ -13,7 +13,6 @@ module.exports = (app) => {
     logger.verbose('validateToken handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       const jwtData = req.identity;
       const user = await mongo.findUser(dbClient, { _id: jwtData.userId }, { projection: { auth: 1 } });

@@ -19,7 +19,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       let item = await dbClient.db().collection('items').findOne({ _id: pollId }, { projection: { _id: 1 } });
       if (!item) {

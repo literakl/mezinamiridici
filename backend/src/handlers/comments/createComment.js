@@ -26,10 +26,9 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug('Mongo connected');
 
       if (parentId) {
-        const response = await dbClient.db().collection('comments').findOne({ _id: parentId, parentId: null });
+        const response = await mongo.findOne(dbClient, 'comments', { _id: parentId, parentId: null });
         if (!response) {
           return api.sendBadRequest(res, api.createError(`Comment ${parentId} is already reply`, 'generic.internal-error'));
         }
