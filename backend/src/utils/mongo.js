@@ -40,7 +40,7 @@ function connectToDatabase() {
 }
 
 async function findOne(dbClient, collection, query) {
-  const start = new Date();
+  const start = dayjs();
   try {
     const response = await dbClient.db().collection(collection).findOne(query);
     mongoLogger.log({
