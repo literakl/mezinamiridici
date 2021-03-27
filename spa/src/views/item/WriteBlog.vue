@@ -39,7 +39,6 @@ import TagSelector from '@/components/atoms/TagSelector.vue';
 import { BButton, BFormInvalidFeedback } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
 
-
 export default {
   components: {
     SelectPicture,
@@ -66,10 +65,7 @@ export default {
       return this.$store.getters.BLOG;
     },
     isRequired() {
-      if (this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html)) { // <x...>y...</x...>
-        return true;
-      }
-      return false;
+      return !!(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
   },
   watch: {
