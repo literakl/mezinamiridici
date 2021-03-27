@@ -27,7 +27,10 @@ module.exports = (app) => {
 
       const user = auth.getIdentity(req.identity);
       const pageId = mongo.generateTimeId();
-      await insertPage(dbClient, pageId, caption, slug, content, user);
+      Promise.all([
+        insertPage(dbClient, pageId, caption, slug, content, user),
+        mongo.logAdminActions(dbClient, user.userId, 'create page', pageId),
+      ]);
       logger.debug('Page inserted');
 
       const pipeline = [mongo.stageId(pageId)];
@@ -42,7 +45,7 @@ module.exports = (app) => {
   });
 };
 
-function insertPage(dbClient, pageId, caption, slug, content, author) {
+async function insertPage(dbClient, pageId, caption, slug, content, author) {
   const item = {
     _id: pageId,
     type: 'page',
@@ -66,5 +69,5 @@ function insertPage(dbClient, pageId, caption, slug, content, author) {
     },
   };
 
-  return dbClient.db().collection('items').insertOne(item);
+  return await dbClient.db().collection('items').insertOne(item);
 }

@@ -33,7 +33,10 @@ module.exports = (app) => {
       logger.debug('Mongo connected');
 
       const query = prepareUpdateQuery(caption, slug, content);
-      await dbClient.db().collection('items').updateOne({ _id: pageId }, query);
+      await Promise.all([
+        dbClient.db().collection('items').updateOne({ _id: pageId }, query),
+        mongo.logAdminActions(dbClient, req.identity.userId, 'update page', pageId),
+      ]);
       logger.debug('Page updated');
 
       const pipeline = [mongo.stageId(pageId)];

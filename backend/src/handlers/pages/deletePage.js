@@ -18,7 +18,10 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       logger.debug('Mongo connected');
 
-      const commandResult = await dbClient.db().collection('items').deleteOne({ _id: pageId });
+      const [ commandResult ] = await Promise.all([
+        dbClient.db().collection('items').deleteOne({ _id: pageId }),
+        mongo.logAdminActions(dbClient, req.identity.userId, 'delete page', pageId),
+      ]);
       if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
         logger.debug('Page deleted');
         return api.sendResponse(res, api.createResponse());

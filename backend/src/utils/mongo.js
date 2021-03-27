@@ -202,6 +202,16 @@ function getNeighbourhItem(dbClient, type, published, older) {
     .limit(1);
 }
 
+async function logAdminActions(dbClient, userId, action, itemId, extraData = {}) {
+  await dbClient.db().collection('audit_log').insertOne({
+    userId,
+    action,
+    itemId,
+    date: new Date().toISOString(),
+    ...extraData,
+  });
+}
+
 // TODO remove and replace with mongo/mongo_setup.js
 function setupIndexes(dbClient) {
   const db = dbClient.db();
@@ -261,3 +271,4 @@ exports.stageTag = stageTag;
 exports.close = close;
 exports.setupIndexes = setupIndexes;
 exports.incrementUserActivityCounter = incrementUserActivityCounter;
+exports.logAdminActions = logAdminActions;
