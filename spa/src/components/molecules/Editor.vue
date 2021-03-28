@@ -143,6 +143,7 @@ import store from '@/store';
 async function upload(file) {
   const formData = new FormData();
   formData.append('image', file);
+  // TODO handle errors
   const res = await store.dispatch('UPLOAD_IMAGE', formData);
   return res.data.url;
 }
