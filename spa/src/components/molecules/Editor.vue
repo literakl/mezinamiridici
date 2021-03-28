@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="editor" v-blur-event>
     <form @submit.prevent>
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
@@ -109,7 +109,7 @@
         </template>
       </div>
     </editor-menu-bubble>
-    <editor-content class="editor__content" :editor="editor" tabindex="0" v-blur-event />
+    <editor-content class="editor__content" :editor="editor" tabindex="0"/>
     <input type="file" ref="fileUploadInput" style="display: none" />
     </form>
   </div>
@@ -248,9 +248,6 @@ export default {
     setLinkUrl(command, url) {
       command({ href: url });
       this.hideLinkMenu();
-    },
-    handleOutOfFocus() {
-      console.log('OUT');
     },
   },
   mounted() {
@@ -426,6 +423,14 @@ $color-grey: #dddddd;
   border-radius: 3px;
   opacity: 0.5;
   cursor: pointer;
+}
+
+.menubar__button:hover {
+   background: #b9b8b5;
+}
+
+.menubar__button.is-active {
+  border-bottom: 3px solid var(--theme-primary);
 }
 
 .actions {
