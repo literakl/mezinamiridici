@@ -5,7 +5,8 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
 
-var path = require('path');
+const path = require('path');
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 require('./handlers/getStatus')(app);
@@ -37,8 +38,8 @@ require('./handlers/items/tags')(app);
 require('./handlers/items/createBlog')(app);
 require('./handlers/items/updateBlog')(app);
 require('./handlers/items/getBlog')(app);
-require('./handlers/items/imageUpload')(app);
 require('./handlers/items/getItemPictures')(app);
+require('./handlers/misc/imageUpload')(app);
 require('./handlers/misc/tagList')(app);
 require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);

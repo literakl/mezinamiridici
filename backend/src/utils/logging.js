@@ -70,6 +70,7 @@ const mongoLogger = createLogger({
   transports: [
     new transports.File({ filename: 'mongo.csv' }),
   ],
+  exitOnError: false,
 });
 
 const jobLogger = createLogger({
@@ -77,6 +78,7 @@ const jobLogger = createLogger({
   transports: [
     new transports.File({ filename: 'jobs.log', level: 'debug' }),
   ],
+  exitOnError: false,
 });
 
 if (NODE_ENV === 'test') {
@@ -98,11 +100,13 @@ if (NODE_ENV === 'test') {
         filename: 'error.log', level: 'warn', handleExceptions: true, exitOnError: false,
       }),
     ],
+    exitOnError: false,
   });
 
   if (NODE_ENV === 'development') {
     appLogger.add(new transports.Console({
       format: combine(appendShortTimestamp(), myFormat),
+      exitOnError: false,
     }));
   }
 }

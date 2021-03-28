@@ -102,15 +102,20 @@ export default {
       if (this.title !== '') {
         if (this.isCreate) {
           result = await this.$store.dispatch('CREATE_BLOG', body);
+          // TODO we need an array of new uploaded pictures
+          // await this.$store.dispatch('SET_IMAGE_ITEM', { itemId: result._id });
         } else {
           body.blogId = this.blog._id;
           body.date = this.blog.date;
           result = await this.$store.dispatch('UPDATE_BLOG', body);
         }
+
         await this.$router.push({
           name: 'blog',
           params: { slug: result.info.slug },
         });
+      } else {
+        console.log('empty title!');
       }
     },
     tagSelect(tags) {
@@ -178,7 +183,7 @@ export default {
   margin-bottom: 15px;
 }
 
-.menubar{
+.menubar {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;

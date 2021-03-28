@@ -38,7 +38,6 @@
     "oauth": "^0.9.15",
     "qs": "^6.9.4",
     "request-promise": "^4.2.6",
-    "sanitize-filename": "^1.6.3",
     "sanitize-html": "^1.27.2",
     "slugify": "^1.4.5",
     "unix-timestamp": "^0.2.0",

@@ -14,13 +14,9 @@
           <b-col sm="12" class="editor-js" :id="`editor-js-${commentId}`">
             <editor-menu-bar v-if="isShow" :editor="editor" v-slot="{ commands, isActive }">
               <div class="menubar">
-                <button class="menubar__button" @click="commands.undo">
-                  <icon name="undo"/>
-                </button>
-
-                <button class="menubar__button" @click="commands.redo">
-                  <icon name="redo"/>
-                </button>
+                <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline">
+                  <BIconEmojiSunglasses></BIconEmojiSunglasses>
+                </b-button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
                   <icon name="bold"/>
@@ -28,6 +24,10 @@
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
                   <icon name="italic"/>
+                </button>
+
+                <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
+                  <icon name="quote"/>
                 </button>
 
                 <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
@@ -46,13 +46,13 @@
                   <icon name="ol"/>
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
-                  <icon name="quote"/>
+                <button class="menubar__button" @click="commands.undo">
+                  <icon name="undo"/>
                 </button>
 
-                <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline">
-                  <BIconEmojiSunglasses></BIconEmojiSunglasses>
-                </b-button>
+                <button class="menubar__button" @click="commands.redo">
+                  <icon name="redo"/>
+                </button>
 
                 <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" class="closebtn">
                   <BIconXCircle></BIconXCircle>

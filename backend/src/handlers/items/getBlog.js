@@ -20,7 +20,7 @@ module.exports = (app) => {
       if (!blog) {
         return api.sendNotFound(res, api.createError('Blog not found', 'generic.not-found-caption'));
       }
-      return api.sendCreated(res, api.createResponse(blog));
+      return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get blog', 'sign-in.something-went-wrong'));

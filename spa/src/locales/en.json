@@ -31,7 +31,9 @@
     "tag-select-placeholder": "Chooose the tag",
     "loading-message": "Loading ..",
     "loading-more-button": "Load more",
-    "own-content": "Editorial"
+    "own-content": "Editorial",
+    "edit-button": "Upravit",
+    "save-button": "Uložit"
   },
   "sign-in": {
     "email-placeholder": "Email",

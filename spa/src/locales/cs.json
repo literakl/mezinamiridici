@@ -31,7 +31,9 @@
     "tag-select-placeholder": "Zvolte štítek",
     "loading-message": "Stahuji ...",
     "loading-more-button": "Další",
-    "own-content": "Redakce"
+    "own-content": "Redakce",
+    "edit-button": "Upravit",
+    "save-button": "Uložit"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -263,8 +265,7 @@
       "title-label": "Titulek",
       "title-placeholder": "Název příspěvku",
       "save-button": "Uložit",
-      "required-field": "This field is required.",
-      "save-button": "Uložit"
+      "required-field": "This field is required."
     },
     "editorial": {
       "mark": "Nastav Redakci",
