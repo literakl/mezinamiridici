@@ -109,7 +109,7 @@
         </template>
       </div>
     </editor-menu-bubble>
-    <editor-content class="editor__content" :editor="editor" />
+    <editor-content class="editor__content" :editor="editor" tabindex="0" v-blur-event />
     <input type="file" ref="fileUploadInput" style="display: none" />
     </form>
   </div>
@@ -158,6 +158,23 @@ export default {
     blog: {
       type: Object,
       default: null,
+    },
+    value: {
+      type: String,
+      default: '',
+    },
+  },
+  model: {
+    prop: 'value',
+    event: 'changeBlog',
+  },
+  directives: {
+    blurEvent: {
+      bind(el, binding, vnode) {
+        el.addEventListener('blur', () => {
+          vnode.context.$emit('outOfFocus');
+        }, true);
+      },
     },
   },
   data() {
@@ -231,6 +248,9 @@ export default {
     setLinkUrl(command, url) {
       command({ href: url });
       this.hideLinkMenu();
+    },
+    handleOutOfFocus() {
+      console.log('OUT');
     },
   },
   mounted() {
