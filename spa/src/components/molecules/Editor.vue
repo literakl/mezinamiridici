@@ -408,7 +408,9 @@ $color-grey: #dddddd;
   opacity: 1;
   cursor: pointer;
 }
-
+.menubar__button.is-active {
+  border-bottom: 3px solid var(--theme-primary);
+}
 .actions {
   max-width: 30rem;
   margin: 0 auto 2rem auto;
