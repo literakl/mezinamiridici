@@ -11,7 +11,6 @@ let cachedDb = null;
 
 logger.info(`Mongo is configured to connect ${MONGODB_URI}`); // TODO mask the password
 
-// TODO overit caching a uzavirani client https://mongodb.github.io/node-mongodb-native/3.5/quick-start/quick-start/
 function connectToDatabase() {
   if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
     logger.debug('Using cached Mongo instance');
@@ -55,6 +54,46 @@ async function findOne(dbClient, collection, query) {
     return response;
   } catch (err) {
     mongoLogger.log({ time: spent(start), operation: 'findOne', result: false, collection, level: 'info', message: query });
+    throw err;
+  }
+}
+
+async function insertOne(dbClient, collection, doc) {
+  const start = dayjs();
+  try {
+    const response = await dbClient.db().collection(collection).insertOne(doc);
+    mongoLogger.log({
+      time: spent(start),
+      operation: 'insertOne',
+      result: true,
+      collection,
+      level: 'info',
+      message: null,
+    });
+
+    return response;
+  } catch (err) {
+    mongoLogger.log({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: doc });
+    throw err;
+  }
+}
+
+async function updateOne(dbClient, collection, filter, update) {
+  const start = dayjs();
+  try {
+    const response = await dbClient.db().collection(collection).updateOne(update);
+    mongoLogger.log({
+      time: spent(start),
+      operation: 'updateOne',
+      result: true,
+      collection,
+      level: 'info',
+      message: null,
+    });
+
+    return response;
+  } catch (err) {
+    mongoLogger.log({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: update });
     throw err;
   }
 }
@@ -280,10 +319,11 @@ function stageReduceCommentData() {
 }
 
 exports.connectToDatabase = connectToDatabase;
-exports.generateId = generateId;
-exports.generateTimeId = generateTimeId;
+exports.close = close;
 exports.findOne = findOne;
 exports.findUser = findUser;
+exports.insertOne = insertOne;
+exports.updateOne = updateOne;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
 exports.getBlog = getBlog;
@@ -299,7 +339,8 @@ exports.stagePublishedPoll = stagePublishedPoll;
 exports.stageSlug = stageSlug;
 exports.stageId = stageId;
 exports.stageTag = stageTag;
-exports.close = close;
 exports.setupIndexes = setupIndexes;
 exports.incrementUserActivityCounter = incrementUserActivityCounter;
+exports.generateId = generateId;
+exports.generateTimeId = generateTimeId;
 exports.logAdminActions = logAdminActions;
