@@ -20,7 +20,13 @@
               {{ blog.comments.count }}
             </a>
           </div>
-          <div>
+          <div v-if="canEdit" class="post-edit">
+            <BIconPencilSquare scale="1"></BIconPencilSquare>
+            <router-link :to="{name: 'update-blog', params: { id: blog._id } }">
+              {{ $t('generic.edit-button') }}
+            </router-link>
+          </div>
+          <div class="post-editorial">
             <b-link v-if="!editorial" v-on:click="toggleEditorial">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.editorial.mark') }}
@@ -47,7 +53,7 @@ import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconShieldPlus, BIconShieldMinus, BLink } from 'bootstrap-vue';
+import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconPencilSquare, BIconShieldPlus, BIconShieldMinus, BLink } from 'bootstrap-vue';
 
 export default {
   name: 'blog',
@@ -55,6 +61,7 @@ export default {
     BLink,
     BIconCalendarRange,
     BIconChatTextFill,
+    BIconPencilSquare,
     BIconShieldPlus,
     BIconShieldMinus,
     BIconPersonCircle,
@@ -91,6 +98,9 @@ export default {
     },
     editorial() {
       return this.blog.info.editorial;
+    },
+    canEdit() {
+      return this.blog.info.author.id === this.$store.getters.USER_ID;
     },
   },
   created() {
@@ -147,7 +157,7 @@ export default {
   border: 0;
 }
 
-.post-time, .post-author, .post-comments {
+.post-time, .post-author, .post-comments, .post-edit, .post-editorial {
   display: flex;
   align-items: center;
   font-weight: 400;
