@@ -418,14 +418,11 @@ $color-grey: #dddddd;
 
 .menubar__button {
   font-weight: 700;
-  display: -webkit-inline-box;
-  background: transparent;
   border: 0;
-  color: $color-black;
   padding: 0.2rem 0.5rem;
   margin-right: 0.2rem;
   border-radius: 3px;
-  opacity: 0.5;
+  opacity: 1;
   cursor: pointer;
 }
 

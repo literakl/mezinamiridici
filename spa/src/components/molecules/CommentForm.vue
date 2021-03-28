@@ -232,17 +232,16 @@ $color-grey: #dddddd;
 
 .menubar__button {
   font-weight: 700;
-  display: -webkit-inline-box;
-  background: transparent;
-  border: 0;
-  color: $color-black;
-  padding: .2rem .5rem;
-  margin-right: .2rem;
-  border-radius: 3px;
-  cursor: pointer;
+    background: #f1f0ed;
+    border: 0;
+    padding: 0.2rem 0.5rem;
+    margin-right: 0.2rem;
+    border-radius: 3px;
+    opacity: 1;
+    cursor: pointer;
 
   &.is-active {
-    background-color: rgba($color-black, .1);
+    background-color: rgba($color-black, .100);
   }
 }
 
@@ -265,14 +264,14 @@ $color-grey: #dddddd;
 }
 
 .menubar button {
- font-weight: 700;
-   background: #f1f0ed;
-  border: 0;
-  padding: .2rem .5rem;
-  margin-right: .2rem;
-  border-radius: 3px;
-  opacity: 1;
-  cursor: pointer;
+//  font-weight: 700;
+//    background: #f1f0ed;
+//   border: 0;
+//   padding: .2rem .5rem;
+//   margin-right: .2rem;
+//   border-radius: 3px;
+//   opacity: 1;
+//   cursor: pointer;
 }
 .menubar__button:hover {
    background: #b9b8b5;
