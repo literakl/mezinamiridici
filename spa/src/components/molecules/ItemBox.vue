@@ -207,7 +207,6 @@ span.picture-overlay {
 
 span.overlay-left {
   left: 0;
-  top: 0!important;
 }
 
 span.overlay-right {
