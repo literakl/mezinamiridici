@@ -59,6 +59,14 @@
           <Icon name="image"/>
         </button>
 
+        <button class="menubar__button" @click="commands.iframe">
+          <svg viewBox="0 0 511.6 511.6" width="14" height="14">
+            <path
+              d="M511.3 213c-.1-10.3-1-23.3-2.4-39a354.4 354.4 0 0 0-6.1-42.1 66.4 66.4 0 0 0-19.9-35.1c-10.1-9.5-22-15-35.5-16.6-42.3-4.7-106.1-7.1-191.6-7.1-85.4 0-149.3 2.4-191.6 7.1a60.2 60.2 0 0 0-35.4 16.6 66.8 66.8 0 0 0-19.7 35.1A316 316 0 0 0 2.7 174a560.2 560.2 0 0 0-2.4 39 2430.9 2430.9 0 0 0 0 85.6 560 560 0 0 0 2.4 39c1.4 15.7 3.5 29.8 6.2 42.1a65.4 65.4 0 0 0 55.3 51.7c42.3 4.8 106.1 7.1 191.6 7.1s149.3-2.3 191.6-7.1c13.5-1.5 25.3-7 35.4-16.6a66.8 66.8 0 0 0 19.7-35c2.8-12.4 5-26.5 6.4-42.2 1.4-15.7 2.2-28.7 2.4-39a2450.8 2450.8 0 0 0 0-85.6zM357 271.2l-146.2 91.4a16.3 16.3 0 0 1-9.7 2.8c-2.9 0-5.8-.7-8.9-2.2a17 17 0 0 1-9.4-16V164.5a17 17 0 0 1 9.4-16 17.2 17.2 0 0 1 18.6.5L357 240.4c5.7 3.2 8.5 8.4 8.5 15.4s-2.8 12.2-8.5 15.4z"
+            />
+          </svg>
+        </button>
+
         <button class="menubar__button" @click="commands.createTable({rowsCount: 2, colsCount: 2, withHeaderRow: false })">
           <icon name="table"/>
         </button>
@@ -139,6 +147,7 @@ import {
 } from 'tiptap-extensions';
 import Image from '@/utils/editorImage';
 import store from '@/store';
+import Iframe from '../../extensions/iframe';
 
 async function upload(file, itemId) {
   const formData = new FormData();
@@ -209,6 +218,7 @@ export default {
             className: 'has-focus',
             nested: false,
           }),
+          new Iframe(),
         ],
         content: '',
         onUpdate: ({ getHTML }) => {
@@ -550,6 +560,23 @@ $color-grey: #dddddd;
     display: flex;
     justify-content: center;
     flex-direction: column;
+  }
+}
+</style>
+
+<style lang="scss">
+.iframe {
+  &__embed {
+    width: 100%;
+  }
+  &__input {
+    display: block;
+    width: 100%;
+    font-size: inherit;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgba(100,100,100, 0.1);
+    padding: 0.3rem 0.5rem;
   }
 }
 </style>
