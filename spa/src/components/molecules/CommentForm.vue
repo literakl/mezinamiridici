@@ -241,7 +241,7 @@ $color-grey: #dddddd;
     cursor: pointer;
 
   &.is-active {
-    background-color: rgba($color-black, .100);
+   border-bottom: 3px solid var(--theme-primary);
   }
 }
 
@@ -275,9 +275,6 @@ $color-grey: #dddddd;
 }
 .menubar__button:hover {
    background: #b9b8b5;
-}
-.menubar__button.is-active {
-  border-bottom: 3px solid var(--theme-primary);
 }
 
 .menubar button svg {
