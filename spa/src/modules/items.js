@@ -38,7 +38,14 @@ export default {
       state.page = payload;
     },
     CLEAR_BLOG: (state) => {
-      state.blog = null;
+      state.blog = {
+        comments: {},
+        data: {},
+        info: {
+          author: {},
+        },
+        type: '',
+      };
     },
   },
   actions: {

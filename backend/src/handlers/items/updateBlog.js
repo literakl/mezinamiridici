@@ -9,6 +9,7 @@ module.exports = (app) => {
 
   app.patch('/v1/blog/:blogId', auth.required, auth.cors, async (req, res) => {
     logger.verbose('update blog handler starts');
+    
     const { blogId } = req.params;
     if (!blogId) {
       return api.sendMissingParam(res, 'blogId');
@@ -25,12 +26,17 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
+      let blog = await mongo.getBlog(dbClient, undefined, blogId);
+      
+      if (blog && blog.info.author.id !== req.identity.userId) {
+        return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
+      }
 
       const query = prepareUpdateQuery(source, title, picture, tags);
       await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
       logger.debug('Blog updated');
 
-      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      blog = await mongo.getBlog(dbClient, undefined, blogId);
       logger.debug('Updated blog fetched');
       return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {

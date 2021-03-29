@@ -26,7 +26,7 @@
               {{ $t('generic.edit-button') }}
             </router-link>
           </div>
-          <div class="post-editorial">
+          <div class="post-editorial" v-if="role">
             <b-link v-if="!editorial" v-on:click="toggleEditorial">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.editorial.mark') }}
@@ -100,6 +100,9 @@ export default {
     },
     canEdit() {
       return this.blog.info.author.id === this.$store.getters.USER_ID;
+    },
+    role() {
+      return this.$store.getters.USER_ROLE;
     },
   },
   created() {
