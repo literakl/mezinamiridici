@@ -37,6 +37,9 @@ export default {
     SET_PAGE: (state, payload) => {
       state.page = payload;
     },
+    CLEAR_BLOG: (state) => {
+      state.blog = null;
+    },
   },
   actions: {
     SHARE_LINK: async (context, payload) => {

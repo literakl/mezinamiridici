@@ -80,7 +80,6 @@ export default {
   },
   watch: {
     blog() {
-      console.log(this.blog.info);
       this.blogHtml = this.blog.data.content;
       document.title = this.blog.info.caption;
     },
@@ -105,6 +104,11 @@ export default {
   },
   created() {
     this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
+  },
+  mounted() {
+    window.onpopstate = () => {
+      this.$store.commit('CLEAR_BLOG');
+    };
   },
   methods: {
     async toggleEditorial() {
