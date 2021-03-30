@@ -32,8 +32,10 @@
     "loading-message": "Loading ..",
     "loading-more-button": "Load more",
     "own-content": "Editorial",
-    "edit-button": "Upravit",
-    "save-button": "Uložit"
+    "edit-button": "Edit",
+    "save-button": "Save",
+    "reset-button": "Reset",
+    "reset-tooltip": "Reset"
   },
   "sign-in": {
     "email-placeholder": "Email",

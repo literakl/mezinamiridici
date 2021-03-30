@@ -2,7 +2,11 @@
   <div>
     <b-form>
       <div class="group-one">
-        <span class="reset-icon"><BIconArrowClockwise scale='1.5'></BIconArrowClockwise></span>
+        <span class="reset-icon">
+          <b-button size="sm" class="mb-2" v-on:click="reset">
+            <BIconArrowClockwise scale='1.5' v-b-tooltip.hover :title="$t('generic.reset-tooltip')"></BIconArrowClockwise>
+          </b-button>
+        </span>
         <b-form-group :label="$t('poll.analysis.driving_time')" label-cols-sm="4">
           <b-input-group class="mb-1">
             <b-form-input :aria-label="$t('poll.analysis.from')" :placeholder="$t('poll.analysis.from')"
@@ -106,8 +110,17 @@ export default {
     group: Object,
     id: String,
   },
-  data() {
-    return {};
+  methods: {
+    reset() {
+      this.group.drivingMin = undefined;
+      this.group.drivingMax = undefined;
+      this.group.ageMin = undefined;
+      this.group.ageMax = undefined;
+      this.group.sex = undefined;
+      this.group.edu = undefined;
+      this.group.region = undefined;
+      this.group.vehicles = undefined;
+    },
   },
 };
 </script>

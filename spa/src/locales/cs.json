@@ -33,7 +33,9 @@
     "loading-more-button": "Další",
     "own-content": "Redakce",
     "edit-button": "Upravit",
-    "save-button": "Uložit"
+    "save-button": "Uložit",
+    "reset-button": "Reset",
+    "reset-tooltip": "Reset"
   },
   "sign-in": {
     "email-placeholder": "Email",
