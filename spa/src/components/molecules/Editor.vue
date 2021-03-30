@@ -266,7 +266,7 @@ export default {
   border-radius: 4px;
 }
 
-.text-area .w-50 {
+/* .text-area .w-50 {
   width: 100% !important;
 }
 
@@ -282,17 +282,46 @@ export default {
 
 .text-area input:focus {
   border-bottom: 2px solid #ced4da;
+} */
+
+
+.text-area .w-50 {
+  width: 100% !important;
 }
 
+.text-area input {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  border: 0;
+  border-bottom: 2px solid #ddd;
+  font-size: 18px!important;
+  border-radius: 0;
+  padding: 0;
+}
+
+.ProseMirror-focused  .has-focus {
+  border-radius: 3px;
+  box-shadow: 0 0 0 3px #f7f7f7;
+}
 .ProseMirror {
-  border: #dddddd solid 1px;
+  border: #ddd solid 1px;
   padding: 10px;
-  min-height: 100px;
+  min-height: 250px;
 }
 
 .editor {
   width: 100%;
   margin-bottom: 15px;
+}
+.editor .menubar{
+  flex-wrap: wrap;
+    padding: 4px 5px;
+    border-radius: 4px 4px 0 0;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 0px solid #ddd;
 }
 
 .bottom-wrap {
@@ -320,7 +349,11 @@ export default {
 .tags-area div div {
   height: 150px;
 }
-
+.tags-area div {
+  border-radius: 0;
+  border: 0;
+  padding: 0;
+}
 blockquote {
   display: block;
   margin-top: 1em;
@@ -337,10 +370,6 @@ blockquote p {
   font-weight: bold;
 }
 
-.has-focus {
-  border-radius: 3px;
-  box-shadow: 0 0 0 3px #3ea4ffe6;
-}
 
 table {
   width: 100%;
@@ -407,6 +436,9 @@ $color-grey: #dddddd;
   border-radius: 3px;
   opacity: 1;
   cursor: pointer;
+}
+.menubar__button:hover {
+   background: #f8f7f4;
 }
 .menubar__button.is-active {
   border-bottom: 3px solid var(--theme-primary);

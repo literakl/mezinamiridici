@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 border centerbox">
+  <div class="mt-4 centerbox">
     <div class="head-area">
       <h2>{{ $t('cms.edit.edit-cms') }}</h2>
     </div>
@@ -32,7 +32,7 @@ export default {
 <style scoped>
 .centerbox {
   max-width: 1235px;
-  padding: 25px 35px;
+  padding: 25px 0;
   border-radius: 4px;
   margin: 0 auto 30px auto;
 }
@@ -53,11 +53,11 @@ export default {
   padding: 0 0 15px 0;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1235px) {
   .centerbox {
     margin-right: 35px;
     margin-left: 35px;
-    padding: 25px 20px;
   }
 }
+
 </style>

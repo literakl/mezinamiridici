@@ -263,27 +263,12 @@ $color-grey: #dddddd;
     border-bottom: 1px solid #ddd;
 }
 
-.menubar button {
-//  font-weight: 700;
-//    background: #f1f0ed;
-//   border: 0;
-//   padding: .2rem .5rem;
-//   margin-right: .2rem;
-//   border-radius: 3px;
-//   opacity: 1;
-//   cursor: pointer;
-}
 .menubar__button:hover {
-   background: #b9b8b5;
+   background: #f8f7f4;
 }
 
 .menubar button svg {
   color: var(--text-color)
-}
-
-.actions {
-  max-width: 30rem;
-  margin: 0 auto 2rem auto;
 }
 
 .export {
