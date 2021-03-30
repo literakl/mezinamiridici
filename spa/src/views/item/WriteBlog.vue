@@ -8,13 +8,21 @@
               v-model="title"
               :placeholder="$t('blog.form.title-placeholder')"
               class="write-blog"
+              :state="getValidationState(validationContext)"
+              aria-describedby="title-errors"
               :rules="{ required: true }"
             />
-            <b-form-invalid-feedback id="text-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+            <b-form-invalid-feedback id="title-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </ValidationProvider>
 
-          <Editor :blog="blog" @changeBlog="changeBlog" :rules="isRequired"/>
-          <b-form-invalid-feedback id="text-errors" :state="isRequired">{{ $t('blog.form.required-field') }}</b-form-invalid-feedback>
+          <Editor
+            :blog="blog"
+            v-model="html"
+            aria-describedby="content-errors"
+            @outOfFocus="handleOutOfFocus"
+            :class="{ invalid: !hideContentError }"
+          />
+          <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.required-field') }}</b-form-invalid-feedback>
         </div>
         <div class="bottom-wrap">
           <div class="tags-area">
@@ -22,7 +30,7 @@
           </div>
           <div class="image-area">
             <SelectPicture :currentPath="picture" @changePath="changePath" />
-            <b-button variant="primary" :disabled="invalid || !isRequired" @click="saveBlog">{{
+            <b-button variant="primary" :disabled="invalid || isEmpty" @click="saveBlog()">{{
               $t("blog.form.save-button")
             }}</b-button>
           </div>
@@ -58,14 +66,15 @@ export default {
       picture: '',
       tags: [],
       html: '',
+      hideContentError: true,
     };
   },
   computed: {
     blog() {
       return this.$store.getters.BLOG;
     },
-    isRequired() {
-      return !!(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
+    isEmpty() {
+      return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
   },
   watch: {
@@ -73,6 +82,11 @@ export default {
       this.title = this.blog.info.caption;
       this.picture = this.blog.info.picture;
       this.tags = this.blog.info.tags;
+    },
+    html() {
+      if (!this.isEmpty) {
+        this.hideContentError = true;
+      }
     },
   },
   methods: {
@@ -104,14 +118,23 @@ export default {
         console.log('empty title!');
       }
     },
-    changeBlog(blg) {
-      this.html = blg;
-    },
     tagSelect(tags) {
       this.tags = tags;
     },
     changePath(path) {
       this.picture = path;
+    },
+    getValidationState({
+      dirty,
+      validated,
+      valid = null,
+    }) {
+      return dirty || validated ? valid : null;
+    },
+    handleOutOfFocus() {
+      if (this.isEmpty) {
+        this.hideContentError = false;
+      }
     },
   },
   created() {

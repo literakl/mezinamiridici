@@ -247,13 +247,7 @@ $color-grey: #dddddd;
 
 .menubar{
     display: flex;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
     align-items: flex-start;
-    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     padding: 4px 5px;
     border-radius: 4px 4px 0 0;

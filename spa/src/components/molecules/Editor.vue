@@ -314,12 +314,12 @@ export default {
 }
 .editor .menubar{
   flex-wrap: wrap;
-    padding: 4px 5px;
-    border-radius: 4px 4px 0 0;
-    border-top: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 0px solid #ddd;
+  padding: 4px 5px;
+  border-radius: 4px 4px 0 0;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 0px solid #ddd;
 }
 
 .bottom-wrap {
