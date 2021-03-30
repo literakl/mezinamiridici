@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="editor" v-blur-event>
     <form @submit.prevent>
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
@@ -109,7 +109,7 @@
         </template>
       </div>
     </editor-menu-bubble>
-    <editor-content class="editor__content" :editor="editor" />
+    <editor-content class="editor__content" :editor="editor" tabindex="0"/>
     <input type="file" ref="fileUploadInput" style="display: none" />
     </form>
   </div>
@@ -162,6 +162,23 @@ export default {
     blog: {
       type: Object,
       default: null,
+    },
+    value: {
+      type: String,
+      default: '',
+    },
+  },
+  model: {
+    prop: 'value',
+    event: 'changeBlog',
+  },
+  directives: {
+    blurEvent: {
+      bind(el, binding, vnode) {
+        el.addEventListener('blur', () => {
+          vnode.context.$emit('outOfFocus');
+        }, true);
+      },
     },
   },
   data() {
@@ -265,25 +282,6 @@ export default {
   padding: 25px 20px;
   border-radius: 4px;
 }
-
-/* .text-area .w-50 {
-  width: 100% !important;
-}
-
-.text-area input {
-  margin-bottom: 20px;
-  width: 100%;
-  display: flex;
-  border: 0;
-  border-bottom: 2px solid #ddd;
-  font-size: 22px;
-  border-radius: 0;
-}
-
-.text-area input:focus {
-  border-bottom: 2px solid #ced4da;
-} */
-
 
 .text-area .w-50 {
   width: 100% !important;
