@@ -15,12 +15,12 @@ module.exports = (app) => {
   app.post('/v1/pages', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
     logger.verbose('Create page handler starts');
     const {
-      caption, slug, content,
+      caption, slug, content, contentPictures,
     } = req.body;
     if (!caption || !slug || !content) {
       return api.sendMissingParam(res, 'content');
     }
-
+    
     try {
       const dbClient = await mongo.connectToDatabase();
 
@@ -35,6 +35,8 @@ module.exports = (app) => {
       const pipeline = [mongo.stageId(pageId)];
       const page = await mongo.getPage(dbClient, pipeline);
       logger.debug('Page fetched');
+
+      mongo.storePictureId(dbClient, pageId, contentPictures, 'page');
 
       return api.sendCreated(res, api.createResponse(page));
     } catch (err) {

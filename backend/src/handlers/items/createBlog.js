@@ -17,8 +17,9 @@ module.exports = (app) => {
     logger.verbose('create blog handler starts');
 
     const {
-      title, source, date, picture, tags,
+      title, source, date, picture, tags, contentPictures,
     } = req.body;
+    
     if (!source) {
       return api.sendMissingParam(res, 'source');
     }
@@ -41,6 +42,8 @@ module.exports = (app) => {
 
       const blog = await mongo.getBlog(dbClient, undefined, blogId);
       logger.debug('Blog fetched');
+
+      mongo.storePictureId(dbClient, blogId, contentPictures, 'blog');
 
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {

@@ -67,6 +67,7 @@ export default {
       tags: [],
       html: '',
       hideContentError: true,
+      contentPictures: [],
     };
   },
   computed: {
@@ -85,6 +86,7 @@ export default {
     },
     html() {
       if (!this.isEmpty) {
+        this.getPictureIdList(this.html);
         this.hideContentError = true;
       }
     },
@@ -96,6 +98,7 @@ export default {
         source: this.html,
         picture: this.picture,
         tags: this.tags,
+        contentPictures: this.contentPictures,
       };
       let result = '';
 
@@ -134,6 +137,16 @@ export default {
     handleOutOfFocus() {
       if (this.isEmpty) {
         this.hideContentError = false;
+      }
+    },
+    getPictureIdList(html) {
+      this.contentPictures = [];
+      const tag = document.createElement('div');
+      tag.innerHTML = html;
+      const list = tag.getElementsByTagName('img');
+
+      for (let i = 0; i < list.length; i += 1) {
+        this.contentPictures.push(list[i].getAttribute('pictureid'));
       }
     },
   },

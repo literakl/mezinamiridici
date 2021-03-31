@@ -38,7 +38,7 @@ module.exports = (app) => {
     logger.verbose('image upload handler starts');
 
     try {
-      const { itemId } = req.body;
+      // const { item } = req.body;
       const { file } = req;
       if (!file) {
         return api.sendBadRequest(res, api.createError('Missing image'));
@@ -46,10 +46,8 @@ module.exports = (app) => {
 
       const user = auth.getIdentity(req.identity);
       const pictureId = mongo.generateTimeId();
-      console.log(file.destination.substring(UPLOAD_PICTURES_DIR.length));
-      console.log(file.filename);
-      const destination = `${file.destination.substring(UPLOAD_PICTURES_DIR.length)}/${file.filename}`;
-      console.log(destination);
+      const destination = `${UPLOADED_PICTURES_PATH}${file.destination.substring(UPLOAD_PICTURES_DIR.length)}/${file.filename}`;
+
       const upload = {
         _id: pictureId,
         user: user.userId,
@@ -57,19 +55,18 @@ module.exports = (app) => {
         mime: file.mimetype,
         path: destination,
       };
-      if (itemId) {
-        upload.item = itemId;
-      }
-      console.log(upload);
+      // if (item) {
+      //   upload.item = item;
+      // }
 
       const dbClient = await mongo.connectToDatabase();
       await mongo.insertOne(dbClient, 'upload', upload);
 
       const body = {
         pictureId,
-        url: `${UPLOADED_PICTURES_PATH}${destination}`,
+        url: destination,
       };
-      console.log(body);
+      
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {
       logger.error('Request failed', err);

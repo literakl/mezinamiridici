@@ -5,10 +5,6 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
 
-const path = require('path');
-
-app.use(express.static(path.join(__dirname, 'dist')));
-
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
 require('./handlers/users/changePassword')(app);

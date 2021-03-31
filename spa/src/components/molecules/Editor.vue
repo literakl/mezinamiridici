@@ -140,15 +140,12 @@ import {
 import Image from '@/utils/editorImage';
 import store from '@/store';
 
-async function upload(file, itemId) {
+async function upload(file) {
   const formData = new FormData();
   formData.append('image', file);
-  if (itemId) {
-    formData.append('item', itemId);
-  }
   // TODO handle errors
   const res = await store.dispatch('UPLOAD_IMAGE', formData);
-  return res.data.url;
+  return res.data;
 }
 
 export default {
@@ -257,8 +254,8 @@ export default {
   mounted() {
     this.$refs.fileUploadInput.addEventListener('change', async (event) => {
       if (event.target.files && event.target.files[0]) {
-        const src = await upload(event.target.files[0], this.blog._id);
-        event.target.command({ src });
+        const data = await upload(event.target.files[0]);
+        event.target.command({ src: data.url, pictureid: data.pictureId });
         event.target.command = null;
       }
     });
