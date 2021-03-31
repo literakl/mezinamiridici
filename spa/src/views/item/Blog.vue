@@ -110,6 +110,7 @@ export default {
   },
   mounted() {
     window.onpopstate = () => {
+      console.log('CLEARED');
       this.$store.commit('CLEAR_BLOG');
     };
   },

@@ -99,7 +99,9 @@ export default {
   actions: {
     // pokryt stavy: nacteni nove diskuse, dalsi stranka, nacist nove komentare
     FETCH_COMMENTS: async (context, payload) => {
-      Vue.$log.debug(`FETCH_COMMENTS ${payload}`);
+      if (payload.itemId === undefined) return;
+
+      Vue.$log.debug(`FETCH_COMMENTS ID:${payload && payload.itemId}`);
       let url = `/items/${payload.itemId}/comments`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
