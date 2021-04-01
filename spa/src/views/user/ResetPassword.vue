@@ -14,8 +14,15 @@
     </b-row>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <b-form @submit.prevent="passes(resetPassword)" action="placeholder">
-        <input type="email" id="email" name="email" v-model="email" v-show="false">
+      <b-form @submit.prevent="passes(resetPassword)" action="placeholder.php" method="post">  <!-- action placeholder attribute to force save credentials -->
+         <div class="field-area">
+          <TextInput
+            v-model="email"
+            rules="required"
+            :label="$t('profile.email')"
+            name="email"
+            type="email"/>
+        </div>
         <div class="field-area">
           <TextInput
             v-model="newPassword"
@@ -94,12 +101,12 @@ export default {
       try {
         await this.$store.dispatch('RESET_PASSWORD', {
           resetPasswordToken: this.resetPasswordToken,
+          email: this.email,
           password: this.newPassword,
-        }).then((response) => {
-          this.email = response.data.data.email;
+        }).then(() => {
           if (window.PasswordCredential) {
             // eslint-disable-next-line no-undef
-            const passwordCredential = new PasswordCredential({ id: response.data.data.email, password: this.newPassword });
+            const passwordCredential = new PasswordCredential({ id: this.email, password: this.newPassword });
             navigator.credentials.store(passwordCredential);
           }
         });

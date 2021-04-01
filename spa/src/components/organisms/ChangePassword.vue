@@ -1,16 +1,9 @@
 <template>
   <div class="pass-change">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <b-form @submit.prevent="passes(changePassword)">
+      <b-form @submit.prevent="passes(changePassword)" action="placeholder" method="post">
         <h3>{{ $t('sign-in.change-password-heading') }}</h3>
-        <div class="field-area">
-          <TextInput
-            v-model="email"
-            rules="email"
-            :label="$t('profile.email')"
-            name="email"
-            type="email"/>
-        </div>
+        <input type="email" name="email" :value="email" v-show="false">
         <div class="field-area">
           <TextInput
             v-model="currentPassword"
@@ -67,11 +60,15 @@ export default {
     BForm,
   },
   data: () => ({
-    email: null,
     currentPassword: null,
     newPassword: null,
     error: null,
   }),
+  computed: {
+    email() {
+      return this.$store.getters.USER_EMAIL;
+    },
+  },
   methods: {
     async changePassword() {
       try {
@@ -79,6 +76,12 @@ export default {
           currentPassword: this.currentPassword,
           newPassword: this.newPassword,
         });
+
+        if (window.PasswordCredential) {
+          // eslint-disable-next-line no-undef
+          const passwordCredential = new PasswordCredential({ id: this.email, password: this.newPassword });
+          navigator.credentials.store(passwordCredential);
+        }
 
         await this.$router.push({
           name: 'sign-in',
@@ -94,6 +97,7 @@ export default {
           this.error = this.$t('sign-in.auth-error');
         }
       }
+      return false;
     },
   },
 };

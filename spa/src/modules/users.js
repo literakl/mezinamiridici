@@ -57,6 +57,7 @@ export default {
     RESET_PASSWORD: (context, payload) => {
       const body = {
         resetPasswordToken: payload.resetPasswordToken,
+        email: payload.email,
         password: payload.password,
       };
       return post('API', '/resetPassword', body);
