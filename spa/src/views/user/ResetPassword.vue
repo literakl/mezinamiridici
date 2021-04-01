@@ -14,21 +14,24 @@
     </b-row>
 
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
-      <b-form @submit.prevent="passes(resetPassword)">
-        <div class="field-area">
-          <TextInput
-            v-model="email"
-            :label="$t('profile.email')"
-            name="email"
-            type="email"/>
-        </div>
+      <b-form @submit.prevent="passes(resetPassword)" action="placeholder">
+        <input type="email" id="email" name="email" v-model="email" v-show="false">
         <div class="field-area">
           <TextInput
             v-model="newPassword"
             rules="required|min:6"
             :label="$t('sign-in.new-password')"
             name="new-password"
+            type="password"/>
+        </div>
+        <div class="field-area">
+          <TextInput
+            v-model="confirmPassword"
+            :rules="{ required: true, is: newPassword }"
+            :label="$t('sign-in.confirm-password')"
+            name="confirm-password"
             type="password"
+            @keyup.enter="resetPassword"
           />
         </div>
 
@@ -39,6 +42,7 @@
         </div>
         <div class="m-auto">
           <Button
+            type="submit"
             class="w-100 green"
             :disabled="invalid"
             :value="$t('sign-in.change-password-button')"
@@ -60,6 +64,9 @@ configure({
   defaultMessage: (field, values) => {
     /* eslint no-param-reassign: ["error", { "props": false }] */
     values._field_ = i18n.t(`sign-in.${field}`);
+    if (values._rule_ === 'is') {
+      return i18n.t('sign-in.password-mismatch');
+    }
     return i18n.t(`validation.${values._rule_}`, values);
   },
 });
@@ -76,6 +83,7 @@ export default {
   data: () => ({
     email: null,
     newPassword: null,
+    confirmPassword: null,
     error: null,
   }),
   props: {
@@ -87,6 +95,13 @@ export default {
         await this.$store.dispatch('RESET_PASSWORD', {
           resetPasswordToken: this.resetPasswordToken,
           password: this.newPassword,
+        }).then((response) => {
+          this.email = response.data.data.email;
+          if (window.PasswordCredential) {
+            // eslint-disable-next-line no-undef
+            const passwordCredential = new PasswordCredential({ id: response.data.data.email, password: this.newPassword });
+            navigator.credentials.store(passwordCredential);
+          }
         });
 
         await this.$router.push({
@@ -103,6 +118,7 @@ export default {
           this.error = this.$t('sign-in.auth-error');
         }
       }
+      return false;
     },
   },
 };

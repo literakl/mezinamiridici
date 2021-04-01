@@ -67,6 +67,8 @@
     "change-password-heading": "Password change",
     "current-password": "Current password",
     "new-password": "New password",
+    "confirm-password": "Confirm password",
+    "password-mismatch": "The passwords do not match",
     "change-password-button": "Change password",
     "change-success": "Your password has been changed successfully. Please log in again."
   },
