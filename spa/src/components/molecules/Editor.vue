@@ -306,6 +306,9 @@ export default {
   border: #ddd solid 1px;
   padding: 10px;
   min-height: 250px;
+  max-height: 70vh;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .editor {
@@ -554,6 +557,9 @@ $color-grey: #dddddd;
     display: flex;
     justify-content: center;
     flex-direction: column;
+  }
+  .ProseMirror {
+    max-height: 50vh;
   }
 }
 </style>
