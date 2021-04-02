@@ -61,9 +61,12 @@ export default {
         }, 700);
       }
     },
+    itemId() {
+      this.getComments();
+    },
   },
-  async created() {
-    await this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
+  created() {
+    this.getComments();
   },
   mounted() {
     const { hash } = this.$route;
@@ -77,6 +80,9 @@ export default {
     this.$store.commit('DESTROY_COMMENTS');
   },
   methods: {
+    getComments() {
+      this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
+    },
     getCollapseId(comment) {
       return (comment.replies && comment.replies.length > 0) ? `replies_${comment._id}` : undefined;
     },
