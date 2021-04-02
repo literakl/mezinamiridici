@@ -22,6 +22,7 @@
 * edu: values: primary, secondary, university
 * registered: date when user became a member; required; date
 * urls: user's websites and social networks; optional; array of string
+* about: A description about themselves user can provide; optional; max 2000 charaters;
 
 ## Driving section
 

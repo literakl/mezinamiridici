@@ -29,9 +29,12 @@ module.exports = (app) => {
 
 function prepareUpdateProfileQuery(req) {
   const {
-    drivingSince, vehicles, sex, born, region, education, publicProfile, urls,
+    about, drivingSince, vehicles, sex, born, region, education, publicProfile, urls,
   } = req.body;
   const setters = {}, unsetters = {};
+  if (about) {
+    setters['bio.about'] = about.substr(0, 2000);
+  }
   if (sex) {
     setters['bio.sex'] = sex;
   } else {

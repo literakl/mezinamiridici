@@ -20,7 +20,7 @@
             </li>
           </ul>
           <div class="user-bio">
-            <p>Sit pariatur cillum ea sit consequat aute magna commodo laborum. Do nisi amet dolore laboris sit veniam amet minim deserunt eu in incididunt aliqua sit reprehenderit. Et cillum eiusmod Lorem fugiat nostrud non dolor nulla ipsum esse velit laboris. Lorem irure in ullamco dolor labore in mollit.</p>
+            <p>{{ userProfile.bio.about || '' }}</p>
           </div>
         </div>
       </div>

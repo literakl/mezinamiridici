@@ -19,7 +19,8 @@
     "born": 1975,
     "region": "PRG",
     "edu": "university",
-    "registered": "2020-03-22 16:46"
+    "registered": "2020-03-22 16:46",
+    "about": "A short description about me."
   },
   "driving": {
     "since": 2007,

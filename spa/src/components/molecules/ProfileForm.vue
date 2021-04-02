@@ -1,7 +1,23 @@
 <template>
   <div class="centerbox">
-    <label class="d-label" for="share-profile">{{ $t('profile.share-profile') }}</label>
     <div class="field-area">
+      <b-form-group
+        label="About Me"
+        label-for="textarea-formatter"
+        description="Max 2000 characters"
+        class="mb-0"
+      >
+        <b-form-textarea
+          id="textarea-formatter"
+          placeholder="Enter your text"
+          rows="6"
+          maxlength="2000"
+          v-model="about"
+        ></b-form-textarea>
+      </b-form-group>
+    </div>
+    <div class="field-area">
+      <label class="d-label" for="share-profile">{{ $t('profile.share-profile') }}</label>
       <div class="radio-boxes">
         <div class="public-box">
           <Radio
@@ -173,7 +189,7 @@
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
-import { BFormInput } from 'bootstrap-vue';
+import { BFormInput, BFormGroup, BFormTextarea } from 'bootstrap-vue';
 
 export default {
   name: 'ProfileForm',
@@ -182,6 +198,8 @@ export default {
     Checkbox,
     Radio,
     BFormInput,
+    BFormGroup,
+    BFormTextarea,
   },
   props: {
     formData: {
@@ -190,6 +208,7 @@ export default {
     },
   },
   data: () => ({
+    about: '',
     drivingSince: null,
     bike: false,
     car: false,
@@ -251,6 +270,9 @@ export default {
     },
     urls() {
       this.$emit('update', { urls: this.urls });
+    },
+    about() {
+      this.$emit('update', { about: this.about });
     },
   },
   created() {
