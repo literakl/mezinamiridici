@@ -18,8 +18,7 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
-      const user = await mongo.findUser(dbClient, { userId }, { projection: { 'auth.email': 1, bio: 1, driving: 1, 'prefs.public': 1, honors: 1, roles: 1 } });
+      const user = await mongo.findUser(dbClient, { userId }, { projection: { 'prefs.email': 0, consent: 0 } });
       logger.debug('User fetched');
       if (!user) {
         return api.sendNotFound(res, api.createError('User not found', 'profile.user-not-found'));
@@ -30,11 +29,19 @@ module.exports = (app) => {
         user.prefs = { public: user.prefs.public };
         user.driving = {};
       }
+
+      if (req.identity && req.identity.userId === userId) {
+        // noinspection JSObjectNullOrUndefined
+        user.auth = { email: user.auth.email };
+      } else {
+        user.auth = undefined;
+      }
+
       return api.sendResponse(res, api.createResponse(user));
       // return api.sendResponse(callback, api.createResponse(user), "public, max-age=600");
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to load  the user', 'generic.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to load the user', 'generic.something-went-wrong'));
     }
   });
 
@@ -44,7 +51,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
       logger.debug('User fetched');
       const data = { conflict: false };
@@ -65,7 +71,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = await mongo.findUser(dbClient, { nickname }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
       logger.debug('User fetched');
       const data = { conflict: false };
@@ -89,7 +94,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = await mongo.findUser(dbClient, { userId }, { projection: { 'bio.nickname': 1, 'bio.registered': 1, honors: 1 } });
       logger.debug('User fetched');
 

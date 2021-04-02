@@ -107,6 +107,7 @@ test('User API', async (done) => {
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
   let profile = response.data;
+  expect(profile.auth).toBeUndefined();
   expect(profile.bio.nickname).toBe('leos');
   expect(profile.bio.sex).toBeUndefined();
   expect(profile.bio.born).toBeUndefined();
@@ -120,6 +121,8 @@ test('User API', async (done) => {
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
   profile = response.data;
+  expect(profile.auth.email).toBe('leos@email.bud');
+  expect(profile.auth.pwdHash).toBeUndefined();
   expect(profile.bio.sex).toBe('man');
   expect(profile.bio.born).toBe(1974);
   expect(profile.bio.region).toBe('PRG');
@@ -143,6 +146,7 @@ test('User API', async (done) => {
   expect(response.success).toBeTruthy();
   expect(response.data).toBeDefined();
   profile = response.data;
+  expect(profile.auth).toBeUndefined();
   expect(profile.bio.sex).toBeUndefined();
   expect(profile.bio.born).toBe(1975);
   expect(profile.bio.region).toBe('MS');
@@ -173,6 +177,9 @@ test('User API', async (done) => {
   response = await api('forgotPassword', { method: 'POST', json: body }).json();
   expect(response.success).toBeTruthy();
   profile = await mongo.findUser(dbClient, { userId });
+  response = await api(`resetPassword/token/${profile.auth.reset.token}`).json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.email).toBe('leos@email.bud');
   body = {
     resetPasswordToken: profile.auth.reset.token,
     password: 'BadPassword',

@@ -67,8 +67,6 @@
     "change-password-heading": "Změna hesla",
     "current-password": "Současné heslo",
     "new-password": "Nové heslo",
-    "confirm-password": "Confirm password",
-    "password-mismatch": "The passwords do not match",
     "change-password-button": "Změnit heslo",
     "change-success": "Vaše heslo bylo úspěšně změněno. Přihlašte se prosím znovu."
   },

@@ -1,9 +1,18 @@
 <template>
   <div class="pass-change">
     <ValidationObserver ref="form" v-slot="{ passes, invalid }">
+      <!-- action placeholder attribute to force save credentials -->
       <b-form @submit.prevent="passes(changePassword)" action="placeholder" method="post">
         <h3>{{ $t('sign-in.change-password-heading') }}</h3>
-        <input type="email" name="email" :value="email" v-show="false">
+        <div class="field-area">
+          <TextInput
+            v-model="email"
+            :label="$t('profile.email')"
+            name="email"
+            type="email"
+            disabled
+          />
+        </div>
         <div class="field-area">
           <TextInput
             v-model="currentPassword"
@@ -20,6 +29,7 @@
             :label="$t('sign-in.new-password')"
             name="new-password"
             type="password"
+            autocomplete="new-password"
           />
           <div v-if="error">
             <strong class="text-error">
@@ -80,7 +90,7 @@ export default {
         if (window.PasswordCredential) {
           // eslint-disable-next-line no-undef
           const passwordCredential = new PasswordCredential({ id: this.email, password: this.newPassword });
-          navigator.credentials.store(passwordCredential);
+          await navigator.credentials.store(passwordCredential);
         }
 
         await this.$router.push({
@@ -106,12 +116,12 @@ export default {
 .pass-change {
   width: 100%;
   margin: 0 auto;
-  padding: 0 0 20px;
+  padding: 0px 0px 20px;
 }
 
 .pass-change h3 {
   font-size: 14px;
-  border-bottom: 0 solid #ddd;
+  border-bottom: 0px solid #ddd;
   padding-bottom: 10px;
 }
 
