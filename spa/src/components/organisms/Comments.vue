@@ -69,10 +69,14 @@ export default {
     this.getComments();
   },
   mounted() {
-    const { hash } = this.$route;
-    if (hash) {
-      this.$scrollTo(document.getElementById(hash), 500, { easing: 'ease' });
-    }
+    this.$nextTick(() => {
+      // TODO not reliable. When I click from home, it does not scroll well. When I reload, it scrolls correctly
+      let { hash } = this.$route;
+      if (hash) {
+        hash = hash.substring(1);
+        this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
+      }
+    });
   },
   destroyed() {
     this.$store.commit('DESTROY_COMMENTS');

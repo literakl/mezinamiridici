@@ -118,9 +118,7 @@ export default {
       await this.$store.dispatch('TOGGLE_EDITORIAL');
     },
     async toComments() {
-      console.log('to scroll');
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
-      console.log('after scroll');
     },
   },
 };
