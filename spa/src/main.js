@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { ModalPlugin } from 'bootstrap-vue';
+import { ModalPlugin, VBTooltip } from 'bootstrap-vue';
 import log from 'loglevel';
 import Chartkick from 'vue-chartkick';
 import Chart from 'chart.js';
@@ -28,6 +28,7 @@ Object.keys(rules).forEach((rule) => {
 });
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
+Vue.directive('b-tooltip', VBTooltip);
 
 // VUE_APP_LOG_LEVEL
 log.setLevel(process.env.LOG_LEVEL || 'debug');

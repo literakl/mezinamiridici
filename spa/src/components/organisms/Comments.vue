@@ -70,10 +70,8 @@ export default {
   },
   mounted() {
     const { hash } = this.$route;
-    if (this.$route.hash) {
-      setTimeout(() => {
-        window.location.href = hash;
-      }, 1000);
+    if (hash) {
+      this.$scrollTo(document.getElementById(hash), 500, { easing: 'ease' });
     }
   },
   destroyed() {
