@@ -24,9 +24,9 @@ module.exports = (app) => {
       const items = await getItems(dbClient, listParams, req);
       logger.debug('Items fetched');
 
-      const response = blendPinnedItems(dbClient, listParams, items);
-      return api.sendResponse(res, api.createResponse(response));
-      // return api.sendResponse(res, api.createResponse(items));
+      // const response = blendPinnedItems(dbClient, listParams, items);
+      // return api.sendResponse(res, api.createResponse(response));
+      return api.sendResponse(res, api.createResponse(items));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
@@ -54,13 +54,13 @@ function getItems(dbClient, listParams, req) {
     .toArray();
 }
 
-function blendPinnedItems(dbClient, listParams, items) {
-  let x = dbClient + listParams + items; // TODO
-  if (STREAM_PINNED_ITEMS) {
-    x += 1; // TOOD
-    console.log(x);
-    // eslint-disable-next-line no-eval
-    // const config = eval(STREAM_PINNED_ITEMS);
-  }
-  return items;
-}
+// function blendPinnedItems(dbClient, listParams, items) {
+//   let x = dbClient + listParams + items;
+//   if (STREAM_PINNED_ITEMS) {
+//     x += 1; // TOOD
+//     console.log(x);
+//     eslint-disable-next-line no-eval
+//     const config = eval(STREAM_PINNED_ITEMS);
+//   }
+//   return items;
+// }
