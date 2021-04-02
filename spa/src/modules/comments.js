@@ -101,7 +101,7 @@ export default {
     FETCH_COMMENTS: async (context, payload) => {
       if (payload.itemId === undefined) return;
 
-      Vue.$log.debug(`FETCH_COMMENTS ID:${payload && payload.itemId}`);
+      Vue.$log.debug(`FETCH_COMMENTS ${payload}`);
       let url = `/items/${payload.itemId}/comments`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
