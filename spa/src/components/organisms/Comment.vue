@@ -181,6 +181,8 @@ export default {
         return;
       }
       this.replying = !this.replying;
+      console.log(this.commentId);
+      this.$scrollTo(document.getElementById(this.comment._id), 500, { easing: 'ease' });
     },
   },
 };
