@@ -13,6 +13,9 @@ import VueScrollTo from 'vue-scrollto';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueAuthenticate from 'vue-authenticate';
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 import App from './App.vue';
 import router from './router';

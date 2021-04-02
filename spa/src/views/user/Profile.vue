@@ -19,6 +19,9 @@
               <a :href="item" rel="nofollow">{{ item }}</a>
             </li>
           </ul>
+          <div class="user-bio">
+            <p>Sit pariatur cillum ea sit consequat aute magna commodo laborum. Do nisi amet dolore laboris sit veniam amet minim deserunt eu in incididunt aliqua sit reprehenderit. Et cillum eiusmod Lorem fugiat nostrud non dolor nulla ipsum esse velit laboris. Lorem irure in ullamco dolor labore in mollit.</p>
+          </div>
         </div>
       </div>
 
@@ -224,8 +227,17 @@ export default {
   width: 100%;
   font-size: 14px;
   display: flex;
+  flex-direction: column;
   border-bottom: 2px solid #f3f3f3;
   padding-bottom: 20px;
+}
+
+.user-bio p {
+  margin:10px 0 5px;
+}
+
+.user-bio p::first-letter {
+  font-size: 18px;
 }
 
 .profile-area-top, .more-details {

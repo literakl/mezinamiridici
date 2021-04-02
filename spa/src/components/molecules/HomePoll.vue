@@ -14,7 +14,9 @@
             <span class="title-status">{{ $t('poll.choices.neutral') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
-                <span class="progress-bar-fill-green" v-bind:style="{ 'width' :  this.votes.neutral + '%'  }"><i>{{ this.votes.neutral }}%</i></span>
+                <span :class="(this.votes.neutral > 0) ? 'progress-bar-fill-green' : 'progress-bar-fill-yellow'" v-bind:style="{ 'width' :  this.votes.neutral + '%'  }">
+                  <i>{{ this.votes.neutral }}%</i>
+                </span>
               </div>
             </div>
           </div>
@@ -25,7 +27,9 @@
             <span class="title-status">{{ $t('poll.choices.trivial') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
-                <span class="progress-bar-fill-blue" :style="{'width' : this.votes.trivial + '%'}"><i>{{ this.votes.trivial }}%</i></span>
+                <span :class="(this.votes.trivial > 0) ? 'progress-bar-fill-blue' : 'progress-bar-fill-yellow'" :style="{'width' : this.votes.trivial + '%'}">
+                  <i>{{ this.votes.trivial }}%</i>
+                </span>
               </div>
             </div>
           </div>
@@ -36,7 +40,9 @@
             <span class="title-status">{{ $t('poll.choices.dislike') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
-                <span class="progress-bar-fill-yellow" :style="{'width': this.votes.dislike + '%'}"><i>{{ this.votes.dislike }}%</i></span>
+                <span class="progress-bar-fill-yellow" :style="{'width': this.votes.dislike + '%'}">
+                  <i>{{ this.votes.dislike }}%</i>
+                </span>
               </div>
             </div>
           </div>
@@ -47,7 +53,9 @@
             <span class="title-status">{{ $t('poll.choices.hate') }}</span>
             <div class="progress-bar-outer">
               <div class="progress-bar">
-                <span class="progress-bar-fill-red" :style="{'width': this.votes.hate + '%'}"><i>{{ this.votes.hate }}%</i></span>
+                <span :class="(this.votes.hate > 0) ? 'progress-bar-fill-red' : 'progress-bar-fill-yellow'" :style="{'width': this.votes.hate + '%'}">
+                  <i>{{ this.votes.hate }}%</i>
+                </span>
               </div>
             </div>
           </div>
