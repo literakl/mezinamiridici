@@ -12,15 +12,12 @@
               <span class="text-white">{{ $t('app.slogan') }}</span>
             </div>
           </b-navbar-nav>
-
           <b-navbar-nav class="ml-auto align-items-center rightmenu">
-            <b-nav-item :to="{ name: 'sign-in'}" v-if="!authorized">{{ $t('app.sign-in-up') }}</b-nav-item>
-            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
-              <template v-slot:button-content>
-                <BIconPencilSquare scale="2"></BIconPencilSquare>
-              </template>
-              <b-dropdown-item :to="{ name: 'create-blog', params: { id: userId } }">{{ $t('app.new-post') }}</b-dropdown-item>
-            </b-nav-item-dropdown>
+            <b-nav-item v-if="!authorized" :to="{ name: 'sign-in'}">{{ $t('app.sign-in-up') }}</b-nav-item>
+            <b-nav-item v-if="authorized" :to="{ name: 'create-blog', params: { id: userId } }"
+                        v-b-tooltip.hover :title="$t('app.new-post')" toggle-class="text-warning" right>
+              <BIconPencilSquare scale="2"></BIconPencilSquare>
+            </b-nav-item>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <BIconPersonCircle scale="2"></BIconPersonCircle>
