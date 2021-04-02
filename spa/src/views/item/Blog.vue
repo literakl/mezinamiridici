@@ -16,9 +16,9 @@
           </div>
           <div class="post-comments">
             <BIconChatTextFill scale="1"></BIconChatTextFill>
-            <a href="#comments">
+            <b-link v-on:click="toComments">
               {{ blog.comments.count }}
-            </a>
+            </b-link>
           </div>
           <div v-if="canEdit" class="post-edit">
             <BIconPencilSquare scale="1"></BIconPencilSquare>
@@ -116,6 +116,11 @@ export default {
   methods: {
     async toggleEditorial() {
       await this.$store.dispatch('TOGGLE_EDITORIAL');
+    },
+    async toComments() {
+      console.log('to scroll');
+      this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
+      console.log('after scroll');
     },
   },
 };
