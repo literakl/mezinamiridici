@@ -6,6 +6,11 @@ const { logger } = require('../../utils/logging');
 require('../../utils/path_env');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
+let { STREAM_PINNED_ITEMS } = process.env || 50;
+if (STREAM_PINNED_ITEMS && (STREAM_PINNED_ITEMS.charAt(0) !== '[' || STREAM_PINNED_ITEMS.charAt(STREAM_PINNED_ITEMS.length - 1) !== ']')) {
+  logger.error(`STREAM_PINNED_ITEMS does not look like JS array: '${STREAM_PINNED_ITEMS}', ignoring`);
+  STREAM_PINNED_ITEMS = undefined;
+}
 
 module.exports = (app) => {
   app.options('/v1/item-stream', auth.cors);
@@ -15,11 +20,13 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
-      const items = await getItems(dbClient, req);
+      const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);
+      const items = await getItems(dbClient, listParams, req);
       logger.debug('Items fetched');
 
-      return api.sendResponse(res, api.createResponse(items));
+      const response = blendPinnedItems(dbClient, listParams, items);
+      return api.sendResponse(res, api.createResponse(response));
+      // return api.sendResponse(res, api.createResponse(items));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
@@ -27,8 +34,7 @@ module.exports = (app) => {
   });
 };
 
-function getItems(dbClient, req) {
-  const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);
+function getItems(dbClient, listParams, req) {
   const { tag } = req.query;
   const query = {
     'info.published': true,
@@ -46,4 +52,15 @@ function getItems(dbClient, req) {
     .skip(listParams.start)
     .limit(listParams.pageSize)
     .toArray();
+}
+
+function blendPinnedItems(dbClient, listParams, items) {
+  let x = dbClient + listParams + items; // TODO
+  if (STREAM_PINNED_ITEMS) {
+    x += 1; // TOOD
+    console.log(x);
+    // eslint-disable-next-line no-eval
+    // const config = eval(STREAM_PINNED_ITEMS);
+  }
+  return items;
 }
