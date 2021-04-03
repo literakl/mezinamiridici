@@ -156,7 +156,6 @@ export default {
       try {
         const response = await this.$store.dispatch('GET_USER_PROFILE_BY_ID', { id });
         this.userProfile = response.data.data;
-        this.$store.commit('SET_USER_EMAIL', this.userProfile.auth.email);
       } catch (err) {
         this.$log.error(err);
         await this.$router.push({ name: 'junkyard' });
