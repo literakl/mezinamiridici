@@ -93,6 +93,7 @@ export default {
       education: '',
       share: 'public',
       urls: ['', '', ''],
+      about: '',
     },
   }),
   created() {
@@ -117,6 +118,7 @@ export default {
           }
         }
 
+        this.profileForm.about = this.userProfile.bio.about;
         this.profileForm.sex = this.userProfile.bio.sex;
         if (this.userProfile.bio.born) {
           this.profileForm.bornInYear = new Date(this.userProfile.bio.born, 0, 1);
@@ -160,6 +162,7 @@ export default {
           education: this.profileForm.education,
           publicProfile: this.profileForm.share,
           urls: this.profileForm.urls,
+          about: this.profileForm.about,
         });
         await this.$router.push({
           name: 'user-profile',
