@@ -34,6 +34,8 @@ function prepareUpdateProfileQuery(req) {
   const setters = {}, unsetters = {};
   if (about) {
     setters['bio.about'] = about.substr(0, 2000);
+  } else {
+    unsetters['bio.about'] = '';
   }
   if (sex) {
     setters['bio.sex'] = sex;

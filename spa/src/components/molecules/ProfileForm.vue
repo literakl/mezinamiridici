@@ -2,19 +2,33 @@
   <div class="centerbox">
     <div class="field-area">
       <b-form-group
-        label="About Me"
+        :label="$t('profile.about-me-label')"
         label-for="textarea-formatter"
-        description="Max 2000 characters"
+        :description="$t('profile.about-me-description')"
         class="mb-0"
       >
         <b-form-textarea
           id="textarea-formatter"
-          placeholder="Enter your text"
-          rows="6"
+          :placeholder="$t('profile.about-me-hint')"
+          rows="3"
           maxlength="2000"
           v-model="about"
         ></b-form-textarea>
       </b-form-group>
+    </div>
+    <div class="field-area">
+      <div>
+        <label class="d-label">{{ $t('edit-profile.urls') }}</label>
+      </div>
+      <div class="pb-2">
+        <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')"></b-form-input>
+      </div>
+      <div class="pb-2">
+        <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')"></b-form-input>
+      </div>
+      <div class="pb-2">
+        <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')"></b-form-input>
+      </div>
     </div>
     <div class="field-area">
       <label class="d-label" for="share-profile">{{ $t('profile.share-profile') }}</label>
@@ -166,20 +180,6 @@
           :label="$t('profile.educations.university')"
           name="education"
           identifier="university"/>
-      </div>
-    </div>
-    <div class="field-area">
-      <div>
-        <label class="d-label">{{ $t('edit-profile.urls') }}</label>
-      </div>
-      <div class="pb-2">
-        <b-form-input v-model="urls[0]" :placeholder="$t('edit-profile.enter-url')"></b-form-input>
-      </div>
-      <div class="pb-2">
-        <b-form-input v-model="urls[1]" :placeholder="$t('edit-profile.enter-url')"></b-form-input>
-      </div>
-      <div class="pb-2">
-        <b-form-input v-model="urls[2]" :placeholder="$t('edit-profile.enter-url')"></b-form-input>
       </div>
     </div>
   </div>

@@ -115,6 +115,9 @@
     "email": "Email",
     "password": "Heslo",
     "nickname": "Přezdívka",
+    "about-me-label": "O mě",
+    "about-me-description": "Maximálně 2000 znaků",
+    "about-me-hint": "Povězte nám něco o sobě",
     "driving-since-label": "Řidičem od",
     "vehicles-label": "Vozidla",
     "vehicles": {
@@ -153,9 +156,9 @@
       "man": "muž",
       "woman": "žena"
     },
-    "public": "veřejný",
-    "private": "soukromý",
-    "share-profile": "Profil je",
+    "share-profile": "Následující údaje jsou",
+    "public": "veřejné",
+    "private": "tajné",
     "finish-button": "Dokončit",
     "born": "Rok narození",
     "terms": "Souhlasím s podmínkami užití",

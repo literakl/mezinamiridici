@@ -19,8 +19,8 @@
               <a :href="item" rel="nofollow">{{ item }}</a>
             </li>
           </ul>
-          <div class="user-bio">
-            <p>{{ userProfile.bio.about || '' }}</p>
+          <div v-if="userProfile.bio.about" class="user-bio">
+            <p>{{ userProfile.bio.about }}</p>
           </div>
         </div>
       </div>

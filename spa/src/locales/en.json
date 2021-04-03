@@ -115,6 +115,9 @@
     "email": "Email",
     "password": "Password",
     "nickname": "Nickname",
+    "about-me-label": "About me",
+    "about-me-description": "Max 2000 characters",
+    "about-me-hint": "Enter your text",
     "driving-since-label": "Driving since",
     "vehicles-label": "Vehicle",
     "vehicles": {
@@ -153,9 +156,9 @@
       "man": "man",
       "woman": "woman"
     },
+    "share-profile": "Following information is",
     "public": "public",
     "private": "private",
-    "share-profile": "Share profile",
     "finish-button": "Finish",
     "born": "Born",
     "terms": "I agree with terms and conditions",
