@@ -6,7 +6,7 @@
         <h3>{{ $t('sign-in.change-password-heading') }}</h3>
         <div class="field-area">
           <TextInput
-            v-model="email"
+            :value="email"
             :label="$t('profile.email')"
             name="email"
             type="email"
@@ -69,16 +69,14 @@ export default {
     TextInput,
     BForm,
   },
+  props: {
+    email: String,
+  },
   data: () => ({
     currentPassword: null,
     newPassword: null,
     error: null,
   }),
-  computed: {
-    email() {
-      return this.$store.getters.USER_EMAIL;
-    },
-  },
   methods: {
     async changePassword() {
       try {

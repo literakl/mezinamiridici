@@ -81,7 +81,7 @@
         </b-tab>
 
         <b-tab v-if="myProfile" :title="$t('profile.tabs.settings')">
-          <ChangePassword/>
+          <ChangePassword :email="userProfile.auth.email"/>
         </b-tab>
       </b-tabs>
     </div>
