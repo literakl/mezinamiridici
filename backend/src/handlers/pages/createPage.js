@@ -20,7 +20,7 @@ module.exports = (app) => {
     if (!caption || !slug || !content) {
       return api.sendMissingParam(res, 'content');
     }
-    
+
     try {
       const dbClient = await mongo.connectToDatabase();
 
@@ -36,7 +36,7 @@ module.exports = (app) => {
       const page = await mongo.getPage(dbClient, pipeline);
       logger.debug('Page fetched');
 
-      mongo.storePictureId(dbClient, pageId, contentPictures, 'page');
+      mongo.storePictureId(dbClient, pageId, contentPictures);
 
       return api.sendCreated(res, api.createResponse(page));
     } catch (err) {

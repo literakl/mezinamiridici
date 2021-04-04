@@ -38,7 +38,6 @@ module.exports = (app) => {
     logger.verbose('image upload handler starts');
 
     try {
-      // const { item } = req.body;
       const { file } = req;
       if (!file) {
         return api.sendBadRequest(res, api.createError('Missing image'));
@@ -55,18 +54,15 @@ module.exports = (app) => {
         mime: file.mimetype,
         path: destination,
       };
-      // if (item) {
-      //   upload.item = item;
-      // }
 
       const dbClient = await mongo.connectToDatabase();
-      await mongo.insertOne(dbClient, 'upload', upload);
+      await mongo.insertOne(dbClient, 'uploads', upload);
 
       const body = {
         pictureId,
         url: destination,
       };
-      
+
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {
       logger.error('Request failed', err);
@@ -98,9 +94,13 @@ module.exports = (app) => {
       const update = { $set: setters };
 
       const dbClient = await mongo.connectToDatabase();
-      await mongo.updateOne(dbClient, 'upload', filter, update);
+      const result = await mongo.updateOne(dbClient, 'uploads', filter, update);
 
-      return api.sendCreated(res, api.createResponse('OK'));
+      if (result.matchedCount === 1) {
+        return api.sendResponse(res, api.createResponse('OK'));
+      } else {
+        return api.sendNotFound(res, api.createResponse('Picture not found or user not authorized to modify'));
+      }
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to update image', 'sign-in.something-went-wrong'));

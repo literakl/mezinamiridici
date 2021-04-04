@@ -132,8 +132,8 @@ test('User Rank', async (done) => {
     picture: 'picture.png',
     tags: ['tag', 'another tag'],
   };
-  voteResponse = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(voteResponse.success).toBeTruthy();
+  const blog1 = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(blog1.success).toBeTruthy();
 
   await calculateUserHonors();
   rank = await getUserRank(dbClient, Leos._id);
@@ -200,6 +200,7 @@ beforeEach(async () => {
   await db.collection('poll_votes').deleteMany({});
   await db.collection('comment_votes').deleteMany({});
   await db.collection('link_shares').deleteMany({});
+  await db.collection('uploads').deleteMany({});
 });
 
 beforeAll(async () => {

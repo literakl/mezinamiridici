@@ -42,8 +42,8 @@ module.exports = (app) => {
       const item = await mongo.getPage(dbClient, pipeline);
       logger.debug('Updated page fetched');
 
-      mongo.storePictureId(dbClient, pageId, contentPictures, 'page');
-      
+      mongo.storePictureId(dbClient, pageId, contentPictures);
+
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);

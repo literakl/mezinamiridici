@@ -225,6 +225,7 @@ function setupIndexes(dbClient) {
   db.collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
   db.collection('link_shares').createIndex({ user: 1 });
   db.collection('link_shares').createIndex({ date: 1 });
+  db.collection('updates').createIndex({ item: 1 });
 }
 
 // Takes milliseconds and appends a random character to avoid sub-millisecond conflicts, e.g. 1dvfc3nt84
@@ -252,17 +253,15 @@ function spent(start) {
   return dayjs().diff(start);
 }
 
-function storePictureId (dbClient, itemId, pictureIds, type) {
-  const setters = {};
-  setters['type'] = type;
-  setters['item'] = itemId;
-
-  const query = { };
-  query.$set = setters;
-
-  pictureIds.forEach(item => {
-    dbClient.db().collection('upload').updateOne({ _id: item }, query);
-  })
+function storePictureId(dbClient, itemId, pictureIds) {
+  if (pictureIds) {
+    const query = { $set: { item: itemId } };
+    pictureIds.forEach((item) => {
+      dbClient.db()
+        .collection('uploads')
+        .updateOne({ _id: item }, query);
+    });
+  }
 }
 
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };

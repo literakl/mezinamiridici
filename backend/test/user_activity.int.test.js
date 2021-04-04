@@ -108,9 +108,11 @@ test('User activity API', async (done) => {
 });
 
 beforeEach(async () => {
-  await dbClient.db().collection('items').deleteMany({});
-  await dbClient.db().collection('polls').deleteMany({});
-  await dbClient.db().collection('comments').deleteMany({});
+  const db = dbClient.db();
+  await db.collection('items').deleteMany({});
+  await db.collection('polls').deleteMany({});
+  await db.collection('comments').deleteMany({});
+  await db.collection('uploads').deleteMany({});
 });
 
 beforeAll(async () => {

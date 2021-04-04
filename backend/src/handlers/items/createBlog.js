@@ -19,7 +19,7 @@ module.exports = (app) => {
     const {
       title, source, date, picture, tags, contentPictures,
     } = req.body;
-    
+
     if (!source) {
       return api.sendMissingParam(res, 'source');
     }
@@ -43,7 +43,7 @@ module.exports = (app) => {
       const blog = await mongo.getBlog(dbClient, undefined, blogId);
       logger.debug('Blog fetched');
 
-      mongo.storePictureId(dbClient, blogId, contentPictures, 'blog');
+      mongo.storePictureId(dbClient, blogId, contentPictures);
 
       return api.sendCreated(res, api.createResponse(blog));
     } catch (err) {
