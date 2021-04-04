@@ -68,6 +68,22 @@ async function getActivity(dbClient, userId, type, req) {
         'item.info.slug': 1,
       },
     });
+
+    const list = await dbClient.db().collection(table)
+      .aggregate(pipeline)
+      .sort({ 'info.date': -1 })
+      .sort({ date: -1 })
+      .skip(listParams.start)
+      .limit(listParams.pageSize)
+      .toArray();
+
+    const result = [];
+    list.forEach((x) => {
+      const item = { _id: x._id, date: x.date, type: x.item[0].type, userId: x.item[0].info.author.id, slug: x.item[0].info.slug };
+      item.text = html2text(x.text).substring(0, TRUNCATE_COMMENTS);
+      result.push(item);
+    });
+    return result;
   } else {
     table = 'items';
     pipeline.push({
@@ -81,29 +97,20 @@ async function getActivity(dbClient, userId, type, req) {
         'info.caption': 1,
       },
     });
-  }
 
-  const list = await dbClient.db().collection(table)
-    .aggregate(pipeline)
-    .sort({ date: -1 })
-    .skip(listParams.start)
-    .limit(listParams.pageSize)
-    .toArray();
+    const list = await dbClient.db().collection(table)
+      .aggregate(pipeline)
+      .sort({ 'info.date': -1 })
+      .skip(listParams.start)
+      .limit(listParams.pageSize)
+      .toArray();
 
-  const result = [];
-  if (type === 'comment') {
-    list.forEach((x) => {
-      const item = { _id: x._id, date: x.date, type: x.item[0].type, userId: x.item[0].info.author.id, slug: x.item[0].info.slug };
-      item.text = html2text(x.text).substring(0, TRUNCATE_COMMENTS);
-      result.push(item);
-    });
-  } else {
+    const result = [];
     list.forEach((x) => {
       const item = { _id: x._id, date: x.info.date, type: 'blog', userId: x.info.author.id, slug: x.info.slug };
       item.text = html2text(x.info.caption).substring(0, TRUNCATE_COMMENTS);
       result.push(item);
     });
+    return result;
   }
-
-  return result;
 }
