@@ -19,7 +19,7 @@ module.exports = (app) => {
       return api.sendMissingParam(res, 'pageId');
     }
     const {
-      caption, slug, content,
+      caption, slug, content, contentPictures,
     } = req.body;
     if (!caption) {
       return api.sendMissingParam(res, 'caption');
@@ -41,6 +41,9 @@ module.exports = (app) => {
       const pipeline = [mongo.stageId(pageId)];
       const item = await mongo.getPage(dbClient, pipeline);
       logger.debug('Updated page fetched');
+
+      mongo.storePictureId(dbClient, pageId, contentPictures, 'page');
+      
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);

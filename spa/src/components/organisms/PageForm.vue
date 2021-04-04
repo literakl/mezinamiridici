@@ -57,6 +57,7 @@ export default {
     },
     error: null,
     html: '',
+    contentPictures: [],
   }),
   mounted() {
     if (!this.isCreate) {
@@ -67,6 +68,7 @@ export default {
   },
   methods: {
     changeBlog(blg) {
+      this.getPictureIdList(blg);
       this.html = blg;
     },
     getValidationState({
@@ -82,6 +84,7 @@ export default {
         caption: this.form.caption,
         slug: this.form.slug.replaceAll('/', ''),
         content: this.html,
+        contentPictures: this.contentPictures,
       };
 
       if (this.isCreate) {
@@ -104,6 +107,16 @@ export default {
         } else {
           this.error = this.$t('generic.internal-error');
         }
+      }
+    },
+    getPictureIdList(html) {
+      this.contentPictures = [];
+      const tag = document.createElement('div');
+      tag.innerHTML = html;
+      const list = tag.getElementsByTagName('img');
+
+      for (let i = 0; i < list.length; i += 1) {
+        this.contentPictures.push(list[i].getAttribute('pictureid'));
       }
     },
 

@@ -252,6 +252,19 @@ function spent(start) {
   return dayjs().diff(start);
 }
 
+function storePictureId (dbClient, itemId, pictureIds, type) {
+  const setters = {};
+  setters['type'] = type;
+  setters['item'] = itemId;
+
+  const query = { };
+  query.$set = setters;
+
+  pictureIds.forEach(item => {
+    dbClient.db().collection('upload').updateOne({ _id: item }, query);
+  })
+}
+
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
 const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
 function stageLimit(n) { return { $limit: n }; }
@@ -344,3 +357,4 @@ exports.incrementUserActivityCounter = incrementUserActivityCounter;
 exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
 exports.logAdminActions = logAdminActions;
+exports.storePictureId = storePictureId;
