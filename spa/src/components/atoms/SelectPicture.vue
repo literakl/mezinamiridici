@@ -61,7 +61,7 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch('FETCH_ITEM_PICTURES');
+    await this.$store.dispatch('FETCH_STREAM_PICTURES');
   },
 };
 </script>

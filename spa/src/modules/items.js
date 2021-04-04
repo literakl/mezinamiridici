@@ -75,8 +75,8 @@ export default {
       context.commit('SET_ITEMS_BY_TAG', response.data.data);
       return response.data.data;
     },
-    FETCH_ITEM_PICTURES: async (context) => {
-      Vue.$log.debug('FETCH_ITEM_PICTURES');
+    FETCH_STREAM_PICTURES: async (context) => {
+      Vue.$log.debug('FETCH_STREAM_PICTURES');
       const response = await get('API', '/items/pictures', context);
       context.commit('SET_ITEM_PICTURES', response.data.data);
       return response.data.data;

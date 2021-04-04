@@ -34,7 +34,7 @@ require('./handlers/items/tags')(app);
 require('./handlers/items/createBlog')(app);
 require('./handlers/items/updateBlog')(app);
 require('./handlers/items/getBlog')(app);
-require('./handlers/items/getItemPictures')(app);
+require('./handlers/items/getStreamPictures')(app);
 require('./handlers/misc/imageUpload')(app);
 require('./handlers/misc/tagList')(app);
 require('./handlers/comments/createComment')(app);
