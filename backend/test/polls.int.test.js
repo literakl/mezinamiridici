@@ -281,6 +281,15 @@ test('Poll API', async (done) => {
   expect(response.data._id).toBe(fourthPoll.id);
   expect(response.data.my_vote).toBe('hate');
 
+  // set date to future
+  fourthPoll.date = dayjs().add(1, 'day').format('YYYY-MM-DD');
+  response = await api(`polls/${fourthPoll.id}`, { method: 'PATCH', json: fourthPoll, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+
+  // check the last poll again
+  response = await bff('polls/last').json();
+  expect(response.data._id).toBe(thirdPoll.id);
+
   // get all polls with default params
   response = await bff('polls/').json();
   expect(response.data.length).toBe(4);

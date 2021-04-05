@@ -99,5 +99,5 @@ async function insertItem(dbClient, pollId, text, author, picture, publishDate, 
     },
   };
 
-  return await dbClient.db().collection('items').insertOne(item);
+  return dbClient.db().collection('items').insertOne(item);
 }

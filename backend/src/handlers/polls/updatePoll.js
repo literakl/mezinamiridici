@@ -42,7 +42,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       let user = auth.getIdentity(req.identity);
       if (author !== undefined && author.length > 0 && ['development', 'test'].includes(NODE_ENV)) {
         user = await mongo.getIdentity(dbClient, author);

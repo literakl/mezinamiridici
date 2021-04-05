@@ -12,7 +12,6 @@ module.exports = (app) => {
     logger.verbose('getLastPoll handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const pipeline = [mongo.stagePublishedPoll, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
@@ -33,7 +32,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const pipeline = [mongo.stageSlug(slug)];
       if (req.identity) {
         // noinspection JSCheckFunctionSignatures

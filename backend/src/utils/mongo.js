@@ -265,7 +265,7 @@ function storePictureId(dbClient, itemId, pictureIds) {
 }
 
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
-const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll' } };
+const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll', 'info.date': { $lte: new Date() } } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
