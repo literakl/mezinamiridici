@@ -13,17 +13,30 @@
             </div>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto align-items-center rightmenu">
-            <b-nav-item v-if="!authorized" :to="{ name: 'sign-in'}">{{ $t('app.sign-in-up') }}</b-nav-item>
-            <b-nav-item v-if="authorized" :to="{ name: 'create-blog', params: { id: userId } }"
-                        v-b-tooltip.hover :title="$t('app.new-post')" toggle-class="text-warning" right>
-              <BIconPencilSquare scale="2"></BIconPencilSquare>
+            <b-nav-item v-if="!authorized">
+              <router-link :to="{ name: 'sign-in'}">
+                {{ $t('app.sign-in-up') }}
+              </router-link>
+            </b-nav-item>
+            <b-nav-item v-if="authorized" v-b-tooltip.hover :title="$t('app.new-post')" toggle-class="text-warning" right>
+              <router-link :to="{ name: 'create-blog', params: { id: userId } }">
+                <BIconPencilSquare scale="2"></BIconPencilSquare>
+              </router-link>
             </b-nav-item>
             <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
               <template v-slot:button-content>
                 <BIconPersonCircle scale="2"></BIconPersonCircle>
               </template>
-              <b-dropdown-item :to="{ name: 'user-profile', params: { id: userId } }">{{ $t('app.my-profile') }}</b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'update-profile', params: { id: userId }}">{{ $t('app.update-profile') }}</b-dropdown-item>
+              <b-dropdown-item>
+                <router-link :to="{ name: 'user-profile', params: { id: userId } }" class="dropdown-item p-0">
+                  {{ $t('app.my-profile') }}
+                </router-link>
+              </b-dropdown-item>
+              <b-dropdown-item>
+                <router-link :to="{ name: 'update-profile', params: { id: userId }}" class="dropdown-item p-0">
+                  {{ $t('app.update-profile') }}
+                </router-link>
+              </b-dropdown-item>
               <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown toggle-class="text-warning" right>
@@ -45,7 +58,15 @@
 </template>
 
 <script>
-import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem } from 'bootstrap-vue';
+import {
+  BIconPersonCircle,
+  BIconInfoCircle,
+  BIconPencilSquare,
+  BNavbar,
+  BNavbarNav,
+  BNavItemDropdown,
+  BDropdownItem,
+  BNavItem } from 'bootstrap-vue';
 
 export default {
   name: 'App',
