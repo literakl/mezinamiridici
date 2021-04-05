@@ -7,7 +7,8 @@
           <b-avatar size="5rem"></b-avatar>
           <div class="nickname-row">
             <h2>{{ userProfile.bio.nickname }}
-              <router-link :to="{ name: 'update-profile', params: { id: id }}"><span class="edit-btn"><BIconPencilSquare scale="1.6"></BIconPencilSquare></span>
+              <router-link :to="{ name: 'update-profile', params: { id: id }}">
+                <span class="edit-btn"><BIconPencilSquare scale="1.6"></BIconPencilSquare></span>
               </router-link>
             </h2>
           </div>
