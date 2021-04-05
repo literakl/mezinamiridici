@@ -20,6 +20,9 @@ module.exports = (app) => {
       title, source, date, picture, tags, contentPictures,
     } = req.body;
 
+    if (!title) {
+      return api.sendMissingParam(res, 'title');
+    }
     if (!source) {
       return api.sendMissingParam(res, 'source');
     }
@@ -33,7 +36,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = auth.getIdentity(req.identity);
       const blogId = mongo.generateTimeId();
       await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);

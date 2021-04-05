@@ -39,7 +39,7 @@ function getItems(dbClient, listParams, req) {
   const query = {
     'info.published': true,
     type: { $in: ['blog', 'poll'] },
-    // 'info.date': { $lte: new Date() }, TODO
+    'info.date': { $lte: new Date() },
   };
   if (tag) {
     query['info.tags'] = tag;
