@@ -37,7 +37,7 @@ test('User activity API', async (done) => {
   const poll2 = {
     text: 'Second question',
     picture: 'picture.png',
-    date: '2020-20-20',
+    date: '2020-02-20',
   };
   response = await api('polls', { method: 'POST', json: poll2, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
@@ -80,7 +80,7 @@ test('User activity API', async (done) => {
   // const comment2 = response.data;
 
   commentBody.text = 'Comment 3';
-  commentBody.date = '2020-20-20 20:20:20';
+  commentBody.date = '2020-02-20 20:20:20';
   response = await api(`items/${poll4.id}/comments`, { method: 'POST', json: commentBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
   const comment3 = response.data;
@@ -90,10 +90,10 @@ test('User activity API', async (done) => {
   response = await api(`users/${Leos._id}/activity?type=poll`).json();
   expect(response.success).toBeTruthy();
   expect(response.data.length).toBe(2);
-  expect(response.data[0]._id).toBe(poll2.id);
-  expect(response.data[0].text).toBe(poll2.text);
-  expect(response.data[1]._id).toBe(poll1.id);
-  expect(response.data[1].text).toBe(poll1.text);
+  expect(response.data[0]._id).toBe(poll1.id);
+  expect(response.data[0].text).toBe(poll1.text);
+  expect(response.data[1]._id).toBe(poll2.id);
+  expect(response.data[1].text).toBe(poll2.text);
 
   response = await api(`users/${Leos._id}/activity?type=comment`).json();
   expect(response.success).toBeTruthy();

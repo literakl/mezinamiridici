@@ -30,7 +30,7 @@ module.exports = (app) => {
       if (parentId) {
         const response = await mongo.findOne(dbClient, 'comments', { _id: parentId, parentId: null });
         if (!response) {
-          return api.sendBadRequest(res, api.createError(`Comment ${parentId} is already reply`, 'generic.internal-error'));
+          return api.sendBadRequest(res, api.createError(`Comment ${parentId} is already a reply`, 'generic.internal-error'));
         }
       }
 
