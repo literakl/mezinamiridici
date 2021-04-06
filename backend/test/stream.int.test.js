@@ -8,6 +8,7 @@ dotenv.config({ path: envPath });
 const mongo = require('../src/utils/mongo.js');
 const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
+const { setPinnedItems } = require('../src/handlers/items/getItems');
 const {
   api, getAuthHeader,
 } = require('./testUtils');
@@ -142,20 +143,23 @@ test('Stream API', async (done) => {
   IBlog.id = response.data._id;
   IBlog.slug = response.data.info.slug;
 
+  // set pinned items
+  setPinnedItems(`[{ slug: '${EBlog.slug}', position: 3 },{ slug: '${IBlog.slug}', position: 1 }]`);
+
   response = await api('item-stream?start=0&ps=10').json();
   expect(response.success).toBeTruthy();
   expect(response.data.length).toBe(9);
   expect(response.data[0]._id).toBe(ABlog.id);
   expect(response.data[0].info.caption).toBe(ABlog.title);
   expect(response.data[0].info.picture).toBe(ABlog.picture);
-  expect(response.data[1]._id).toBe(BBlog.id);
-  expect(response.data[2]._id).toBe(CPoll.id);
-  expect(response.data[3]._id).toBe(DBlog.id);
-  expect(response.data[4]._id).toBe(EBlog.id);
-  expect(response.data[5]._id).toBe(FPoll.id);
-  expect(response.data[6]._id).toBe(GBlog.id);
-  expect(response.data[7]._id).toBe(HBlog.id);
-  expect(response.data[8]._id).toBe(IBlog.id);
+  expect(response.data[1]._id).toBe(IBlog.id);
+  expect(response.data[2]._id).toBe(BBlog.id);
+  expect(response.data[3]._id).toBe(EBlog.id);
+  expect(response.data[4]._id).toBe(CPoll.id);
+  expect(response.data[5]._id).toBe(DBlog.id);
+  expect(response.data[6]._id).toBe(FPoll.id);
+  expect(response.data[7]._id).toBe(GBlog.id);
+  expect(response.data[8]._id).toBe(HBlog.id);
 
   done();
 });
