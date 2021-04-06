@@ -110,13 +110,16 @@
       </div>
     </editor-menu-bubble>
     <editor-content class="editor__content" :editor="editor" tabindex="0"/>
+
+    <div class="upload-progress-content" v-if="progressValue!==0 && progressValue!==progressMax">
+      <b-progress class="custom-progress-bar" :value="progressValue" :max="progressMax" variant="success" show-progress animated show-value></b-progress>
+    </div>
+
     <input type="file" ref="fileUploadInput" style="display: none" />
     </form>
   </div>
 </template>
 <script>
-import { loadProgressBar } from 'axios-progress-bar';
-import 'axios-progress-bar/dist/nprogress.css';
 import Icon from '@/components/atoms/EditorIcon.vue';
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
 import {
@@ -141,12 +144,16 @@ import {
 } from 'tiptap-extensions';
 import Image from '@/utils/editorImage';
 import store from '@/store';
+import { BProgress } from 'bootstrap-vue';
 
-async function upload(file) {
+async function upload(file, progress) {
   const formData = new FormData();
   formData.append('image', file);
   // TODO handle errors
-  const res = await store.dispatch('UPLOAD_IMAGE', formData);
+  const res = await store.dispatch('UPLOAD_IMAGE', {
+    body: formData,
+    progress,
+  });
   return res.data;
 }
 
@@ -156,6 +163,7 @@ export default {
     EditorContent,
     EditorMenuBar,
     EditorMenuBubble,
+    BProgress,
   },
   props: {
     blog: {
@@ -217,6 +225,8 @@ export default {
       }),
       linkUrl: null,
       linkMenuIsActive: true,
+      progressMax: 100,
+      progressValue: 0,
     };
   },
   watch: {
@@ -254,12 +264,22 @@ export default {
     },
   },
   mounted() {
-    loadProgressBar();
+    const _this = this;
+    const progress = (progressEvent) => {
+      const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+
+      if (totalLength !== null) {
+        _this.progressValue = Math.round((progressEvent.loaded * 100) / totalLength);
+      }
+    };
+
     this.$refs.fileUploadInput.addEventListener('change', async (event) => {
       if (event.target.files && event.target.files[0]) {
-        const data = await upload(event.target.files[0]);
-        event.target.command({ src: data.url, pictureid: data.pictureId });
-        event.target.command = null;
+        if (['image/jpeg', 'image/gif', 'image/png', 'image/svg+xml'].indexOf(event.target.files[0].type) > -1) {
+          const data = await upload(event.target.files[0], progress);
+          event.target.command({ src: data.url, pictureid: data.pictureId });
+          event.target.command = null;
+        }
       }
     });
   },
@@ -272,6 +292,21 @@ export default {
 .editor {
   width: 100%;
   margin-bottom: 15px;
+}
+.upload-progress-content {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+.custom-progress-bar{
+  position: inherit;
+  top: 50%;
+  width: calc(100vw - 20%);
+  margin-left: 10%;
+  margin-right: 10%;
 }
 </style>
 

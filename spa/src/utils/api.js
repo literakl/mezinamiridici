@@ -30,13 +30,10 @@ axios.interceptors.response.use((x) => {
 
 const { VUE_APP_API_ENDPOINT, VUE_APP_BFF_ENDPOINT } = process.env;
 
-function getAuthHeader(context, jwt = undefined, upload) {
-  const config = { headers: { } };
+function getAuthHeader(context, jwt = undefined, onUploadProgress) {
+  const config = (onUploadProgress) ? { headers: { }, onUploadProgress } : { headers: { } };
   if (jwt || (context && context.rootState.users.userToken)) {
     config.headers.Authorization = `bearer ${jwt || context.rootState.users.userToken}`;
-  }
-  if (upload) {
-    config.headers['Content-Type'] = 'multipart/form-data';
   }
   return config;
 }
@@ -50,8 +47,8 @@ function get(endpoint, url, context = undefined) {
   }
 }
 
-function post(endpoint, url, body, context, jwt) {
-  const headers = getAuthHeader(context, jwt);
+function post(endpoint, url, body, context, jwt, progress) {
+  const headers = getAuthHeader(context, jwt, progress);
   if (endpoint === 'BFF') {
     return axios.post(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
   } else {
@@ -60,7 +57,7 @@ function post(endpoint, url, body, context, jwt) {
 }
 
 function put(endpoint, url, body, context, jwt) {
-  const headers = getAuthHeader(context, jwt, true);
+  const headers = getAuthHeader(context, jwt);
   if (endpoint === 'BFF') {
     return axios.put(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
   } else {
