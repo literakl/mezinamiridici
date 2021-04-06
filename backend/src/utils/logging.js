@@ -1,6 +1,7 @@
 const { stringify } = require('flatted/cjs');
 const logger = require('log4js');
 const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 const { NODE_ENV, CONFIG_DIRECTORY, LOG_DIRECTORY } = process.env;
@@ -37,7 +38,7 @@ function appendTimestamp(info) {
 
 let appLogger, mongoLogger, jobLogger;
 
-function configureLoggers(fileName = `${CONFIG_DIRECTORY}/logger.js`, isJob = false, tag = 'job') {
+function configureLoggers(fileName = `${path.join(__dirname, CONFIG_DIRECTORY)}/logger.js`, isJob = false, tag = 'job') {
   const loggerConfig = require(fileName);
   logger.configure(loggerConfig);
 
