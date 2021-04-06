@@ -115,6 +115,8 @@
   </div>
 </template>
 <script>
+import { loadProgressBar } from 'axios-progress-bar';
+import 'axios-progress-bar/dist/nprogress.css';
 import Icon from '@/components/atoms/EditorIcon.vue';
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
 import {
@@ -252,6 +254,7 @@ export default {
     },
   },
   mounted() {
+    loadProgressBar();
     this.$refs.fileUploadInput.addEventListener('change', async (event) => {
       if (event.target.files && event.target.files[0]) {
         const data = await upload(event.target.files[0]);
