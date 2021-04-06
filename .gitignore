@@ -12,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 /backend/*.log
 *.log
+*.log.gz
 /backend/mongo.csv
 mongo.csv
 
@@ -33,6 +34,6 @@ transfer
 /spa/.env.staging
 /spa/.env.production
 
-.SRC2
-
 /spa/public/images/uploads/
+/backend/.eslintrc.js
+sitemap.xml

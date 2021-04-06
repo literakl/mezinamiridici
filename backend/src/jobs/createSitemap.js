@@ -1,11 +1,13 @@
 const { toXML } = require('jstoxml');
 const fs = require('fs');
-const { jobLogger } = require('../utils/logging');
+const { configureLoggers } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
-
+const path = require('path');
 require('../utils/path_env');
 
-const { WEB_URL, SITEMAP_PATH } = process.env;
+const { WEB_URL, SITEMAP_PATH, CONFIG_DIRECTORY } = process.env;
+
+const jobLogger = configureLoggers(`${path.join(__dirname, CONFIG_DIRECTORY)}/createSitemap.js`, true, 'createSitemap');
 
 // TODO split to multiple files when the sitemap is about to reach the limit
 // TODO max 50,000 URLs and must not exceed 50MB uncompressed
@@ -24,11 +26,11 @@ async function createSitemap() {
 
   // TODO could it die with out of memory one day?
   // TODO I would favour not to use external library and print each item as XML manually
-  fs.writeFile(`${SITEMAP_PATH}sitemap.xml`, sitemap, (err) => {
+  fs.writeFile(`${path.join(__dirname, SITEMAP_PATH)}/sitemap.xml`, sitemap, (err) => {
     if (err) {
       console.log(err);
     } else {
-      jobLogger.info('Sitemap created.', { label: 'createSitemap' });
+      jobLogger.info('Sitemap created.');
     }
   });
 }
@@ -72,7 +74,7 @@ async function fetchURLs() {
 }
 
 async function getItems() {
-  jobLogger.info('Connecting to database', { label: 'createSitemap' });
+  jobLogger.info('Connecting to database');
   const dbClient = await mongo.connectToDatabase();
 
   let items;

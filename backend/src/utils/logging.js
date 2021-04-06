@@ -3,10 +3,7 @@ const logger = require('log4js');
 const fs = require('fs');
 require('dotenv').config();
 
-const { NODE_ENV, LOGGER_CONFIG, LOG_DIRECTORY } = process.env;
-
-const loggerConfig = require(LOGGER_CONFIG);
-logger.configure(loggerConfig);
+const { NODE_ENV, CONFIG_DIRECTORY, LOG_DIRECTORY } = process.env;
 
 function timestamp() {
   const currentDate = new Date();
@@ -25,7 +22,7 @@ function timestamp() {
   return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day} ${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}:${ms}`;
 }
 
-const mongoCSVFormat = (info) => {
+function mongoCSVFormat(info) {
   let output = `${info.timestamp},${info.time},${info.operation},${info.result},${(info.collection) ? info.collection : ''},`;
   if (info.message) {
     output += (info.message === Object(info.message)) ? stringify(info.message) : info.message;
@@ -33,61 +30,77 @@ const mongoCSVFormat = (info) => {
   return output;
 };
 
-const appendTimestamp = (info) => {
+function appendTimestamp(info) {
   info.timestamp = timestamp();
   return info;
 };
 
-let appLogger;
-if (NODE_ENV === 'test') {
-  appLogger = logger.getLogger('test');
-} else if(NODE_ENV === 'development') {
-  appLogger = logger.getLogger('development');
-} else {
-  appLogger = logger.getLogger('production');
-}
+let appLogger, mongoLogger, jobLogger;
 
-const mongoLogger = logger.getLogger('mongo');
+function configureLoggers(fileName = `${CONFIG_DIRECTORY}/logger.js`, isJob = false, tag = 'job') {
+  const loggerConfig = require(fileName);
+  logger.configure(loggerConfig);
 
-// Facade for mongoLogger
-// NOTE: aliasing mongoLogger.log here causes call stack overflow
-mongoLogger.record = (payload) => {
-  const level = payload.level;
-  let data = Object.assign({}, payload);
-  data = appendTimestamp(data);
-  const message = mongoCSVFormat(data);
+  if (isJob) {
+    jobLogger = logger.getLogger(tag);
+    jobLogger.end = () => logger.shutdown();
+    return jobLogger;
+  } else {
+    if (NODE_ENV === 'test') {
+      appLogger = logger.getLogger('test');
+    } else if(NODE_ENV === 'development') {
+      appLogger = logger.getLogger('development');
+    } else {
+      appLogger = logger.getLogger('production');
+    }
+  }  
+  mongoLogger = logger.getLogger('mongo');
 
-  switch(level) {
-    case 'verbose':
-    case 5000:
-      mongoLogger.verbose(message);
-      break;
-    case 'debug':
-    case 10000:
-      mongoLogger.debug(message);
-      break;
-    case 'info':
-    case 20000:
-      mongoLogger.info(message);
-      break;
-    case 'warn':
-    case 'warning':
-    case 30000:
-      mongoLogger.warn(message);
-      break;
-    case 'error':
-    case 40000:
-      mongoLogger.error(message);
-      break;
-    case 'fatal':
-    case 50000:
-      mongoLogger.fatal(message);
-      break;
-    default:
-      mongoLogger.debug(message);
-      break;
+  // interface for mongoLogger
+  // NOTE: aliasing mongoLogger.log here causes call-stack overflow
+  mongoLogger.record = (payload) => {
+    let data = Object.assign({}, payload);
+    data = appendTimestamp(data);
+    const message = mongoCSVFormat(data);
+
+    switch(payload.level) {
+      case 'verbose':
+      case 5000:
+        mongoLogger.verbose(message);
+        break;
+      case 'debug':
+      case 10000:
+        mongoLogger.debug(message);
+        break;
+      case 'info':
+      case 20000:
+        mongoLogger.info(message);
+        break;
+      case 'warn':
+      case 'warning':
+      case 30000:
+        mongoLogger.warn(message);
+        break;
+      case 'error':
+      case 40000:
+        mongoLogger.error(message);
+        break;
+      case 'fatal':
+      case 50000:
+        mongoLogger.fatal(message);
+        break;
+      default:
+        mongoLogger.debug(message);
+        break;
+    }
   }
+  appLogger.end = () => logger.shutdown();
+  mongoLogger.end = () => logger.shutdown();
+
+  return appLogger;
 }
+
+configureLoggers();
 
 // Create Log directory
 fs.mkdir(LOG_DIRECTORY, (err) => {
@@ -101,3 +114,5 @@ fs.mkdir(LOG_DIRECTORY, (err) => {
 
 exports.logger = appLogger;
 exports.mongoLogger = mongoLogger;
+exports.jobLogger = jobLogger;
+exports.configureLoggers = configureLoggers;
