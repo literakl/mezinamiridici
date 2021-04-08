@@ -31,10 +31,8 @@ function getItems(dbClient, tag, start, pageSize) {
   const query = {
     type: { $in: ['blog', 'poll'] },
     'info.published': true,
+    'info.date': { $lte: new Date() },
   };
-  if (start === 0) {
-    query['info.date'] = { $lte: new Date() };
-  }
   if (tag) {
     query['info.tags'] = tag;
   }
@@ -92,7 +90,8 @@ async function blendPinnedItems(listParams, tag) {
     if (foundAt !== -1) {
       // move an item within the page to its requested position
       const arr = [...items];
-      arr.splice(position, 0, ...arr.splice(foundAt, 1));
+      // TODO position for the second page must be recalculated
+      arr.splice(position - listParams.start, 0, ...arr.splice(foundAt, 1));
       items = arr;
     } else {
       // fetch item and insert it at its requested position

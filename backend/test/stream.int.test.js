@@ -161,6 +161,27 @@ test('Stream API', async (done) => {
   expect(response.data[7]._id).toBe(GBlog.id);
   expect(response.data[8]._id).toBe(HBlog.id);
 
+  response = await api('item-stream?start=0&ps=3').json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.length).toBe(3);
+  expect(response.data[0]._id).toBe(ABlog.id);
+  expect(response.data[1]._id).toBe(IBlog.id);
+  expect(response.data[2]._id).toBe(BBlog.id);
+
+  response = await api('item-stream?start=3&ps=3').json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.length).toBe(3);
+  expect(response.data[0]._id).toBe(EBlog.id);
+  expect(response.data[1]._id).toBe(CPoll.id);
+  expect(response.data[2]._id).toBe(DBlog.id);
+
+  response = await api('item-stream?start=6&ps=3').json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.length).toBe(3);
+  expect(response.data[0]._id).toBe(FPoll.id);
+  expect(response.data[1]._id).toBe(GBlog.id);
+  expect(response.data[2]._id).toBe(HBlog.id);
+
   done();
 });
 
