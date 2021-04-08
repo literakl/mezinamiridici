@@ -37,6 +37,10 @@
             </b-nav-item-dropdown>
           </b-navbar-nav>
       </b-navbar>
+      <div class="info-box">
+      <span class="closebtn"><BIconXCircle scale='1'></BIconXCircle></span>
+   <p>Why was this forum created? We want to reduce road traffic incidents. <a href="#">READ MORE</a></p>
+  </div>
     </header>
     <main>
       <router-view/>
@@ -45,7 +49,7 @@
 </template>
 
 <script>
-import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem } from 'bootstrap-vue';
+import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem, BIconXCircle } from 'bootstrap-vue';
 
 export default {
   name: 'App',
@@ -58,6 +62,7 @@ export default {
     BNavItemDropdown,
     BDropdownItem,
     BNavItem,
+    BIconXCircle,
   },
   computed: {
     authorized() {
