@@ -19,7 +19,7 @@ export default {
     },
   },
   data: () => ({
-    colors: ['#28a745ff', '#007bffff', '#ffc107ff', '#dc3545ff'],
+    colors: ['#28a745ff', '#007bffff', '#dab70c', '#dc3545ff'],
   }),
   computed: {
     poll() {

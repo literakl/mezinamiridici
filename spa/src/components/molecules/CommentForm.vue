@@ -218,6 +218,15 @@ export default {
 .send-comment-btn button {
   max-width: 150px;
   width: 100%;
+  background: var(--dislike-status);
+  border: 0;
+}
+.send-comment-btn button:hover {
+background: var(--dislike-status-hover);
+}
+
+.send-comment-btn button:disabled{
+  background: var(--dislike-status);
 }
 
 .closebtn {

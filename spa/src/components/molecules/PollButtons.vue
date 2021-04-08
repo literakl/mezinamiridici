@@ -2,15 +2,15 @@
   <div class="normal-poll pt-1">
     <div class="text-center normal-poll-inside">
     <h4 class="pb-2 mb-3">{{ $t('poll.your-opinion') }}</h4>
-      <b-button variant="success" v-on:click="voted('neutral')">
+      <b-button variant="no-problem-btn" v-on:click="voted('neutral')">
         <img src="/images/icons/happy.svg" alt="">
         {{ $t('poll.choices.neutral') }}
       </b-button>
-      <b-button variant="primary" v-on:click="voted('trivial')">
+      <b-button variant="traval-trouble-btn" v-on:click="voted('trivial')">
         <img src="/images/icons/ok.svg" alt="">
         {{ $t('poll.choices.trivial') }}
       </b-button>
-      <b-button variant="warning" v-on:click="voted('dislike')">
+      <b-button variant="dislike-btn" v-on:click="voted('dislike')">
         <img src="/images/icons/dislike.svg" alt="">
         {{ $t('poll.choices.dislike') }}
       </b-button>
@@ -83,11 +83,40 @@ export default {
   font-weight: 400;
 }
 
-.normal-poll-inside button.btn-success img {
+.btn-no-problem-btn{
+background-color: var(--no-problem-status);
+color: #fff;
+}
+.btn-no-problem-btn:hover{
+  background-color: var(--no-problem-status-hover);
+}
+.btn-no-problem-btn:not(:disabled):not(.disabled).active:focus, .btn-no-problem-btn:not(:disabled):not(.disabled):active:focus, .show>.btn-no-problem-btn.dropdown-toggle:focus{
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+.normal-poll-inside .btn-no-problem-btn img {
   width: 60px;
   height: 40px;
   top: -38px;
 }
+
+.btn-traval-trouble-btn{
+background-color: var(--traval-trouble-status);
+color: #fff;
+}
+.btn-traval-trouble-btn:hover{
+  background-color: var(--traval-trouble-status-hover);
+}
+
+.btn-dislike-btn{
+background-color: var(--dislike-status);
+color: #212529;
+}
+.btn-dislike-btn:hover{
+  background-color: var(--dislike-status-hover);
+}
+
 
 .normal-poll-inside button img {
   position: absolute;

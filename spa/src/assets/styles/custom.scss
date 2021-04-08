@@ -16,6 +16,21 @@ html[theme="default"] {
     --color-lightgreen: rgba(129, 215, 66, 0.9);
     --bg-light: #ecf7fb;
     --dark-color: #131518!important;
+    // Poll Base Colors
+    --no-problem-status:#28a745;
+    --no-problem-status-hover:#218838;
+
+    --traval-trouble-status:#007bff;
+    --traval-trouble-status-hover:#0069d9;
+
+    --dislike-status:#dab70c;
+    --dislike-status-hover:#d1ae00;
+
+    --angry-status:#dc3545;
+    --angry-status-hover:#c82333;
+
+
+
     --box-shadow: -2px 2px 3px rgba(57, 73, 76, 0.1);
     --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
     --inside-padding: 18px 25px;
@@ -26,10 +41,10 @@ html[theme="default"] {
 
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 300;
-    font-size: 1rem;
-    color: #333;
+    font-family: 'Poppins', sans-serif!important;
+    font-weight: 300!important;
+    font-size: 1rem!important;
+    color: #333!important;
 }
 
 input,
@@ -87,12 +102,12 @@ label {
 }
 
 a {
-    color: var(--link-color);
+    color: var(--link-color)!important;
 }
 
 a:hover{
     color: var(--link-blue);
-    text-decoration: none;
+    text-decoration: none!important;
 }
 
 button:active {

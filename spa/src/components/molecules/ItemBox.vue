@@ -138,7 +138,7 @@ export default {
 }
 
 .item-div h4 a {
-  color: var(--dark-color);
+  color: var(--dark-color)!important;
   font-size: 16px;
   padding: 16px 10px 18px 10px;
   display: flex;

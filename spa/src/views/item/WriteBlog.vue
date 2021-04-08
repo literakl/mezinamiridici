@@ -30,7 +30,7 @@
           </div>
           <div class="image-area">
             <SelectPicture :currentPath="picture" @changePath="changePath" />
-            <b-button variant="primary" :disabled="invalid || isEmpty" @click="saveBlog()">{{
+            <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">{{
               $t("blog.form.save-button")
             }}</b-button>
           </div>
@@ -165,7 +165,18 @@ export default {
   margin: 0 auto 20px;
   padding:0px;
 }
-
+.btn-post-btn{
+  background: var(--traval-trouble-status);
+  border: 0;
+  color: var(--color-white);
+}
+.btn-post-btn:hover{
+  background: var(--traval-trouble-status-hover);
+  color: var(--color-white);
+}
+.btn-post-btn:disabled {
+    background: var(--traval-trouble-status);
+}
 </style>
 
 <style lang="scss" scoped>
