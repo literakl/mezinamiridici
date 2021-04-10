@@ -109,8 +109,17 @@ export default {
     this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
   },
   mounted() {
+    document.onmouseover = () => {
+      window.innerDocClick = true;
+    };
+    document.onmouseleave = () => {
+      window.innerDocClick = false;
+    };
+
     window.onpopstate = () => {
-      this.$store.commit('CLEAR_BLOG');
+      if (!window.innerDocClick) {
+        this.$store.commit('CLEAR_BLOG');
+      }
     };
   },
   methods: {
