@@ -7,7 +7,7 @@ require('../../utils/path_env');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 let { STREAM_PINNED_ITEMS } = process.env || [];
-let PINNED_ITEMS = configurePinnedItems();
+let pinnedItems = configurePinnedItems(STREAM_PINNED_ITEMS);
 
 module.exports = (app) => {
   app.options('/v1/item-stream', auth.cors);
@@ -18,16 +18,32 @@ module.exports = (app) => {
     try {
       const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);
       const { tag } = req.query;
-      const response = await blendPinnedItems(listParams, tag);
-      return api.sendResponse(res, api.createResponse(response));
+      const dbClient = await mongo.connectToDatabase();
+      const result = await getItemsPage(dbClient, tag, listParams.start, listParams.pageSize);
+      return api.sendResponse(res, api.createResponse(result));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
     }
   });
+
+  app.options('/v1/item-stream/pinned', auth.cors);
+
+  app.get('/v1/item-stream/pinned', auth.cors, async (req, res) => {
+    logger.debug('Get pinned items');
+    const dbClient = await mongo.connectToDatabase();
+    const items = await getItems(dbClient, { 'info.slug': { $in: pinnedItems.slugs } });
+    const result = [];
+    items.forEach((item) => {
+      const position = pinnedItems.map.get(item.info.slug);
+      result.push({ position, item });
+    });
+    result.sort((a, b) => a.position - b.position);
+    return api.sendResponse(res, api.createResponse(result));
+  });
 };
 
-function getItems(dbClient, tag, start, pageSize) {
+function getItemsPage(dbClient, tag, start, pageSize) {
   const query = {
     type: { $in: ['blog', 'poll'] },
     'info.published': true,
@@ -46,101 +62,41 @@ function getItems(dbClient, tag, start, pageSize) {
     .toArray();
 }
 
-function getItem(dbClient, slug) {
+function getItems(dbClient, query) {
   return dbClient.db().collection('items')
-    .findOne({ 'info.slug': slug }, { projection: { type: 1, info: 1, comments: 1 } });
-}
-
-/*
-odecti od startu, kolik pozic je pred ni
-presun na spravnou pozici pinned item, pokud je ve strance
-jinak stahni polozku a vloz ji na pozici dle konfigurace pinned item
-opakuj pro vsechny pinned item ze stranky
-umaz prebytecne polozky
-*/
-async function blendPinnedItems(listParams, tag) {
-  logger.debug('Blending items start');
-  let shift = 0;
-  const currentPage = [];
-
-  const iterator = PINNED_ITEMS.byPosition.keys();
-  let result = iterator.next();
-  while (!result.done) {
-    const position = result.value;
-    if (position < listParams.start) {
-      shift += 1;
-    } else if (position < (listParams.start + listParams.pageSize)) {
-      currentPage.push(position);
-    }
-    result = iterator.next();
-  }
-
-  const dbClient = await mongo.connectToDatabase();
-  let items = await getItems(dbClient, tag, listParams.start - shift, listParams.pageSize);
-  logger.debug('Items fetched');
-
-  if (currentPage.length === 0) {
-    return items;
-  }
-
-  for (let i = 0; i < currentPage.length; i += 1) {
-    const position = currentPage[i];
-    const slug = PINNED_ITEMS.byPosition.get(position);
-    const foundAt = items.findIndex(item => item.info.slug === slug);
-    if (foundAt !== -1) {
-      // move an item within the page to its requested position
-      const arr = [...items];
-      // TODO position for the second page must be recalculated
-      arr.splice(position - listParams.start, 0, ...arr.splice(foundAt, 1));
-      items = arr;
-    } else {
-      // fetch item and insert it at its requested position
-      // eslint-disable-next-line no-await-in-loop
-      const item = await getItem(dbClient, slug);
-      if (item) {
-        items.splice(position, 0, item);
-      }
-    }
-  }
-
-  if (items.length > listParams.pageSize) {
-    // items = items.slice(listParams.pageSize);
-    items.splice(listParams.pageSize);
-  }
-
-  logger.debug('Blending items finished');
-  return items;
+    .find(query, { projection: { type: 1, info: 1, comments: 1 } })
+    .toArray();
 }
 
 function configurePinnedItems() {
   if (STREAM_PINNED_ITEMS && (STREAM_PINNED_ITEMS.charAt(0) !== '[' || STREAM_PINNED_ITEMS.charAt(STREAM_PINNED_ITEMS.length - 1) !== ']')) {
     logger.error(`STREAM_PINNED_ITEMS does not look like JS array: '${STREAM_PINNED_ITEMS}', ignoring`);
-    STREAM_PINNED_ITEMS = [];
+    STREAM_PINNED_ITEMS = '[]';
   }
 
-  const pinnedItems = { byPosition: new Map(), bySlug: new Map() };
-  if (STREAM_PINNED_ITEMS.length > 0) {
+  const result = { map: new Map(), slugs: [] };
+  if (STREAM_PINNED_ITEMS.length > 2) {
     let pinnedArray;
     try {
       // eslint-disable-next-line no-eval
       pinnedArray = eval(STREAM_PINNED_ITEMS);
     } catch (e) {
       logger.error(`Failed to evaluate STREAM_PINNED_ITEMS '${STREAM_PINNED_ITEMS}'`);
-      return pinnedItems;
+      return result;
     }
 
     pinnedArray.sort((a, b) => a.position - b.position);
-    pinnedArray.forEach((item) => {
-      pinnedItems.byPosition.set(item.position, item.slug);
-      pinnedItems.bySlug.set(item.slug, item.position);
+    pinnedArray.forEach((config) => {
+      result.slugs.push(config.slug);
+      result.map.set(config.slug, config.position);
     });
   }
-  return pinnedItems;
+  return result;
 }
 
 function setPinnedItems(items) {
   STREAM_PINNED_ITEMS = items;
-  PINNED_ITEMS = configurePinnedItems();
+  pinnedItems = configurePinnedItems();
 }
 
 module.exports.setPinnedItems = setPinnedItems;
