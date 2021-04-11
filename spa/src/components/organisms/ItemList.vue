@@ -36,6 +36,7 @@ export default {
       hasEnded: false,
       list: [],
       pins: this.pinnedItems,
+      excluded: this.exceptItem,
       options: {
         // isOverflowScroll: false,
         // useFit: true,
@@ -66,7 +67,6 @@ export default {
   methods: {
     async onAppend({ groupKey, startLoading }) {
       this.$log.warn('onAppend');
-      this.$log.warn(this.pinnedItems);
       this.$log.warn(this.pins);
       if (this.$refs.ig.isProcessing()) {
         return;
@@ -88,25 +88,27 @@ export default {
         return;
       }
 
-      this.$log.debug(this.exceptItem);
+      this.$log.debug('items before removing except item ');
       this.$log.debug(items);
-      if (this.exceptItem) {
+      if (this.excluded) {
         // remove the current poll
         let found = false;
         items = items.filter((item) => {
-          const x = item._id !== this.exceptItem._id;
+          const x = item._id !== this.excluded._id;
           if (!x) {
             found = true;
           }
           return x;
         });
         if (found) {
-          this.exceptItem = null;
-          this.$log.debug(this.exceptItem);
+          this.excluded = null;
           this.$log.debug(items);
         }
       }
 
+      this.$log.debug('items before filter');
+      this.$log.debug(items);
+      this.$log.debug('pins before calculation');
       this.$log.debug(this.pins);
       if (this.pins && this.pins.length > 0) {
         // move pinned items on the current page from pins to currentPinned
@@ -119,18 +121,23 @@ export default {
           return true;
         });
 
+        this.$log.debug('new pins');
         this.$log.debug(this.pins);
+        this.$log.debug('current page pins');
         this.$log.debug(currentPinned);
         // TODO jak posunout start
         // remove duplicates of pinned items
-        items = items.filter(item => (currentPinned.some(pinned => pinned.item.info.slug !== item.info.slug)));
+        items = items.filter(item => !(currentPinned.some(pinned => pinned.item.info.slug === item.info.slug)));
+        this.$log.debug('after filter duplicates');
         this.$log.debug(items);
         // insert pinned items at their position
         currentPinned.forEach((pinned) => {
           items.splice(pinned.position, 0, pinned.item);
+          this.$log.debug(`after inserting item at position ${pinned.position}`);
           this.$log.debug(items);
         });
       }
+      this.$log.debug('after merging pins');
       this.$log.debug(items);
 
       const newGroupKey = parseFloat(groupKey || '0') + 1;
@@ -138,6 +145,8 @@ export default {
         item.groupKey = newGroupKey;
       });
 
+      this.$log.debug('after setting group key');
+      this.$log.debug(items);
       this.start = this.start + this.pageSize;
       this.list = this.list.concat(items);
     },
