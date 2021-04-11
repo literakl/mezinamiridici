@@ -24,7 +24,7 @@ test('Stream API', async (done) => {
 
   const futurePoll = {
     text: 'Third question',
-    picture: 'images/stream/image.jpg',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
   };
   let response = await api('polls', { method: 'POST', json: futurePoll, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
@@ -32,14 +32,14 @@ test('Stream API', async (done) => {
   futurePoll.slug = response.data.info.slug;
 
   futurePoll.published = true;
-  futurePoll.date = dayjs().add(1, 'day').format('YYYY-MM-DD');
+  futurePoll.date = dayjs().add(1, 'year').format('YYYY-MM-DD');
   response = await api(`polls/${futurePoll.id}`, { method: 'PATCH', json: futurePoll, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
   const ABlog = {
     title: 'Today blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/image.jpg',
+    picture: '/images/stream/aceofnet-I3Em9PGzkzw-unsplash.jpg',
     date: new Date(),
   };
   response = await api('blog', { method: 'POST', json: ABlog, headers: getAuthHeader(Bara.jwt) }).json();
@@ -50,7 +50,7 @@ test('Stream API', async (done) => {
   const BBlog = {
     title: '1 day ago blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/picture.png',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
     date: dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
   };
   response = await api('blog', { method: 'POST', json: BBlog, headers: getAuthHeader(Jana.jwt) }).json();
@@ -60,7 +60,7 @@ test('Stream API', async (done) => {
 
   const CPoll = {
     text: '2 days ago poll',
-    picture: 'images/stream/picture.png',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
     author: Jiri._id,
   };
   response = await api('polls', { method: 'POST', json: CPoll, headers: getAuthHeader(Leos.jwt) }).json();
@@ -76,7 +76,7 @@ test('Stream API', async (done) => {
   const DBlog = {
     title: '3 days ago blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/default.jpg',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
     date: dayjs().subtract(3, 'day').format('YYYY-MM-DD HH:mm:ss'),
   };
   response = await api('blog', { method: 'POST', json: DBlog, headers: getAuthHeader(Leos.jwt) }).json();
@@ -87,7 +87,7 @@ test('Stream API', async (done) => {
   const EBlog = {
     title: '4 days ago blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/default.jpg',
+    picture: '/images/stream/aceofnet-I3Em9PGzkzw-unsplash.jpg',
     date: dayjs().subtract(4, 'day').format('YYYY-MM-DD HH:mm:ss'),
   };
   response = await api('blog', { method: 'POST', json: EBlog, headers: getAuthHeader(Lukas.jwt) }).json();
@@ -97,7 +97,7 @@ test('Stream API', async (done) => {
 
   const FPoll = {
     text: '5 days ago poll',
-    picture: '/images/stream/default.jpg',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
     author: Vita._id,
   };
   response = await api('polls', { method: 'POST', json: FPoll, headers: getAuthHeader(Leos.jwt) }).json();
@@ -113,7 +113,7 @@ test('Stream API', async (done) => {
   const GBlog = {
     title: '6 days ago blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/default.jpg',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
     date: dayjs().subtract(6, 'day').format('YYYY-MM-DD HH:mm:ss'),
   };
   response = await api('blog', { method: 'POST', json: GBlog, headers: getAuthHeader(Bara.jwt) }).json();
@@ -124,7 +124,7 @@ test('Stream API', async (done) => {
   const HBlog = {
     title: '7 days ago blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/default.jpg',
+    picture: '/images/stream/michael-jin-ipHlSSaC3vk-unsplash.jpg',
     date: dayjs().subtract(7, 'day').format('YYYY-MM-DD HH:mm:ss'),
   };
   response = await api('blog', { method: 'POST', json: HBlog, headers: getAuthHeader(Jana.jwt) }).json();
@@ -135,7 +135,7 @@ test('Stream API', async (done) => {
   const IBlog = {
     title: '8 days ago blog',
     source: '<h1>Title</h1>',
-    picture: 'images/stream/default.jpg',
+    picture: 'https://beta.mezinamiridici.cz/images/stream/aceofnet-I3Em9PGzkzw-unsplash.jpg',
     date: dayjs().subtract(8, 'day').format('YYYY-MM-DD HH:mm:ss'),
   };
   response = await api('blog', { method: 'POST', json: IBlog, headers: getAuthHeader(Jiri.jwt) }).json();
@@ -143,9 +143,7 @@ test('Stream API', async (done) => {
   IBlog.id = response.data._id;
   IBlog.slug = response.data.info.slug;
 
-  // set pinned items
   setPinnedItems(`[{ slug: '${EBlog.slug}', position: 3 },{ slug: '${IBlog.slug}', position: 1 }]`);
-
   const pinnedItems = await api('item-stream/pinned').json();
   expect(pinnedItems.success).toBeTruthy();
   expect(pinnedItems.data.length).toBe(2);

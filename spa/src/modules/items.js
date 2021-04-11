@@ -8,6 +8,7 @@ export default {
     itemsByTag: null,
     blog: null,
     itemPictures: [],
+    pinnedItems: null,
     page: null,
   }),
   getters: {
@@ -17,6 +18,7 @@ export default {
     BLOG: state => state.blog,
     ITEM_PICTURES: state => state.itemPictures,
     PAGE: state => state.page,
+    PINNED_ITEMS: state => state.pinnedItems,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -33,6 +35,9 @@ export default {
     },
     SET_ITEM_PICTURES: (state, payload) => {
       state.itemPictures = payload;
+    },
+    SET_PINNED_ITEMS: (state, payload) => {
+      state.pinnedItems = payload;
     },
     SET_PAGE: (state, payload) => {
       state.page = payload;
@@ -79,6 +84,12 @@ export default {
       Vue.$log.debug('FETCH_STREAM_PICTURES');
       const response = await get('API', '/items/pictures', context);
       context.commit('SET_ITEM_PICTURES', response.data.data);
+      return response.data.data;
+    },
+    FETCH_PINNED_ITEMS: async (context, payload) => {
+      Vue.$log.debug('FETCH_PINNED_ITEMS');
+      const response = await get('API', '/item-stream/pinned', payload, context);
+      context.commit('SET_PINNED_ITEMS', response.data.data);
       return response.data.data;
     },
     CREATE_BLOG: async (context, payload) => {

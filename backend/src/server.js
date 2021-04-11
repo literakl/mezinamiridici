@@ -5,6 +5,12 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
 
+/*
+setTimeout(() => {
+  api.sendResponse(res, api.createResponse(result));
+}, 5000);
+*/
+
 require('./handlers/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
 require('./handlers/users/changePassword')(app);

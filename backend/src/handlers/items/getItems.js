@@ -20,7 +20,9 @@ module.exports = (app) => {
       const { tag } = req.query;
       const dbClient = await mongo.connectToDatabase();
       const result = await getItemsPage(dbClient, tag, listParams.start, listParams.pageSize);
-      return api.sendResponse(res, api.createResponse(result));
+      setTimeout(() => {
+        api.sendCreated(res, api.createResponse(result));
+      }, 0);
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
@@ -39,7 +41,9 @@ module.exports = (app) => {
       result.push({ position, item });
     });
     result.sort((a, b) => a.position - b.position);
-    return api.sendResponse(res, api.createResponse(result));
+    setTimeout(() => {
+      api.sendResponse(res, api.createResponse(result));
+    }, 0);
   });
 };
 

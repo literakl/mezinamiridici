@@ -112,6 +112,10 @@ function deepCopy(obj) {
   return obj;
 }
 
+function insertAt(array, position, item) {
+  return array.splice(position, 0, item);
+}
+
 export {
-  get, post, patch, deleteApi, put, deepCopy,
+  get, post, patch, deleteApi, put, deepCopy, insertAt,
 };
