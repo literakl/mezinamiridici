@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       start: 0,
-      pageSize: 10,
+      pageSize: 3,
       hasEnded: false,
       list: [],
       pins: this.pinnedItems,
@@ -127,15 +127,17 @@ export default {
         this.$log.debug(currentPinned);
         // TODO jak posunout start
         // remove duplicates of pinned items
-        items = items.filter(item => !(currentPinned.some(pinned => pinned.item.info.slug === item.info.slug)));
+        const filteredItems = items.filter(item => !(currentPinned.some(pinned => pinned.item.info.slug === item.info.slug)));
         this.$log.debug('after filter duplicates');
-        this.$log.debug(items);
+        this.$log.debug(filteredItems);
         // insert pinned items at their position
         currentPinned.forEach((pinned) => {
-          items.splice(pinned.position, 0, pinned.item);
+          filteredItems.splice(pinned.position, 0, pinned.item);
           this.$log.debug(`after inserting item at position ${pinned.position}`);
-          this.$log.debug(items);
+          this.$log.debug(filteredItems);
         });
+
+        items = filteredItems;
       }
       this.$log.debug('after merging pins');
       this.$log.debug(items);
