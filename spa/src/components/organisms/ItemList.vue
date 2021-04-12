@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       start: 0,
-      pageSize: 3,
+      pageSize: 10,
       hasEnded: false,
       list: [],
       pins: this.pinnedItems,
