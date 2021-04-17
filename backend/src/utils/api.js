@@ -224,6 +224,34 @@ function sanitizeConfigure() {
   };
 }
 
+async function getSlug(slug, dbClient) {
+  let items;
+  const regexp = new RegExp(`^(${slug})($|-\\d+$)`);
+  try {
+    items = await dbClient.db().collection('items').find({ 'info.slug': { $regex: regexp }}, { projection: { _id: 0, 'info.slug': 1 }}).toArray();
+  } catch (err) {
+    console.error(err);
+  }
+
+  if (items.length > 0) {
+    let max = 0;
+    const regexpNumbered = new RegExp(`^(${slug})(-\\d+$)`);
+    for (const item of items) {
+      const itemSlug = item.info.slug;
+      if (regexpNumbered.test(itemSlug)) {
+        const splitSlug = itemSlug.split('-');
+        const slugNum = parseInt(splitSlug.pop());
+        if (slugNum > max) {
+          max = slugNum;
+        }
+      }
+    }
+    return `${slug}-${max + 1}`;
+  } else {
+    return slug;
+  }
+}
+
 module.exports.sendResponse = sendResponse;
 module.exports.sendErrorForbidden = sendErrorForbidden;
 module.exports.sendInternalError = sendInternalError;
@@ -245,3 +273,4 @@ module.exports.parseDate = parseDate;
 module.exports.sanitizeConfigure = sanitizeConfigure;
 module.exports.authAPILimits = authAPILimits;
 module.exports.diskAPILimits = diskAPILimits;
+module.exports.getSlug = getSlug;
