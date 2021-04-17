@@ -279,6 +279,9 @@ export default {
           const data = await upload(event.target.files[0], progress);
           event.target.command({ src: data.url, pictureid: data.pictureId });
           event.target.command = null;
+        } else {
+          this.$log.error(`File type ${event.target.files[0].type} is not supported!`);
+          // todo show error unsupported type
         }
       }
     });
