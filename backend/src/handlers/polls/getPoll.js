@@ -19,9 +19,7 @@ module.exports = (app) => {
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Item fetched');
 
-      setTimeout(() => {
-        api.sendCreated(res, api.createResponse(item));
-      }, 0);
+      api.sendCreated(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get polls', 'sign-in.something-went-wrong'));

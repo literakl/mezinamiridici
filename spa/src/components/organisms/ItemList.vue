@@ -26,17 +26,17 @@ export default {
   },
   props: {
     tag: String,
-    exceptItem: Object,
+    excludedItem: Object,
     pinnedItems: Array,
   },
   data() {
     return {
       start: 0,
-      pageSize: 10,
+      pageSize: 3,
       hasEnded: false,
       list: [],
       pins: this.pinnedItems,
-      excluded: this.exceptItem,
+      excluded: this.excludedItem,
       options: {
         // isOverflowScroll: false,
         // useFit: true,
@@ -88,7 +88,7 @@ export default {
         return;
       }
 
-      this.$log.debug('items before removing except item ');
+      this.$log.debug('items before removing excluded item ');
       this.$log.debug(items);
       if (this.excluded) {
         // remove the current poll
@@ -102,15 +102,19 @@ export default {
         });
         if (found) {
           this.excluded = null;
-          this.$log.debug(items);
         }
+        this.$log.debug('items after filter excluded');
+        this.$log.debug(items);
       }
 
-      this.$log.debug('items before filter');
-      this.$log.debug(items);
-      this.$log.debug('pins before calculation');
-      this.$log.debug(this.pins);
       if (this.pins && this.pins.length > 0) {
+        this.$log.debug('pins before removing of pinned duplicates');
+        this.$log.debug(this.pins);
+        // remove duplicates of pinned items
+        const filteredItems = items.filter(item => !(this.pins.some(pinned => pinned.item.info.slug === item.info.slug)));
+        this.$log.debug('items after removing of pinned duplicates');
+        this.$log.debug(filteredItems);
+
         // move pinned items on the current page from pins to currentPinned
         const currentPinned = [];
         this.pins = this.pins.filter((pinned) => {
@@ -125,30 +129,26 @@ export default {
         this.$log.debug(this.pins);
         this.$log.debug('current page pins');
         this.$log.debug(currentPinned);
-        // TODO jak posunout start
-        // remove duplicates of pinned items
-        const filteredItems = items.filter(item => !(currentPinned.some(pinned => pinned.item.info.slug === item.info.slug)));
-        this.$log.debug('after filter duplicates');
-        this.$log.debug(filteredItems);
         // insert pinned items at their position
         currentPinned.forEach((pinned) => {
           filteredItems.splice(pinned.position, 0, pinned.item);
-          this.$log.debug(`after inserting item at position ${pinned.position}`);
-          this.$log.debug(filteredItems);
         });
+        this.$log.debug('after inserting pinned items');
+        this.$log.debug(filteredItems);
 
         items = filteredItems;
+        this.$log.debug('after merging pins');
+        this.$log.debug(items);
       }
-      this.$log.debug('after merging pins');
-      this.$log.debug(items);
 
       const newGroupKey = parseFloat(groupKey || '0') + 1;
       items.forEach((item) => {
         item.groupKey = newGroupKey;
       });
-
       this.$log.debug('after setting group key');
       this.$log.debug(items);
+
+      // TODO jak posunout start
       this.start = this.start + this.pageSize;
       this.list = this.list.concat(items);
     },

@@ -22,7 +22,7 @@ module.exports = (app) => {
       const result = await getItemsPage(dbClient, tag, listParams.start, listParams.pageSize);
       setTimeout(() => {
         api.sendCreated(res, api.createResponse(result));
-      }, 0);
+      }, 100);
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));

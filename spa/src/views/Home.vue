@@ -5,7 +5,7 @@
     </div>
     <div v-if="poll">
       <HomePoll :poll="poll"/>
-      <ItemList :except-item="poll" :pinned-items="pinnedItems"/>
+      <ItemList :excluded-item="poll" :pinned-items="pinnedItems"/>
     </div>
   </div>
 </template>
@@ -27,7 +27,6 @@ export default {
       return this.$store.getters.POLL;
     },
     pinnedItems() {
-      this.$log.warn(this.$store.getters.PINNED_ITEMS);
       return this.$store.getters.PINNED_ITEMS;
     },
   },
