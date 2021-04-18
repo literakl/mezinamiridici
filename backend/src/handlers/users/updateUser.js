@@ -15,7 +15,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const query = prepareUpdateProfileQuery(req);
       await dbClient.db().collection('users').updateOne({ _id: userId }, query);
       logger.debug('User updated');

@@ -43,6 +43,7 @@ function copyNodeJSCodeTask() {
   console.log('copying NodeJS code into the directory');
   return merge2(src('../backend/src/**').pipe(dest(`${packageDirectory}/backend/src`)),
     src('../backend/templates/**').pipe(dest(`${packageDirectory}/backend/templates`)),
+    src('../backend/config/**').pipe(dest(`${packageDirectory}/backend/config`)),
     src('../backend/package*json').pipe(dest(`${packageDirectory}/backend/`)));
 }
 
