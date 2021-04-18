@@ -6,9 +6,9 @@
   "license": "MIT",
   "main": "./src/server.js",
   "scripts": {
-    "dev": "nodemon src/start.js",
-    "start": "node src/start.js",
-    "test": "jest --config jest.config.js --runInBand"
+    "dev": "cross-env NODE_ENV=development nodemon src/start.js",
+    "start": "cross-env  NODE_ENV=production node src/start.js",
+    "test": "cross-env NODE_ENV=test jest --config jest.config.js --runInBand"
   },
   "dependencies": {
     "aws-sdk": "^2.724.0",
@@ -19,6 +19,7 @@
     "cheerio-advanced-selectors": "^2.0.1",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.8.36",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -30,6 +31,7 @@
     "html2plaintext": "^2.1.2",
     "jsonwebtoken": "^8.5.1",
     "jstoxml": "^2.0.3",
+    "log4js": "^6.3.0",
     "mongodb": "^3.6.5",
     "multer": "^1.4.2",
     "nanoid": "^2.1.11",
@@ -42,9 +44,7 @@
     "slugify": "^1.4.5",
     "unix-timestamp": "^0.2.0",
     "update": "^0.7.4",
-    "uuid": "^3.4.0",
-    "winston": "^3.3.3",
-    "winston-transport": "^4.4.0"
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "got": "^10.7.0",

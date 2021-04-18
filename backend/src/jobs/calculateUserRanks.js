@@ -1,17 +1,20 @@
 const { CronJob } = require('cron');
 const dayjs = require('dayjs');
 const isoWeek = require('dayjs/plugin/isoWeek');
+const path = require('path');
 
-const { jobLogger } = require('../utils/logging');
+const { configureLoggers } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 const { findLastIndex } = require('../utils/helpers');
 
-const { CALCULATE_USER_RANKS_SCHEDULE } = process.env;
+const { CALCULATE_USER_RANKS_SCHEDULE, CONFIG_DIRECTORY } = process.env;
+
+const jobLogger = configureLoggers(`${path.join(__dirname, CONFIG_DIRECTORY)}/calculateUserRanks.js`, true, 'calculateUserRanks');
 
 dayjs.extend(isoWeek);
 
 const calculateUserHonors = async () => {
-  jobLogger.info('Running a job to calculate the user ranks', { label: 'calculateUserRanks' });
+  jobLogger.info('Running a job to calculate the user ranks');
 
   const dbClient = await mongo.connectToDatabase();
   let users = await getUsers(dbClient, undefined, 100);
@@ -152,8 +155,8 @@ function calculateConsecutiveSharing(date, foundWeeks) {
   return { sharingWeeksCount: count, sharingWeeksList: weeks };
 }
 
-function scheduleCalculation() {
-  jobLogger.info(`Rank job scheduled to run at ${CALCULATE_USER_RANKS_SCHEDULE}`, { label: 'calculateUserRanks' });
+async function scheduleCalculation() {
+  jobLogger.info(`Rank job scheduled to run at ${CALCULATE_USER_RANKS_SCHEDULE}`);
   const job = new CronJob(CALCULATE_USER_RANKS_SCHEDULE, async () => calculateUserHonors);
   job.start();
 }
