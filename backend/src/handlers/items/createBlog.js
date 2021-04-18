@@ -38,6 +38,7 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       const user = auth.getIdentity(req.identity);
       const blogId = mongo.generateTimeId();
+
       await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
       logger.debug('Blog inserted');
@@ -55,9 +56,10 @@ module.exports = (app) => {
   });
 };
 
-function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
+async function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
+  const adjustedSlug = await api.getSlug(slug, dbClient);
 
   const blog = {
     _id: blogId,
@@ -68,7 +70,7 @@ function insertItem(dbClient, blogId, title, source, author, publishDate, pictur
         id: author.userId,
       },
       caption: title,
-      slug,
+      slug: adjustedSlug,
       published: true,
       date: publishDate,
       picture,
