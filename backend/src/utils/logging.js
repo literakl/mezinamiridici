@@ -58,7 +58,7 @@ function configureLoggers(fileName = `${path.join(__dirname, CONFIG_DIRECTORY)}/
   mongoLogger = logger.getLogger('mongo');
 
   // interface for mongoLogger
-  // NOTE: aliasing mongoLogger.log here causes call-stack overflow
+  // NOTE: overriding mongoLogger.log here causes call-stack overflow due to infinite recursion
   mongoLogger.record = (payload) => {
     let data = Object.assign({}, payload);
     data = appendTimestamp(data);
