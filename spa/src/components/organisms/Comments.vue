@@ -59,6 +59,8 @@ export default {
         setTimeout(() => {
           this.$scrollTo(document.getElementById(this.addedId), 500, { easing: 'ease' });
         }, 700);
+      } else {
+        this.scrollToComment();
       }
     },
     itemId() {
@@ -67,16 +69,6 @@ export default {
   },
   created() {
     this.getComments();
-  },
-  mounted() {
-    this.$nextTick(() => {
-      // TODO not reliable. When I click from home, it does not scroll well. When I reload, it scrolls correctly
-      let { hash } = this.$route;
-      if (hash) {
-        hash = hash.substring(1);
-        this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
-      }
-    });
   },
   destroyed() {
     this.$store.commit('DESTROY_COMMENTS');
@@ -94,6 +86,16 @@ export default {
         payload.lastSeen = this.comments[this.comments.length - 1]._id;
       }
       this.$store.dispatch('FETCH_COMMENTS', payload);
+    },
+    scrollToComment() {
+      let { hash } = this.$route;
+
+      if (hash) {
+        hash = hash.substring(1);
+        setTimeout(() => {
+          this.$scrollTo(document.getElementById(hash), 500, { easing: 'ease' });
+        }, 1);
+      }
     },
   },
 };
