@@ -135,7 +135,11 @@ export default {
     },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');
-      const response = await post('API', '/images', payload, context);
+      const {
+        body,
+        progress,
+      } = payload;
+      const response = await post('API', '/images', body, context, undefined, progress);
       return response.data;
     },
     SET_IMAGE_ITEM: async (context, payload) => {
