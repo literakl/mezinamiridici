@@ -1,6 +1,7 @@
 require('../utils/path_env');
 const dayjs = require('dayjs');
 const rateLimit = require('express-rate-limit');
+const { logger } = require('../utils/logging');
 
 const authAPILimits = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -226,19 +227,19 @@ function sanitizeConfigure() {
 
 async function getSlug(slug, dbClient) {
   let items;
-  const regexp = new RegExp(`^(${slug})($|-\\d+$)`);
+  const regexMatchSlug = new RegExp(`^(${slug})($|-\\d+$)`);
   try {
-    items = await dbClient.db().collection('items').find({ 'info.slug': { $regex: regexp }}, { projection: { _id: 0, 'info.slug': 1 }}).toArray();
+    items = await dbClient.db().collection('items').find({ 'info.slug': { $regex: regexMatchSlug } }, { projection: { _id: 0, 'info.slug': 1 } }).toArray();
   } catch (err) {
-    console.error(err);
+    logger.error(`Error getting items matching slug: ${slug}`, err);
   }
 
   if (items.length > 0) {
     let max = 0;
-    const regexpNumbered = new RegExp(`^(${slug})(-\\d+$)`);
+    const regexNumberedItem = new RegExp(`^(${slug})(-\\d+$)`);
     for (const item of items) {
       const itemSlug = item.info.slug;
-      if (regexpNumbered.test(itemSlug)) {
+      if (regexNumberedItem.test(itemSlug)) {
         const splitSlug = itemSlug.split('-');
         const slugNum = parseInt(splitSlug.pop());
         if (slugNum > max) {
