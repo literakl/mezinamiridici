@@ -69,8 +69,12 @@ function getItems(dbClient, query) {
 }
 
 function configurePinnedItems() {
-  if (STREAM_PINNED_ITEMS && (STREAM_PINNED_ITEMS.charAt(0) !== '[' || STREAM_PINNED_ITEMS.charAt(STREAM_PINNED_ITEMS.length - 1) !== ']')) {
-    logger.error(`STREAM_PINNED_ITEMS does not look like JS array: '${STREAM_PINNED_ITEMS}', ignoring`);
+  if (STREAM_PINNED_ITEMS) {
+    if (STREAM_PINNED_ITEMS.charAt(0) !== '[' || STREAM_PINNED_ITEMS.charAt(STREAM_PINNED_ITEMS.length - 1) !== ']') {
+      logger.error(`STREAM_PINNED_ITEMS does not look like JS array: '${STREAM_PINNED_ITEMS}', ignoring`);
+      STREAM_PINNED_ITEMS = '[]';
+    }
+  } else {
     STREAM_PINNED_ITEMS = '[]';
   }
 
