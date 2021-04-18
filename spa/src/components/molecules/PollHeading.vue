@@ -127,7 +127,7 @@ export default {
 .pollheading a {
   font-size: 21px;
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--text-color)!important;
   margin: 10px 0 0px;
 }
 

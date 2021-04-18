@@ -188,17 +188,17 @@ export default {
 
 .progress-bar-fill-green {
   display: block;
-  background-color: #28a745;
+  background-color: var(--no-problem-status);
 }
 
 .progress-bar-fill-blue {
   display: block;
-  background-color: #007bff;
+  background-color: var(--traval-trouble-status);
 }
 
 .progress-bar-fill-yellow {
   display: block;
-  background-color: #ffc107;
+  background-color: var(--dislike-status);
 }
 
 .progress-bar-fill-yellow i {
@@ -207,7 +207,7 @@ export default {
 
 .progress-bar-fill-red {
   display: block;
-  background-color: #dc3545;
+  background-color: var(--angry-status);
 }
 
 /* Voted Poll Success Progress Bars Css End */
