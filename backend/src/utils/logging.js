@@ -46,7 +46,7 @@ function appendTimestamp(info) {
 }
 
 function configureLoggers(fileName = 'logger.js', isJob = false, tag = 'job') {
-  const configPath = `${path.join(__dirname, CONFIG_DIRECTORY)}/${fileName}`;
+  const configPath = path.resolve(CONFIG_DIRECTORY, fileName);
   // eslint-disable-next-line import/no-dynamic-require,global-require
   const loggerConfig = require(configPath);
   logger.configure(loggerConfig);
