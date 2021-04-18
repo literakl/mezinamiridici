@@ -6,9 +6,9 @@
   "license": "MIT",
   "main": "./src/server.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon src/start.js",
-    "start": "NODE_ENV=production node src/start.js",
-    "test": "NODE_ENV=test jest --config jest.config.js --runInBand"
+    "dev": "nodemon src/start.js",
+    "start": "node src/start.js",
+    "test": "jest --config jest.config.js --runInBand"
   },
   "dependencies": {
     "aws-sdk": "^2.724.0",
