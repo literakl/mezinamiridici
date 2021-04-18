@@ -23,9 +23,9 @@ dayjs.extend(dayOfYear);
 const cheerioParser = cheerioAdv.wrap(cheerio);
 
 const { ACCIDENTS_STATS_URL, ACCIDENTS_STATS_SCHEDULE, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
-const { TEMPLATES_DIRECTORY, STREAM_PICTURES_PATH, CONFIG_DIRECTORY } = process.env;
+const { TEMPLATES_DIRECTORY, STREAM_PICTURES_PATH } = process.env;
 
-const jobLogger = configureLoggers(`${path.join(__dirname, CONFIG_DIRECTORY)}/parseAccidents.js`, true, 'parseAccidents');
+const jobLogger = configureLoggers('parseAccidents.js', true, 'parseAccidents');
 
 // eslint-disable-next-line prefer-template
 const PAGE_TEMPLATES_DIRECTORY = TEMPLATES_DIRECTORY + PATH_SEPARATOR + 'pages';

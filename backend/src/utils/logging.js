@@ -4,7 +4,16 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const { NODE_ENV, CONFIG_DIRECTORY, LOG_DIRECTORY } = process.env;
+const { NODE_ENV } = process.env;
+let { CONFIG_DIRECTORY, LOG_DIRECTORY } = process.env;
+if (!CONFIG_DIRECTORY) {
+  CONFIG_DIRECTORY = '../../config';
+}
+if (!LOG_DIRECTORY) {
+  LOG_DIRECTORY = './logs';
+}
+
+let appLogger, mongoLogger, jobLogger;
 
 function timestamp() {
   const currentDate = new Date();
@@ -29,32 +38,30 @@ function mongoCSVFormat(info) {
     output += (info.message === Object(info.message)) ? stringify(info.message) : info.message;
   }
   return output;
-};
+}
 
 function appendTimestamp(info) {
   info.timestamp = timestamp();
   return info;
-};
+}
 
-let appLogger, mongoLogger, jobLogger;
-
-function configureLoggers(fileName = `${path.join(__dirname, CONFIG_DIRECTORY)}/logger.js`, isJob = false, tag = 'job') {
-  const loggerConfig = require(fileName);
+function configureLoggers(fileName = 'logger.js', isJob = false, tag = 'job') {
+  const configPath = `${path.join(__dirname, CONFIG_DIRECTORY)}/${fileName}`;
+  // eslint-disable-next-line import/no-dynamic-require,global-require
+  const loggerConfig = require(configPath);
   logger.configure(loggerConfig);
 
   if (isJob) {
     jobLogger = logger.getLogger(tag);
     jobLogger.end = () => logger.shutdown();
     return jobLogger;
+  } else if (NODE_ENV === 'test') {
+    appLogger = logger.getLogger('test');
+  } else if (NODE_ENV === 'development') {
+    appLogger = logger.getLogger('development');
   } else {
-    if (NODE_ENV === 'test') {
-      appLogger = logger.getLogger('test');
-    } else if(NODE_ENV === 'development') {
-      appLogger = logger.getLogger('development');
-    } else {
-      appLogger = logger.getLogger('production');
-    }
-  }  
+    appLogger = logger.getLogger('production');
+  }
   mongoLogger = logger.getLogger('mongo');
 
   // interface for mongoLogger
@@ -64,7 +71,7 @@ function configureLoggers(fileName = `${path.join(__dirname, CONFIG_DIRECTORY)}/
     data = appendTimestamp(data);
     const message = mongoCSVFormat(data);
 
-    switch(payload.level) {
+    switch (payload.level) {
       case 'verbose':
       case 5000:
         mongoLogger.verbose(message);
@@ -94,7 +101,7 @@ function configureLoggers(fileName = `${path.join(__dirname, CONFIG_DIRECTORY)}/
         mongoLogger.debug(message);
         break;
     }
-  }
+  };
   appLogger.end = () => logger.shutdown();
   mongoLogger.end = () => logger.shutdown();
 
@@ -105,11 +112,9 @@ configureLoggers();
 
 // Create Log directory
 fs.mkdir(LOG_DIRECTORY, (err) => {
-  if (err.code !== 'EEXIST') {
-    return appLogger.error('Could not create the log directory. Error: ', err)
-  }
   if (!err) {
     appLogger.info('Log directory created successfully!');
+    appLogger.error('Could not create the log directory. Error: ', err);
   }
 });
 

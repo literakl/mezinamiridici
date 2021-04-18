@@ -1,15 +1,14 @@
 const { CronJob } = require('cron');
 const dayjs = require('dayjs');
 const isoWeek = require('dayjs/plugin/isoWeek');
-const path = require('path');
 
 const { configureLoggers } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
 const { findLastIndex } = require('../utils/helpers');
 
-const { CALCULATE_USER_RANKS_SCHEDULE, CONFIG_DIRECTORY } = process.env;
+const { CALCULATE_USER_RANKS_SCHEDULE } = process.env;
 
-const jobLogger = configureLoggers(`${path.join(__dirname, CONFIG_DIRECTORY)}/calculateUserRanks.js`, true, 'calculateUserRanks');
+const jobLogger = configureLoggers('calculateUserRanks.js', true, 'calculateUserRanks');
 
 dayjs.extend(isoWeek);
 

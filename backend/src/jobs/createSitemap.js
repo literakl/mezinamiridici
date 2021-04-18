@@ -1,13 +1,14 @@
 const { toXML } = require('jstoxml');
 const fs = require('fs');
+const path = require('path');
+
 const { configureLoggers } = require('../utils/logging');
 const mongo = require('../utils/mongo.js');
-const path = require('path');
 require('../utils/path_env');
 
-const { WEB_URL, SITEMAP_PATH, CONFIG_DIRECTORY } = process.env;
+const { WEB_URL, SITEMAP_PATH } = process.env;
 
-const jobLogger = configureLoggers(`${path.join(__dirname, CONFIG_DIRECTORY)}/createSitemap.js`, true, 'createSitemap');
+const jobLogger = configureLoggers('createSitemap.js', true, 'createSitemap');
 
 // TODO split to multiple files when the sitemap is about to reach the limit
 // TODO max 50,000 URLs and must not exceed 50MB uncompressed
