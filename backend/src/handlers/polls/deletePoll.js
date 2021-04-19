@@ -7,7 +7,7 @@ module.exports = (app) => {
   app.options('/v1/polls/:pollId', auth.cors);
 
   app.delete('/v1/polls/:pollId', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.verbose('delete Poll handler starts');
+    logger.debug('delete Poll handler starts');
     const { pollId } = req.params;
 
     if (!pollId) {
@@ -16,8 +16,7 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
-      const [ commandResult ] = await Promise.all([
+      const [commandResult] = await Promise.all([
         dbClient.db().collection('items').deleteOne({ _id: pollId }),
         mongo.logAdminActions(dbClient, req.identity.userId, 'delete poll', pollId),
       ]);

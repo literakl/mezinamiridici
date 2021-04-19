@@ -11,7 +11,7 @@ module.exports = (app) => {
   app.options('/v1/users', auth.cors);
 
   app.post('/v1/users', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.verbose('createUser handler starts');
+    logger.debug('createUser handler starts');
     const {
       email,
       password,
@@ -28,8 +28,6 @@ module.exports = (app) => {
     }
 
     const dbClient = await mongo.connectToDatabase();
-    logger.debug('Mongo connected');
-
     let socialRecord;
     if (socialId) {
       socialRecord = await dbClient.db().collection('social_login').findOne({ _id: socialId });

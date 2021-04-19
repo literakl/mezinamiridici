@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.options('/v1/blog/:blogId', auth.cors);
 
   app.patch('/v1/blog/:blogId', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('update blog handler starts');
+    logger.debug('update blog handler starts');
 
     const { blogId } = req.params;
     if (!blogId) {
@@ -28,7 +28,6 @@ module.exports = (app) => {
     try {
       const dbClient = await mongo.connectToDatabase();
       let blog = await mongo.getBlog(dbClient, undefined, blogId);
-
       if (blog && blog.info.author.id !== req.identity.userId) {
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
@@ -52,7 +51,7 @@ module.exports = (app) => {
   app.options('/v1/blog/:blogId/editorial', auth.cors);
 
   app.patch('/v1/blog/:blogId/editorial', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
-    logger.verbose('mark blog as editorial handler starts');
+    logger.debug('mark blog as editorial handler starts');
     const { blogId } = req.params;
     if (!blogId) {
       return api.sendMissingParam(res, 'blogId');
@@ -66,7 +65,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const query = { $set: { 'info.editorial': flag } };
       await Promise.all([
         dbClient.db().collection('items').updateOne({ _id: blogId }, query),

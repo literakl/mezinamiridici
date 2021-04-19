@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.options('/v1/items/pictures', auth.cors);
 
   app.get('/v1/items/pictures', api.diskAPILimits, auth.required, async (req, res) => {
-    logger.verbose('get Item Pictures handler starts');
+    logger.debug('get Item Pictures handler starts');
     try {
       if (!STREAM_PICTURES_DIR || !STREAM_PICTURES_PATH || !STREAM_PICTURES_DEFAULT) {
         return api.sendInternalError(res, api.createError('Incomplete configuration', 'sign-in.something-went-wrong'));

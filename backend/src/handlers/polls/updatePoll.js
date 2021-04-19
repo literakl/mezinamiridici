@@ -18,7 +18,7 @@ module.exports = (app) => {
   app.options('/v1/polls/:pollId', auth.cors);
 
   app.patch('/v1/polls/:pollId', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.verbose('updatePoll handler starts');
+    logger.debug('updatePoll handler starts');
     const { pollId } = req.params;
     if (!pollId) {
       return api.sendMissingParam(res, 'pollId');

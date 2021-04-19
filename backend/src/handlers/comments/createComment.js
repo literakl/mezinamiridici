@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
 
   app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('createComment handler starts');
+    logger.debug('createComment handler starts');
     const {
       source, parentId, date,
     } = req.body;
@@ -26,7 +26,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       if (parentId) {
         const response = await mongo.findOne(dbClient, 'comments', { _id: parentId, parentId: null });
         if (!response) {

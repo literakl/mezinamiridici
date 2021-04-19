@@ -14,7 +14,7 @@ module.exports = (app) => {
   app.options('/v1/blog', auth.cors);
 
   app.post('/v1/blog', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('create blog handler starts');
+    logger.debug('create blog handler starts');
 
     const {
       title, source, date, picture, tags, contentPictures,

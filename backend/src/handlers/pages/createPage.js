@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.options('/v1/pages', auth.cors);
 
   app.post('/v1/pages', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
-    logger.verbose('Create page handler starts');
+    logger.debug('Create page handler starts');
     const {
       caption, slug, content, contentPictures,
     } = req.body;
@@ -23,7 +23,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = auth.getIdentity(req.identity);
       const pageId = mongo.generateTimeId();
       Promise.all([
@@ -70,5 +69,5 @@ async function insertPage(dbClient, pageId, caption, slug, content, author) {
     },
   };
 
-  return await dbClient.db().collection('items').insertOne(item);
+  return dbClient.db().collection('items').insertOne(item);
 }

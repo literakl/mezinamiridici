@@ -4,12 +4,11 @@ const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.get('/bff/polls/:pollId/votes', async (req, res) => {
-    logger.verbose('getVotes handler starts');
+    logger.debug('getVotes handler starts');
     const { pollId } = req.params;
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const list = await getVotes(dbClient, pollId, req).toArray();
       logger.debug('Votes fetched');
 

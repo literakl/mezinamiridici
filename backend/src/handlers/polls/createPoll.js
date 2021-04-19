@@ -18,7 +18,7 @@ module.exports = (app) => {
   app.options('/v1/polls', auth.cors);
 
   app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.verbose('createPoll handler starts');
+    logger.debug('createPoll handler starts');
     const {
       text, author, date, picture, tags,
     } = req.body;
@@ -38,7 +38,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       let user = auth.getIdentity(req.identity);
       if (author !== undefined && author.length > 0 && ['development', 'test'].includes(NODE_ENV)) {
         user = await mongo.getIdentity(dbClient, author);

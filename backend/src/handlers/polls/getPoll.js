@@ -9,7 +9,7 @@ module.exports = (app) => {
   app.options('/bff/polls/id/:id', auth.cors);
 
   app.get('/bff/polls/last', auth.optional, async (req, res) => {
-    logger.verbose('getLastPoll handler starts');
+    logger.debug('getLastPoll handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
       const pipeline = [mongo.stagePublishedPoll, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
@@ -27,7 +27,7 @@ module.exports = (app) => {
   });
 
   app.get('/bff/polls/:slug', auth.optional, async (req, res) => {
-    logger.verbose('getPoll by slug handler starts');
+    logger.debug('getPoll by slug handler starts');
     const { slug } = req.params;
 
     try {

@@ -22,7 +22,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const tagWeights = await dbClient.db().collection('items').aggregate([
         { $unwind: '$info.tags' },
         { $group: { _id: '$info.tags', count: { $sum: 1 } } },

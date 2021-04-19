@@ -12,6 +12,17 @@ if (!CONFIG_DIRECTORY) {
 if (!LOG_DIRECTORY) {
   LOG_DIRECTORY = './logs';
 }
+console.log(`NODE_ENV = ${NODE_ENV}`);
+console.log(`CONFIG_DIRECTORY = ${CONFIG_DIRECTORY}`);
+console.log(`LOG_DIRECTORY = ${LOG_DIRECTORY}`);
+
+// Create Log directory
+fs.mkdir(LOG_DIRECTORY, (err) => {
+  if (!err) {
+    appLogger.info('Log directory created successfully!');
+    appLogger.error('Could not create the log directory. Error: ', err);
+  }
+});
 
 let appLogger, mongoLogger, jobLogger;
 
@@ -109,14 +120,6 @@ function configureLoggers(fileName = 'logger.js', isJob = false, tag = 'job') {
 }
 
 configureLoggers();
-
-// Create Log directory
-fs.mkdir(LOG_DIRECTORY, (err) => {
-  if (!err) {
-    appLogger.info('Log directory created successfully!');
-    appLogger.error('Could not create the log directory. Error: ', err);
-  }
-});
 
 exports.logger = appLogger;
 exports.mongoLogger = mongoLogger;

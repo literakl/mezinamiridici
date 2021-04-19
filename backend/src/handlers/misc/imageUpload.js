@@ -35,7 +35,7 @@ module.exports = (app) => {
   app.options('/v1/images', auth.cors);
 
   app.post('/v1/images', api.diskAPILimits, auth.required, auth.cors, uploader.single('image'), async (req, res) => {
-    logger.verbose('image upload handler starts');
+    logger.debug('image upload handler starts');
 
     try {
       const { file } = req;
@@ -73,7 +73,7 @@ module.exports = (app) => {
   app.options('/v1/images/:pictureId', auth.cors);
 
   app.patch('/v1/images/:pictureId', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('patch image handler starts');
+    logger.debug('patch image handler starts');
 
     try {
       const { pictureId } = req.params;

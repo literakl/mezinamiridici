@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.options('/v1/pages/:pageId', auth.cors);
 
   app.patch('/v1/pages/:pageId', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
-    logger.verbose('Update page handler starts');
+    logger.debug('Update page handler starts');
     const { pageId } = req.params;
     if (!pageId) {
       return api.sendMissingParam(res, 'pageId');
@@ -30,7 +30,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const query = prepareUpdateQuery(caption, slug, content);
       await Promise.all([
         dbClient.db().collection('items').updateOne({ _id: pageId }, query),

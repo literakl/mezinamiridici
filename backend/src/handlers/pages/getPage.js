@@ -10,12 +10,11 @@ module.exports = (app) => {
   app.options('/v1/pages/', auth.cors);
 
   app.get('/v1/pages/:slug', async (req, res) => {
-    logger.verbose('Get page by slug handler starts');
+    logger.debug('Get page by slug handler starts');
     const { slug } = req.params;
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const pipeline = [mongo.stageSlug(slug)];
       const item = await mongo.getPage(dbClient, pipeline);
       logger.debug('Item fetched');
@@ -31,10 +30,9 @@ module.exports = (app) => {
   });
 
   app.get('/v1/pages/', async (req, res) => {
-    logger.verbose('Get pages handler starts');
+    logger.debug('Get pages handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const list = await getPages(dbClient, req);
       logger.debug('Pages fetched');
 

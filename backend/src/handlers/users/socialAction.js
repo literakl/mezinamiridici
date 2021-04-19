@@ -4,7 +4,7 @@ const api = require('../../utils/api.js');
 const { logger } = require('../../utils/logging');
 
 async function handleSocialProviderResponse(socialProfile, res) {
-  logger.verbose('socialAction starts');
+  logger.debug('socialAction starts');
   const { email, name } = socialProfile;
   const dbClient = await mongo.connectToDatabase();
   logger.debug('Mongo connected');

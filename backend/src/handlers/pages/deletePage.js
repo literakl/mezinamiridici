@@ -7,7 +7,7 @@ module.exports = (app) => {
   app.options('/v1/pages/:pageId', auth.cors);
 
   app.delete('/v1/pages/:pageId', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
-    logger.verbose('Delete page handler starts');
+    logger.debug('Delete page handler starts');
     const { pageId } = req.params;
 
     if (!pageId) {
@@ -16,8 +16,7 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
-      const [ commandResult ] = await Promise.all([
+      const [commandResult] = await Promise.all([
         dbClient.db().collection('items').deleteOne({ _id: pageId }),
         mongo.logAdminActions(dbClient, req.identity.userId, 'delete page', pageId),
       ]);

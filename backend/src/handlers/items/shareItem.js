@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.options('/v1/items/:itemId/share', auth.cors);
 
   app.post('/v1/items/:itemId/share', auth.cors, async (req, res) => {
-    logger.verbose('share link handler starts');
+    logger.debug('share link handler starts');
     const { itemId } = req.params;
     const { path, service, userId, date } = req.body;
     if (!codes.includes(service)) {
@@ -29,7 +29,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const url = createURL(service, path);
       await insertShare(dbClient, itemId, userId, service, publishDate);
       await mongo.incrementUserActivityCounter(dbClient, userId, 'share', 'create');

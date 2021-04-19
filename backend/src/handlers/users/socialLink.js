@@ -13,14 +13,14 @@ module.exports = (app) => {
   app.options('/v1/auth/:provider');
 
   app.get('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
-    logger.verbose('socialLink GET handler starts');
+    logger.debug('socialLink GET handler starts');
     logger.info(helpers.toJSON(req.query));
     api.sendResponse(res, {});
   });
 
   // eslint-disable-next-line consistent-return
   app.post('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
-    logger.verbose('socialLink POST handler starts');
+    logger.debug('socialLink POST handler starts');
     logger.info(helpers.toJSON(req.body));
     let socialProfile;
     try {
@@ -44,7 +44,7 @@ module.exports = (app) => {
 };
 
 async function googleAuth(req) {
-  logger.verbose('Google authentication starts');
+  logger.debug('Google authentication starts');
   const requestObject = {
     method: 'post',
     url: CREDENTIAL.GOOGLE.TOKEN_URL,
@@ -82,7 +82,7 @@ async function googleAuth(req) {
 }
 
 async function facebookAuth(req) {
-  logger.verbose('Facebook authentication starts');
+  logger.debug('Facebook authentication starts');
   const requestObject = {
     method: 'post',
     url: CREDENTIAL.FACEBOOK.TOKEN_URL,
@@ -107,7 +107,7 @@ async function facebookAuth(req) {
 
 // eslint-disable-next-line consistent-return
 async function twitterAuth(req, res) {
-  logger.verbose('Twitter authentication starts');
+  logger.debug('Twitter authentication starts');
   const oauthService = new OAuth.OAuth(
     CREDENTIAL.TWITTER.REQUEST_URL,
     CREDENTIAL.TWITTER.ACCESS_URL,

@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.options('/bff/items/:itemId/comments/:commentId', auth.cors);
 
   app.get('/bff/items/:itemId/comments', auth.cors, auth.optional, async (req, res) => {
-    logger.verbose('getComments handler starts');
+    logger.debug('getComments handler starts');
     const { itemId } = req.params;
     if (!itemId) {
       return api.sendMissingParam(res, 'itemId');
@@ -21,7 +21,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const query = { itemId, parentId: { $exists: false } };
       if (listParams.lastResult) {
         query._id = listParams.lastResult.value;
@@ -84,7 +83,7 @@ module.exports = (app) => {
   });
 
   app.get('/bff/items/:itemId/comments/:commentId', auth.cors, auth.optional, async (req, res) => {
-    logger.verbose('getComment handler starts');
+    logger.debug('getComment handler starts');
     const { commentId } = req.params;
     if (!commentId) {
       return api.sendBadRequest(res, api.createError('Missing parameter commentId', 'generic.internal-error'));
@@ -92,7 +91,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const query = {
         $or: [
           { _id: commentId }, // fetch the comment

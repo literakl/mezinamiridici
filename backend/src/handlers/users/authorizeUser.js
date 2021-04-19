@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.options('/v1/authorizeUser', auth.cors);
 
   app.post('/v1/authorizeUser', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.verbose('authorizeUser handler starts');
+    logger.debug('authorizeUser handler starts');
     const { email, password } = req.body;
     const result = validateParameters(email, password);
     if (!result.success) {
@@ -19,7 +19,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1, 'bio.nickname': 1, roles: 1 } });
       logger.debug('User fetched');
       if (!user) {

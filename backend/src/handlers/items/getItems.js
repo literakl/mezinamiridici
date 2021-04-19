@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.options('/v1/item-stream', auth.cors);
 
   app.get('/v1/item-stream', auth.cors, async (req, res) => {
-    logger.debug(`Get items ${JSON.stringify(req.query)}`);
+    logger.debug('Get items'); // ${JSON.stringify(req.query)}
 
     try {
       const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);

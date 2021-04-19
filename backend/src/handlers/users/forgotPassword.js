@@ -9,12 +9,11 @@ module.exports = (app) => {
   app.options('/v1/forgotPassword', auth.cors);
 
   app.post('/v1/forgotPassword', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.verbose('forgotPassword handler starts');
+    logger.debug('forgotPassword handler starts');
     const { email } = req.body;
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1 } });
       if (!user) {
         logger.error(`User not found ${email}`);

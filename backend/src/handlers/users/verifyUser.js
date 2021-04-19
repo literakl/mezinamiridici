@@ -7,12 +7,11 @@ module.exports = (app) => {
   app.options('/v1/verify/:token', auth.cors);
 
   app.post('/v1/verify/:token', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.verbose('verifyUser handler starts');
+    logger.debug('verifyUser handler starts');
     const { token } = req.params;
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const user = await mongo.findUser(dbClient, { token }, { projection: { auth: 1 } });
       logger.debug('User fetched');
       if (!user) {

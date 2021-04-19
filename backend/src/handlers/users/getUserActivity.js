@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.options('/v1/users/:userId/activity', auth.cors);
 
   app.get('/v1/users/:userId/activity', async (req, res) => {
-    logger.verbose('get user activity handler starts');
+    logger.debug('get user activity handler starts');
     const { userId } = req.params;
     if (!userId) {
       return api.sendBadRequest(res, api.createError('Missing user id', 'generic.internal-error'));
@@ -25,7 +25,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const list = await getActivity(dbClient, userId, type, req);
       logger.debug('Activity fetched');
 

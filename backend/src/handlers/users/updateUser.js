@@ -6,7 +6,7 @@ const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.patch('/v1/users/:userId', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('updateUser handler starts');
+    logger.debug('updateUser handler starts');
     const { userId } = req.params;
     if (req.identity.userId !== userId) {
       logger.error(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);

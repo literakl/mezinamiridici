@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.options('/v1/resetPassword', auth.cors);
 
   app.post('/v1/resetPassword', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.verbose('resetPassword handler starts');
+    logger.debug('resetPassword handler starts');
     const { resetPasswordToken, password } = req.body;
     if (!resetPasswordToken) {
       return api.sendBadRequest(res, api.createError('Missing token', 'sign-in.auth-error'));
@@ -42,7 +42,7 @@ module.exports = (app) => {
   app.options('/v1/resetPassword/token/:token', auth.cors);
 
   app.get('/v1/resetPassword/token/:token', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.verbose('get email from reset token handler starts');
+    logger.debug('get email from reset token handler starts');
     const { token } = req.params;
     if (!token) {
       return api.sendMissingParam(res, 'token');

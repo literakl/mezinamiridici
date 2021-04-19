@@ -7,7 +7,7 @@ module.exports = (app) => {
   app.options('/v1/comments/:commentId/votes', auth.cors);
 
   app.post('/v1/comments/:commentId/votes', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('voteComment handler starts');
+    logger.debug('voteComment handler starts');
     const { vote } = req.body;
     const { commentId } = req.params;
     if (!commentId) {
@@ -22,7 +22,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const commentVote = await dbClient.db().collection('comment_votes').findOne({ commentId, 'user.id': req.identity.userId });
       if (commentVote && commentVote.vote !== undefined) {
         return api.sendConflict(res, api.createError('You have already voted.', 'generic.internal-error'));

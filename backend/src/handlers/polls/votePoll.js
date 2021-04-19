@@ -7,7 +7,7 @@ module.exports = (app) => {
   app.options('/bff/polls/:pollId/votes', auth.cors);
 
   app.post('/bff/polls/:pollId/votes', auth.required, auth.cors, async (req, res) => {
-    logger.verbose('votePoll handler starts');
+    logger.debug('votePoll handler starts');
     const { pollId } = req.params;
     const { vote } = req.body;
     if (!pollId) {
@@ -19,7 +19,6 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-
       let item = await dbClient.db().collection('items').findOne({ _id: pollId }, { projection: { _id: 1 } });
       if (!item) {
         return api.sendNotFound(res, api.createError('Poll not found', 'generic.internal-error'));

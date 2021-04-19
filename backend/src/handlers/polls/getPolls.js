@@ -10,10 +10,9 @@ module.exports = (app) => {
   app.options('/bff/polls/', auth.cors);
 
   app.get('/bff/polls/', auth.optional, async (req, res) => {
-    logger.verbose('getPolls handler starts');
+    logger.debug('getPolls handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const list = await getItems(dbClient, req);
       logger.debug('Items fetched');
 

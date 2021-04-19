@@ -11,7 +11,7 @@ module.exports = {
       backups: NUM_LOG_BACKUPS,
       layout: {
         type: 'pattern',
-        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS} [%p] [%c]: %m',
+        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS} [%p] %m',
       },
     },
     test: {
@@ -54,7 +54,7 @@ module.exports = {
       backups: NUM_LOG_BACKUPS,
       layout: {
         type: 'pattern',
-        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS} [%p] [%c] [%f{1}:%l]: %m',
+        pattern: '%d{yyyy-MM-dd hh:mm:ss.SSS} [%p] [%f{1}:%l]: %m',
       },
     },
     error: {

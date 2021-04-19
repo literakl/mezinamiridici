@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.options('/bff/users/:userId/info', auth.cors);
 
   app.get('/v1/users/:userId', auth.optional, async (req, res) => {
-    logger.verbose('getUser handler starts');
+    logger.debug('getUser handler starts');
     const { userId } = req.params;
     if (!userId) {
       return api.sendMissingParam(res, 'userId');
@@ -46,7 +46,7 @@ module.exports = (app) => {
   });
 
   app.post('/v1/check/email', auth.cors, async (req, res) => {
-    logger.verbose('User email check handler starts');
+    logger.debug('User email check handler starts');
     const { email } = req.body;
 
     try {
@@ -66,7 +66,7 @@ module.exports = (app) => {
   });
 
   app.post('/v1/check/nickname', auth.cors, async (req, res) => {
-    logger.verbose('User nickname check handler starts');
+    logger.debug('User nickname check handler starts');
     const { nickname } = req.body;
 
     try {
@@ -86,7 +86,7 @@ module.exports = (app) => {
   });
 
   app.get('/bff/users/:userId/info', auth.cors, async (req, res) => {
-    logger.verbose('Get user info check handler starts');
+    logger.debug('Get user info check handler starts');
     const { userId } = req.params;
     if (!userId) {
       return api.sendMissingParam(res, 'userId');

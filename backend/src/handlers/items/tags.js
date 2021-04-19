@@ -9,10 +9,9 @@ module.exports = (app) => {
   app.options('/bff/items/:tag', auth.cors);
 
   app.get('/bff/items/:tag', async (req, res) => {
-    logger.verbose('getItems by tag handler starts');
+    logger.debug('getItems by tag handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const list = await getItems(dbClient, req);
       logger.debug('Item fetched');
 

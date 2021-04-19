@@ -10,10 +10,9 @@ module.exports = (app) => {
   app.options('/v1/users/:userId/validateToken', auth.cors);
 
   app.post('/v1/users/:userId/validateToken', api.authAPILimits, auth.required, auth.cors, async (req, res) => {
-    logger.verbose('validateToken handler starts');
+    logger.debug('validateToken handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-
       const jwtData = req.identity;
       const user = await mongo.findUser(dbClient, { _id: jwtData.userId }, { projection: { auth: 1 } });
       logger.debug('User fetched');
