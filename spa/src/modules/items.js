@@ -83,8 +83,10 @@ export default {
     },
     CREATE_BLOG: async (context, payload) => {
       Vue.$log.debug('CREATE_BLOG');
-      const blog = await post('API', '/blog', payload, context);
-      return blog.data.data;
+      const blog = await post('API', '/blog', payload, context)
+        .then(() => blog.data.data)
+        .catch(err => err.response.data);
+      return blog;
     },
     UPDATE_BLOG: async (context, payload) => {
       Vue.$log.debug('UPDATE_BLOG');

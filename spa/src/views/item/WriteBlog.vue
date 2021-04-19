@@ -36,6 +36,11 @@
           </div>
         </div>
       </ValidationObserver>
+      <div class="errors">
+        <ul>
+          <li v-for="error in errors" :key="error.message">{{ error }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -68,6 +73,7 @@ export default {
       html: '',
       hideContentError: true,
       contentPictures: [],
+      errors: [],
     };
   },
   computed: {
@@ -93,6 +99,7 @@ export default {
   },
   methods: {
     async saveBlog() {
+      this.errors = [];
       const body = {
         title: this.title,
         source: this.html,
@@ -113,10 +120,14 @@ export default {
           result = await this.$store.dispatch('UPDATE_BLOG', body);
         }
 
-        await this.$router.push({
-          name: 'blog',
-          params: { slug: result.info.slug },
-        });
+        if (result.success) {
+          await this.$router.push({
+            name: 'blog',
+            params: { slug: result.info.slug },
+          });
+        } else {
+          this.showError(result.errors);
+        }
       } else {
         console.log('empty title!');
       }
@@ -149,6 +160,11 @@ export default {
         this.contentPictures.push(list[i].getAttribute('pictureid'));
       }
     },
+    showError(errors) {
+      for (let i = 0; i < errors.length; i += 1) {
+        this.errors.push(this.$t(errors[i].messageKey));
+      }
+    },
   },
   created() {
     if (this.$route.name === 'update-blog') {
@@ -176,6 +192,12 @@ export default {
 }
 .btn-post-btn:disabled {
     background: var(--traval-trouble-status);
+}
+.errors ul {
+  color: red;
+  margin: 2rem 0;
+  padding-left: 0;
+  list-style-type: none;
 }
 </style>
 
