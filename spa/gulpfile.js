@@ -35,7 +35,7 @@ function buildVueCodeTask(cb) {
 
 function copyVueCodeTask() {
   console.log('copying Vue code into the directory');
-  return src('dist/**')
+  return src(['dist/**', '!dist/images/uploads/**'])
     .pipe(dest(`${packageDirectory}/html`));
 }
 
