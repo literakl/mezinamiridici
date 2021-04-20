@@ -37,9 +37,11 @@
         </div>
       </ValidationObserver>
       <div class="errors">
-        <ul>
-          <li v-for="error in errors" :key="error.message">{{ error }}</li>
-        </ul>
+        <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
+          <ul>
+            <li v-for="error in errors" :key="error.message">{{ error }}</li>
+          </ul>
+        </b-alert>
       </div>
     </div>
   </div>
@@ -49,7 +51,7 @@
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-import { BButton, BFormInvalidFeedback } from 'bootstrap-vue';
+import { BButton, BFormInvalidFeedback, BAlert } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
 
 export default {
@@ -60,6 +62,7 @@ export default {
     BButton,
     Editor,
     BFormInvalidFeedback,
+    BAlert,
   },
   props: {
     slug: String,
@@ -193,11 +196,11 @@ export default {
 .btn-post-btn:disabled {
     background: var(--traval-trouble-status);
 }
-.errors ul {
-  color: red;
-  margin: 2rem 0;
-  padding-left: 0;
-  list-style-type: none;
+.errors {
+  margin-top: 1rem;
+}
+.errors .alert li{
+  margin-top: 1rem;
 }
 </style>
 
