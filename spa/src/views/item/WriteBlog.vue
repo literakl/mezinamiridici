@@ -126,7 +126,7 @@ export default {
         if (result.success) {
           await this.$router.push({
             name: 'blog',
-            params: { slug: result.info.slug },
+            params: { slug: result.data.info.slug },
           });
         } else {
           this.showError(result.errors);

@@ -84,16 +84,18 @@ export default {
     CREATE_BLOG: async (context, payload) => {
       Vue.$log.debug('CREATE_BLOG');
       const blog = await post('API', '/blog', payload, context)
-        .then(() => blog.data.data)
+        .then(response => response.data)
         .catch(err => err.response.data);
       return blog;
     },
     UPDATE_BLOG: async (context, payload) => {
       Vue.$log.debug('UPDATE_BLOG');
       const { blogId } = payload;
-      const blogData = await patch('API', `/blog/${blogId}/`, payload, context);
-      const item = blogData.data.data;
-      context.commit('SET_BLOG', item);
+      const item = await patch('API', `/blog/${blogId}/`, payload, context)
+        .then((response) => {
+          context.commit('SET_BLOG', response.data.data);
+          return response.data;
+        }).catch(err => err.response.data);
       return item;
     },
     FETCH_BLOG: async (context, payload) => {
