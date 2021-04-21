@@ -157,6 +157,10 @@ export default {
   margin: 0 auto;
 }
 
+.post-content img{
+  width: 100%;
+}
+
 .post-details {
   border-bottom: 1px solid #dee0e1;
   margin-bottom: 20px !important;

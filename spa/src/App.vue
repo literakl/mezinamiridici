@@ -34,6 +34,8 @@
               <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
               <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
               <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/privacy">{{ $t('page-title.privacy') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/cookies">{{ $t('page-title.cookies') }}</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
       </b-navbar>
