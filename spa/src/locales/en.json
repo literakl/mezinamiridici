@@ -347,5 +347,14 @@
     "move-down": "Move down",
     "ordered-list": "Ordered",
     "unordered-list": "Unordered"
+  },
+  "infoBox": {
+    "readMore": "READ MORE",
+    "whyThisForum": {
+      "para": "Why was this forum created? We want to reduce road traffic incidents."
+    },
+    "reducingAccidents": {
+      "para": "How to reduce accidents?"
+    }
   }
 }

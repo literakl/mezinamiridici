@@ -324,5 +324,14 @@
       "new-cms-heading": "Nová stránka",
       "delete-message": "Opravdu chcete tuto stránku smazat?"
     }
+  },
+  "infoBox": {
+    "readMore": "READ MORE",
+    "whyThisForum": {
+      "para": "Why was this forum created? We want to reduce road traffic incidents."
+    },
+    "reducingAccidents": {
+      "para": "How to reduce accidents?"
+    }
   }
 }

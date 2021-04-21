@@ -15,6 +15,7 @@ yarn-error.log*
 *.log.gz
 /backend/mongo.csv
 mongo.csv
+*.csv.gz
 
 # Editor directories and files
 .vscode
