@@ -30,6 +30,13 @@
           </div>
           <div class="image-area">
             <SelectPicture :currentPath="picture" @changePath="changePath" />
+            <div class="errors">
+              <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
+                <ul>
+                  <li v-for="error in errors" :key="error.message">{{ error }}</li>
+                </ul>
+              </b-alert>
+            </div>
             <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">{{
               $t("blog.form.save-button")
             }}</b-button>
@@ -44,7 +51,7 @@
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-import { BButton, BFormInvalidFeedback } from 'bootstrap-vue';
+import { BButton, BFormInvalidFeedback, BAlert } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
 
 export default {
@@ -55,6 +62,7 @@ export default {
     BButton,
     Editor,
     BFormInvalidFeedback,
+    BAlert,
   },
   props: {
     slug: String,
@@ -68,6 +76,7 @@ export default {
       html: '',
       hideContentError: true,
       contentPictures: [],
+      errors: [],
     };
   },
   computed: {
@@ -93,6 +102,7 @@ export default {
   },
   methods: {
     async saveBlog() {
+      this.errors = [];
       const body = {
         title: this.title,
         source: this.html,
@@ -113,10 +123,14 @@ export default {
           result = await this.$store.dispatch('UPDATE_BLOG', body);
         }
 
-        await this.$router.push({
-          name: 'blog',
-          params: { slug: result.info.slug },
-        });
+        if (result.success) {
+          await this.$router.push({
+            name: 'blog',
+            params: { slug: result.data.info.slug },
+          });
+        } else {
+          this.showError(result.errors);
+        }
       } else {
         console.log('empty title!');
       }
@@ -149,6 +163,11 @@ export default {
         this.contentPictures.push(list[i].getAttribute('pictureid'));
       }
     },
+    showError(errors) {
+      for (let i = 0; i < errors.length; i += 1) {
+        this.errors.push(this.$t(errors[i].messageKey));
+      }
+    },
   },
   created() {
     if (this.$route.name === 'update-blog') {
@@ -176,6 +195,12 @@ export default {
 }
 .btn-post-btn:disabled {
     background: var(--traval-trouble-status);
+}
+.errors {
+  margin-top: 1rem;
+}
+.errors .alert li{
+  margin-top: 1rem;
 }
 </style>
 
