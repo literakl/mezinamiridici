@@ -1,13 +1,17 @@
 <template>
   <div class="info-box"  v-if="infoBoxContent">
     <span class="closebtn" @click="ignoreMessage()"><BIconXCircle scale='1'></BIconXCircle></span>
-    <component v-if="infoBoxContent" :is="infoBoxContent"></component>
+    <component :is="infoBoxContent"></component>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import { BIconXCircle } from 'bootstrap-vue';
-import { infoBoxes } from '../../../config/infoBox.json';
+import { infoBoxes } from '@/config/infoBox.json';
+
+dayjs.extend(isBetween);
 
 export default {
   name: 'InfoBox',
@@ -25,24 +29,21 @@ export default {
   },
   methods: {
     loadInfoBox() {
-      const userIgnored = this.checkIfIgnored();
-      if (userIgnored) {
-        return;
-      }
+      if (this.checkIfIgnored()) return;
       const validInfoBoxes = this.findValidInfoBoxes(infoBoxes);
-      const randomIndex = this.randomNumber(validInfoBoxes.length);
-      this.loadComponent(validInfoBoxes[randomIndex].template);
-      this.infoBoxId = validInfoBoxes[randomIndex].id;
+
+      if (validInfoBoxes.length) {
+        const randomIndex = this.randomNumber(validInfoBoxes.length);
+        this.loadComponent(validInfoBoxes[randomIndex].template);
+        this.infoBoxId = validInfoBoxes[randomIndex].id;
+      }
     },
     checkIfIgnored() {
       const millisInDay = 24 * 3600 * 1000;
       const infoBoxCloseDate = localStorage.getItem('infoBoxCloseDate');
 
       if (infoBoxCloseDate) {
-        const ignoredDate = new Date(infoBoxCloseDate);
-        const nowDate = new Date();
-
-        if (nowDate - ignoredDate < millisInDay) {
+        if (new Date() - new Date(infoBoxCloseDate) < millisInDay) {
           return true;
         }
       }
@@ -54,43 +55,31 @@ export default {
       return stageTwoFiltered;
     },
     filterByDate(list) {
-      const filteredList = [];
-
-      for (let i = 0; i < list.length; i += 1) {
-        const startDate = new Date(list[i].since);
-        const endDate = new Date(list[i].to);
-        const currentDate = new Date();
-
-        if (currentDate > startDate && currentDate <= endDate) {
-          filteredList.push(list[i]);
-        }
-      }
-      return filteredList;
+      return list.filter(item => dayjs().isBetween(item.since, item.to));
     },
     filterByUserPreferences(list) {
       const ignoredInfoBoxes = localStorage.getItem('ignoredInfoBoxes');
+
       let ignoredList;
       if (ignoredInfoBoxes) {
         ignoredList = JSON.parse(ignoredInfoBoxes);
       } else {
-        ignoredList = [];
+        return list;
       }
-      const filteredList = [];
 
-      for (let i = 0; i < list.length; i += 1) {
-        if (!ignoredList.includes(list[i].id)) {
-          filteredList.push(list[i]);
-        }
-      }
-      return filteredList;
+      return list.filter(item => !ignoredList.includes(item.id));
     },
     randomNumber(max) {
       return Math.floor(Math.random() * max);
     },
     loadComponent(path) {
-      // eslint-disable-next-line global-require, import/no-dynamic-require
-      const loadedComponent = require(`@/${path}`).default;
-      this.infoBoxContent = loadedComponent;
+      try {
+        // eslint-disable-next-line global-require, import/no-dynamic-require
+        const loadedComponent = require(`@/${path}`).default;
+        this.infoBoxContent = loadedComponent;
+      } catch (err) {
+        this.$log.error(err);
+      }
     },
     ignoreMessage() {
       const ignoredInfoBoxes = localStorage.getItem('ignoredInfoBoxes');
