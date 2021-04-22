@@ -38,7 +38,7 @@ function getAuthHeader(context, jwt = undefined, onUploadProgress) {
   return config;
 }
 
-async function get(endpoint, url, context = undefined) {
+function get(endpoint, url, context = undefined) {
   const headers = getAuthHeader(context);
   if (endpoint === 'BFF') {
     return axios.get(`${VUE_APP_BFF_ENDPOINT}${url}`, headers);
@@ -47,7 +47,7 @@ async function get(endpoint, url, context = undefined) {
   }
 }
 
-async function post(endpoint, url, body, context, jwt, progress) {
+function post(endpoint, url, body, context, jwt, progress) {
   const headers = getAuthHeader(context, jwt, progress);
   if (endpoint === 'BFF') {
     return axios.post(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
@@ -56,7 +56,7 @@ async function post(endpoint, url, body, context, jwt, progress) {
   }
 }
 
-async function put(endpoint, url, body, context, jwt) {
+function put(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
   if (endpoint === 'BFF') {
     return axios.put(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
@@ -65,7 +65,7 @@ async function put(endpoint, url, body, context, jwt) {
   }
 }
 
-async function patch(endpoint, url, body, context, jwt) {
+function patch(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
   if (endpoint === 'BFF') {
     return axios.patch(`${VUE_APP_BFF_ENDPOINT}${url}`, body, headers);
@@ -74,7 +74,7 @@ async function patch(endpoint, url, body, context, jwt) {
   }
 }
 
-async function deleteApi(endpoint, url, body, context, jwt) {
+function deleteApi(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
   if (endpoint === 'BFF') {
     return axios.delete(`${VUE_APP_BFF_ENDPOINT}${url}`, headers);
