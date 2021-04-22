@@ -30,19 +30,19 @@
           </div>
           <div class="image-area">
             <SelectPicture :currentPath="picture" @changePath="changePath" />
+            <div class="errors">
+              <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
+                <ul>
+                  <li v-for="error in errors" :key="error.message">{{ error }}</li>
+                </ul>
+              </b-alert>
+            </div>
             <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">{{
               $t("blog.form.save-button")
             }}</b-button>
           </div>
         </div>
       </ValidationObserver>
-      <div class="errors">
-        <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
-          <ul>
-            <li v-for="error in errors" :key="error.message">{{ error }}</li>
-          </ul>
-        </b-alert>
-      </div>
     </div>
   </div>
 </template>
