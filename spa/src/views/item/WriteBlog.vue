@@ -24,12 +24,15 @@
           />
           <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.required-field') }}</b-form-invalid-feedback>
         </div>
+
         <div class="bottom-wrap">
           <div class="tags-area">
             <TagSelector @changeTags="tagSelect" :formTags="tags" />
           </div>
+
           <div class="image-area">
             <SelectPicture :currentPath="picture" @changePath="changePath" />
+
             <div class="errors">
               <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
                 <ul>
@@ -37,6 +40,7 @@
                 </ul>
               </b-alert>
             </div>
+
             <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">{{
               $t("blog.form.save-button")
             }}</b-button>

@@ -1,6 +1,11 @@
 <template>
   <div class="editor" v-blur-event>
     <form @submit.prevent>
+    <div>
+      <b-alert :show="showDismissibleAlert" dismissible @dismissed="dismissError" variant="danger">
+        {{ errorMessage }}
+      </b-alert>
+    </div>
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
         <button class="menubar__button" @click="commands.undo">
@@ -144,7 +149,7 @@ import {
 } from 'tiptap-extensions';
 import Image from '@/utils/editorImage';
 import store from '@/store';
-import { BProgress } from 'bootstrap-vue';
+import { BAlert, BProgress } from 'bootstrap-vue';
 
 async function upload(file, progress) {
   const formData = new FormData();
@@ -163,6 +168,7 @@ export default {
     EditorContent,
     EditorMenuBar,
     EditorMenuBubble,
+    BAlert,
     BProgress,
   },
   props: {
@@ -227,6 +233,8 @@ export default {
       linkMenuIsActive: true,
       progressMax: 100,
       progressValue: 0,
+      showDismissibleAlert: false,
+      errorMessage: undefined,
     };
   },
   watch: {
@@ -262,6 +270,10 @@ export default {
       command({ href: url });
       this.hideLinkMenu();
     },
+    dismissError() {
+      this.showDismissibleAlert = false;
+      this.errorMessage = undefined;
+    },
   },
   mounted() {
     const _this = this;
@@ -275,14 +287,22 @@ export default {
 
     this.$refs.fileUploadInput.addEventListener('change', async (event) => {
       if (event.target.files && event.target.files[0]) {
-        if (['image/jpeg', 'image/gif', 'image/png', 'image/svg+xml'].indexOf(event.target.files[0].type) > -1) {
-          const data = await upload(event.target.files[0], progress);
-          event.target.command({ src: data.url, pictureid: data.pictureId });
-          event.target.command = null;
-        } else {
-          this.$log.error(`File type ${event.target.files[0].type} is not supported!`);
-          // todo show error unsupported type
+        const file = event.target.files[0];
+        if (['image/jpeg', 'image/webp', 'image/gif', 'image/png', 'image/svg+xml'].indexOf(file.type) === -1) {
+          this.errorMessage = this.$t('editor.image-unsupported-type');
+          this.showDismissibleAlert = true;
+          return;
         }
+
+        if (file.size > 20000000) {
+          this.errorMessage = this.$t('editor.image-too-big');
+          this.showDismissibleAlert = true;
+          return;
+        }
+
+        const data = await upload(file, progress);
+        event.target.command({ src: data.url, pictureid: data.pictureId });
+        event.target.command = null;
       }
     });
   },

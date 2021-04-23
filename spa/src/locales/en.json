@@ -277,6 +277,30 @@
       "unmark": "Unset editorial"
     }
   },
+  "cms": {
+    "edit": {
+      "caption-label": "Caption",
+      "slug-label": "Slug",
+      "content-label": "Content",
+      "edit-cms": "Edit page",
+      "delete-cms": "Delete page",
+      "new-cms-heading": "New page",
+      "delete-message": "Are you sure to delete this page?"
+    }
+  },
+  "editor": {
+    "image-too-big": "This image is too big. Limit is 20 MB.",
+    "image-unsupported-type": "Only JPG, WEBP, PNG, GIF and SVG are supported."
+  },
+  "infoBox": {
+    "readMore": "READ MORE",
+    "whyThisForum": {
+      "para": "Why was this forum created? We want to reduce road traffic incidents."
+    },
+    "reducingAccidents": {
+      "para": "How to reduce accidents?"
+    }
+  },
   "page-title":{
     "home": "Home",
     "sign-up": "Sign up",
@@ -310,53 +334,5 @@
     "edit-content": "Edit page",
     "create-content": "Create page",
     "junkyard": "Junkyard"
-  },
-  "cms": {
-    "edit": {
-      "caption-label": "Caption",
-      "slug-label": "Slug",
-      "content-label": "Content",
-      "edit-cms": "Edit page",
-      "delete-cms": "Delete page",
-      "new-cms-heading": "New page",
-      "delete-message": "Are you sure to delete this page?"
-    }
-  },
-  "editorjs": {
-    "p-placeholder": "Enter your text or press + button",
-    "h-placeholder": "Enter a header",
-    "q-placeholder": "Enter a quote",
-    "click-to-tune": "",
-    "or-drag-to-move": "",
-    "convert-to": "",
-    "add": "Add",
-    "text": "Text",
-    "heading": "Heading",
-    "list": "List",
-    "quote": "Quote",
-    "delimiter": "Delimiter",
-    "table": "Table",
-    "image": "Image",
-    "bold": "Bold",
-    "italic": "Italic",
-    "inlineCode": "InlineCode",
-    "title": "Title",
-    "message": "Message",
-    "add-link": "Add a link",
-    "display-incorrect": "The block can not be displayed correctly.",
-    "delete": "Delete",
-    "move-up": "Move up",
-    "move-down": "Move down",
-    "ordered-list": "Ordered",
-    "unordered-list": "Unordered"
-  },
-  "infoBox": {
-    "readMore": "READ MORE",
-    "whyThisForum": {
-      "para": "Why was this forum created? We want to reduce road traffic incidents."
-    },
-    "reducingAccidents": {
-      "para": "How to reduce accidents?"
-    }
   }
 }
