@@ -13,8 +13,6 @@ if (!LOG_DIRECTORY) {
   LOG_DIRECTORY = './logs';
 }
 console.log(`NODE_ENV = ${NODE_ENV}`);
-console.log(`CONFIG_DIRECTORY = ${CONFIG_DIRECTORY}`);
-console.log(`LOG_DIRECTORY = ${LOG_DIRECTORY}`);
 
 // Create Log directory
 fs.mkdir(LOG_DIRECTORY, (err) => {

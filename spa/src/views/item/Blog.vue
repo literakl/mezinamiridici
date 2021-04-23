@@ -20,13 +20,13 @@
               {{ blog.comments.count }}
             </b-link>
           </div>
-          <div v-if="canEdit" class="post-edit">
+          <div v-if="isAuthor" class="post-edit">
             <BIconPencilSquare scale="1"></BIconPencilSquare>
             <router-link :to="{name: 'update-blog', params: { id: blog._id } }">
               {{ $t('generic.edit-button') }}
             </router-link>
           </div>
-          <div class="post-editorial" v-if="role">
+          <div class="post-editorial" v-if="isAdmin">
             <b-link v-if="!editorial" v-on:click="toggleEditorial">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.editorial.mark') }}
@@ -36,6 +36,24 @@
               {{ $t('blog.editorial.unmark') }}
             </b-link>
           </div>
+          <div class="post-delete" v-if="isAuthor || isAdmin">
+            <b-link v-b-modal.confirm>
+              <BIconXCircle scale="1"></BIconXCircle>
+              {{ $t('blog.delete') }}
+            </b-link>
+          </div>
+          <b-modal id="confirm" :title="$t('confirm.delete')" hide-footer>
+            <p class="my-4">{{ $t('blog.confirm-delete') }}</p>
+            <b-button class="mt-3 mr-2" @click="$bvModal.hide('confirm')">Cancel</b-button>
+            <b-button class="mt-3" variant="danger" @click="deleteBlog(); $bvModal.hide('confirm');">Delete</b-button>
+          </b-modal>
+        </div>
+        <div class="errors">
+          <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
+            <ul>
+              <li v-for="error in errors" :key="error.message">{{ error }}</li>
+            </ul>
+          </b-alert>
         </div>
 
         <div class="post-content p3" v-html="blogHtml"></div>
@@ -53,7 +71,8 @@ import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconPencilSquare, BIconShieldPlus, BIconShieldMinus, BLink } from 'bootstrap-vue';
+import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconPencilSquare,
+  BIconShieldPlus, BIconShieldMinus, BLink, BIconXCircle, BAlert, BButton } from 'bootstrap-vue';
 
 export default {
   name: 'blog',
@@ -65,10 +84,13 @@ export default {
     BIconShieldPlus,
     BIconShieldMinus,
     BIconPersonCircle,
+    BIconXCircle,
     Comments,
     Date,
     ProfileLink,
     ShareLink,
+    BAlert,
+    BButton,
   },
   props: {
     slug: String,
@@ -76,6 +98,7 @@ export default {
   data() {
     return {
       blogHtml: '',
+      errors: [],
     };
   },
   watch: {
@@ -98,11 +121,11 @@ export default {
     editorial() {
       return this.blog.info.editorial;
     },
-    canEdit() {
+    isAuthor() {
       return this.blog.info.author.id === this.$store.getters.USER_ID;
     },
-    role() {
-      return this.$store.getters.USER_ROLE;
+    isAdmin() {
+      return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:blog');
     },
   },
   created() {
@@ -128,6 +151,20 @@ export default {
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
+    },
+    async deleteBlog() {
+      this.errors = [];
+      const result = await this.$store.dispatch('DELETE_BLOG', { blogId: this.blog._id });
+      if (result.success) {
+        window.history.go(-1);
+      } else {
+        this.showError(result.errors);
+      }
+    },
+    showError(errors) {
+      for (let i = 0; i < errors.length; i += 1) {
+        this.errors.push(this.$t(errors[i].messageKey));
+      }
     },
   },
 };
@@ -274,6 +311,13 @@ tbody tr td:last-child {
 
 tbody tr td:first-child {
   border-left: none;
+}
+
+.errors {
+  margin-top: 1rem;
+}
+.errors .alert li{
+  margin-top: 1rem;
 }
 
 @media (max-width: 1235px) {

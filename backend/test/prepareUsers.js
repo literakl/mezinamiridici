@@ -20,7 +20,7 @@ const Leos = {
     count: { pollVotes: 0, comments: 4, commentVotes: 0, commentVoteRatio: 25, blogs: 0, shares: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
-  roles: ['admin:poll', 'admin:pages'],
+  roles: ['admin:poll', 'admin:pages', 'admin:blog'],
 };
 const Jiri = {
   _id: 'jiri',
