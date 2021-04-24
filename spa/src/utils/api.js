@@ -74,12 +74,14 @@ function patch(endpoint, url, body, context, jwt) {
   }
 }
 
-function deleteApi(endpoint, url, body, context, jwt) {
+async function deleteApi(endpoint, url, body, context, jwt) {
   const headers = getAuthHeader(context, jwt);
   if (endpoint === 'BFF') {
     return axios.delete(`${VUE_APP_BFF_ENDPOINT}${url}`, headers);
   } else {
-    return axios.delete(`${VUE_APP_API_ENDPOINT}${url}`, headers);
+    return fetch(`${VUE_APP_API_ENDPOINT}${url}`, Object.assign({ method: 'DELETE' }, headers))
+      .then(response => response.json())
+      .catch(err => err.json());
   }
 }
 

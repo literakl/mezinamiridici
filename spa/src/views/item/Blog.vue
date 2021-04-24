@@ -156,7 +156,7 @@ export default {
       this.errors = [];
       const result = await this.$store.dispatch('DELETE_BLOG', { blogId: this.blog._id });
       if (result.success) {
-        window.history.go(-1);
+        this.$router.push('/');
       } else {
         this.showError(result.errors);
       }

@@ -110,8 +110,8 @@ export default {
       const result = await deleteApi('API', `/blog/${blogId}`, payload, context)
         .then((response) => {
           context.commit('CLEAR_BLOG');
-          return response.data;
-        }).catch(err => err.response.data);
+          return response;
+        });
       return result;
     },
     FETCH_PAGE: async (context, payload) => {
