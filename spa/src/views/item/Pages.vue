@@ -35,11 +35,11 @@
           <b-button-group>
             <b-button v-if="role" :to="{ name: 'edit-content', params: { slug: item.info.slug }}" variant="outline-primary">
               <BIconPencilSquare scale="1"></BIconPencilSquare>
-              {{ $t('cms.edit.edit-cms') }}
+              {{ $t('generic.edit-button') }}
             </b-button>
             <b-button v-if="role" @click="confirmDelete(item)" variant="outline-primary">
               <BIconTrash scale="1"></BIconTrash>
-              {{ $t('cms.edit.delete-cms') }}
+              {{ $t('generic.delete-button') }}
             </b-button>
           </b-button-group>
         </b-card-footer>
@@ -89,8 +89,8 @@ export default {
   },
   methods: {
     confirmDelete(item) {
-      this.$bvModal.msgBoxConfirm(this.$t('cms.edit.delete-message'), {
-        title: this.$t('poll.forms.poll-confirm-message-title'),
+      this.$bvModal.msgBoxConfirm(this.$t('cms.delete-message'), {
+        title: this.$t('generic.confirm-title-title'),
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

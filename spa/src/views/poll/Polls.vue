@@ -46,12 +46,12 @@
           <b-button-group>
             <b-button v-if="role" :to="{ name: 'edit-poll', params: { slug: item.info.slug }}" variant="outline-primary">
               <span>
-                <BIconPencilSquare scale="1"></BIconPencilSquare>{{ $t('poll.forms.edit-poll') }}
+                <BIconPencilSquare scale="1"></BIconPencilSquare>{{ $t('generic.edit-button') }}
               </span>
             </b-button>
             <b-button v-if="role" @click="confirmDelete(item)" variant="outline-primary">
               <span>
-                <BIconTrash scale="1"></BIconTrash>{{ $t('poll.forms.delete-poll') }}
+                <BIconTrash scale="1"></BIconTrash>{{ $t('generic.delete-button') }}
               </span>
             </b-button>
           </b-button-group>
@@ -103,8 +103,8 @@ export default {
   },
   methods: {
     confirmDelete(item) {
-      this.$bvModal.msgBoxConfirm(this.$t('poll.forms.delete-message'), {
-        title: this.$t('poll.forms.poll-confirm-message-title'),
+      this.$bvModal.msgBoxConfirm(this.$t('poll.delete-message'), {
+        title: this.$t('generic.confirm-title-title'),
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

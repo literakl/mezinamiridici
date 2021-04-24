@@ -22,8 +22,6 @@
     "today": "dnes",
     "yesterday": "včera",
     "not-published": "nezveřejněno",
-    "ok-button": "OK",
-    "cancel-button": "Storno",
     "share-link": "Sdílejte",
     "select-picture-label": "Obrázek",
     "select-picture-title": "Zvolte obrázek",
@@ -32,10 +30,14 @@
     "loading-message": "Stahuji ...",
     "loading-more-button": "Další",
     "own-content": "Redakce",
+    "ok-button": "OK",
+    "cancel-button": "Storno",
     "edit-button": "Upravit",
     "save-button": "Uložit",
+    "delete-button": "Smazat",
     "reset-button": "Reset",
-    "reset-tooltip": "Reset"
+    "reset-tooltip": "Reset",
+    "confirm-title-title": "Potvrzení"
   },
   "sign-in": {
     "email-placeholder": "Email",
@@ -102,8 +104,7 @@
     "body": "please confirm your account by accepting consents.",
     "success-message": "success message",
     "finished-button-label": "Activate Account",
-    "nickname-already-present":"nickname already present, please select different nickname",
-    "delete": "Confirm Delete?"
+    "nickname-already-present":"nickname already present, please select different nickname"
   },
   "edit-profile": {
     "heading": "Aktualizace profilu",
@@ -247,14 +248,11 @@
       "text-label": "Otázka",
       "date-label": "Datum",
       "author-id-label": "ID autora",
-      "delete-poll": "Smazat anketu",
-      "edit-poll": "Upravit anketu",
-      "delete-message": "Opravdu chcete smazat tuto anketu?",
       "published-label":"Publikováno",
-      "poll-create-error":"Vytvořit chybu !",
-      "poll-update-error":"Chyba aktualizace !",
-      "poll-confirm-message-title":"potvrzení"
-    }
+      "poll-create-error":"Chyba vytvoření!",
+      "poll-update-error":"Chyba aktualizace!"
+    },
+    "delete-message": "Opravdu chcete smazat tuto anketu?"
   },
   "comment": {
     "discussion": "Diskuse",
@@ -277,19 +275,16 @@
       "mark": "Nastav Redakci",
       "unmark": "Zruš Redakci"
     },
-    "delete": "Delete blog",
-    "confirm-delete": "Are you sure you want to delete this blog?"
+    "confirm-delete": "Opravdu chcete smazat tento blog?"
   },
   "cms": {
     "edit": {
       "caption-label": "Titulek",
       "slug-label": "URL adresa",
       "content-label": "Obsah",
-      "edit-cms": "Upravit",
-      "delete-cms": "Smazat ",
-      "new-cms-heading": "Nová stránka",
-      "delete-message": "Opravdu chcete tuto stránku smazat?"
-    }
+      "new-cms-heading": "Nová stránka"
+    },
+    "delete-message": "Opravdu chcete smazat tuto stránku?"
   },
   "editor": {
     "image-too-big": "Tento obrázek je obrovský. Limit je 20 MB.",

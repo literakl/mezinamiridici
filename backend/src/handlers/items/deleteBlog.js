@@ -16,21 +16,26 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      let blog = await mongo.getBlog(dbClient, undefined, blogId);
-      const isBlogAdmin = req.identity.roles && req.identity.roles.includes(auth.ROLE_BLOG_ADMIN);
-      const isAuthor = blog && (blog.info.author.id === req.identity.userId);
+      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      if (!blog) {
+        return api.sendNotFound(res, api.createError('Blog not found'));
+      }
 
-      if ( !isAuthor && !isBlogAdmin) {
+      const isBlogAdmin = req.identity.roles && req.identity.roles.includes(auth.ROLE_BLOG_ADMIN);
+      const isAuthor = blog.info.author.id === req.identity.userId;
+
+      if (!isAuthor && !isBlogAdmin) {
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
-      const promises = [ dbClient.db().collection('items').deleteOne({ _id: blogId }) ];
+      const promises = [dbClient.db().collection('items').deleteOne({ _id: blogId })];
       if (isBlogAdmin && !isAuthor) {
         promises.push(mongo.logAdminActions(dbClient, req.identity.userId, 'delete blog', blogId));
       }
       const [commandResult] = await Promise.all(promises);
+
       if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
-        logger.debug(`Blog deleted: ${blogId}`);
+        logger.info(`Blog deleted: ${blogId} by ${req.identity.userId}`);
         return api.sendResponse(res, api.createResponse());
       } else {
         logger.error(`Failed to delete blog: ${blogId}`);

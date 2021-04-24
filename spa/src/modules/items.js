@@ -107,12 +107,7 @@ export default {
     DELETE_BLOG: async (context, payload) => {
       Vue.$log.debug('DELETE_BLOG');
       const { blogId } = payload;
-      const result = await deleteApi('API', `/blog/${blogId}`, payload, context)
-        .then((response) => {
-          context.commit('CLEAR_BLOG');
-          return response.data;
-        }).catch(err => err.response.data);
-      return result;
+      return deleteApi('API', `/blog/${blogId}`, {}, context);
     },
     FETCH_PAGE: async (context, payload) => {
       Vue.$log.debug(`FETCH_PAGE ${payload.slug}`);

@@ -36,16 +36,16 @@
               {{ $t('blog.editorial.unmark') }}
             </b-link>
           </div>
-          <div class="post-delete" v-if="isAuthor || isAdmin">
+          <div v-if="isAuthor || isAdmin" class="post-delete">
             <b-link v-b-modal.confirm>
               <BIconXCircle scale="1"></BIconXCircle>
-              {{ $t('blog.delete') }}
+              {{ $t('generic.delete-button') }}
             </b-link>
           </div>
-          <b-modal id="confirm" :title="$t('confirm.delete')" hide-footer>
+          <b-modal id="confirm" :title="$t('generic.confirm-title-title')" hide-footer>
             <p class="my-4">{{ $t('blog.confirm-delete') }}</p>
-            <b-button class="mt-3 mr-2" @click="$bvModal.hide('confirm')">Cancel</b-button>
-            <b-button class="mt-3" variant="danger" @click="deleteBlog(); $bvModal.hide('confirm');">Delete</b-button>
+            <b-button class="mt-3 mr-2" @click="$bvModal.hide('confirm')">{{ this.$t('generic.cancel-button') }}</b-button>
+            <b-button class="mt-3" variant="danger" @click="deleteBlog(); $bvModal.hide('confirm');">{{ this.$t('generic.ok-button') }}</b-button>
           </b-modal>
         </div>
         <div class="errors">
@@ -158,12 +158,10 @@ export default {
       if (result.success) {
         window.history.go(-1);
       } else {
-        this.showError(result.errors);
-      }
-    },
-    showError(errors) {
-      for (let i = 0; i < errors.length; i += 1) {
-        this.errors.push(this.$t(errors[i].messageKey));
+        const { errors } = result;
+        for (let i = 0; i < errors.length; i += 1) {
+          this.errors.push(this.$t(errors[i].messageKey));
+        }
       }
     },
   },
@@ -203,7 +201,7 @@ export default {
   margin: 0 auto;
 }
 
-.post-content img{
+.post-content img {
   width: 100%;
 }
 
@@ -217,7 +215,7 @@ export default {
   border: 0;
 }
 
-.post-time, .post-author, .post-comments, .post-edit, .post-editorial {
+.post-time, .post-author, .post-comments, .post-edit, .post-editorial, .post-delete {
   display: flex;
   align-items: center;
   font-weight: 400;
