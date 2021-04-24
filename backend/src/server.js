@@ -33,6 +33,7 @@ require('./handlers/items/getItems')(app);
 require('./handlers/items/tags')(app);
 require('./handlers/items/createBlog')(app);
 require('./handlers/items/updateBlog')(app);
+require('./handlers/items/deleteBlog')(app);
 require('./handlers/items/getBlog')(app);
 require('./handlers/items/getStreamPictures')(app);
 require('./handlers/misc/imageUpload')(app);
