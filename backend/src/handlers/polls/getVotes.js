@@ -12,9 +12,6 @@ module.exports = (app) => {
       const list = await getVotes(dbClient, pollId, req).toArray();
       logger.debug('Votes fetched');
 
-      if (!list.length) {
-        return api.sendNotFound(res, api.createError('Poll not found', 'generic.not-found-caption'));
-      }
       const votes = {
         neutral: 0, trivial: 0, dislike: 0, hate: 0,
       };
