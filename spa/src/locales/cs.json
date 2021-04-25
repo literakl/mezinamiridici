@@ -37,7 +37,8 @@
     "delete-button": "Smazat",
     "reset-button": "Reset",
     "reset-tooltip": "Reset",
-    "confirm-title-title": "Potvrzení"
+    "confirm-title-title": "Potvrzení",
+    "operation-failed": "Operace se nezdařila"
   },
   "sign-in": {
     "email-placeholder": "Email",

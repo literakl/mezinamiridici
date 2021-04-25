@@ -11,18 +11,18 @@ axios.interceptors.request.use((x) => {
     ...x.headers,
   };
 
-  ['common', 'get', 'post', 'head', 'put', 'patch', 'delete'].forEach((header) => {
+  ['common', 'get', 'post', 'head', 'put', 'patch', 'delete', 'options'].forEach((header) => {
     delete headers[header];
   });
 
-  const printable = `${new Date()} | Request: ${x.method.toUpperCase()} | ${x.url} | ${JSON.stringify(x.data)} | ${JSON.stringify(headers)}`;
+  const printable = `${new Date()} | Request: ${x.method.toUpperCase()} | ${x.url}\n${JSON.stringify(headers)}\n${JSON.stringify(x.data)}`;
   console.log(printable);
   return x;
 });
 
 
 axios.interceptors.response.use((x) => {
-  const printable = `${new Date()} | Response: ${x.status} | ${JSON.stringify(x.data)}`;
+  const printable = `${new Date()} | Response: ${x.status}\n${JSON.stringify(x.data)}`;
   console.log(printable);
   return x;
 });

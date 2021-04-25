@@ -49,10 +49,8 @@
           </b-modal>
         </div>
         <div class="errors">
-          <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
-            <ul>
-              <li v-for="error in errors" :key="error.message">{{ error }}</li>
-            </ul>
+          <b-alert variant="danger" dismissible :show="error !== undefined">
+            {{ error }}
           </b-alert>
         </div>
 
@@ -98,7 +96,7 @@ export default {
   data() {
     return {
       blogHtml: '',
-      errors: [],
+      error: undefined,
     };
   },
   watch: {
@@ -153,14 +151,18 @@ export default {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
     },
     async deleteBlog() {
-      this.errors = [];
-      const result = await this.$store.dispatch('DELETE_BLOG', { blogId: this.blog._id });
-      if (result.success) {
-        window.history.go(-1);
-      } else {
-        const { errors } = result;
-        for (let i = 0; i < errors.length; i += 1) {
-          this.errors.push(this.$t(errors[i].messageKey));
+      this.error = undefined;
+      try {
+        await this.$store.dispatch('DELETE_BLOG', { blogId: this.blog._id });
+        await this.$router.push('/');
+      } catch (error) {
+        this.$log.error(error);
+        this.$log.error(error.response);
+        if (error.response && error.response.data && error.response.data.errors && error.response.data.errors[0].messageKey) {
+          this.$log.error(error.response.data.errors[0]);
+          this.error = this.$t(error.response.data.errors[0].messageKey);
+        } else {
+          this.error = this.$t('generic.operation-failed');
         }
       }
     },
