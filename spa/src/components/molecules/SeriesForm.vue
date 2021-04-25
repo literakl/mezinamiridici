@@ -89,13 +89,14 @@
 
 <script>
 import {
-  BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox,
+  BButton, BFormGroup, BForm, BInputGroup, BFormInput, BFormCheckbox,
   BFormCheckboxGroup, BInputGroupAppend, BInputGroupText, BIconArrowClockwise,
 } from 'bootstrap-vue';
 
 export default {
   name: 'SeriesForm',
   components: {
+    BButton,
     BFormGroup,
     BForm,
     BInputGroup,
