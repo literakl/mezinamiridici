@@ -4,21 +4,18 @@
       <HomePoll v-if="poll" :poll="poll"/>
       <ItemList :exceptItem="poll"/>
     </div>
-    <cookiesbox />
   </div>
 </template>
 
 <script>
 import HomePoll from '@/components/molecules/HomePoll.vue';
 import ItemList from '@/components/organisms/ItemList.vue';
-import cookiesbox from '@/components/molecules/CookiesBox.vue';
 
 export default {
   name: 'home',
   components: {
     HomePoll,
     ItemList,
-    cookiesbox,
   },
   computed: {
     poll() {
