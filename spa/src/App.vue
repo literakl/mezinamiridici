@@ -104,8 +104,8 @@ export default {
       }
     },
     handleCookies(preferences) {
-      this.$log(preferences);
       // TODO: Do something with cookie preferences
+      console.log(preferences);
     },
   },
 };
