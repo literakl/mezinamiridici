@@ -176,6 +176,7 @@
       "expert": "expert"
     },
     "honors": {
+      "requirements-label": "Find out which requirements for the next rank were already met and which you need to fullfill yet.",
       "next-rank-label": "Next rank",
       "poll-votes-label": "Poll votes",
       "comments-label": "Comments",

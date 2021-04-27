@@ -176,6 +176,7 @@
       "expert": "guru"
     },
     "honors": {
+      "requirements-label": "Zjistěte, které požadavky pro vyšší úroveň jste již splnili a které ještě čekají.",
       "next-rank-label": "Příští úroveň",
       "poll-votes-label": "Hlasy v anketách",
       "comments-label": "Komentáře",
