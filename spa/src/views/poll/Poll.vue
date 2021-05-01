@@ -41,11 +41,11 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('GET_POLL', { slug: this.slug });
+    this.$store.dispatch('GET_POLL', { slug: this.slug, component: this });
   },
   beforeRouteUpdate(to, from, next) {
     if (from.params.slug !== to.params.slug) {
-      this.$store.dispatch('GET_POLL', { slug: to.params.slug });
+      this.$store.dispatch('GET_POLL', { slug: to.params.slug, component: this });
     }
     next();
   },

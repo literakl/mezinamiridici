@@ -127,7 +127,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
+    this.$store.dispatch('FETCH_BLOG', { slug: this.slug, component: this });
   },
   mounted() {
     document.onmouseover = () => {
