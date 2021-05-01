@@ -82,16 +82,9 @@ export default {
       this.savePreferences();
     },
     savePreferences() {
-      const confirmDate = new Date();
-      const options = { statistical: this.statistical, marketing: this.marketing, confirmDate };
-
-      localStorage.setItem('cookieSettings', JSON.stringify(options));
-
-      this.emitEvent(options);
+      const options = { statistical: this.statistical, marketing: this.marketing, confirmDate: new Date() };
+      this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
       this.preferencesChosen = true;
-    },
-    emitEvent(options) {
-      this.$emit('cookiePreferenceChange', options);
     },
     loadCookiePreferences() {
       let options;
@@ -105,7 +98,7 @@ export default {
         this.statistical = options.statistical;
         this.marketing = options.marketing;
         this.preferencesChosen = true;
-        this.emitEvent(options);
+        this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
       } catch (err) {
         this.resetCookiePreferences();
       }
@@ -116,9 +109,7 @@ export default {
       this.preferencesChosen = false;
 
       const options = { statistical: false, marketing: false, confirmDate: null };
-      localStorage.setItem('cookieSettings', JSON.stringify(options));
-
-      this.emitEvent(options);
+      this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
     },
   },
   mounted() {
