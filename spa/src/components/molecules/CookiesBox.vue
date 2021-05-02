@@ -86,34 +86,17 @@ export default {
       this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
       this.preferencesChosen = true;
     },
-    loadCookiePreferences() {
-      let options;
-      try {
-        options = JSON.parse(localStorage.getItem('cookieSettings'));
-
-        if (!options || !options.confirmDate) {
-          this.resetCookiePreferences();
-          return;
-        }
+    loadPreferences() {
+      const options = this.$store.dispatch('LOAD_COOKIE_PREFERENCES');
+      if (options) {
         this.statistical = options.statistical;
         this.marketing = options.marketing;
         this.preferencesChosen = true;
-        this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
-      } catch (err) {
-        this.resetCookiePreferences();
       }
-    },
-    resetCookiePreferences() {
-      this.statistical = false;
-      this.marketing = false;
-      this.preferencesChosen = false;
-
-      const options = { statistical: false, marketing: false, confirmDate: null };
-      this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
     },
   },
   mounted() {
-    this.loadCookiePreferences();
+    this.loadPreferences();
   },
 };
 </script>

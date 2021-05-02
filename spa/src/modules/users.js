@@ -194,6 +194,20 @@ export default {
       const response = await get('BFF', `/users/${payload.userId}/info`, context);
       return response.data.data;
     },
+    LOAD_COOKIE_PREFERENCES: async (context) => {
+      try {
+        const options = JSON.parse(localStorage.getItem('cookieSettings'));
+        if (!options || !options.confirmDate) {
+          localStorage.removeItem('cookieSettings');
+          return undefined;
+        }
+        context.commit('SET_COOKIE_SETTINGS', options);
+        return options;
+      } catch (err) {
+        this.$log.error('Failed to load cookies settings', err);
+        return undefined;
+      }
+    },
     SAVE_COOKIE_PREFERENCES: (context, { options, component }) => {
       localStorage.setItem('cookieSettings', JSON.stringify(options));
       context.commit('SET_COOKIE_SETTINGS', options);
