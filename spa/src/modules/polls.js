@@ -30,7 +30,7 @@ export default {
         pollData = await get('BFF', `/polls/${payload.slug}`, context);
       } catch (err) {
         if (err.response.status === 404 && payload.component) {
-          payload.component.$router.push('/vrakoviste');
+          await payload.component.$router.push({ name: 'junkyard' });
           return;
         }
       }

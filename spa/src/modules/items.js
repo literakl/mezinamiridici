@@ -105,7 +105,8 @@ export default {
         blog = await get('API', `/blog/${payload.slug}`, context);
       } catch (err) {
         if (err.response.status === 404 && payload.component) {
-          return payload.component.$router.push('/vrakoviste');
+          await payload.component.$router.push({ name: 'junkyard' });
+          return;
         }
       }
       context.commit('SET_BLOG', blog.data.data);
@@ -127,7 +128,7 @@ export default {
         response = await get('API', `/pages/${payload.slug}`, context);
       } catch (err) {
         if (err.response.status === 404 && payload.component) {
-          payload.component.$router.push('/vrakoviste');
+          await payload.component.$router.push({ name: 'junkyard' });
           return;
         }
       }
