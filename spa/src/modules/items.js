@@ -100,7 +100,14 @@ export default {
     },
     FETCH_BLOG: async (context, payload) => {
       Vue.$log.debug('FETCH_BLOG');
-      const blog = await get('API', `/blog/${payload.slug}`, context);
+      let blog;
+      try {
+        blog = await get('API', `/blog/${payload.slug}`, context);
+      } catch (err) {
+        if (err.response.status === 404 && payload.component) {
+          return payload.component.$router.push('/vrakoviste');
+        }
+      }
       context.commit('SET_BLOG', blog.data.data);
       return blog.data.data;
     },
@@ -115,7 +122,15 @@ export default {
         return; // cached value recycled
       }
       context.commit('SET_PAGE', null);
-      const response = await get('API', `/pages/${payload.slug}`, context);
+      let response;
+      try {
+        response = await get('API', `/pages/${payload.slug}`, context);
+      } catch (err) {
+        if (err.response.status === 404 && payload.component) {
+          payload.component.$router.push('/vrakoviste');
+          return;
+        }
+      }
       const cms = response.data.data;
       context.commit('SET_PAGE', cms);
     },

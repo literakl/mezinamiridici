@@ -38,7 +38,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('FETCH_PAGE', { slug: this.slug });
+    this.$store.dispatch('FETCH_PAGE', { slug: this.slug, component: this });
   },
   methods: {
     changeTitle(title) {
