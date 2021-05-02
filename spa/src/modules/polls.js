@@ -25,7 +25,15 @@ export default {
         return; // cached value recycled
       }
       context.commit('SET_POLL', null);
-      const pollData = await get('BFF', `/polls/${payload.slug}`, context);
+      let pollData;
+      try {
+        pollData = await get('BFF', `/polls/${payload.slug}`, context);
+      } catch (err) {
+        if (err.response.status === 404 && payload.component) {
+          payload.component.$router.push('/vrakoviste');
+          return;
+        }
+      }
       const item = pollData.data.data;
       context.commit('SET_POLL', item);
     },
