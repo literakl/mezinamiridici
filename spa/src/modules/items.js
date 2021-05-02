@@ -106,7 +106,7 @@ export default {
       } catch (err) {
         if (err.response.status === 404 && payload.component) {
           await payload.component.$router.push({ name: 'junkyard' });
-          return;
+          return undefined;
         }
       }
       context.commit('SET_BLOG', blog.data.data);
