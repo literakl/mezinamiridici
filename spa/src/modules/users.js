@@ -10,6 +10,7 @@ export default {
     userNickname: null,
     userRole: null,
     userEmail: null,
+    cookieSettings: { statistical: false, marketing: false, confirmDate: null },
   }),
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -37,6 +38,9 @@ export default {
     },
     SET_USER_EMAIL: (state, payload) => {
       state.userEmail = payload;
+    },
+    SET_COOKIE_SETTINGS: (state, payload) => {
+      state.cookieSettings = payload;
     },
   },
   actions: {
@@ -138,6 +142,7 @@ export default {
 
           if (Date.now() > 1000 * (jwtData.iat + 24 * 3600)) {
             const response = await post('API', `/users/${jwtData.userId}/validateToken`, { }, context);
+            // eslint-disable-next-line
             jwt = response.data.data;
             localStorage.setItem('jwt', jwt);
             context.commit('SET_USER_TOKEN', jwt);
@@ -188,6 +193,11 @@ export default {
       Vue.$log.debug('FETCH_USER_INFO');
       const response = await get('BFF', `/users/${payload.userId}/info`, context);
       return response.data.data;
+    },
+    SAVE_COOKIE_PREFERENCES: (context, { options, component }) => {
+      localStorage.setItem('cookieSettings', JSON.stringify(options));
+      context.commit('SET_COOKIE_SETTINGS', options);
+      component.$emit('cookiePreferenceChange', options);
     },
   },
 };

@@ -1,61 +1,61 @@
 <template>
-    <div class="cookies-box-wrap">
-        <div class="cookies-box-inner">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took <span @click="$bvModal.show('modal-scrollable')"> More info</span></p>
-            <!-- Using value -->
-            <div class="action-btns">
-                <b-button v-b-modal="" class="squared">Accept All</b-button>
-                <b-button @click="$bvModal.show('modal-scrollable')" varient="squared" class="bordered">Settings</b-button>
-            </div>
+  <div class="cookies-box-wrap" v-if="!preferencesChosen">
+    <div class="cookies-box-inner">
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took <span><router-link to="o/privacy"> More info</router-link></span></p>
+        <!-- Using value -->
+        <div class="action-btns">
+            <b-button v-b-modal="" class="squared" @click="confirmAll()">Accept All</b-button>
+            <b-button @click="$bvModal.show('modal-scrollable')" varient="squared" class="bordered">Settings</b-button>
         </div>
+    </div>
     <b-modal id="modal-scrollable" scrollable>
-        <template #modal-header="{ close }" class="mainheader">
+      <template #modal-header="{ close }" class="mainheader">
         <!-- Emulate built in modal header close button action -->
-            <div class="title-tag">
-                <img src="/images/icons/logo-black.png" :alt="$t('app.logo-alt')"  class="brand">
-                <h2>{{ $t('app.name') }}</h2>
-            </div>
+        <div class="title-tag">
+          <img src="/images/icons/logo-black.png" :alt="$t('app.logo-alt')"  class="brand">
+          <h2>{{ $t('app.name') }}</h2>
+        </div>
         <b-button size="sm" @click="close()" class="closebtn">
-        <BIconXCircle scale="1.5"></BIconXCircle>
+          <BIconXCircle scale="1.5"></BIconXCircle>
         </b-button>
-        </template>
+      </template>
 
-        <template>
-            <div class="content-inside">
-                <h5>We value your privacy</h5>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took <a href="">More information</a></p>
-                <button class="green text-white mb-4 mt-2">Allow All</button>
-                <h5>Manage Consent Preference</h5>
-                <div class="inner-header my-3">
-                <h6>Statistical</h6>
-                <b-form-checkbox switch size="lg"></b-form-checkbox>
-                </div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
-                <div class="inner-header my-3">
-                <h6>Marketing</h6>
-                <b-form-checkbox switch size="lg"></b-form-checkbox>
-                </div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
-                <div class="inner-header my-3">
-                <h6>Strictly Necessary Cookies</h6>
-                <b class="active">Always Active</b>
-                </div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
-            </div>
-        </template>
+      <template>
+        <div class="content-inside">
+          <h5>We value your privacy</h5>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took <router-link to="o/privacy">More information</router-link></p>
+          <button class="green text-white mb-4 mt-2" @click="confirmAll()">Allow All</button>
+          <h5>Manage Consent Preference</h5>
+          <div class="inner-header my-3">
+            <h6>Statistical</h6>
+            <b-form-checkbox switch size="lg" v-model="statistical"></b-form-checkbox>
+          </div>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+          <div class="inner-header my-3">
+            <h6>Marketing</h6>
+            <b-form-checkbox switch size="lg" v-model="marketing"></b-form-checkbox>
+          </div>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+          <div class="inner-header my-3">
+            <h6>Strictly Necessary Cookies</h6>
+            <b class="active">Always Active</b>
+          </div>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+        </div>
+      </template>
 
-        <template #modal-footer="{ confirm }">
+      <template #modal-footer="">
         <!-- Emulate built in modal footer Confirm button actions -->
         <div class="action-btns">
-            <b-button size="lg" variant="squared" class="squared text-white" @click="confirm()">
-                CONFIRM MY CHOICES
-            </b-button>
+          <b-button size="lg" variant="squared" class="squared text-white" @click="savePreferences()">
+            CONFIRM MY CHOICES
+          </b-button>
         </div>
-        </template>
+      </template>
     </b-modal>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -70,13 +70,55 @@ export default {
   },
   data() {
     return {
-      checked: false,
+      statistical: false,
+      marketing: false,
+      preferencesChosen: false,
     };
+  },
+  methods: {
+    confirmAll() {
+      this.statistical = true;
+      this.marketing = true;
+      this.savePreferences();
+    },
+    savePreferences() {
+      const options = { statistical: this.statistical, marketing: this.marketing, confirmDate: new Date() };
+      this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
+      this.preferencesChosen = true;
+    },
+    loadCookiePreferences() {
+      let options;
+      try {
+        options = JSON.parse(localStorage.getItem('cookieSettings'));
+
+        if (!options || !options.confirmDate) {
+          this.resetCookiePreferences();
+          return;
+        }
+        this.statistical = options.statistical;
+        this.marketing = options.marketing;
+        this.preferencesChosen = true;
+        this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
+      } catch (err) {
+        this.resetCookiePreferences();
+      }
+    },
+    resetCookiePreferences() {
+      this.statistical = false;
+      this.marketing = false;
+      this.preferencesChosen = false;
+
+      const options = { statistical: false, marketing: false, confirmDate: null };
+      this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
+    },
+  },
+  mounted() {
+    this.loadCookiePreferences();
   },
 };
 </script>
 
-<style>
+<style scoped>
 .title-tag{
     display: flex;
     justify-content: space-between;
@@ -115,16 +157,16 @@ export default {
     font-size: 12px;
     text-align: left;
 }
-.cookies-box-inner p span{
+.cookies-box-inner p span a{
     cursor: pointer;
-    color: var(--link-blue);
+    color: var(--link-blue) !important;
     text-decoration: underline;
     display: inline-block;
 }
 .content-inside p a{
     font-size: 14px;
     cursor: pointer;
-    color: var(--link-blue)!important;
+    color: var(--link-blue) !important;
     text-decoration: underline;
     display: inline-block;
 }
@@ -192,11 +234,11 @@ export default {
     padding: 0;
 }
 .inner-header .custom-control{
- padding: 0;
- margin: 0;
+    padding: 0;
+    margin: 0;
 }
 .custom-control-input:checked ~ .custom-control-label::before{
-        color: #fff;
+    color: #fff;
     border-color: var(--theme-primary);
     background-color: var(--dislike-status-hover);
 }
@@ -219,9 +261,9 @@ export default {
 }
 
 .custom-switch.b-custom-control-lg .custom-control-label::after{
-left: calc( -2.8125rem + 2px );
+    left: calc( -2.8125rem + 2px );
 }
 .custom-switch.b-custom-control-lg .custom-control-input:checked ~ .custom-control-label::after{
-     left: calc( -2.1125rem + 2px );
+    left: calc( -2.1125rem + 2px );
 }
 </style>

@@ -57,12 +57,14 @@
     <main>
       <router-view/>
     </main>
+    <CookiesBox @cookiePreferenceChange="handleCookies($event)"/>
   </div>
 </template>
 
 <script>
 import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem } from 'bootstrap-vue';
 import InfoBox from '@/components/molecules/InfoBox.vue';
+import CookiesBox from '@/components/molecules/CookiesBox.vue';
 
 export default {
   name: 'App',
@@ -76,6 +78,7 @@ export default {
     BDropdownItem,
     BNavItem,
     InfoBox,
+    CookiesBox,
   },
   computed: {
     authorized() {
@@ -99,6 +102,10 @@ export default {
       } else {
         this.$router.push({ name: 'home' });
       }
+    },
+    handleCookies(preferences) {
+      // TODO: Do something with cookie preferences
+      console.log(preferences);
     },
   },
 };
