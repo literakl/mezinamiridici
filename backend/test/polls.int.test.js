@@ -8,6 +8,7 @@ dotenv.config({ path: envPath });
 const mongo = require('../src/utils/mongo.js');
 const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
+
 const {
   api, bff, getAuthHeader, deepCopy, getActivityCounter, resetHonors,
 } = require('./testUtils');
