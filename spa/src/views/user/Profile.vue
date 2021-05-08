@@ -77,7 +77,7 @@
           <UserActivity :userId="userProfile._id"/>
         </b-tab>
 
-        <b-tab v-if="myProfile" :title="$t('profile.tabs.honors')">
+        <b-tab v-if="myProfile && userProfile.honors.rank !== 'expert'" :title="$t('profile.tabs.honors')">
           <HonorsProgress v-if="myProfile" :user="userProfile"/>
         </b-tab>
 

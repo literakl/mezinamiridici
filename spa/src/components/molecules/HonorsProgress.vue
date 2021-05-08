@@ -1,5 +1,6 @@
 <template>
-  <div v-if="user.honors.rank !== 'expert'" class="mb-3">
+  <div class="mb-3">
+    <!-- TODO sloucit spolecny kod, jeden ul, v-if podminky v LI-->
     <ul v-if="user.honors.rank === 'novice'" class="ranks-list">
       <li>
         <BIconAward scale="1.5"></BIconAward>
