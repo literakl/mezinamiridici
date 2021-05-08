@@ -28,6 +28,8 @@ jobs:
       MAILER: fake
       DEFAULT_SENDER: github@literak.cz
       TEMPLATE_DIRECTORY: ../emails
+      CONFIG_DIRECTORY: ./config
+      LOG_DIRECTORY: ./logs
 
     defaults:
       run:
