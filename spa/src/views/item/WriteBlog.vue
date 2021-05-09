@@ -3,17 +3,14 @@
     <div class="write-post-wrap">
       <ValidationObserver ref="observer" v-slot="{ invalid }">
         <div class="text-area">
-          <ValidationProvider v-slot="validationContext">
-            <TextInput
-              v-model="title"
-              :placeholder="$t('blog.form.title-placeholder')"
-              class="write-blog"
-              :state="getValidationState(validationContext)"
-              aria-describedby="title-errors"
-              :rules="{ required: true }"
-            />
-            <b-form-invalid-feedback id="title-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-          </ValidationProvider>
+          <TextInput
+            v-model="title"
+            name="title"
+            :placeholder="$t('blog.form.title-placeholder')"
+            class="write-blog"
+            aria-describedby="title-errors"
+            :rules="{ required: true }"
+          />
 
           <Editor
             :blog="blog"
@@ -22,7 +19,7 @@
             @outOfFocus="handleOutOfFocus"
             :class="{ invalid: !hideContentError }"
           />
-          <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.required-field') }}</b-form-invalid-feedback>
+          <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.content-error') }}</b-form-invalid-feedback>
         </div>
 
         <div class="bottom-wrap">
@@ -41,9 +38,9 @@
               </b-alert>
             </div>
 
-            <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">{{
-              $t("blog.form.save-button")
-            }}</b-button>
+            <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">
+              {{ $t("generic.save-button") }}
+            </b-button>
           </div>
         </div>
       </ValidationObserver>
@@ -144,13 +141,6 @@ export default {
     },
     changePath(path) {
       this.picture = path;
-    },
-    getValidationState({
-      dirty,
-      validated,
-      valid = null,
-    }) {
-      return dirty || validated ? valid : null;
     },
     handleOutOfFocus() {
       if (this.isEmpty) {

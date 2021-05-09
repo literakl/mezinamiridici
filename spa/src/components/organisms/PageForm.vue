@@ -24,7 +24,7 @@
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="primary">{{ $t("generic.save-button") }}</b-button>
       </b-form>
     </ValidationObserver>
   </div>
@@ -35,7 +35,7 @@ import { BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton } from 'bo
 import Editor from '@/components/molecules/Editor.vue';
 
 export default {
-  name: 'ContentForm',
+  name: 'PageForm',
   components: {
     BForm,
     BFormGroup,

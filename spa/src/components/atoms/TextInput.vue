@@ -11,10 +11,8 @@
       <label
         @click="$refs.input.focus()"
         :for="name">
-        <div v-if="label">
-          <span>{{ label }}</span>
-          <span v-if="required" class="text-danger"> *</span>
-        </div>
+        <span v-if="label">{{ label }}</span>
+        <span v-if="label && required" class="text-danger"> *</span>
       </label>
       <b-form-input
         :class="{ 'is-invalid':errors[0], 'has-value': hasValue }"

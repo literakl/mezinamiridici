@@ -3,17 +3,17 @@
     <div class="head-area">
       <h2>{{ $t('cms.edit.new-cms-heading') }}</h2>
     </div>
-    <ContentForm :isCreate="true"/>
+    <PageForm :isCreate="true"/>
   </div>
 </template>
 
 <script>
-import ContentForm from '@/components/organisms/PageForm.vue';
+import PageForm from '@/components/organisms/PageForm.vue';
 
 export default {
   name: 'CreatePage',
   components: {
-    ContentForm,
+    PageForm,
   },
 };
 </script>

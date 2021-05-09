@@ -268,10 +268,8 @@
   },
   "blog": {
     "form": {
-      "title-label": "Title",
       "title-placeholder": "Blog post title",
-      "save-button": "Save",
-      "required-field": "This field is required."
+      "content-error": "There is no content"
     },
     "editorial": {
       "mark": "Set editorial",
