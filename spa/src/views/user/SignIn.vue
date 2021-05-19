@@ -97,7 +97,6 @@ import i18n from '../../i18n';
 
 configure({
   defaultMessage: (field, values) => {
-    // issue #176 - TODO this interacts with the validation errors in WriteBlog.vue, global settings?
     /* eslint no-param-reassign: ["error", { "props": false }] */
     values._field_ = i18n.t(`profile.${field}`);
     return i18n.t(`validation.${values._rule_}`, values);

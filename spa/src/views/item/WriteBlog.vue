@@ -49,11 +49,20 @@
 </template>
 
 <script>
+import { configure } from 'vee-validate';
+import { BButton, BFormInvalidFeedback, BAlert } from 'bootstrap-vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-import { BButton, BFormInvalidFeedback, BAlert } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
+import i18n from '@/i18n';
+
+configure({
+  defaultMessage(field, values) {
+    values._field_ = i18n.t('blog.form.title-placeholder');
+    return i18n.t(`validation.${values._rule_}`, values);
+  },
+});
 
 export default {
   components: {
