@@ -10,7 +10,7 @@ const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
 const { setPinnedItems } = require('../src/handlers/items/getItems');
 const {
-  api, getAuthHeader,
+  api, getAuthHeader, FULL_DATE_FORMAT, SHORT_DATE_FORMAT,
 } = require('./testUtils');
 const {
   setup, Leos, Lukas, Jana, Vita, Jiri, Bara,
@@ -32,7 +32,7 @@ test('Stream API', async (done) => {
   futurePoll.slug = response.data.info.slug;
 
   futurePoll.published = true;
-  futurePoll.date = dayjs().add(1, 'day').format('YYYY-MM-DD');
+  futurePoll.date = dayjs().add(1, 'day').format(SHORT_DATE_FORMAT);
   response = await api(`polls/${futurePoll.id}`, { method: 'PATCH', json: futurePoll, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
@@ -42,7 +42,7 @@ test('Stream API', async (done) => {
     picture: 'images/stream/image.jpg',
     date: new Date(),
   };
-  response = await api('blog', { method: 'POST', json: ABlog, headers: getAuthHeader(Bara.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: ABlog, headers: getAuthHeader(Bara.jwt) }).json();
   expect(response.success).toBeTruthy();
   ABlog.id = response.data._id;
   ABlog.slug = response.data.info.slug;
@@ -51,9 +51,9 @@ test('Stream API', async (done) => {
     title: '1 day ago blog',
     source: '<h1>Title</h1>',
     picture: 'images/stream/picture.png',
-    date: dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs().subtract(1, 'day').format(FULL_DATE_FORMAT),
   };
-  response = await api('blog', { method: 'POST', json: BBlog, headers: getAuthHeader(Jana.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: BBlog, headers: getAuthHeader(Jana.jwt) }).json();
   expect(response.success).toBeTruthy();
   BBlog.id = response.data._id;
   BBlog.slug = response.data.info.slug;
@@ -69,7 +69,7 @@ test('Stream API', async (done) => {
   CPoll.slug = response.data.info.slug;
 
   CPoll.published = true;
-  CPoll.date = dayjs().subtract(2, 'day').format('YYYY-MM-DD');
+  CPoll.date = dayjs().subtract(2, 'day').format(SHORT_DATE_FORMAT);
   response = await api(`polls/${CPoll.id}`, { method: 'PATCH', json: CPoll, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
@@ -77,9 +77,9 @@ test('Stream API', async (done) => {
     title: '3 days ago blog',
     source: '<h1>Title</h1>',
     picture: 'images/stream/default.jpg',
-    date: dayjs().subtract(3, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs().subtract(3, 'day').format(FULL_DATE_FORMAT),
   };
-  response = await api('blog', { method: 'POST', json: DBlog, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: DBlog, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
   DBlog.id = response.data._id;
   DBlog.slug = response.data.info.slug;
@@ -88,9 +88,9 @@ test('Stream API', async (done) => {
     title: '4 days ago blog',
     source: '<h1>Title</h1>',
     picture: 'images/stream/default.jpg',
-    date: dayjs().subtract(4, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs().subtract(4, 'day').format(FULL_DATE_FORMAT),
   };
-  response = await api('blog', { method: 'POST', json: EBlog, headers: getAuthHeader(Lukas.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: EBlog, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(response.success).toBeTruthy();
   EBlog.id = response.data._id;
   EBlog.slug = response.data.info.slug;
@@ -106,7 +106,7 @@ test('Stream API', async (done) => {
   FPoll.slug = response.data.info.slug;
 
   FPoll.published = true;
-  FPoll.date = dayjs().subtract(5, 'day').format('YYYY-MM-DD');
+  FPoll.date = dayjs().subtract(5, 'day').format(SHORT_DATE_FORMAT);
   response = await api(`polls/${FPoll.id}`, { method: 'PATCH', json: FPoll, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
@@ -114,9 +114,9 @@ test('Stream API', async (done) => {
     title: '6 days ago blog',
     source: '<h1>Title</h1>',
     picture: 'images/stream/default.jpg',
-    date: dayjs().subtract(6, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs().subtract(6, 'day').format(FULL_DATE_FORMAT),
   };
-  response = await api('blog', { method: 'POST', json: GBlog, headers: getAuthHeader(Bara.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: GBlog, headers: getAuthHeader(Bara.jwt) }).json();
   expect(response.success).toBeTruthy();
   GBlog.id = response.data._id;
   GBlog.slug = response.data.info.slug;
@@ -125,9 +125,9 @@ test('Stream API', async (done) => {
     title: '7 days ago blog',
     source: '<h1>Title</h1>',
     picture: 'images/stream/default.jpg',
-    date: dayjs().subtract(7, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs().subtract(7, 'day').format(FULL_DATE_FORMAT),
   };
-  response = await api('blog', { method: 'POST', json: HBlog, headers: getAuthHeader(Jana.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: HBlog, headers: getAuthHeader(Jana.jwt) }).json();
   expect(response.success).toBeTruthy();
   HBlog.id = response.data._id;
   HBlog.slug = response.data.info.slug;
@@ -136,9 +136,9 @@ test('Stream API', async (done) => {
     title: '8 days ago blog',
     source: '<h1>Title</h1>',
     picture: 'images/stream/default.jpg',
-    date: dayjs().subtract(8, 'day').format('YYYY-MM-DD HH:mm:ss'),
+    date: dayjs().subtract(8, 'day').format(FULL_DATE_FORMAT),
   };
-  response = await api('blog', { method: 'POST', json: IBlog, headers: getAuthHeader(Jiri.jwt) }).json();
+  response = await api('posts', { method: 'POST', json: IBlog, headers: getAuthHeader(Jiri.jwt) }).json();
   expect(response.success).toBeTruthy();
   IBlog.id = response.data._id;
   IBlog.slug = response.data.info.slug;

@@ -11,9 +11,9 @@ const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/blog', auth.cors);
+  app.options('/v1/posts', auth.cors);
 
-  app.post('/v1/blog', auth.required, auth.cors, async (req, res) => {
+  app.post('/v1/posts', auth.required, auth.cors, async (req, res) => {
     logger.debug('create blog handler starts');
 
     const {

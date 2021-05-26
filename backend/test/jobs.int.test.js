@@ -10,13 +10,12 @@ const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
 
 const {
-  api, bff, getAuthHeader, getUserRank, resetHonors,
+  api, bff, getAuthHeader, getUserRank, resetHonors, FULL_DATE_FORMAT, SHORT_DATE_FORMAT,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Vita,
 } = require('./prepareUsers');
 
-const FULL_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss', SHORT_DATE_FORMAT = 'YYYY-MM-DD';
 const { calculateUserHonors, calculateConsecutiveSharing } = require('../src/jobs/calculateUserRanks');
 
 let dbClient, server;
@@ -132,7 +131,7 @@ test('User Rank', async (done) => {
     picture: 'picture.png',
     tags: ['tag', 'another tag'],
   };
-  const blog1 = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
+  const blog1 = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(blog1.success).toBeTruthy();
 
   await calculateUserHonors();

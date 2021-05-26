@@ -6,9 +6,9 @@ const { logger } = require('../../utils/logging');
 require('../../utils/path_env');
 
 module.exports = (app) => {
-  app.options('/v1/blog', auth.cors);
+  app.options('/v1/posts', auth.cors);
 
-  app.get('/v1/blog/:slug', auth.cors, async (req, res) => {
+  app.get('/v1/posts/:slug', auth.cors, async (req, res) => {
     logger.debug('get blog');
     const { slug } = req.params;
     try {

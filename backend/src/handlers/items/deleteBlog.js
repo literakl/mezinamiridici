@@ -4,9 +4,9 @@ const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/blog/:blogId', auth.cors);
+  app.options('/v1/posts/:blogId', auth.cors);
 
-  app.delete('/v1/blog/:blogId', auth.required, auth.cors, async (req, res) => {
+  app.delete('/v1/posts/:blogId', auth.required, auth.cors, async (req, res) => {
     logger.debug('Delete blog handler starts');
     const { blogId } = req.params;
 

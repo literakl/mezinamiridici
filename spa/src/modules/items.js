@@ -83,7 +83,7 @@ export default {
     },
     CREATE_BLOG: async (context, payload) => {
       Vue.$log.debug('CREATE_BLOG');
-      const blog = await post('API', '/blog', payload, context)
+      const blog = await post('API', '/posts', payload, context)
         .then(response => response.data)
         .catch(err => err.response.data);
       return blog;
@@ -91,7 +91,7 @@ export default {
     UPDATE_BLOG: async (context, payload) => {
       Vue.$log.debug('UPDATE_BLOG');
       const { blogId } = payload;
-      const item = await patch('API', `/blog/${blogId}/`, payload, context)
+      const item = await patch('API', `/posts/${blogId}/`, payload, context)
         .then((response) => {
           context.commit('SET_BLOG', response.data.data);
           return response.data;
@@ -102,7 +102,7 @@ export default {
       Vue.$log.debug('FETCH_BLOG');
       let blog;
       try {
-        blog = await get('API', `/blog/${payload.slug}`, context);
+        blog = await get('API', `/posts/${payload.slug}`, context);
       } catch (err) {
         if (err.response.status === 404 && payload.component) {
           await payload.component.$router.push({ name: 'junkyard' });
@@ -115,7 +115,7 @@ export default {
     DELETE_BLOG: async (context, payload) => {
       Vue.$log.debug('DELETE_BLOG');
       const { blogId } = payload;
-      return deleteApi('API', `/blog/${blogId}`, {}, context);
+      return deleteApi('API', `/posts/${blogId}`, {}, context);
     },
     FETCH_PAGE: async (context, payload) => {
       Vue.$log.debug(`FETCH_PAGE ${payload.slug}`);
@@ -192,7 +192,7 @@ export default {
         flag: editorial,
         id: blog._id,
       };
-      await patch('API', `/blog/${payload.id}/editorial`, payload, context);
+      await patch('API', `/posts/${payload.id}/editorial`, payload, context);
       Vue.set(blog.info, 'editorial', editorial);
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);

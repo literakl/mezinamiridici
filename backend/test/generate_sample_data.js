@@ -155,7 +155,7 @@ async function generateData() {
     tags: ['Trucks', 'Car accidents'],
     date: dayjs().subtract(16, 'day').format(DATE_FORMAT),
   };
-  let blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  let blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Nejčastější místa policejních kontrol';
@@ -163,7 +163,7 @@ async function generateData() {
   body.picture = '/images/stream/jack-anstey-XVoyX7l9ocY-unsplash.jpg';
   body.tags = ['Police'];
   body.date = dayjs().subtract(13, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Nejnebezpečnější křižovatky Česka';
@@ -171,28 +171,28 @@ async function generateData() {
   body.picture = '/images/stream/sabrina-mazzeo-pz0P5piDQXs-unsplash.jpg';
   body.tags = ['Crossroads', 'Car accidents'];
   body.date = dayjs().subtract(9, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Deset nejhorších chyb při řízení';
   body.source = randomSource(6);
   body.picture = '/images/stream/shane-aldendorff-UNo3mR8JyT4-unsplash.jpg';
   body.date = dayjs().subtract(7, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Co dělat při poruše na dálnici';
   body.source = randomSource(2);
   body.picture = '/images/stream/valik-chernetskyi-OOV0H-jIKTM-unsplash.jpg';
   body.date = dayjs().subtract(5, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Jak poskytnout první pomoc I';
   body.source = randomSource(2);
   body.picture = '/images/stream/abed-ismail-uCdqsulpdT0-unsplash.jpg';
   body.date = dayjs().subtract(2, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Video šíleného řidiče kamiónu předjíždějícího v křižovatce';
@@ -200,28 +200,28 @@ async function generateData() {
   body.picture = '/images/stream/aceofnet-I3Em9PGzkzw-unsplash.jpg';
   body.tags = ['Trucks'];
   body.date = dayjs().subtract(1, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Jak poskytnout první pomoc II';
   body.source = randomSource(2);
   body.picture = '/images/stream/vladimir-haltakov-9J4Id8uXcQU-unsplash.jpg';
   body.date = dayjs().subtract(0, 'day').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Máte kompletní lékarničku dle předpisů?';
   body.source = randomSource(2);
   body.picture = '/images/stream/ale-sat-UlmLMQC8pJ4-unsplash.jpg';
   body.date = dayjs().subtract(2, 'hour').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   body.title = 'Vtipné video z parkování';
   body.source = randomSource(2);
   body.picture = '/images/stream/alex-h-pflaum-3CW11ymVHJQ-unsplash.jpg';
   body.date = dayjs().subtract(90, 'minute').format(DATE_FORMAT);
-  blog = await api('blog', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  blog = await api('posts', { method: 'POST', json: body, headers: getAuthHeader(Vita.jwt) }).json();
   await generateComments(blog.data._id, body.date);
 
   date = dayjs().subtract(15, 'day');

@@ -95,3 +95,5 @@ module.exports.shuffle = shuffle;
 module.exports.getActivityCounter = getActivityCounter;
 module.exports.getUserRank = getUserRank;
 module.exports.resetHonors = resetHonors;
+module.exports.SHORT_DATE_FORMAT = 'YYYY-MM-DD';
+module.exports.FULL_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
