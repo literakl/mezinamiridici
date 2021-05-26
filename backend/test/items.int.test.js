@@ -1,7 +1,5 @@
- 
 const dotenv = require('dotenv');
 const path = require('path');
-const dayjs = require('dayjs');
 
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
@@ -11,7 +9,7 @@ const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
 
 const {
-  api, bff, getAuthHeader
+  api, bff, getAuthHeader,
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Vita,
@@ -25,22 +23,29 @@ test('Delete Blog', async (done) => {
 
   const blogBody = {
     title: 'First blog',
-    source: { date: new Date().getTime(), blocks: [], version: '2.18.0' },
+    source: '<h1>Title</h1><p>Very smart topic</p>',
     picture: 'picture.png',
-    tags: ['tag', 'another tag'],
   };
 
-  const blogToDeleteByAuthor = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Jiri.jwt) }).json();
-  const deleteByAuthorResponse = await api(`blog/${blogToDeleteByAuthor.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
-  expect(deleteByAuthorResponse.success).toBeTruthy();
+  let blog = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
 
-  const blogToDeleteByAdmin = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Jiri.jwt) }).json();
-  const deleteByAdminResponse = await api(`blog/${blogToDeleteByAdmin.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
-  expect(deleteByAdminResponse.success).toBeTruthy();
+  // delete by anonymous user
+  let response = await api(`blog/${blog.data._id}`, { method: 'DELETE' }).json();
+  expect(response.success).toBeFalsy();
+  // delete by different user
+  response = await api(`blog/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(response.success).toBeFalsy();
+  // delete by author
+  response = await api(`blog/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Vita.jwt) }).json();
+  expect(response.success).toBeTruthy();
 
-  const blogToDeleteByNonAuthUser = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
-  const deleteByNonAuthUserResponse = await api(`blog/${blogToDeleteByNonAuthUser.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
-  expect(deleteByNonAuthUserResponse.success).toBeFalsy();
+  blog = await api('blog', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  response = await api(`blog/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  // delete as admin
+  expect(response.success).toBeTruthy();
+  // delete deleted
+  response = await api(`blog/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeFalsy();
 
   done();
 });
@@ -49,6 +54,9 @@ beforeEach(async () => {
   const db = dbClient.db();
   await db.collection('users').deleteMany({});
   await db.collection('items').deleteMany({});
+  await db.collection('comments').deleteMany({});
+  await db.collection('comment_votes').deleteMany({});
+  await db.collection('uploads').deleteMany({});
 });
 
 beforeAll(async () => {
