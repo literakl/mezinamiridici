@@ -28,7 +28,11 @@ module.exports = (app) => {
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
-      const promises = [dbClient.db().collection('items').deleteOne({ _id: blogId })];
+      const promises = [
+        dbClient.db().collection('items').deleteOne({ _id: blogId }),
+        dbClient.db().collection('comments').deleteOne({ itemId: blogId }),
+        dbClient.db().collection('comment_votes').deleteOne({ itemId: blogId }),
+      ];
       if (isBlogAdmin && !isAuthor) {
         promises.push(mongo.logAdminActions(dbClient, req.identity.userId, 'delete blog', blogId));
       }
