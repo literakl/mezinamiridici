@@ -51,7 +51,7 @@ module.exports = (app) => {
 
 function insertPollVote(dbClient, pollId, vote, user) {
   const pollVote = {
-    item: pollId, user: user._id, vote,
+    itemId: pollId, user: user._id, vote,
   };
   const currentYear = new Date().getFullYear();
   if (user.bio.sex) {

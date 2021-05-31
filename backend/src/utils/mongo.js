@@ -26,13 +26,13 @@ function connectToDatabase() {
     useNewUrlParser: true,
   })
     .then((db) => {
-     mongoLogger.record({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
+      mongoLogger.record({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
       logger.debug('Successful connect');
       cachedDb = db;
       return cachedDb;
     })
     .catch((err) => {
-     mongoLogger.record({ time: spent(start), operation: 'connect', result: false, collection: undefined, level: 'info', message: null });
+      mongoLogger.record({ time: spent(start), operation: 'connect', result: false, collection: undefined, level: 'info', message: null });
       logger.error('Connection error occurred: ', err);
       throw err;
     });
@@ -42,7 +42,7 @@ async function findOne(dbClient, collection, query) {
   const start = dayjs();
   try {
     const response = await dbClient.db().collection(collection).findOne(query);
-   mongoLogger.record({
+    mongoLogger.record({
       time: spent(start),
       operation: 'findOne',
       result: true,
@@ -53,7 +53,7 @@ async function findOne(dbClient, collection, query) {
 
     return response;
   } catch (err) {
-   mongoLogger.record({ time: spent(start), operation: 'findOne', result: false, collection, level: 'info', message: query });
+    mongoLogger.record({ time: spent(start), operation: 'findOne', result: false, collection, level: 'info', message: query });
     throw err;
   }
 }
@@ -62,7 +62,7 @@ async function insertOne(dbClient, collection, doc) {
   const start = dayjs();
   try {
     const response = await dbClient.db().collection(collection).insertOne(doc);
-   mongoLogger.record({
+    mongoLogger.record({
       time: spent(start),
       operation: 'insertOne',
       result: true,
@@ -73,7 +73,7 @@ async function insertOne(dbClient, collection, doc) {
 
     return response;
   } catch (err) {
-   mongoLogger.record({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: doc });
+    mongoLogger.record({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: doc });
     throw err;
   }
 }
@@ -82,7 +82,7 @@ async function updateOne(dbClient, collection, filter, update) {
   const start = dayjs();
   try {
     const response = await dbClient.db().collection(collection).updateOne(update);
-   mongoLogger.record({
+    mongoLogger.record({
       time: spent(start),
       operation: 'updateOne',
       result: true,
@@ -93,7 +93,7 @@ async function updateOne(dbClient, collection, filter, update) {
 
     return response;
   } catch (err) {
-   mongoLogger.record({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: update });
+    mongoLogger.record({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: update });
     throw err;
   }
 }
@@ -219,7 +219,7 @@ function setupIndexes(dbClient) {
   db.collection('items').createIndex({ 'info.type': 1 });
   db.collection('items').createIndex({ 'info.date': 1 });
   db.collection('items').createIndex({ 'info.slug': 1 }, { unique: true });
-  db.collection('poll_votes').createIndex({ item: 1, user: 1 }, { unique: true });
+  db.collection('poll_votes').createIndex({ itemId: 1, user: 1 }, { unique: true });
   db.collection('comments').createIndex({ itemId: 1 });
   db.collection('comments').createIndex({ parentId: 1 });
   db.collection('comment_votes').createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
@@ -279,7 +279,7 @@ function stageMyPollVote(userId, pollId) {
           {
             $match: {
               $and: [
-                { item: pollId },
+                { itemId: pollId },
                 { user: userId },
               ],
             },
@@ -298,7 +298,7 @@ function stageMyPollVote(userId, pollId) {
         {
           $match: {
             $and: [
-              { $expr: { $eq: ['$item', '$$poll_id'] } },
+              { $expr: { $eq: ['$itemId', '$$poll_id'] } },
               { user: userId },
             ],
           },

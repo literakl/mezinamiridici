@@ -65,9 +65,9 @@ function createURL(service, path) {
   return sendUrl;
 }
 
-function insertShare(dbClient, item, user, service, date) {
+function insertShare(dbClient, itemId, user, service, date) {
   const theShare = {
-    item,
+    itemId,
     service,
     date,
   };

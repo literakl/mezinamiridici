@@ -65,10 +65,14 @@ test('Blog', async (done) => {
   expect(comment).toBeFalsy();
   const vote = await db.collection('comment_votes').findOne({ itemId: blog.data._id });
   expect(vote).toBeFalsy();
+  // check upload is gone
+  const upload = await db.collection('uploads').findOne({ itemId: blog.data._id });
+  expect(upload).toBeFalsy();
 
   blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  response = await api(`blog/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  console.log(blog);
   // delete as admin
+  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
   // delete deleted
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();

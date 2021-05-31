@@ -32,6 +32,7 @@ module.exports = (app) => {
         dbClient.db().collection('items').deleteOne({ _id: blogId }),
         dbClient.db().collection('comments').deleteOne({ itemId: blogId }),
         dbClient.db().collection('comment_votes').deleteOne({ itemId: blogId }),
+        dbClient.db().collection('uploads').deleteOne({ itemId: blogId }),
       ];
       if (isBlogAdmin && !isAuthor) {
         promises.push(mongo.logAdminActions(dbClient, req.identity.userId, 'delete blog', blogId));

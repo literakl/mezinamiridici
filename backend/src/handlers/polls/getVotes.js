@@ -28,7 +28,7 @@ module.exports = (app) => {
 };
 
 function getVotes(dbClient, pollId, req) {
-  const conditions = { $match: { item: pollId } };
+  const conditions = { $match: { itemId: pollId } };
   const filters = api.parsePollFilterParams(req);
   handleRange(conditions, filters, 'age');
   handleRange(conditions, filters, 'driving');

@@ -82,7 +82,7 @@ module.exports = (app) => {
       }
       const { itemId } = req.body;
       if (!itemId) {
-        return api.sendMissingParam(res, 'pollId');
+        return api.sendMissingParam(res, 'itemId');
       }
 
       const user = auth.getIdentity(req.identity);
@@ -90,7 +90,7 @@ module.exports = (app) => {
         _id: pictureId,
         user: user.userId,
       };
-      const setters = { 'info.picture': itemId };
+      const setters = { itemId };
       const update = { $set: setters };
 
       const dbClient = await mongo.connectToDatabase();
