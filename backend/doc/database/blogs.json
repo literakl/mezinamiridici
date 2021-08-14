@@ -1,0 +1,18 @@
+{
+  "_id": "1fd2okv12wjr",
+  "type": "blog",
+  "info": {
+    "author": {
+      "nickname": "Víťa",
+      "id": "vita"
+    },
+    "caption": "First blog",
+    "slug": "first-blog",
+    "published": true,
+    "date": "2021-08-14T16:41:48.834Z",
+    "picture": "picture.png",
+    "tags" : [ "motorky" ]
+  },
+  "data" : { "content" : "<h1>Title</h1><p>Very smart topic</p>" },
+  "comments" : { "count" : 0, "last" : null }
+}

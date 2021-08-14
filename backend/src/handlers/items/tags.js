@@ -38,6 +38,7 @@ async function getItems(dbClient, req) {
     { $match: query },
     { $sort: listParams.order },
     { $limit: listParams.pageSize },
+    { $project: { 'data.content': 0 } },
   ];
   const items = await dbClient.db().collection('items').aggregate(pipeline, { allowDiskUse: true }).toArray();
   // todo make it generic for any kind of item
