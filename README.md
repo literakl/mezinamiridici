@@ -22,10 +22,10 @@ This is a monorepo for portal www.mezinamiridici.cz
 Import the data:
 
 ```
-cd backend/database/doc
+cd backend/doc/database
 # install indexes and constrains
 mongo bud mongo_setup.js
-cd ..
+cd ../..
 # generate demo database (backend server must not be running!)
 node test/generate_sample_data.js
 ```
