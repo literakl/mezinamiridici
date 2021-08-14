@@ -29,6 +29,13 @@ test('Blog', async (done) => {
   };
 
   let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  expect(blog.data.info.caption).toBe(blogBody.title);
+  blogBody.title = 'First blog post';
+  blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  expect(blog.data.info.caption).toBe(blogBody.title);
+
   let comments = await bff(`items/${blog.data._id}/comments`).json();
   expect(comments.success).toBeTruthy();
   expect(comments.data.comments.length).toBe(0);
@@ -70,7 +77,6 @@ test('Blog', async (done) => {
   expect(upload).toBeFalsy();
 
   blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  console.log(blog);
   // delete as admin
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
