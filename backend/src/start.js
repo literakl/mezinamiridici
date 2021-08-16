@@ -1,7 +1,8 @@
 const app = require('./server.js');
 const { logger } = require('./utils/logging');
 
-app.listen(3000, () => logger.info('Server started'));
+const { NODE_PORT } = process.env || 3000;
+app.listen(NODE_PORT, () => logger.info('Server started'));
 
 /*
 process.on('unhandledRejection', (reason, p) => {

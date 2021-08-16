@@ -9,7 +9,7 @@ This is a monorepo for portal www.mezinamiridici.cz
 
 * `spa` is the single page Vue.js application that delivers the website experience
 * `backend` is the NodeJS backend
-* `nginx` is a configuration for Nginx server
+* `deploy` is a configuration for Nginx server
 
 ##Prerequisities
 
@@ -30,7 +30,7 @@ cd ../..
 node test/generate_sample_data.js
 ```
 
-If you need to recreate the database:
+If you need to recreate the database, clear Mongo with:
 
 ```
 mongo bud --eval db.dropDatabase()
@@ -42,13 +42,15 @@ and repeat the import procedure.
 
 ### backend/.env
 
-Copy `.env.template` to `.env` and update as needed. You may need to set your local IP address in CORS_ORIGINS property.
+Copy `.env.template` to `.env` and update as needed. You may need to set 
+your local IP address in CORS_ORIGINS property.
 
-### spa/.env
+### spa/public/runtimeConfig.js
 
-Copy `.env.template` to `.env` and update as needed. If you want to access the web 
-from other devices (e.g. mobile phone), you should point the endpoint properties
-to your real IP address (not localhost or 127.0.0.1).
+Copy `spa/public/config/local.js` to `spa/public/runtimeConfig.js` and 
+update the target file as needed. If you want to access the site from 
+other devices (e.g. mobile phone), you should point the endpoint 
+URL properties to your real IP address (not localhost or 127.0.0.1).
 
 ## Local run
 
@@ -69,9 +71,9 @@ To log in, use the users defined in `backend/test/prepareUsers.js` and password 
 
 ## Nginx
 
-This set up is neccessary for testing OAuth login (Facebook).
+This set up is neccessary only for testing the OAuth login (Facebook).
 
-Install Nginx and copy `nginx/dev/nginx.conf` to its `conf` directory. Fix the path in `root` directive.
+Install Nginx and copy `deploy/dev/nginx.conf` to its `conf` directory. Fix the path in `root` directive.
 
 The first terminal: 
 ```

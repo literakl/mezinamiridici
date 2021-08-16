@@ -122,5 +122,5 @@ const enMessages = {
   },
 };
 
-const currentMessages = ((process.env.VUE_APP_I18N_LOCALE || 'cs') === 'cs') ? csMessages : enMessages;
+const currentMessages = ((process.env.I18N_LOCALE || 'cs') === 'cs') ? csMessages : enMessages;
 module.exports = currentMessages;

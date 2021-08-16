@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
-    "staging": "vue-cli-service serve --mode staging",
     "prod": "vue-cli-service serve --mode production",
     "buildDev": "vue-cli-service build --mode development",
-    "buildStaging": "vue-cli-service build --mode staging",
     "buildProd": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
