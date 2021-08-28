@@ -41,7 +41,7 @@ export default class Iframe extends Link {
           }},
         },
       ],
-      toDOM: node => {
+      toDOM: async (node) => {
         debugger
         if (node.attrs.src || this.options.src) {
           return ['iframe', {
