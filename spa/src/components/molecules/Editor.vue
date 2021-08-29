@@ -228,7 +228,6 @@ export default {
         content: '',
         onUpdate: ({ getHTML }) => {
           const html = getHTML();
-          debugger;
           this.$emit('changeBlog', html);
         },
       }),

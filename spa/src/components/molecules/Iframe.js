@@ -1,7 +1,8 @@
-import { Mark, Node, Plugin } from 'tiptap'
+import { Plugin } from 'tiptap'
 import { updateMark, removeMark, pasteRule } from 'tiptap-commands'
 import { Link } from 'tiptap-extensions'
 import { getMarkAttrs } from 'tiptap-utils'
+import fetchSync from 'sync-fetch';
 
 export default class Iframe extends Link {
 
@@ -32,6 +33,9 @@ export default class Iframe extends Link {
         },
         target: {
           default: null
+        },
+        isTwitter: {
+          default: false
         }
       },
       inclusive: false,
@@ -55,8 +59,14 @@ export default class Iframe extends Link {
         }
       ],
       toDOM: node => {
-        debugger
         if (node.attrs.src || this.options.src) {
+          if (node.attrs.isTwitter || this.options.isTwitter) {
+            const iframeAttr = this.getIframeCodeFromTweet(node.attrs.src || this.options.src)
+            return ['iframe', {
+              ...node.attrs,
+              ...iframeAttr
+            }, 0]
+          }
           return ['iframe', {
             ...node.attrs,
             src: node.attrs.src || this.options.src,
@@ -88,15 +98,20 @@ export default class Iframe extends Link {
   pasteRules({ type }) {
     return [
       pasteRule(
+        /https?:\/\/(www\.)?twitte[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
+        type,
+        url => ({ src: url, isTwitter: true }),
+      ),
+      pasteRule(
         /https?:\/\/(www\.)?youtu[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
         type,
         url => {
+          console.log("paste youtube")
           if (url.includes("/embed/")) {
             return { src: url }
           } else if (url.includes("watch?v=")) {
             return { src: "https://youtube.com/embed/" + url.split('watch?v=').pop().split('&')[0] };
           }
-          return { src: url }
         },
       ),
     ]
@@ -124,4 +139,33 @@ export default class Iframe extends Link {
     ]
   }
 
+  getOEmbed(tweetIdOrUrl) {
+    const { VUE_APP_API_ENDPOINT } = process.env;
+    const endpoint = VUE_APP_API_ENDPOINT + '/twitter-html?url=' + tweetIdOrUrl;
+    const response = fetchSync(endpoint)
+    return response.json()
+  }
+
+  getIframeCodeFromTweet(tweetUrl) {
+    console.log("dsnkdsn")
+    const { data } = this.getOEmbed(tweetUrl);
+    console.log(data);
+    let { html, width, height } = data;
+    height = height || 650;
+    const iframeProps = {
+      style: null,
+      width,
+      height,
+      'data-tweet-url': data.url
+    };
+    // To hide overflow, the style has to be injected *inside* the frame
+    html += `<style>html{overflow:hidden !important;}</style>`;
+    iframeProps.style = 'border:none;';
+    const dataUri = `data:text/html;charset=utf-8,${escape(html)}`;
+
+    return {
+      ...iframeProps,
+      src: dataUri
+    };
+  }
 }
