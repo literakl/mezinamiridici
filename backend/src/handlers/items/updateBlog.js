@@ -5,9 +5,9 @@ const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/blog/:blogId', auth.cors);
+  app.options('/v1/posts/:blogId', auth.cors);
 
-  app.patch('/v1/blog/:blogId', auth.required, auth.cors, async (req, res) => {
+  app.patch('/v1/posts/:blogId', auth.required, auth.cors, async (req, res) => {
     logger.debug('update blog handler starts');
 
     const { blogId } = req.params;
@@ -48,9 +48,9 @@ module.exports = (app) => {
     }
   });
 
-  app.options('/v1/blog/:blogId/editorial', auth.cors);
+  app.options('/v1/posts/:blogId/editorial', auth.cors);
 
-  app.patch('/v1/blog/:blogId/editorial', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+  app.patch('/v1/posts/:blogId/editorial', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
     logger.debug('mark blog as editorial handler starts');
     const { blogId } = req.params;
     if (!blogId) {

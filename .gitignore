@@ -33,8 +33,7 @@ transfer
 /backend/test/coverage
 
 /spa/.env
-/spa/.env.staging
-/spa/.env.production
+/spa/public/runtimeConfig.js
 
 /spa/public/images/uploads/
 /backend/.eslintrc.js

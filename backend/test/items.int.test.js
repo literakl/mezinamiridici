@@ -29,6 +29,13 @@ test('Blog', async (done) => {
   };
 
   let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  expect(blog.data.info.caption).toBe(blogBody.title);
+  blogBody.title = 'First blog post';
+  blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  expect(blog.data.info.caption).toBe(blogBody.title);
+
   let comments = await bff(`items/${blog.data._id}/comments`).json();
   expect(comments.success).toBeTruthy();
   expect(comments.data.comments.length).toBe(0);
@@ -70,13 +77,45 @@ test('Blog', async (done) => {
   expect(upload).toBeFalsy();
 
   blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  console.log(blog);
   // delete as admin
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
   // delete deleted
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeFalsy();
+
+  done();
+});
+
+test('Tag API', async (done) => {
+  await setup(dbClient, api);
+  jest.setTimeout(180 * 60000);
+
+  const blogBody = {
+    title: 'First blog',
+    source: '<h1>Title</h1><p>Very smart topic</p>',
+    picture: 'picture.png',
+    tags: ['motorky'],
+  };
+
+  const blogA = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blogA.success).toBeTruthy();
+  blogBody.title = 'Second blog';
+  blogBody.source = '<p>Offtopic topic</p>';
+  blogBody.tags.push('auta');
+  const blogB = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blogB.success).toBeTruthy();
+
+  let taggedItems = await bff('items/motorky').json();
+  expect(taggedItems.success).toBeTruthy();
+  expect(taggedItems.data.length).toBe(2);
+
+  taggedItems = await bff('items/auta').json();
+  expect(taggedItems.success).toBeTruthy();
+  console.log(taggedItems.data);
+  expect(taggedItems.data.length).toBe(1);
+  expect(taggedItems.data[0]._id).toBe(blogB.data._id);
+  expect(taggedItems.data[0].data.content).toBeUndefined();
 
   done();
 });

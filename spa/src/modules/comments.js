@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { get, post } from '@/utils/api';
 
-const { VUE_APP_REPLY_LIMIT } = process.env;
-const REPLY_LIMIT = Number.parseInt(VUE_APP_REPLY_LIMIT || '5', 10);
+let { REPLY_LIMIT } = window.config;
+REPLY_LIMIT = Number.parseInt(REPLY_LIMIT || '5', 10);
 
 export default {
   state: () => ({
