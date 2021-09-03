@@ -90,16 +90,16 @@
 </template>
 
 <script>
-import Date from '@/components/atoms/Date.vue';
-import ContentLoading from '@/components/atoms/ContentLoading.vue';
-import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
-import UserActivity from '@/components/organisms/UserActivity.vue';
-import ChangePassword from '@/components/organisms/ChangePassword.vue';
 import {
   BTabs, BTab, BAvatar, BIconGeoAlt, BIconLink,
   BIconAward, BIconPersonCircle, BIconJoystick, BIconTruck,
   BIconPersonFill, BIconPersonCheck, BIconPen, BIconPencilSquare,
 } from 'bootstrap-vue';
+import Date from '@/components/atoms/Date.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
+import HonorsProgress from '@/components/molecules/HonorsProgress.vue';
+import UserActivity from '@/components/organisms/UserActivity.vue';
+import ChangePassword from '@/components/organisms/ChangePassword.vue';
 
 export default {
   name: 'profile',

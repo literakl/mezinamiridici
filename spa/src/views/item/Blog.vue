@@ -65,12 +65,12 @@
 </template>
 
 <script>
+import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconPencilSquare,
+  BIconShieldPlus, BIconShieldMinus, BLink, BIconXCircle, BAlert, BButton } from 'bootstrap-vue';
 import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconPencilSquare,
-  BIconShieldPlus, BIconShieldMinus, BLink, BIconXCircle, BAlert, BButton } from 'bootstrap-vue';
 
 export default {
   name: 'blog',

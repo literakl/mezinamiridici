@@ -36,10 +36,10 @@
 </template>
 
 <script>
+import { BIconClock } from 'bootstrap-vue';
 import Date from '@/components/atoms/Date.vue';
 import Button from '@/components/atoms/Button.vue';
 import Radio from '@/components/atoms/Radio.vue';
-import { BIconClock } from 'bootstrap-vue';
 
 export default {
   name: 'UserActivity',

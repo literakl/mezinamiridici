@@ -62,13 +62,13 @@
 </template>
 
 <script>
-import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import Date from '@/components/atoms/Date.vue';
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPlusCircle, BIconCalendarRange, BIconPersonCircle, BIconStarFill,
   BIconChatTextFill, BIconPencilSquare, BIconTrash, BIconXOctagon,
 } from 'bootstrap-vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   components: {

@@ -43,12 +43,12 @@
 </template>
 
 <script>
+import { BFormGroup, BFormRadio, BCard, BFormRadioGroup, BButton } from 'bootstrap-vue';
 import PollHeading from '@/components/molecules/PollHeading.vue';
 import SeriesBarChart from '@/components/molecules/VotesSeriesChart.vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import SeriesForm from '@/components/molecules/SeriesForm.vue';
 import PredefinedComparisons from '@/components/molecules/PredefinedComparisons.vue';
-import { BFormGroup, BFormRadio, BCard, BFormRadioGroup, BButton } from 'bootstrap-vue';
 
 export default {
   name: 'analyze-votes',

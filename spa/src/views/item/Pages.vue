@@ -49,13 +49,13 @@
 </template>
 
 <script>
-import ProfileLink from '@/components/molecules/ProfileLink.vue';
-import Date from '@/components/atoms/Date.vue';
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPersonCircle, BIconClock, BIconPencilSquare,
   BIconTrash, BIconFileEarmarkBreak,
 } from 'bootstrap-vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
+import Date from '@/components/atoms/Date.vue';
 
 export default {
   name: 'Pages',
