@@ -5,7 +5,7 @@ import { getMarkAttrs } from 'tiptap-utils'
 import fetchSync from 'sync-fetch';
 
 export default class Iframe extends Link {
-
+  static twitterCache = {}
   get name() {
     return 'link'
   }
@@ -36,7 +36,13 @@ export default class Iframe extends Link {
         },
         isTwitter: {
           default: false
-        }
+        },
+        isFacebook: {
+          default: false
+        },
+        isInstagram: {
+          default: false
+        },
       },
       inclusive: false,
       parseDOM: [
@@ -66,7 +72,22 @@ export default class Iframe extends Link {
               ...node.attrs,
               ...iframeAttr
             }, 0]
+          } else if (node.attrs.isFacebook || this.options.isFacebook) {
+            const iframeAttr = this.getIframeCodeForFacebook(node.attrs.src || this.options.src)
+            return ['iframe', {
+              ...node.attrs,
+              ...iframeAttr
+            }, 0]
+          } else if (node.attrs.isInstagram || this.options.isInstagram) {
+            return ['iframe', {
+              ...node.attrs,
+              width: 320,
+              height: 460,
+              src: node.attrs.src || this.options.src,
+              frameborder: 0
+            }, 0]
           }
+
           return ['iframe', {
             ...node.attrs,
             src: node.attrs.src || this.options.src,
@@ -98,15 +119,33 @@ export default class Iframe extends Link {
   pasteRules({ type }) {
     return [
       pasteRule(
-        /https?:\/\/(www\.)?twitte[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
+        /https?:\/\/(www\.)?(web\.)?instagram\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
+        type,
+        url => {
+          if (!url.includes("/embed")) {
+            const newUrl = new URL(url)
+            newUrl.pathname = newUrl.pathname.concat(newUrl.pathname.endsWith("/") ? "embed/" : "/embed/")
+            return { src: newUrl.toString(), isInstagram: true }
+
+          }
+
+          return { src: url, isInstagram: true }
+        },
+      ),
+      pasteRule(
+        /https?:\/\/(www\.)?twitter\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
         type,
         url => ({ src: url, isTwitter: true }),
       ),
       pasteRule(
-        /https?:\/\/(www\.)?youtu[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
+        /https?:\/\/(www\.)?(web\.)?facebook\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
+        type,
+        url => ({ src: url, isFacebook: true }),
+      ),
+      pasteRule(
+        /https?:\/\/(www\.)?youtube\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
         type,
         url => {
-          console.log("paste youtube")
           if (url.includes("/embed/")) {
             return { src: url }
           } else if (url.includes("watch?v=")) {
@@ -147,9 +186,14 @@ export default class Iframe extends Link {
   }
 
   getIframeCodeFromTweet(tweetUrl) {
-    console.log("dsnkdsn")
-    const { data } = this.getOEmbed(tweetUrl);
-    console.log(data);
+    let data
+    if (Iframe.twitterCache && Iframe.twitterCache[tweetUrl]) {
+      data = Iframe.twitterCache[tweetUrl]
+    } else {
+      const oEmbedResponse = this.getOEmbed(tweetUrl);
+      data = oEmbedResponse.data;
+      Iframe.twitterCache[tweetUrl] = data;
+    }
     let { html, width, height } = data;
     height = height || 650;
     const iframeProps = {
@@ -166,6 +210,22 @@ export default class Iframe extends Link {
     return {
       ...iframeProps,
       src: dataUri
+    };
+  }
+
+  getIframeCodeForFacebook(fbUrl) {
+    let html = `<div id="fb-root"></div>
+      <script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+      <div class="fb-post"
+      data-href="${fbUrl}"
+      data-width="500"></div>
+  `;
+    const dataUri = `data:text/html;charset=utf-8,${escape(html)}`;
+    return {
+      // height: 650,
+      width: 550,
+      src: dataUri,
+      frameborder: 0
     };
   }
 }

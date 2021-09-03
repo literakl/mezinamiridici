@@ -221,7 +221,7 @@ function sanitizeConfigure() {
     allowedAttributes: {
       a: ['href', 'name', 'target'],
       img: ['src'],
-      iframe: ['src', 'height', 'width', 'allowfullscreen', 'data-tweet-url', 'style'],
+      iframe: ['src', 'height', 'width', 'allowfullscreen', 'data-tweet-url', 'style', 'frameborder'],
     },
     allowedSchemesByTag: {
       iframe: [ 'data', 'http', 'https' ],
