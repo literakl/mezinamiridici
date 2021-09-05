@@ -264,7 +264,8 @@
     "load-more":"Load More",
     "show-all":"Show all",
     "reply": "Reply",
-    "close": "Close"
+    "close": "Close",
+    "sign-in": "Sign in to comment"
   },
   "blog": {
     "form": {

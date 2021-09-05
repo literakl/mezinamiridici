@@ -162,11 +162,9 @@ export default {
       this.error = false;
       this.sending = true;
 
-      const editorData = this.html;
-
       const payload = {
         itemId: this.itemId,
-        source: editorData,
+        source: this.html,
       };
 
       if (this.parent) {
