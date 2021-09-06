@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { deleteApi, get, patch, post } from '@/utils/api';
+import { deleteApi, get, patch, post, getSync } from '@/utils/api';
 
 export default {
   state: () => ({
@@ -196,6 +196,11 @@ export default {
       Vue.set(blog.info, 'editorial', editorial);
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);
+    },
+    FETCH_TWITTER_HTML: (context, payload) => {
+      Vue.$log.debug('FETCH_TWITTER_HTML');
+      const response = getSync('API', `/twitter-html?url=${payload.url}`);
+      return response.data;
     },
   },
 };

@@ -2,7 +2,8 @@ import { Plugin } from 'tiptap'
 import { updateMark, removeMark, pasteRule } from 'tiptap-commands'
 import { Link } from 'tiptap-extensions'
 import { getMarkAttrs } from 'tiptap-utils'
-import fetchSync from 'sync-fetch';
+import store from '@/store';
+import { getSync } from '@/utils/api';
 
 export default class Iframe extends Link {
   static twitterCache = {}
@@ -67,11 +68,20 @@ export default class Iframe extends Link {
       toDOM: node => {
         if (node.attrs.src || this.options.src) {
           if (node.attrs.isTwitter || this.options.isTwitter) {
-            const iframeAttr = this.getIframeCodeFromTweet(node.attrs.src || this.options.src)
-            return ['iframe', {
+            let content = ['a', {
               ...node.attrs,
-              ...iframeAttr
+              target: node.attrs.target || this.options.target,
             }, 0]
+
+            const iframeAttr = this.getIframeCodeFromTweet(node.attrs.src || this.options.src)
+            if (iframeAttr) {
+              content = ['iframe', {
+                ...node.attrs,
+                ...iframeAttr
+              }, 0]
+            }
+
+            return content
           } else if (node.attrs.isFacebook || this.options.isFacebook) {
             const iframeAttr = this.getIframeCodeForFacebook(node.attrs.src || this.options.src)
             return ['iframe', {
@@ -86,15 +96,16 @@ export default class Iframe extends Link {
               src: node.attrs.src || this.options.src,
               frameborder: 0
             }, 0]
+          } else {
+            return ['iframe', {
+              ...node.attrs,
+              src: node.attrs.src || this.options.src,
+              height: node.attrs.height || this.options.height,
+              width: node.attrs.width || this.options.width,
+              allowfullscreen: true
+            }, 0]
           }
 
-          return ['iframe', {
-            ...node.attrs,
-            src: node.attrs.src || this.options.src,
-            height: node.attrs.height || this.options.height,
-            width: node.attrs.width || this.options.width,
-            allowfullscreen: true
-          }, 0]
         } else {
           return ['a', {
             ...node.attrs,
@@ -179,21 +190,33 @@ export default class Iframe extends Link {
   }
 
   getOEmbed(tweetIdOrUrl) {
-    const { VUE_APP_API_ENDPOINT } = process.env;
-    const endpoint = VUE_APP_API_ENDPOINT + '/twitter-html?url=' + tweetIdOrUrl;
-    const response = fetchSync(endpoint)
-    return response.json()
+    try {
+      const response = getSync("API", `/twitter-html?url=${tweetIdOrUrl}`)
+      // store.dispatch('FETCH_TWITTER_HTML', {
+      //   url: tweetIdOrUrl
+      // });
+
+      return response.json()
+    } catch (e) {
+      return null
+    }
   }
 
-  getIframeCodeFromTweet(tweetUrl) {
+  getIframeCodeFromTweet(tweetUrl, callback) {
     let data
     if (Iframe.twitterCache && Iframe.twitterCache[tweetUrl]) {
       data = Iframe.twitterCache[tweetUrl]
+      return this.makeTwitterIframe(data)
     } else {
-      const oEmbedResponse = this.getOEmbed(tweetUrl);
+      const oEmbedResponse = this.getOEmbed(tweetUrl)
+      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html) return null
       data = oEmbedResponse.data;
       Iframe.twitterCache[tweetUrl] = data;
+      return this.makeTwitterIframe(data)
     }
+  }
+
+  makeTwitterIframe(data) {
     let { html, width, height } = data;
     height = height || 650;
     const iframeProps = {
@@ -222,7 +245,6 @@ export default class Iframe extends Link {
   `;
     const dataUri = `data:text/html;charset=utf-8,${escape(html)}`;
     return {
-      // height: 650,
       width: 550,
       src: dataUri,
       frameborder: 0

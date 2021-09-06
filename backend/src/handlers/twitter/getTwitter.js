@@ -12,13 +12,18 @@ module.exports = (app) => {
     if (!url) {
       return api.sendMissingParam(res, 'url');
     }
+    const twitterRegex = new RegExp(/https?:\/\/(www\.)?twitter\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi)
+    if(!twitterRegex.test(url)) {
+      return api.sendInvalidParam(res, 'url', url);
+    }
+
     try {
       const endpoint = 'https://publish.twitter.com/oembed?url=' + url;
       const apiResponse = await axios.get(endpoint)
       return api.sendResponse(res, api.createResponse(apiResponse.data));
     } catch (err) {
       logger.debug('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to get comment votes', 'sign-in.something-went-wrong'));
+      return api.sendInternalError(res, api.createError('Failed to load tiwtter html', ''));
     }
   });
 };
