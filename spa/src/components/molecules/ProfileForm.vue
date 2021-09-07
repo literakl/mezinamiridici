@@ -186,10 +186,10 @@
 </template>
 
 <script>
+import { BFormInput, BFormGroup, BFormTextarea } from 'bootstrap-vue';
 import Datepicker from '@/components/atoms/Datepicker.vue';
 import Checkbox from '@/components/atoms/Checkbox.vue';
 import Radio from '@/components/atoms/Radio.vue';
-import { BFormInput, BFormGroup, BFormTextarea } from 'bootstrap-vue';
 
 export default {
   name: 'ProfileForm',

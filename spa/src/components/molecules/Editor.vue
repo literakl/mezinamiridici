@@ -125,7 +125,6 @@
   </div>
 </template>
 <script>
-import Icon from '@/components/atoms/EditorIcon.vue';
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
 import {
   Blockquote,
@@ -147,9 +146,11 @@ import {
   TableRow,
   Focus,
 } from 'tiptap-extensions';
+import { BAlert, BProgress } from 'bootstrap-vue';
 import Image from '@/utils/editorImage';
 import store from '@/store';
-import { BAlert, BProgress } from 'bootstrap-vue';
+import Icon from '@/components/atoms/EditorIcon.vue';
+import Iframe from './Iframe';
 
 async function upload(file, progress) {
   const formData = new FormData();
@@ -222,6 +223,7 @@ export default {
             className: 'has-focus',
             nested: false,
           }),
+          new Iframe(),
         ],
         content: '',
         onUpdate: ({ getHTML }) => {

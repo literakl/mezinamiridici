@@ -89,11 +89,11 @@
 </template>
 
 <script>
+import { BForm, BRow, BCol } from 'bootstrap-vue';
 import { configure } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
-import i18n from '../../i18n';
+import i18n from '@/i18n';
 
 configure({
   defaultMessage: (field, values) => {

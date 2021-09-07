@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import { BForm } from 'bootstrap-vue';
 import jwtDecode from 'jwt-decode';
 import { configure, extend } from 'vee-validate';
 import Button from '@/components/atoms/Button.vue';
@@ -111,8 +113,6 @@ import Checkbox from '@/components/atoms/Checkbox.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
 import ProfileForm from '@/components/molecules/ProfileForm.vue';
 import i18n from '@/i18n';
-import { BForm } from 'bootstrap-vue';
-import Vue from 'vue';
 import store from '../../store';
 
 configure({

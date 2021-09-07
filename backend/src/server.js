@@ -41,5 +41,6 @@ require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
+require('./handlers/twitter/getTwitter')(app);
 
 module.exports = app;

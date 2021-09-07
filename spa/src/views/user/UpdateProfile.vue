@@ -30,12 +30,12 @@
 </template>
 
 <script>
+import { BForm } from 'bootstrap-vue';
 import { configure } from 'vee-validate';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import ProfileForm from '@/components/molecules/ProfileForm.vue';
 import Button from '@/components/atoms/Button.vue';
 import i18n from '@/i18n';
-import { BForm } from 'bootstrap-vue';
 
 configure({
   defaultMessage: (field, values) => {
