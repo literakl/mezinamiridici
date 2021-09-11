@@ -42,7 +42,7 @@
     "sanitize-html": "^2.3.2",
     "slugify": "^1.4.5",
     "unix-timestamp": "^0.2.0",
-    "update": "^0.4.2",
+    "update": "^0.7.4",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
