@@ -38,7 +38,7 @@ module.exports = (app) => {
     logger.debug('image upload handler starts');
 
     try {
-      const { file } = req;
+      const { file } = req; // TODO is it safe? What if user on slow network is sending large file and connection is interrupted?
       if (!file) {
         return api.sendBadRequest(res, api.createError('Missing image'));
       }
