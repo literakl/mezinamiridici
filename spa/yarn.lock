@@ -13109,8 +13109,7 @@
     "vue-hot-reload-api" "^2.3.0"
     "vue-style-loader" "^4.1.0"
 
-"vue-prope
-rty-decorator@^8.3.0":
+"vue-property-decorator@^8.3.0":
   "integrity" "sha512-O6OUN2OMsYTGPvgFtXeBU3jPnX5ffQ9V4I1WfxFQ6dqz6cOUbR3Usou7kgFpfiXDvV7dJQSFcJ5yUPgOtPPm1Q=="
   "resolved" "https://registry.npmjs.org/vue-property-decorator/-/vue-property-decorator-8.5.1.tgz"
   "version" "8.5.1"
