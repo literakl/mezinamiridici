@@ -2,12 +2,10 @@ const app = require('./server.js');
 const { logger } = require('./utils/logging');
 
 const { NODE_PORT } = process.env || 3000;
-app.listen(NODE_PORT, () => console.info('Server started', NODE_PORT));
+app.listen(NODE_PORT, () => logger.info('Server started'));
 
-/*
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
-  logger.error(p);
-  logger.error(reason);
+process.on('unhandledRejection', (error, promise) => {
+  console.log('Unhandled Rejection at: Promise', promise, 'reason:', error);
+  logger.error('Unhandled Rejection at:', error.stack || error);
+  // Recommended: send the information to sentry.io or whatever crash reporting service you use
 });
-*/
