@@ -3,7 +3,7 @@ import { updateMark, removeMark, pasteRule } from 'tiptap-commands'
 import { Link } from 'tiptap-extensions'
 import { getMarkAttrs } from 'tiptap-utils'
 import store from '@/store';
-import { getSync } from '@/utils/api';
+import Vue from 'vue';
 
 export default class Iframe extends Link {
   static twitterCache = {}
@@ -81,7 +81,7 @@ export default class Iframe extends Link {
               }, 0]
             }
 
-            return content
+            return content;
           } else if (node.attrs.isFacebook || this.options.isFacebook) {
             const iframeAttr = this.getIframeCodeForFacebook(node.attrs.src || this.options.src)
             return ['iframe', {
@@ -190,26 +190,32 @@ export default class Iframe extends Link {
   }
 
   getOEmbed(tweetIdOrUrl) {
-    try {
-      const response = getSync("API", `/twitter-html?url=${tweetIdOrUrl}`)
-      // store.dispatch('FETCH_TWITTER_HTML', {
-      //   url: tweetIdOrUrl
-      // });
-
-      return response.json()
-    } catch (e) {
-      return null
-    }
+    console.log("getOembed");
+    store.dispatch('FETCH_TWITTER_HTML', {
+      url: tweetIdOrUrl,
+    })
+      .then(response => {
+        console.log(`getOembed response ${response}`);
+        return response.json();
+      })
+      .catch(error => {
+        Vue.$log.debug(`Embedding twitter failed for '${tweetIdOrUrl}'`, error);
+        return null;
+      });
   }
 
-  getIframeCodeFromTweet(tweetUrl, callback) {
-    let data
+  getIframeCodeFromTweet(tweetUrl) {
+    console.log('getIframeCodeFromTweet');
+    let data;
     if (Iframe.twitterCache && Iframe.twitterCache[tweetUrl]) {
-      data = Iframe.twitterCache[tweetUrl]
-      return this.makeTwitterIframe(data)
+      data = Iframe.twitterCache[tweetUrl];
+      return this.makeTwitterIframe(data);
     } else {
-      const oEmbedResponse = this.getOEmbed(tweetUrl)
-      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html) return null
+      const oEmbedResponse = this.getOEmbed(tweetUrl);
+      console.log(`oEmbedResponse ${oEmbedResponse}`);
+      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html)
+        return null;
+
       data = oEmbedResponse.data;
       Iframe.twitterCache[tweetUrl] = data;
       return this.makeTwitterIframe(data)

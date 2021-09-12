@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { deleteApi, get, patch, post, getSync } from '@/utils/api';
+import { deleteApi, get, patch, post } from '@/utils/api';
 
 export default {
   state: () => ({
@@ -167,7 +167,7 @@ export default {
       const response = await post('API', '/images', body, context, undefined, progress);
       return response.data;
     },
-    SET_IMAGE_ITEM: async (context, payload) => {
+    SET_IMAGE_ITEM: async (context, payload) => { // TODO obsolete?
       Vue.$log.debug('IMAGE_UPLOAD');
       // todo pictureId in URL
       const response = await patch('API', '/images', payload, context);
@@ -197,9 +197,9 @@ export default {
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);
     },
-    FETCH_TWITTER_HTML: (context, payload) => {
+    FETCH_TWITTER_HTML: async (context, payload) => {
       Vue.$log.debug('FETCH_TWITTER_HTML');
-      const response = getSync('API', `/twitter-html?url=${payload.url}`);
+      const response = await get('API', `/twitter-html?url=${payload.url}`, context);
       return response.data;
     },
   },

@@ -1,4 +1,3 @@
-const fetchSync = require('sync-fetch');
 const axios = require('axios').default;
 
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
@@ -110,15 +109,6 @@ function deepCopy(obj) {
   return obj;
 }
 
-function getSync(endpoint, url, context = undefined) {
-  const headers = getAuthHeader(context);
-  if (endpoint === 'BFF') {
-    return fetchSync(`${BFF_ENDPOINT}${url}`, headers);
-  } else {
-    return fetchSync(`${API_ENDPOINT}${url}`, headers);
-  }
-}
-
 export {
-  get, post, patch, deleteApi, put, deepCopy, getSync,
+  get, post, patch, deleteApi, put, deepCopy,
 };
