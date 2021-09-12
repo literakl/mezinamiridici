@@ -3,10 +3,12 @@ import { Plugin } from 'tiptap';
 import { updateMark, removeMark, pasteRule } from 'tiptap-commands';
 import { Link } from 'tiptap-extensions';
 import { getMarkAttrs } from 'tiptap-utils';
-import { getSync } from '@/utils/api';
+import store from '@/store';
+import Vue from 'vue';
 
 export default class EmbedLinkPlugin extends Link {
   static twitterCache = {}
+
   get name() {
     return 'link';
   }
@@ -186,25 +188,33 @@ export default class EmbedLinkPlugin extends Link {
   }
 
   getOEmbed(tweetIdOrUrl) {
-    try {
-      const response = getSync('API', `/twitter-html?url=${tweetIdOrUrl}`);
-      return response.json();
-    } catch (e) {
-      return null;
-    }
+    console.log('getOembed');
+    store.dispatch('FETCH_TWITTER_HTML', {
+      url: tweetIdOrUrl,
+    })
+      .then((response) => {
+        console.log(`getOembed response ${response}`);
+        return response.json();
+      })
+      .catch((error) => {
+        Vue.$log.debug(`Embedding twitter failed for '${tweetIdOrUrl}'`, error);
+        return null;
+      });
   }
 
   getIframeCodeFromTweet(tweetUrl) {
+    console.log('getIframeCodeFromTweet');
+    let data;
     if (EmbedLinkPlugin.twitterCache && EmbedLinkPlugin.twitterCache[tweetUrl]) {
-      const data = EmbedLinkPlugin.twitterCache[tweetUrl];
+      data = EmbedLinkPlugin.twitterCache[tweetUrl];
       return this.makeTwitterIframe(data);
     } else {
       const oEmbedResponse = this.getOEmbed(tweetUrl);
-      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html) {
-        return null;
-      }
+      console.log(`oEmbedResponse ${oEmbedResponse}`);
+      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html) return null;
 
-      const { data } = oEmbedResponse;
+      // eslint-disable-next-line prefer-destructuring
+      data = oEmbedResponse.data;
       EmbedLinkPlugin.twitterCache[tweetUrl] = data;
       return this.makeTwitterIframe(data);
     }
