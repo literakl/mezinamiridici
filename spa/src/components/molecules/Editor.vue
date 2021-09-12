@@ -6,6 +6,7 @@
         {{ errorMessage }}
       </b-alert>
     </div>
+
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
         <button class="menubar__button" @click="commands.undo">
@@ -96,7 +97,6 @@
         </span>
       </div>
     </editor-menu-bar>
-
     <editor-menu-bubble class="menububble" :editor="editor" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
       <div class="menububble" :class="{ 'is-active': menu.isActive }" :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`">
         <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
@@ -120,7 +120,13 @@
       <b-progress class="custom-progress-bar" :value="progressValue" :max="progressMax" variant="success" show-progress animated show-value></b-progress>
     </div>
 
-    <input type="file" ref="fileUploadInput" style="display: none" />
+    <b-modal id="pictureMetadata" :title="$t('generic.confirm-title-title')" hide-footer>
+      <p class="my-4">Enter picture metadata</p>
+      <b-button class="mt-3 mr-2" @click="$bvModal.hide('confirm')">{{ this.$t('generic.cancel-button') }}</b-button>
+      <b-button class="mt-3" variant="danger" @click="uploadPicture(); $bvModal.hide('confirm');">{{ this.$t('generic.ok-button') }}</b-button>
+    </b-modal>
+
+    <input type="file" ref="fileUploadInput" accept=".gif,.jpg,.jpeg,.png,.webp,.svg" style="display: none" />
     </form>
   </div>
 </template>
@@ -128,31 +134,32 @@
 import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
 import {
   Blockquote,
+  Bold,
+  BulletList,
+  Focus,
   HardBreak,
   Heading,
+  History,
   HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  Bold,
   Italic,
   Link,
+  ListItem,
+  OrderedList,
   Strike,
-  Underline,
-  History,
   Table,
   TableHeader,
   TableCell,
   TableRow,
-  Focus,
+  Underline,
 } from 'tiptap-extensions';
-import { BAlert, BProgress } from 'bootstrap-vue';
+import { BAlert, BProgress, BModal } from 'bootstrap-vue';
 import store from '@/store';
 import Icon from '@/components/atoms/EditorIcon.vue';
 import UploadPicturePlugin from '@/modules/tiptap/uploadPicturePlugin';
 import EmbedLinkPlugin from '@/modules/tiptap/embedLinkPlugin';
 
 async function upload(file, progress) {
+  console.log('upload');
   const formData = new FormData();
   formData.append('image', file);
   // TODO handle errors
@@ -170,6 +177,7 @@ export default {
     EditorMenuBar,
     EditorMenuBubble,
     BAlert,
+    BModal,
     BProgress,
   },
   props: {
@@ -233,6 +241,7 @@ export default {
       }),
       linkUrl: null,
       linkMenuIsActive: true,
+      pictureFile: null,
       progressMax: 100,
       progressValue: 0,
       showDismissibleAlert: false,
@@ -246,8 +255,24 @@ export default {
   },
   methods: {
     showImageModal(command) {
+      console.log('showImageModal');
       this.$refs.fileUploadInput.click();
       this.$refs.fileUploadInput.command = command;
+    },
+    async uploadPicture() {
+      console.log('uploadPicture');
+      const _this = this;
+      const progress = (progressEvent) => {
+        const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+        if (totalLength !== null) {
+          _this.progressValue = Math.round((progressEvent.loaded * 100) / totalLength);
+        }
+      };
+
+      const data = await upload(this.pictureFile, progress);
+      const fileInput = this.$refs.fileUploadInput;
+      fileInput.command({ src: data.url, pictureid: data.pictureId });
+      fileInput.command = null;
     },
     clearContent() {
       this.editor.clearContent(true);
@@ -278,15 +303,6 @@ export default {
     },
   },
   mounted() {
-    const _this = this;
-    const progress = (progressEvent) => {
-      const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-
-      if (totalLength !== null) {
-        _this.progressValue = Math.round((progressEvent.loaded * 100) / totalLength);
-      }
-    };
-
     this.$refs.fileUploadInput.addEventListener('change', async (event) => {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
@@ -303,9 +319,10 @@ export default {
         }
 
         // #214 TODO add dialog here?
-        const data = await upload(file, progress);
-        event.target.command({ src: data.url, pictureid: data.pictureId });
-        event.target.command = null;
+        console.log('EventListener');
+        this.pictureFile = file;
+        this.$bvModal.show('enterPictureMetadata');
+        console.log('EventListener showed');
       }
     });
   },
