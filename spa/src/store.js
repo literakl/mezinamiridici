@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import items from './modules/items';
-import users from './modules/users';
-import polls from './modules/polls';
-import comments from './modules/comments';
+import items from './modules/vuex/items';
+import users from './modules/vuex/users';
+import polls from './modules/vuex/polls';
+import comments from './modules/vuex/comments';
 
 Vue.use(Vuex);
 

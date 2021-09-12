@@ -147,10 +147,10 @@ import {
   Focus,
 } from 'tiptap-extensions';
 import { BAlert, BProgress } from 'bootstrap-vue';
-import Image from '@/utils/editorImage';
 import store from '@/store';
 import Icon from '@/components/atoms/EditorIcon.vue';
-import Iframe from './Iframe';
+import UploadPicturePlugin from '@/modules/tiptap/uploadPicturePlugin';
+import EmbedLinkPlugin from '@/modules/tiptap/embedLinkPlugin';
 
 async function upload(file, progress) {
   const formData = new FormData();
@@ -212,7 +212,7 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
-          new Image(null, null, upload),
+          new UploadPicturePlugin(null, null, upload),
           new Table({
             resizable: true,
           }),
@@ -223,7 +223,7 @@ export default {
             className: 'has-focus',
             nested: false,
           }),
-          new Iframe(),
+          new EmbedLinkPlugin(),
         ],
         content: '',
         onUpdate: ({ getHTML }) => {
