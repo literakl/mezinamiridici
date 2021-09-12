@@ -302,6 +302,7 @@ export default {
           return;
         }
 
+        // #214 TODO add dialog here?
         const data = await upload(file, progress);
         event.target.command({ src: data.url, pictureid: data.pictureId });
         event.target.command = null;

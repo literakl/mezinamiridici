@@ -125,8 +125,6 @@ export default {
       if (this.title !== '') {
         if (this.isCreate) {
           result = await this.$store.dispatch('CREATE_BLOG', body);
-          // TODO we need an array of new uploaded pictures
-          // await this.$store.dispatch('SET_IMAGE_ITEM', { itemId: result._id });
         } else {
           body.blogId = this.blog._id;
           body.date = this.blog.date;

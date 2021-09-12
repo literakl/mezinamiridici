@@ -167,12 +167,6 @@ export default {
       const response = await post('API', '/images', body, context, undefined, progress);
       return response.data;
     },
-    SET_IMAGE_ITEM: async (context, payload) => {
-      Vue.$log.debug('IMAGE_UPLOAD');
-      // todo pictureId in URL
-      const response = await patch('API', '/images', payload, context);
-      return response.data;
-    },
     GET_ITEM_STREAM: async (context, payload) => {
       Vue.$log.debug('GET_ITEM_STREAM');
       const { start, size, tag } = payload;
