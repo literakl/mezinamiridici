@@ -1,20 +1,20 @@
-import { Plugin } from 'tiptap'
-import { updateMark, removeMark, pasteRule } from 'tiptap-commands'
-import { Link } from 'tiptap-extensions'
-import { getMarkAttrs } from 'tiptap-utils'
-import store from '@/store';
-import Vue from 'vue';
+/* eslint-disable class-methods-use-this */
+import { Plugin } from 'tiptap';
+import { updateMark, removeMark, pasteRule } from 'tiptap-commands';
+import { Link } from 'tiptap-extensions';
+import { getMarkAttrs } from 'tiptap-utils';
+import { getSync } from '@/utils/api';
 
-export default class Iframe extends Link {
+export default class EmbedLinkPlugin extends Link {
   static twitterCache = {}
   get name() {
-    return 'link'
+    return 'link';
   }
 
   get defaultOptions() {
     return {
-      src: null
-    }
+      src: null,
+    };
   }
 
   get schema() {
@@ -24,107 +24,103 @@ export default class Iframe extends Link {
           default: null,
         },
         height: {
-          default: "400px",
+          default: '400px',
         },
         width: {
-          default: "80%",
+          default: '80%',
         },
         href: {
-          default: null
+          default: null,
         },
         target: {
-          default: null
+          default: null,
         },
         isTwitter: {
-          default: false
+          default: false,
         },
         isFacebook: {
-          default: false
+          default: false,
         },
         isInstagram: {
-          default: false
+          default: false,
         },
       },
       inclusive: false,
       parseDOM: [
         {
           tag: 'iframe',
-          getAttrs: dom => {
-            return {
-              src: dom.getAttribute('src') || dom.getAttribute('href'),
-              height: dom.getAttribute('height'),
-              width: dom.getAttribute('width')
-            }
-          },
+          getAttrs: dom => ({
+            src: dom.getAttribute('src') || dom.getAttribute('href'),
+            height: dom.getAttribute('height'),
+            width: dom.getAttribute('width'),
+          }),
         },
         {
           tag: 'a[href]',
           getAttrs: dom => ({
             href: dom.getAttribute('href'),
-            target: dom.getAttribute('target')
-          })
-        }
+            target: dom.getAttribute('target'),
+          }),
+        },
       ],
-      toDOM: node => {
+      toDOM: (node) => {
         if (node.attrs.src || this.options.src) {
           if (node.attrs.isTwitter || this.options.isTwitter) {
             let content = ['a', {
               ...node.attrs,
               target: node.attrs.target || this.options.target,
-            }, 0]
+            }, 0];
 
-            const iframeAttr = this.getIframeCodeFromTweet(node.attrs.src || this.options.src)
+            const iframeAttr = this.getIframeCodeFromTweet(node.attrs.src || this.options.src);
             if (iframeAttr) {
               content = ['iframe', {
                 ...node.attrs,
-                ...iframeAttr
-              }, 0]
+                ...iframeAttr,
+              }, 0];
             }
 
             return content;
           } else if (node.attrs.isFacebook || this.options.isFacebook) {
-            const iframeAttr = this.getIframeCodeForFacebook(node.attrs.src || this.options.src)
+            const iframeAttr = this.getIframeCodeForFacebook(node.attrs.src || this.options.src);
             return ['iframe', {
               ...node.attrs,
-              ...iframeAttr
-            }, 0]
+              ...iframeAttr,
+            }, 0];
           } else if (node.attrs.isInstagram || this.options.isInstagram) {
             return ['iframe', {
               ...node.attrs,
               width: 320,
               height: 460,
               src: node.attrs.src || this.options.src,
-              frameborder: 0
-            }, 0]
+              frameborder: 0,
+            }, 0];
           } else {
             return ['iframe', {
               ...node.attrs,
               src: node.attrs.src || this.options.src,
               height: node.attrs.height || this.options.height,
               width: node.attrs.width || this.options.width,
-              allowfullscreen: true
-            }, 0]
+              allowfullscreen: true,
+            }, 0];
           }
-
         } else {
           return ['a', {
             ...node.attrs,
             target: node.attrs.target || this.options.target,
-          }, 0]
+          }, 0];
         }
-
       },
-    }
+    };
   }
 
   commands({ type }) {
-    return attrs => {
+    return (attrs) => {
       if (attrs.src) {
-        return updateMark(type, attrs)
+        return updateMark(type, attrs);
       }
 
-      return removeMark(type)
-    }
+      return removeMark(type);
+    };
   }
 
   pasteRules({ type }) {
@@ -132,15 +128,14 @@ export default class Iframe extends Link {
       pasteRule(
         /https?:\/\/(www\.)?(web\.)?instagram\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
         type,
-        url => {
-          if (!url.includes("/embed")) {
-            const newUrl = new URL(url)
-            newUrl.pathname = newUrl.pathname.concat(newUrl.pathname.endsWith("/") ? "embed/" : "/embed/")
-            return { src: newUrl.toString(), isInstagram: true }
-
+        (url) => {
+          if (!url.includes('/embed')) {
+            const newUrl = new URL(url);
+            newUrl.pathname = newUrl.pathname.concat(newUrl.pathname.endsWith('/') ? 'embed/' : '/embed/');
+            return { src: newUrl.toString(), isInstagram: true };
           }
 
-          return { src: url, isInstagram: true }
+          return { src: url, isInstagram: true };
         },
       ),
       pasteRule(
@@ -156,94 +151,88 @@ export default class Iframe extends Link {
       pasteRule(
         /https?:\/\/(www\.)?youtube\.[a-zA-Z]{2,}\b([-a-zA-Z0-9@:%_+.~#?&//=,()!]*)/gi,
         type,
-        url => {
-          if (url.includes("/embed/")) {
-            return { src: url }
-          } else if (url.includes("watch?v=")) {
-            return { src: "https://youtube.com/embed/" + url.split('watch?v=').pop().split('&')[0] };
+        // eslint-disable-next-line consistent-return
+        (url) => {
+          if (url.includes('/embed/')) {
+            return { src: url };
+          } else if (url.includes('watch?v=')) {
+            return { src: `https://youtube.com/embed/${url.split('watch?v=').pop().split('&')[0]}` };
           }
         },
       ),
-    ]
+    ];
   }
 
   get plugins() {
     if (!this.options.openOnClick) {
-      return []
+      return [];
     }
 
     return [
       new Plugin({
         props: {
           handleClick: (view, pos, event) => {
-            const { schema } = view.state
-            const attrs = getMarkAttrs(view.state, schema.marks.link)
+            const { schema } = view.state;
+            const attrs = getMarkAttrs(view.state, schema.marks.link);
 
             if (attrs.src && event.target instanceof HTMLAnchorElement) {
-              event.stopPropagation()
-              window.open(attrs.src, attrs.src)
+              event.stopPropagation();
+              window.open(attrs.src, attrs.src);
             }
           },
         },
       }),
-    ]
+    ];
   }
 
   getOEmbed(tweetIdOrUrl) {
-    console.log("getOembed");
-    store.dispatch('FETCH_TWITTER_HTML', {
-      url: tweetIdOrUrl,
-    })
-      .then(response => {
-        console.log(`getOembed response ${response}`);
-        return response.json();
-      })
-      .catch(error => {
-        Vue.$log.debug(`Embedding twitter failed for '${tweetIdOrUrl}'`, error);
-        return null;
-      });
+    try {
+      const response = getSync('API', `/twitter-html?url=${tweetIdOrUrl}`);
+      return response.json();
+    } catch (e) {
+      return null;
+    }
   }
 
   getIframeCodeFromTweet(tweetUrl) {
-    console.log('getIframeCodeFromTweet');
-    let data;
-    if (Iframe.twitterCache && Iframe.twitterCache[tweetUrl]) {
-      data = Iframe.twitterCache[tweetUrl];
+    if (EmbedLinkPlugin.twitterCache && EmbedLinkPlugin.twitterCache[tweetUrl]) {
+      const data = EmbedLinkPlugin.twitterCache[tweetUrl];
       return this.makeTwitterIframe(data);
     } else {
       const oEmbedResponse = this.getOEmbed(tweetUrl);
-      console.log(`oEmbedResponse ${oEmbedResponse}`);
-      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html)
+      if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html) {
         return null;
+      }
 
-      data = oEmbedResponse.data;
-      Iframe.twitterCache[tweetUrl] = data;
-      return this.makeTwitterIframe(data)
+      const { data } = oEmbedResponse;
+      EmbedLinkPlugin.twitterCache[tweetUrl] = data;
+      return this.makeTwitterIframe(data);
     }
   }
 
   makeTwitterIframe(data) {
-    let { html, width, height } = data;
+    let { html, height } = data;
+    const { width } = data;
     height = height || 650;
     const iframeProps = {
       style: null,
       width,
       height,
-      'data-tweet-url': data.url
+      'data-tweet-url': data.url,
     };
     // To hide overflow, the style has to be injected *inside* the frame
-    html += `<style>html{overflow:hidden !important;}</style>`;
+    html += '<style>html{overflow:hidden !important;}</style>';
     iframeProps.style = 'border:none;';
     const dataUri = `data:text/html;charset=utf-8,${escape(html)}`;
 
     return {
       ...iframeProps,
-      src: dataUri
+      src: dataUri,
     };
   }
 
   getIframeCodeForFacebook(fbUrl) {
-    let html = `<div id="fb-root"></div>
+    const html = `<div id="fb-root"></div>
       <script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
       <div class="fb-post"
       data-href="${fbUrl}"
@@ -253,7 +242,7 @@ export default class Iframe extends Link {
     return {
       width: 550,
       src: dataUri,
-      frameborder: 0
+      frameborder: 0,
     };
   }
 }
