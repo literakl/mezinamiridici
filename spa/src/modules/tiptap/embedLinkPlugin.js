@@ -2,10 +2,9 @@ import { Plugin } from 'tiptap'
 import { updateMark, removeMark, pasteRule } from 'tiptap-commands'
 import { Link } from 'tiptap-extensions'
 import { getMarkAttrs } from 'tiptap-utils'
-import store from '@/store';
 import { getSync } from '@/utils/api';
 
-export default class Iframe extends Link {
+export default class EmbedLinkPlugin extends Link {
   static twitterCache = {}
   get name() {
     return 'link'
@@ -204,14 +203,14 @@ export default class Iframe extends Link {
 
   getIframeCodeFromTweet(tweetUrl, callback) {
     let data
-    if (Iframe.twitterCache && Iframe.twitterCache[tweetUrl]) {
-      data = Iframe.twitterCache[tweetUrl]
+    if (EmbedLinkPlugin.twitterCache && EmbedLinkPlugin.twitterCache[tweetUrl]) {
+      data = EmbedLinkPlugin.twitterCache[tweetUrl]
       return this.makeTwitterIframe(data)
     } else {
       const oEmbedResponse = this.getOEmbed(tweetUrl)
       if (!oEmbedResponse || !oEmbedResponse.data || !oEmbedResponse.data.html) return null
       data = oEmbedResponse.data;
-      Iframe.twitterCache[tweetUrl] = data;
+      EmbedLinkPlugin.twitterCache[tweetUrl] = data;
       return this.makeTwitterIframe(data)
     }
   }
