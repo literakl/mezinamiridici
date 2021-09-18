@@ -1,26 +1,26 @@
-const sanitizeHtml = require("sanitize-html");
-const mongo = require("../../utils/mongo.js");
-const api = require("../../utils/api.js");
-const auth = require("../../utils/authenticate");
-const { logger } = require("../../utils/logging");
+const sanitizeHtml = require('sanitize-html');
+const mongo = require('../../utils/mongo.js');
+const api = require('../../utils/api.js');
+const auth = require('../../utils/authenticate');
+const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options("/v1/posts/:blogId", auth.cors);
+  app.options('/v1/posts/:blogId', auth.cors);
 
-  app.patch("/v1/posts/:blogId", auth.required, auth.cors, async (req, res) => {
-    logger.debug("update blog handler starts");
+  app.patch('/v1/posts/:blogId', auth.required, auth.cors, async (req, res) => {
+    logger.debug('update blog handler starts');
 
     const { blogId } = req.params;
     if (!blogId) {
-      return api.sendMissingParam(res, "blogId");
+      return api.sendMissingParam(res, 'blogId');
     }
     const { source, title, picture, tags, contentPictures } = req.body;
 
     if (!source) {
-      return api.sendMissingParam(res, "source");
+      return api.sendMissingParam(res, 'source');
     }
     if (!picture) {
-      return api.sendMissingParam(res, "picture");
+      return api.sendMissingParam(res, 'picture');
     }
 
     try {
@@ -29,55 +29,55 @@ module.exports = (app) => {
       if (blog && blog.info.author.id !== req.identity.userId) {
         return api.sendErrorForbidden(
           res,
-          api.createError("You are not authorized to perform this action")
+          api.createError('You are not authorized to perform this action')
         );
       }
 
       const query = prepareUpdateQuery(source, title, picture, tags);
-      await dbClient.db().collection("items").updateOne({ _id: blogId }, query);
-      logger.debug("Blog updated");
+      await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
+      logger.debug('Blog updated');
 
       blog = await mongo.getBlog(dbClient, undefined, blogId);
-      logger.debug("Updated blog fetched");
+      logger.debug('Updated blog fetched');
 
       mongo.storePictureId(dbClient, blogId, contentPictures);
 
       return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
-      logger.error("Request failed", err);
+      logger.error('Request failed', err);
       return api.sendInternalError(
         res,
-        api.createError("Failed to update blog", "sign-in.something-went-wrong")
+        api.createError('Failed to update blog', 'sign-in.something-went-wrong')
       );
     }
   });
 
-  app.options("/v1/posts/:blogId/editorial", auth.cors);
+  app.options('/v1/posts/:blogId/editorial', auth.cors);
 
-  app.patch("/v1/posts/:blogId/editorial",
+  app.patch('/v1/posts/:blogId/editorial',
     auth.required,
     auth.cms_admin,
     auth.cors,
     async (req, res) => {
-      logger.debug("mark blog as editorial handler starts");
+      logger.debug('mark blog as editorial handler starts');
       const { blogId } = req.params;
       if (!blogId) {
-        return api.sendMissingParam(res, "blogId");
+        return api.sendMissingParam(res, 'blogId');
       }
       const { flag } = req.body;
-      if (typeof flag !== "boolean") {
-        return api.sendMissingParam(res, "flag");
+      if (typeof flag !== 'boolean') {
+        return api.sendMissingParam(res, 'flag');
       }
 
       try {
         const dbClient = await mongo.connectToDatabase();
-        const query = { $set: { "info.editorial": flag } };
+        const query = { $set: { 'info.editorial': flag } };
         await Promise.all([
-          dbClient.db().collection("items").updateOne({ _id: blogId }, query),
+          dbClient.db().collection('items').updateOne({ _id: blogId }, query),
           mongo.logAdminActions(
             dbClient,
             req.identity.userId,
-            "toggle editorial",
+            'toggle editorial',
             blogId,
             { flag }
           ),
@@ -86,51 +86,51 @@ module.exports = (app) => {
 
         return api.sendResponse(res, api.createResponse());
       } catch (err) {
-        logger.error("Request failed", err);
+        logger.error('Request failed', err);
         return api.sendInternalError(
           res,
           api.createError(
-            "Failed to set an editorial flag",
-            "sign-in.something-went-wrong"
+            'Failed to set an editorial flag',
+            'sign-in.something-went-wrong'
           )
         );
       }
     })
 
     app.patch(
-      "/v1/posts/:blogId/visibility",
+      '/v1/posts/:blogId/visibility',
       auth.required,
       auth.cms_admin,
       auth.cors, async (req, res) => {
         const { blogId } = req.params;
         if (!blogId) {
-          return api.sendMissingParam(res, "blogId");
+          return api.sendMissingParam(res, 'blogId');
         }
         const { flag } = req.body;
-        if (typeof flag !== "boolean") {
-          return api.sendMissingParam(res, "flag");
+        if (typeof flag !== 'boolean') {
+          return api.sendMissingParam(res, 'flag');
         }
         try {
         const dbClient = await mongo.connectToDatabase();
-        const query = { $set: { "info.hidden": flag } };
-        await dbClient.db().collection("items").updateOne({ _id: blogId }, query,mongo.logAdminActions(
+        const query = { $set: { 'info.hidden': flag } };
+        await dbClient.db().collection('items').updateOne({ _id: blogId }, query,mongo.logAdminActions(
           dbClient,
           req.identity.userId,
-          "update hidden flag",
+          'update hidden flag',
           blogId,
           { flag }
         ));
-        logger.debug("Blog updated");
+        logger.debug('Blog updated');
 
         blog = await mongo.getBlog(dbClient, undefined, blogId);
-        logger.debug("Updated blog fetched");
+        logger.debug('Updated blog fetched');
         return api.sendResponse(res, api.createResponse(blog));
         }
         catch(err){
-          logger.error("Request failed", err);
+          logger.error('Request failed', err);
           return api.sendInternalError(
             res,
-            api.createError("Failed to update blog", "sign-in.something-went-wrong")
+            api.createError('Failed to update blog', 'sign-in.something-went-wrong')
           );
         }
       });
@@ -141,10 +141,10 @@ module.exports = (app) => {
 function prepareUpdateQuery(source, title, picture, tags) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const setters = {};
-  setters["data.content"] = content;
-  setters["info.caption"] = title;
-  setters["info.picture"] = picture;
-  setters["info.tags"] = tags;
+  setters['data.content'] = content;
+  setters['info.caption'] = title;
+  setters['info.picture'] = picture;
+  setters['info.tags'] = tags;
 
   const query = {};
   query.$set = setters;
