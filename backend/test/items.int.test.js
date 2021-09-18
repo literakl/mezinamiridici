@@ -15,6 +15,7 @@ const {
 const {
   setup, Leos, Jiri, Vita,
 } = require('./prepareUsers');
+const { response } = require('../src/server.js');
 
 let dbClient, server;
 
@@ -119,6 +120,27 @@ test('Tag API', async (done) => {
 
   done();
 });
+
+test('Hide Posts',async (done)=>{
+  await setup(dbClient, api);
+  jest.setTimeout(180 * 60000);
+
+  const blogBody = {
+    title: 'First blog',
+    source: '<h1>Title</h1><p>Very smart topic</p>',
+    picture: 'picture.png',
+  };
+
+  let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  expect(blog.data.info.caption).toBe(blogBody.title);
+  let body = {
+    flag: true,
+  }
+  response = await api(`/v1/posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(response.success).toBeTruthy()
+  done()
+})
 
 beforeEach(async () => {
   const db = dbClient.db();
