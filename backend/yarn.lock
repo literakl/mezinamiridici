@@ -3676,10 +3676,10 @@
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
   "version" "2.29.1"
 
-"mongodb@^3.6.5":
-  "integrity" "sha512-JOAYjT9WYeRFkIP6XtDidAr3qvpfLRJhT2iokRWWH0tgqCQr9kmSfOJBZ3Ry0E5A3EqKxVPVhN3MV8Gn03o7pA=="
-  "resolved" "https://registry.npmjs.org/mongodb/-/mongodb-3.7.0.tgz"
-  "version" "3.7.0"
+"mongodb@^3.6.12":
+  "integrity" "sha512-ErHpF4P4disEIQB8Nns2twIMVXcvmlwjpKqfVnyB/hhd/L5We48LfoBYjBjuUSiSqL6ffmcygPTgjvpy2LETRQ=="
+  "resolved" "https://registry.npmjs.org/mongodb/-/mongodb-3.6.12.tgz"
+  "version" "3.6.12"
   dependencies:
     "bl" "^2.2.1"
     "bson" "^1.1.4"
