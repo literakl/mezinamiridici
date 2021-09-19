@@ -5,11 +5,12 @@ const dayjs = require('dayjs');
 const { logger, mongoLogger } = require('./logging');
 require('./path_env');
 
-const { MONGODB_URI, MONGO_POOL, MONGO_CONNECT_TIMEOUT_MS, TIME_ID_CHARS } = process.env;
+const { MONGODB_URI, TIME_ID_CHARS } = process.env;
+const { MONGO_TRACE } = process.env || false;
 const TIME_ID_CHARS_INT = parseInt(TIME_ID_CHARS || '1', 10);
-let cachedDb = null;
-
 logger.info(`Mongo is configured to connect ${MONGODB_URI}`); // TODO mask the password
+
+let cachedDb;
 
 function connectToDatabase() {
   if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
@@ -19,16 +20,26 @@ function connectToDatabase() {
 
   logger.debug('Get a new Mongo instance from database');
   const start = dayjs();
-  return MongoClient.connect(MONGODB_URI, {
-    poolSize: MONGO_POOL || 5,
-    connectTimeoutMS: MONGO_CONNECT_TIMEOUT_MS || 10000,
+  const client = new MongoClient(MONGODB_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-  })
+  });
+  return client.connect()
     .then((db) => {
-      mongoLogger.record({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
       logger.debug('Successful connect');
+      mongoLogger.record({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
       cachedDb = db;
+
+      if (MONGO_TRACE) {
+        const events = ['serverOpening', 'serverClosed', 'serverDescriptionChanged', 'topologyOpening', 'topologyClosed', 'topologyDescriptionChanged', 'serverHeartbeatStarted', 'serverHeartbeatSucceeded', 'serverHeartbeatFailed'];
+        for (let i = 0; i < events.length; i += 1) {
+          const eventName = events[i];
+          client.on(eventName, (event) => {
+            logger.info(`received ${eventName}:\n${JSON.stringify(event, null, 2)}`);
+          });
+        }
+      }
+
       return cachedDb;
     })
     .catch((err) => {
@@ -357,3 +368,5 @@ exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
 exports.logAdminActions = logAdminActions;
 exports.storePictureId = storePictureId;
+
+cachedDb = connectToDatabase(); // pre heat the database
