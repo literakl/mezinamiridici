@@ -5,7 +5,7 @@ const merge2 = require('merge2');
 const zip = require('gulp-zip');
 const { exec } = require('child_process');
 
-const packageDirectory = '../transfer';
+const packageDirectory = '../deploy/transfer';
 
 function clean() {
   console.log('removing the old files in the directory');
@@ -35,7 +35,7 @@ function createVueDEVBuild(cb) {
 
 function copyVueDEVTask() {
   console.log('Copying Vue DEV code');
-  return src(['dist/**', '!dist/images/uploads/**'])
+  return src(['dist/**', '!dist/runtimeConfig.js', '!dist/images/uploads/**'])
     .pipe(dest(`${packageDirectory}/html/dev`));
 }
 
@@ -51,7 +51,7 @@ function createVuePRODBuild(cb) {
 
 function copyVuePRODTask() {
   console.log('Copying Vue PROD code');
-  return src(['dist/**', '!dist/images/uploads/**'])
+  return src(['dist/**', '!dist/runtimeConfig.js', '!dist/images/uploads/**'])
     .pipe(dest(`${packageDirectory}/html/prod`));
 }
 
