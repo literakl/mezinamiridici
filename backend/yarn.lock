@@ -2734,6 +2734,11 @@
   "resolved" "https://registry.npmjs.org/is-plain-object/-/is-plain-object-5.0.0.tgz"
   "version" "5.0.0"
 
+"is-primitive@^3.0.1":
+  "integrity" "sha512-GljRxhWvlCNRfZyORiH77FwdFwGcMO620o37EOYC0ORWdq+WYNVqW0w2Juzew4M+L81l6/QS3t5gkkihyRqv9w=="
+  "resolved" "https://registry.npmjs.org/is-primitive/-/is-primitive-3.0.1.tgz"
+  "version" "3.0.1"
+
 "is-stream@^1.1.0":
   "integrity" "sha1-EtSj3U5o4Lec6428hBc66A2RykQ="
   "resolved" "https://registry.npmjs.org/is-stream/-/is-stream-1.1.0.tgz"
@@ -4720,7 +4725,7 @@
   "resolved" "https://registry.npmjs.org/set-blocking/-/set-blocking-2.0.0.tgz"
   "version" "2.0.0"
 
-"set-value@^2.0.0", "set-value@^2.0.1":
+"set-value@^2.0.0":
   "integrity" "sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw=="
   "resolved" "https://registry.npmjs.org/set-value/-/set-value-2.0.1.tgz"
   "version" "2.0.1"
@@ -4729,6 +4734,24 @@
     "is-extendable" "^0.1.1"
     "is-plain-object" "^2.0.3"
     "split-string" "^3.0.1"
+
+"set-value@^2.0.1":
+  "integrity" "sha512-JxHc1weCN68wRY0fhCoXpyK55m/XPHafOmK4UWD7m2CI14GMcFypt4w/0+NV5f/ZMby2F6S2wwA7fgynh9gWSw=="
+  "resolved" "https://registry.npmjs.org/set-value/-/set-value-2.0.1.tgz"
+  "version" "2.0.1"
+  dependencies:
+    "extend-shallow" "^2.0.1"
+    "is-extendable" "^0.1.1"
+    "is-plain-object" "^2.0.3"
+    "split-string" "^3.0.1"
+
+"set-value@^4.1.0":
+  "integrity" "sha512-zTEg4HL0RwVrqcWs3ztF+x1vkxfm0lP+MQQFPiMJTKVceBwEV0A569Ou8l9IYQG8jOZdMVI1hGsc0tmeD2o/Lw=="
+  "resolved" "https://registry.npmjs.org/set-value/-/set-value-4.1.0.tgz"
+  "version" "4.1.0"
+  dependencies:
+    "is-plain-object" "^2.0.4"
+    "is-primitive" "^3.0.1"
 
 "setprototypeof@1.1.1":
   "integrity" "sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw=="
