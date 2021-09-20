@@ -1,6 +1,7 @@
 const { LOG_DIRECTORY, NUM_LOG_BACKUPS } = process.env;
 
 module.exports = {
+  pm2: true,
   appenders: {
     application: {
       type: 'dateFile',
