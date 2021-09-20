@@ -20,8 +20,8 @@ module.exports = (app) => {
 
   // eslint-disable-next-line consistent-return
   app.post('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
-    logger.debug('socialLink POST handler starts');
-    logger.info(helpers.toJSON(req.body));
+    logger.debug(`socialLink POST handler starts for ${req.params.provider}`);
+    logger.trace(helpers.toJSON(req.body));
     let socialProfile;
     try {
       if (req.params.provider === 'google') {
@@ -120,6 +120,7 @@ async function twitterAuth(req, res) {
   if (!req.body.oauth_token) {
     oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret) => {
       if (error) {
+        logger.warn(error);
         res.status(500).json(error);
       } else {
         res.json({
