@@ -17,7 +17,7 @@ module.exports = (app) => {
     logger.debug('create blog handler starts');
 
     const {
-      title, source, date, picture, tags, contentPictures,
+      title, source, date, picture, tags, contentPictures, hidden
     } = req.body;
 
     if (!title) {
@@ -39,7 +39,7 @@ module.exports = (app) => {
       const user = auth.getIdentity(req.identity);
       const blogId = mongo.generateTimeId();
 
-      await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
+      await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags,hidden);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
       logger.debug('Blog inserted');
 
@@ -56,7 +56,7 @@ module.exports = (app) => {
   });
 };
 
-async function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
+async function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags, hiddenflag) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
   const adjustedSlug = await api.getSlug(slug, dbClient);
@@ -75,6 +75,7 @@ async function insertItem(dbClient, blogId, title, source, author, publishDate, 
       date: publishDate,
       picture,
       tags,
+      hidden: hiddenflag
     },
     data: {
       content,
