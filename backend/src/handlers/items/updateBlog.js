@@ -98,12 +98,13 @@ module.exports = (app) => {
     })
 
     app.options('/v1/posts/:blogId/visibility',auth.cors);
-
+    
     app.patch(
       '/v1/posts/:blogId/visibility',
       auth.required,
-      auth.ROLE_BLOG_ADMIN,
-      auth.cors, async (req, res) => {
+      auth.blog_admin,
+      auth.cors, 
+      async (req, res) => {
         const { blogId } = req.params;
         if (!blogId) {
           return api.sendMissingParam(res, 'blogId');
