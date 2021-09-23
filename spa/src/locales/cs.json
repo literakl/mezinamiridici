@@ -276,6 +276,10 @@
       "mark": "Nastav Redakci",
       "unmark": "Zruš Redakci"
     },
+    "hidden": {
+      "mark": "Skryj",
+      "unmark": "Odkryj"
+    },
     "confirm-delete": "Opravdu chcete smazat tento blog?"
   },
   "cms": {

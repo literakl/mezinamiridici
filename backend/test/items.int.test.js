@@ -15,7 +15,6 @@ const {
 const {
   setup, Leos, Jiri, Vita,
 } = require('./prepareUsers');
-const { response } = require('../src/server.js');
 
 let dbClient, server;
 
@@ -121,9 +120,9 @@ test('Tag API', async (done) => {
   done();
 });
 
-test('Hide Posts',async (done)=>{
+test('Hide Posts', async (done) => {
   await setup(dbClient, api);
-  jest.setTimeout(180 * 60000);
+  jest.setTimeout(180000);
 
   const blogBody = {
     title: 'First blog',
@@ -131,16 +130,23 @@ test('Hide Posts',async (done)=>{
     picture: 'picture.png',
   };
 
-  let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
+  const blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(blog.success).toBeTruthy();
-  expect(blog.data.info.caption).toBe(blogBody.title);
-  let body = {
+  const body = {
     flag: true,
-  }
-  response = await api(`/v1/posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(response.success).toBeTruthy()
-  done()
-})
+  };
+
+  let response = await api(`posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.info.hidden).toBe(true);
+
+  body.flag = false;
+  response = await api(`posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  expect(response.data.info.hidden).toBe(false);
+
+  done();
+});
 
 beforeEach(async () => {
   const db = dbClient.db();
