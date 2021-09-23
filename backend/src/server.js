@@ -4,7 +4,7 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
 
-require('./handlers/getStatus')(app);
+require('./handlers/misc/getStatus')(app);
 require('./handlers/users/authorizeUser')(app);
 require('./handlers/users/changePassword')(app);
 require('./handlers/users/createUser')(app);
@@ -41,6 +41,6 @@ require('./handlers/comments/createComment')(app);
 require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
-require('./handlers/twitter/getTwitterEmbed')(app);
+require('./handlers/misc/getTwitterEmbed')(app);
 
 module.exports = app;
