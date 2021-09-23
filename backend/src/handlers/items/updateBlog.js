@@ -97,11 +97,14 @@ module.exports = (app) => {
       }
     })
 
+    app.options('/v1/posts/:blogId/visibility',auth.cors);
+    
     app.patch(
       '/v1/posts/:blogId/visibility',
       auth.required,
-      auth.cms_admin,
-      auth.cors, async (req, res) => {
+      auth.blog_admin,
+      auth.cors, 
+      async (req, res) => {
         const { blogId } = req.params;
         if (!blogId) {
           return api.sendMissingParam(res, 'blogId');
@@ -111,29 +114,31 @@ module.exports = (app) => {
           return api.sendMissingParam(res, 'flag');
         }
         try {
-        const dbClient = await mongo.connectToDatabase();
-        const query = { $set: { 'info.hidden': flag } };
-        await dbClient.db().collection('items').updateOne({ _id: blogId }, query,mongo.logAdminActions(
-          dbClient,
-          req.identity.userId,
-          'update hidden flag',
-          blogId,
-          { flag }
-        ));
-        logger.debug('Blog updated');
-
-        blog = await mongo.getBlog(dbClient, undefined, blogId);
-        logger.debug('Updated blog fetched');
-        return api.sendResponse(res, api.createResponse(blog));
+          const dbClient = await mongo.connectToDatabase();
+          const query = { $set: { 'info.hidden': flag } };
+          await Promise.all([
+          await dbClient.db().collection('items').updateOne({ _id: blogId }, query, mongo.logAdminActions(
+            dbClient,
+            req.identity.userId,
+            'update hidden flag',
+            blogId,
+            { flag }
+          ))
+          ]);
+          logger.debug('Blog updated');
+  
+          blog = await mongo.getBlog(dbClient, undefined, blogId);
+          logger.debug('Updated blog fetched');
+          return api.sendResponse(res, api.createResponse(blog));
         }
-        catch(err){
+        catch (err) {
           logger.error('Request failed', err);
           return api.sendInternalError(
             res,
             api.createError('Failed to update blog', 'sign-in.something-went-wrong')
           );
         }
-      });
+      });  
 };
 
 

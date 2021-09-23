@@ -131,13 +131,13 @@ test('Hide Posts',async (done)=>{
     picture: 'picture.png',
   };
 
-  let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(blog.success).toBeTruthy();
   expect(blog.data.info.caption).toBe(blogBody.title);
   let body = {
     flag: true,
   }
-  response = await api(`/v1/posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Vita.jwt) }).json();
+  response = await api(`/v1/posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy()
   done()
 })
