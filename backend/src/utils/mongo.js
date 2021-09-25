@@ -6,7 +6,7 @@ const { logger, mongoLogger } = require('./logging');
 require('./path_env');
 
 const { MONGODB_URI, TIME_ID_CHARS } = process.env;
-const { MONGO_TRACE } = process.env || false;
+const { MONGO_TRACE = 'false' } = process.env;
 const TIME_ID_CHARS_INT = parseInt(TIME_ID_CHARS || '1', 10);
 logger.info(`Mongo is configured to connect ${MONGODB_URI}`); // TODO mask the password
 
@@ -30,7 +30,8 @@ function connectToDatabase() {
       mongoLogger.record({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
       cachedDb = db;
 
-      if (MONGO_TRACE) {
+      if (MONGO_TRACE === 'true') {
+        logger.info('mongo trace on');
         const events = ['serverOpening', 'serverClosed', 'serverDescriptionChanged', 'topologyOpening', 'topologyClosed', 'topologyDescriptionChanged', 'serverHeartbeatStarted', 'serverHeartbeatSucceeded', 'serverHeartbeatFailed'];
         for (let i = 0; i < events.length; i += 1) {
           const eventName = events[i];
