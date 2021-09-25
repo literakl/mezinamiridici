@@ -2,7 +2,7 @@ const { stringify } = require('flatted/cjs');
 const logger = require('log4js');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config(); // TODO check path_env.js
 
 const { NODE_ENV } = process.env;
 let { CONFIG_DIRECTORY, LOG_DIRECTORY } = process.env;
