@@ -8,7 +8,6 @@ dotenv.config({ path: envPath });
 const mongo = require('../src/utils/mongo.js');
 const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
-const { setPinnedItems } = require('../src/handlers/items/getItems');
 const {
   api, getAuthHeader, FULL_DATE_FORMAT, SHORT_DATE_FORMAT,
 } = require('./testUtils');
@@ -143,6 +142,8 @@ test('Stream API', async (done) => {
   IBlog.id = response.data._id;
   IBlog.slug = response.data.info.slug;
 
+  /*
+  // TODO dead code #133
   // set pinned items
   setPinnedItems(`[{ slug: '${EBlog.slug}', position: 3 },{ slug: '${IBlog.slug}', position: 1 }]`);
 
@@ -155,6 +156,7 @@ test('Stream API', async (done) => {
   expect(pinnedItems.data[1].position).toBe(3);
   expect(pinnedItems.data[1].item._id).toBe(EBlog.id);
   expect(pinnedItems.data[1].item.info.caption).toBe(EBlog.title);
+  */
 
   response = await api('item-stream?start=0&ps=10').json();
   expect(response.success).toBeTruthy();

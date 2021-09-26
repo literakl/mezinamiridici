@@ -6,8 +6,11 @@ const { logger } = require('../../utils/logging');
 require('../../utils/path_env');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
+/*
+TODO dead code #133
 let { STREAM_PINNED_ITEMS } = process.env || [];
 let pinnedItems = configurePinnedItems(STREAM_PINNED_ITEMS);
+*/
 
 module.exports = (app) => {
   app.options('/v1/item-stream', auth.cors);
@@ -26,7 +29,8 @@ module.exports = (app) => {
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
     }
   });
-
+/*
+  TODO dead code #133
   app.options('/v1/item-stream/pinned', auth.cors);
 
   app.get('/v1/item-stream/pinned', auth.cors, async (req, res) => {
@@ -41,14 +45,15 @@ module.exports = (app) => {
     result.sort((a, b) => a.position - b.position);
     return api.sendResponse(res, api.createResponse(result));
   });
+*/
 };
 
 function getItemsPage(dbClient, tag, start, pageSize) {
   const query = {
     type: { $in: ['blog', 'poll'] },
+    'info.hidden': false,
     'info.published': true,
     'info.date': { $lte: new Date() },
-    'info.hidden':false
   };
   if (tag) {
     query['info.tags'] = tag;
@@ -62,7 +67,8 @@ function getItemsPage(dbClient, tag, start, pageSize) {
     .limit(pageSize)
     .toArray();
 }
-
+/*
+TODO dead code #133
 function getItems(dbClient, query) {
   return dbClient.db().collection('items')
     .find(query, { projection: { type: 1, info: 1, comments: 1 } })
@@ -105,3 +111,4 @@ function setPinnedItems(items) {
 }
 
 module.exports.setPinnedItems = setPinnedItems;
+*/
