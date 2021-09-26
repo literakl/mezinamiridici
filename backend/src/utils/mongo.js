@@ -369,5 +369,3 @@ exports.generateId = generateId;
 exports.generateTimeId = generateTimeId;
 exports.logAdminActions = logAdminActions;
 exports.storePictureId = storePictureId;
-
-cachedDb = connectToDatabase(); // pre heat the database
