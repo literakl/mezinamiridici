@@ -35,7 +35,9 @@
               <BIconShieldMinus scale="1"></BIconShieldMinus>
               {{ $t('blog.editorial.unmark') }}
             </b-link>
-            <b-link v-if="!hidden" v-on:click="toggleEditorial">
+          </div>
+          <div class="post-editorial" v-if="isAdmin">
+            <b-link v-if="!hidden" v-on:click="toggleHidden">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.hidden.mark') }}
             </b-link>
