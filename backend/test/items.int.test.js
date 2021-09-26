@@ -136,13 +136,15 @@ test('Hide Posts', async (done) => {
     flag: true,
   };
 
-  let response = await api(`posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  let response = await api(`posts/${blog.data._id}/hidden`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
+  response = await api(`posts/${blog.data.info.slug}`).json();
   expect(response.data.info.hidden).toBe(true);
 
   body.flag = false;
-  response = await api(`posts/${blog.data._id}/visibility`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`posts/${blog.data._id}/hidden`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
+  response = await api(`posts/${blog.data.info.slug}`).json();
   expect(response.data.info.hidden).toBe(false);
 
   done();
