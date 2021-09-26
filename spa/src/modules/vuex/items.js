@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import Vue from 'vue';
 import { deleteApi, get, patch, post, getSync } from '@/utils/api';
 
@@ -101,7 +102,7 @@ export default {
     TOGGLE_HIDDEN: async (context) => {
       Vue.$log.debug('HIDE_BLOG');
       const { blog } = context.state;
-      let { hidden } = blog.hidden || false;
+      let hidden = blog.info.hidden;
       hidden = !hidden;
       const payload = {
         flag: hidden,
