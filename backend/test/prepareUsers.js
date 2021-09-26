@@ -20,7 +20,7 @@ const Leos = {
     count: { pollVotes: 0, comments: 4, commentVotes: 0, commentVoteRatio: 25, blogs: 0, shares: 0, sharingWeeks: 0 },
   },
   consent: { terms: new Date(), data: new Date() },
-  roles: ['admin:poll', 'admin:pages', 'admin:blog'],
+  roles: ['admin:poll', 'admin:pages', 'admin:blog', 'admin:editor'],
 };
 const Jiri = {
   _id: 'jiri',
@@ -58,6 +58,7 @@ const Lukas = {
     count: { pollVotes: 5, comments: 20, commentVotes: 30, commentVoteRatio: 80, blogs: 2, shares: 30, sharingWeeks: 15 },
   },
   consent: { terms: new Date(), data: new Date() },
+  roles: ['user:staffer'],
 };
 const Vita = {
   _id: 'vita',
@@ -77,6 +78,7 @@ const Vita = {
     count: { pollVotes: 2, comments: 2, commentVotes: 10, blogs: 1, shares: 4, sharingWeeks: 3 },
   },
   consent: { terms: new Date(), data: new Date() },
+  roles: ['user:staffer'],
 };
 const Jana = {
   _id: 'jana',

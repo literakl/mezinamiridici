@@ -42,5 +42,6 @@ require('./handlers/comments/getComments')(app);
 require('./handlers/comments/voteComment')(app);
 require('./handlers/comments/getVotes')(app);
 require('./handlers/misc/getTwitterEmbed')(app);
+require('./handlers/snippets/snippets')(app);
 
 module.exports = app;

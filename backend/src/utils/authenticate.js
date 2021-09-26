@@ -85,6 +85,8 @@ const corsPerRoute = corsMiddleware({
 const ROLE_POLL_ADMIN = 'admin:poll';
 const ROLE_CMS_ADMIN = 'admin:pages';
 const ROLE_BLOG_ADMIN = 'admin:blog';
+const ROLE_EDITOR_IN_CHIEF = 'admin:editor';
+const ROLE_STAFFER = 'user:staffer';
 
 module.exports.optional = authenticate(false);
 module.exports.required = authenticate(true);
@@ -96,6 +98,10 @@ module.exports.cms_admin = withRole(ROLE_CMS_ADMIN);
 module.exports.ROLE_CMS_ADMIN = ROLE_CMS_ADMIN;
 /** manage user provided content */
 module.exports.blog_admin = withRole(ROLE_BLOG_ADMIN);
+/** manages articles */
+module.exports.editor_in_chief = withRole(ROLE_EDITOR_IN_CHIEF);
+/** writes articles */
+module.exports.staffer = withRole(ROLE_STAFFER);
 module.exports.ROLE_BLOG_ADMIN = ROLE_BLOG_ADMIN;
 module.exports.cors = corsPerRoute;
 module.exports.createToken = createToken;
