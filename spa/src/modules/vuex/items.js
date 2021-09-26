@@ -99,22 +99,6 @@ export default {
         }).catch(err => err.response.data);
       return item;
     },
-    TOGGLE_HIDDEN: async (context) => {
-      Vue.$log.debug('HIDE_BLOG');
-      const { blog } = context.state;
-      let hidden = blog.info.hidden;
-      hidden = !hidden;
-      const payload = {
-        flag: hidden,
-        id: blog._id,
-      };
-      const item = await patch('API', `/posts/${payload.id}/visibility`, payload, context)
-        .then((response) => {
-          context.commit('SET_BLOG', response.data.data);
-          return response.data;
-        }).catch(err => err.response.data);
-      return item;
-    },
     FETCH_BLOG: async (context, payload) => {
       Vue.$log.debug('FETCH_BLOG');
       let blog;
@@ -197,16 +181,26 @@ export default {
     TOGGLE_EDITORIAL: async (context) => {
       Vue.$log.debug('TOGGLE_EDITORIAL');
       const { blog } = context.state;
-      let { editorial } = blog.info || false;
+      let { editorial = false } = blog.info;
       editorial = !editorial;
       const payload = {
         flag: editorial,
-        id: blog._id,
       };
-      await patch('API', `/posts/${payload.id}/editorial`, payload, context);
+      await patch('API', `/posts/${blog._id}/editorial`, payload, context);
       Vue.set(blog.info, 'editorial', editorial);
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);
+    },
+    TOGGLE_HIDDEN: async (context) => {
+      Vue.$log.debug('TOGGLE_HIDDEN');
+      const { blog } = context.state;
+      let { hidden = false } = blog.info;
+      hidden = !hidden;
+      const payload = {
+        flag: hidden,
+      };
+      await patch('API', `/posts/${blog._id}/hidden`, payload, context);
+      Vue.set(blog.info, 'hidden', hidden);
     },
     FETCH_TWITTER_HTML: (context, payload) => {
       Vue.$log.debug('FETCH_TWITTER_HTML');

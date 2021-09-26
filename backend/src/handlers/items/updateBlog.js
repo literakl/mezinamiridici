@@ -70,32 +70,21 @@ module.exports = (app) => {
       const query = { $set: { 'info.editorial': flag } };
       await Promise.all([
         dbClient.db().collection('items').updateOne({ _id: blogId }, query),
-        mongo.logAdminActions(
-          dbClient,
-          req.identity.userId,
-          'toggle editorial',
-          blogId,
-          { flag },
-        ),
+        mongo.logAdminActions(dbClient, req.identity.userId, 'toggle editorial', blogId, { flag }),
       ]);
       logger.debug(`Updated an editorial flag to ${flag} for blog ${blogId}`);
 
       return api.sendResponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(
-        res,
-        api.createError(
-          'Failed to set an editorial flag',
-          'sign-in.something-went-wrong',
-        ),
-      );
+      return api.sendInternalError(res, api.createError('Failed to set an editorial flag', 'sign-in.something-went-wrong'));
     }
   });
 
-  app.options('/v1/posts/:blogId/visibility', auth.cors);
+  app.options('/v1/posts/:blogId/hidden', auth.cors);
 
-  app.patch('/v1/posts/:blogId/visibility', auth.required, auth.blog_admin, auth.cors, async (req, res) => {
+  app.patch('/v1/posts/:blogId/hidden', auth.required, auth.blog_admin, auth.cors, async (req, res) => {
+    logger.debug('mark blog as hidden handler starts');
     const { blogId } = req.params;
     if (!blogId) {
       return api.sendMissingParam(res, 'blogId');
@@ -108,25 +97,14 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       const query = { $set: { 'info.hidden': flag } };
       await Promise.all([
-        await dbClient.db().collection('items').updateOne({ _id: blogId }, query, mongo.logAdminActions(
-          dbClient,
-          req.identity.userId,
-          'update hidden flag',
-          blogId,
-          { flag },
-        )),
+        await dbClient.db().collection('items').updateOne({ _id: blogId }, query),
+        mongo.logAdminActions(dbClient, req.identity.userId, 'update hidden flag', blogId, { flag }),
       ]);
-      logger.debug('Blog updated');
-
-      const blog = await mongo.getBlog(dbClient, undefined, blogId);
-      logger.debug('Updated blog fetched');
-      return api.sendResponse(res, api.createResponse(blog));
+      logger.debug(`Updated a hidden flag to ${flag} for blog ${blogId}`);
+      return api.sendResponse(res, api.createResponse());
     } catch (err) {
       logger.error('Request failed', err);
-      return api.sendInternalError(
-        res,
-        api.createError('Failed to update blog', 'sign-in.something-went-wrong'),
-      );
+      return api.sendInternalError(res, api.createError('Failed to set a hidden flag', 'sign-in.something-went-wrong'));
     }
   });
 };
