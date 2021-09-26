@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import Vue from 'vue';
 import { deleteApi, get, patch, post, getSync } from '@/utils/api';
 
@@ -180,16 +181,26 @@ export default {
     TOGGLE_EDITORIAL: async (context) => {
       Vue.$log.debug('TOGGLE_EDITORIAL');
       const { blog } = context.state;
-      let { editorial } = blog.info || false;
+      let { editorial = false } = blog.info;
       editorial = !editorial;
       const payload = {
         flag: editorial,
-        id: blog._id,
       };
-      await patch('API', `/posts/${payload.id}/editorial`, payload, context);
+      await patch('API', `/posts/${blog._id}/editorial`, payload, context);
       Vue.set(blog.info, 'editorial', editorial);
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);
+    },
+    TOGGLE_HIDDEN: async (context) => {
+      Vue.$log.debug('TOGGLE_HIDDEN');
+      const { blog } = context.state;
+      let { hidden = false } = blog.info;
+      hidden = !hidden;
+      const payload = {
+        flag: hidden,
+      };
+      await patch('API', `/posts/${blog._id}/hidden`, payload, context);
+      Vue.set(blog.info, 'hidden', hidden);
     },
     FETCH_TWITTER_HTML: (context, payload) => {
       Vue.$log.debug('FETCH_TWITTER_HTML');

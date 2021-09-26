@@ -75,6 +75,7 @@ async function insertItem(dbClient, blogId, title, source, author, publishDate, 
       date: publishDate,
       picture,
       tags,
+      hidden: false,
     },
     data: {
       content,

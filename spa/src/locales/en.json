@@ -276,6 +276,10 @@
       "mark": "Set editorial",
       "unmark": "Unset editorial"
     },
+    "hidden": {
+      "mark": "Hide",
+      "unmark": "Unhide"
+    },
     "confirm-delete": "Do you really want to delete this blog?"
   },
   "cms": {

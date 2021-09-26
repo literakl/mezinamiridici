@@ -36,6 +36,16 @@
               {{ $t('blog.editorial.unmark') }}
             </b-link>
           </div>
+          <div class="post-editorial" v-if="isAdmin">
+            <b-link v-if="!hidden" v-on:click="toggleHidden">
+              <BIconShieldPlus scale="1"></BIconShieldPlus>
+              {{ $t('blog.hidden.mark') }}
+            </b-link>
+            <b-link v-if="hidden" v-on:click="toggleHidden">
+              <BIconShieldMinus scale="1"></BIconShieldMinus>
+              {{ $t('blog.hidden.unmark') }}
+            </b-link>
+          </div>
           <div v-if="isAuthor || isAdmin" class="post-delete">
             <b-link v-b-modal.confirm>
               <BIconXCircle scale="1"></BIconXCircle>
@@ -119,6 +129,9 @@ export default {
     editorial() {
       return this.blog.info.editorial;
     },
+    hidden() {
+      return this.blog.info.hidden;
+    },
     isAuthor() {
       return this.blog.info.author.id === this.$store.getters.USER_ID;
     },
@@ -146,6 +159,9 @@ export default {
   methods: {
     async toggleEditorial() {
       await this.$store.dispatch('TOGGLE_EDITORIAL');
+    },
+    async toggleHidden() {
+      await this.$store.dispatch('TOGGLE_HIDDEN');
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });

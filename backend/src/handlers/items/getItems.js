@@ -48,6 +48,7 @@ function getItemsPage(dbClient, tag, start, pageSize) {
     type: { $in: ['blog', 'poll'] },
     'info.published': true,
     'info.date': { $lte: new Date() },
+    'info.hidden':false
   };
   if (tag) {
     query['info.tags'] = tag;

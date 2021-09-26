@@ -120,6 +120,36 @@ test('Tag API', async (done) => {
   done();
 });
 
+test('Hide Posts', async (done) => {
+  await setup(dbClient, api);
+  jest.setTimeout(180000);
+
+  const blogBody = {
+    title: 'First blog',
+    source: '<h1>Title</h1><p>Very smart topic</p>',
+    picture: 'picture.png',
+  };
+
+  const blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  const body = {
+    flag: true,
+  };
+
+  let response = await api(`posts/${blog.data._id}/hidden`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  response = await api(`posts/${blog.data.info.slug}`).json();
+  expect(response.data.info.hidden).toBe(true);
+
+  body.flag = false;
+  response = await api(`posts/${blog.data._id}/hidden`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  response = await api(`posts/${blog.data.info.slug}`).json();
+  expect(response.data.info.hidden).toBe(false);
+
+  done();
+});
+
 beforeEach(async () => {
   const db = dbClient.db();
   await db.collection('users').deleteMany({});
