@@ -6,7 +6,6 @@ const customParseFormat = require('dayjs/plugin/customParseFormat');
 const weekOfYear = require('dayjs/plugin/weekOfYear');
 const { CronJob } = require('cron');
 const cheerio = require('cheerio');
-const cheerioAdv = require('cheerio-advanced-selectors');
 const FormData = require('form-data');
 const Handlebars = require('handlebars');
 const path = require('path');
@@ -19,8 +18,6 @@ const { PATH_SEPARATOR } = require('../utils/path_env');
 dayjs.extend(customParseFormat);
 dayjs.extend(weekOfYear);
 dayjs.extend(dayOfYear);
-
-const cheerioParser = cheerioAdv.wrap(cheerio);
 
 const { ACCIDENTS_STATS_URL, ACCIDENTS_STATS_SCHEDULE, ACCIDENTS_STATS_RETRY_MINUTES, ACCIDENTS_STATS_RETRY_MAXIMUM } = process.env;
 const { TEMPLATES_DIRECTORY, STREAM_PICTURES_PATH } = process.env;
@@ -146,7 +143,7 @@ function exitWithHelp() {
 async function getInitialFormData() {
   jobLogger.debug('Initial loading of the bloody form');
   const html = await getPage(ACCIDENTS_STATS_URL);
-  const $ = await cheerioParser.load(html);
+  const $ = await cheerio.load(html);
   return {
     ctl00_Application_ScriptManager1_HiddenField: $('#ctl00_Application_ScriptManager1_HiddenField').val(),
     __EVENTTARGET: $('#__EVENTTARGET').val(),
@@ -172,7 +169,7 @@ async function parseData(dbClient, formDataBody, date) {
   }
 
   const html = await getPage(ACCIDENTS_STATS_URL, formData);
-  const $ = await cheerioParser.load(html);
+  const $ = await cheerio.load(html);
   jobLogger.debug('Page downloaded');
 
   const regionsData = $('#celacr tr');

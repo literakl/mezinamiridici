@@ -1168,11 +1168,6 @@
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
 
-"cheerio-advanced-selectors@^2.0.1":
-  "integrity" "sha512-5wHR8bpiD5pdUtaS81A6hnJezzoDzL1TLWfK6bxnLkIgEKPV26BlOdMCcvuj3fTE7JSalsTUeNU7AOD/u6bYhw=="
-  "resolved" "https://registry.npmjs.org/cheerio-advanced-selectors/-/cheerio-advanced-selectors-2.0.1.tgz"
-  "version" "2.0.1"
-
 "cheerio-select@^1.5.0":
   "integrity" "sha512-qocaHPv5ypefh6YNxvnbABM07KMxExbtbfuJoIie3iZXX1ERwYmJcIiRrr9H05ucQP1k28dav8rpdDgjQd8drg=="
   "resolved" "https://registry.npmjs.org/cheerio-select/-/cheerio-select-1.5.0.tgz"
