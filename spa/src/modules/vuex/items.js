@@ -98,10 +98,16 @@ export default {
         }).catch(err => err.response.data);
       return item;
     },
-    HIDE_BLOG: async (context, payload) => {
+    TOGGLE_HIDDEN: async (context) => {
       Vue.$log.debug('HIDE_BLOG');
-      const { blogId } = payload;
-      const item = await patch('API', `/posts/${blogId}/visibility`, payload, context)
+      const { blog } = context.state;
+      let { hidden } = blog.hidden || false;
+      hidden = !hidden;
+      const payload = {
+        flag: hidden,
+        id: blog._id,
+      };
+      const item = await patch('API', `/posts/${payload.id}/visibility`, payload, context)
         .then((response) => {
           context.commit('SET_BLOG', response.data.data);
           return response.data;
