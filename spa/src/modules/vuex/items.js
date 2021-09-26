@@ -98,6 +98,16 @@ export default {
         }).catch(err => err.response.data);
       return item;
     },
+    HIDE_BLOG: async (context, payload) => {
+      Vue.$log.debug('HIDE_BLOG');
+      const { blogId } = payload;
+      const item = await patch('API', `/posts/${blogId}/visibility`, payload, context)
+        .then((response) => {
+          context.commit('SET_BLOG', response.data.data);
+          return response.data;
+        }).catch(err => err.response.data);
+      return item;
+    },
     FETCH_BLOG: async (context, payload) => {
       Vue.$log.debug('FETCH_BLOG');
       let blog;
