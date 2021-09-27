@@ -1,0 +1,12 @@
+{
+  "_id": "1edhoubg0tzm",
+  "itemId": "1edhouabq4xj",
+  "code": "set_x",
+  "user": {
+    "nickname": "Leoš",
+    "id": "leos"
+  },
+  "date": "2021-08-16T05:22:33.121Z",
+  "type": "html",
+  "content": "<javascript>x=1</javascript>"
+}

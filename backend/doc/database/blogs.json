@@ -14,19 +14,7 @@
     "tags" : [ "motorky" ]
   },
   "data" : {
-    "content" : "<h1>Title</h1><p>Very smart topic</p>",
-    "snippets": [
-      {
-        "code": "set_x",
-        "author": {
-          "nickname": "Leoš",
-          "id": "leos"
-        },
-        "date": "2021-08-16T05:22:33.121Z",
-        "type": "html",
-        "content": "<javascript>x=1</javascript>"
-      }
-    ]
+    "content" : "<h1>Title</h1><p>Very smart topic</p>"
   },
   "comments" : { "count" : 0, "last" : null }
 }
