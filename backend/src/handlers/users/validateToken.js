@@ -14,7 +14,7 @@ module.exports = (app) => {
     try {
       const dbClient = await mongo.connectToDatabase();
       const jwtData = req.identity;
-      const user = await mongo.findUser(dbClient, { _id: jwtData.userId }, { projection: { auth: 1 } });
+      const user = await mongo.findUser(dbClient, { userId: jwtData.userId }, { projection: { auth: 1 } });
       logger.debug('User fetched');
       if (!user) {
         logger.debug(`User not found ${jwtData.userId}`);
