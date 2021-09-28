@@ -4,7 +4,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
-const bruteForceDelay = 1000;
+const bruteForceDelay = 1000; // for script kiddies
 
 module.exports = (app) => {
   app.options('/v1/authorizeUser', auth.cors);
@@ -28,11 +28,10 @@ module.exports = (app) => {
       }
 
       if (!user.auth.verified) {
-        setTimeout(() => api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified')), bruteForceDelay);
+        setTimeout(() => api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified-error')), bruteForceDelay);
         return res;
       }
 
-      // following part takes more than 1 second with 128 MB RAM on AWS Lambda!
       if (bcrypt.compareSync(password, user.auth.pwdHash)) {
         logger.debug('Password verified');
         const token = auth.createTokenFromUser(user);
@@ -64,3 +63,5 @@ const validateParameters = (email, password) => {
   }
   return result;
 };
+
+exports.bruteForceDelay = bruteForceDelay;

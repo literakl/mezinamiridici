@@ -161,6 +161,13 @@ test('User API', async (done) => {
   response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) });
   expect(response.statusCode).toBe(500); // Forbidden would be better
 
+  // resend activation email again
+  body = {
+    email: 'leos@email.bud',
+  };
+  response = await api('verify/resend', { method: 'POST', json: body }).json();
+  expect(response.success).toBeTruthy();
+
   // verify account
   profile = await mongo.findUser(dbClient, { userId });
   response = await api(`verify/${profile.auth.verifyToken}`, { method: 'POST' }).json();

@@ -1,22 +1,26 @@
 <template>
   <div class="mt-5 border centerbox">
     <div class="head-area">
-      <h2>{{ $t('sign-in.forgot-password-heading') }}</h2>
-      <p v-if="passwordReset !== true">{{ $t('sign-in.email-reset-description') }}</p>
+      <h2>{{ $t('sign-up.resend-heading') }}</h2>
+      <p>{{ $t('sign-up.resend-description') }}</p>
     </div>
 
-    <div v-if="!passwordReset">
+    <div v-if="!finished">
       <ValidationObserver ref="form" v-slot="{ passes }">
-        <form @submit.prevent="passes(forgotPassword)">
-          <fieldset :disabled='wholeDisable'>
-            <div v-if="passwordReset === false">
-              <p class="text-danger">{{ $t('sign-in.forget-error') }}</p>
+        <form @submit.prevent="passes(sendActivationEmail)">
+          <fieldset :disabled='disableForm'>
+            <div v-if="error" class="text-danger">
+              <strong>
+                {{ error }}
+              </strong>
             </div>
+
             <div class="field-area">
               <TextInput
                 v-model="email"
+                rules="required|email"
+                name="email"
                 type="email"
-                identifier="resetEmail"
                 :label="$t('profile.email')"
                 :placeholder="$t('generic.email-placeholder')"/>
             </div>
@@ -24,16 +28,16 @@
             <Button
               class="reset-btn"
               :waiting="sending"
-              :value="$t('sign-in.reset-password-button')"
-              @clicked="forgotPassword"/>
+              :value="$t('sign-up.resend-button')"
+              @clicked="sendActivationEmail"/>
 
           </fieldset>
         </form>
       </ValidationObserver>
     </div>
 
-    <div v-if="passwordReset === true">
-      <p class="text-success">{{ $t('sign-in.forget-success') }}</p>
+    <div v-if="finished === true">
+      <p class="text-success">{{ $t('sign-up.resend-success') }}</p>
     </div>
   </div>
 </template>
@@ -53,34 +57,42 @@ configure({
 });
 
 export default {
-  name: 'ForgottenPassword',
+  name: 'ResendActivation',
   components: {
     Button,
     TextInput,
   },
   data: () => ({
     email: null,
-    passwordReset: null,
+    finished: null,
     error: null,
     sending: false,
-    wholeDisable: false,
+    disableForm: false,
   }),
   methods: {
-    async forgotPassword() {
-      this.passwordReset = null;
+    async sendActivationEmail() {
+      this.finished = null;
       try {
         this.sending = true;
-        this.wholeDisable = true;
-        const response = await this.$store.dispatch('FORGOT_PASSWORD', {
+        this.disableForm = true;
+        const response = await this.$store.dispatch('RESEND_ACTIVATION', {
           email: this.email,
         });
 
-        this.passwordReset = response.status === 200;
-      } catch (e) {
-        this.$log.error(e);
+        this.finished = response.status === 200;
+      } catch (error) {
+        this.$log.error(error);
+        this.disableForm = false;
+        this.finished = false;
+
+        if (error.response && error.response.data && error.response.data.errors) {
+          const key = error.response.data.errors[0].messageKey;
+          this.error = this.$t(key);
+        } else {
+          this.error = this.$t('generic.internal-error');
+        }
+      } finally {
         this.sending = false;
-        this.wholeDisable = false;
-        this.passwordReset = false;
       }
     },
   },

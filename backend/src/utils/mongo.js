@@ -128,6 +128,10 @@ function findUser(dbClient, params, projection) {
     query['auth.reset.token'] = params.resetPasswordToken;
   }
 
+  if (Object.keys(query).length === 0) {
+    throw new Error('Empty query');
+  }
+
   return dbClient.db()
     .collection('users')
     .findOne(query, projection)
@@ -212,6 +216,12 @@ function getNeighbourhItem(dbClient, type, published, older) {
     .sort(sortExpression)
     .limit(1);
 }
+
+/*
+  function parseMongoError(error) {
+    // TODO createUser.js, separate keys
+  }
+*/
 
 async function logAdminActions(dbClient, userId, action, itemId, extraData = {}) {
   await dbClient.db().collection('audit_log').insertOne({

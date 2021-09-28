@@ -63,6 +63,13 @@ export default new Router({
       props: true,
     },
     {
+      path: '/p/dokonceni-aktivace',
+      name: 'resend-activation',
+      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ResendActivation'),
+      beforeEnter: requireUnauth,
+      props: true,
+    },
+    {
       path: '/p/nastaveni-hesla/:resetPasswordToken',
       name: 'reset',
       component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ResetPassword.vue'),

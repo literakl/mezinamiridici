@@ -12,11 +12,11 @@
               <TextInput
                 v-model="email"
                 rules="required|email"
-                class="w-100"
-                :label="$t('profile.email')"
-                :placeholder="$t('sign-in.email-placeholder')"
                 name="email"
                 type="email"
+                class="w-100"
+                :label="$t('profile.email')"
+                :placeholder="$t('generic.email-placeholder')"
               />
             </div>
             <div class="field-area">
@@ -32,9 +32,17 @@
             </div>
 
             <div class="w-100 d-flex flex-row-reverse mb-3 forgot-link">
-              <router-link :to="{ name: 'forgotten' }">
-                {{ $t('sign-in.forgot-password-link') }}
-              </router-link>
+              <span>
+                <router-link :to="{ name: 'resend-activation' }">
+                  {{ $t('sign-up.resend-link') }}
+                </router-link>
+              </span>
+              <span class="mr-1">
+                <!--<router-link :to="{ name: 'forgotten' }">-->
+                <router-link :to="{ name: 'forgotten' }">
+                  {{ $t('sign-in.forgot-password-link') }}
+                </router-link>
+              </span>
             </div>
 
             <div v-if="error" class="text-danger">
@@ -117,9 +125,9 @@ export default {
     redirectUrl: String,
   },
   data: () => ({
-    page: 0,
     email: null,
     password: null,
+    emailNotVerified: null,
     signingIn: false,
     error: null,
   }),
@@ -151,9 +159,10 @@ export default {
         });
         await this.$router.push(this.redirectUrl || '/');
       } catch (error) {
-        this.$log.error(error);
+        this.$log.debug(error);
         if (error.response && error.response.data && error.response.data.errors) {
-          this.error = this.$t(error.response.data.errors[0].messageKey);
+          const key = error.response.data.errors[0].messageKey;
+          this.error = this.$t(key);
         } else {
           this.error = this.$t('sign-in.auth-error');
         }

@@ -79,7 +79,7 @@ module.exports = (app) => {
         logger.debug('Email sent');
       }
     } catch (err) {
-      console.error('Sending email failed', err);
+      logger.error('Sending email failed', err);
       return api.sendInternalError(res, api.createError('Failed to send email', 'sign-up.something-went-wrong'));
     }
 
@@ -172,6 +172,8 @@ const sendVerificationEmail = async (email, token) => {
     verificationLink: `${WEB_URL}/p/overeni/${token}`,
   };
   return mailService.sendEmail('confirm_email.json', options, context);
+  // todo handle selected errors like
+  // - all recipients were rejected: 450 4.1.2 <nobody@email.bud>: Recipient address rejected: Domain not found
 };
 
 const validateParameters = (socialId, email, password, nickname, termsAndConditions, dataProcessing) => {
@@ -198,3 +200,5 @@ const validateParameters = (socialId, email, password, nickname, termsAndConditi
   }
   return result;
 };
+
+module.exports.sendVerificationEmail = sendVerificationEmail;

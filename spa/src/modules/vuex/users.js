@@ -66,6 +66,12 @@ export default {
       return post('API', '/resetPassword', body);
     },
     GET_EMAIL_FROM_RESET_TOKEN: (context, payload) => get('API', `/resetPassword/token/${payload.resetPasswordToken}`),
+    RESEND_ACTIVATION: (context, payload) => {
+      const body = {
+        email: payload.email,
+      };
+      return post('API', '/verify/resend', body);
+    },
     ACTIVATE_USER_PROFILE: async (context, payload) => {
       const body = {
         email: payload.email,

@@ -5,11 +5,15 @@ const { logger } = require('../utils/logging');
 
 const authAPILimits = rateLimit({
   windowMs: 5 * 60 * 1000,
-  max: process.env.API_LIMIT_AUTH || 2,
+  max: process.env.API_LIMIT_AUTH || 5,
+});
+const resendAPILimits = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: process.env.API_LIMIT_RESEND || 2,
 });
 const diskAPILimits = rateLimit({
   windowMs: 5 * 60 * 1000,
-  max: process.env.API_LIMIT_DISK || 2,
+  max: process.env.API_LIMIT_DISK || 10,
 });
 
 function sendResponse(res, body, cacheControl = 'private') {
@@ -278,4 +282,5 @@ module.exports.parseDate = parseDate;
 module.exports.sanitizeConfigure = sanitizeConfigure;
 module.exports.authAPILimits = authAPILimits;
 module.exports.diskAPILimits = diskAPILimits;
+module.exports.resendAPILimits = resendAPILimits;
 module.exports.getSlug = getSlug;
