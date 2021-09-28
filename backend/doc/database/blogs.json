@@ -9,6 +9,7 @@
     "caption": "First blog",
     "slug": "first-blog",
     "published": true,
+    "hidden": false,
     "date": "2021-08-14T16:41:48.834Z",
     "picture": "picture.png",
     "tags" : [ "motorky" ]
