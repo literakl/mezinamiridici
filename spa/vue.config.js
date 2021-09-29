@@ -9,6 +9,11 @@ module.exports = {
     optimization: {
       splitChunks: false,
     },
+    devServer: {
+      watchOptions: {
+        ignored: [/node_modules/, /public/],
+      },
+    },
     // mode: 'production',
     plugins: [
       // new BundleAnalyzerPlugin(),

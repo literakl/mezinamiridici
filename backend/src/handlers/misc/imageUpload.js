@@ -10,7 +10,7 @@ const auth = require('../../utils/authenticate');
 const api = require('../../utils/api.js');
 require('../../utils/path_env');
 
-const { UPLOAD_PICTURES_DIR, UPLOADED_PICTURES_PATH } = process.env;
+const { UPLOAD_PICTURES_DIR, UPLOADED_PICTURES_PATH, UPLOAD_DELAY_MS } = process.env;
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -34,6 +34,7 @@ module.exports = (app) => {
 
   app.options('/v1/images', auth.cors);
 
+  // there is a problem with local vue-cli, because it detects changes in its folder and automatically redeploys the app
   app.post('/v1/images', api.diskAPILimits, auth.required, auth.cors, uploader.single('image'), async (req, res) => {
     logger.debug('image upload handler starts');
 
@@ -63,7 +64,7 @@ module.exports = (app) => {
         url: destination,
       };
 
-      return api.sendCreated(res, api.createResponse(body));
+      setTimeout(() => api.sendCreated(res, api.createResponse(body)), UPLOAD_DELAY_MS);
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to upload image', 'sign-in.something-went-wrong'));

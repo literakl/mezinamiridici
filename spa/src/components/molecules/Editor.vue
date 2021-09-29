@@ -280,8 +280,12 @@ export default {
   mounted() {
     const _this = this;
     const progress = (progressEvent) => {
-      const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-
+      let totalLength;
+      if (progressEvent.lengthComputable) {
+        totalLength = progressEvent.total;
+      } else {
+        totalLength = progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+      }
       if (totalLength !== null) {
         _this.progressValue = Math.round((progressEvent.loaded * 100) / totalLength);
       }
