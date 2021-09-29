@@ -26,11 +26,13 @@ module.exports = (app) => {
     try {
       const dbClient = await mongo.connectToDatabase();
       let blog = await mongo.getBlog(dbClient, undefined, blogId);
-      if (blog && blog.info.author.id !== req.identity.userId) {
-        return api.sendErrorForbidden(
-          res,
-          api.createError('You are not authorized to perform this action'),
-        );
+      if (!blog) {
+        return api.sendNotFound(res, api.createError('Blog not found'));
+      }
+
+      const authorized = await isAuthorized(req, blog);
+      if (!authorized) {
+        return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
       const query = prepareUpdateQuery(source, title, picture, tags);
@@ -122,4 +124,22 @@ function prepareUpdateQuery(source, title, picture, tags) {
   query.$set = setters;
 
   return query;
+}
+
+async function isAuthorized(dbClient, req, blog) {
+  if (blog.info.author.id === req.identity.userId) {
+    return true;
+  }
+
+  if (!blog.info.editorial && auth.checkRole(req, auth.ROLE_BLOG_ADMIN)) {
+    await mongo.logAdminActions(dbClient, req.identity.userId, 'edit blog', blog._id);
+    return true;
+  }
+
+  if (blog.info.editorial && auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF)) {
+    await mongo.logAdminActions(dbClient, req.identity.userId, 'edit blog', blog._id);
+    return true;
+  }
+
+  return false;
 }

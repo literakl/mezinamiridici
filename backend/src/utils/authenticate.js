@@ -90,19 +90,23 @@ const ROLE_STAFFER = 'user:staffer';
 
 module.exports.optional = authenticate(false);
 module.exports.required = authenticate(true);
-/** manage polls */
 module.exports.poll_admin = withRole(ROLE_POLL_ADMIN);
-module.exports.ROLE_POLL_ADMIN = ROLE_POLL_ADMIN;
-/** manage site pages like Help */
 module.exports.cms_admin = withRole(ROLE_CMS_ADMIN);
-module.exports.ROLE_CMS_ADMIN = ROLE_CMS_ADMIN;
-/** manage user provided content */
 module.exports.blog_admin = withRole(ROLE_BLOG_ADMIN);
-/** manages articles */
 module.exports.editor_in_chief = withRole(ROLE_EDITOR_IN_CHIEF);
-/** writes articles */
 module.exports.staffer = withRole(ROLE_STAFFER);
+
+/** manage polls */
+module.exports.ROLE_POLL_ADMIN = ROLE_POLL_ADMIN;
+/** manage user provided content */
 module.exports.ROLE_BLOG_ADMIN = ROLE_BLOG_ADMIN;
+/** manages articles */
+module.exports.ROLE_EDITOR_IN_CHIEF = ROLE_EDITOR_IN_CHIEF;
+/** manage site pages like Help */
+module.exports.ROLE_CMS_ADMIN = ROLE_CMS_ADMIN;
+/** writes articles */
+module.exports.ROLE_STAFFER = ROLE_STAFFER;
+
 module.exports.cors = corsPerRoute;
 module.exports.createToken = createToken;
 module.exports.createTokenFromUser = createTokenFromUser;
