@@ -10,9 +10,18 @@
     "slug": "first-blog",
     "published": true,
     "hidden": false,
+    "editorial": false;
     "date": "2021-08-14T16:41:48.834Z",
     "picture": "picture.png",
-    "tags" : [ "motorky" ]
+    "tags" : [ "motorky" ],
+    "payments": [
+      {
+        "purpose": "author",
+        "recipient": "Vitezslav",
+        "fee": 400,
+        "date": "2021-08-14T16:41:48.834Z"
+      }
+    ]
   },
   "data" : {
     "content" : "<h1>Title</h1><p>Very smart topic</p>"

@@ -70,9 +70,12 @@ function getIdentity(identity) {
   return { userId: identity.userId, nickname: identity.nickname };
 }
 
-function checkRole(req, role) {
+function checkRole(req, ...roles) {
   const user = req.identity;
-  return user && user.roles && user.roles.includes(role);
+  if (!user || !user.roles) {
+    return false;
+  }
+  return roles.some(role => user.roles.includes(role));
 }
 
 const corsPerRoute = corsMiddleware({

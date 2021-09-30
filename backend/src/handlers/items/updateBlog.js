@@ -30,7 +30,7 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Blog not found'));
       }
 
-      const authorized = await isAuthorized(req, blog);
+      const authorized = await isAuthorized(dbClient, req, blog);
       if (!authorized) {
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }

@@ -16,30 +16,39 @@ module.exports = (app) => {
   app.post('/v1/posts', auth.required, auth.cors, async (req, res) => {
     logger.debug('create blog handler starts');
 
-    const {
-      title, source, date, picture, tags, contentPictures,
-    } = req.body;
-
-    if (!title) {
-      return api.sendMissingParam(res, 'title');
-    }
-    if (!source) {
-      return api.sendMissingParam(res, 'source');
-    }
-    const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
-    if (!publishDate) {
-      return api.sendInvalidParam(res, 'date', date);
-    }
-    if (!picture) {
-      return api.sendMissingParam(res, 'picture');
-    }
-
     try {
-      const dbClient = await mongo.connectToDatabase();
+      const {
+        title, source, date, picture, tags, contentPictures,
+      } = req.body;
+      let { editorial } = req.body;
       const user = auth.getIdentity(req.identity);
+
+      if (!title) {
+        return api.sendMissingParam(res, 'title');
+      }
+      if (!source) {
+        return api.sendMissingParam(res, 'source');
+      }
+      const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
+      if (!publishDate) {
+        return api.sendInvalidParam(res, 'date', date);
+      }
+      if (!picture) {
+        return api.sendMissingParam(res, 'picture');
+      }
+      if (typeof editorial === 'boolean' && editorial) {
+        if (!auth.checkRole(req, auth.ROLE_STAFFER, auth.ROLE_EDITOR_IN_CHIEF)) {
+          return api.sendInvalidParam(res, 'editorial');
+        }
+        editorial = true;
+      } else {
+        editorial = false;
+      }
+
+      const dbClient = await mongo.connectToDatabase();
       const blogId = mongo.generateTimeId();
 
-      await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
+      await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags, editorial);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
       logger.debug('Blog inserted');
 
@@ -56,7 +65,7 @@ module.exports = (app) => {
   });
 };
 
-async function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
+async function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags, editorial) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
   const adjustedSlug = await api.getSlug(slug, dbClient);
@@ -65,17 +74,18 @@ async function insertItem(dbClient, blogId, title, source, author, publishDate, 
     _id: blogId,
     type: 'blog',
     info: {
+      published: editorial,
+      hidden: false,
+      editorial,
+      date: publishDate,
       author: {
         nickname: author.nickname,
         id: author.userId,
       },
       caption: title,
       slug: adjustedSlug,
-      published: true,
-      date: publishDate,
       picture,
       tags,
-      hidden: false,
     },
     data: {
       content,

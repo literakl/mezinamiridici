@@ -278,13 +278,14 @@
       "content-error": "Příspěvek je prázdný"
     },
     "editorial": {
-      "mark": "Nastav Redakci",
-      "unmark": "Zruš Redakci"
+      "mark": "Nastav redakci",
+      "unmark": "Zruš redakci"
     },
     "hidden": {
       "mark": "Skryj",
       "unmark": "Odkryj"
     },
+    "concept": "Koncept",
     "confirm-delete": "Opravdu chcete smazat tento blog?"
   },
   "cms": {

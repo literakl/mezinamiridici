@@ -284,6 +284,7 @@
       "mark": "Hide",
       "unmark": "Unhide"
     },
+    "concept": "concept",
     "confirm-delete": "Do you really want to delete this blog?"
   },
   "cms": {

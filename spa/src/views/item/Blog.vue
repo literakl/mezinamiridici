@@ -12,6 +12,7 @@
           </div>
           <div class="post-time">
             <BIconCalendarRange scale="1"></BIconCalendarRange>
+            <span v-if="!blog.info.published">{{ $t('blog.concept') }}</span>
             <Date :date="blog.info.date" format="dynamicDate"/>
           </div>
           <div class="post-comments">
@@ -20,7 +21,7 @@
               {{ blog.comments.count }}
             </b-link>
           </div>
-          <div v-if="isAuthor" class="post-edit">
+          <div  v-if="isAuthor || isEditor" class="post-edit">
             <BIconPencilSquare scale="1"></BIconPencilSquare>
             <router-link :to="{name: 'update-blog', params: { id: blog._id } }">
               {{ $t('generic.edit-button') }}
@@ -137,6 +138,9 @@ export default {
     },
     isAdmin() {
       return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:blog');
+    },
+    isEditor() {
+      return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:editor');
     },
   },
   created() {
