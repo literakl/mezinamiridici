@@ -127,15 +127,18 @@ function prepareUpdateQuery(source, title, picture, tags) {
 }
 
 async function isAuthorized(dbClient, req, blog) {
-  if (blog.info.author.id === req.identity.userId) {
+  // user can always edit its blog posts, except it is an editorial articles
+  if (blog.info.author.id === req.identity.userId && !blog.info.published) {
     return true;
   }
 
+  // blog admin can edit any blog posts, except editorial articles
   if (!blog.info.editorial && auth.checkRole(req, auth.ROLE_BLOG_ADMIN)) {
     await mongo.logAdminActions(dbClient, req.identity.userId, 'edit blog', blog._id);
     return true;
   }
 
+  // editor in chied can edit any editorial articles
   if (blog.info.editorial && auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF)) {
     await mongo.logAdminActions(dbClient, req.identity.userId, 'edit blog', blog._id);
     return true;

@@ -21,7 +21,7 @@
               {{ blog.comments.count }}
             </b-link>
           </div>
-          <div v-if="isAuthor || isEditor" class="post-edit">
+          <div v-if="canEdit" class="post-edit">
             <BIconPencilSquare scale="1"></BIconPencilSquare>
             <router-link :to="{name: 'update-blog', params: { id: blog._id } }">
               {{ $t('generic.edit-button') }}
@@ -141,6 +141,18 @@ export default {
     },
     isEditor() {
       return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:editor');
+    },
+    canEdit() {
+      if (this.isEditor()) {
+        return true;
+      }
+      if (this.isAuthor()) {
+        if (this.blog.info.editorial) {
+          return this.blog.info.published;
+        }
+        return true;
+      }
+      return false;
     },
   },
   created() {
