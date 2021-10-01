@@ -23,7 +23,7 @@
     "yesterday": "včera",
     "not-published": "nezveřejněno",
     "share-link": "Sdílejte",
-    "select-picture-label": "Obrázek",
+    "select-picture-label": "Ilustrační obrázek",
     "select-picture-title": "Zvolte obrázek",
     "tag-select-label": "Štítky",
     "tag-select-placeholder": "Zvolte štítek",
@@ -275,7 +275,10 @@
   "blog": {
     "form": {
       "title-placeholder": "Název příspěvku",
-      "content-error": "Příspěvek je prázdný"
+      "content-error": "Příspěvek je prázdný",
+      "type": "Typ",
+      "article": "článek redakce",
+      "blog": "příspěvek blogu"
     },
     "editorial": {
       "mark": "Nastav redakci",

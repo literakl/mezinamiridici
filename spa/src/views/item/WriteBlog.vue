@@ -1,60 +1,82 @@
 <template>
   <div class="mt-4 centerbox">
-    <div class="write-post-wrap">
-      <ValidationObserver ref="observer" v-slot="{ invalid }">
-        <div class="text-area">
-          <TextInput
-            v-model="title"
-            name="title"
-            :placeholder="$t('blog.form.title-placeholder')"
-            class="write-blog"
-            aria-describedby="title-errors"
-            :rules="{ required: true }"
-          />
+    <ValidationObserver ref="observer" v-slot="{ invalid }">
+      <div class="container">
+        <div class="row">
+          <div class="col text-area">
+            <TextInput
+              v-model="title"
+              name="title"
+              :placeholder="$t('blog.form.title-placeholder')"
+              class="write-blog"
+              aria-describedby="title-errors"
+              :rules="{ required: true }"
+            />
 
-          <Editor
-            :blog="blog"
-            v-model="html"
-            aria-describedby="content-errors"
-            @outOfFocus="handleOutOfFocus"
-            :class="{ invalid: !hideContentError }"
-          />
-          <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.content-error') }}</b-form-invalid-feedback>
-        </div>
-
-        <div class="bottom-wrap">
-          <div class="tags-area">
-            <TagSelector @changeTags="tagSelect" :formTags="tags" />
+            <Editor
+              :blog="blog"
+              v-model="html"
+              aria-describedby="content-errors"
+              @outOfFocus="handleOutOfFocus"
+              :class="{ invalid: !hideContentError }"
+            />
+            <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.content-error') }}</b-form-invalid-feedback>
           </div>
-
-          <div class="image-area">
-            <SelectPicture :currentPath="picture" @changePath="changePath" />
-
-            <div class="errors">
-              <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
-                <ul>
-                  <li v-for="error in errors" :key="error.message">{{ error }}</li>
-                </ul>
-              </b-alert>
+          <div class="col col-lg-2 sidebar">
+            <div v-if="isStaffer" class="field-area mb-3">
+              <div>
+                <label class="d-label" for="type">{{ $t('blog.form.type') }}</label>
+              </div>
+              <div class="row">
+                <Radio
+                  class="pl-3"
+                  v-model="type"
+                  :label="$t('blog.form.article')"
+                  name="type"
+                  identifier="article"/>
+                <Radio
+                  class="pl-3"
+                  v-model="type"
+                  :label="$t('blog.form.blog')"
+                  name="type"
+                  identifier="blog"/>
+              </div>
             </div>
 
-            <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">
-              {{ $t("generic.save-button") }}
-            </b-button>
+            <div class="tags-area">
+              <TagSelector @changeTags="tagSelect" :formTags="tags" />
+            </div>
+
+            <div class="image-area">
+              <SelectPicture :currentPath="picture" @changePath="changePath" />
+
+              <div class="errors">
+                <b-alert variant="danger" dismissible :show="errors.length > 0" class="p-0">
+                  <ul>
+                    <li v-for="error in errors" :key="error.message">{{ error }}</li>
+                  </ul>
+                </b-alert>
+              </div>
+
+              <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">
+                {{ $t("generic.save-button") }}
+              </b-button>
+            </div>
           </div>
         </div>
-      </ValidationObserver>
-    </div>
+      </div>
+    </ValidationObserver>
   </div>
 </template>
 
 <script>
 import { configure } from 'vee-validate';
 import { BButton, BFormInvalidFeedback, BAlert } from 'bootstrap-vue';
-import TextInput from '@/components/atoms/TextInput.vue';
+import Editor from '@/components/molecules/Editor.vue';
+import Radio from '@/components/atoms/Radio.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
 import TagSelector from '@/components/atoms/TagSelector.vue';
-import Editor from '@/components/molecules/Editor.vue';
+import TextInput from '@/components/atoms/TextInput.vue';
 import i18n from '@/i18n';
 
 configure({
@@ -68,6 +90,7 @@ export default {
   components: {
     SelectPicture,
     TextInput,
+    Radio,
     TagSelector,
     BButton,
     Editor,
@@ -82,6 +105,7 @@ export default {
       isCreate: true,
       title: '',
       picture: '',
+      type: '',
       tags: [],
       html: '',
       hideContentError: true,
@@ -95,6 +119,9 @@ export default {
     },
     isEmpty() {
       return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
+    },
+    isStaffer() {
+      return true;// todo roles
     },
   },
   watch: {
@@ -185,12 +212,12 @@ export default {
   margin: 0 auto 20px;
   padding:0px;
 }
-.btn-post-btn{
+.btn-post-btn {
   background: var(--traval-trouble-status);
   border: 0;
   color: var(--color-white);
 }
-.btn-post-btn:hover{
+.btn-post-btn:hover {
   background: var(--traval-trouble-status-hover);
   color: var(--color-white);
 }
@@ -200,7 +227,7 @@ export default {
 .errors {
   margin-top: 1rem;
 }
-.errors .alert li{
+.errors .alert li {
   margin-top: 1rem;
 }
 </style>
@@ -224,13 +251,13 @@ $color-grey: #dddddd;
 }
 
 @media (max-width: 992px) {
-  .bottom-wrap {
+  .sidebar {
     flex-wrap: wrap;
   }
 }
 
 @media (max-width: 600px) {
-  .bottom-wrap {
+  .sidebar {
     flex-direction: column;
   }
   .tags-area {

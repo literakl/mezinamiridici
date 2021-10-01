@@ -23,7 +23,7 @@
     "yesterday": "yesterday",
     "not-published": "not published",
     "share-link": "Share",
-    "select-picture-label": "Stream picture",
+    "select-picture-label": "Illustration picture",
     "select-picture-title": "Select picture",
     "tag-select-label":"Hash tags",
     "tag-select-placeholder": "Chooose the tag",
@@ -274,7 +274,10 @@
   "blog": {
     "form": {
       "title-placeholder": "Blog post title",
-      "content-error": "There is no content"
+      "content-error": "There is no content",
+      "type": "Type",
+      "article": "staffer article",
+      "blog": "blog post"
     },
     "editorial": {
       "mark": "Set editorial",
