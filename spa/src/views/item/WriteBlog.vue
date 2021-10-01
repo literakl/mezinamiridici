@@ -23,23 +23,23 @@
             <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.content-error') }}</b-form-invalid-feedback>
           </div>
           <div class="col col-lg-2 sidebar">
-            <div v-if="isStaffer" class="field-area mb-3">
+            <div v-if="canWriteArticles" class="field-area mb-3">
               <div>
                 <label class="d-label" for="type">{{ $t('blog.form.type') }}</label>
               </div>
               <div class="row">
                 <Radio
                   class="pl-3"
-                  v-model="type"
                   :label="$t('blog.form.article')"
-                  name="type"
-                  identifier="article"/>
+                  v-model="type"
+                  identifier="article"
+                  name="type"/>
                 <Radio
                   class="pl-3"
-                  v-model="type"
                   :label="$t('blog.form.blog')"
-                  name="type"
-                  identifier="blog"/>
+                  v-model="type"
+                  identifier="blog"
+                  name="type"/>
               </div>
             </div>
 
@@ -105,7 +105,7 @@ export default {
       isCreate: true,
       title: '',
       picture: '',
-      type: '',
+      type: 'blog',
       tags: [],
       html: '',
       hideContentError: true,
@@ -120,19 +120,21 @@ export default {
     isEmpty() {
       return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
-    isStaffer() {
-      return true;// todo roles
+    canWriteArticles() {
+      return this.$store.getters.USER_ROLE.includes('user:staffer')
+      || this.$store.getters.USER_ROLE.includes('admin:editor');
     },
   },
   watch: {
     blog() {
       this.title = this.blog.info.caption;
+      this.type = (this.blog.info.editorial) ? 'article' : 'blog';
       this.picture = this.blog.info.picture;
       this.tags = this.blog.info.tags;
     },
     html() {
       if (!this.isEmpty) {
-        this.getPictureIdList(this.html);
+        this.setPictureIdList(this.html);
         this.hideContentError = true;
       }
     },
@@ -143,6 +145,7 @@ export default {
       const body = {
         title: this.title,
         source: this.html,
+        editorial: this.type === 'article',
         picture: this.picture,
         tags: this.tags,
         contentPictures: this.contentPictures,
@@ -181,7 +184,7 @@ export default {
         this.hideContentError = false;
       }
     },
-    getPictureIdList(html) {
+    setPictureIdList(html) {
       this.contentPictures = [];
       const tag = document.createElement('div');
       tag.innerHTML = html;

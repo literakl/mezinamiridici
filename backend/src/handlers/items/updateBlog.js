@@ -10,20 +10,28 @@ module.exports = (app) => {
   app.patch('/v1/posts/:blogId', auth.required, auth.cors, async (req, res) => {
     logger.debug('update blog handler starts');
 
-    const { blogId } = req.params;
-    if (!blogId) {
-      return api.sendMissingParam(res, 'blogId');
-    }
-    const { source, title, picture, tags, contentPictures } = req.body;
-
-    if (!source) {
-      return api.sendMissingParam(res, 'source');
-    }
-    if (!picture) {
-      return api.sendMissingParam(res, 'picture');
-    }
-
     try {
+      const { blogId } = req.params;
+      if (!blogId) {
+        return api.sendMissingParam(res, 'blogId');
+      }
+      const { source, title, picture, tags, contentPictures } = req.body;
+      let { editorial = false } = req.body;
+
+      if (!source) {
+        return api.sendMissingParam(res, 'source');
+      }
+      if (!picture) {
+        return api.sendMissingParam(res, 'picture');
+      }
+      if (typeof editorial === 'boolean' && editorial) {
+        if (!auth.checkRole(req, auth.ROLE_STAFFER, auth.ROLE_EDITOR_IN_CHIEF)) {
+          return api.sendInvalidParam(res, 'editorial');
+        }
+      } else {
+        editorial = false;
+      }
+
       const dbClient = await mongo.connectToDatabase();
       let blog = await mongo.getBlog(dbClient, undefined, blogId);
       if (!blog) {
@@ -35,7 +43,7 @@ module.exports = (app) => {
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
-      const query = prepareUpdateQuery(source, title, picture, tags);
+      const query = prepareUpdateQuery(source, title, picture, tags, editorial);
       await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
       logger.debug('Blog updated');
 
@@ -112,11 +120,12 @@ module.exports = (app) => {
 };
 
 
-function prepareUpdateQuery(source, title, picture, tags) {
+function prepareUpdateQuery(source, title, picture, tags, editorial) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const setters = {};
   setters['data.content'] = content;
   setters['info.caption'] = title;
+  setters['info.editorial'] = editorial;
   setters['info.picture'] = picture;
   setters['info.tags'] = tags;
 

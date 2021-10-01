@@ -12,8 +12,13 @@
           </div>
           <div class="post-time">
             <BIconCalendarRange scale="1"></BIconCalendarRange>
-            <span v-if="!blog.info.published">{{ $t('blog.concept') }}</span>
-            <Date :date="blog.info.date" format="dynamicDate"/>
+            <template v-if="!blog.info.published">
+              {{ $t('blog.concept') }}
+              (<Date :date="blog.info.date" format="dynamicDate"/>)
+            </template>
+            <template v-else>
+              <Date :date="blog.info.date" format="dynamicDate"/>
+            </template>
           </div>
           <div class="post-comments">
             <BIconChatTextFill scale="1"></BIconChatTextFill>
@@ -27,7 +32,7 @@
               {{ $t('generic.edit-button') }}
             </router-link>
           </div>
-          <div class="post-editorial" v-if="isAdmin">
+          <div class="post-editorial" v-if="isEditor">
             <b-link v-if="!editorial" v-on:click="toggleEditorial">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.editorial.mark') }}
@@ -37,7 +42,7 @@
               {{ $t('blog.editorial.unmark') }}
             </b-link>
           </div>
-          <div class="post-editorial" v-if="isAdmin">
+          <div class="post-editorial" v-if="isEditor">
             <b-link v-if="!hidden" v-on:click="toggleHidden">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.hidden.mark') }}
@@ -127,14 +132,14 @@ export default {
       }
       return txt;
     },
+    isAuthor() {
+      return this.blog.info.author.id === this.$store.getters.USER_ID;
+    },
     editorial() {
       return this.blog.info.editorial;
     },
     hidden() {
       return this.blog.info.hidden;
-    },
-    isAuthor() {
-      return this.blog.info.author.id === this.$store.getters.USER_ID;
     },
     isAdmin() {
       return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:blog');
@@ -143,10 +148,18 @@ export default {
       return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:editor');
     },
     canEdit() {
-      if (this.isEditor()) {
-        return true;
+      if (!this.$store.getters.IS_AUTHORIZED) {
+        return false;
       }
-      if (this.isAuthor()) {
+      if (this.$store.getters.USER_ROLE) {
+        if (this.$store.getters.USER_ROLE.includes('admin:blog')) {
+          return true;
+        }
+        if (this.$store.getters.USER_ROLE.includes('admin:editor')) {
+          return true;
+        }
+      }
+      if (this.blog.info.author.id === this.$store.getters.USER_ID) {
         if (this.blog.info.editorial) {
           return this.blog.info.published;
         }
@@ -166,6 +179,7 @@ export default {
       window.innerDocClick = false;
     };
 
+    // TODO what is the purpose? Clear blog causes error with URL to profile in chrome console
     window.onpopstate = () => {
       if (!window.innerDocClick) {
         this.$store.commit('CLEAR_BLOG');

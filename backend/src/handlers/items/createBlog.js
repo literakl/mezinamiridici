@@ -20,7 +20,7 @@ module.exports = (app) => {
       const {
         title, source, date, picture, tags, contentPictures,
       } = req.body;
-      let { editorial } = req.body;
+      let { editorial = false } = req.body;
       const user = auth.getIdentity(req.identity);
 
       if (!title) {
@@ -40,7 +40,6 @@ module.exports = (app) => {
         if (!auth.checkRole(req, auth.ROLE_STAFFER, auth.ROLE_EDITOR_IN_CHIEF)) {
           return api.sendInvalidParam(res, 'editorial');
         }
-        editorial = true;
       } else {
         editorial = false;
       }
@@ -74,7 +73,7 @@ async function insertItem(dbClient, blogId, title, source, author, publishDate, 
     _id: blogId,
     type: 'blog',
     info: {
-      published: editorial,
+      published: !editorial,
       hidden: false,
       editorial,
       date: publishDate,
