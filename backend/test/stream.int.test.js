@@ -19,8 +19,6 @@ let server;
 let dbClient;
 
 test('Stream API', async (done) => {
-  jest.setTimeout(180000);
-
   const futurePoll = {
     text: 'Third question',
     picture: 'images/stream/image.jpg',

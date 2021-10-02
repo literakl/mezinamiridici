@@ -20,7 +20,6 @@ let dbClient, server;
 
 test('Item snippets', async (done) => {
   await setup(dbClient, api);
-  jest.setTimeout(180 * 60000);
 
   /*
   1. create blog as Vita

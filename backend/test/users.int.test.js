@@ -38,8 +38,6 @@ class ResponseMock {
 }
 
 test('User API', async (done) => {
-  jest.setTimeout(120000);
-
   // create user
   let body = {
     email: 'leos@email.bud',

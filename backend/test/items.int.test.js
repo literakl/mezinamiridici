@@ -1,3 +1,4 @@
+
 const dotenv = require('dotenv');
 const dayjs = require('dayjs');
 const path = require('path');
@@ -20,7 +21,6 @@ let dbClient, server;
 
 test('Blog', async (done) => {
   await setup(dbClient, api);
-  jest.setTimeout(180 * 60000);
 
   const blogBody = {
     title: 'First blog',
@@ -89,7 +89,6 @@ test('Blog', async (done) => {
 
 test('Tag API', async (done) => {
   await setup(dbClient, api);
-  jest.setTimeout(180 * 60000);
 
   const blogBody = {
     title: 'First blog',
@@ -122,7 +121,6 @@ test('Tag API', async (done) => {
 
 test('Hide Posts', async (done) => {
   await setup(dbClient, api);
-  jest.setTimeout(180000);
 
   const blogBody = {
     title: 'First blog',

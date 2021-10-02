@@ -21,7 +21,6 @@ const { calculateUserHonors, calculateConsecutiveSharing } = require('../src/job
 let dbClient, server;
 
 test('User Rank', async (done) => {
-  jest.setTimeout(180 * 60000);
   await setup(dbClient, api);
   await resetHonors(dbClient);
 

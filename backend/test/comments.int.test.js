@@ -22,8 +22,6 @@ let server;
 let dbClient;
 
 test('Comments API', async (done) => {
-  jest.setTimeout(180 * 60000);
-
   const pollBody = {
     text: 'First question',
     picture: 'picture.png',

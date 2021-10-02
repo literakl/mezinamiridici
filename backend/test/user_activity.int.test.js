@@ -18,8 +18,6 @@ let server;
 let dbClient;
 
 test('User activity API', async (done) => {
-  jest.setTimeout(180000);
-
   // create first poll
   const poll1 = {
     text: 'First question',
