@@ -14,9 +14,7 @@ const {
   api, bff, getAuthHeader, FULL_DATE_FORMAT,
 } = require('./testUtils');
 const {
-  setup, Leos, Jiri, Vita,
-  Lukas,
-  Bara,
+  setup, Leos, Jiri, Vita, Lukas, Bara, Jana,
 } = require('./prepareUsers');
 
 let dbClient, server;
@@ -37,6 +35,9 @@ test('Blog', async (done) => {
   blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
   expect(blog.success).toBeTruthy();
   expect(blog.data.info.caption).toBe(blogBody.title);
+
+  const blog2 = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(blog2.success).toBeTruthy();
 
   let comments = await bff(`items/${blog.data._id}/comments`).json();
   expect(comments.success).toBeTruthy();
@@ -99,13 +100,36 @@ test('Blog', async (done) => {
   expect(blog.success).toBeTruthy();
 
   // editor in chief
+  blogBody.title = 'First article';
   blog.source = '<h1>Title</h1><p>Very smart approved article</p>';
   blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
   expect(blog.success).toBeTruthy();
 
+  blogBody.title = 'Second article';
+  const secondArticle = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(secondArticle.success).toBeTruthy();
+
   // todo publish as editor
   // todo author cannot edit
   // todo author cannot delete
+
+  // anonymous user does not see a list of articles
+  let articles = await bff('articles');
+  expect(articles.success).toBeFalsy();
+  // only editor and staff can see the list of articles
+  articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Jana.jwt) }).json();
+  expect(articles.success).toBeFalsy();
+  // authors can see the list of their articles
+  articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
+  expect(articles.success).toBeTruthy();
+  expect(articles.data.length).toBe(1);
+  expect(articles.data[0]._id).toBe(blog.data._id);
+  // editor can see the list of all articles
+  articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(articles.success).toBeTruthy();
+  expect(articles.data.length).toBe(2);
+  expect(articles.data[0]._id).toBe(secondArticle.data._id);
+  expect(articles.data[1]._id).toBe(blog.data._id);
 
   // delete as admin
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
