@@ -10,10 +10,10 @@ const { logger } = require('../src/utils/logging');
 const app = require('../src/server.js');
 
 const {
-  api,
+  api, getAuthHeader,
 } = require('./testUtils');
 const {
-  setup,
+  setup, Leos, Jiri, Vita, Lukas
 } = require('./prepareUsers');
 
 let dbClient, server;
@@ -21,6 +21,44 @@ let dbClient, server;
 test('Item snippets', async (done) => {
   await setup(dbClient, api);
   jest.setTimeout(180 * 60000);
+
+  const blogBody = {
+    title: 'First blog',
+    source: '<h1>Title</h1><p>Very smart topic</p>',
+    picture: 'picture.png',
+  };
+  const snippetBody = {
+    code: 'set_x',
+    type: 'html',
+    content: '<javascript>x=1</javascript>',
+    date: '2021-08-16T05:22:33.121Z',
+  };
+  const snippetBody1 = {
+    code: 'set_x',
+    type: 'html',
+    content: '<javascript>x=1</javascript>',
+    date: '2021-08-16T05:22:33.121Z',
+  };
+
+  let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+
+  let snippet = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetBody, headers: getAuthHeader(Leos.jwt)}).json();
+  expect(snippet.success).toBeTruthy();
+
+  // let snippet1 = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetBody1, headers: getAuthHeader(Leos.jwt)}).json();
+  // expect(snippet1.success).toBeTruthy();
+  
+  // let snippets=await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt)}).json();
+  // console.log("snippets array ",snippets);
+   
+  let updatedsnippet = await api(`posts/${blog.data._id}/snippets/set_Y`, { method: 'PATCH', headers: getAuthHeader(Leos.jwt)}).json();
+  console.log("updatedsnippet",updatedsnippet);
+
+  let deletedsnippet = await api(`posts/${blog.data._id}/snippets/set_Y`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt)}).json();
+  console.log("updatedsnippet",deletedsnippet);
+
+
 
   /*
   1. create blog as Vita
@@ -45,6 +83,7 @@ beforeEach(async () => {
   const db = dbClient.db();
   await db.collection('users').deleteMany({});
   await db.collection('items').deleteMany({});
+  await db.collection('snippets').deleteMany({});
 });
 
 beforeAll(async () => {

@@ -175,6 +175,34 @@ async function getBlog(dbClient, slug, blogId) {
   throw new Error('Both slug and id are empty');
 }
 
+async function getSnippet(dbClient, snippetId){
+  if (snippetId) {
+    return dbClient.db().collection('snippets').findOne({ _id: snippetId });
+  }
+  throw new Error('Snippet id is empty');
+}
+
+async function getAllSnippets(dbClient, blogId){
+  if (blogId) {
+    return dbClient.db().collection('snippets').find({ itemId: blogId }).toArray();
+  }
+  throw new Error('blog id is empty');
+}
+
+async function updateSnippet(dbClient, blogId, code){
+  if (blogId) {
+    return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId},{$set: { code : code}});
+  }
+  throw new Error('blog id is empty');
+}
+
+async function deleteSnippet(dbClient, blogId, code){
+  if (blogId) {
+    return dbClient.db().collection('snippets').deleteOne({ itemId: blogId, code: code});
+  }
+  throw new Error('blog id is empty');
+}
+
 async function getPoll(dbClient, pipeline) {
   const cursor = dbClient.db().collection('items').aggregate(pipeline);
   const item = await cursor.next();
@@ -361,6 +389,10 @@ exports.updateOne = updateOne;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
 exports.getBlog = getBlog;
+exports.getSnippet = getSnippet;
+exports.getAllSnippets = getAllSnippets;
+exports.updateSnippet = updateSnippet;
+exports.deleteSnippet = deleteSnippet;
 exports.processPoll = processPoll;
 exports.getPage = getPage;
 exports.getNeighbourhItem = getNeighbourhItem;
