@@ -21,10 +21,8 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Blog not found'));
       }
 
-      const isBlogAdmin = req.identity.roles && req.identity.roles.includes(auth.ROLE_BLOG_ADMIN);
-      const isAuthor = blog.info.author.id === req.identity.userId;
-
-      if (!isAuthor && !isBlogAdmin) {
+      const permission = canDelete(req, blog);
+      if (!permission.allowed) {
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
@@ -34,7 +32,7 @@ module.exports = (app) => {
         dbClient.db().collection('comment_votes').deleteOne({ itemId: blogId }),
         dbClient.db().collection('uploads').deleteOne({ itemId: blogId }),
       ];
-      if (isBlogAdmin && !isAuthor) {
+      if (permission.admin) {
         promises.push(mongo.logAdminActions(dbClient, req.identity.userId, 'delete blog', blogId));
       }
       const [commandResult] = await Promise.all(promises);
@@ -52,3 +50,19 @@ module.exports = (app) => {
     }
   });
 };
+
+function canDelete(req, blog) {
+  const isBlogAdmin = req.identity.roles && req.identity.roles.includes(auth.ROLE_BLOG_ADMIN);
+  const isEditor = req.identity.roles && req.identity.roles.includes(auth.ROLE_EDITOR_IN_CHIEF);
+  const isAuthor = blog.info.author.id === req.identity.userId;
+  const isEditorial = this.blog.info.editorial;
+
+  if (isEditorial) {
+    return { allowed: (isEditor || (isAuthor && !blog.info.published)), admin: !isAuthor };
+  } else if (isBlogAdmin) {
+    return { allowed: true, admin: !isAuthor };
+  } else if (isAuthor) {
+    return { allowed: true, admin: false };
+  }
+  return { allowed: false, admin: false };
+}

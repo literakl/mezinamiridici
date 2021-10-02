@@ -38,9 +38,9 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Blog not found'));
       }
 
-      const authorized = await isAuthorized(dbClient, req, blog);
-      if (!authorized) {
-        return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
+      const allowed = await canEdit(dbClient, req, blog);
+      if (!allowed) {
+        return api.sendErrorForbidden(res, api.createError('You are not authorized'));
       }
 
       const query = prepareUpdateQuery(source, title, picture, tags, editorial);
@@ -103,6 +103,7 @@ module.exports = (app) => {
     if (typeof flag !== 'boolean') {
       return api.sendMissingParam(res, 'flag');
     }
+
     try {
       const dbClient = await mongo.connectToDatabase();
       const query = { $set: { 'info.hidden': flag } };
@@ -119,7 +120,6 @@ module.exports = (app) => {
   });
 };
 
-
 function prepareUpdateQuery(source, title, picture, tags, editorial) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const setters = {};
@@ -135,20 +135,23 @@ function prepareUpdateQuery(source, title, picture, tags, editorial) {
   return query;
 }
 
-async function isAuthorized(dbClient, req, blog) {
-  // user can always edit its blog posts, except it is an editorial articles
-  if (blog.info.author.id === req.identity.userId && !blog.info.published) {
+async function canEdit(dbClient, req, blog) {
+  const isAuthor = blog.info.author.id === req.identity.userId;
+  const isEditorial = blog.info.editorial;
+
+  // users can always edit their blog posts, unless it is a published editorial articles
+  if (isAuthor && !isEditorial && !blog.info.published) {
     return true;
   }
 
   // blog admin can edit any blog posts, except editorial articles
-  if (!blog.info.editorial && auth.checkRole(req, auth.ROLE_BLOG_ADMIN)) {
+  if (!isEditorial && auth.checkRole(req, auth.ROLE_BLOG_ADMIN)) {
     await mongo.logAdminActions(dbClient, req.identity.userId, 'edit blog', blog._id);
     return true;
   }
 
   // editor in chied can edit any editorial articles
-  if (blog.info.editorial && auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF)) {
+  if (isEditorial && auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF)) {
     await mongo.logAdminActions(dbClient, req.identity.userId, 'edit blog', blog._id);
     return true;
   }

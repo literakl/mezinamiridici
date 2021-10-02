@@ -52,7 +52,7 @@
               {{ $t('blog.hidden.unmark') }}
             </b-link>
           </div>
-          <div v-if="isAuthor || isAdmin" class="post-delete">
+          <div v-if="canDelete" class="post-delete">
             <b-link v-b-modal.confirm>
               <BIconXCircle scale="1"></BIconXCircle>
               {{ $t('generic.delete-button') }}
@@ -164,6 +164,22 @@ export default {
           return this.blog.info.published;
         }
         return true;
+      }
+      return false;
+    },
+    canDelete() {
+      if (!this.$store.getters.IS_AUTHORIZED) {
+        return false;
+      }
+      if (this.$store.getters.USER_ROLE) {
+        if (this.blog.info.editorial) {
+          return !!this.$store.getters.USER_ROLE.includes('admin:editor');
+        } else if (this.$store.getters.USER_ROLE.includes('admin:blog')) {
+          return true;
+        }
+      }
+      if (this.blog.info.author.id === this.$store.getters.USER_ID) {
+        return !this.blog.info.editorial;
       }
       return false;
     },
