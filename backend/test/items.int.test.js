@@ -15,6 +15,8 @@ const {
 } = require('./testUtils');
 const {
   setup, Leos, Jiri, Vita,
+  Lukas,
+  Bara,
 } = require('./prepareUsers');
 
 let dbClient, server;
@@ -57,7 +59,7 @@ test('Blog', async (done) => {
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE' }).json();
   expect(response.success).toBeFalsy();
   // delete by different user
-  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
+  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Bara.jwt) }).json();
   expect(response.success).toBeFalsy();
   // delete by author
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Vita.jwt) }).json();
@@ -79,6 +81,37 @@ test('Blog', async (done) => {
   blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
   // delete as admin
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeTruthy();
+  // delete deleted
+  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  expect(response.success).toBeFalsy();
+
+  // check editor staff actions
+  blogBody.editorial = true;
+  blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+  expect(blog.data.info.editorial).toBeTruthy();
+  expect(blog.data.info.published).toBeFalsy();
+
+  // author before publishing
+  blog.source = '<h1>Title</h1><p>Very smart article</p>';
+  blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+
+  // editor in chief
+  blog.source = '<h1>Title</h1><p>Very smart approved article</p>';
+  blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(blog.success).toBeTruthy();
+
+  // todo publish as editor
+  // todo author cannot edit
+  // todo author cannot delete
+
+  // delete as admin
+  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
+  expect(response.success).toBeFalsy();
+  // delete as editor
+  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Lukas.jwt) }).json();
   expect(response.success).toBeTruthy();
   // delete deleted
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();

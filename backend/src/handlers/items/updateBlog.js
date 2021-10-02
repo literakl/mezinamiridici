@@ -156,5 +156,5 @@ async function canEdit(dbClient, req, blog) {
     return true;
   }
 
-  return false;
+  return isAuthor;
 }

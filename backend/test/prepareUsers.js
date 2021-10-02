@@ -40,6 +40,7 @@ const Jiri = {
     count: { pollVotes: 10, comments: 100, commentVotes: 50, commentVoteRatio: 90, blogs: 20, shares: 250, sharingWeeks: 30 },
   },
   consent: { terms: new Date(), data: new Date() },
+  roles: ['admin:blog'],
 };
 const Lukas = {
   _id: 'lukas',
@@ -58,7 +59,7 @@ const Lukas = {
     count: { pollVotes: 5, comments: 20, commentVotes: 30, commentVoteRatio: 80, blogs: 2, shares: 30, sharingWeeks: 15 },
   },
   consent: { terms: new Date(), data: new Date() },
-  roles: ['user:staffer'],
+  roles: ['user:staffer', 'admin:editor'],
 };
 const Vita = {
   _id: 'vita',
