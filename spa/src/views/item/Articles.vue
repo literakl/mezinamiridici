@@ -1,62 +1,58 @@
 <template>
   <div class="pt-3 centerbox m-auto">
     <div class="head-area">
-      <h2>{{ $t('cms.pages-heading') }}</h2>
+      <h2>{{ $t('blog.articles.heading') }}</h2>
     </div>
 
-    <div class="mb-2 d-flex flex-row-reverse action-btn">
-      <b-button-group>
-        <b-button v-if="role" :to="{ name: 'create-content'}" variant="btn btn-primary">
-          <BIconFileEarmarkBreak scale="1"></BIconFileEarmarkBreak>
-          {{ $t('cms.edit.new-cms-heading') }}
-        </b-button>
-      </b-button-group>
+    <div v-if="!isAuthorized">
+      {{ $t('blog.articles.not-authorized') }}
     </div>
 
-    <div v-for="item in cmsList" :key="item._id" class="pagelist-box">
-      <b-card tag="article">
-        <b-card-body>
-          <h3>
-            <router-link :to="{ name: 'page', params: { slug: item.info.slug }}">
-              {{ item.info.caption }}
-            </router-link>
-          </h3>
-        </b-card-body>
-        <b-card-footer>
-          <div>
+    <template v-else>
+      <div v-for="item in articles" :key="item._id" class="pagelist-box">
+        <b-card tag="article">
+          <b-card-body>
+            <h3>
+              <router-link :to="{ name: 'blog', params: { slug: item.info.slug, id: item.info.author.id }}">
+                {{ item.info.caption }}
+              </router-link>
+            </h3>
+          </b-card-body>
+          <b-card-footer>
+            <div>
             <span>
               <BIconClock scale="1"></BIconClock>
               <Date :date="item.info.date" format="dynamicDate"/>
             </span>
-            <span>
+              <span>
               <BIconPersonCircle scale="1"></BIconPersonCircle>
               <ProfileLink :profile="item.info.author"/>
             </span>
-            <span v-if="! item.info.published">
+              <span v-if="! item.info.published">
                 &bull; {{ $t('generic.not-published') }}
             </span>
-          </div>
-          <b-button-group>
-            <b-button v-if="role" :to="{ name: 'edit-content', params: { slug: item.info.slug }}" variant="outline-primary">
-              <BIconPencilSquare scale="1"></BIconPencilSquare>
-              {{ $t('generic.edit-button') }}
-            </b-button>
-            <b-button v-if="role" @click="confirmDelete(item)" variant="outline-primary">
-              <BIconTrash scale="1"></BIconTrash>
-              {{ $t('generic.delete-button') }}
-            </b-button>
-          </b-button-group>
-        </b-card-footer>
-      </b-card>
-    </div>
+            </div>
+            <b-button-group>
+              <b-button v-if="canEdit" :to="{ name: 'update-blog', params: { slug: item.info.slug, id: item.info.author.id }}" variant="outline-primary">
+                <BIconPencilSquare scale="1"></BIconPencilSquare>
+                {{ $t('generic.edit-button') }}
+              </b-button>
+              <b-button v-if="canDelete" @click="confirmDelete(item)" variant="outline-primary">
+                <BIconTrash scale="1"></BIconTrash>
+                {{ $t('generic.delete-button') }}
+              </b-button>
+            </b-button-group>
+          </b-card-footer>
+        </b-card>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
-  BIconPersonCircle, BIconClock, BIconPencilSquare,
-  BIconTrash, BIconFileEarmarkBreak,
+  BIconPersonCircle, BIconClock, BIconPencilSquare, BIconTrash,
 } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -75,21 +71,38 @@ export default {
     BIconClock,
     BIconPencilSquare,
     BIconTrash,
-    BIconFileEarmarkBreak,
   },
   data() {
     return {
-      cmsList: null,
+      articles: null,
     };
   },
   computed: {
-    role() {
-      // todo helper to test if user has a role
-      return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[1] === 'admin:pages' : false;
+    isAuthorized() {
+      console.log(this.$store.getters.USER_ID);
+      console.log(this.$store.getters.USER_ROLE);
+      if (this.$store.getters.USER_ID === null || !this.$store.getters.USER_ROLE) {
+        return false;
+      }
+      if (this.$store.getters.USER_ROLE[1] === 'admin:editor') {
+        return true;
+      } else if (this.$store.getters.USER_ROLE[1] === 'user:staffer') {
+        return true;
+      }
+      return false;
+    },
+    canEdit() {
+      if (this.$store.getters.USER_ROLE[1] === 'admin:editor') {
+        return true;
+      }
+      return !this.blog.info.published;
+    },
+    canDelete() {
+      return this.$store.getters.USER_ROLE[1] === 'admin:editor';
     },
   },
   async mounted() {
-    this.cmsList = await this.$store.dispatch('FETCH_PAGES', {});
+    this.articles = await this.$store.dispatch('FETCH_ARTICLES', {});
   },
   methods: {
     confirmDelete(item) {
@@ -106,7 +119,7 @@ export default {
       })
         .then((value) => {
           if (value) {
-            this.deleteCMS(item);
+            this.deleteBlog(item);
           }
         })
         .catch((err) => {
@@ -114,11 +127,11 @@ export default {
         });
     },
 
-    async deleteCMS(item) {
-      await this.$store.dispatch('DELETE_PAGE', {
-        cmsId: item._id,
+    async deleteBlog(item) {
+      await this.$store.dispatch('DELETE_BLOG', {
+        blogId: item._id,
       });
-      this.cmsList = await this.$store.dispatch('FETCH_PAGES', {});
+      this.articles = await this.$store.dispatch('FETCH_ARTICLES', {});
     },
   },
 };
@@ -143,13 +156,13 @@ export default {
   margin-bottom: 10px;
 }
 .pagelist-box .card{
- border-color: #ddd;
+  border-color: #ddd;
 }
 .pagelist-box .card-body {
- padding: 10px;
+  padding: 10px;
 }
-.pagelist-box .card-body .card-body{
- padding: 0;
+.pagelist-box .card-body .card-body {
+  padding: 0;
 }
 
 .pagelist-box h3 {

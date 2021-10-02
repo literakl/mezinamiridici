@@ -37,7 +37,7 @@
     "delete-button": "Smazat",
     "reset-button": "Reset",
     "reset-tooltip": "Reset",
-    "confirm-title-title": "Potvrzení",
+    "confirm-title": "Potvrzení",
     "operation-failed": "Operace se nezdařila",
     "email-placeholder": "Email"
   },
@@ -284,6 +284,10 @@
       "mark": "Nastav redakci",
       "unmark": "Zruš redakci"
     },
+    "articles": {
+      "heading": "Články",
+      "not-authorized": "Je nám líto, ale k této stránce nemáte přístup."
+    },
     "hidden": {
       "mark": "Skryj",
       "unmark": "Odkryj"
@@ -298,6 +302,7 @@
       "content-label": "Obsah",
       "new-cms-heading": "Nová stránka"
     },
+    "pages-heading": "Stránky",
     "delete-message": "Opravdu chcete smazat tuto stránku?"
   },
   "editor": {
@@ -342,6 +347,7 @@
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
     "tags": "Štítky",
+    "articles": "Články",
     "cms": "Stránky",
     "content": "Stránka",
     "create-content": "Nová stránka",

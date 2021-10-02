@@ -168,7 +168,6 @@ test('Tag API', async (done) => {
 
   taggedItems = await bff('items/auta').json();
   expect(taggedItems.success).toBeTruthy();
-  console.log(taggedItems.data);
   expect(taggedItems.data.length).toBe(1);
   expect(taggedItems.data[0]._id).toBe(blogB.data._id);
   expect(taggedItems.data[0].data.content).toBeUndefined();

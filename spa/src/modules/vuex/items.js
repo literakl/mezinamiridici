@@ -159,6 +159,11 @@ export default {
       const { cmsId } = payload;
       return deleteApi('API', `/pages/${cmsId}/`, {}, context);
     },
+    FETCH_ARTICLES: async (context) => {
+      Vue.$log.debug('FETCH_ARTICLES');
+      const response = await get('BFF', '/articles', context);
+      return response.data.data;
+    },
     UPLOAD_IMAGE: async (context, payload) => {
       Vue.$log.debug('IMAGE_UPLOAD');
       const {

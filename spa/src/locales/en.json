@@ -37,7 +37,7 @@
     "delete-button": "Delete",
     "reset-button": "Reset",
     "reset-tooltip": "Reset",
-    "confirm-title-title":"Confirmation",
+    "confirm-title":"Confirmation",
     "operation-failed": "Operace se nezdařila",
     "email-placeholder": "Email"
   },
@@ -287,6 +287,10 @@
       "mark": "Hide",
       "unmark": "Unhide"
     },
+    "articles": {
+      "heading": "Articles",
+      "not-authorized": "We are sorry but you are not allowed to access this page."
+    },
     "concept": "concept",
     "confirm-delete": "Do you really want to delete this blog?"
   },
@@ -297,6 +301,7 @@
       "content-label": "Content",
       "new-cms-heading": "New page"
     },
+    "pages-heading": "Pages",
     "delete-message": "Do you really want to delete this page?"
   },
   "editor": {
@@ -341,6 +346,7 @@
     "not-found": "Page not found",
     "tag": "Tag",
     "tags": "Tags",
+    "articles": "Articles",
     "cms": "Pages",
     "page": "Page",
     "edit-content": "Edit page",

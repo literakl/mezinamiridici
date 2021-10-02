@@ -172,6 +172,11 @@ export default new Router({
       props: true,
     },
     {
+      path: '/clanky/',
+      name: 'articles',
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles'),
+    },
+    {
       path: '/vrakoviste',
       name: 'junkyard',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/site/404.vue'),
