@@ -9,6 +9,10 @@
     </div>
 
     <template v-else>
+      <ContentLoading v-if="!articles" type="items"/>
+
+      <div v-if="noArticlesFound">{{ $t('blog.articles.empty') }}</div>
+
       <div v-for="item in articles" :key="item._id" class="pagelist-box">
         <b-card tag="article">
           <b-card-body>
@@ -20,20 +24,20 @@
           </b-card-body>
           <b-card-footer>
             <div>
-            <span>
-              <BIconClock scale="1"></BIconClock>
-              <Date :date="item.info.date" format="dynamicDate"/>
-            </span>
               <span>
-              <BIconPersonCircle scale="1"></BIconPersonCircle>
-              <ProfileLink :profile="item.info.author"/>
-            </span>
+                <BIconClock scale="1"></BIconClock>
+                <Date :date="item.info.date" format="dynamicDate"/>
+              </span>
               <span v-if="! item.info.published">
-                &bull; {{ $t('generic.not-published') }}
-            </span>
+                {{ $t('generic.not-published') }}
+              </span>
+              <span>
+                <BIconPersonCircle scale="1"></BIconPersonCircle>
+                <ProfileLink :profile="item.info.author"/>
+              </span>
             </div>
             <b-button-group>
-              <b-button v-if="canEdit" :to="{ name: 'update-blog', params: { slug: item.info.slug, id: item.info.author.id }}" variant="outline-primary">
+              <b-button v-if="canEdit(item)" :to="{ name: 'update-blog', params: { slug: item.info.slug, id: item.info.author.id }}" variant="outline-primary">
                 <BIconPencilSquare scale="1"></BIconPencilSquare>
                 {{ $t('generic.edit-button') }}
               </b-button>
@@ -54,14 +58,13 @@ import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPersonCircle, BIconClock, BIconPencilSquare, BIconTrash,
 } from 'bootstrap-vue';
-import ProfileLink from '@/components/molecules/ProfileLink.vue';
+import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import Date from '@/components/atoms/Date.vue';
+import ProfileLink from '@/components/molecules/ProfileLink.vue';
 
 export default {
   name: 'Pages',
   components: {
-    ProfileLink,
-    Date,
     BButtonGroup,
     BButton,
     BCard,
@@ -71,15 +74,19 @@ export default {
     BIconClock,
     BIconPencilSquare,
     BIconTrash,
+    ContentLoading,
+    Date,
+    ProfileLink,
   },
   data() {
     return {
       articles: null,
+      noArticlesFound: undefined,
     };
   },
   computed: {
     isAuthorized() {
-      if (this.$store.getters.USER_ID === null || this.$store.getters.HAS_ROLES) {
+      if (this.$store.getters.USER_ID === null || !this.$store.getters.HAS_ROLES) {
         return false;
       }
       if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
@@ -89,20 +96,21 @@ export default {
       }
       return false;
     },
-    canEdit() {
-      if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
-        return true;
-      }
-      return !this.blog.info.published;
-    },
     canDelete() {
       return this.$store.getters.USER_ROLES.includes('admin:editor');
     },
   },
   async mounted() {
     this.articles = await this.$store.dispatch('FETCH_ARTICLES', {});
+    this.noArticlesFound = this.articles.length === 0;
   },
   methods: {
+    canEdit(item) {
+      if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
+        return true;
+      }
+      return !item.info.published;
+    },
     confirmDelete(item) {
       this.$bvModal.msgBoxConfirm(this.$t('cms.delete-message'), {
         title: this.$t('generic.confirm-title'),

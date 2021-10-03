@@ -286,7 +286,8 @@
     },
     "articles": {
       "heading": "Články",
-      "not-authorized": "Je nám líto, ale k této stránce nemáte přístup."
+      "not-authorized": "Je nám líto, ale k této stránce nemáte přístup.",
+      "empty": "Zatím jste nenapsal žádný článek."
     },
     "hidden": {
       "mark": "Skryj",

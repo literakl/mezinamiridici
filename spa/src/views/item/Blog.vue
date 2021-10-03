@@ -58,7 +58,7 @@
               {{ $t('generic.delete-button') }}
             </b-link>
           </div>
-          <b-modal id="confirm" :title="$t('generic.confirm-title-title')" hide-footer>
+          <b-modal id="confirm" :title="$t('generic.confirm-title')" hide-footer>
             <p class="my-4">{{ $t('blog.confirm-delete') }}</p>
             <b-button class="mt-3 mr-2" @click="$bvModal.hide('confirm')">{{ this.$t('generic.cancel-button') }}</b-button>
             <b-button class="mt-3" variant="danger" @click="deleteBlog(); $bvModal.hide('confirm');">{{ this.$t('generic.ok-button') }}</b-button>

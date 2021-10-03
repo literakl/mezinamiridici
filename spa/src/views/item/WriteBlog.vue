@@ -22,6 +22,7 @@
             />
             <b-form-invalid-feedback id="content-errors" :state="hideContentError">{{ $t('blog.form.content-error') }}</b-form-invalid-feedback>
           </div>
+
           <div class="col col-lg-2 sidebar">
             <div v-if="canWriteArticles" class="field-area mb-3">
               <div>
@@ -29,16 +30,16 @@
               </div>
               <div class="row">
                 <Radio
-                  class="pl-3"
-                  :label="$t('blog.form.article')"
                   v-model="type"
                   identifier="article"
+                  class="pl-3"
+                  :label="$t('blog.form.article')"
                   name="type"/>
                 <Radio
-                  class="pl-3"
-                  :label="$t('blog.form.blog')"
                   v-model="type"
                   identifier="blog"
+                  class="pl-3"
+                  :label="$t('blog.form.blog')"
                   name="type"/>
               </div>
             </div>

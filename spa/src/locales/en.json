@@ -289,7 +289,8 @@
     },
     "articles": {
       "heading": "Articles",
-      "not-authorized": "We are sorry but you are not allowed to access this page."
+      "not-authorized": "We are sorry but you are not allowed to access this page.",
+      "empty": "You have not written any article yet."
     },
     "concept": "concept",
     "confirm-delete": "Do you really want to delete this blog?"
