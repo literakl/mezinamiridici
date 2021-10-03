@@ -17,8 +17,8 @@ export default {
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
-    USER_ROLES: state => ((state.userRoles) ? state.userRoles : []),
-    HAS_ROLES: (state, getters) => (getters.HAS_ROLES.length > 0),
+    USER_ROLES: state => state.userRoles,
+    HAS_ROLES: (state, getters) => (getters.USER_ROLES.length > 0),
     // https://stackoverflow.com/q/46210109/1639556
     // HAS_ROLE: (state) => (role) => false;
     USER_EMAIL: state => state.userEmail,
@@ -37,7 +37,7 @@ export default {
       state.userNickname = payload;
     },
     SET_USER_ROLES: (state, payload) => {
-      state.userRoles = payload;
+      state.userRoles = payload || [];
     },
     SET_USER_EMAIL: (state, payload) => {
       state.userEmail = payload;
