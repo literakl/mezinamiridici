@@ -66,8 +66,8 @@ function prepareUpdateProfileQuery(req) {
   } else {
     unsetters['driving.vehicles'] = '';
   }
-  if (publicProfile === true || publicProfile === false) {
-    setters['prefs.public'] = publicProfile;
+  if (publicProfile) {
+    setters['prefs.public'] = publicProfile === 'public';
   }
   const query = { };
   if (Object.keys(setters).length !== 0) {
