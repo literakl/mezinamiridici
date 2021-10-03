@@ -85,7 +85,7 @@ export default {
   computed: {
     role() {
       // todo helper to test if user has a role
-      return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[1] === 'admin:pages' : false;
+      return this.$store.getters.USER_ROLES.includes('admin:pages');
     },
   },
   async mounted() {

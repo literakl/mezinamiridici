@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     role() {
-      return (this.$store.getters.USER_ROLE) ? this.$store.getters.USER_ROLE[0] === 'admin:poll' : false;
+      return this.$store.getters.USER_ROLES.includes('admin:poll');
     },
   },
   async mounted() {

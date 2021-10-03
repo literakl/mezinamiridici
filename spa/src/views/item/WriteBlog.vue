@@ -121,8 +121,8 @@ export default {
       return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
     canWriteArticles() {
-      return this.$store.getters.USER_ROLE.includes('user:staffer')
-      || this.$store.getters.USER_ROLE.includes('admin:editor');
+      return this.$store.getters.USER_ROLES.includes('user:staffer')
+      || this.$store.getters.USER_ROLES.includes('admin:editor');
     },
   },
   watch: {

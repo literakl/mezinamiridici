@@ -8,7 +8,7 @@ export default {
     userToken: null,
     userId: null,
     userNickname: null,
-    userRole: null,
+    userRoles: [],
     userEmail: null,
     cookieSettings: { statistical: false, marketing: false, confirmDate: null },
   }),
@@ -17,7 +17,10 @@ export default {
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
-    USER_ROLE: state => state.userRole,
+    USER_ROLES: state => ((state.userRoles) ? state.userRoles : []),
+    HAS_ROLES: (state, getters) => (getters.HAS_ROLES.length > 0),
+    // https://stackoverflow.com/q/46210109/1639556
+    // HAS_ROLE: (state) => (role) => false;
     USER_EMAIL: state => state.userEmail,
   },
   mutations: {
@@ -33,8 +36,8 @@ export default {
     SET_USER_NICKNAME: (state, payload) => {
       state.userNickname = payload;
     },
-    SET_USER_ROLE: (state, payload) => {
-      state.userRole = payload;
+    SET_USER_ROLES: (state, payload) => {
+      state.userRoles = payload;
     },
     SET_USER_EMAIL: (state, payload) => {
       state.userEmail = payload;
@@ -97,8 +100,8 @@ export default {
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
       context.commit('SET_AUTHORIZED', false);
-      context.commit('SET_USER_ID', null);
-      context.commit('SET_USER_ROLE', null);
+      context.commit('SET_USER_ID', []);
+      context.commit('SET_USER_ROLES', null);
       context.commit('SET_USER_NICKNAME', null);
       const body = {
         email: payload.email,
@@ -121,7 +124,7 @@ export default {
       context.commit('SET_AUTHORIZED', true);
       context.commit('SET_USER_ID', jwtData.userId);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
-      context.commit('SET_USER_ROLE', jwtData.roles);
+      context.commit('SET_USER_ROLES', jwtData.roles);
       return true;
     },
     SIGN_USER_OUT: (context) => {
@@ -130,7 +133,7 @@ export default {
       context.commit('SET_AUTHORIZED', false);
       context.commit('SET_USER_ID', null);
       context.commit('SET_USER_NICKNAME', null);
-      context.commit('SET_USER_ROLE', null);
+      context.commit('SET_USER_ROLES', []);
       context.commit('SET_LATEST_POLL', null);
       context.commit('SET_POLL', null);
     },
@@ -144,7 +147,7 @@ export default {
           context.commit('SET_USER_NICKNAME', jwtData.nickname);
           context.commit('SET_AUTHORIZED', true);
           context.commit('SET_USER_TOKEN', jwt);
-          context.commit('SET_USER_ROLE', jwtData.roles);
+          context.commit('SET_USER_ROLES', jwtData.roles);
 
           if (Date.now() > 1000 * (jwtData.iat + 24 * 3600)) {
             const response = await post('API', `/users/${jwtData.userId}/validateToken`, { }, context);

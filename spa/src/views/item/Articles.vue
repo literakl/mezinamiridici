@@ -79,26 +79,24 @@ export default {
   },
   computed: {
     isAuthorized() {
-      console.log(this.$store.getters.USER_ID);
-      console.log(this.$store.getters.USER_ROLE);
-      if (this.$store.getters.USER_ID === null || !this.$store.getters.USER_ROLE) {
+      if (this.$store.getters.USER_ID === null || this.$store.getters.HAS_ROLES) {
         return false;
       }
-      if (this.$store.getters.USER_ROLE[1] === 'admin:editor') {
+      if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
         return true;
-      } else if (this.$store.getters.USER_ROLE[1] === 'user:staffer') {
+      } else if (this.$store.getters.USER_ROLES.includes('user:staffer')) {
         return true;
       }
       return false;
     },
     canEdit() {
-      if (this.$store.getters.USER_ROLE[1] === 'admin:editor') {
+      if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
         return true;
       }
       return !this.blog.info.published;
     },
     canDelete() {
-      return this.$store.getters.USER_ROLE[1] === 'admin:editor';
+      return this.$store.getters.USER_ROLES.includes('admin:editor');
     },
   },
   async mounted() {

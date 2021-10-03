@@ -142,20 +142,20 @@ export default {
       return this.blog.info.hidden;
     },
     isAdmin() {
-      return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:blog');
+      return this.$store.getters.USER_ROLES && this.$store.getters.USER_ROLES.includes('admin:blog');
     },
     isEditor() {
-      return this.$store.getters.USER_ROLE && this.$store.getters.USER_ROLE.includes('admin:editor');
+      return this.$store.getters.USER_ROLES && this.$store.getters.USER_ROLES.includes('admin:editor');
     },
     canEdit() {
       if (!this.$store.getters.IS_AUTHORIZED) {
         return false;
       }
-      if (this.$store.getters.USER_ROLE) {
-        if (this.$store.getters.USER_ROLE.includes('admin:blog')) {
+      if (this.$store.getters.USER_ROLES) {
+        if (this.$store.getters.USER_ROLES.includes('admin:blog')) {
           return true;
         }
-        if (this.$store.getters.USER_ROLE.includes('admin:editor')) {
+        if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
           return true;
         }
       }
@@ -171,10 +171,10 @@ export default {
       if (!this.$store.getters.IS_AUTHORIZED) {
         return false;
       }
-      if (this.$store.getters.USER_ROLE) {
+      if (this.$store.getters.USER_ROLES) {
         if (this.blog.info.editorial) {
-          return !!this.$store.getters.USER_ROLE.includes('admin:editor');
-        } else if (this.$store.getters.USER_ROLE.includes('admin:blog')) {
+          return !!this.$store.getters.USER_ROLES.includes('admin:editor');
+        } else if (this.$store.getters.USER_ROLES.includes('admin:blog')) {
           return true;
         }
       }

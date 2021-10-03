@@ -23,7 +23,7 @@ export default {
       return this.$store.getters.POLL;
     },
     role() {
-      return this.$store.getters.USER_ROLE[0] === 'admin:poll';
+      return this.$store.getters.USER_ROLES.includes('admin:poll');
     },
   },
   created() {
