@@ -7,7 +7,7 @@ module.exports = (app) => {
   app.options('/v1/posts/:blogId/snippets', auth.cors);
   app.options('/v1/posts/:blogId/snippets/:code', auth.cors);
 
-  app.get('/v1/posts/:blogId/snippets', auth.required, auth.staffer, auth.cors, async (req, res) => {
+  app.get('/v1/posts/:blogId/snippets', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
     logger.debug('get snippets handler starts');
     // find all documents in snippets collection where itemId is blogId
     const { blogId } = req.params;

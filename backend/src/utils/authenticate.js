@@ -49,6 +49,17 @@ function withRole(role) {
   };
 }
 
+function withAnyRole(roles) {
+  return function (req, res, next) {
+    if (!req.identity.roles || !req.identity.roles.some(r => roles.includes(r))) {
+      api.sendErrorForbidden(res, api.createError('Access denied'));
+      res.end();
+      return;
+    }
+    next();
+  };
+}
+
 function createTokenFromUser(user, expiration = '31d') {
   return createToken(user._id, user.bio.nickname, user.auth.pwdTimestamp, user.roles, user.auth.active, expiration);
 }
@@ -88,7 +99,9 @@ const ROLE_BLOG_ADMIN = 'admin:blog';
 const ROLE_EDITOR_IN_CHIEF = 'admin:editor';
 const ROLE_STAFFER = 'user:staffer';
 
+/* authentication is optional */
 module.exports.optional = authenticate(false);
+/* authentication is mandatory */
 module.exports.required = authenticate(true);
 /** manage polls */
 module.exports.poll_admin = withRole(ROLE_POLL_ADMIN);
@@ -102,6 +115,9 @@ module.exports.blog_admin = withRole(ROLE_BLOG_ADMIN);
 module.exports.editor_in_chief = withRole(ROLE_EDITOR_IN_CHIEF);
 /** writes articles */
 module.exports.staffer = withRole(ROLE_STAFFER);
+/** writes articles */
+module.exports.editorial_staff = withAnyRole([ROLE_STAFFER, ROLE_EDITOR_IN_CHIEF]);
+
 module.exports.ROLE_BLOG_ADMIN = ROLE_BLOG_ADMIN;
 module.exports.cors = corsPerRoute;
 module.exports.createToken = createToken;
