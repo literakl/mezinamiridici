@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const dayjs = require('dayjs');
 const path = require('path');
 
 const envPath = path.join(__dirname, '..', '.test.env');
@@ -22,42 +21,80 @@ test('Item snippets', async (done) => {
   await setup(dbClient, api);
   jest.setTimeout(180 * 60000);
 
-  const blogBody = {
-    title: 'First blog',
-    source: '<h1>Title</h1><p>Very smart topic</p>',
-    picture: 'picture.png',
-  };
-  const snippetBody = {
-    code: 'set_x',
-    type: 'html',
-    content: '<javascript>x=1</javascript>',
-    date: '2021-08-16T05:22:33.121Z',
-  };
-  const snippetBody1 = {
-    code: 'set_x',
-    type: 'html',
-    content: '<javascript>x=1</javascript>',
-    date: '2021-08-16T05:22:33.121Z',
-  };
+    const blogBody = {
+      title: 'First blog',
+      source: '<h1>Title</h1><p>Very smart topic</p>',
+      picture: 'picture.png',
+    };
 
-  let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Leos.jwt) }).json();
-  expect(blog.success).toBeTruthy();
+    let blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+    expect(blog.success).toBeTruthy();
 
-  let snippet = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetBody, headers: getAuthHeader(Leos.jwt)}).json();
-  expect(snippet.success).toBeTruthy();
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Jiri.jwt)}).json();
+    expect(response.success).toBe(false)
+    expect(response.errors[0].message).toBe('Access denied');
 
-  // let snippet1 = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetBody1, headers: getAuthHeader(Leos.jwt)}).json();
-  // expect(snippet1.success).toBeTruthy();
+    // response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt)}).json();
+    // expect(response.success).toBe(false)
+    // expect(response.errors[0].message).toBe('Access denied');
+
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt)}).json();
+    expect(response.success).toBe(true)
+    expect(response.data.length).toBe(0);
+
+    const snippetABody = {
+      code: 'set_x',
+      type: 'html',
+      content: '<javascript>x=1</javascript>',
+      date: '2021-08-16T05:22:33.121Z',
+    };
+
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Jiri.jwt)}).json();
+    expect(response.success).toBe(false);
+    expect(response.errors[0].message).toBe('Access denied');
+
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Vita.jwt)}).json();
+    expect(response.success).toBe(false);
+    expect(response.errors[0].message).toBe('Access denied');
+
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Leos.jwt)}).json();
+    expect(response.success).toBe(true);
+
+    const snippetCBody = {
+      code: 'set_x',
+      type: 'html',
+      content: '<javascript>x=1</javascript>',
+      date: '2021-08-16T05:22:33.121Z',
+    };
+
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetCBody, headers: getAuthHeader(Leos.jwt)}).json();
+    expect(response.success).toBeTruthy();
+
+    response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt)}).json();
+    expect(response.success).toBe(true)
+    expect(response.data.length).toBe(2);
   
-  // let snippets=await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt)}).json();
-  // console.log("snippets array ",snippets);
-   
-  let updatedsnippet = await api(`posts/${blog.data._id}/snippets/set_Y`, { method: 'PATCH', headers: getAuthHeader(Leos.jwt)}).json();
-  console.log("updatedsnippet",updatedsnippet);
+   response = await api(`posts/${blog.data._id}/snippets/set_Y`, { method: 'PATCH', headers: getAuthHeader(Leos.jwt)}).json();
+   expect(response.success).toBe(true);
+   expect(response.data.value.code).toBe('set_x');
 
-  let deletedsnippet = await api(`posts/${blog.data._id}/snippets/set_Y`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt)}).json();
-  console.log("updatedsnippet",deletedsnippet);
+   const snippetDBody = {
+    code: 'set_F',
+    type: 'html',
+    content: '<javascript>x=1</javascript>',
+    date: '2021-08-16T05:22:33.121Z',
+  };
 
+  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetDBody, headers: getAuthHeader(Leos.jwt)}).json();
+  expect(response.success).toBeTruthy();
+  
+
+  response = await api(`posts/${blog.data._id}/snippets/set_x`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt)}).json();
+  expect(response.success).toBe(true);
+
+  response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt)}).json();
+  expect(response.success).toBe(true);
+  expect(response.data.length).toBe(2);
 
 
   /*

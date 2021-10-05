@@ -16,11 +16,11 @@ module.exports = (app) => {
     }
     try {
       const dbClient = await mongo.connectToDatabase();
-      const snippets = await mongo.getAllSnippets(dbClient, blogId);
+      const snippets = await getAllSnippets(dbClient, blogId);
       logger.debug('Snippets fetched');
 
       if (!snippets) {
-        return api.sendNotFound(res, api.createError('Snippets not found', 'generic.not-found-caption'));
+        return api.sendResponse(res, api.createError('Snippets not found', 'generic.not-found-caption'));
       }
       return api.sendResponse(res, api.createResponse(snippets));
     } catch (err) {
@@ -49,7 +49,7 @@ module.exports = (app) => {
     if (!content) {
       return api.sendMissingParam(res, 'content');
     } 
-    const publishDate = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
+    const publishDate = new Date();
     if (!publishDate) {
       return api.sendInvalidParam(res, 'date', date);
     }
@@ -65,7 +65,7 @@ module.exports = (app) => {
       await insertItem(dbClient,snippetId,blog._id,code,user,publishDate,type,content);
       logger.debug('Snippet inserted');
       
-      const snippet = await mongo.getSnippet(dbClient, snippetId);
+      const snippet = await getSnippet(dbClient, snippetId);
       logger.debug('Snippet fetched');
 
       return api.sendCreated(res, api.createResponse(snippet));
@@ -88,11 +88,11 @@ module.exports = (app) => {
     }
     try {
       const dbClient = await mongo.connectToDatabase();
-      const snippet = await mongo.updateSnippet(dbClient, blogId, code);
+      const snippet = await updateSnippet(dbClient, blogId, code);
       logger.debug('Snippet updated');
 
       if (!snippet) {
-        return api.sendNotFound(res, api.createError('Snippets not found', 'generic.not-found-caption'));
+        return api.sendResponse(res, api.createError('Snippets not found', 'generic.not-found-caption'));
       }
       return api.sendResponse(res, api.createResponse(snippet));
     } catch (err) {
@@ -113,13 +113,14 @@ module.exports = (app) => {
     }
     try {
       const dbClient = await mongo.connectToDatabase();
-      const snippet = await mongo.deleteSnippet(dbClient, blogId, code);
+      const result = await deleteSnippet(dbClient, blogId, code);
       logger.debug('Snippet deleted');
 
-      if (!snippet) {
-        return api.sendNotFound(res, api.createError('Snippets not found', 'generic.not-found-caption'));
+      if (result.result.n === 1 && result.result.ok === 1) {
+        return api.sendResponse(res, api.createResponse(result));
       }
-      return api.sendResponse(res, api.createResponse(snippet));
+      return api.sendResponse(res, api.createError('Snippets not found', 'generic.not-found-caption'));
+      
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to delete snippets', 'sign-in.something-went-wrong'));
@@ -140,4 +141,32 @@ const snippet={
   content:content,
 }
 return dbClient.db().collection('snippets').insertOne(snippet);
+}
+
+async function getSnippet(dbClient, snippetId){
+  if (snippetId) {
+    return dbClient.db().collection('snippets').findOne({ _id: snippetId });
+  }
+  throw new Error('Snippet id is empty');
+}
+
+async function getAllSnippets(dbClient, blogId){
+  if (blogId) {
+    return dbClient.db().collection('snippets').find({ itemId: blogId }).toArray();
+  }
+  throw new Error('blog id is empty');
+}
+
+async function updateSnippet(dbClient, blogId, code){
+  if (blogId) {
+    return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId},{$set: { code : code}});
+  }
+  throw new Error('blog id is empty');
+}
+
+async function deleteSnippet(dbClient, blogId, code){
+  if (blogId) {
+    return dbClient.db().collection('snippets').deleteOne({ itemId: blogId, code: code});
+  }
+  throw new Error('blog id is empty');
 }
