@@ -31,15 +31,12 @@ test('Item snippets', async (done) => {
   expect(blog.success).toBeTruthy();
 
   // get snippets as Jiri - forbidden (missing role staffer)
-  // let response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Jiri.jwt) }).json();
-  // expect(response.success).toBe(false);
-  // console.log("response",response);
-  // expect(response.statusCode).toBe(403);
+  let response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Jiri.jwt) });
+  expect(response.statusCode).toBe(403);
 
   // get snippets as Lukas - forbidden (different user than owner)
-  // response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt)}).json();
-  // expect(response.success).toBe(false)
-  // expect(response.statusCode).toBe(403);
+  response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt) });
+  expect(response.statusCode).toBe(403);
 
   // get snippets as Vita - empty
   response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
@@ -54,14 +51,12 @@ test('Item snippets', async (done) => {
   };
 
   // create snippet A as Jiri - forbidden (missing role editor in chief)
-  // response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Jiri.jwt) }).json();
-  // expect(response.success).toBe(false);
-  // expect(response.statusCode).toBe(403);
+  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Jiri.jwt) });
+  expect(response.statusCode).toBe(403);
 
   // create snippet A as Vita - forbidden (missing role editor in chief)
-  // response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Vita.jwt) }).json();
-  // expect(response.success).toBe(false);
-  // expect(response.statusCode).toBe(403);
+  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Vita.jwt) });
+  expect(response.statusCode).toBe(403);
 
   // create snippet A as Leos
   response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Leos.jwt) }).json();

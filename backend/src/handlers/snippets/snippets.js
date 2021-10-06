@@ -14,15 +14,18 @@ module.exports = (app) => {
     if (!blogId) {
       return api.sendMissingParam(res, 'blogId');
     }
+
     try {
       const dbClient = await mongo.connectToDatabase();
-      const snippets = await getAllSnippets(dbClient, blogId);
+      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      if (blog.info.author.id !== req.identity.userId) {
+        return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
+      }
+
+      const snippets = await dbClient.db().collection('snippets').find({ itemId: blogId }).toArray();
       logger.debug('Snippets fetched');
 
-      if (!snippets) {
-        return api.sendResponse(res, api.createError('Snippets not found', 'generic.not-found-caption'));
-      }
-      return api.sendResponse(res, api.createResponse(snippets));
+      return api.sendResponse(res, api.sendResponse(snippets || []));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get snippets', 'sign-in.something-went-wrong'));
@@ -146,13 +149,6 @@ async function getSnippet(dbClient, snippetId) {
     return dbClient.db().collection('snippets').findOne({ _id: snippetId });
   }
   throw new Error('Snippet id is empty');
-}
-
-async function getAllSnippets(dbClient, blogId) {
-  if (blogId) {
-    return dbClient.db().collection('snippets').find({ itemId: blogId }).toArray();
-  }
-  throw new Error('blog id is empty');
 }
 
 async function updateSnippet(dbClient, blogId, code) {
