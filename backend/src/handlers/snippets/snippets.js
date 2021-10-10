@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.options('/v1/posts/:blogId/snippets/:code', auth.cors);
 
   app.get('/v1/posts/:blogId/snippets', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
-    logger.debug('get snippets handler starts');
+    logger.trace('get snippets handler starts');
     // find all documents in snippets collection where itemId is blogId
     const { blogId } = req.params;
     if (!blogId) {
@@ -23,9 +23,9 @@ module.exports = (app) => {
       }
 
       const snippets = await dbClient.db().collection('snippets').find({ itemId: blogId }).toArray();
-      logger.debug('Snippets fetched');
+      logger.trace('Snippets fetched');
 
-      return api.sendResponse(res, api.sendResponse(snippets || []));
+      return api.sendResponse(res, api.createResponse(snippets));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get snippets', 'sign-in.something-went-wrong'));
