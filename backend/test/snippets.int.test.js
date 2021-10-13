@@ -44,9 +44,9 @@ test('Item snippets', async (done) => {
   expect(response.data.length).toBe(0);
 
   const snippetABody = {
-    code: 'set_x',
+    code: 'set_a',
     type: 'html',
-    content: '<javascript>x=1</javascript>',
+    content: '<javascript>a=1</javascript>',
     date: '2021-08-16T05:22:33.121Z',
   };
 
@@ -63,9 +63,9 @@ test('Item snippets', async (done) => {
   expect(response.success).toBe(true);
 
   const snippetCBody = {
-    code: 'set_x',
+    code: 'set_c',
     type: 'html',
-    content: '<javascript>x=1</javascript>',
+    content: '<javascript>c=1</javascript>',
     date: '2021-08-16T05:22:33.121Z',
   };
 
@@ -77,18 +77,27 @@ test('Item snippets', async (done) => {
   response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.length).toBe(2);
-  expect(response.data[0].content).toBe(response.data[1].content);
-  // compare the content
+  expect(response.data[0].code).toBe(snippetABody.code);
+  expect(response.data[1].code).toBe(snippetCBody.code);
+
+  response = await api(`posts/${blog.data.info.slug}`).json();
+  expect(response.success).toBe(true);
+  expect(response.data.snippets.length).toBe(2);
+  expect(response.data.snippets[0].code).toBe(snippetABody.code);
+  expect(response.data.snippets[1].code).toBe(snippetCBody.code);
 
   // rename snippet C to B as Leos
-  response = await api(`posts/${blog.data._id}/snippets/set_Y`, { method: 'PATCH', headers: getAuthHeader(Leos.jwt) }).json();
+  const snippetBBody = snippetCBody;
+  snippetBBody.code = 'set_b';
+  // todo body?
+  response = await api(`posts/${blog.data._id}/snippets/${snippetCBody.code}`, { method: 'PATCH', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
-  expect(response.data.value.code).toBe('set_x');
+  expect(response.data.value.code).toBe(snippetBBody.code);
 
   const snippetDBody = {
-    code: 'set_F',
+    code: 'set_d',
     type: 'html',
-    content: '<javascript>x=1</javascript>',
+    content: '<javascript>d=1</javascript>',
     date: '2021-08-16T05:22:33.121Z',
   };
 
@@ -97,16 +106,15 @@ test('Item snippets', async (done) => {
   expect(response.success).toBeTruthy();
 
   // remove snippet A as Leos
-  response = await api(`posts/${blog.data._id}/snippets/set_x`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`posts/${blog.data._id}/snippets/${snippetABody.code}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
 
   // get snippets - B,D as Vita
   response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.length).toBe(2);
-  expect(response.data[0].code).toBe('set_Y');
-  expect(response.data[1].code).toBe('set_F');
-  // check the snippets codes
+  expect(response.data[0].code).toBe(snippetBBody.code);
+  expect(response.data[1].code).toBe(snippetDBody.code);
 
   done();
 });

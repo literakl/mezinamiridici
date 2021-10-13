@@ -157,6 +157,15 @@ export default {
     };
   },
   methods: {
+    // find this pattern and replace it with its content [code="animated_chart"]
+    applySnippets(html) {
+      const regex = /\[code="([\w]+)"\]/gm;
+      const replacer = (match, code) => {
+        console.log(code);
+        return match.toUpperCase();
+      };
+      return html.replace(regex, replacer);
+    },
     async toggleEditorial() {
       await this.$store.dispatch('TOGGLE_EDITORIAL');
     },
