@@ -345,6 +345,7 @@ function insertItem(dbClient, title, content, author, picture, tags, publishDate
         id: author.userId,
       },
       published: true,
+      hidden: false,
       caption: title,
       slug,
       date: publishDate.toDate(),

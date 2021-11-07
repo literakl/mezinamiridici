@@ -10,6 +10,7 @@ const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
+// remember to sync changes to parseAccidents.js
 module.exports = (app) => {
   app.options('/v1/posts', auth.cors);
 
