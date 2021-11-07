@@ -87,12 +87,17 @@ test('Item snippets', async (done) => {
   expect(response.data.snippets[1].code).toBe(snippetCBody.code);
 
   // rename snippet C to B as Leos
-  const snippetBBody = snippetCBody;
-  snippetBBody.code = 'set_b';
-  // todo body?
-  response = await api(`posts/${blog.data._id}/snippets/${snippetCBody.code}`, { method: 'PATCH', headers: getAuthHeader(Leos.jwt) }).json();
+  const snippetBBody = {
+    code: 'set_b',
+    type: 'HTML',
+    content: '<javascript>b=1</javascript>',
+    date: '2021-08-16T05:22:33.121Z',
+  };
+  response = await api(`posts/${blog.data._id}/snippets/${snippetCBody.code}`, { method: 'PATCH', json: snippetBBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
-  expect(response.data.value.code).toBe(snippetBBody.code);
+  expect(response.data.code).toBe(snippetBBody.code);
+  expect(response.data.type).toBe(snippetBBody.type);
+  expect(response.data.content).toBe(snippetBBody.content);
 
   const snippetDBody = {
     code: 'set_d',

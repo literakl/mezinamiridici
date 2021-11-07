@@ -33,7 +33,7 @@ module.exports = (app) => {
   });
 
   app.post('/v1/posts/:blogId/snippets', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
-    logger.debug('create snippet handler starts');
+    logger.trace('create snippet handler starts');
     const {
       code, type, content, date,
     } = req.body;
@@ -58,6 +58,7 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
+      logger.debug(`Creating snippet ${code} of blog ${blogId}`);
       const user = auth.getIdentity(req.identity);
       const snippetId = mongo.generateTimeId();
 
@@ -77,7 +78,7 @@ module.exports = (app) => {
   });
 
   app.patch('/v1/posts/:blogId/snippets/:code', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
-    logger.debug('update snippet handler starts');
+    logger.trace('update snippet handler starts');
     // update document from snippets collection with itemId set to blogId and given code
     const { blogId } = req.params;
     if (!blogId) {
@@ -102,12 +103,13 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
+      logger.debug(`Updating snippet ${currentCode} of blog ${blogId}`);
       const result = await updateSnippet(dbClient, blogId, currentCode, code, type, content);
       logger.debug('Snippet updated');
       // todo mongo log admin
 
-      if (result.result.n === 1 && result.result.ok === 1) {
-        const snippet = await getSnippet(dbClient, snippetId);
+      if (result.ok === 1) {
+        const snippet = await getSnippet(dbClient, result.value._id);
         return api.sendResponse(res, api.createResponse(snippet));
       }
       return api.sendNotFound(res, api.createError('Snippet not found', 'generic.not-found-caption'));
@@ -118,7 +120,7 @@ module.exports = (app) => {
   });
 
   app.delete('/v1/posts/:blogId/snippets/:code', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
-    logger.debug('delete snippet handler starts');
+    logger.trace('delete snippet handler starts');
     // delete document from snippets collection with itemId set to blogId and given code
     const { blogId, code } = req.params;
     if (!blogId) {
@@ -129,6 +131,7 @@ module.exports = (app) => {
     }
     try {
       const dbClient = await mongo.connectToDatabase();
+      logger.debug(`Deleting snippet ${code} of blog ${blogId}`);
       const result = await deleteSnippet(dbClient, blogId, code);
       logger.debug('Snippet deleted');
       // todo mongo log admin
@@ -167,8 +170,8 @@ async function getSnippet(dbClient, snippetId) {
   throw new Error('Snippet id is empty');
 }
 
-async function updateSnippet(dbClient, blogId, code) {
-  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId }, { $set: { code } });
+async function updateSnippet(dbClient, blogId, currentCode, code, type, content) {
+  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId, code: currentCode }, { $set: { code, type, content } });
 }
 
 async function deleteSnippet(dbClient, blogId, code) {
