@@ -156,7 +156,7 @@ function calculateConsecutiveSharing(date, foundWeeks) {
 
 async function scheduleCalculation() {
   jobLogger.info(`Rank job scheduled to run at ${CALCULATE_USER_RANKS_SCHEDULE}`);
-  const job = new CronJob(CALCULATE_USER_RANKS_SCHEDULE, async () => calculateUserHonors);
+  const job = new CronJob(CALCULATE_USER_RANKS_SCHEDULE, calculateUserHonors);
   job.start();
 }
 

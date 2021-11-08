@@ -52,7 +52,7 @@ let createArticle = true, retried = 0;
 
 async function doRun() {
   const args = process.argv.slice(2);
-  if (args.length < 1 || args.length === 2 || args.length > 4) {
+  if (args.length === 0 || args.length === 2 || args.length > 4) {
     exitWithHelp();
   }
 
@@ -73,41 +73,43 @@ async function doRun() {
     exitWithHelp();
   }
 
-  jobLogger.info('Connecting to server');
-  const formDataBody = await getInitialFormData();
-  const dbClient = await mongo.connectToDatabase();
-  while (current.unix() <= until.unix()) {
-    console.log(`Started to fetch data for ${current.format(DATE_FORMAT)}`);
-    // eslint-disable-next-line no-await-in-loop
-    const isParsed = await parseData(dbClient, formDataBody, current);
-    if (!isParsed) {
-      console.error(`Failed to parse accident statistics for ${current.format(DATE_FORMAT)}`);
-      process.exit(1);
-    }
-
-    if (createArticle) {
+  try {
+    jobLogger.info('Connecting to server');
+    const formDataBody = await getInitialFormData();
+    const dbClient = await mongo.connectToDatabase();
+    while (current.unix() <= until.unix()) {
+      console.log(`Started to fetch data for ${current.format(DATE_FORMAT)}`);
       // eslint-disable-next-line no-await-in-loop
-      const data = await getArticleData(dbClient, current);
-      // eslint-disable-next-line no-await-in-loop
-      await saveArticle(dbClient, data, current);
-    }
+      const isParsed = await parseData(dbClient, formDataBody, current);
+      if (!isParsed) {
+        console.error(`Failed to parse accident statistics for ${current.format(DATE_FORMAT)}`);
+        process.exit(1);
+      }
 
-    current = current.add(1, 'day');
+      if (createArticle) {
+        // eslint-disable-next-line no-await-in-loop
+        const data = await getArticleData(dbClient, current);
+        // eslint-disable-next-line no-await-in-loop
+        await saveArticle(dbClient, data, current);
+      }
+
+      current = current.add(1, 'day');
+    }
+    jobLogger.info('Finished');
+  } finally {
+    jobLogger.end();
+    mongo.close();
   }
-
-  jobLogger.info('Finished');
-  mongo.close();
-  jobLogger.end();
 }
 
 function scheduleParsing() {
-  const job = new CronJob(ACCIDENTS_STATS_SCHEDULE, async () => doJob);
-  job.start();
   jobLogger.info(`Parse accidents job scheduled to ${ACCIDENTS_STATS_SCHEDULE}`);
+  const job = new CronJob(ACCIDENTS_STATS_SCHEDULE, doJob);
+  job.start();
 }
 
 async function doJob() {
-  jobLogger.info('Connecting to server');
+  jobLogger.info('Job is connecting to server');
   const formDataBody = await getInitialFormData();
   const dbClient = await mongo.connectToDatabase();
   const date = dayjs().subtract(1, 'day');
@@ -122,10 +124,11 @@ async function doJob() {
     retried += 1;
     jobLogger.info(`Data is not available, scheduling the attempt ${retried}`);
     const nextTime = dayjs().add(ACCIDENTS_STATS_RETRY_MINUTES, 'minute').toDate();
-    const job = new CronJob(nextTime, async () => doJob);
+    const job = new CronJob(nextTime, doJob);
     job.start();
-  } else if (createArticle) {
+  } else {
     jobLogger.info('Data fetched, creating new article');
+    retried = 0;
     const data = await getArticleData(dbClient, date);
     await saveArticle(dbClient, data, date);
   }
@@ -133,8 +136,8 @@ async function doJob() {
 
 function exitWithHelp() {
   console.error('Usage: node jobs/cli_ParseAccidents.js schedule createArticle since until\n'
-    + 'schedule: boolean, if job should be scheduled. Other parameters are ignored.\n'
-    + 'createArticle: boolean, if article shall be created\n'
+    + 'schedule: true, if job should be scheduled\n'
+    + 'createArticle: true, if article shall be created\n'
     + 'since: start date in DD.MM.YYYY format\n'
     + 'until: end date (inclusive) in DD.MM.YYYY format. If not set, since will be used.\n');
   process.exit(1);
@@ -384,15 +387,3 @@ function lookupRegion(vusc) {
 
 exports.doRun = doRun;
 exports.saveArticle = saveArticle;
-
-/*
-async function x() {
-  const dbClient = await mongo.connectToDatabase();
-  const date = dayjs('12.02.2020', DATE_FORMAT);
-  const stats = await getArticleData(dbClient, date);
-  await saveArticle(dbClient, stats, date);
-  mongo.close();
-}
-
-x().then(() => { console.log('finished'); });
-*/
