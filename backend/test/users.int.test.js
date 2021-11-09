@@ -95,7 +95,7 @@ test('User API', async (done) => {
     born: 1974,
     region: 'PRG',
     education: 'university',
-    publicProfile: false,
+    publicProfile: 'private',
   };
   response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
   expect(response.success).toBeTruthy();
@@ -133,7 +133,7 @@ test('User API', async (done) => {
     vehicles: ['car', 'bike'],
     born: 1975,
     region: 'MS',
-    publicProfile: true,
+    publicProfile: 'public',
     urls: ['', 'https://github.com/literakl/', ''],
   };
   response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
@@ -305,7 +305,7 @@ test('User API', async (done) => {
     born: 1974,
     region: 'PRG',
     education: 'university',
-    publicProfile: false,
+    publicProfile: 'private',
   };
   response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
   expect(response.success).toBeTruthy();
