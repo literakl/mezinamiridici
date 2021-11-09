@@ -79,39 +79,63 @@ test('Blog', async (done) => {
   const upload = await db.collection('uploads').findOne({ itemId: blog.data._id });
   expect(upload).toBeFalsy();
 
+  // delete post as admin
   blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  // delete as admin
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
-  // delete deleted
+  // cannot delete deleted post
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeFalsy();
 
-  // check editor staff actions
-  blogBody.editorial = true;
-  blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(blog.success).toBeTruthy();
-  expect(blog.data.info.editorial).toBeTruthy();
-  expect(blog.data.info.published).toBeFalsy();
+  // editor staff actions
 
-  // author before publishing
-  blog.source = '<h1>Title</h1><p>Very smart article</p>';
-  blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(blog.success).toBeTruthy();
+  // create new article as author
+  const articleBody = {
+    title: 'First articel',
+    source: '<h1>Title</h1><p>Smart article</p>',
+    picture: 'picture.png',
+    editorial: true,
+  };
+  let firstArticle = await api('posts', { method: 'POST', json: articleBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(firstArticle.success).toBeTruthy();
+  expect(firstArticle.data.info.editorial).toBeTruthy();
+  expect(firstArticle.data.info.published).toBeFalsy();
 
-  // editor in chief
-  blogBody.title = 'First article';
-  blog.source = '<h1>Title</h1><p>Very smart approved article</p>';
-  blog = await api(`posts/${blog.data._id}`, { method: 'PATCH', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(blog.success).toBeTruthy();
+  // edit post as author before publishing
+  articleBody.source = '<h1>Title</h1><p>Very smart article</p>';
+  firstArticle = await api(`posts/${firstArticle.data._id}`, { method: 'PATCH', json: articleBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(firstArticle.success).toBeTruthy();
 
-  blogBody.title = 'Second article';
-  const secondArticle = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  // edit as editor in chief
+  articleBody.title = 'First article';
+  articleBody.source = '<h1>Title</h1><p>Very smart edited article</p>';
+  firstArticle = await api(`posts/${firstArticle.data._id}`, { method: 'PATCH', json: articleBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(firstArticle.success).toBeTruthy();
+
+  firstArticle = await api(`posts/${firstArticle.data.info.slug}`).json();
+  expect(firstArticle.success).toBeTruthy();
+  expect(firstArticle.data.info.caption).toBe(articleBody.title);
+  expect(firstArticle.data.data.content).toBe(articleBody.source);
+
+  // prepare another article for later use
+  articleBody.title = 'Second article';
+  articleBody.source = '<h1>Title</h1><p>Editor in chief article</p>';
+  const secondArticle = await api('posts', { method: 'POST', json: articleBody, headers: getAuthHeader(Lukas.jwt) }).json();
   expect(secondArticle.success).toBeTruthy();
 
-  // todo publish as editor
-  // todo author cannot edit
-  // todo author cannot delete
+  // publish article as editor
+  const flagBody = { flag: true };
+  response = await api(`posts/${firstArticle.data._id}/published`, { method: 'PATCH', json: flagBody, headers: getAuthHeader(Lukas.jwt) }).json();
+  expect(response.success).toBeTruthy();
+
+  // author cannot edit published article anymore
+  articleBody.title = 'Spam article';
+  response = await api(`posts/${firstArticle.data._id}`, { method: 'PATCH', json: articleBody, headers: getAuthHeader(Vita.jwt) }).json();
+  expect(response.success).toBeFalsy();
+
+  // author cannot delete published article anymore
+  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Vita.jwt) }).json();
+  expect(response.success).toBeFalsy();
 
   // anonymous user does not see a list of articles
   let articles = await bff('articles');
@@ -123,22 +147,22 @@ test('Blog', async (done) => {
   articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
   expect(articles.success).toBeTruthy();
   expect(articles.data.length).toBe(1);
-  expect(articles.data[0]._id).toBe(blog.data._id);
+  expect(articles.data[0]._id).toBe(firstArticle.data._id);
   // editor can see the list of all articles
   articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Lukas.jwt) }).json();
   expect(articles.success).toBeTruthy();
   expect(articles.data.length).toBe(2);
   expect(articles.data[0]._id).toBe(secondArticle.data._id);
-  expect(articles.data[1]._id).toBe(blog.data._id);
+  expect(articles.data[1]._id).toBe(firstArticle.data._id);
 
-  // delete as admin
-  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
+  // cannot delete post as firstArticle admin
+  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
   expect(response.success).toBeFalsy();
-  // delete as editor
-  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Lukas.jwt) }).json();
+  // delete post as editor
+  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Lukas.jwt) }).json();
   expect(response.success).toBeTruthy();
-  // delete deleted
-  response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  // cannot delete deleted post
+  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeFalsy();
 
   done();
