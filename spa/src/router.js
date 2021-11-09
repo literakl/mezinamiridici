@@ -172,7 +172,7 @@ export default new Router({
       props: true,
     },
     {
-      path: '/clanky/',
+      path: '/redakce/',
       name: 'articles',
       component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles'),
     },
