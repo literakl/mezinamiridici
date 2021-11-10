@@ -283,6 +283,10 @@
       "mark": "Set editorial",
       "unmark": "Unset editorial"
     },
+    "publish": {
+      "mark": "Publish",
+      "unmark": "Unpublish"
+    },
     "hidden": {
       "mark": "Hide",
       "unmark": "Unhide"

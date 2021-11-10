@@ -33,6 +33,16 @@
             </router-link>
           </div>
           <div class="post-editorial" v-if="isEditor">
+            <b-link v-if="!blog.info.published" v-on:click="togglePublished">
+              <BIconShieldPlus scale="1"></BIconShieldPlus>
+              {{ $t('blog.publish.mark') }}
+            </b-link>
+            <b-link v-if="blog.info.published" v-on:click="togglePublished">
+              <BIconShieldMinus scale="1"></BIconShieldMinus>
+              {{ $t('blog.publish.unmark') }}
+            </b-link>
+          </div>
+          <div class="post-editorial" v-if="isEditor">
             <b-link v-if="!editorial" v-on:click="toggleEditorial">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.editorial.mark') }}
@@ -42,7 +52,7 @@
               {{ $t('blog.editorial.unmark') }}
             </b-link>
           </div>
-          <div class="post-editorial" v-if="isEditor">
+          <div class="post-editorial" v-if="isAdmin">
             <b-link v-if="!hidden" v-on:click="toggleHidden">
               <BIconShieldPlus scale="1"></BIconShieldPlus>
               {{ $t('blog.hidden.mark') }}
@@ -205,6 +215,9 @@ export default {
   methods: {
     async toggleEditorial() {
       await this.$store.dispatch('TOGGLE_EDITORIAL');
+    },
+    async togglePublished() {
+      await this.$store.dispatch('TOGGLE_PUBLISHED');
     },
     async toggleHidden() {
       await this.$store.dispatch('TOGGLE_HIDDEN');

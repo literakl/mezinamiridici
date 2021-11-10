@@ -284,6 +284,10 @@
       "mark": "Nastav redakci",
       "unmark": "Zruš redakci"
     },
+    "publish": {
+      "mark": "Zveřejni",
+      "unmark": "Zruš zveřejnění"
+    },
     "articles": {
       "heading": "Články",
       "not-authorized": "Je nám líto, ale k této stránce nemáte přístup.",

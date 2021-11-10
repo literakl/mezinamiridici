@@ -196,6 +196,19 @@ export default {
       // if (response.success === true) {
       context.commit('SET_PAGE', blog);
     },
+    TOGGLE_PUBLISHED: async (context) => {
+      Vue.$log.debug('TOGGLE_PUBLISHED');
+      const { blog } = context.state;
+      let { published = false } = blog.info;
+      published = !published;
+      const payload = {
+        flag: published,
+      };
+      await patch('API', `/posts/${blog._id}/published`, payload, context);
+      Vue.set(blog.info, 'published', published);
+      // if (response.success === true) {
+      context.commit('SET_PAGE', blog);
+    },
     TOGGLE_HIDDEN: async (context) => {
       Vue.$log.debug('TOGGLE_HIDDEN');
       const { blog } = context.state;
