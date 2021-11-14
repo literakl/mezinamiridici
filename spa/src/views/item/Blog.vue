@@ -111,7 +111,7 @@ export default {
   },
   watch: {
     blog() {
-      this.blogHtml = this.blog.data.content;
+      this.blogHtml = this.applySnippets();
       document.title = this.blog.info.caption;
     },
   },
@@ -157,12 +157,19 @@ export default {
     };
   },
   methods: {
-    // find this pattern and replace it with its content [code="animated_chart"]
-    applySnippets(html) {
+    // find snippet pattern [code="animated_chart"] and replace it with its content
+    applySnippets() {
+      const html = this.blog.data.content;
+      if (!this.blog.snippets || this.blog.snippets.length === 0) {
+        return html;
+      }
+
       const regex = /\[code="([\w]+)"\]/gm;
-      const replacer = (match, code) => {
-        console.log(code);
-        return match.toUpperCase();
+      const replacer = (match, foundCode) => {
+        console.log(foundCode);
+        const snippet = this.blog.snippets.find(({ code }) => code === foundCode);
+        console.log(snippet);
+        return snippet.content;
       };
       return html.replace(regex, replacer);
     },

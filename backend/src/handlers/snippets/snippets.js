@@ -18,7 +18,7 @@ module.exports = (app) => {
     try {
       const dbClient = await mongo.connectToDatabase();
       const blog = await mongo.getBlog(dbClient, undefined, blogId);
-      if (blog.info.author.id !== req.identity.userId) {
+      if (blog.info.author.id !== req.identity.userId) { // todo editor in chief shall pass through as well
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
