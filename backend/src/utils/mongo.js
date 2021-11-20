@@ -166,13 +166,33 @@ async function incrementUserActivityCounter(dbClient, userId, type, action) {
 }
 
 async function getBlog(dbClient, slug, blogId) {
+  let query;
   if (blogId) {
-    return dbClient.db().collection('items').findOne({ _id: blogId });
+    query = { _id: blogId };
   }
   if (slug) {
-    return dbClient.db().collection('items').findOne({ 'info.slug': slug });
+    query = { 'info.slug': slug };
   }
-  throw new Error('Both slug and id are empty');
+  if (!query) {
+    throw new Error('Both slug and id are empty');
+  }
+
+  const db = dbClient.db();
+  const blog = await db.collection('items').findOne(query);
+  if (blog) {
+    const projection = {
+      projection: {
+        code: 1,
+        type: 1,
+        content: 1,
+      },
+    };
+    blog.snippets = await db.collection('snippets')
+      .find({ itemId: blog._id }, projection)
+      .toArray();
+  }
+
+  return blog;
 }
 
 async function getPoll(dbClient, pipeline) {
