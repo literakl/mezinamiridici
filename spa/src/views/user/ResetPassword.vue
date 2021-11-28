@@ -56,9 +56,9 @@
 
 <script>
 import { configure } from 'vee-validate';
+import { BForm, BRow, BCol } from 'bootstrap-vue';
 import Button from '@/components/atoms/Button.vue';
 import TextInput from '@/components/atoms/TextInput.vue';
-import { BForm, BRow, BCol } from 'bootstrap-vue';
 import i18n from '../../i18n';
 
 configure({

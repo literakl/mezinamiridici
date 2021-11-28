@@ -58,14 +58,14 @@ export default new Router({
     {
       path: '/p/zapomenute-heslo',
       name: 'forgotten',
-      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ForgottenPassword'),
+      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ForgottenPassword.vue'),
       beforeEnter: requireUnauth,
       props: true,
     },
     {
       path: '/p/dokonceni-aktivace',
       name: 'resend-activation',
-      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ResendActivation'),
+      component: () => import(/* webpackChunkName: "user-chunk" */ './views/user/ResendActivation.vue'),
       beforeEnter: requireUnauth,
       props: true,
     },
@@ -134,30 +134,30 @@ export default new Router({
     {
       path: '/ankety/:slug/grafy/:type',
       name: 'analyse-poll',
-      component: () => import(/* webpackChunkName: "content-chunk" */ './views/poll/AnalyzeVotes'),
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/poll/AnalyzeVotes.vue'),
       props: true,
     },
     {
       path: '/o/',
       name: 'cms',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Pages'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Pages.vue'),
     },
     {
       path: '/o/:slug',
       name: 'page',
-      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Page'),
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Page.vue'),
       props: true,
     },
     {
       path: '/o/novy',
       name: 'create-content',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CreatePage'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CreatePage.vue'),
       props: true,
     },
     {
       path: '/o/:slug/uprava',
       name: 'edit-content',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/EditPage'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/EditPage.vue'),
       props: true,
     },
     {
@@ -174,7 +174,7 @@ export default new Router({
     {
       path: '/redakce/',
       name: 'articles',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles.vue'),
     },
     {
       path: '/vrakoviste',
