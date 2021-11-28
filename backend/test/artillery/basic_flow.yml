@@ -1,0 +1,51 @@
+config:
+  target: "http://localhost:3000"
+  environments:
+    local:
+      target: "http://localhost:3000"
+    virtual:
+      target: "http://10.0.0.3:3000"
+    beta:
+      target: "https://beta.mezinamiridici.cz/api"
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 10
+      rampTo: 100
+      name: Ramp up load
+    - duration: 600
+      arrivalRate: 100
+      name: Sustained load
+
+scenarios:
+  - name: "Simple flow"
+    flow:
+      - get:
+          url: "/api/bff/polls/last"
+          gzip: true
+      - get:
+          url: "/v1/item-stream?start=0&ps=10"
+          gzip: true
+      - get:
+          url: "/v1/item-stream?start=10&ps=10"
+          gzip: true
+      - get:
+          url: "/api/bff/polls/stihnu-aspon-duben"
+          gzip: true
+      - get:
+          url: "/api/bff/items/1f30acourh/comments"
+          gzip: true
+      - get:
+          url: "/api/v1/blog/testing-post-checking-alignment-issues-and-expended-issues"
+          gzip: true
+      - get:
+          url: "/api/v1/users/leos"
+          gzip: true
+      - get:
+          url: "/api/v1/users/leos/activity?type=blog&ps=10&start=0"
+          gzip: true
+      - get:
+          url: "/api/v1/pages/napoveda"
+          gzip: true
