@@ -22,7 +22,7 @@ module.exports = (app) => {
       if (!item) {
         return api.sendNotFound(res, api.createError('Page not found', 'generic.not-found-caption'));
       }
-      return api.sendCreated(res, api.createResponse(item));
+      return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get page', 'sign-in.something-went-wrong'));
