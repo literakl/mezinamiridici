@@ -8,14 +8,14 @@ config:
     beta:
       target: "https://beta.mezinamiridici.cz/api"
   phases:
-    - duration: 30
-      arrivalRate: 5
-      name: Warm up
-    - duration: 120
-      arrivalRate: 10
-      rampTo: 100
-      name: Ramp up load
-    - duration: 600
+#    - duration: 30
+#      arrivalRate: 5
+#      name: Warm up
+#    - duration: 120
+#      arrivalRate: 10
+#      rampTo: 100
+#      name: Ramp up load
+    - duration: 300
       arrivalRate: 100
       name: Sustained load
 
@@ -38,7 +38,7 @@ scenarios:
           url: "/bff/items/1f30acourh/comments"
           gzip: true
       - get:
-          url: "/v1/blog/testing-post-checking-alignment-issues-and-expended-issues"
+          url: "/api/v1/posts/test-with-pictures"
           gzip: true
       - get:
           url: "/v1/users/leos"
