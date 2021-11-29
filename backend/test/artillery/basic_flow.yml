@@ -38,7 +38,7 @@ scenarios:
           url: "/bff/items/1f30acourh/comments"
           gzip: true
       - get:
-          url: "/api/v1/posts/test-with-pictures"
+          url: "/v1/posts/test-with-pictures"
           gzip: true
       - get:
           url: "/v1/users/leos"
