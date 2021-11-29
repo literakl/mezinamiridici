@@ -23,7 +23,7 @@ scenarios:
   - name: "Simple flow"
     flow:
       - get:
-          url: "/api/bff/polls/last"
+          url: "/bff/polls/last"
           gzip: true
       - get:
           url: "/v1/item-stream?start=0&ps=10"
@@ -32,20 +32,20 @@ scenarios:
           url: "/v1/item-stream?start=10&ps=10"
           gzip: true
       - get:
-          url: "/api/bff/polls/stihnu-aspon-duben"
+          url: "/bff/polls/stihnu-aspon-duben"
           gzip: true
       - get:
-          url: "/api/bff/items/1f30acourh/comments"
+          url: "/bff/items/1f30acourh/comments"
           gzip: true
       - get:
-          url: "/api/v1/blog/testing-post-checking-alignment-issues-and-expended-issues"
+          url: "/v1/blog/testing-post-checking-alignment-issues-and-expended-issues"
           gzip: true
       - get:
-          url: "/api/v1/users/leos"
+          url: "/v1/users/leos"
           gzip: true
       - get:
-          url: "/api/v1/users/leos/activity?type=blog&ps=10&start=0"
+          url: "/v1/users/leos/activity?type=blog&ps=10&start=0"
           gzip: true
       - get:
-          url: "/api/v1/pages/napoveda"
+          url: "/v1/pages/napoveda"
           gzip: true
