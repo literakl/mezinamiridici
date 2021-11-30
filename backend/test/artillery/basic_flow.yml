@@ -4,17 +4,10 @@ config:
     local:
       target: "http://localhost:3000"
     virtual:
-      target: "http://10.0.0.3:3000"
+      target: "http://10.0.0.3:4000"
     beta:
       target: "https://beta.mezinamiridici.cz/api"
   phases:
-#    - duration: 30
-#      arrivalRate: 5
-#      name: Warm up
-#    - duration: 120
-#      arrivalRate: 10
-#      rampTo: 100
-#      name: Ramp up load
     - duration: 300
       arrivalRate: 100
       name: Sustained load
