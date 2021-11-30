@@ -24,7 +24,7 @@ module.exports = (app) => {
         }
       });
 
-      return api.sendCreated(res, api.createResponse(files));
+      return api.sendResponse(res, api.createResponse(files));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Internal error', 'sign-in.something-went-wrong'));

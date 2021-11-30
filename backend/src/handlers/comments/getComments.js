@@ -48,7 +48,7 @@ module.exports = (app) => {
       }
 
       if (parentIdList.length === 0) {
-        return api.sendCreated(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments: [] }));
+        return api.sendResponse(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments: [] }));
       }
 
       pipeline = [

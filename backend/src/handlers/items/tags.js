@@ -19,7 +19,7 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('No items with that tag exists'));
       }
 
-      return api.sendCreated(res, api.createResponse(list));
+      return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));

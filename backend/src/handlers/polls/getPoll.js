@@ -19,7 +19,7 @@ module.exports = (app) => {
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.debug('Item fetched');
 
-      return api.sendCreated(res, api.createResponse(item));
+      return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get polls', 'sign-in.something-went-wrong'));
@@ -50,7 +50,7 @@ module.exports = (app) => {
         logger.debug('Neighbours fetched');
         item.siblings = { newer: values[0], older: values[1] };
       });
-      return api.sendCreated(res, api.createResponse(item));
+      return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get polls', 'sign-in.something-went-wrong'));
