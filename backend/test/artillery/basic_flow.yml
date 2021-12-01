@@ -1,11 +1,11 @@
 config:
   target: "http://localhost:3000"
   environments:
-    local:
+    localhost:
       target: "http://localhost:3000"
-    virtual:
+    lan:
       target: "http://10.0.0.3:4000"
-    beta:
+    nginx:
       target: "https://beta.mezinamiridici.cz/api"
   phases:
     - duration: 300
