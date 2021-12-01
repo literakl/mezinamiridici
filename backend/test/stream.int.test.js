@@ -5,9 +5,9 @@ const dayjs = require('dayjs');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 const {
   api, getAuthHeader, FULL_DATE_FORMAT, SHORT_DATE_FORMAT,
 } = require('./testUtils');
@@ -18,7 +18,7 @@ const {
 let server;
 let dbClient;
 
-test('Stream API', async (done) => {
+test('Stream API', async () => {
   const futurePoll = {
     text: 'Third question',
     picture: 'images/stream/image.jpg',
@@ -170,8 +170,6 @@ test('Stream API', async (done) => {
   expect(response.data[6]._id).toBe(GBlog.id);
   expect(response.data[7]._id).toBe(HBlog.id);
   expect(response.data[8]._id).toBe(IBlog.id);
-
-  done();
 });
 
 beforeEach(async () => {

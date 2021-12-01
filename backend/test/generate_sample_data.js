@@ -19,7 +19,7 @@ const lorem = new LoremIpsum({
   },
 });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
 const app = require('..');
 const {

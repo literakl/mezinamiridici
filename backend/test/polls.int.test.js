@@ -5,9 +5,9 @@ const dayjs = require('dayjs');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 
 const {
   api, bff, getAuthHeader, deepCopy, getActivityCounter, resetHonors,
@@ -19,7 +19,7 @@ const {
 let server;
 let dbClient;
 
-test('Poll API', async (done) => {
+test('Poll API', async () => {
   // create poll, anonymous user
   let body = {
     text: 'First question',
@@ -408,8 +408,6 @@ test('Poll API', async (done) => {
   expect(response.data.trivial).toBe(0);
   expect(response.data.dislike).toBe(0);
   expect(response.data.hate).toBe(0);
-
-  done();
 });
 
 beforeEach(async () => {

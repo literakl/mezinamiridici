@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
-const app = require('../src/server.js');
+const app = require('../src/server');
 const { handleSocialProviderResponse } = require('../src/handlers/users/socialAction');
 
 const {
@@ -37,7 +37,7 @@ class ResponseMock {
   }
 }
 
-test('User API', async (done) => {
+test('User API', async () => {
   // create user
   let body = {
     email: 'leos@email.bud',
@@ -309,11 +309,9 @@ test('User API', async (done) => {
   };
   response = await api(`users/${userId}`, { method: 'PATCH', json: body, headers: getAuthHeader(jwtData) }).json();
   expect(response.success).toBeTruthy();
-
-  done();
 });
 
-test('CORS', async (done) => {
+test('CORS', async () => {
   let response = await api('authorizeUser', { method: 'OPTIONS' });
   expect(response.statusCode).toBe(200);
   response = await api('resetPassword', { method: 'OPTIONS' });
@@ -330,8 +328,6 @@ test('CORS', async (done) => {
   expect(response.statusCode).toBe(200);
   response = await api('users/XXX/validateToken', { method: 'OPTIONS' });
   expect(response.statusCode).toBe(200);
-
-  done();
 });
 
 beforeEach(async () => {

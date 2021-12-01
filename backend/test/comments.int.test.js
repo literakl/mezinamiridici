@@ -8,9 +8,9 @@ dayjs.extend(utc);
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 const {
   api, bff, getAuthHeader, getActivityCounter, resetHonors, FULL_DATE_FORMAT, SHORT_DATE_FORMAT,
 } = require('./testUtils');
@@ -21,7 +21,7 @@ const {
 let server;
 let dbClient;
 
-test('Comments API', async (done) => {
+test('Comments API', async () => {
   const pollBody = {
     text: 'First question',
     picture: 'picture.png',
@@ -390,7 +390,7 @@ test('Comments API', async (done) => {
   counter = await getActivityCounter(dbClient, Leos._id, 'commentVotes');
   expect(counter).toBe(3);
 
-  done();
+  // done();
 });
 
 beforeEach(async () => {

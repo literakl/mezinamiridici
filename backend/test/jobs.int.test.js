@@ -5,9 +5,9 @@ const dayjs = require('dayjs');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 
 const {
   api, bff, getAuthHeader, getUserRank, resetHonors, FULL_DATE_FORMAT, SHORT_DATE_FORMAT,
@@ -20,7 +20,7 @@ const { calculateUserHonors, calculateConsecutiveSharing } = require('../src/job
 
 let dbClient, server;
 
-test('User Rank', async (done) => {
+test('User Rank', async () => {
   await setup(dbClient, api);
   await resetHonors(dbClient);
 
@@ -186,8 +186,6 @@ test('User Rank', async (done) => {
       { week: 7, shared: true },
       { week: 8, shared: false },
     ] });
-
-  done();
 });
 
 beforeEach(async () => {

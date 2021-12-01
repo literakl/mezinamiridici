@@ -4,9 +4,9 @@ const path = require('path');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 const {
   api, getAuthHeader, resetHonors,
 } = require('./testUtils');
@@ -17,7 +17,7 @@ const {
 let server;
 let dbClient;
 
-test('User activity API', async (done) => {
+test('User activity API', async () => {
   // create first poll
   const poll1 = {
     text: 'First question',
@@ -103,8 +103,6 @@ test('User activity API', async (done) => {
   expect(response.data[1]._id).toBe(comment3.comment._id);
   expect(response.data[1].userId).toBe(poll4.author);
   expect(response.data[1].slug).toBe('fourth-question');
-
-  done();
 });
 
 beforeEach(async () => {

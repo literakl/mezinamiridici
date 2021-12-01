@@ -1,5 +1,5 @@
 const { api } = require('./testUtils');
-const app = require('../src/server.js');
+const app = require('../src/server');
 const { logger } = require('../src/utils/logging');
 
 let server;

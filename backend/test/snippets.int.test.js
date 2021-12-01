@@ -4,9 +4,9 @@ const path = require('path');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 
 const {
   api, getAuthHeader,
@@ -17,7 +17,7 @@ const {
 
 let dbClient, server;
 
-test('Item snippets', async (done) => {
+test('Item snippets', async () => {
   await setup(dbClient, api);
 
   const blogBody = {
@@ -119,8 +119,6 @@ test('Item snippets', async (done) => {
   expect(response.data.length).toBe(2);
   expect(response.data[0].code).toBe(snippetBBody.code);
   expect(response.data[1].code).toBe(snippetDBody.code);
-
-  done();
 });
 
 beforeEach(async () => {

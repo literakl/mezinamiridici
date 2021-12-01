@@ -6,9 +6,9 @@ const path = require('path');
 const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
-const mongo = require('../src/utils/mongo.js');
+const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
-const app = require('../src/server.js');
+const app = require('../src/server');
 
 const {
   api, bff, getAuthHeader, FULL_DATE_FORMAT,
@@ -19,7 +19,7 @@ const {
 
 let dbClient, server;
 
-test('Blog', async (done) => {
+test('Blog', async () => {
   await setup(dbClient, api);
 
   const blogBody = {
@@ -164,11 +164,9 @@ test('Blog', async (done) => {
   // cannot delete deleted post
   response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeFalsy();
-
-  done();
 });
 
-test('Tag API', async (done) => {
+test('Tag API', async () => {
   await setup(dbClient, api);
 
   const blogBody = {
@@ -195,11 +193,9 @@ test('Tag API', async (done) => {
   expect(taggedItems.data.length).toBe(1);
   expect(taggedItems.data[0]._id).toBe(blogB.data._id);
   expect(taggedItems.data[0].data.content).toBeUndefined();
-
-  done();
 });
 
-test('Hide Posts', async (done) => {
+test('Hide Posts', async () => {
   await setup(dbClient, api);
 
   const blogBody = {
@@ -224,8 +220,6 @@ test('Hide Posts', async (done) => {
   expect(response.success).toBeTruthy();
   response = await api(`posts/${blog.data.info.slug}`).json();
   expect(response.data.info.hidden).toBe(false);
-
-  done();
 });
 
 beforeEach(async () => {
