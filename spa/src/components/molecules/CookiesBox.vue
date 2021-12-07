@@ -29,12 +29,17 @@
           <h5>Manage Consent Preference</h5>
           <div class="inner-header my-3">
             <h6>Statistical</h6>
-            <b-form-checkbox switch size="lg" v-model="statistical"></b-form-checkbox>
+            <b-form-checkbox switch size="lg" v-model="analytics"></b-form-checkbox>
+          </div>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
+          <div class="inner-header my-3">
+            <h6>Personalization</h6>
+            <b-form-checkbox switch size="lg" v-model="personalization"></b-form-checkbox>
           </div>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
           <div class="inner-header my-3">
             <h6>Marketing</h6>
-            <b-form-checkbox switch size="lg" v-model="marketing"></b-form-checkbox>
+            <b-form-checkbox switch size="lg" v-model="ad"></b-form-checkbox>
           </div>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took</p>
@@ -70,33 +75,34 @@ export default {
   },
   data() {
     return {
-      statistical: false,
-      marketing: false,
+      ad: false,
+      analytics: false,
+      personalization: false,
       preferencesChosen: false,
     };
   },
   methods: {
     confirmAll() {
-      this.statistical = true;
-      this.marketing = true;
+      this.ad = true;
+      this.analytics = true;
+      this.personalization = true;
       this.savePreferences();
     },
     savePreferences() {
-      const options = { statistical: this.statistical, marketing: this.marketing, confirmDate: new Date() };
+      const options = { ad: this.ad, analytics: this.analytics, personalization: this.personalization, confirmDate: new Date() };
       this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
       this.preferencesChosen = true;
     },
-    loadPreferences() {
-      const options = this.$store.dispatch('LOAD_COOKIE_PREFERENCES');
-      if (options) {
-        this.statistical = options.statistical;
-        this.marketing = options.marketing;
-        this.preferencesChosen = true;
-      }
-    },
   },
-  mounted() {
-    this.loadPreferences();
+  async mounted() {
+    const options = await this.$store.dispatch('LOAD_COOKIE_PREFERENCES');
+    if (options) {
+      this.ad = options.ad;
+      this.analytics = options.analytics;
+      this.personalization = options.personalization;
+      this.preferencesChosen = true;
+      this.$emit('cookiePreferenceChange', options);
+    }
   },
 };
 </script>

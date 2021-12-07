@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <script src="<%= BASE_URL %>runtimeConfig.js"></script>
+      <script src="/runtimeConfig.js"></script>
       <!-- Google Tag Manager -->
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('consent', 'default', {
+          ad_storage: 'denied',
+          analytics_storage: 'denied',
+          personalization_storage: 'denied',
+          functionality_storage: 'granted',
+          security_storage: 'granted',
+          wait_for_update: 400,
+        });
+        gtag('set', 'url_passthrough', true);
+        let gtm = (window.location.hostname !== 'www.mezinamiridici.cz') ? 'GTM-W86T93B' : 'GTM-WDMT8Q8';
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-W86T93B');</script>
+      })(window,document,'script','dataLayer', gtm);</script>
       <!-- End Google Tag Manager -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,13 +30,11 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap">
-    <!--<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css">-->
-    <!--<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css">-->
   </head>
   <body>
     <noscript>
         <!-- Google Tag Manager (noscript) -->
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W86T93B" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WDMT8Q8" height="0" width="0" style="display:none;visibility:hidden"></iframe>
         <!-- End Google Tag Manager (noscript) -->
       <strong>Je nám líto, ale jako auto nepojede bez motoru, tak tahle stránka nepofrčí bez Javascriptu. Povolte jej pro jízdu vašeho života.</strong>
     </noscript>

@@ -10,7 +10,6 @@ export default {
     userNickname: null,
     userRoles: [],
     userEmail: null,
-    cookieSettings: { statistical: false, marketing: false, confirmDate: null },
   }),
   getters: {
     IS_AUTHORIZED: state => state.authorized,
@@ -41,9 +40,6 @@ export default {
     },
     SET_USER_EMAIL: (state, payload) => {
       state.userEmail = payload;
-    },
-    SET_COOKIE_SETTINGS: (state, payload) => {
-      state.cookieSettings = payload;
     },
   },
   actions: {
@@ -210,7 +206,6 @@ export default {
           localStorage.removeItem('cookieSettings');
           return undefined;
         }
-        context.commit('SET_COOKIE_SETTINGS', options);
         return options;
       } catch (err) {
         this.$log.error('Failed to load cookies settings', err);

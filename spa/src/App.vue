@@ -104,8 +104,12 @@ export default {
       }
     },
     handleCookies(preferences) {
-      // TODO: Do something with cookie preferences
-      console.log(preferences);
+      gtag('consent', 'update', {
+        ad_storage: preferences.ad,
+        analytics_storage: preferences.analytics,
+        personalization_storage: preferences.personalization,
+      });
+      console.log(window.dataLayer);
     },
   },
 };
