@@ -1,6 +1,6 @@
 {
   "name": "between-us-drivers",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
@@ -47,11 +47,12 @@
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-pwa": "^4.5.15",
     "@vue/cli-service": "^4.5.14",
-    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@vue/eslint-config-airbnb": "^6.0.0",
     "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
     "del": "^6.0.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
+    "eslint": "^8.4.1",
+    "eslint-plugin-vue": "^8.2.0",
     "gulp": "^4.0.2",
     "gulp-zip": "^5.0.2",
     "lint-staged": "^12",

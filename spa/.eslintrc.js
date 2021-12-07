@@ -5,8 +5,10 @@ module.exports = {
     jest: true
   },
   extends: [
-    'plugin:vue/essential',
-    '@vue/airbnb',
+    // "plugin:vue/essential",
+    // "plugin:vue/strongly-recommended",
+    // "plugin:vue/recommended",
+    // '@vue/airbnb',
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -23,9 +25,9 @@ module.exports = {
     "import/no-named-as-default": 0,
     "prefer-destructuring": ["error", {"object": true, "array": false}]
   },
-  parserOptions: {
-    parser: 'babel-eslint',
-  },
+  // parserOptions: {
+  //   "parser": "vue-eslint-parser",
+  // },
   overrides: [
     {
       files: [
