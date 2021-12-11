@@ -202,7 +202,7 @@ export default {
     LOAD_COOKIE_PREFERENCES: async (context) => {
       try {
         const options = JSON.parse(localStorage.getItem('cookieSettings'));
-        if (!options || !options.confirmDate) {
+        if (!options || !options.confirmed) {
           localStorage.removeItem('cookieSettings');
           return undefined;
         }
@@ -214,7 +214,6 @@ export default {
     },
     SAVE_COOKIE_PREFERENCES: (context, { options, component }) => {
       localStorage.setItem('cookieSettings', JSON.stringify(options));
-      context.commit('SET_COOKIE_SETTINGS', options);
       component.$emit('cookiePreferenceChange', options);
     },
   },

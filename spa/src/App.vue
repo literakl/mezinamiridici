@@ -105,9 +105,9 @@ export default {
     },
     handleCookies(preferences) {
       gtag('consent', 'update', {
-        ad_storage: preferences.ad,
-        analytics_storage: preferences.analytics,
-        personalization_storage: preferences.personalization,
+        ad_storage: preferences.ad ? 'granted' : 'denied',
+        analytics_storage: preferences.analytics ? 'granted' : 'denied',
+        personalization_storage: preferences.personalization ? 'granted' : 'denied',
       });
       console.log(window.dataLayer);
     },

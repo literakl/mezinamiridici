@@ -89,7 +89,7 @@ export default {
       this.savePreferences();
     },
     savePreferences() {
-      const options = { ad: this.ad, analytics: this.analytics, personalization: this.personalization, confirmDate: new Date() };
+      const options = { ad: this.ad, analytics: this.analytics, personalization: this.personalization, confirmed: new Date() };
       this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
       this.preferencesChosen = true;
     },
@@ -101,7 +101,6 @@ export default {
       this.analytics = options.analytics;
       this.personalization = options.personalization;
       this.preferencesChosen = true;
-      this.$emit('cookiePreferenceChange', options);
     }
   },
 };
