@@ -58,7 +58,7 @@
     <main>
       <router-view/>
     </main>
-    <CookiesBox :modify-prefs="openCookieDialog" @cookiePreferenceChange="handleCookies($event)"/>
+    <CookiesBox @cookiePreferenceChange="handleCookies($event)"/>
   </div>
 </template>
 
@@ -80,11 +80,6 @@ export default {
     BNavItem,
     InfoBox,
     CookiesBox,
-  },
-  data() {
-    return {
-      openCookieDialog: false,
-    }
   },
   computed: {
     authorized() {
@@ -117,8 +112,7 @@ export default {
       });
     },
     manageCookies() {
-      console.log('open dialog');
-      this.openCookieDialog = true;
+      this.$store.commit('SHOW_COOKIES_DIALOG', true);
     },
   },
 };
