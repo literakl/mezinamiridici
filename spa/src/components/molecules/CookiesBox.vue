@@ -56,7 +56,7 @@
           </div>
           <p>
             Používají se pro ukládání nastavení. Web bude fungovat, ale třeba zapomene,
-            co jste viděli nebo zapomněli naposledy.
+            co jste nastavili nebo viděli naposledy.
           </p>
 
           <div class="inner-header my-3">
