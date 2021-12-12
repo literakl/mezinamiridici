@@ -12,7 +12,10 @@
     "our-mission": "Naše mise",
     "contact": "Kontakt",
     "advertisement": "Reklama",
-    "archive": "Archiv"
+    "archive": "Archiv",
+    "terms": "Podmínky používání",
+    "privacy": "Ochrana osobních údajů",
+    "cookies": "Nastavení cookies"
   },
   "generic": {
     "internal-error": "Jejda, chybička se vloudila. Omlouváme se.",
@@ -347,8 +350,6 @@
     "mission": "Mise",
     "contact": "Kontakt",
     "advertisement": "Reklama",
-    "privacy": "Privacy",
-    "cookies": "Nastavení cookies",
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
     "tags": "Štítky",

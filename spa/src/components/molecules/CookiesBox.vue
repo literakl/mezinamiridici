@@ -1,5 +1,5 @@
 <template>
-  <div class="cookies-box-wrap" v-if="!preferencesChosen">
+  <div class="cookies-box-wrap" v-if="!prefsChosen || modifyPrefs">
     <div class="cookies-box-inner">
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took <span><router-link to="o/privacy"> More info</router-link></span></p>
         <!-- Using value -->
@@ -67,18 +67,21 @@
 import { BButton, BIconXCircle, BFormCheckbox } from 'bootstrap-vue';
 
 export default {
-  name: 'cookiesbox',
+  name: 'CookiesBox',
   components: {
     BButton,
     BIconXCircle,
     BFormCheckbox,
+  },
+  props: {
+    modifyPrefs: false,
   },
   data() {
     return {
       ad: false,
       analytics: false,
       personalization: false,
-      preferencesChosen: false,
+      prefsChosen: false,
     };
   },
   methods: {
@@ -86,12 +89,14 @@ export default {
       this.ad = true;
       this.analytics = true;
       this.personalization = true;
+      this.modifyPrefs = false;
       this.savePreferences();
     },
     savePreferences() {
       const options = { ad: this.ad, analytics: this.analytics, personalization: this.personalization, confirmed: new Date() };
       this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
-      this.preferencesChosen = true;
+      this.modifyPrefs = false;
+      this.prefsChosen = true;
     },
   },
   async mounted() {
@@ -100,7 +105,7 @@ export default {
       this.ad = options.ad;
       this.analytics = options.analytics;
       this.personalization = options.personalization;
-      this.preferencesChosen = true;
+      this.prefsChosen = true;
     }
   },
 };

@@ -12,7 +12,10 @@
     "our-mission": "Our mission",
     "contact": "Contact",
     "advertisement": "Advertisement",
-    "archive": "Archive"
+    "archive": "Archive",
+    "terms": "Terms of Use",
+    "privacy": "Privacy",
+    "cookies": "Cookies"
   },
   "generic": {
     "internal-error": "Oops, this is an error. We are sorry.",
@@ -346,8 +349,6 @@
     "mission": "Mission",
     "contact": "Contact",
     "advertisement": "Advertisement",
-    "privacy": "Privacy",
-    "cookies": "Cookies Setting",
     "not-found": "Page not found",
     "tag": "Tag",
     "tags": "Tags",

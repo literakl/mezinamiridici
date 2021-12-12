@@ -47,8 +47,9 @@
               <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
               <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
               <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/privacy">{{ $t('page-title.privacy') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/cookies">{{ $t('page-title.cookies') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/podminky">{{ $t('app.terms') }}</b-dropdown-item>
+              <b-dropdown-item href="/o/soukromi">{{ $t('app.privacy') }}</b-dropdown-item>
+              <b-dropdown-item href="#0" v-on:click="manageCookies()">{{ $t('app.cookies') }}</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
       </b-navbar>
@@ -57,7 +58,7 @@
     <main>
       <router-view/>
     </main>
-    <CookiesBox @cookiePreferenceChange="handleCookies($event)"/>
+    <CookiesBox :modify-prefs="openCookieDialog" @cookiePreferenceChange="handleCookies($event)"/>
   </div>
 </template>
 
@@ -79,6 +80,11 @@ export default {
     BNavItem,
     InfoBox,
     CookiesBox,
+  },
+  data() {
+    return {
+      openCookieDialog: false,
+    }
   },
   computed: {
     authorized() {
@@ -109,7 +115,10 @@ export default {
         analytics_storage: preferences.analytics ? 'granted' : 'denied',
         personalization_storage: preferences.personalization ? 'granted' : 'denied',
       });
-      console.log(window.dataLayer);
+    },
+    manageCookies() {
+      console.log('open dialog');
+      this.openCookieDialog = true;
     },
   },
 };

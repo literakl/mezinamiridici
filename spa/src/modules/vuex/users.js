@@ -199,7 +199,7 @@ export default {
       const response = await get('BFF', `/users/${payload.userId}/info`, context);
       return response.data.data;
     },
-    LOAD_COOKIE_PREFERENCES: async (context) => {
+    LOAD_COOKIE_PREFERENCES: async () => {
       try {
         const options = JSON.parse(localStorage.getItem('cookieSettings'));
         if (!options || !options.confirmed) {
