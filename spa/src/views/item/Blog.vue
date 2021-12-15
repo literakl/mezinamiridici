@@ -222,9 +222,7 @@ export default {
 
       const regex = /\[code="([\w]+)"\]/gm;
       const replacer = (match, foundCode) => {
-        console.log(foundCode);
         const snippet = this.blog.snippets.find(({ code }) => code === foundCode);
-        console.log(snippet);
         return snippet.content;
       };
       return html.replace(regex, replacer);
