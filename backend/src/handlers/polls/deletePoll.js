@@ -18,6 +18,8 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       const [commandResult] = await Promise.all([
         dbClient.db().collection('items').deleteOne({ _id: pollId }),
+        dbClient.db().collection('comments').deleteOne({ itemId: pollId }),
+        dbClient.db().collection('comment_votes').deleteOne({ itemId: pollId }),
         mongo.logAdminActions(dbClient, req.identity.userId, 'delete poll', pollId),
       ]);
       if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
