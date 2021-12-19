@@ -55,20 +55,26 @@
               <Checkbox
                 v-model="termsAndConditions"
                 :rules="{ required: { allowFalse: false} }"
-                :label="$t('profile.terms')"
                 name="terms"
-                identifier="termsAndConditions"/>
+                identifier="termsAndConditions">
+                <i18n path="profile.terms" tag="label" for="terms">
+                  <a href="/o/podminky" target="_blank">{{ $t('profile.terms-link') }}</a>
+                </i18n>
+              </Checkbox>
             </div>
 
             <div>
               <Checkbox
                 v-model="personalDataProcessing"
                 :rules="{ required: { allowFalse: false} }"
-                :label="$t('profile.processing')"
-                name="processing"
-                identifier="personalDataProcessing"/>
+                name="privacy"
+                identifier="personalDataProcessing">
+                <i18n path="profile.privacy" tag="label" for="personal">
+                  <a href="/o/soukromi" target="_blank">{{ $t('profile.privacy-link') }}</a>
+                </i18n>
+              </Checkbox>
             </div>
-
+<!--
             <div>
               <Checkbox
                 v-model="emailNotifications"
@@ -76,6 +82,7 @@
                 name="email-notifications"
                 identifier="emailNotifications"/>
             </div>
+-->
           </div>
 
           <div v-if="error" class="text-danger">

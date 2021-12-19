@@ -32,11 +32,11 @@ module.exports = (app) => {
     if (socialId) {
       socialRecord = await dbClient.db().collection('social_login').findOne({ _id: socialId });
       if (!socialRecord) {
-        logger.debug(`Registration with invalid socialId ${socialId}`, result);
+        logger.warn(`Registration with invalid socialId ${socialId} for ${email}`, result);
         return api.sendBadRequest(res, result);
       }
       if (socialRecord.email !== email) {
-        logger.debug(`Registration with different email than in socialId ${socialId}`, result);
+        logger.warn(`Registration with different email than in socialId ${socialId} for ${email}`, result);
         return api.sendBadRequest(res, result);
       }
     }

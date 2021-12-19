@@ -13,9 +13,10 @@
       ref="input"
       @click.native="selectfunction($event)"
     >
-      <label :for="identifier" class="atoms__checkbox-label">
+      <label v-if="label" :for="identifier" class="atoms__checkbox-label">
         <span>{{ label }}</span>
       </label>
+      <slot></slot>
     </b-form-checkbox>
   </ValidationProvider>
 </template>
@@ -48,7 +49,7 @@ export default {
     },
     label: {
       type: String,
-      default: '',
+      default: undefined,
     },
     rules: {
       type: [Object, String],

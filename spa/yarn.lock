@@ -10489,7 +10489,7 @@
   "resolved" "https://registry.npmjs.org/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
 
-"vue-i18n@^8.20.0":
+"vue-i18n@latest":
   "integrity" "sha512-7apa5PvRg1YCLoraE3lOgpCG8hJGupLCtywQWedWsgBbvF0TOgFvhitqK9xRH0PBGG1G8aiJz9oklyNDFfDxLg=="
   "resolved" "https://registry.npmjs.org/vue-i18n/-/vue-i18n-8.26.7.tgz"
   "version" "8.26.7"
