@@ -6,7 +6,7 @@
       <CommentForm :isShow="true" :itemId="itemId"/>
     </div>
     <div v-else>
-      <router-link :to="{ name: 'forgotten', params: { redirectUrl: this.$route.fullPath } }">
+      <router-link :to="{ name: 'sign-in', params: { redirectUrl: this.$route.fullPath } }">
         {{ $t('comment.sign-in') }}
       </router-link>
     </div>
