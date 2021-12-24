@@ -1,11 +1,11 @@
 module.exports = {
   apps: [
     {
-      name: 'Beta API',
+      name: 'PROD API',
       script: 'src/start.js',
-      instances: 1,
+      instances: 2,
       exec_mode: 'cluster',
-      max_memory_restart: '200M',
+      max_memory_restart: '600M',
       exp_backoff_restart_delay: 100,
       env: {
         NODE_ENV: 'development',
@@ -13,9 +13,8 @@ module.exports = {
         LOG_PM2: true,
       },
     },
-    /*
     {
-      name: 'Beta User Ranks',
+      name: 'PROD User Ranks',
       script: 'src/jobs/cli_CalculateUserRanks.js',
       instances: 1,
       max_memory_restart: '200M',
@@ -26,7 +25,7 @@ module.exports = {
       },
     },
     {
-      name: 'Beta Parse Accidents',
+      name: 'PROD Parse Accidents',
       script: 'src/jobs/cli_ParseAccidents.js',
       args: 'true',
       instances: 1,
@@ -37,18 +36,5 @@ module.exports = {
         LOG_PM2: true,
       },
     },
-    {
-      name: 'Beta Sitemap',
-      script: 'src/jobs/cli_CreateSitemap.js',
-      args: 'true',
-      instances: 1,
-      max_memory_restart: '200M',
-      exp_backoff_restart_delay: 100,
-      env: {
-        NODE_ENV: 'development',
-        LOG_PM2: true,
-      },
-    },
-     */
   ],
 };

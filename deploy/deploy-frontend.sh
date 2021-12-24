@@ -1,12 +1,10 @@
 #!/bin/bash
 
 DEST=0
-VARIANT=dev
-CONFIG=beta.js
 
 while [[ "$#" -gt 0 ]]; do
  case $1 in
-  -d | --destination) DEST="/home/bud/$2"; shift ;;
+  -d | --destination) DEST="$2"; shift ;;
   *) echo "Unknown parameter $1"; exit 1 ;;
  esac
 
@@ -19,20 +17,28 @@ if [[ "$DEST" == "0" ]] ; then
  exit 1
 fi
 
-if [ ! -d $DEST ] ; then
+if [ ! -d "../$DEST" ] ; then
  echo "Directory $DEST does not exist!"
  exit 1
 fi
 
-echo "Deploying the application into " $(realpath $DEST)
-echo "Is it correct? Enter one of Y/N" 
+TARGET=$(realpath "../$DEST")
+echo "Deploying the application into $TARGET"
+echo "Is it correct? Enter one of Y/N"
 read -r CONFIRM
 if [ "$CONFIRM" != "Y" ] && [ "$CONFIRM" != "y"  ] ; then
  exit 0
 fi
 
-FRONTEND="$(realpath $DEST)/html"
-echo $FRONTEND
+FRONTEND="$TARGET/html"
+if [ $DEST == 'www' ]
+then
+  VARIANT=prod
+  CONFIG=production.js
+else
+  VARIANT=dev
+  CONFIG=beta.js
+fi
 
 rm -r frontend
 mkdir frontend && cd frontend
@@ -48,6 +54,4 @@ mkdir -p $FRONTEND/js
 echo "Deploying the SPA to $FRONTEND"
 echo cp $VARIANT/config/$CONFIG $FRONTEND/runtimeConfig.js
 cp $VARIANT/config/$CONFIG $FRONTEND/runtimeConfig.js
-#rm -rf $VARIANT/config
 cp -r $VARIANT/* $FRONTEND
-

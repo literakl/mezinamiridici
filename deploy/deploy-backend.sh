@@ -16,7 +16,7 @@ done
 if [[ "$DEST" == "0" ]]; then
  echo "Usage:"
  echo "-d | --destination www  Symbolic link to the destination directory"
- echo "-n | --npm         Run 'npm install' in backend"
+ echo "-n | --npm              Run 'npm ci' in backend"
  exit 1
 fi
 
@@ -40,15 +40,13 @@ echo "Unpacking the application"
 unzip -q ../bud-backend.zip
 
 echo "Deleting the previous app"
-echo rm -rf $BACKEND/src $BACKEND/templates $BACKEND/config $BACKEND/package*.json
 rm -rf $BACKEND/src $BACKEND/templates $BACKEND/config $BACKEND/package*.json
 
 echo "Deploying to $BACKEND"
-cp -r .* $BACKEND
+cp -r . $BACKEND
 
 if [ ! "$NPM" == 0 ]; then
  echo "Refreshing the backend dependencies"
  cd $BACKEND
- npm install
+ npm ci
 fi
-
