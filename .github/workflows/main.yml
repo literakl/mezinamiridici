@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        mongodb-version: [4.4]
+        mongodb-version: [5.0]
 
     env:
       JWT_SECRET: SUPERTAJNEHESLO

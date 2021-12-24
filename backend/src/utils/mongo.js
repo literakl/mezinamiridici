@@ -14,7 +14,7 @@ let cachedDb;
 
 function connectToDatabase() {
   if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
-    logger.debug('Using cached Mongo instance');
+    logger.debug('Using the cached Mongo instance');
     return Promise.resolve(cachedDb);
   }
 
