@@ -16,18 +16,18 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      const [commandResult] = await Promise.all([
+      const [result] = await Promise.all([
         dbClient.db().collection('items').deleteOne({ _id: pollId }),
         dbClient.db().collection('comments').deleteOne({ itemId: pollId }),
         dbClient.db().collection('comment_votes').deleteOne({ itemId: pollId }),
         mongo.logAdminActions(dbClient, req.identity.userId, 'delete poll', pollId),
       ]);
-      if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
+      if (result.deletedCount !== 1) {
+        logger.error(`Failed to delete poll ${pollId}`);
+        return api.sendInternalError(res, api.createError('Failed to delete poll', 'sign-in.something-went-wrong'));
+      } else {
         logger.debug('Item deleted');
         return api.sendResponse(res, api.createResponse());
-      } else {
-        logger.error(`Item ${pollId} not deleted`);
-        return api.sendInternalError(res, api.createError('Failed to delete poll', 'sign-in.something-went-wrong'));
       }
     } catch (err) {
       logger.error('Request failed', err);

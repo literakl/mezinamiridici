@@ -71,5 +71,5 @@ function incrementVote(dbClient, commentId, vote) {
   }
 
   return dbClient.db().collection('comments')
-    .findOneAndUpdate({ _id: commentId }, update, { returnOriginal: false });
+    .findOneAndUpdate({ _id: commentId }, update, { returnOriginal: false }); // todo #230
 }

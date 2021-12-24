@@ -20,10 +20,7 @@ function connectToDatabase() {
 
   logger.debug('Get a new Mongo instance from database');
   const start = dayjs();
-  const client = new MongoClient(MONGODB_URI, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
+  const client = new MongoClient(MONGODB_URI);
   return client.connect()
     .then((db) => {
       logger.debug('Successful connect');

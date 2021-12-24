@@ -35,14 +35,14 @@ module.exports = (app) => {
       if (permission.admin) {
         promises.push(mongo.logAdminActions(dbClient, req.identity.userId, 'delete blog', blogId));
       }
-      const [commandResult] = await Promise.all(promises);
 
-      if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
+      const [result] = await Promise.all(promises);
+      if (result.deletedCount !== 1) {
+        logger.error(`Failed to delete blog ${blogId}`);
+        return api.sendInternalError(res, api.createError('Failed to delete blog', 'sign-in.something-went-wrong'));
+      } else {
         logger.info(`Blog deleted: ${blogId} by ${req.identity.userId}`);
         return api.sendResponse(res, api.createResponse());
-      } else {
-        logger.error(`Failed to delete blog: ${blogId}`);
-        return api.sendInternalError(res, api.createError('Failed to delete blog', 'sign-in.something-went-wrong'));
       }
     } catch (err) {
       logger.error('Request failed', err);

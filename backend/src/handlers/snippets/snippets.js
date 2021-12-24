@@ -136,10 +136,11 @@ module.exports = (app) => {
       logger.debug('Snippet deleted');
       // todo mongo log admin
 
-      if (result.result.n === 1 && result.result.ok === 1) {
+      if (result.deletedCount !== 1) {
+        return api.sendNotFound(res, api.createError('Snippet not found', 'generic.not-found-caption'));
+      } else {
         return api.sendResponse(res, api.createResponse(result));
       }
-      return api.sendNotFound(res, api.createError('Snippet not found', 'generic.not-found-caption'));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to delete snippet', 'sign-in.something-went-wrong'));
@@ -171,7 +172,7 @@ async function getSnippet(dbClient, snippetId) {
 }
 
 async function updateSnippet(dbClient, blogId, currentCode, code, type, content) {
-  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId, code: currentCode }, { $set: { code, type, content } });
+  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId, code: currentCode }, { $set: { code, type, content } }); // todo #230
 }
 
 async function deleteSnippet(dbClient, blogId, code) {

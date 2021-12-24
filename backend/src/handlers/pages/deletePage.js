@@ -16,16 +16,16 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      const [commandResult] = await Promise.all([
+      const [result] = await Promise.all([
         dbClient.db().collection('items').deleteOne({ _id: pageId }),
         mongo.logAdminActions(dbClient, req.identity.userId, 'delete page', pageId),
       ]);
-      if (commandResult.result.ok === 1 && commandResult.result.n === 1) {
-        logger.debug('Page deleted');
-        return api.sendResponse(res, api.createResponse());
-      } else {
+      if (result.deletedCount !== 1) {
         logger.error(`Failed to delete page ${pageId}`);
         return api.sendInternalError(res, api.createError('Failed to delete page', 'sign-in.something-went-wrong'));
+      } else {
+        logger.debug('Page deleted');
+        return api.sendResponse(res, api.createResponse());
       }
     } catch (err) {
       logger.error('Request failed', err);
