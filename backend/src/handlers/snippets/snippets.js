@@ -172,7 +172,7 @@ async function getSnippet(dbClient, snippetId) {
 }
 
 async function updateSnippet(dbClient, blogId, currentCode, code, type, content) {
-  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId, code: currentCode }, { $set: { code, type, content } }); // todo #230
+  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId, code: currentCode }, { $set: { code, type, content } });
 }
 
 async function deleteSnippet(dbClient, blogId, code) {
