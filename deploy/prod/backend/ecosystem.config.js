@@ -8,7 +8,7 @@ module.exports = {
       max_memory_restart: '600M',
       exp_backoff_restart_delay: 100,
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         NODE_PORT: 4000,
         LOG_PM2: true,
       },
@@ -20,7 +20,7 @@ module.exports = {
       max_memory_restart: '200M',
       exp_backoff_restart_delay: 100,
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         LOG_PM2: true,
       },
     },
@@ -32,7 +32,7 @@ module.exports = {
       max_memory_restart: '200M',
       exp_backoff_restart_delay: 100,
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         LOG_PM2: true,
       },
     },
