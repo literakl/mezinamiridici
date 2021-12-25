@@ -16,10 +16,10 @@ module.exports = (app) => {
       logger.debug('Item fetched');
 
       if (!list.length) {
-        return api.sendNotFound(res, api.createError('No items with that tag exists'));
+        return api.sendResponse(res, api.createResponse([]));
+      } else {
+        return api.sendResponse(res, api.createResponse(list));
       }
-
-      return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
