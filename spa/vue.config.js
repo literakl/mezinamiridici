@@ -9,12 +9,14 @@ module.exports = {
     optimization: {
       splitChunks: false,
     },
+    externals: {
+      moment: 'moment'
+    },
     devServer: {
       watchOptions: {
         ignored: [/node_modules/, /public/],
       },
     },
-    // mode: 'production',
     plugins: [
       // new BundleAnalyzerPlugin(),
     ],
