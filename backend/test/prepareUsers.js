@@ -119,11 +119,28 @@ const Bara = {
   },
   consent: { terms: new Date(), data: new Date() },
 };
+const redakce = {
+  _id: 'redakce',
+  auth: {
+    email: 'redakce@email.bud',
+    pwdHash: '$2a$10$EgZrIC7jmLGatzhLZeolAuJzL1peobCO5sTUIYa1c2XKNCRRNd2WO',
+    pwdTimestamp: new Date(),
+    verified: true,
+  },
+  bio: {
+    nickname: 'Redakce', registered: new Date(),
+  },
+  prefs: { public: true },
+  honors: {
+    rank: 'novice',
+    count: { pollVotes: 0, comments: 0, commentVotes: 0, commentVoteRatio: 0, blogs: 0, shares: 0, sharingWeeks: 0 },
+  },
+};
 
 async function setup(dbClient, api) {
   const db = dbClient.db();
   await db.collection('users').deleteMany({});
-  await db.collection('users').insertMany([Leos, Jiri, Lukas, Vita, Jana, Bara]);
+  await db.collection('users').insertMany([Leos, Jiri, Lukas, Vita, Jana, Bara, redakce]);
 
   const body = {
     email: 'vita@email.bud',
@@ -155,5 +172,5 @@ async function setup(dbClient, api) {
 }
 
 module.exports = {
-  setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
+  setup, Leos, Jiri, Lukas, Vita, Jana, Bara, redakce
 };

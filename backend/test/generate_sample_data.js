@@ -26,7 +26,7 @@ const {
   api, bff, getAuthHeader, shuffle,
 } = require('./testUtils');
 const {
-  setup, Leos, Jiri, Lukas, Vita, Jana, Bara,
+  setup, Leos, Jiri, Lukas, Vita, Jana, Bara
 } = require('./prepareUsers');
 
 const USERS = [Leos, Jiri, Lukas, Vita, Jana, Bara];
@@ -55,6 +55,7 @@ async function generateData() {
     dropCollection(db, 'poll_votes');
     dropCollection(db, 'link_shares');
     dropCollection(db, 'social_login');
+    dropCollection(db, 'snippets');
     await setup(dbClient, api);
     await mongo.setupIndexes(dbClient);
   } catch (e) {
@@ -292,8 +293,15 @@ function randomUser() {
 }
 
 function dropCollection(db, name) {
-  db.collection(name).dropIndexes().then(logger.info(`Indexes for ${name} were deleted`)).catch(logger.info(`Indexes for ${name} were not deleted`));
-  db.collection(name).drop().then(logger.info(`Collection ${name} was deleted`)).catch(logger.info(`Collection ${name} was not deleted`));
+  db.collection(name)
+    .dropIndexes()
+    .then(() => logger.info(`Indexes for ${name} were deleted`))
+    .catch(() => logger.info(`Indexes for ${name} were not deleted`));
+
+  db.collection(name)
+    .drop()
+    .then(() => logger.info(`Collection ${name} was deleted`))
+    .catch(() => logger.info(`Collection ${name} was not deleted`));
 }
 
 function generateAccidents() {
