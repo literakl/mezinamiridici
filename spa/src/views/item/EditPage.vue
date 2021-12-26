@@ -1,7 +1,7 @@
 <template>
   <div class="mt-4 centerbox">
     <div class="head-area">
-      <h2>{{ $t('cms.edit.edit-cms') }}</h2>
+      <h2>{{ $t('page-title.edit-content') }}</h2>
     </div>
     <PageForm v-if="page" :page="page" :isCreate="false"/>
   </div>
