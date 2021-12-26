@@ -5,10 +5,10 @@ window.config = {
   API_ENDPOINT: 'https://www.mezinamiridici.cz/api/v1',
   BFF_ENDPOINT: 'https://www.mezinamiridici.cz/api/bff',
   REPLY_LIMIT: 5,
-  FACEBOOK_CLIENT_ID: '860316561127732',
+  FACEBOOK_CLIENT_ID: '2402472069835800',
   FACEBOOK_REDIRECT_URI: 'https://www.mezinamiridici.cz/api/v1/auth/facebook',
-  GOOGLE_CLIENT_ID: '396700960342-s9gqte15vsglkgjnfqin14qm5k5gn73e.apps.googleusercontent.com',
+  GOOGLE_CLIENT_ID: '396700960342-th2g6h942lg1fcftlje1u45qmj1vjqgl.apps.googleusercontent.com',
   GOOGLE_REDIRECT_URI: 'https://www.mezinamiridici.cz/api/v1/auth/google',
-  TWITTER_CLIENT_ID: 'jHNJPGIzI6brhdJm6B3V8FBZ6',
+  TWITTER_CLIENT_ID: 'Tnfu4YVPdsnCWVexTZ4oL7HNT',
   TWITTER_REDIRECT_URI: 'https://www.mezinamiridici.cz/api/v1/auth/twitter',
 };
