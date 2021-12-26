@@ -68,8 +68,8 @@ module.exports = {
     default: { appenders: ['application', 'error'], level: 'DEBUG' },
     test: { appenders: ['test'], level: 'DEBUG' },
     mongo: { appenders: ['mongo'], level: 'DEBUG' },
-    production: { appenders: ['application', 'error'], level: 'DEBUG', enableCallStack: true },
-    development: { appenders: ['application', 'error', 'console'], level: 'DEBUG', enableCallStack: true },
+    production: { appenders: ['application', 'error'], level: 'INFO', enableCallStack: true },
+    development: { appenders: ['application', 'error'], level: 'DEBUG', enableCallStack: true },
   },
   levels: {
     verbose: {

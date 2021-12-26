@@ -309,7 +309,9 @@
       "caption-label": "Caption",
       "slug-label": "Slug",
       "content-label": "Content",
-      "new-cms-heading": "New page"
+      "new-cms-heading": "New page",
+      "wysiwyg": "WYSIWYG",
+      "html": "HTML"
     },
     "pages-heading": "Pages",
     "delete-message": "Do you really want to delete this page?"

@@ -310,7 +310,9 @@
       "caption-label": "Titulek",
       "slug-label": "URL adresa",
       "content-label": "Obsah",
-      "new-cms-heading": "Nová stránka"
+      "new-cms-heading": "Nová stránka",
+      "wysiwyg": "WYSIWYG",
+      "html": "HTML"
     },
     "pages-heading": "Stránky",
     "delete-message": "Opravdu chcete smazat tuto stránku?"

@@ -20,7 +20,34 @@
             <b-form-invalid-feedback id="slug-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-form-group>
         </ValidationProvider>
-        <Editor :blog="form.content" @changeBlog="changeBlog"/>
+
+        <div class="row">
+          <Radio
+            v-model="mode"
+            identifier="wysiwyg"
+            class="pl-3"
+            :label="$t('cms.edit.wysiwyg')"
+            name="mode"/>
+          <Radio
+            v-model="mode"
+            identifier="html"
+            class="pl-3"
+            :label="$t('cms.edit.html')"
+            name="mode"/>
+        </div>
+
+        <Editor
+          v-if="mode === 'wysiwyg'"
+          :blog="form.content"
+          @changeBlog="changeBlog"
+        />
+        <b-form-textarea
+          v-if="mode === 'html'"
+          id="htmlcontent"
+          v-model="html"
+          rows="10"
+        />
+
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
@@ -31,8 +58,16 @@
 </template>
 
 <script>
-import { BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton } from 'bootstrap-vue';
+import {
+  BForm,
+  BFormGroup,
+  BFormInput,
+  BFormInvalidFeedback,
+  BButton,
+  BFormTextarea
+} from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
+import Radio from '@/components/atoms/Radio';
 
 export default {
   name: 'PageForm',
@@ -41,8 +76,10 @@ export default {
     BFormGroup,
     BFormInput,
     BFormInvalidFeedback,
+    BFormTextarea,
     BButton,
     Editor,
+    Radio,
   },
   props: {
     isCreate: Boolean,
@@ -53,8 +90,8 @@ export default {
       caption: '',
       slug: '',
       content: null,
-      context: null,
     },
+    mode: 'wysiwyg',
     error: null,
     html: '',
     contentPictures: [],
@@ -64,12 +101,13 @@ export default {
       this.form.caption = this.page.info.caption;
       this.form.slug = this.page.info.slug;
       this.form.content = this.page;
+      this.html = this.page.data.content;
     }
   },
   methods: {
-    changeBlog(blg) {
-      this.getPictureIdList(blg);
-      this.html = blg;
+    changeBlog(source) {
+      this.getPictureIdList(source);
+      this.html = source;
     },
     getValidationState({
       dirty,
@@ -118,10 +156,6 @@ export default {
       for (let i = 0; i < list.length; i += 1) {
         this.contentPictures.push(list[i].getAttribute('pictureid'));
       }
-    },
-
-    onContext() {
-      // this.$log.debug(this.form.date);
     },
   },
 };
