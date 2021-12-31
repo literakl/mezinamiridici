@@ -196,14 +196,14 @@ export default {
 
 .ProseMirror {
   padding: 10px;
-  min-height: 250px;
+  min-height: 130px;
   border-left: #ddd solid 1px;
   border-right: #ddd solid 1px;
   border-bottom: #ddd solid 1px;
 }
 
 .ProseMirror img {
-  width: 100%;
+  max-width: 100%;
 }
 
 .send-comment-btn {
