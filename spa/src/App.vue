@@ -3,28 +3,29 @@
     <header>
       <b-navbar toggleable="sm" type="dark" variant="dark">
         <b-nav-item href="/" class="brand-pic">
-          <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand">
+          <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand ">
         </b-nav-item>
 
-          <b-navbar-nav class="d-none d-sm-block">
+          <b-navbar-nav class="d-none d-sm-block d-sm-dark">
             <div class="d-inline-flex flex-column title-tag">
               <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
               <span class="text-white">{{ $t('app.slogan') }}</span>
             </div>
           </b-navbar-nav>
-          <b-navbar-nav class="ml-auto align-items-center rightmenu">
+          <b-navbar-nav class="ml-auto align-items-center rightmenu info">
+
             <b-nav-item v-if="!authorized">
               <router-link :to="{ name: 'sign-in'}">
                 {{ $t('app.sign-in-up') }}
               </router-link>
             </b-nav-item>
-            <b-nav-item v-if="authorized" v-b-tooltip.hover :title="$t('app.new-post')" toggle-class="text-warning" right>
+            <b-nav-item class="edit" v-if="authorized" v-b-tooltip.hover :title="$t('app.new-post')" toggle-class="text-warning " right>
               <router-link :to="{ name: 'create-blog', params: { id: userId } }">
                 <BIconPencilSquare scale="2"></BIconPencilSquare>
               </router-link>
             </b-nav-item>
-            <b-nav-item-dropdown v-if="authorized" toggle-class="text-warning" right>
-              <template v-slot:button-content>
+            <b-nav-item-dropdown class="sign-out" v-if="authorized" toggle-class="text-warning " right>
+              <template  v-slot:button-content>
                 <BIconPersonCircle scale="2"></BIconPersonCircle>
               </template>
               <b-dropdown-item>
@@ -37,7 +38,7 @@
                   {{ $t('app.update-profile') }}
                 </router-link>
               </b-dropdown-item>
-              <b-dropdown-item href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
+              <b-dropdown-item  class="sign-out-account" href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown toggle-class="text-warning" right>
               <template v-slot:button-content>

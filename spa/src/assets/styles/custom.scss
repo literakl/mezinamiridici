@@ -5,9 +5,9 @@ $primary: $gray-900;
 :root,
 html[theme="default"] {
     --theme-primary: #dcb90b;
-    --text-color: #343A40;
+    --text-color: #343a40;
     --text-color-light: #656565;
-    --link-color:#777A7C;
+    --link-color: #777a7c;
     --link-blue: #2e69ff;
     --body-color: #f2f2f2;
     --color-white: #fff;
@@ -15,21 +15,19 @@ html[theme="default"] {
     --color-darkgreen: #077247;
     --color-lightgreen: rgba(129, 215, 66, 0.9);
     --bg-light: #ecf7fb;
-    --dark-color: #131518!important;
+    --dark-color: #131518 !important;
     // Poll Base Colors
-    --no-problem-status:#28a745;
-    --no-problem-status-hover:#218838;
+    --no-problem-status: #28a745;
+    --no-problem-status-hover: #218838;
 
-    --traval-trouble-status:#007bff;
-    --traval-trouble-status-hover:#0069d9;
+    --traval-trouble-status: #007bff;
+    --traval-trouble-status-hover: #0069d9;
 
-    --dislike-status:#dab70c;
-    --dislike-status-hover:#d1ae00;
+    --dislike-status: #dab70c;
+    --dislike-status-hover: #d1ae00;
 
-    --angry-status:#dc3545;
-    --angry-status-hover:#c82333;
-
-
+    --angry-status: #dc3545;
+    --angry-status-hover: #c82333;
 
     --box-shadow: -2px 2px 3px rgba(57, 73, 76, 0.1);
     --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
@@ -41,10 +39,10 @@ html[theme="default"] {
 
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif!important;
-    font-weight: 300!important;
-    font-size: 1rem!important;
-    color: #333!important;
+    font-family: "Poppins", sans-serif !important;
+    font-weight: 300 !important;
+    font-size: 1rem !important;
+    color: #333 !important;
 }
 
 input,
@@ -70,9 +68,12 @@ p {
     font-size: 14px;
 }
 
-label, input[type="text"], input[type="date"], select {
-    font-size: 14px!important;
-    font-weight: 300!important;
+label,
+input[type="text"],
+input[type="date"],
+select {
+    font-size: 14px !important;
+    font-weight: 300 !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -88,8 +89,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 input {
-    font-size: 14px!important;
-    font-weight: 300!important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
 }
 
 textarea {
@@ -102,59 +103,63 @@ label {
 }
 
 a {
-    color: var(--link-color)!important;
+    color: var(--link-color) !important;
 }
 
-a:hover{
+a:hover {
     color: var(--link-blue);
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 
 button:active {
-    background: transparent!important;
-    color: var(--link-color)!important;
+    background: transparent !important;
+    color: var(--link-color) !important;
 }
 
-textarea, input:focus, button:focus {
+textarea,
+input:focus,
+button:focus {
     outline: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
     resize: none; /*remove the resize handle on the bottom right*/
-    box-shadow: none!important;
+    box-shadow: none !important;
 }
 
-input[type="text"], input[type="password"], textarea, select {
+input[type="text"],
+input[type="password"],
+textarea,
+select {
     outline: none;
-    box-shadow: none!important;
+    box-shadow: none !important;
 }
 
 *:focus {
     outline: none;
 }
 
-
 /* width */
 ::-webkit-scrollbar {
     width: 4px;
-  }
+}
 
-  /* Track */
-  ::-webkit-scrollbar-track {
+/* Track */
+::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px rgb(240, 240, 240);
     border-radius: 10px;
-  }
+}
 
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+/* Handle */
+::-webkit-scrollbar-thumb {
     background: rgb(226, 226, 226);
     border-radius: 10px;
-  }
+}
 
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: #bebebe;
-  }
+}
 button.btn-warning {
     padding-left: 20px !important;
     padding-right: 20px !important;
@@ -173,7 +178,8 @@ svg {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.text-danger, .invalid-feedback {
+.text-danger,
+.invalid-feedback {
     font-size: 14px;
 }
 
@@ -181,8 +187,13 @@ svg {
     margin: 0;
     padding: 0;
     display: block;
-    a{ padding: 0; width: 60px;}
-    img{ width: 100%;}
+    a {
+        padding: 0;
+        width: 60px;
+    }
+    img {
+        width: 100%;
+    }
 }
 
 .rightmenu {
@@ -191,34 +202,32 @@ svg {
             display: flex;
             align-items: center;
             font-size: 15px;
-            color: var(--theme-primary)!important;
+            color: var(--theme-primary) !important;
             svg {
-                font-size: 10px!important;
+                font-size: 10px !important;
                 margin-right: 10px;
                 color: var(--theme-primary);
             }
-
-
-        } a:hover, a:hover svg {
-            color: var(--color-white)!important;
+        }
+        a:hover,
+        a:hover svg {
+            color: var(--color-white) !important;
         }
         ul.dropdown-menu {
             border-radius: 0;
             li {
                 a {
-                    padding:5px 15px;
-                    background-color: transparent!important;
+                    padding: 5px 15px;
+                    background-color: transparent !important;
                     font-size: 14px;
-                    color: var(--text-color)!important;
-
+                    color: var(--text-color) !important;
                 }
                 :hover {
-                    color: var(--link-blue)!important;
+                    color: var(--link-blue) !important;
                     background-color: #f8f9fa;
                 }
-                :focus
-                :active {
-                    color: #333!important;
+                :focus :active {
+                    color: #333 !important;
                 }
             }
         }
@@ -229,7 +238,7 @@ svg {
     margin: 0 0 0 10px;
     h2 {
         font-size: 23px;
-        margin:0;
+        margin: 0;
         text-transform: uppercase;
     }
     span {
@@ -238,7 +247,7 @@ svg {
 }
 
 .no-padding .card-header {
-    padding: 0!important;
+    padding: 0 !important;
     li {
         a {
             color: #333;
@@ -255,18 +264,17 @@ svg {
 }
 
 .no-padding .card-header:first-child {
-    padding: 0!important;
+    padding: 0 !important;
 }
 
 .no-padding ul.nav-tabs {
-     li {
+    li {
         a {
             border-radius: 0;
             color: var(--text-color-light);
             font-size: 14px;
-
         }
-        :hover{
+        :hover {
             border: 1px solid transparent;
         }
         .active {
@@ -287,17 +295,17 @@ svg {
 .post-content > h1 {
     font-size: 21px;
 }
-.wrap-analyze-showcase .form-row legend{
+.wrap-analyze-showcase .form-row legend {
     padding-top: 0;
     padding-bottom: 0;
 }
-.closebtn{
+.closebtn {
     position: absolute;
     right: 20px;
     cursor: pointer;
 }
-.closebtn svg:hover{
-    color: var(--link-blue)!important;
+.closebtn svg:hover {
+    color: var(--link-blue) !important;
 }
 @media (min-width: 1920px) {
     svg {
@@ -329,7 +337,7 @@ svg {
         border-color: #f3f3f3;
         li {
             a {
-                padding: .5rem 1rem;
+                padding: 0.5rem 1rem;
             }
         }
     }
@@ -342,10 +350,19 @@ svg {
 @media (max-width: 575px) {
     .rightmenu {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-evenly;
-        position: relative;
+        position: absolute;
+        right:0;
     }
+    .info{
+        position:absolute;
+        top:10px;
+        right:0
+        
+        
+    }
+
     .navbar-nav .dropdown-menu {
         position: absolute;
         left: 0;
@@ -355,21 +372,93 @@ svg {
         right: 0;
         left: unset;
     }
+    .rightmenu li ul.dropdown-menu {
+        position: absolute;
+        top: 50px;
+        left: -70px;
+        float: left;
+        width: 207px;
+    }
+    .info .dropdown-menu{
+        margin-top:5px
+    }
+    
+    
+    .nav-item{
+        padding:10px 10px;
+        
+    }
     .rightmenu li a {
-        padding: 0 6px!important;
+        padding: 0 6px !important;
         font-size: 14px;
     }
     .rightmenu li ul.dropdown-menu li a {
-        padding: 5px 15px!important;
-
+        padding: 5px 15px !important;
+        
+    }
+    .info{
+        
+        width:200px;
+        display: inline-block;
+    }
+    
+    .info #__BVID__12__BV_toggle_ {
+        margin: 20px 0px;
+    }
+    #__BVID__12 {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .edit{
+        position:absolute;
+        top: 20px;
+        left:20px
+    }
+    .sign-out{
+        position: absolute;
+        top:20px;
+        display: flex;
+    }
+    #__BVID__23{
+        position:absolute;
+        right:20px;
+        top:20px;
+        
+    }
+    #__BVID__12{
+        margin-top: -20px;
     }
     .no-padding ul.nav-tabs {
         border-color: #f3f3f3;
         li {
             a {
                 font-size: 13px;
-                padding: .5rem 0.5rem;
+                padding: 0.5rem 0.5rem;
             }
         }
     }
+    .rightmenu li ul.dropdown-menu{
+        position:absolute;
+        top:50px;
+        left:-70px;
+        float:left;
+        width:160px
+    }
+    .rightmenu li:last-child .dropdown-menu{
+        position:absolute;
+        top:50px;
+        right:0;
+    }
+   .sign-out-account{
+       margin-left:16.5px
+   }
+   .rightmenu li ul.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    left: -70px;
+    float: left;
+    width: 197px;
+}
+   
 }
