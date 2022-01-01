@@ -1,162 +1,223 @@
 <template>
   <div class="editor" v-blur-event>
     <form @submit.prevent>
-    <div>
-      <b-alert :show="showDismissibleAlert" dismissible @dismissed="dismissError" variant="danger">
-        {{ errorMessage }}
-      </b-alert>
-    </div>
-    <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-      <div class="menubar">
-        <button class="menubar__button" @click="commands.undo">
-          <icon name="undo"/>
+      <div>
+        <b-alert
+          :show="showDismissibleAlert"
+          dismissible
+          @dismissed="dismissError"
+          variant="danger"
+        >
+          {{ errorMessage }}
+        </b-alert>
+      </div>
+      <div class="menubar" v-if="editor">
+        <button class="menubar__button" @click="editor.chain().focus().undo().run()">
+          <icon name="undo" />
+        </button>
+        <button class="menubar__button" @click="editor.chain().focus().redo().run()">
+          <icon name="redo" />
+        </button>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleBold().run()"
+          :class="{ 'is-active': editor.isActive('bold') }"
+        >
+          <icon name="bold" />
         </button>
 
-        <button class="menubar__button" @click="commands.redo">
-          <icon name="redo"/>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleItalic().run()"
+          :class="{ 'is-active': editor.isActive('italic') }"
+        >
+          <icon name="italic" />
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-          <icon name="bold"/>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleStrike().run()"
+          :class="{ 'is-active': editor.isActive('strike') }"
+        >
+          <icon name="strike" />
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
-          <icon name="italic"/>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleUnderline().run()"
+          :class="{ 'is-active': editor.isActive('underline') }"
+        >
+          <icon name="underline" />
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
-          <icon name="strike"/>
-        </button>
-
-        <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
-          <icon name="underline"/>
-        </button>
-
-        <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 1 }) }" @click="commands.heading({ level: 1 })">
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+          :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
+        >
           H1
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+          :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
+        >
           H2
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+          :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }"
+        >
           H3
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
-          <icon name="ul"/>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleBulletList().run()"
+          :class="{ 'is-active': editor.isActive('bulletList') }"
+        >
+          <icon name="ul" />
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
-          <icon name="ol"/>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleOrderedList().run()"
+          :class="{ 'is-active': editor.isActive('orderedList') }"
+        >
+          <icon name="ol" />
         </button>
 
-        <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
-          <icon name="quote"/>
+        <button
+          class="menubar__button"
+          @click="editor.chain().focus().toggleCodeBlock().run()"
+          :class="{ 'is-active': editor.isActive('codeBlock') }"
+        >
+          <icon name="quote" />
         </button>
 
-        <button class="menubar__button" @click="commands.horizontal_rule">
-          <icon name="hr"/>
+        <button class="menubar__button" @click="editor.chain().focus().setHorizontalRule().run()">
+          <icon name="hr" />
         </button>
 
-        <button class="menubar__button" @click="showImageModal(commands.image)">
-          <Icon name="image"/>
+        <button class="menubar__button" @click="showImageModal">
+          <Icon name="image" />
         </button>
 
-        <button class="menubar__button" @click="commands.createTable({rowsCount: 2, colsCount: 2, withHeaderRow: false })">
-          <icon name="table"/>
+        <button
+          class="menubar__button"
+          @click="showLinkMenu"
+          :class="{ 'is-active': editor.isActive('link') }"
+        >
+          <span>{{ editor.isActive("link") ? "Update Link" : "Add Link" }}</span>
+          <icon name="link" />
         </button>
 
-        <span v-if="isActive.table()">
-          <button class="menubar__button" @click="commands.deleteTable">
-            <icon name="delete_table"/>
+        <button class="menubar__button" @click="addIframe">
+          <icon name="video" />
+        </button>
+
+        <button
+          class="menubar__button"
+          @click="
+            editor.chain().focus().insertTable({ rows: 2, cols: 2, withHeaderRow: false }).run()
+          "
+        >
+          <icon name="table" />
+        </button>
+
+        <span v-if="editor.can().addColumnBefore()">
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().deleteTable().run()"
+            :disabled="!editor.can().deleteTable()"
+          >
+            <icon name="delete_table" />
           </button>
-          <button class="menubar__button" @click="commands.addColumnBefore">
-            <icon name="add_col_before"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().addColumnBefore().run()"
+            :disabled="!editor.can().addColumnBefore()"
+          >
+            <icon name="add_col_before" />
           </button>
-          <button class="menubar__button" @click="commands.addColumnAfter">
-            <icon name="add_col_after"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().addColumnAfter().run()"
+            :disabled="!editor.can().addColumnAfter()"
+          >
+            <icon name="add_col_after" />
           </button>
-          <button class="menubar__button" @click="commands.deleteColumn">
-            <icon name="delete_col"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().deleteColumn().run()"
+            :disabled="!editor.can().deleteColumn()"
+          >
+            <icon name="delete_col" />
           </button>
-          <button class="menubar__button" @click="commands.addRowBefore">
-            <icon name="add_row_before"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().addRowBefore().run()"
+            :disabled="!editor.can().addRowBefore()"
+          >
+            <icon name="add_row_before" />
           </button>
-          <button class="menubar__button" @click="commands.addRowAfter">
-            <icon name="add_row_after"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().addRowAfter().run()"
+            :disabled="!editor.can().addRowAfter()"
+          >
+            <icon name="add_row_after" />
           </button>
-          <button class="menubar__button" @click="commands.deleteRow">
-            <icon name="delete_row"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().deleteRow().run()"
+            :disabled="!editor.can().deleteRow()"
+          >
+            <icon name="delete_row" />
           </button>
-          <button class="menubar__button" @click="commands.toggleCellMerge">
-            <icon name="combine_cells"/>
+          <button
+            class="menubar__button"
+            @click="editor.chain().focus().mergeCells().run()"
+            :disabled="!editor.can().mergeCells()"
+          >
+            <icon name="combine_cells" />
           </button>
         </span>
       </div>
-    </editor-menu-bar>
 
-    <editor-menu-bubble class="menububble" :editor="editor" @hide="hideLinkMenu" v-slot="{ commands, isActive, getMarkAttrs, menu }">
-      <div class="menububble" :class="{ 'is-active': menu.isActive }" :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`">
-        <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
-          <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu"/>
-          <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
-            <icon name="remove" />
-          </button>
-        </form>
+      <editor-content class="editor__content" :editor="editor" tabindex="0" />
 
-        <template v-else>
-          <button class="menububble__button" @click="showLinkMenu(getMarkAttrs('link'))" :class="{ 'is-active': isActive.link() }">
-            <span>{{ isActive.link() ? "Update Link" : "Add Link" }}</span>
-            <icon name="link" />
-          </button>
-        </template>
-      </div>
-    </editor-menu-bubble>
-    <editor-content class="editor__content" :editor="editor" tabindex="0"/>
-
-    <div class="upload-progress-content" v-if="progressValue!==0 && progressValue!==progressMax">
+      <!-- <div class="upload-progress-content" v-if="progressValue!==0 && progressValue!==progressMax">
       <b-progress class="custom-progress-bar" :value="progressValue" :max="progressMax" variant="success" show-progress animated show-value></b-progress>
-    </div>
+    </div> -->
 
-    <input type="file" ref="fileUploadInput" style="display: none" />
+      <input type="file" ref="fileUploadInput" style="display: none" />
     </form>
   </div>
 </template>
 <script>
-import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
-import {
-  Blockquote,
-  HardBreak,
-  Heading,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  Bold,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-  Focus,
-} from 'tiptap-extensions';
-import { BAlert, BProgress } from 'bootstrap-vue';
-import store from '@/store';
-import Icon from '@/components/atoms/EditorIcon.vue';
-import UploadPicturePlugin from '@/modules/tiptap/uploadPicturePlugin';
-import EmbedLinkPlugin from '@/modules/tiptap/embedLinkPlugin';
+import { Editor, EditorContent } from "@tiptap/vue-2";
+import StarterKit from "@tiptap/starter-kit";
+import Table from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import Underline from "@tiptap/extension-underline";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Iframe from "@/modules/tiptap/iframe";
+import { BAlert, BProgress } from "bootstrap-vue";
+import store from "@/store";
+import Icon from "@/components/atoms/EditorIcon.vue";
 
 async function upload(file, progress) {
   const formData = new FormData();
-  formData.append('image', file);
+  formData.append("image", file);
   // TODO handle errors
-  const res = await store.dispatch('UPLOAD_IMAGE', {
+  const res = await store.dispatch("UPLOAD_IMAGE", {
     body: formData,
     progress,
   });
@@ -167,8 +228,6 @@ export default {
   components: {
     Icon,
     EditorContent,
-    EditorMenuBar,
-    EditorMenuBubble,
     BAlert,
     BProgress,
   },
@@ -179,19 +238,23 @@ export default {
     },
     value: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   model: {
-    prop: 'value',
-    event: 'changeBlog',
+    prop: "value",
+    event: "changeBlog",
   },
   directives: {
     blurEvent: {
       bind(el, binding, vnode) {
-        el.addEventListener('blur', () => {
-          vnode.context.$emit('outOfFocus');
-        }, true);
+        el.addEventListener(
+          "blur",
+          () => {
+            vnode.context.$emit("outOfFocus");
+          },
+          true
+        );
       },
     },
   },
@@ -199,36 +262,24 @@ export default {
     return {
       editor: new Editor({
         extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new Link(),
-          new Bold(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
-          new UploadPicturePlugin(null, null, upload),
-          new Table({
+          StarterKit,
+          Table.configure({
             resizable: true,
           }),
-          new TableHeader(),
-          new TableCell(),
-          new TableRow(),
-          new Focus({
-            className: 'has-focus',
-            nested: false,
+          TableRow,
+          TableHeader,
+          TableCell,
+          Underline,
+          Image,
+          Link.configure({
+            openOnClick: false,
           }),
-          new EmbedLinkPlugin(),
+          Iframe,
         ],
-        content: '',
-        onUpdate: ({ getHTML }) => {
-          const html = getHTML();
-          this.$emit('changeBlog', html);
+        content: "",
+        onUpdate: ({ editor }) => {
+          const html = editor.getHTML();
+          this.$emit("changeBlog", html);
         },
       }),
       linkUrl: null,
@@ -245,24 +296,43 @@ export default {
     },
   },
   methods: {
-    showImageModal(command) {
+    addIframe() {
+      const url = window.prompt("URL");
+
+      if (url) {
+        this.editor.chain().focus().setIframe({ src: url }).run();
+      }
+    },
+    showImageModal() {
       this.$refs.fileUploadInput.click();
       this.$refs.fileUploadInput.command = command;
     },
     clearContent() {
-      this.editor.clearContent(true);
-      this.editor.focus();
+      this.editor.commands.clearContent(true);
+      this.editor.commands.focus();
     },
     setContent(json) {
-      this.editor.setContent(json, true);
-      this.editor.focus();
+      this.editor.commands.setContent(json, true);
+      this.editor.commands.focus();
     },
-    showLinkMenu(attrs) {
-      this.linkUrl = attrs.href;
-      this.linkMenuIsActive = true;
-      this.$nextTick(() => {
-        this.$refs.linkInput.focus();
-      });
+    showLinkMenu() {
+      const previousUrl = this.editor.getAttributes("link").href;
+      this.linkUrl = window.prompt("URL", previousUrl);
+     
+      // cancelled
+      if (this.linkUrl === null) {
+        return;
+      }
+
+      // empty
+      if (this.linkUrl === "") {
+        this.editor.chain().focus().extendMarkRange("link").unsetLink().run();
+
+        return;
+      }
+
+      // update link
+      this.editor.chain().focus().extendMarkRange("link").setLink({ href: this.linkUrl }).run();
     },
     hideLinkMenu() {
       this.linkUrl = null;
@@ -284,24 +354,30 @@ export default {
       if (progressEvent.lengthComputable) {
         totalLength = progressEvent.total;
       } else {
-        totalLength = progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+        totalLength =
+          progressEvent.target.getResponseHeader("content-length") ||
+          progressEvent.target.getResponseHeader("x-decompressed-content-length");
       }
       if (totalLength !== null) {
         _this.progressValue = Math.round((progressEvent.loaded * 100) / totalLength);
       }
     };
 
-    this.$refs.fileUploadInput.addEventListener('change', async (event) => {
+    this.$refs.fileUploadInput.addEventListener("change", async (event) => {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
-        if (['image/jpeg', 'image/webp', 'image/gif', 'image/png', 'image/svg+xml'].indexOf(file.type) === -1) {
-          this.errorMessage = this.$t('editor.image-unsupported-type');
+        if (
+          ["image/jpeg", "image/webp", "image/gif", "image/png", "image/svg+xml"].indexOf(
+            file.type
+          ) === -1
+        ) {
+          this.errorMessage = this.$t("editor.image-unsupported-type");
           this.showDismissibleAlert = true;
           return;
         }
 
         if (file.size > 20000000) {
-          this.errorMessage = this.$t('editor.image-too-big');
+          this.errorMessage = this.$t("editor.image-too-big");
           this.showDismissibleAlert = true;
           return;
         }
@@ -324,14 +400,14 @@ export default {
   margin-bottom: 15px;
 }
 .upload-progress-content {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;
   left: 0;
 }
-.custom-progress-bar{
+.custom-progress-bar {
   position: inherit;
   top: 50%;
   width: calc(100vw - 20%);
@@ -358,12 +434,12 @@ export default {
   display: flex;
   border: 0;
   border-bottom: 2px solid #ddd;
-  font-size: 18px!important;
+  font-size: 18px !important;
   border-radius: 0;
   padding: 0;
 }
 
-.ProseMirror-focused  .has-focus {
+.ProseMirror-focused .has-focus {
   border-radius: 3px;
   box-shadow: 0 0 0 3px #f7f7f7;
 }
@@ -380,7 +456,7 @@ export default {
   width: 100%;
   margin-bottom: 15px;
 }
-.editor .menubar{
+.editor .menubar {
   flex-wrap: wrap;
   padding: 4px 5px;
   border-radius: 4px 4px 0 0;
@@ -435,7 +511,6 @@ blockquote p {
   font-style: normal;
   font-weight: bold;
 }
-
 
 table {
   width: 100%;
@@ -504,7 +579,7 @@ $color-grey: #dddddd;
   cursor: pointer;
 }
 .menubar__button:hover {
-   background: #f8f7f4;
+  background: #f8f7f4;
 }
 .menubar__button.is-active {
   border-bottom: 3px solid var(--theme-primary);

@@ -51,7 +51,7 @@ function get(endpoint, url, context = undefined) {
 function post(endpoint, url, body, context, jwt, progress) {
   const headers = getAuthHeader(context, jwt, progress);
   if (endpoint === 'BFF') {
-    return axios.post(`${BFF_ENDPOINT}${url}`, body, headers);
+    return axios.post(`https://beta.mezinamiridici.cz/api/v1`, body, headers);
   } else {
     return axios.post(`${API_ENDPOINT}${url}`, body, headers);
   }
