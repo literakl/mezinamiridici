@@ -33,7 +33,6 @@ html[theme="default"] {
     --big-shadow: 10px 10px 52px -30px rgba(0, 0, 0, 0.75);
     --inside-padding: 18px 25px;
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
-    -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -359,8 +358,8 @@ svg {
         position:absolute;
         top:10px;
         right:0
-        
-        
+
+
     }
 
     .navbar-nav .dropdown-menu {
@@ -382,11 +381,11 @@ svg {
     .info .dropdown-menu{
         margin-top:5px
     }
-    
-    
+
+
     .nav-item{
         padding:10px 10px;
-        
+
     }
     .rightmenu li a {
         padding: 0 6px !important;
@@ -394,14 +393,14 @@ svg {
     }
     .rightmenu li ul.dropdown-menu li a {
         padding: 5px 15px !important;
-        
+
     }
     .info{
-        
+
         width:200px;
         display: inline-block;
     }
-    
+
     .info #__BVID__12__BV_toggle_ {
         margin: 20px 0px;
     }
@@ -424,7 +423,7 @@ svg {
         position:absolute;
         right:20px;
         top:20px;
-        
+
     }
     #__BVID__12{
         margin-top: -20px;
@@ -460,5 +459,5 @@ svg {
     float: left;
     width: 197px;
 }
-   
+
 }

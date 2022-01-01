@@ -4,7 +4,7 @@
       <b-col>
         <h1>{{ $t('generic.not-found-caption') }}</h1>
         <p>{{ $t('generic.not-found-message') }}</p>
-        <img src="/images/opravit.jpg" :alt="$t('generic.we-must-fix')" width="1156">
+        <img src="/images/opravit.jpg" :alt="$t('generic.we-must-fix')" width="1156" height="774">
       </b-col>
     </b-row>
   </div>
