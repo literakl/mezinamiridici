@@ -25,14 +25,6 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
   },
-  pwa: {
-    name: "Mezi námi řidiči",
-    iconPaths: {
-      favicon32: 'images/fav/32.png',
-      favicon16: 'images/fav/16.png',
-      appleTouchIcon: 'images/fav/152.png',
-    },
-  },
   chainWebpack: (config) => {
     config.module
       .rule('vue')
