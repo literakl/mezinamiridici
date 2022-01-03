@@ -208,6 +208,7 @@ import TableHeader from "@tiptap/extension-table-header";
 import Underline from "@tiptap/extension-underline";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
+import {getEmbedURL} from "@/modules/tiptap/embedLinkGenerate";
 import Iframe from "@/modules/tiptap/iframe";
 import { BAlert, BProgress } from "bootstrap-vue";
 import store from "@/store";
@@ -297,15 +298,14 @@ export default {
   },
   methods: {
     addIframe() {
-      const url = window.prompt("URL");
-
+      let url = window.prompt("URL");
+      url = getEmbedURL(url)
       if (url) {
-        this.editor.chain().focus().setIframe({ src: url }).run();
+        this.editor.chain().focus().setIframe({ src: url }).run(); 
       }
     },
     showImageModal() {
       this.$refs.fileUploadInput.click();
-      this.$refs.fileUploadInput.command = command;
     },
     clearContent() {
       this.editor.commands.clearContent(true);
@@ -384,8 +384,7 @@ export default {
 
         // #214 TODO add dialog here?
         const data = await upload(file, progress);
-        event.target.command({ src: data.url, pictureid: data.pictureId });
-        event.target.command = null;
+        this.editor.chain().focus().setImage({ src: data.url }).run();
       }
     });
   },
@@ -700,6 +699,38 @@ $color-grey: #dddddd;
   }
   .ProseMirror {
     max-height: 50vh;
+  }
+}
+</style>
+
+<style lang="scss">
+@use "sass:math";
+.ProseMirror {
+  > * + * {
+    margin-top: 0.75em;
+  }
+}
+
+.iframe-wrapper {
+  position: relative;
+  padding-bottom: math.div(100,16)*7%;
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 700px;
+  overflow-y: scroll;
+
+  &.ProseMirror-selectednode {
+    outline: 1px solid #68CEF8;
+  }
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 }
 </style>
