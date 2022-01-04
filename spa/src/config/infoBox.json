@@ -1,7 +1,6 @@
 {
-  "infoBoxes": 
+  "infoBoxes":
     [
-      { "id": 1, "since": "2021-04-19 07:00", "to": "2021-06-22 06:52", "template": "components/info/WhyThisForum.vue" },
-      { "id": 2, "since": "2021-03-21 02:00", "to": "2021-06-20 06:00", "template": "components/info/ReducingAccidents.vue" }
+      { "id": 1, "since": "2022-01-01 07:00", "to": "2022-12-31 23:59", "template": "components/info/Mise.vue" }
     ]
 }
