@@ -31,13 +31,13 @@ export const getEmbedURL = (url) => {
             type: 'instagram' 
         },
         {
-            exp: /^.*(facebook.com.*\/*\/posts\/)([[0-9]{16}]*).*/,
+            exp: /^.*(facebook.com.*\/*\/posts\/)((\d+)$]*).*/,
             width: 400,
             embedURL:{
-                firstPart: `https://www.facebook.com/v3.2/plugins/post.php?app_id=&channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df82c808c66bb44%26domain%3D%26is_canvas%3Dfalse%26origin%3Ddata%253A%252F%252F%252Ff21a1e3966ac65%26relation%3Dparent.parent&container_width=534&href=https%3A%2F%2Fwww.facebook.com%2Fenkocz%2Fposts%2F`,
-                lastPart: `&locale=en_US&width=500`
+                firstPart: `https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fnayadiganta%2Fposts%2F`,
+                lastPart: `&show_text=true&width=500`
             },
-            length: 16,
+            length: 17,
             type: 'facebook' 
         }
     ]
@@ -47,7 +47,7 @@ export const getEmbedURL = (url) => {
 
         if(regFilterInfo){
             const match  = url.match(regFilterInfo[0].exp)
-            return (match && match[2].length === regFilterInfo[0].length)
+            return (match && match[2].length <= regFilterInfo[0].length)
             ? `${regFilterInfo[0].embedURL.firstPart}${match[2]}${regFilterInfo[0].embedURL.lastPart}`
             : null;
         }   
