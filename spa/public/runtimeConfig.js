@@ -1,5 +1,5 @@
 window.config = {
-  I18N_LOCALE: 'cs',
+  I18N_LOCALE: 'en',
   I18N_FALLBACK_LOCALE: 'cs',
   LOG_LEVEL: 'debug',
   LOG_PRODUCTION_TIP: false,

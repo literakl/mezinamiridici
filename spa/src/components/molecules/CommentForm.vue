@@ -12,54 +12,80 @@
       <b-container fluid>
         <b-row>
           <b-col sm="12" class="editor-js" :id="`editor-js-${commentId}`">
-            <editor-menu-bar v-if="isShow" :editor="editor" v-slot="{ commands, isActive }">
-              <div class="menubar">
+            <div class="menubar" v-if="editor">
                 <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline">
                   <BIconEmojiSunglasses></BIconEmojiSunglasses>
                 </b-button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.bold() }" @click="commands.bold">
-                  <icon name="bold"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleBold().run()"
+                  :class="{ 'is-active': editor.isActive('bold') }"
+                >
+                  <icon name="bold" />
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
-                  <icon name="italic"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleItalic().run()"
+                  :class="{ 'is-active': editor.isActive('italic') }"
+                >
+                  <icon name="italic" />
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.blockquote() }" @click="commands.blockquote">
-                  <icon name="quote"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleCodeBlock().run()"
+                  :class="{ 'is-active': editor.isActive('codeBlock') }"
+                >
+                  <icon name="quote" />
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
-                  <icon name="strike"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleStrike().run()"
+                  :class="{ 'is-active': editor.isActive('strike') }"
+                >
+                  <icon name="strike" />
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.underline() }" @click="commands.underline">
-                  <icon name="underline"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleUnderline().run()"
+                  :class="{ 'is-active': editor.isActive('underline') }"
+                >
+                  <icon name="underline" />
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
-                  <icon name="ul"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleBulletList().run()"
+                  :class="{ 'is-active': editor.isActive('bulletList') }"
+                >
+                  <icon name="ul" />
                 </button>
 
-                <button class="menubar__button" :class="{ 'is-active': isActive.ordered_list() }" @click="commands.ordered_list">
-                  <icon name="ol"/>
+                <button
+                  class="menubar__button"
+                  @click="editor.chain().focus().toggleOrderedList().run()"
+                  :class="{ 'is-active': editor.isActive('orderedList') }"
+                >
+                  <icon name="ol" />
                 </button>
 
-                <button class="menubar__button" @click="commands.undo">
-                  <icon name="undo"/>
+                <button class="menubar__button" @click="editor.chain().focus().undo().run()">
+                  <icon name="undo" />
                 </button>
 
-                <button class="menubar__button" @click="commands.redo">
-                  <icon name="redo"/>
+                <button class="menubar__button" @click="editor.chain().focus().redo().run()">
+                  <icon name="redo" />
                 </button>
 
                 <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" class="closebtn">
                   <BIconXCircle></BIconXCircle>
                 </b-button>
               </div>
-            </editor-menu-bar>
-            <editor-content v-if="isShow" :editor="editor"/>
+              <editor-content v-if="isShow" :editor="editor"/>
           </b-col>
         </b-row>
       </b-container>
@@ -74,19 +100,9 @@
 
 <script>
 import { BIconEmojiSunglasses, BIconXCircle, BPopover, BButton, BContainer, BRow, BCol, BAlert } from 'bootstrap-vue';
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
-import {
-  Blockquote,
-  OrderedList,
-  BulletList,
-  ListItem,
-  Bold,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-} from 'tiptap-extensions';
+import { Editor, EditorContent } from "@tiptap/vue-2";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
 import Button from '@/components/atoms/Button.vue';
 import Icon from '@/components/atoms/EditorIcon.vue';
 
@@ -110,7 +126,6 @@ export default {
     BAlert,
     Icon,
     EditorContent,
-    EditorMenuBar,
   },
   data() {
     return {
@@ -123,24 +138,13 @@ export default {
         '\u{1F62D}', '\u{1F629}', '\u{1F621}', '\u{1F620}', '\u{1F47F}'],
       editor: new Editor({
         extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new ListItem(),
-          new OrderedList(),
-          new Link(),
-          new Bold(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
+          StarterKit,
+          Underline,
         ],
         content: '',
-        onUpdate: ({
-          getJSON,
-          getHTML,
-        }) => {
-          this.json = getJSON();
-          this.html = getHTML();
+        onUpdate: ({editor}) => {
+          this.json = editor.getJSON();
+          this.html = editor.getHTML();
           if (this.html.replace(/<[^>]*>/g, '')
             .trim().length > 0) {
             this.empty = false;
@@ -173,7 +177,7 @@ export default {
 
       try {
         await this.$store.dispatch('ADD_COMMENT', payload);
-        this.editor.clearContent(true);
+        this.editor.commands.clearContent(true);
         this.$emit('dismiss');
       } catch (e) {
         this.$log.error(e);
@@ -183,7 +187,7 @@ export default {
     },
     async addEmoji(idx) {
       const editorData = `${this.html}<p>${this.emojiArray[idx]}</p>`;
-      this.editor.setContent(editorData, true);
+      this.editor.commands.setContent(editorData, true);
     },
   },
 };

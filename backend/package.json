@@ -37,6 +37,7 @@
     "nodemailer": "^6.4.16",
     "oauth": "^0.9.15",
     "qs": "^6.9.4",
+    "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "sanitize-html": "^2.3.2",
     "set-value": "^4.1.0",
