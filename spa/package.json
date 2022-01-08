@@ -35,7 +35,7 @@
     "jwt-decode": "^2.2.0",
     "loglevel": "^1.6.8",
     "nanoid": "^3.1.12",
-    "register-service-worker": "^1.7.1",
+    "register-service-worker": "^1.7.2",
     "sync-fetch": "^0.3.0",
     "tiptap": "^1.30.0",
     "tiptap-commands": "^1.15.0",

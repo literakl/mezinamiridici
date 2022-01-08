@@ -55,6 +55,9 @@
           </b-navbar-nav>
       </b-navbar>
       <info-box></info-box>
+      <b-button v-if="updateExists" @click="refreshApp" class="w-100 fixed-top bg-warning text-dark rounded-0 border-warning">
+        {{ $t('app.update') }}
+      </b-button>
     </header>
     <main>
       <router-view/>
@@ -64,13 +67,16 @@
 </template>
 
 <script>
-import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem } from 'bootstrap-vue';
+import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem, BButton } from 'bootstrap-vue';
 import InfoBox from '@/components/molecules/InfoBox.vue';
 import CookiesBox from '@/components/molecules/CookiesBox.vue';
+import update from './modules/mixins/update';
 
 export default {
   name: 'App',
+  mixins: [update],
   components: {
+    BButton,
     BIconPersonCircle,
     BIconInfoCircle,
     BIconPencilSquare,
@@ -79,8 +85,8 @@ export default {
     BNavItemDropdown,
     BDropdownItem,
     BNavItem,
-    InfoBox,
     CookiesBox,
+    InfoBox,
   },
   computed: {
     authorized() {
@@ -97,6 +103,13 @@ export default {
     this.$store.dispatch('LOAD_USER');
   },
   methods: {
+    makeToast() {
+      this.$bvToast.toast('Toast body content', {
+        title: 'Update',
+        variant: 'success',
+        solid: true
+      })
+    },
     signMeOut() {
       this.$store.dispatch('SIGN_USER_OUT');
       if (this.$route.path === '/') {

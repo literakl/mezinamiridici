@@ -15,7 +15,8 @@
     "archive": "Archive",
     "terms": "Terms of Use",
     "privacy": "Privacy",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "update": "Reload app"
   },
   "generic": {
     "internal-error": "Oops, this is an error. We are sorry.",

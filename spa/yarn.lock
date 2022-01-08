@@ -8793,7 +8793,7 @@
     "unicode-match-property-ecmascript" "^2.0.0"
     "unicode-match-property-value-ecmascript" "^2.0.0"
 
-"register-service-worker@^1.7.1":
+"register-service-worker@^1.7.2":
   "integrity" "sha512-CiD3ZSanZqcMPRhtfct5K9f7i3OLCcBBWsJjLh1gW9RO/nS94sVzY59iS+fgYBOBqaBpf4EzfqUF3j9IG+xo8A=="
   "resolved" "https://registry.npmjs.org/register-service-worker/-/register-service-worker-1.7.2.tgz"
   "version" "1.7.2"
