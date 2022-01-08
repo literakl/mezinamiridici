@@ -41,7 +41,7 @@
     "tiptap-commands": "^1.15.0",
     "tiptap-extensions": "^1.33.0",
     "tiptap-utils": "^1.13.1",
-    "vee-validate": "^3.3.7",
+    "vee-validate": "^3",
     "vue": "^2.6.14",
     "vue-authenticate": "^1.5",
     "vue-axios": "^2.1.5",

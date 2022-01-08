@@ -6,7 +6,7 @@
     :vid="vid"
     :rules="rules"
     :name="name || label"
-    v-slot="{ errors, required, ariaInput, ariaMsg }">
+    v-slot="{ errors, required, ariaMsg }">
     <div>
       <label
         @click="$refs.input.focus()"
@@ -22,7 +22,7 @@
         :placeholder="placeholder"
         ref="input"
         v-model="innerValue"
-        v-bind="ariaInput">
+        >
       </b-form-input>
       <div
         class="p-1 text-danger"
