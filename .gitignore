@@ -32,9 +32,6 @@ transfer
 /backend/src/dist/
 /backend/test/coverage
 
-/spa/.env
-/spa/public/runtimeConfig.js
-
 /spa/public/images/uploads/
 /backend/.eslintrc.js
 sitemap.xml

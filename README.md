@@ -45,10 +45,10 @@ and repeat the import procedure.
 Copy `.env.template` to `.env` and update as needed. You may need to set 
 your local IP address in CORS_ORIGINS property.
 
-### spa/public/runtimeConfig.js
+### spa/.env.development.local
 
-Copy `spa/public/config/local.js` to `spa/public/runtimeConfig.js` and 
-update the target file as needed. If you want to access the site from 
+Create file [spa/.env.development.local](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)
+and update as needed. If you want to access the site from 
 other devices (e.g. mobile phone), you should point the endpoint 
 URL properties to your real IP address (not localhost or 127.0.0.1).
 

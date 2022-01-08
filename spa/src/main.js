@@ -31,33 +31,33 @@ Vue.component('ValidationProvider', ValidationProvider);
 Vue.directive('b-tooltip', VBTooltip);
 
 // VUE_APP_LOG_LEVEL
-log.setLevel(window.config.LOG_LEVEL || 'debug');
+log.setLevel(process.env.LOG_LEVEL || 'debug');
 Vue.$log = log;
 Vue.prototype.$log = Vue.$log;
 
-Vue.config.productionTip = window.config.LOG_PRODUCTION_TIP || false;
+Vue.config.productionTip = process.env.VUE_APP_LOG_PRODUCTION_TIP || false;
 Vue.use(ModalPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',
-  baseUrl: window.config.API_ENDPOINT,
+  baseUrl: process.env.VUE_APP_API_ENDPOINT,
   storageType: 'localStorage',
   bindRequestInterceptor() {},
   bindResponseInterceptor() {},
   providers: {
     facebook: {
-      clientId: window.config.FACEBOOK_CLIENT_ID,
-      redirectUri: window.config.FACEBOOK_REDIRECT_URI,
+      clientId: process.env.VUE_APP_FACEBOOK_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_FACEBOOK_REDIRECT_URI,
     },
     twitter: {
-      clientId: window.config.TWITTER_CLIENT_ID,
-      redirectUri: window.config.TWITTER_REDIRECT_URI,
+      clientId: process.env.VUE_APP_TWITTER_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_TWITTER_REDIRECT_URI,
     },
     google: {
-      clientId: window.config.GOOGLE_CLIENT_ID,
-      redirectUri: window.config.GOOGLE_REDIRECT_URI,
+      clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+      redirectUri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
     },
   },
 });
