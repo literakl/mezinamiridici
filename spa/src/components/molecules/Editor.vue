@@ -11,180 +11,246 @@
           {{ errorMessage }}
         </b-alert>
       </div>
+
       <div class="menubar" v-if="editor">
-        <button class="menubar__button" @click="editor.chain().focus().undo().run()">
+        <button
+          :title="$t('editor.menu.undo')"
+          @click="editor.chain().focus().undo().run()"
+          class="menubar__button"
+        >
           <icon name="undo" />
         </button>
-        <button class="menubar__button" @click="editor.chain().focus().redo().run()">
+
+        <button
+          :title="$t('editor.menu.redo')"
+          @click="editor.chain().focus().redo().run()"
+          class="menubar__button"
+        >
           <icon name="redo" />
         </button>
+
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.bold')"
           @click="editor.chain().focus().toggleBold().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('bold') }"
         >
           <icon name="bold" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.italic')"
           @click="editor.chain().focus().toggleItalic().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('italic') }"
         >
           <icon name="italic" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.strike')"
           @click="editor.chain().focus().toggleStrike().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('strike') }"
         >
           <icon name="strike" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.underline')"
           @click="editor.chain().focus().toggleUnderline().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('underline') }"
         >
           <icon name="underline" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.h1')"
           @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
         >
           H1
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.h2')"
           @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
         >
           H2
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.h3')"
           @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }"
         >
           H3
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.ul')"
           @click="editor.chain().focus().toggleBulletList().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('bulletList') }"
         >
           <icon name="ul" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.ol')"
           @click="editor.chain().focus().toggleOrderedList().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('orderedList') }"
         >
           <icon name="ol" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.quote')"
           @click="editor.chain().focus().toggleCodeBlock().run()"
+          class="menubar__button"
           :class="{ 'is-active': editor.isActive('codeBlock') }"
         >
           <icon name="quote" />
         </button>
 
-        <button class="menubar__button" @click="editor.chain().focus().setHorizontalRule().run()">
-          <icon name="hr" />
+        <button
+          :title="$t('editor.menu.hr')"
+          @click="editor.chain().focus().setHorizontalRule().run()"
+          class="menubar__button"
+        >
+          <icon name="hr"/>
         </button>
 
-        <button class="menubar__button" @click="showImageModal">
+        <button
+          :title="$t('editor.menu.image')"
+          @click="showImageModal"
+          class="menubar__button"
+        >
           <Icon name="image" />
         </button>
 
         <button
-          class="menubar__button"
+          :title="$t('editor.menu.link')"
+          v-if="!editor.isActive('link')"
           @click="showLinkMenu"
-          :class="{ 'is-active': editor.isActive('link') }"
+          class="menubar__button"
         >
-          <span>{{ editor.isActive("link") ? "Update Link" : "Add Link" }}</span>
           <icon name="link" />
         </button>
 
-        <button class="menubar__button" @click="addIframe">
+<!--        <button TODO fix
+          :title="$t('editor.menu.unlink')"
+          v-if="editor.isActive('link')"
+          @click="editor.chain().clearNodes().run()"
+          class="is-active menubar__button"
+        >
+          <icon name="trash" />
+        </button>-->
+
+        <button
+          :title="$t('editor.menu.link-edit')"
+          v-if="editor.isActive('link')"
+          @click="showLinkMenu"
+          class="is-active menubar__button"
+        >
+          <icon name="link" />
+        </button>
+
+        <button
+          :title="$t('editor.menu.media')"
+          @click="addIframe"
+          class="menubar__button"
+        >
           <icon name="video" />
         </button>
 
         <button
+          :title="$t('editor.menu.table-add')"
+          @click="editor.chain().focus().insertTable({ rows: 2, cols: 2, withHeaderRow: false }).run()"
           class="menubar__button"
-          @click="
-            editor.chain().focus().insertTable({ rows: 2, cols: 2, withHeaderRow: false }).run()
-          "
         >
           <icon name="table" />
         </button>
 
         <span v-if="editor.can().addColumnBefore()">
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().deleteTable().run()"
+            :title="$t('editor.menu.table-delete')"
             :disabled="!editor.can().deleteTable()"
+            @click="editor.chain().focus().deleteTable().run()"
+            class="menubar__button"
           >
             <icon name="delete_table" />
           </button>
+
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().addColumnBefore().run()"
+            :title="$t('editor.menu.column-add-before')"
             :disabled="!editor.can().addColumnBefore()"
+            @click="editor.chain().focus().addColumnBefore().run()"
+            class="menubar__button"
           >
             <icon name="add_col_before" />
           </button>
+
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().addColumnAfter().run()"
+            :title="$t('editor.menu.column-add-after')"
             :disabled="!editor.can().addColumnAfter()"
+            @click="editor.chain().focus().addColumnAfter().run()"
+            class="menubar__button"
           >
             <icon name="add_col_after" />
           </button>
+
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().deleteColumn().run()"
+            :title="$t('editor.menu.column-delete')"
             :disabled="!editor.can().deleteColumn()"
+            @click="editor.chain().focus().deleteColumn().run()"
+            class="menubar__button"
           >
             <icon name="delete_col" />
           </button>
+
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().addRowBefore().run()"
+            :title="$t('editor.menu.row-add-before')"
             :disabled="!editor.can().addRowBefore()"
+            @click="editor.chain().focus().addRowBefore().run()"
+            class="menubar__button"
           >
             <icon name="add_row_before" />
           </button>
+
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().addRowAfter().run()"
+            :title="$t('editor.menu.row-add-after')"
             :disabled="!editor.can().addRowAfter()"
+            @click="editor.chain().focus().addRowAfter().run()"
+            class="menubar__button"
           >
             <icon name="add_row_after" />
           </button>
+
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().deleteRow().run()"
+            :title="$t('editor.menu.row-delete')"
             :disabled="!editor.can().deleteRow()"
+            @click="editor.chain().focus().deleteRow().run()"
+            class="menubar__button"
           >
             <icon name="delete_row" />
           </button>
+
+<!--          TODO: fix UX
           <button
-            class="menubar__button"
-            @click="editor.chain().focus().mergeCells().run()"
+            :title="$t('editor.menu.cells-merge')"
             :disabled="!editor.can().mergeCells()"
+            @click="editor.chain().focus().mergeCells().run()"
+            class="menubar__button"
           >
             <icon name="combine_cells" />
-          </button>
+          </button>-->
         </span>
       </div>
 
@@ -301,7 +367,7 @@ export default {
       let url = window.prompt("URL");
       url = getEmbedURL(url)
       if (url) {
-        this.editor.chain().focus().setIframe({ src: url }).run(); 
+        this.editor.chain().focus().setIframe({ src: url }).run();
       }
     },
     showImageModal() {
@@ -318,7 +384,7 @@ export default {
     showLinkMenu() {
       const previousUrl = this.editor.getAttributes("link").href;
       this.linkUrl = window.prompt("URL", previousUrl);
-     
+
       // cancelled
       if (this.linkUrl === null) {
         return;

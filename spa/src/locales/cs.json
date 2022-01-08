@@ -320,7 +320,36 @@
   },
   "editor": {
     "image-too-big": "Tento obrázek je obrovský. Limit je 20 MB.",
-    "image-unsupported-type": "Podporujeme formáty JPG, WEBP, PNG, GIF a SVG."
+    "image-unsupported-type": "Podporujeme formáty JPG, WEBP, PNG, GIF a SVG.",
+    "menu": {
+      "undo": "Zpět",
+      "redo": "Znovu",
+      "bold": "Tučně",
+      "italic": "Kurzíva",
+      "strike": "Přeškrtnuté",
+      "underline": "Podtržené",
+      "h1": "Velký nadpis",
+      "h2": "Střední nadpis",
+      "h3": "Malý nadpis",
+      "ul": "Odrážky",
+      "ol": "Číslované odrážky",
+      "quote": "Citace",
+      "hr": "Oddělovač",
+      "image": "Obrázek",
+      "link": "Odkaz",
+      "link-edit": "Upravit odkaz",
+      "unlink": "Smazat odkaz",
+      "media": "Odkaz na sociální sítě",
+      "table-add": "Tabulka",
+      "table-delete": "Smazat tabulku",
+      "column-add-before": "Sloupec před",
+      "column-add-after": "Sloupec za",
+      "column-delete": "Smazat sloupec",
+      "row-add-before": "Řádek před",
+      "row-add-after": "Řádek po",
+      "row-delete": "Smazat řádek",
+      "cells-merge": "Sloučit buňky"
+    }
   },
   "infoBox": {
     "readMore": "READ MORE",

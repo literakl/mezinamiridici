@@ -319,7 +319,36 @@
   },
   "editor": {
     "image-too-big": "This image is too big. Limit is 20 MB.",
-    "image-unsupported-type": "Only JPG, WEBP, PNG, GIF and SVG are supported."
+    "image-unsupported-type": "Only JPG, WEBP, PNG, GIF and SVG are supported.",
+    "menu": {
+      "undo": "Undo",
+      "redo": "Redo",
+      "bold": "Bold",
+      "italic": "Italic",
+      "strike": "Strike",
+      "underline": "Underline",
+      "h1": "H1",
+      "h2": "H2",
+      "h3": "H3",
+      "ul": "Unordered link",
+      "ol": "Ordered link",
+      "quote": "Quote",
+      "hr": "",
+      "image": "",
+      "link": "Link",
+      "link-edit": "Edit link",
+      "unlink": "Unlink",
+      "media": "",
+      "table-add": "",
+      "table-delete": "",
+      "column-add-before": "",
+      "column-add-after": "",
+      "column-delete": "",
+      "row-add-before": "",
+      "row-add-after": "",
+      "row-delete": "Delete row",
+      "cells-merge": ""
+    }
   },
   "infoBox": {
     "readMore": "READ MORE",
