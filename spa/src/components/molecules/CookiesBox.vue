@@ -1,5 +1,5 @@
 <template>
-  <div class="cookies-box-wrap" v-if="!prefsChosen || showPrefs">
+  <div class="cookies-box-wrap" v-if="showPrefs">
     <div class="cookies-box-inner">
       <p>
         <strong>Povolíte nám shromažďovat cookies?</strong>
@@ -114,7 +114,6 @@ export default {
       ad: false,
       analytics: false,
       personalization: false,
-      prefsChosen: false,
     };
   },
   computed: {
@@ -142,7 +141,6 @@ export default {
       const options = { ad: this.ad, analytics: this.analytics, personalization: this.personalization, confirmed: new Date() };
       this.$store.dispatch('SAVE_COOKIE_PREFERENCES', { options, component: this });
       this.$store.commit('SHOW_COOKIES_DIALOG', false);
-      this.prefsChosen = true;
     },
   },
   async mounted() {
@@ -151,7 +149,9 @@ export default {
       this.ad = options.ad;
       this.analytics = options.analytics;
       this.personalization = options.personalization;
-      this.prefsChosen = true;
+      this.$store.commit('SHOW_COOKIES_DIALOG', false);
+    } else {
+      this.$store.commit('SHOW_COOKIES_DIALOG', true);
     }
   },
 };
