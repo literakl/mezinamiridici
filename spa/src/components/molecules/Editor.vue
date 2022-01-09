@@ -30,6 +30,33 @@
         </button>
 
         <button
+          :title="$t('editor.menu.link')"
+          v-if="!editor.isActive('link')"
+          @click="showLinkMenu"
+          class="menubar__button"
+        >
+          <icon name="link" />
+        </button>
+
+        <button
+          :title="$t('editor.menu.unlink')"
+          v-if="editor.isActive('link')"
+          @click="editor.chain().focus().unsetLink().run()"
+          class="is-active menubar__button"
+        >
+          <icon name="remove" />
+        </button>
+
+        <button
+          :title="$t('editor.menu.link-edit')"
+          v-if="editor.isActive('link')"
+          @click="showLinkMenu"
+          class="is-active menubar__button"
+        >
+          <icon name="link" />
+        </button>
+
+        <button
           :title="$t('editor.menu.bold')"
           @click="editor.chain().focus().toggleBold().run()"
           class="menubar__button"
@@ -133,33 +160,6 @@
           class="menubar__button"
         >
           <Icon name="image" />
-        </button>
-
-        <button
-          :title="$t('editor.menu.link')"
-          v-if="!editor.isActive('link')"
-          @click="showLinkMenu"
-          class="menubar__button"
-        >
-          <icon name="link" />
-        </button>
-
-<!--        <button TODO fix
-          :title="$t('editor.menu.unlink')"
-          v-if="editor.isActive('link')"
-          @click="editor.chain().clearNodes().run()"
-          class="is-active menubar__button"
-        >
-          <icon name="trash" />
-        </button>-->
-
-        <button
-          :title="$t('editor.menu.link-edit')"
-          v-if="editor.isActive('link')"
-          @click="showLinkMenu"
-          class="is-active menubar__button"
-        >
-          <icon name="link" />
         </button>
 
         <button
@@ -393,20 +393,11 @@ export default {
       // empty
       if (this.linkUrl === "") {
         this.editor.chain().focus().extendMarkRange("link").unsetLink().run();
-
         return;
       }
 
       // update link
       this.editor.chain().focus().extendMarkRange("link").setLink({ href: this.linkUrl }).run();
-    },
-    hideLinkMenu() {
-      this.linkUrl = null;
-      this.linkMenuIsActive = false;
-    },
-    setLinkUrl(command, url) {
-      command({ href: url });
-      this.hideLinkMenu();
     },
     dismissError() {
       this.showDismissibleAlert = false;

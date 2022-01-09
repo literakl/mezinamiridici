@@ -18,6 +18,33 @@
               </b-button>
 
               <button
+                :title="$t('editor.menu.link')"
+                v-if="!editor.isActive('link')"
+                @click="showLinkMenu"
+                class="menubar__button"
+              >
+                <icon name="link" />
+              </button>
+
+              <button
+                :title="$t('editor.menu.unlink')"
+                v-if="editor.isActive('link')"
+                @click="editor.chain().focus().unsetLink().run()"
+                class="is-active menubar__button"
+              >
+                <icon name="remove" />
+              </button>
+
+              <button
+                :title="$t('editor.menu.link-edit')"
+                v-if="editor.isActive('link')"
+                @click="showLinkMenu"
+                class="is-active menubar__button"
+              >
+                <icon name="link" />
+              </button>
+
+              <button
                 :title="$t('editor.menu.bold')"
                 @click="editor.chain().focus().toggleBold().run()"
                 class="menubar__button"
@@ -117,6 +144,7 @@ import { BIconEmojiSunglasses, BIconXCircle, BPopover, BButton, BContainer, BRow
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
 import Button from '@/components/atoms/Button.vue';
 import Icon from '@/components/atoms/EditorIcon.vue';
 
@@ -153,6 +181,9 @@ export default {
       editor: new Editor({
         extensions: [
           StarterKit,
+          Link.configure({
+            openOnClick: false,
+          }),
           Underline,
         ],
         content: '',
@@ -175,6 +206,24 @@ export default {
   methods: {
     dismiss() {
       this.$emit('dismiss');
+    },
+    showLinkMenu() {
+      const previousUrl = this.editor.getAttributes("link").href;
+      this.linkUrl = window.prompt("URL", previousUrl);
+
+      // cancelled
+      if (this.linkUrl === null) {
+        return;
+      }
+
+      // empty
+      if (this.linkUrl === "") {
+        this.editor.chain().focus().extendMarkRange("link").unsetLink().run();
+        return;
+      }
+
+      // update link
+      this.editor.chain().focus().extendMarkRange("link").setLink({ href: this.linkUrl }).run();
     },
     async send() {
       this.error = false;
