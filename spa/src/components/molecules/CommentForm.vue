@@ -13,79 +13,93 @@
         <b-row>
           <b-col sm="12" class="editor-js" :id="`editor-js-${commentId}`">
             <div class="menubar" v-if="editor">
-                <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline">
-                  <BIconEmojiSunglasses></BIconEmojiSunglasses>
-                </b-button>
+              <b-button class="menubar__button" :id="`emojis_${commentId}`" variant="outline">
+                <BIconEmojiSunglasses></BIconEmojiSunglasses>
+              </b-button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleBold().run()"
-                  :class="{ 'is-active': editor.isActive('bold') }"
-                >
-                  <icon name="bold" />
-                </button>
+              <button
+                :title="$t('editor.menu.bold')"
+                @click="editor.chain().focus().toggleBold().run()"
+                class="menubar__button"
+                :class="{ 'is-active': editor.isActive('bold') }"
+              >
+                <icon name="bold" />
+              </button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleItalic().run()"
-                  :class="{ 'is-active': editor.isActive('italic') }"
-                >
-                  <icon name="italic" />
-                </button>
+              <button
+                :title="$t('editor.menu.italic')"
+                @click="editor.chain().focus().toggleItalic().run()"
+                class="menubar__button"
+                :class="{ 'is-active': editor.isActive('italic') }"
+              >
+                <icon name="italic" />
+              </button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleCodeBlock().run()"
-                  :class="{ 'is-active': editor.isActive('codeBlock') }"
-                >
-                  <icon name="quote" />
-                </button>
+              <button
+                :title="$t('editor.menu.quote')"
+                @click="editor.chain().focus().toggleCodeBlock().run()"
+                class="menubar__button"
+                :class="{ 'is-active': editor.isActive('codeBlock') }"
+              >
+                <icon name="quote" />
+              </button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleStrike().run()"
-                  :class="{ 'is-active': editor.isActive('strike') }"
-                >
-                  <icon name="strike" />
-                </button>
+              <button
+                :title="$t('editor.menu.strike')"
+                @click="editor.chain().focus().toggleStrike().run()"
+                class="menubar__button"
+                :class="{ 'is-active': editor.isActive('strike') }"
+              >
+                <icon name="strike" />
+              </button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleUnderline().run()"
-                  :class="{ 'is-active': editor.isActive('underline') }"
-                >
-                  <icon name="underline" />
-                </button>
+              <button
+                class="menubar__button"
+                @click="editor.chain().focus().toggleUnderline().run()"
+                :class="{ 'is-active': editor.isActive('underline') }"
+              >
+                <icon name="underline" />
+              </button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleBulletList().run()"
-                  :class="{ 'is-active': editor.isActive('bulletList') }"
-                >
-                  <icon name="ul" />
-                </button>
+              <button
+                :title="$t('editor.menu.ul')"
+                @click="editor.chain().focus().toggleBulletList().run()"
+                class="menubar__button"
+                :class="{ 'is-active': editor.isActive('bulletList') }"
+              >
+                <icon name="ul" />
+              </button>
 
-                <button
-                  class="menubar__button"
-                  @click="editor.chain().focus().toggleOrderedList().run()"
-                  :class="{ 'is-active': editor.isActive('orderedList') }"
-                >
-                  <icon name="ol" />
-                </button>
+              <button
+                :title="$t('editor.menu.ol')"
+                @click="editor.chain().focus().toggleOrderedList().run()"
+                class="menubar__button"
+                :class="{ 'is-active': editor.isActive('orderedList') }"
+              >
+                <icon name="ol" />
+              </button>
 
-                <button class="menubar__button" @click="editor.chain().focus().undo().run()">
-                  <icon name="undo" />
-                </button>
+              <button
+                :title="$t('editor.menu.undo')"
+                @click="editor.chain().focus().undo().run()"
+                class="menubar__button"
+              >
+                <icon name="undo" />
+              </button>
 
-                <button class="menubar__button" @click="editor.chain().focus().redo().run()">
-                  <icon name="redo" />
-                </button>
+              <button
+                :title="$t('editor.menu.redo')"
+                @click="editor.chain().focus().redo().run()"
+                class="menubar__button"
+              >
+                <icon name="redo" />
+              </button>
 
-                <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" class="closebtn">
-                  <BIconXCircle></BIconXCircle>
-                </b-button>
-              </div>
-              <editor-content v-if="isShow" :editor="editor"/>
+              <b-button v-if="parent" @click="dismiss" variant="outline" size="sm" class="closebtn">
+                <BIconXCircle></BIconXCircle>
+              </b-button>
+            </div>
+            <editor-content v-if="isShow" :editor="editor"/>
           </b-col>
         </b-row>
       </b-container>
