@@ -1,7 +1,7 @@
 <template>
   <div class="m-auto item-div item-hover">
     <router-link :to="link">
-      <b-img :src="item.info.picture"></b-img>
+      <b-img :src="item.info.picture" alt="" />
     </router-link>
     <div class="picture-actions">
       <div v-if="item.type === 'poll'" class="poll-symbol">
