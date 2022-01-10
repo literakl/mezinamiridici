@@ -26,9 +26,9 @@ module.exports = (app) => {
 
 async function getItems(dbClient, req) {
   const listParams = api.parseListParams(req, 'date', -1, 20, MAXIMUM_PAGE_SIZE);
-  const query = { type: 'poll', 'info.published': true };
+  const query = { type: 'poll', 'info.state': 'published' };
   if (auth.checkRole(req, auth.ROLE_POLL_ADMIN)) {
-    delete query['info.published'];
+    delete query['info.state'];
   }
   if (listParams.lastResult) {
     query[listParams.lastResult.key] = listParams.lastResult.value;

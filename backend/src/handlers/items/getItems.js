@@ -6,15 +6,11 @@ const { logger } = require('../../utils/logging');
 require('../../utils/path_env');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
-/*
-TODO dead code #133
-let { STREAM_PINNED_ITEMS } = process.env || [];
-let pinnedItems = configurePinnedItems(STREAM_PINNED_ITEMS);
-*/
 
 module.exports = (app) => {
   app.options('/v1/item-stream', auth.cors);
   app.options('/bff/articles', auth.cors);
+  app.options('/v1/content/:slug', auth.cors);
 
   app.get('/v1/item-stream', auth.cors, async (req, res) => {
     logger.debug('Get items'); // ${JSON.stringify(req.query)}
@@ -28,6 +24,25 @@ module.exports = (app) => {
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
+    }
+  });
+
+  app.get('/v1/content/:slug', async (req, res) => {
+    logger.debug('Get content by slug handler starts');
+    const { slug } = req.params;
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      const item = await mongo.getContent(dbClient, slug);
+      logger.debug('Item fetched');
+
+      if (!item) {
+        return api.sendNotFound(res, api.createError('Page not found', 'generic.not-found-caption'));
+      }
+      return api.sendResponse(res, api.createResponse(item));
+    } catch (err) {
+      logger.error('Request failed', err);
+      return api.sendInternalError(res, api.createError('Failed to get page', 'sign-in.something-went-wrong'));
     }
   });
 
@@ -53,9 +68,8 @@ module.exports = (app) => {
 
 function getItemsPage(dbClient, tag, start, pageSize) {
   const query = {
-    type: { $in: ['blog', 'poll'] },
-    'info.hidden': false,
-    'info.published': true,
+    type: { $in: ['blog', 'article', 'poll'] },
+    'info.state': 'published',
     'info.date': { $lte: new Date() },
   };
   if (tag) {
@@ -73,8 +87,7 @@ function getItemsPage(dbClient, tag, start, pageSize) {
 
 function getArticlesPage(dbClient, author, start, pageSize) {
   const query = {
-    type: 'blog',
-    'info.editorial': true,
+    type: 'article',
   };
   if (author) {
     query['info.author.id'] = author.userId;

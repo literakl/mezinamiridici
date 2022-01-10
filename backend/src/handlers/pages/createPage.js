@@ -50,14 +50,14 @@ async function insertPage(dbClient, pageId, caption, slug, content, author) {
     _id: pageId,
     type: 'page',
     info: {
+      state: 'published',
+      date: new Date(),
+      slug,
       author: {
         nickname: author.nickname,
         id: author.userId,
       },
       caption,
-      slug,
-      published: true,
-      date: new Date(),
       picture: 'none.jpg',
     },
     data: {

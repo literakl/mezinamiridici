@@ -24,26 +24,6 @@
           </div>
 
           <div class="col col-lg-2 sidebar">
-            <div v-if="canWriteArticles" class="field-area mb-3">
-              <div>
-                <label class="d-label" for="type">{{ $t('blog.form.type') }}</label>
-              </div>
-              <div class="row">
-                <Radio
-                  v-model="type"
-                  identifier="article"
-                  class="pl-3"
-                  :label="$t('blog.form.article')"
-                  name="type"/>
-                <Radio
-                  v-model="type"
-                  identifier="blog"
-                  class="pl-3"
-                  :label="$t('blog.form.blog')"
-                  name="type"/>
-              </div>
-            </div>
-
             <div class="tags-area">
               <TagSelector @changeTags="tagSelect" :formTags="tags" />
             </div>
@@ -106,7 +86,6 @@ export default {
       isCreate: true,
       title: '',
       picture: '',
-      type: 'blog',
       tags: [],
       html: '',
       hideContentError: true,
@@ -116,22 +95,19 @@ export default {
   },
   computed: {
     blog() {
-      return this.$store.getters.BLOG;
+      return this.$store.getters.CONTENT;
     },
     isEmpty() {
       return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
-    canWriteArticles() {
-      return this.$store.getters.USER_ROLES.includes('user:staffer')
-      || this.$store.getters.USER_ROLES.includes('admin:editor');
-    },
   },
   watch: {
     blog() {
-      this.title = this.blog.info.caption;
-      this.type = (this.blog.info.editorial) ? 'article' : 'blog';
-      this.picture = this.blog.info.picture;
-      this.tags = this.blog.info.tags;
+      if (this.blog) {
+        this.title = this.blog.info.caption;
+        this.picture = this.blog.info.picture;
+        this.tags = this.blog.info.tags;
+      }
     },
     html() {
       if (!this.isEmpty) {
@@ -146,7 +122,6 @@ export default {
       const body = {
         title: this.title,
         source: this.html,
-        editorial: this.type === 'article',
         picture: this.picture,
         tags: this.tags,
         contentPictures: this.contentPictures,
@@ -204,7 +179,7 @@ export default {
   created() {
     if (this.$route.name === 'update-blog') {
       this.isCreate = false;
-      this.$store.dispatch('FETCH_BLOG', { slug: this.slug });
+      this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
     }
   },
 };

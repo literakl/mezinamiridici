@@ -6,9 +6,10 @@
 * caption: object title, required
 * slug: normalized caption for URL, required, unique, indexed
 * date: published timestamp, required, indexed. Order of _id and info.date may not be aligned.
-* published: published flag, required
-* hidden: flag indicating a low quality posts to be hidden from the item stream; optional for pages, required for polls and blogs
-* editorial: written by staff; boolean; optional 
+* state: item lifecycle flagg, required
+  * draft: not ready for visitors yet 
+  * published: visible item
+  * hidden: low quality post hidden in the item stream
 * picture: stream picture path from root; required
 * tags: array of tags
 

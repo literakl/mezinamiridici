@@ -29,7 +29,7 @@ module.exports = (app) => {
 
 async function getItems(dbClient, req) {
   const { tag } = req.params;
-  const query = { 'info.published': true, 'info.tags': tag };
+  const query = { 'info.state': 'published', 'info.tags': tag };
   const listParams = api.parseListParams(req, 'date', -1, 20, MAXIMUM_PAGE_SIZE);
   if (listParams.lastResult) {
     query[listParams.lastResult.key] = listParams.lastResult.value;

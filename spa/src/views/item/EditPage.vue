@@ -24,7 +24,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('FETCH_PAGE', { slug: this.slug });
+    this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
   },
 };
 </script>

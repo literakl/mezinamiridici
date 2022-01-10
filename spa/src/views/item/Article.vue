@@ -1,5 +1,5 @@
 <template>
-  <div v-if="blog" class="blog-posts pt-3 m-auto">
+  <div v-if="article" class="blog-posts pt-3 m-auto">
     <div class="post-details-wrap">
       <div>
         <div class="hero-details">
@@ -8,45 +8,24 @@
         <div class="post-details">
           <div class="post-author">
             <BIconPersonCircle scale="1"></BIconPersonCircle>
-            <ProfileLink :profile="blog.info.author"/>
+            <ProfileLink :profile="article.info.author"/>
           </div>
           <div class="post-time">
             <BIconCalendarRange scale="1"></BIconCalendarRange>
-            <Date :date="blog.info.date" format="dynamicDate"/>
+            <template v-if="article.info.state === 'draft'">
+              {{ $t('generic.content.state.draft') }}
+              (<Date :date="article.info.date" format="dynamicDate"/>)
+            </template>
+            <template v-else>
+              <Date :date="article.info.date" format="dynamicDate"/>
+            </template>
           </div>
           <div class="post-comments">
             <BIconChatTextFill scale="1"></BIconChatTextFill>
             <b-link v-on:click="toComments">
-              {{ blog.comments.count }}
+              {{ article.comments.count }}
             </b-link>
           </div>
-          <div v-if="canEdit" class="post-edit">
-            <BIconPencilSquare scale="1"></BIconPencilSquare>
-            <router-link :to="{name: 'update-blog', params: { id: blog._id } }">
-              {{ $t('generic.edit-button') }}
-            </router-link>
-          </div>
-          <div class="post-editorial" v-if="isAdmin">
-            <b-link v-if="!hidden" v-on:click="toggleHidden">
-              <BIconShieldPlus scale="1"></BIconShieldPlus>
-              {{ $t('blog.hidden.mark') }}
-            </b-link>
-            <b-link v-if="hidden" v-on:click="toggleHidden">
-              <BIconShieldMinus scale="1"></BIconShieldMinus>
-              {{ $t('blog.hidden.unmark') }}
-            </b-link>
-          </div>
-          <div v-if="canDelete" class="post-delete">
-            <b-link v-b-modal.confirm>
-              <BIconXCircle scale="1"></BIconXCircle>
-              {{ $t('generic.delete-button') }}
-            </b-link>
-          </div>
-          <b-modal id="confirm" :title="$t('generic.confirm-title')" hide-footer>
-            <p class="my-4">{{ $t('blog.confirm-delete') }}</p>
-            <b-button class="mt-3 mr-2" @click="$bvModal.hide('confirm')">{{ this.$t('generic.cancel-button') }}</b-button>
-            <b-button class="mt-3" variant="danger" @click="deleteBlog(); $bvModal.hide('confirm');">{{ this.$t('generic.ok-button') }}</b-button>
-          </b-modal>
         </div>
         <div class="errors">
           <b-alert variant="danger" dismissible :show="error !== undefined">
@@ -54,11 +33,11 @@
           </b-alert>
         </div>
 
-        <div class="post-content p3" v-html="this.blog.data.content"></div>
+        <div class="post-content p3" v-html="generatedHtml"></div>
 
         <div class="content-wrap">
-          <ShareLink :item="blog"/>
-          <Comments :itemId="blog._id"/>
+          <ShareLink :item="article"/>
+          <Comments :itemId="article._id"/>
         </div>
       </div>
     </div>
@@ -66,25 +45,25 @@
 </template>
 
 <script>
-import { BIconPersonCircle, BIconCalendarRange, BIconChatTextFill, BIconPencilSquare,
-  BIconShieldPlus, BIconShieldMinus, BLink, BIconXCircle, BAlert, BButton } from 'bootstrap-vue';
+import {
+  BIconPersonCircle,
+  BIconCalendarRange,
+  BIconChatTextFill,
+  BLink,
+  BAlert
+} from 'bootstrap-vue';
 import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 
 export default {
-  name: 'Blog',
+  name: 'Article',
   components: {
     BAlert,
-    BButton,
     BIconCalendarRange,
     BIconChatTextFill,
-    BIconPencilSquare,
-    BIconShieldPlus,
-    BIconShieldMinus,
     BIconPersonCircle,
-    BIconXCircle,
     BLink,
     Comments,
     Date,
@@ -96,53 +75,31 @@ export default {
   },
   data() {
     return {
+      generatedHtml: '',
       error: undefined,
     };
   },
   watch: {
-    blog() {
-      if (this.blog) {
-        document.title = this.blog.info.caption;
+    article() {
+      if (this.article) {
+        this.generatedHtml = this.applySnippets();
+        document.title = this.article.info.caption;
       }
     },
   },
   computed: {
-    blog() {
+    article() {
       return this.$store.getters.CONTENT;
     },
     title() {
       let txt = '';
-      if (this.blog !== null) {
-        txt = this.blog.info.caption;
+      if (this.article !== null) {
+        txt = this.article.info.caption;
       }
       return txt;
     },
-    hidden() {
-      return this.blog.info.state === 'hidden';
-    },
-    isAdmin() {
-      return this.$store.getters.USER_ROLES && this.$store.getters.USER_ROLES.includes('admin:blog');
-    },
-    canEdit() {
-      if (!this.$store.getters.IS_AUTHORIZED) {
-        return false;
-      }
-      if (this.$store.getters.USER_ROLES && this.$store.getters.USER_ROLES.includes('admin:blog')) {
-        return true;
-      }
-      return this.blog.info.author.id === this.$store.getters.USER_ID;
-    },
-    canDelete() {
-      if (!this.$store.getters.IS_AUTHORIZED) {
-        return false;
-      }
-      if (this.$store.getters.USER_ROLES && this.$store.getters.USER_ROLES.includes('admin:blog')) {
-        return true;
-      }
-      return this.blog.info.author.id === this.$store.getters.USER_ID;
-    },
   },
-  created() { // slug must be unique across all blogs
+  created() {
     this.$store.dispatch('FETCH_CONTENT', { slug: this.slug, component: this });
   },
   mounted() {
@@ -152,35 +109,32 @@ export default {
     document.onmouseleave = () => {
       window.innerDocClick = false;
     };
-    // TODO what is the purpose? Clear blog causes error with URL to profile in chrome console
-    window.onpopstate = () => {
-      if (!window.innerDocClick) {
-        this.$store.commit('CLEAR_CONTENT');
-      }
-    };
+    // TODO back button causes empty data
+    // window.onpopstate = () => {
+    //   if (!window.innerDocClick) {
+    //     this.$store.commit('CLEAR_CONTENT');
+    //   }
+    // };
   },
   methods: {
-    async toggleHidden() {
-      await this.$store.dispatch('TOGGLE_HIDDEN');
+    // find snippet pattern [code="animated_chart"] and replace it with its content
+    applySnippets() {
+      const html = this.article.data.content;
+      if (!this.article.snippets || this.article.snippets.length === 0) {
+        return html;
+      }
+      const regex = /\[code="([\w]+)"\]/gm;
+      const replacer = (match, foundCode) => {
+        const snippet = this.article.snippets.find(({ code }) => code === foundCode);
+        return snippet.content;
+      };
+      return html.replace(regex, replacer);
+    },
+    async togglePublished() {
+      await this.$store.dispatch('TOGGLE_PUBLISHED');
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
-    },
-    async deleteBlog() {
-      this.error = undefined;
-      try {
-        await this.$store.dispatch('DELETE_BLOG', { blogId: this.blog._id });
-        await this.$router.push('/');
-      } catch (error) {
-        this.$log.error(error);
-        this.$log.error(error.response);
-        if (error.response && error.response.data && error.response.data.errors && error.response.data.errors[0].messageKey) {
-          this.$log.error(error.response.data.errors[0]);
-          this.error = this.$t(error.response.data.errors[0].messageKey);
-        } else {
-          this.error = this.$t('generic.operation-failed');
-        }
-      }
     },
   },
 };
@@ -233,7 +187,7 @@ export default {
   border: 0;
 }
 
-.post-time, .post-author, .post-comments, .post-edit, .post-editorial, .post-delete {
+.post-time, .post-author, .post-comments {
   display: flex;
   align-items: center;
   font-weight: 400;

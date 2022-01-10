@@ -1,23 +1,23 @@
 <template>
   <div class="pt-3 centerbox m-auto">
     <div class="head-area">
-      <h2>{{ $t('blog.articles.heading') }}</h2>
+      <h2>{{ $t('articles.heading') }}</h2>
     </div>
 
     <div v-if="!isAuthorized">
-      {{ $t('blog.articles.not-authorized') }}
+      {{ $t('articles.not-authorized') }}
     </div>
 
     <template v-else>
       <ContentLoading v-if="!articles" type="items"/>
 
-      <div v-if="noArticlesFound">{{ $t('blog.articles.empty') }}</div>
+      <div v-if="noArticlesFound">{{ $t('articles.empty') }}</div>
 
       <div v-for="item in articles" :key="item._id" class="pagelist-box">
         <b-card tag="article">
           <b-card-body>
             <h3>
-              <router-link :to="{ name: 'blog', params: { slug: item.info.slug, id: item.info.author.id }}">
+              <router-link :to="{ name: 'article', params: { slug: item.info.slug }}">
                 {{ item.info.caption }}
               </router-link>
             </h3>
@@ -28,8 +28,8 @@
                 <BIconClock scale="1"></BIconClock>
                 <Date :date="item.info.date" format="dynamicDate"/>
               </span>
-              <span v-if="! item.info.published">
-                {{ $t('generic.not-published') }}
+              <span>
+                {{ $t(`generic.content.state.${item.info.state}`) }}
               </span>
               <span>
                 <BIconPersonCircle scale="1"></BIconPersonCircle>
@@ -37,7 +37,11 @@
               </span>
             </div>
             <b-button-group>
-              <b-button v-if="canEdit(item)" :to="{ name: 'update-blog', params: { slug: item.info.slug, id: item.info.author.id }}" variant="outline-primary">
+              <b-button v-if="canEdit(item)" :to="{ name: 'edit-article', params: { slug: item.info.slug }}" variant="outline-primary">
+                <BIconPencilSquare scale="1"></BIconPencilSquare>
+                {{ $t('generic.edit-button') }}
+              </b-button>
+              <b-button v-if="canEdit(item)" :to="{ name: 'edit-article-html', params: { slug: item.info.slug }}" variant="outline-primary">
                 <BIconPencilSquare scale="1"></BIconPencilSquare>
                 {{ $t('generic.edit-button') }}
               </b-button>
@@ -109,7 +113,7 @@ export default {
       if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
         return true;
       }
-      return !item.info.published;
+      return item.info.state === 'draft';
     },
     confirmDelete(item) {
       this.$bvModal.msgBoxConfirm(this.$t('cms.delete-message'), {
@@ -125,7 +129,7 @@ export default {
       })
         .then((value) => {
           if (value) {
-            this.deleteBlog(item);
+            this.deleteArticle(item);
           }
         })
         .catch((err) => {
@@ -133,8 +137,8 @@ export default {
         });
     },
 
-    async deleteBlog(item) {
-      await this.$store.dispatch('DELETE_BLOG', {
+    async deleteArticle(item) {
+      await this.$store.dispatch('DELETE_ARTICLE', {
         blogId: item._id,
       });
       this.articles = await this.$store.dispatch('FETCH_ARTICLES', {});

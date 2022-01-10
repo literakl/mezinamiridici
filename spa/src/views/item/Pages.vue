@@ -32,9 +32,9 @@
               <BIconPersonCircle scale="1"></BIconPersonCircle>
               <ProfileLink :profile="item.info.author"/>
             </span>
-            <span v-if="! item.info.published">
-                &bull; {{ $t('generic.not-published') }}
-            </span>
+            <span>
+                &bull; {{ $t(`generic.content.state.${item.info.state}`) }}
+              </span>
           </div>
           <b-button-group>
             <b-button v-if="role" :to="{ name: 'edit-content', params: { slug: item.info.slug }}" variant="outline-primary">

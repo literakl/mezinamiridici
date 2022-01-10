@@ -10,8 +10,7 @@
     "caption": "Předjíždění bez blinkru",
     "slug": "predjizdeni-bez-blinkru",
     "date": "2020-03-22 16:46",
-    "published": true,
-    "hidden": false,
+    "state": "published",
     "picture":  "/pictures/stream/car75.png",
     "tags": ["polls", "driving"]
   },

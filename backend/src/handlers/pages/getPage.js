@@ -6,28 +6,7 @@ const { logger } = require('../../utils/logging');
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 
 module.exports = (app) => {
-  app.options('/v1/pages/:slug', auth.cors);
   app.options('/v1/pages/', auth.cors);
-
-  app.get('/v1/pages/:slug', async (req, res) => {
-    logger.debug('Get page by slug handler starts');
-    const { slug } = req.params;
-
-    try {
-      const dbClient = await mongo.connectToDatabase();
-      const pipeline = [mongo.stageSlug(slug)];
-      const item = await mongo.getPage(dbClient, pipeline);
-      logger.debug('Item fetched');
-
-      if (!item) {
-        return api.sendNotFound(res, api.createError('Page not found', 'generic.not-found-caption'));
-      }
-      return api.sendResponse(res, api.createResponse(item));
-    } catch (err) {
-      logger.error('Request failed', err);
-      return api.sendInternalError(res, api.createError('Failed to get page', 'sign-in.something-went-wrong'));
-    }
-  });
 
   app.get('/v1/pages/', async (req, res) => {
     logger.debug('Get pages handler starts');

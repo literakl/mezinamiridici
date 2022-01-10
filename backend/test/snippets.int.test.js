@@ -20,25 +20,25 @@ let dbClient, server;
 test('Item snippets', async () => {
   await setup(dbClient, api);
 
-  const blogBody = {
-    title: 'First blog',
+  const itemBody = {
+    title: 'First item',
     source: '<h1>Title</h1><p>Very smart topic</p>',
     picture: 'picture.png',
   };
 
-  const blog = await api('posts', { method: 'POST', json: blogBody, headers: getAuthHeader(Vita.jwt) }).json();
+  const blog = await api('articles', { method: 'POST', json: itemBody, headers: getAuthHeader(Vita.jwt) }).json();
   expect(blog.success).toBeTruthy();
 
   // get snippets as Jiri - forbidden (missing role staffer)
-  let response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Jiri.jwt) });
+  let response = await api(`items/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Jiri.jwt) });
   expect(response.statusCode).toBe(403);
 
   // get snippets as Lukas - forbidden (different user than owner)
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt) });
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Lukas.jwt) });
   expect(response.statusCode).toBe(403);
 
   // get snippets as Vita - empty
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.length).toBe(0);
 
@@ -50,15 +50,15 @@ test('Item snippets', async () => {
   };
 
   // create snippet A as Jiri - forbidden (missing role editor in chief)
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Jiri.jwt) });
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Jiri.jwt) });
   expect(response.statusCode).toBe(403);
 
   // create snippet A as Vita - forbidden (missing role editor in chief)
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Vita.jwt) });
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Vita.jwt) });
   expect(response.statusCode).toBe(403);
 
   // create snippet A as Leos
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'POST', json: snippetABody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
 
   const snippetCBody = {
@@ -69,17 +69,17 @@ test('Item snippets', async () => {
   };
 
   // create snippet C as Leos
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetCBody, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'POST', json: snippetCBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
   // get snippets - A,C as Vita
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.length).toBe(2);
   expect(response.data[0].code).toBe(snippetABody.code);
   expect(response.data[1].code).toBe(snippetCBody.code);
 
-  response = await api(`posts/${blog.data.info.slug}`).json();
+  response = await api(`content/${blog.data.info.slug}`).json();
   expect(response.success).toBe(true);
   expect(response.data.snippets.length).toBe(2);
   expect(response.data.snippets[0].code).toBe(snippetABody.code);
@@ -92,7 +92,7 @@ test('Item snippets', async () => {
     content: '<javascript>b=1</javascript>',
     date: '2021-08-16T05:22:33.121Z',
   };
-  response = await api(`posts/${blog.data._id}/snippets/${snippetCBody.code}`, { method: 'PATCH', json: snippetBBody, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets/${snippetCBody.code}`, { method: 'PATCH', json: snippetBBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.code).toBe(snippetBBody.code);
   expect(response.data.type).toBe(snippetBBody.type);
@@ -106,15 +106,15 @@ test('Item snippets', async () => {
   };
 
   // add snippet D as Leos
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'POST', json: snippetDBody, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'POST', json: snippetDBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
 
   // remove snippet A as Leos
-  response = await api(`posts/${blog.data._id}/snippets/${snippetABody.code}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets/${snippetABody.code}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
 
   // get snippets - B,D as Vita
-  response = await api(`posts/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
+  response = await api(`items/${blog.data._id}/snippets`, { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.length).toBe(2);
   expect(response.data[0].code).toBe(snippetBBody.code);

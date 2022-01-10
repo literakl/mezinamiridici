@@ -16,7 +16,7 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      const blog = await mongo.getContent(dbClient, undefined, blogId);
       if (!blog) {
         return api.sendNotFound(res, api.createError('Blog not found'));
       }
@@ -53,13 +53,9 @@ module.exports = (app) => {
 
 function canDelete(req, blog) {
   const isBlogAdmin = req.identity.roles && req.identity.roles.includes(auth.ROLE_BLOG_ADMIN);
-  const isEditor = req.identity.roles && req.identity.roles.includes(auth.ROLE_EDITOR_IN_CHIEF);
   const isAuthor = blog.info.author.id === req.identity.userId;
-  const isEditorial = blog.info.editorial;
 
-  if (isEditorial) {
-    return { allowed: (isEditor || (isAuthor && !blog.info.published)), admin: !isAuthor };
-  } else if (isBlogAdmin) {
+  if (isBlogAdmin) {
     return { allowed: true, admin: !isAuthor };
   } else if (isAuthor) {
     return { allowed: true, admin: false };

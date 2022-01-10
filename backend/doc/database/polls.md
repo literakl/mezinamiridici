@@ -6,8 +6,7 @@
 * caption: poll question, required
 * slug: normalized caption for URL, required, unique, indexed
 * date: published timestamp, required, indexed
-* published: published flag, required
-* hidden: flag present here from performance reasons; required
+* state: lifecycle flag, required
 * picture: stream picture identifier
 * tags: array of tags
 

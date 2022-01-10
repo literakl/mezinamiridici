@@ -25,7 +25,6 @@
     "we-must-fix": "We must fix it",
     "today": "today",
     "yesterday": "yesterday",
-    "not-published": "not published",
     "share-link": "Share",
     "select-picture-label": "Illustration picture",
     "select-picture-title": "Select picture",
@@ -33,7 +32,14 @@
     "tag-select-placeholder": "Chooose the tag",
     "loading-message": "Loading ..",
     "loading-more-button": "Load more",
-    "own-content": "Editorial",
+    "content": {
+      "article": "Article",
+      "blog": "Blog",
+      "state": {
+        "draft": "Draft",
+        "published": "Published"
+      }
+    },
     "ok-button": "OK",
     "cancel-button": "Cancel",
     "edit-button": "Edit",
@@ -280,30 +286,23 @@
   "blog": {
     "form": {
       "title-placeholder": "Blog post title",
-      "content-error": "There is no content",
-      "type": "Type",
-      "article": "staffer article",
-      "blog": "blog post"
-    },
-    "editorial": {
-      "mark": "Set editorial",
-      "unmark": "Unset editorial"
-    },
-    "publish": {
-      "mark": "Publish",
-      "unmark": "Unpublish"
+      "content-error": "There is no content"
     },
     "hidden": {
       "mark": "Hide",
       "unmark": "Unhide"
     },
-    "articles": {
-      "heading": "Articles",
-      "not-authorized": "We are sorry but you are not allowed to access this page.",
-      "empty": "You have not written any article yet."
-    },
     "concept": "concept",
     "confirm-delete": "Do you really want to delete this blog?"
+  },
+  "articles": {
+    "heading": "Articles",
+    "not-authorized": "We are sorry but you are not allowed to access this page.",
+    "empty": "You have not written any article yet.",
+    "publish": {
+      "mark": "Publish",
+      "unmark": "Unpublish"
+    }
   },
   "cms": {
     "edit": {
@@ -376,8 +375,11 @@
     "create-poll": "Create poll",
     "analyse-poll": "Analyse poll",
     "analyze-votes": "Analyze votes",
-    "create-blog": "Write a blog post",
-    "update-blog": "Write a blog post",
+    "create-blog": "Write blog post",
+    "update-blog": "Update blog post",
+    "article": "Article",
+    "write-article": "Write article",
+    "enter-article": "Write article",
     "blog": "Blog",
     "help": "Help",
     "mission": "Mission",

@@ -7,17 +7,15 @@ export default {
     tags: null,
     tagCloud: null,
     itemsByTag: null,
-    blog: null,
+    content: null,
     itemPictures: [],
-    page: null,
   }),
   getters: {
     TAGS: state => state.tags,
     TAG_CLOUD: state => state.tagCloud,
     ITEMS_BY_TAG: state => state.itemsByTag,
-    BLOG: state => state.blog,
+    CONTENT: state => state.content,
     ITEM_PICTURES: state => state.itemPictures,
-    PAGE: state => state.page,
   },
   mutations: {
     SET_TAGS: (state, payload) => {
@@ -29,17 +27,14 @@ export default {
     SET_ITEMS_BY_TAG: (state, payload) => {
       state.itemsByTag = payload;
     },
-    SET_BLOG: (state, payload) => {
-      state.blog = payload;
+    SET_CONTENT: (state, payload) => {
+      state.content = payload;
     },
     SET_ITEM_PICTURES: (state, payload) => {
       state.itemPictures = payload;
     },
-    SET_PAGE: (state, payload) => {
-      state.page = payload;
-    },
-    CLEAR_BLOG: (state) => {
-      state.blog = {
+    CLEAR_CONTENT: (state) => {
+      state.content = {
         comments: {},
         data: {},
         info: {
@@ -94,47 +89,35 @@ export default {
       const { blogId } = payload;
       const item = await patch('API', `/posts/${blogId}/`, payload, context)
         .then((response) => {
-          context.commit('SET_BLOG', response.data.data);
+          context.commit('SET_CONTENT', response.data.data);
           return response.data;
         }).catch(err => err.response.data);
       return item;
-    },
-    FETCH_BLOG: async (context, payload) => {
-      Vue.$log.debug('FETCH_BLOG');
-      let blog;
-      try {
-        blog = await get('API', `/posts/${payload.slug}`, context);
-      } catch (err) {
-        if (err.response.status === 404 && payload.component) {
-          await payload.component.$router.push({ name: 'junkyard' });
-          return undefined;
-        }
-      }
-      context.commit('SET_BLOG', blog.data.data);
-      return blog.data.data;
     },
     DELETE_BLOG: async (context, payload) => {
       Vue.$log.debug('DELETE_BLOG');
       const { blogId } = payload;
       return deleteApi('API', `/posts/${blogId}`, {}, context);
     },
-    FETCH_PAGE: async (context, payload) => {
-      Vue.$log.debug(`FETCH_PAGE ${payload.slug}`);
+    FETCH_CONTENT: async (context, payload) => {
+      Vue.$log.debug(`FETCH_CONTENT ${payload.slug}`);
       if (context.state.content != null && payload.slug === context.state.content.info.slug) {
+        Vue.$log.debug(`Slug is in the cache`);
         return; // cached value recycled
       }
-      context.commit('SET_PAGE', null);
+      context.commit('SET_CONTENT', null);
       let response;
       try {
-        response = await get('API', `/pages/${payload.slug}`, context);
+        response = await get('API', `/content/${payload.slug}`, context);
       } catch (err) {
         if (err.response.status === 404 && payload.component) {
           await payload.component.$router.push({ name: 'junkyard' });
           return;
         }
       }
-      const cms = response.data.data;
-      context.commit('SET_PAGE', cms);
+      const item = response.data.data;
+      context.commit('SET_CONTENT', item);
+      return item;
     },
     FETCH_PAGES: async (context) => {
       Vue.$log.debug('FETCH_PAGES');
@@ -158,6 +141,11 @@ export default {
       Vue.$log.debug('DELETE_PAGE');
       const { cmsId } = payload;
       return deleteApi('API', `/pages/${cmsId}/`, {}, context);
+    },
+    DELETE_ARTICLE: async (context, payload) => {
+      Vue.$log.debug('DELETE_ARTICLE');
+      const { blogId } = payload;
+      return deleteApi('API', `/articles/${blogId}`, {}, context);
     },
     FETCH_ARTICLES: async (context) => {
       Vue.$log.debug('FETCH_ARTICLES');
@@ -183,47 +171,28 @@ export default {
       const response = await get('API', url, context);
       return response.data.data;
     },
-    TOGGLE_EDITORIAL: async (context) => {
-      Vue.$log.debug('TOGGLE_EDITORIAL');
-      const { blog } = context.state;
-      let { editorial = false } = blog.info;
-      editorial = !editorial;
-      const payload = {
-        flag: editorial,
-      };
-      await patch('API', `/posts/${blog._id}/editorial`, payload, context);
-      Vue.set(blog.info, 'editorial', editorial);
-      // if (response.success === true) {
-      context.commit('SET_PAGE', blog);
-    },
     TOGGLE_PUBLISHED: async (context) => {
       Vue.$log.debug('TOGGLE_PUBLISHED');
-      const { blog } = context.state;
-      let { published = false } = blog.info;
+      const { content } = context.state;
+      let published = content.info.state === 'published';
       published = !published;
       const payload = {
         flag: published,
       };
-      await patch('API', `/posts/${blog._id}/published`, payload, context);
-      Vue.set(blog.info, 'published', published);
-      // if (response.success === true) {
-      context.commit('SET_PAGE', blog);
+      await patch('API', `/articles/${content._id}/published`, payload, context);
+      Vue.set(content.info, 'state', published ? 'published' : 'draft');
+      context.commit('SET_PAGE', content);
     },
     TOGGLE_HIDDEN: async (context) => {
       Vue.$log.debug('TOGGLE_HIDDEN');
-      const { blog } = context.state;
-      let { hidden = false } = blog.info;
+      const { content } = context.state;
+      let hidden = content.info.state === 'hidden';
       hidden = !hidden;
       const payload = {
         flag: hidden,
       };
-      await patch('API', `/posts/${blog._id}/hidden`, payload, context);
-      Vue.set(blog.info, 'hidden', hidden);
-    },
-    FETCH_TWITTER_HTML: (context, payload) => {
-      Vue.$log.debug('FETCH_TWITTER_HTML');
-      const response = getSync('API', `/twitter-html?url=${payload.url}`);
-      return response.data;
+      await patch('API', `/posts/${content._id}/hidden`, payload, context);
+      Vue.set(content.info, 'state', hidden ? 'hidden' : 'published');
     },
   },
 };

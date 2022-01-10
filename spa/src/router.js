@@ -109,6 +109,26 @@ export default new Router({
       props: true,
     },
     {
+      path: '/clanky/:slug',
+      name: 'article',
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Article'),
+      props: true,
+    },
+    {
+      path: '/clanky/:slug/uprava',
+      name: 'write-article',
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/WriteBlog.vue'),
+      beforeEnter: requireAuth,
+      props: true,
+    },
+    {
+      path: '/clanky/:slug/vlozeni-html',
+      name: 'enter-article',
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/WriteBlog.vue'),
+      beforeEnter: requireAuth,
+      props: true,
+    },
+    {
       path: '/ankety/',
       name: 'polls',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/poll/Polls.vue'),

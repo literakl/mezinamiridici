@@ -9,8 +9,11 @@
         <span class="poll-trival"></span>
         <span class="poll-dislike"></span>
       </div>
-      <span v-if="item.type === 'blog' && item.info.editorial" class="picture-overlay overlay-left">
-        {{ $t('generic.own-content') }}
+      <span v-if="item.type === 'blog'" class="picture-overlay overlay-left">
+        {{ $t('generic.content.blog') }}
+      </span>
+      <span v-if="item.type === 'article'" class="picture-overlay overlay-left">
+        {{ $t('generic.content.article') }}
       </span>
       <span class="picture-overlay overlay-right"><Date :date="item.info.date" format="dynamicDate"/></span>
     </div>
@@ -61,9 +64,9 @@ export default {
   },
   computed: {
     link() {
-      if (this.item.type === 'poll') {
+      if (this.item.type === 'article') {
         return {
-          name: 'poll',
+          name: 'article',
           params: { slug: this.item.info.slug },
         };
       }
@@ -74,6 +77,12 @@ export default {
             slug: this.item.info.slug,
             id: this.item.info.author.id,
           },
+        };
+      }
+      if (this.item.type === 'poll') {
+        return {
+          name: 'poll',
+          params: { slug: this.item.info.slug },
         };
       }
       if (this.item.type === 'page') {
@@ -93,7 +102,7 @@ export default {
       return this.item.type !== 'poll';
     },
     hasDiscussion() {
-      return this.item.type === 'poll' || this.item.type === 'blog';
+      return this.item.type === 'article' || this.item.type === 'blog' || this.item.type === 'poll';
     },
   },
 };

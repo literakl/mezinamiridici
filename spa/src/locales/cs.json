@@ -25,7 +25,6 @@
     "we-must-fix": "Musíme to opravit",
     "today": "dnes",
     "yesterday": "včera",
-    "not-published": "nezveřejněno",
     "share-link": "Sdílejte",
     "select-picture-label": "Ilustrační obrázek",
     "select-picture-title": "Zvolte obrázek",
@@ -33,7 +32,14 @@
     "tag-select-placeholder": "Zvolte štítek",
     "loading-message": "Stahuji ...",
     "loading-more-button": "Další",
-    "own-content": "Redakce",
+    "content": {
+      "article": "Článek",
+      "blog": "Blog",
+      "state": {
+        "draft": "Koncept",
+        "published": "Zveřejněno"
+      }
+    },
     "ok-button": "OK",
     "cancel-button": "Storno",
     "edit-button": "Upravit",
@@ -281,30 +287,26 @@
   "blog": {
     "form": {
       "title-placeholder": "Název příspěvku",
-      "content-error": "Příspěvek je prázdný",
-      "type": "Typ",
-      "article": "článek redakce",
-      "blog": "příspěvek blogu"
-    },
-    "editorial": {
-      "mark": "Nastav redakci",
-      "unmark": "Zruš redakci"
-    },
-    "publish": {
-      "mark": "Zveřejni",
-      "unmark": "Zruš zveřejnění"
-    },
-    "articles": {
-      "heading": "Články",
-      "not-authorized": "Je nám líto, ale k této stránce nemáte přístup.",
-      "empty": "Zatím jste nenapsal žádný článek."
+      "content-error": "Příspěvek je prázdný"
     },
     "hidden": {
       "mark": "Skryj",
       "unmark": "Odkryj"
     },
-    "concept": "Koncept",
     "confirm-delete": "Opravdu chcete smazat tento blog?"
+  },
+  "articles": {
+    "heading": "Články",
+    "not-authorized": "Je nám líto, ale k této stránce nemáte přístup.",
+    "empty": "Zatím jste nenapsal žádný článek.",
+    "state": {
+      "draft": "Koncept",
+      "published": "Zveřejněn"
+    },
+    "publish": {
+      "mark": "Zveřejni",
+      "unmark": "Zruš zveřejnění"
+    }
   },
   "cms": {
     "edit": {
@@ -379,6 +381,9 @@
     "analyze-votes": "Analýza ankety",
     "create-blog": "Nový příspěvek",
     "update-blog": "Úprava příspěvku",
+    "article": "Článek",
+    "write-article": "Úprava článku",
+    "enter-article": "Úprava článku",
     "blog": "Příspěvek",
     "page": "Stránka",
     "mission": "Mise",

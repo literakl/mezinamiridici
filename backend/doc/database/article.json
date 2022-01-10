@@ -1,6 +1,6 @@
 {
   "_id": "1fd2okv12wjr",
-  "type": "blog",
+  "type": "article",
   "info": {
     "author": {
       "nickname": "Víťa",
@@ -11,7 +11,16 @@
     "state": "published",
     "date": "2021-08-14T16:41:48.834Z",
     "picture": "picture.png",
-    "tags" : [ "motorky" ]
+    "tags" : [ "motorky" ],
+    "payments": [
+      {
+        "purpose": "author",
+        "recipient": "Vitezslav",
+        "amount": 400,
+        "reference": "FI1234",
+        "date": "2021-08-14T16:41:48.834Z"
+      }
+    ]
   },
   "data" : {
     "content" : "<h1>Title</h1><p>Very smart topic</p>"

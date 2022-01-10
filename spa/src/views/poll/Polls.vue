@@ -38,8 +38,11 @@
                 {{ item.comments.count }}
               </router-link>
             </span>
-            <span v-if="!item.info.published">
-               <BIconXOctagon scale='1'></BIconXOctagon> {{ $t('generic.not-published') }}
+            <span>
+                {{ $t(`generic.content.state.${item.info.state}`) }}
+            </span>
+            <span v-if="item.info.state === 'draft'">
+                {{ $t('generic.content.state.draft') }}
             </span>
           </div>
 
@@ -65,7 +68,7 @@
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPlusCircle, BIconCalendarRange, BIconPersonCircle, BIconStarFill,
-  BIconChatTextFill, BIconPencilSquare, BIconTrash, BIconXOctagon,
+  BIconChatTextFill, BIconPencilSquare, BIconTrash,
 } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -86,7 +89,6 @@ export default {
     BIconChatTextFill,
     BIconPencilSquare,
     BIconTrash,
-    BIconXOctagon,
   },
   data() {
     return {

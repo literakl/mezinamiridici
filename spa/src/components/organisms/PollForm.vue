@@ -102,7 +102,7 @@ export default {
   mounted() {
     if (!this.isCreate) {
       this.form.text = this.poll.info.caption;
-      this.form.published = this.poll.info.published;
+      this.form.published = this.poll.info.status === 'published';
       this.form.date = getISO(this.poll.info.date);
       this.form.authorId = this.poll.info.author.id;
       this.form.pollTagsList = (this.poll.info.tags === undefined) ? [] : this.poll.info.tags;

@@ -1,4 +1,3 @@
-
 const dotenv = require('dotenv');
 const dayjs = require('dayjs');
 const path = require('path');
@@ -67,7 +66,7 @@ test('Blog', async () => {
   expect(response.success).toBeTruthy();
 
   // check blog is gone
-  response = await api(`posts/${blog.data.data.slug}`).json();
+  response = await api(`content/${blog.data.data.slug}`).json();
   expect(response.success).toBeFalsy();
   // check comments are gone
   const db = dbClient.db();
@@ -85,84 +84,6 @@ test('Blog', async () => {
   expect(response.success).toBeTruthy();
   // cannot delete deleted post
   response = await api(`posts/${blog.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
-  expect(response.success).toBeFalsy();
-
-  // editor staff actions
-
-  // create new article as author
-  const articleBody = {
-    title: 'First articel',
-    source: '<h1>Title</h1><p>Smart article</p>',
-    picture: 'picture.png',
-    editorial: true,
-  };
-  let firstArticle = await api('posts', { method: 'POST', json: articleBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(firstArticle.success).toBeTruthy();
-  expect(firstArticle.data.info.editorial).toBeTruthy();
-  expect(firstArticle.data.info.published).toBeFalsy();
-
-  // edit post as author before publishing
-  articleBody.source = '<h1>Title</h1><p>Very smart article</p>';
-  firstArticle = await api(`posts/${firstArticle.data._id}`, { method: 'PATCH', json: articleBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(firstArticle.success).toBeTruthy();
-
-  // edit as editor in chief
-  articleBody.title = 'First article';
-  articleBody.source = '<h1>Title</h1><p>Very smart edited article</p>';
-  firstArticle = await api(`posts/${firstArticle.data._id}`, { method: 'PATCH', json: articleBody, headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(firstArticle.success).toBeTruthy();
-
-  firstArticle = await api(`posts/${firstArticle.data.info.slug}`).json();
-  expect(firstArticle.success).toBeTruthy();
-  expect(firstArticle.data.info.caption).toBe(articleBody.title);
-  expect(firstArticle.data.data.content).toBe(articleBody.source);
-
-  // prepare another article for later use
-  articleBody.title = 'Second article';
-  articleBody.source = '<h1>Title</h1><p>Editor in chief article</p>';
-  const secondArticle = await api('posts', { method: 'POST', json: articleBody, headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(secondArticle.success).toBeTruthy();
-
-  // publish article as editor
-  const flagBody = { flag: true };
-  response = await api(`posts/${firstArticle.data._id}/published`, { method: 'PATCH', json: flagBody, headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(response.success).toBeTruthy();
-
-  // author cannot edit published article anymore
-  articleBody.title = 'Spam article';
-  response = await api(`posts/${firstArticle.data._id}`, { method: 'PATCH', json: articleBody, headers: getAuthHeader(Vita.jwt) }).json();
-  expect(response.success).toBeFalsy();
-
-  // author cannot delete published article anymore
-  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Vita.jwt) }).json();
-  expect(response.success).toBeFalsy();
-
-  // anonymous user does not see a list of articles
-  let articles = await bff('articles');
-  expect(articles.success).toBeFalsy();
-  // only editor and staff can see the list of articles
-  articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Jana.jwt) }).json();
-  expect(articles.success).toBeFalsy();
-  // authors can see the list of their articles
-  articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Vita.jwt) }).json();
-  expect(articles.success).toBeTruthy();
-  expect(articles.data.length).toBe(1);
-  expect(articles.data[0]._id).toBe(firstArticle.data._id);
-  // editor can see the list of all articles
-  articles = await bff('articles', { method: 'GET', headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(articles.success).toBeTruthy();
-  expect(articles.data.length).toBe(2);
-  expect(articles.data[0]._id).toBe(secondArticle.data._id);
-  expect(articles.data[1]._id).toBe(firstArticle.data._id);
-
-  // cannot delete post as firstArticle admin
-  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Jiri.jwt) }).json();
-  expect(response.success).toBeFalsy();
-  // delete post as editor
-  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Lukas.jwt) }).json();
-  expect(response.success).toBeTruthy();
-  // cannot delete deleted post
-  response = await api(`posts/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeFalsy();
 });
 
@@ -212,14 +133,14 @@ test('Hide Posts', async () => {
 
   let response = await api(`posts/${blog.data._id}/hidden`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
-  response = await api(`posts/${blog.data.info.slug}`).json();
-  expect(response.data.info.hidden).toBe(true);
+  response = await api(`content/${blog.data.info.slug}`).json();
+  expect(response.data.info.state).toBe('hidden');
 
   body.flag = false;
   response = await api(`posts/${blog.data._id}/hidden`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
-  response = await api(`posts/${blog.data.info.slug}`).json();
-  expect(response.data.info.hidden).toBe(false);
+  response = await api(`content/${blog.data.info.slug}`).json();
+  expect(response.data.info.state).toBe('published');
 });
 
 beforeEach(async () => {

@@ -74,7 +74,7 @@ function prepareUpdateQuery(text, author, picture, date, published, tags) {
   setters['info.slug'] = slugify(text, { lower: true, strict: true });
   setters['info.author'] = { nickname: author.nickname, id: author.userId };
   setters['info.date'] = date;
-  setters['info.published'] = published;
+  setters['info.state'] = published ? 'published' : 'draft';
   setters['info.picture'] = picture;
   if (tags) {
     setters['info.tags'] = tags;

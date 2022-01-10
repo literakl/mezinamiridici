@@ -86,7 +86,7 @@ async function getActivity(dbClient, userId, type, req) {
   } else {
     table = 'items';
     pipeline.push({
-      $match: { 'info.author.id': userId, 'info.published': true, type },
+      $match: { 'info.author.id': userId, 'info.state': { $ne: 'draft' }, type },
     });
     pipeline.push({
       $project: {

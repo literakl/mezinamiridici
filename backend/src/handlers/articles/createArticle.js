@@ -11,10 +11,10 @@ const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/posts', auth.cors);
+  app.options('/v1/articles', auth.cors);
 
-  app.post('/v1/posts', auth.required, auth.cors, async (req, res) => {
-    logger.debug('create blog handler starts');
+  app.post('/v1/articles', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
+    logger.debug('create article handler starts');
 
     try {
       const {
@@ -37,18 +37,13 @@ module.exports = (app) => {
       }
 
       const dbClient = await mongo.connectToDatabase();
-      const blogId = mongo.generateTimeId();
-
-      await insertItem(dbClient, blogId, title, source, user, publishDate, picture, tags);
+      const item = await insertItem(dbClient, title, source, user, publishDate, picture, tags);
+      // we will consider articles as blogs from a user rank point of view
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
+      mongo.storePictureId(dbClient, item._id, contentPictures);
       logger.debug('Blog inserted');
 
-      mongo.storePictureId(dbClient, blogId, contentPictures);
-
-      const blog = await mongo.getContent(dbClient, undefined, blogId);
-      logger.debug('Blog fetched');
-
-      return api.sendCreated(res, api.createResponse(blog));
+      return api.sendCreated(res, api.createResponse(item));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create post', 'sign-in.something-went-wrong'));
@@ -56,16 +51,17 @@ module.exports = (app) => {
   });
 };
 
-async function insertItem(dbClient, blogId, title, source, author, publishDate, picture, tags) {
+// sync changes with parseAccidents.js
+async function insertItem(dbClient, title, source, author, publishDate, picture, tags, published = false) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const slug = slugify(title, { lower: true, strict: true });
   const adjustedSlug = await api.getSlug(slug, dbClient);
 
-  const blog = {
-    _id: blogId,
-    type: 'blog',
+  const doc = {
+    _id: mongo.generateTimeId(),
+    type: 'article',
     info: {
-      state: 'published',
+      state: published ? 'published' : 'draft',
       date: publishDate,
       slug: adjustedSlug,
       author: {
@@ -85,5 +81,8 @@ async function insertItem(dbClient, blogId, title, source, author, publishDate, 
     },
   };
 
-  return dbClient.db().collection('items').insertOne(blog);
+  await dbClient.db().collection('items').insertOne(doc);
+  return doc;
 }
+
+module.exports.insertItem = insertItem;

@@ -83,7 +83,7 @@ test('Poll API', async () => {
   expect(response.data._id).toBe(firstPoll.id);
   expect(response.data.info.caption).toBe(firstPoll.text);
   expect(response.data.info.slug).toBe('first-question');
-  expect(response.data.info.published).toBe(false);
+  expect(response.data.info.state).toBe('draft');
   expect(response.data.my_vote).toBe('neutral');
   expect(response.data.votes_count).toBe(1);
   expect(response.data.votes.neutral).toBe(1);
@@ -237,7 +237,7 @@ test('Poll API', async () => {
   expect(response.data.info.picture).toBe(secondPoll.picture);
   expect(response.data.info.author.id).toBe(Bara._id);
   expect(response.data.info.author.nickname).toBe(Bara.bio.nickname);
-  expect(response.data.info.published).toBeTruthy();
+  expect(response.data.info.state).toBe('published');
   expect(response.data.my_vote).toBe('trivial');
   expect(response.data.votes_count).toBe(5);
   expect(response.data.votes.neutral).toBe(1);

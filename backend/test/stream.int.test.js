@@ -140,22 +140,6 @@ test('Stream API', async () => {
   IBlog.id = response.data._id;
   IBlog.slug = response.data.info.slug;
 
-  /*
-  // TODO dead code #133
-  // set pinned items
-  setPinnedItems(`[{ slug: '${EBlog.slug}', position: 3 },{ slug: '${IBlog.slug}', position: 1 }]`);
-
-  const pinnedItems = await api('item-stream/pinned').json();
-  expect(pinnedItems.success).toBeTruthy();
-  expect(pinnedItems.data.length).toBe(2);
-  expect(pinnedItems.data[0].position).toBe(1);
-  expect(pinnedItems.data[0].item._id).toBe(IBlog.id);
-  expect(pinnedItems.data[0].item.info.caption).toBe(IBlog.title);
-  expect(pinnedItems.data[1].position).toBe(3);
-  expect(pinnedItems.data[1].item._id).toBe(EBlog.id);
-  expect(pinnedItems.data[1].item.info.caption).toBe(EBlog.title);
-  */
-
   response = await api('item-stream?start=0&ps=10').json();
   expect(response.success).toBeTruthy();
   expect(response.data.length).toBe(9);

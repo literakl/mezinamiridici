@@ -4,25 +4,25 @@ const mongo = require('../../utils/mongo.js');
 const { logger } = require('../../utils/logging');
 
 module.exports = (app) => {
-  app.options('/v1/posts/:blogId/snippets', auth.cors);
-  app.options('/v1/posts/:blogId/snippets/:code', auth.cors);
+  app.options('/v1/items/:itemId/snippets', auth.cors);
+  app.options('/v1/items/:itemId/snippets/:code', auth.cors);
 
-  app.get('/v1/posts/:blogId/snippets', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
+  app.get('/v1/items/:itemId/snippets', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
     logger.trace('get snippets handler starts');
-    // find all documents in snippets collection where itemId is blogId
-    const { blogId } = req.params;
-    if (!blogId) {
-      return api.sendMissingParam(res, 'blogId');
+    // find all documents in snippets collection where itemId is itemId
+    const { itemId } = req.params;
+    if (!itemId) {
+      return api.sendMissingParam(res, 'itemId');
     }
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      const blog = await mongo.getContent(dbClient, undefined, itemId);
       if (blog.info.author.id !== req.identity.userId) { // todo editor in chief shall pass through as well
         return api.sendErrorForbidden(res, api.createError('You are not authorized to perform this action'));
       }
 
-      const snippets = await dbClient.db().collection('snippets').find({ itemId: blogId }).toArray();
+      const snippets = await dbClient.db().collection('snippets').find({ itemId: itemId }).toArray();
       logger.trace('Snippets fetched');
 
       return api.sendResponse(res, api.createResponse(snippets));
@@ -32,15 +32,15 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/v1/posts/:blogId/snippets', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
+  app.post('/v1/items/:itemId/snippets', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
     logger.trace('create snippet handler starts');
     const {
       code, type, content, date,
     } = req.body;
 
-    const { blogId } = req.params;
-    if (!blogId) {
-      return api.sendMissingParam(res, 'blogId');
+    const { itemId } = req.params;
+    if (!itemId) {
+      return api.sendMissingParam(res, 'itemId');
     }
     if (!code) {
       return api.sendMissingParam(res, 'code');
@@ -58,11 +58,11 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug(`Creating snippet ${code} of blog ${blogId}`);
+      logger.debug(`Creating snippet ${code} of blog ${itemId}`);
       const user = auth.getIdentity(req.identity);
       const snippetId = mongo.generateTimeId();
 
-      const blog = await mongo.getBlog(dbClient, undefined, blogId);
+      const blog = await mongo.getContent(dbClient, undefined, itemId);
       logger.debug('Blog fetched');
 
       await insertItem(dbClient, snippetId, blog._id, code, user, publishDate, type, content);
@@ -77,12 +77,12 @@ module.exports = (app) => {
     }
   });
 
-  app.patch('/v1/posts/:blogId/snippets/:code', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
+  app.patch('/v1/items/:itemId/snippets/:code', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
     logger.trace('update snippet handler starts');
-    // update document from snippets collection with itemId set to blogId and given code
-    const { blogId } = req.params;
-    if (!blogId) {
-      return api.sendMissingParam(res, 'blogId');
+    // update document from snippets collection with itemId set to itemId and given code
+    const { itemId } = req.params;
+    if (!itemId) {
+      return api.sendMissingParam(res, 'itemId');
     }
     const currentCode = req.params.code;
     if (!currentCode) {
@@ -103,8 +103,8 @@ module.exports = (app) => {
 
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug(`Updating snippet ${currentCode} of blog ${blogId}`);
-      const result = await updateSnippet(dbClient, blogId, currentCode, code, type, content);
+      logger.debug(`Updating snippet ${currentCode} of blog ${itemId}`);
+      const result = await updateSnippet(dbClient, itemId, currentCode, code, type, content);
       logger.debug('Snippet updated');
       // todo mongo log admin
 
@@ -119,20 +119,20 @@ module.exports = (app) => {
     }
   });
 
-  app.delete('/v1/posts/:blogId/snippets/:code', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
+  app.delete('/v1/items/:itemId/snippets/:code', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
     logger.trace('delete snippet handler starts');
-    // delete document from snippets collection with itemId set to blogId and given code
-    const { blogId, code } = req.params;
-    if (!blogId) {
-      return api.sendMissingParam(res, 'blogId');
+    // delete document from snippets collection with itemId set to itemId and given code
+    const { itemId, code } = req.params;
+    if (!itemId) {
+      return api.sendMissingParam(res, 'itemId');
     }
     if (!code) {
       return api.sendMissingParam(res, 'code');
     }
     try {
       const dbClient = await mongo.connectToDatabase();
-      logger.debug(`Deleting snippet ${code} of blog ${blogId}`);
-      const result = await deleteSnippet(dbClient, blogId, code);
+      logger.debug(`Deleting snippet ${code} of blog ${itemId}`);
+      const result = await deleteSnippet(dbClient, itemId, code);
       logger.debug('Snippet deleted');
       // todo mongo log admin
 
@@ -148,10 +148,10 @@ module.exports = (app) => {
   });
 };
 
-async function insertItem(dbClient, snippetId, blogId, code, user, date, type, content) {
+async function insertItem(dbClient, snippetId, itemId, code, user, date, type, content) {
   const snippet = {
     _id: snippetId,
-    itemId: blogId,
+    itemId: itemId,
     code,
     user: {
       nickname: user.nickname,
@@ -171,10 +171,10 @@ async function getSnippet(dbClient, snippetId) {
   throw new Error('Snippet id is empty');
 }
 
-async function updateSnippet(dbClient, blogId, currentCode, code, type, content) {
-  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: blogId, code: currentCode }, { $set: { code, type, content } });
+async function updateSnippet(dbClient, itemId, currentCode, code, type, content) {
+  return dbClient.db().collection('snippets').findOneAndUpdate({ itemId: itemId, code: currentCode }, { $set: { code, type, content } });
 }
 
-async function deleteSnippet(dbClient, blogId, code) {
-  return dbClient.db().collection('snippets').deleteOne({ itemId: blogId, code });
+async function deleteSnippet(dbClient, itemId, code) {
+  return dbClient.db().collection('snippets').deleteOne({ itemId: itemId, code });
 }

@@ -162,10 +162,10 @@ async function incrementUserActivityCounter(dbClient, userId, type, action) {
   return dbClient.db().collection('users').updateOne({ _id: userId }, update);
 }
 
-async function getBlog(dbClient, slug, blogId) {
+async function getContent(dbClient, slug, itemId) {
   let query;
-  if (blogId) {
-    query = { _id: blogId };
+  if (itemId) {
+    query = { _id: itemId };
   }
   if (slug) {
     query = { 'info.slug': slug };
@@ -175,8 +175,8 @@ async function getBlog(dbClient, slug, blogId) {
   }
 
   const db = dbClient.db();
-  const blog = await db.collection('items').findOne(query);
-  if (blog) {
+  const item = await db.collection('items').findOne(query);
+  if (item && item.type !== 'blog') { // fetch snippets
     const projection = {
       projection: {
         code: 1,
@@ -184,12 +184,12 @@ async function getBlog(dbClient, slug, blogId) {
         content: 1,
       },
     };
-    blog.snippets = await db.collection('snippets')
-      .find({ itemId: blog._id }, projection)
+    item.snippets = await db.collection('snippets')
+      .find({ itemId: item._id }, projection)
       .toArray();
   }
 
-  return blog;
+  return item;
 }
 
 async function getPoll(dbClient, pipeline) {
@@ -199,11 +199,6 @@ async function getPoll(dbClient, pipeline) {
     return null;
   }
   return processPoll(item);
-}
-
-async function getPage(dbClient, pipeline) {
-  const cursor = dbClient.db().collection('items').aggregate(pipeline);
-  return cursor.next();
 }
 
 function processPoll(item) {
@@ -229,7 +224,7 @@ function getNeighbourhItem(dbClient, type, published, older) {
     sortExpression = { 'info.date': 1 };
   }
   return dbClient.db().collection('items')
-    .find({ type, 'info.published': true, 'info.date': dateExpression }, { projection: { info: 1 } })
+    .find({ type, 'info.state': 'published', 'info.date': dateExpression }, { projection: { info: 1 } })
     .sort(sortExpression)
     .limit(1);
 }
@@ -257,6 +252,7 @@ function setupIndexes(dbClient) {
   db.collection('users').createIndex({ 'bio.nickname': 1 }, { unique: true });
   db.collection('items').createIndex({ 'info.type': 1 });
   db.collection('items').createIndex({ 'info.date': 1 });
+  db.collection('items').createIndex({ 'info.state': 1 });
   db.collection('items').createIndex({ 'info.slug': 1 }, { unique: true });
   db.collection('poll_votes').createIndex({ itemId: 1, user: 1 }, { unique: true });
   db.collection('comments').createIndex({ itemId: 1 });
@@ -304,7 +300,7 @@ function storePictureId(dbClient, itemId, pictureIds) {
 }
 
 const stageSortByDateDesc = { $sort: { 'info.date': -1 } };
-const stagePublishedPoll = { $match: { 'info.published': true, type: 'poll', 'info.date': { $lte: new Date() } } };
+const stagePublishedPoll = { $match: { 'info.state': 'published', type: 'poll', 'info.date': { $lte: new Date() } } };
 function stageLimit(n) { return { $limit: n }; }
 function stageId(id) { return { $match: { _id: id } }; }
 function stageSlug(slug) { return { $match: { 'info.slug': slug } }; }
@@ -377,9 +373,8 @@ exports.insertOne = insertOne;
 exports.updateOne = updateOne;
 exports.getIdentity = getIdentity;
 exports.getPoll = getPoll;
-exports.getBlog = getBlog;
+exports.getContent = getContent;
 exports.processPoll = processPoll;
-exports.getPage = getPage;
 exports.getNeighbourhItem = getNeighbourhItem;
 exports.stageSortByDateDesc = stageSortByDateDesc;
 exports.stageLimit = stageLimit;

@@ -85,8 +85,7 @@ async function getItems() {
       .find(
         {
           type: { $in: ['blog', 'page', 'poll'] },
-          'info.published': true,
-          // 'info.date': { $lte: new Date() }, TODO
+          'info.state': 'published',
         },
         {
           projection: {
