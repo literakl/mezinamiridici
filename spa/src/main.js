@@ -35,7 +35,7 @@ log.setLevel(process.env.LOG_LEVEL || 'debug');
 Vue.$log = log;
 Vue.prototype.$log = Vue.$log;
 
-Vue.config.productionTip = process.env.VUE_APP_LOG_PRODUCTION_TIP || false;
+Vue.config.productionTip = false;
 Vue.use(ModalPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
