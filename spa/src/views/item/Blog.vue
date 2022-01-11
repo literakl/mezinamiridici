@@ -101,6 +101,7 @@ export default {
   },
   watch: {
     blog() {
+      console.log(`Blog.vue watch ${this.$store.getters.CONTENT}`);
       if (this.blog) {
         document.title = this.blog.info.caption;
       }
@@ -142,10 +143,36 @@ export default {
       return this.blog.info.author.id === this.$store.getters.USER_ID;
     },
   },
+  beforeCreate() {
+    console.log("Blog beforeCreate");
+  },
+  beforeMount() {
+    console.log("Blog beforeMount");
+  },
+  beforeUpdate() {
+    console.log('Blog beforeUpdate');
+  },
+  updated() {
+    console.log('Blog updated');
+  },
+  activated() {
+    console.log('Blog activated');
+  },
+  deactivated() {
+    console.log('Blog deactivated');
+  },
+  beforeUnmount() {
+    console.log('Blog beforeUnmount');
+  },
+  unmounted() {
+    console.log('Blog unmounted');
+  },
   created() { // slug must be unique across all blogs
+    console.log('Blog created');
     this.$store.dispatch('FETCH_CONTENT', { slug: this.slug, component: this });
   },
   mounted() {
+    console.log('Blog mounted');
     document.onmouseover = () => {
       window.innerDocClick = true;
     };
@@ -155,6 +182,7 @@ export default {
     // TODO what is the purpose? Clear blog causes error with URL to profile in chrome console
     window.onpopstate = () => {
       if (!window.innerDocClick) {
+        console.log('Blog onpopstate');
         this.$store.commit('CLEAR_CONTENT');
       }
     };

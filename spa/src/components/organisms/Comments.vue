@@ -31,6 +31,7 @@ import Comment from '@/components/organisms/Comment.vue';
 import Replies from '@/components/organisms/Replies.vue';
 import Button from '@/components/atoms/Button.vue';
 import CommentForm from '@/components/molecules/CommentForm.vue';
+import Vue from 'vue';
 
 export default {
   name: 'Comments',
@@ -60,6 +61,7 @@ export default {
   },
   watch: {
     comments() {
+      console.log("Comments watch comments");
       if (this.addedId !== '') {
         setTimeout(() => {
           this.$scrollTo(document.getElementById(this.addedId), 500, { easing: 'ease' });
@@ -69,17 +71,48 @@ export default {
       }
     },
     itemId() {
+      console.log(`Comments watch itemId ${this.itemId}`);
       this.getComments();
     },
   },
+  beforeCreate() {
+    console.log("Comments beforeCreate");
+  },
+  beforeMount() {
+    console.log("Comments beforeMount");
+  },
+  mounted() {
+    console.log('Comments mounted');
+  },
+  beforeUpdate() {
+    console.log('Comments beforeUpdate');
+  },
+  updated() {
+    console.log('Comments updated');
+  },
+  activated() {
+    console.log('Comments activated');
+  },
+  deactivated() {
+    console.log('Comments deactivated');
+  },
+  beforeUnmount() {
+    console.log('Comments beforeUnmount');
+  },
+  unmounted() {
+    console.log('Comments unmounted');
+  },
   created() {
+    console.log("Comments created");
     this.getComments();
   },
   destroyed() {
+    console.log("Comments destroyed");
     this.$store.commit('DESTROY_COMMENTS');
   },
   methods: {
     getComments() {
+      console.log("Comments getComments");
       this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
     },
     getCollapseId(comment) {
