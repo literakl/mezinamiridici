@@ -36,12 +36,13 @@ export default {
     CLEAR_CONTENT: (state) => {
       console.log('CLEAR_CONTENT');
       state.content = {
+        _id: null,
+        type: '',
         comments: {},
         data: {},
         info: {
           author: {},
         },
-        type: '',
       };
     },
   },
@@ -107,8 +108,8 @@ export default {
         Vue.$log.debug(`Slug is in the cache`);
         return; // cached value recycled
       }
-      context.commit('SET_CONTENT', null);
 */
+      // context.commit('SET_CONTENT', null);
       let response;
       try {
         response = await get('API', `/content/${payload.slug}`, context);
@@ -118,6 +119,7 @@ export default {
           return;
         }
       }
+      console.log(`Fetched, itemId=${response.data.data._id}`);
       context.commit('SET_CONTENT', response.data.data);
       return response.data.data;
     },

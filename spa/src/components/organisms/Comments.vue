@@ -72,20 +72,11 @@ export default {
     },
     itemId() {
       console.log(`Comments watch itemId ${this.itemId}`);
-      this.getComments();
+      // this.getComments();
     },
-  },
-  beforeCreate() {
-    console.log("Comments beforeCreate");
-  },
-  beforeMount() {
-    console.log("Comments beforeMount");
   },
   mounted() {
     console.log('Comments mounted');
-  },
-  beforeUpdate() {
-    console.log('Comments beforeUpdate');
   },
   updated() {
     console.log('Comments updated');
@@ -96,25 +87,22 @@ export default {
   deactivated() {
     console.log('Comments deactivated');
   },
-  beforeUnmount() {
-    console.log('Comments beforeUnmount');
-  },
   unmounted() {
     console.log('Comments unmounted');
   },
   created() {
-    console.log("Comments created");
-    this.getComments();
+    console.log(`Comments created itemId=${this.itemId}`);
+    this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
   },
   destroyed() {
     console.log("Comments destroyed");
     this.$store.commit('DESTROY_COMMENTS');
   },
   methods: {
-    getComments() {
-      console.log("Comments getComments");
-      this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
-    },
+    // getComments() {
+    //   console.log("Comments getComments");
+    //   this.$store.dispatch('FETCH_COMMENTS', { itemId: this.itemId });
+    // },
     getCollapseId(comment) {
       return (comment.replies && comment.replies.length > 0) ? `replies_${comment._id}` : undefined;
     },

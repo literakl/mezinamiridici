@@ -101,7 +101,7 @@ export default {
   },
   watch: {
     blog() {
-      console.log(`Blog.vue watch ${this.$store.getters.CONTENT}`);
+      console.log(`Blog.vue watch ${this.$store.getters.CONTENT._id}`);
       if (this.blog) {
         document.title = this.blog.info.caption;
       }
@@ -143,15 +143,6 @@ export default {
       return this.blog.info.author.id === this.$store.getters.USER_ID;
     },
   },
-  beforeCreate() {
-    console.log("Blog beforeCreate");
-  },
-  beforeMount() {
-    console.log("Blog beforeMount");
-  },
-  beforeUpdate() {
-    console.log('Blog beforeUpdate');
-  },
   updated() {
     console.log('Blog updated');
   },
@@ -160,9 +151,6 @@ export default {
   },
   deactivated() {
     console.log('Blog deactivated');
-  },
-  beforeUnmount() {
-    console.log('Blog beforeUnmount');
   },
   unmounted() {
     console.log('Blog unmounted');
@@ -183,7 +171,7 @@ export default {
     window.onpopstate = () => {
       if (!window.innerDocClick) {
         console.log('Blog onpopstate');
-        this.$store.commit('CLEAR_CONTENT');
+        // this.$store.commit('CLEAR_CONTENT');
       }
     };
   },

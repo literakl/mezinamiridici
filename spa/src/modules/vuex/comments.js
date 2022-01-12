@@ -6,6 +6,7 @@ const REPLY_LIMIT = Number.parseInt(VUE_APP_REPLY_LIMIT || '5', 10);
 
 export default {
   state: () => ({
+    iemId: null,
     discussion: {
       incomplete: true,
       comments: [],
@@ -33,6 +34,7 @@ export default {
   mutations: {
     DESTROY_COMMENTS: (state) => {
       Vue.$log.debug('DESTROY_COMMENTS');
+      state.iemId = null;
       state.comments = {};
       state.discussion.incomplete = true;
       state.discussion.comments = [];
@@ -94,13 +96,24 @@ export default {
       const { commentId } = payload;
       state.discussion.addedCommentId = commentId;
     },
+    SET_ITEM_ID: (state, payload) => {
+      const { itemId } = payload;
+      state.itemId = itemId;
+    },
   },
 
   actions: {
     // pokryt stavy: nacteni nove diskuse, dalsi stranka, nacist nove komentare
     FETCH_COMMENTS: async (context, payload) => {
       Vue.$log.debug(`FETCH_COMMENTS ${payload.itemId}`);
-      if (payload.itemId === undefined) return;
+      if (payload.itemId === undefined) {
+        Vue.$log.warn('FETCH_COMMENTS null detected');
+        return;
+      }
+      if (context.state.itemId && payload.itemId !== context.state.itemId) {
+        Vue.$log.error(`FETCH_COMMENTS item mismatch: payload=${payload.itemId}, state=${context.state.itemId}`);
+        return;
+      }
       let url = `/items/${payload.itemId}/comments`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;
@@ -112,6 +125,7 @@ export default {
         userId: context.rootState.users.userId,
       };
       context.commit('APPEND_COMMENTS', mutation);
+      context.commit('SET_ITEM_ID', { itemId: payload.itemId });
     },
     RELOAD_COMMENT: async (context, payload) => {
       Vue.$log.debug(`FETCH_REPLIES ${payload}`);
