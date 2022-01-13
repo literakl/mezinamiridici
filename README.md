@@ -11,7 +11,7 @@ This is a monorepo for portal [www.mezinamiridici.cz]((https://www.mezinamiridic
 * `backend` is the NodeJS backend
 * `deploy` is a configuration for the deployment
 
-##Prerequisities
+## Prerequisities
 
 * Download and install [NodeJS 16](https://nodejs.org/en/download/). It needs to be on your path so you can start it from any directory.
 
