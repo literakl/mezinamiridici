@@ -110,10 +110,6 @@ export default {
         Vue.$log.warn('FETCH_COMMENTS null detected');
         return;
       }
-      if (context.state.itemId && payload.itemId !== context.state.itemId) {
-        Vue.$log.error(`FETCH_COMMENTS item mismatch: payload=${payload.itemId}, state=${context.state.itemId}`);
-        return;
-      }
       let url = `/items/${payload.itemId}/comments`;
       if (payload.lastSeen) {
         url += `?lr=id:${payload.lastSeen}`;

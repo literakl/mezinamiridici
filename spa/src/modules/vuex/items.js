@@ -34,7 +34,6 @@ export default {
       state.itemPictures = payload;
     },
     CLEAR_CONTENT: (state) => {
-      console.log('CLEAR_CONTENT');
       state.content = {
         _id: null,
         type: '',
@@ -103,13 +102,6 @@ export default {
     },
     FETCH_CONTENT: async (context, payload) => {
       Vue.$log.debug(`FETCH_CONTENT ${payload.slug}`);
-/*
-      if (context.state.content != null && payload.slug === context.state.content.info.slug) {
-        Vue.$log.debug(`Slug is in the cache`);
-        return; // cached value recycled
-      }
-*/
-      // context.commit('SET_CONTENT', null);
       let response;
       try {
         response = await get('API', `/content/${payload.slug}`, context);
@@ -119,7 +111,6 @@ export default {
           return;
         }
       }
-      console.log(`Fetched, itemId=${response.data.data._id}`);
       context.commit('SET_CONTENT', response.data.data);
       return response.data.data;
     },
