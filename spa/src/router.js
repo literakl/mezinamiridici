@@ -123,7 +123,7 @@ export default new Router({
     },
     {
       path: '/clanky/:slug/vlozeni-html',
-      name: 'enter-article',
+      name: 'code-article',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/WriteBlog.vue'),
       beforeEnter: requireAuth,
       props: true,
@@ -159,7 +159,7 @@ export default new Router({
     },
     {
       path: '/o/',
-      name: 'cms',
+      name: 'pages',
       component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Pages.vue'),
     },
     {
@@ -170,13 +170,13 @@ export default new Router({
     },
     {
       path: '/o/novy',
-      name: 'create-content',
+      name: 'create-page',
       component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CreatePage.vue'),
       props: true,
     },
     {
       path: '/o/:slug/uprava',
-      name: 'edit-content',
+      name: 'edit-page',
       component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/EditPage.vue'),
       props: true,
     },

@@ -13,6 +13,15 @@
 
       <div v-if="noArticlesFound">{{ $t('articles.empty') }}</div>
 
+      <div class="mb-2 d-flex flex-row-reverse action-btn">
+        <b-button-group>
+          <b-button v-if="role" :to="{ name: 'create-content'}" variant="outline-primary">
+            <BIconFileEarmarkPlusFill scale="1" />
+            {{ $t('articles.edit.new-page-heading') }}
+          </b-button>
+        </b-button-group>
+      </div>
+
       <div v-for="item in articles" :key="item._id" class="pagelist-box">
         <b-card tag="article">
           <b-card-body>
@@ -27,9 +36,9 @@
               <span>
                 <BIconClock scale="1"></BIconClock>
                 <Date :date="item.info.date" format="dynamicDate"/>
-              </span>
-              <span>
-                {{ $t(`generic.content.state.${item.info.state}`) }}
+                <span>
+                  {{ $t(`generic.content.state.${item.info.state}`) }}
+                </span>
               </span>
               <span>
                 <BIconPersonCircle scale="1"></BIconPersonCircle>
@@ -37,13 +46,13 @@
               </span>
             </div>
             <b-button-group>
-              <b-button v-if="canEdit(item)" :to="{ name: 'edit-article', params: { slug: item.info.slug }}" variant="outline-primary">
+              <b-button v-if="canEdit(item)" :to="{ name: 'write-article', params: { slug: item.info.slug }}" variant="outline-primary">
                 <BIconPencilSquare scale="1"></BIconPencilSquare>
                 {{ $t('generic.edit-button') }}
               </b-button>
-              <b-button v-if="canEdit(item)" :to="{ name: 'edit-article-html', params: { slug: item.info.slug }}" variant="outline-primary">
-                <BIconPencilSquare scale="1"></BIconPencilSquare>
-                {{ $t('generic.edit-button') }}
+              <b-button v-if="canEdit(item)" :to="{ name: 'code-article', params: { slug: item.info.slug }}" variant="outline-primary">
+                <BIconCodeSlash scale="1"></BIconCodeSlash>
+                {{ $t('generic.edit-html-button') }}
               </b-button>
               <b-button v-if="canDelete" @click="confirmDelete(item)" variant="outline-primary">
                 <BIconTrash scale="1"></BIconTrash>
@@ -59,8 +68,17 @@
 
 <script>
 import {
-  BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
-  BIconPersonCircle, BIconClock, BIconPencilSquare, BIconTrash,
+  BButtonGroup,
+  BButton,
+  BCard,
+  BCardBody,
+  BCardFooter,
+  BIconPersonCircle,
+  BIconClock,
+  BIconPencilSquare,
+  BIconTrash,
+  BIconCodeSlash,
+  BIconFileEarmarkPlusFill,
 } from 'bootstrap-vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -75,7 +93,9 @@ export default {
     BCardBody,
     BCardFooter,
     BIconPersonCircle,
+    BIconCodeSlash,
     BIconClock,
+    BIconFileEarmarkPlusFill,
     BIconPencilSquare,
     BIconTrash,
     ContentLoading,
@@ -115,8 +135,11 @@ export default {
       }
       return item.info.state === 'draft';
     },
+    async togglePublished() {
+      await this.$store.dispatch('TOGGLE_PUBLISHED');
+    },
     confirmDelete(item) {
-      this.$bvModal.msgBoxConfirm(this.$t('cms.delete-message'), {
+      this.$bvModal.msgBoxConfirm(this.$t('articles.delete-message'), {
         title: this.$t('generic.confirm-title'),
         size: 'sm',
         buttonSize: 'sm',

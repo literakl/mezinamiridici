@@ -31,8 +31,7 @@ module.exports = (app) => {
       ]);
       logger.debug('Page inserted');
 
-      const pipeline = [mongo.stageId(pageId)];
-      const page = await mongo.getPage(dbClient, pipeline);
+      const page = await mongo.getContent(dbClient, null, pageId);
       logger.debug('Page fetched');
 
       mongo.storePictureId(dbClient, pageId, contentPictures);

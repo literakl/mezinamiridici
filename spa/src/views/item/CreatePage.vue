@@ -1,9 +1,9 @@
 <template>
   <div class="mt-5 border centerbox">
     <div class="head-area">
-      <h2>{{ $t('cms.edit.new-cms-heading') }}</h2>
+      <h2>{{ $t('page-title.create-page') }}</h2>
     </div>
-    <PageForm :isCreate="true"/>
+    <PageForm />
   </div>
 </template>
 

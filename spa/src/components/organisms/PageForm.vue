@@ -3,7 +3,7 @@
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <ValidationProvider :rules="{ required: true, min: 3 }" v-slot="validationContext">
-          <b-form-group id="caption-group" :label="$t('cms.edit.caption-label')" label-for="caption">
+          <b-form-group id="caption-group" :label="$t('generic.content.caption-label')" label-for="caption">
             <b-form-input
               id="caption" name="caption" aria-describedby="text-errors"
               v-model="form.caption" :state="getValidationState(validationContext)">
@@ -11,8 +11,9 @@
             <b-form-invalid-feedback id="caption-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-form-group>
         </ValidationProvider>
+
         <ValidationProvider :rules="{ required: true, min: 3 }" v-slot="validationContext">
-          <b-form-group id="slug-group" :label="$t('cms.edit.slug-label')" label-for="slug">
+          <b-form-group id="slug-group" :label="$t('generic.content.slug-label')" label-for="slug">
             <b-form-input
               id="slug" name="slug" aria-describedby="text-errors"
               v-model="form.slug" :state="getValidationState(validationContext)">
@@ -21,36 +22,15 @@
           </b-form-group>
         </ValidationProvider>
 
-        <div class="row">
-          <Radio
-            v-model="mode"
-            identifier="wysiwyg"
-            class="pl-3"
-            :label="$t('cms.edit.wysiwyg')"
-            name="mode"/>
-          <Radio
-            v-model="mode"
-            identifier="html"
-            class="pl-3"
-            :label="$t('cms.edit.html')"
-            name="mode"/>
-        </div>
-
         <Editor
-          v-if="mode === 'wysiwyg'"
           :blog="form.content"
           @changeBlog="changeBlog"
-        />
-        <b-form-textarea
-          v-if="mode === 'html'"
-          id="htmlcontent"
-          v-model="html"
-          rows="10"
         />
 
         <div v-if="error" class="text-danger">
           {{ error }}
         </div>
+
         <b-button type="submit" variant="primary">{{ $t("generic.save-button") }}</b-button>
       </b-form>
     </ValidationObserver>
@@ -67,7 +47,6 @@ import {
   BFormTextarea
 } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
-import Radio from '@/components/atoms/Radio';
 
 export default {
   name: 'PageForm',
@@ -79,10 +58,8 @@ export default {
     BFormTextarea,
     BButton,
     Editor,
-    Radio,
   },
   props: {
-    isCreate: Boolean,
     page: Object,
   },
   data: () => ({
@@ -91,13 +68,12 @@ export default {
       slug: '',
       content: null,
     },
-    mode: 'wysiwyg',
     error: null,
     html: '',
     contentPictures: [],
   }),
   mounted() {
-    if (!this.isCreate) {
+    if (this.page) {
       this.form.caption = this.page.info.caption;
       this.form.slug = this.page.info.slug;
       this.form.content = this.page;
@@ -125,11 +101,11 @@ export default {
         contentPictures: this.contentPictures,
       };
 
-      if (this.isCreate) {
-        message = 'CREATE_PAGE';
-      } else {
+      if (this.page) {
         message = 'UPDATE_PAGE';
         body.pageId = this.page._id;
+      } else {
+        message = 'CREATE_PAGE';
       }
 
       try {

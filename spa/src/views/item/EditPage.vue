@@ -1,9 +1,9 @@
 <template>
   <div class="mt-4 centerbox">
     <div class="head-area">
-      <h2>{{ $t('page-title.edit-content') }}</h2>
+      <h2>{{ $t('page-title.edit-page') }}</h2>
     </div>
-    <PageForm v-if="page" :page="page" :isCreate="false"/>
+    <PageForm v-if="page" :page="page"/>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     page() {
-      return this.$store.getters.PAGE;
+      return this.$store.getters.CONTENT;
     },
   },
   created() {

@@ -1,14 +1,14 @@
 <template>
   <div class="pt-3 centerbox m-auto">
     <div class="head-area">
-      <h2>{{ $t('cms.pages-heading') }}</h2>
+      <h2>{{ $t('page-title.pages') }}</h2>
     </div>
 
     <div class="mb-2 d-flex flex-row-reverse action-btn">
       <b-button-group>
-        <b-button v-if="role" :to="{ name: 'create-content'}" variant="btn btn-primary">
-          <BIconFileEarmarkBreak scale="1"></BIconFileEarmarkBreak>
-          {{ $t('cms.edit.new-cms-heading') }}
+        <b-button v-if="role" :to="{ name: 'create-page'}" variant="outline-primary">
+          <BIconFileEarmarkPlusFill scale="1" />
+          {{ $t('pages.new-page-button') }}
         </b-button>
       </b-button-group>
     </div>
@@ -27,17 +27,18 @@
             <span>
               <BIconClock scale="1"></BIconClock>
               <Date :date="item.info.date" format="dynamicDate"/>
+              <span>
+                {{ $t(`generic.content.state.${item.info.state}`) }}
+              </span>
             </span>
             <span>
               <BIconPersonCircle scale="1"></BIconPersonCircle>
               <ProfileLink :profile="item.info.author"/>
             </span>
-            <span>
-                &bull; {{ $t(`generic.content.state.${item.info.state}`) }}
-              </span>
           </div>
           <b-button-group>
-            <b-button v-if="role" :to="{ name: 'edit-content', params: { slug: item.info.slug }}" variant="outline-primary">
+            <!--TODO publish button-->
+            <b-button v-if="role" :to="{ name: 'edit-page', params: { slug: item.info.slug }}" variant="outline-primary">
               <BIconPencilSquare scale="1"></BIconPencilSquare>
               {{ $t('generic.edit-button') }}
             </b-button>
@@ -56,7 +57,7 @@
 import {
   BButtonGroup, BButton, BCard, BCardBody, BCardFooter,
   BIconPersonCircle, BIconClock, BIconPencilSquare,
-  BIconTrash, BIconFileEarmarkBreak,
+  BIconTrash, BIconFileEarmarkPlusFill,
 } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -64,18 +65,18 @@ import Date from '@/components/atoms/Date.vue';
 export default {
   name: 'Pages',
   components: {
-    ProfileLink,
-    Date,
     BButtonGroup,
     BButton,
     BCard,
     BCardBody,
     BCardFooter,
-    BIconPersonCircle,
     BIconClock,
+    BIconFileEarmarkPlusFill,
     BIconPencilSquare,
+    BIconPersonCircle,
     BIconTrash,
-    BIconFileEarmarkBreak,
+    Date,
+    ProfileLink,
   },
   data() {
     return {
@@ -93,7 +94,7 @@ export default {
   },
   methods: {
     confirmDelete(item) {
-      this.$bvModal.msgBoxConfirm(this.$t('cms.delete-message'), {
+      this.$bvModal.msgBoxConfirm(this.$t('pages.delete-message'), {
         title: this.$t('generic.confirm-title'),
         size: 'sm',
         buttonSize: 'sm',
@@ -106,7 +107,7 @@ export default {
       })
         .then((value) => {
           if (value) {
-            this.deleteCMS(item);
+            this.deletePage(item);
           }
         })
         .catch((err) => {
@@ -114,7 +115,7 @@ export default {
         });
     },
 
-    async deleteCMS(item) {
+    async deletePage(item) {
       await this.$store.dispatch('DELETE_PAGE', {
         cmsId: item._id,
       });
@@ -125,7 +126,6 @@ export default {
 </script>
 
 <style scoped>
-
 .centerbox {
   max-width: 1235px;
   margin: 0 auto;
@@ -135,20 +135,19 @@ export default {
   font-size: 14px;
 }
 
-.action-btn a svg {
-  color: #fff;
-}
-
 .pagelist-box {
   margin-bottom: 10px;
 }
-.pagelist-box .card{
+
+.pagelist-box .card {
  border-color: #ddd;
 }
+
 .pagelist-box .card-body {
  padding: 10px;
 }
-.pagelist-box .card-body .card-body{
+
+.pagelist-box .card-body .card-body {
  padding: 0;
 }
 

@@ -25,9 +25,9 @@ export default {
   },
   computed: {
     content() {
-      const cms = this.$store.getters.PAGE;
-      if (cms) this.changeTitle(cms.info.caption);
-      return cms;
+      const item = this.$store.getters.CONTENT;
+      if (item) this.changeTitle(item.info.caption);
+      return item;
     },
     title() {
       let txt = '';

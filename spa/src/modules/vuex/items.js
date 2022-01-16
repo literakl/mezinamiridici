@@ -129,7 +129,7 @@ export default {
       const { pageId } = payload;
       const cmsData = await patch('API', `/pages/${pageId}/`, payload, context);
       const item = cmsData.data.data;
-      context.commit('SET_PAGE', item);
+      context.commit('SET_CONTENT', item);
       return item;
     },
     DELETE_PAGE: async (context, payload) => {
@@ -176,7 +176,7 @@ export default {
       };
       await patch('API', `/articles/${content._id}/published`, payload, context);
       Vue.set(content.info, 'state', published ? 'published' : 'draft');
-      context.commit('SET_PAGE', content);
+      context.commit('SET_CONTENT', content);
     },
     TOGGLE_HIDDEN: async (context) => {
       Vue.$log.debug('TOGGLE_HIDDEN');

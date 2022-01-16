@@ -38,11 +38,15 @@
       "state": {
         "draft": "Koncept",
         "published": "Zveřejněno"
-      }
+      },
+      "caption-label": "Titulek",
+      "slug-label": "URL adresa",
+      "content-label": "Obsah"
     },
     "ok-button": "OK",
     "cancel-button": "Storno",
     "edit-button": "Upravit",
+    "edit-html-button": "Upravit HTML",
     "save-button": "Uložit",
     "delete-button": "Smazat",
     "reset-button": "Reset",
@@ -306,18 +310,16 @@
     "publish": {
       "mark": "Zveřejni",
       "unmark": "Zruš zveřejnění"
-    }
+    },
+    "new-article-button": "Nový článek",
+    "delete-message": "Opravdu chcete smazat tento článek?"
   },
-  "cms": {
+  "pages": {
     "edit": {
-      "caption-label": "Titulek",
-      "slug-label": "URL adresa",
-      "content-label": "Obsah",
-      "new-cms-heading": "Nová stránka",
       "wysiwyg": "WYSIWYG",
       "html": "HTML"
     },
-    "pages-heading": "Stránky",
+    "new-page-button": "Nová stránka",
     "delete-message": "Opravdu chcete smazat tuto stránku?"
   },
   "editor": {
@@ -373,8 +375,8 @@
     "update-password": "Změna hesla",
     "user-profile": "Uživatelský profil",
     "update-profile": "Úprava profilu",
-    "polls": "Ankety",
     "poll": "Anketa",
+    "polls": "Ankety",
     "edit-poll": "Úprava ankety",
     "create-poll": "Nová anketa",
     "analyse-poll": "Analýza ankety",
@@ -382,21 +384,20 @@
     "create-blog": "Nový příspěvek",
     "update-blog": "Úprava příspěvku",
     "article": "Článek",
+    "articles": "Články",
     "write-article": "Úprava článku",
     "enter-article": "Úprava článku",
     "blog": "Příspěvek",
-    "page": "Stránka",
     "mission": "Mise",
     "contact": "Kontakt",
     "advertisement": "Reklama",
     "not-found": "Stránka nenalezena",
     "tag": "Štítek",
     "tags": "Štítky",
-    "articles": "Články",
-    "cms": "Stránky",
-    "content": "Stránka",
-    "create-content": "Nová stránka",
-    "edit-content": "Úprava stránky",
+    "page": "Stránka",
+    "pages": "Stránky",
+    "create-page": "Nová stránka",
+    "edit-page": "Úprava stránky",
     "junkyard": "Vrakoviště"
   }
 }
