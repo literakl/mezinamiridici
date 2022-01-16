@@ -80,10 +80,10 @@ export default {
     },
     CREATE_BLOG: async (context, payload) => {
       Vue.$log.debug('CREATE_BLOG');
-      const blog = await post('API', '/posts', payload, context)
+      const item = await post('API', '/posts', payload, context)
         .then(response => response.data)
         .catch(err => err.response.data);
-      return blog;
+      return item;
     },
     UPDATE_BLOG: async (context, payload) => {
       Vue.$log.debug('UPDATE_BLOG');
@@ -136,6 +136,24 @@ export default {
       Vue.$log.debug('DELETE_PAGE');
       const { cmsId } = payload;
       return deleteApi('API', `/pages/${cmsId}/`, {}, context);
+    },
+    CREATE_ARTICLE: async (context, payload) => {
+      Vue.$log.debug('CREATE_ARTICLE');
+      const item = await post('API', '/articles', payload, context)
+        .then(response => response.data)
+        .catch(err => err.response.data);
+      return item;
+    },
+    UPDATE_ARTICLE: async (context, payload) => {
+      Vue.$log.debug('UPDATE_ARTICLE');
+      console.log(payload);
+      const { itemId } = payload;
+      const item = await patch('API', `/articles/${itemId}/`, payload, context)
+        .then((response) => {
+          context.commit('SET_CONTENT', response.data.data);
+          return response.data;
+        }).catch(err => err.response.data);
+      return item;
     },
     DELETE_ARTICLE: async (context, payload) => {
       Vue.$log.debug('DELETE_ARTICLE');

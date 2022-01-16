@@ -8,13 +8,13 @@
               v-model="title"
               name="title"
               :placeholder="$t('blog.form.title-placeholder')"
-              class="write-blog"
+              class="write-article"
               aria-describedby="title-errors"
               :rules="{ required: true }"
             />
 
             <Editor
-              :blog="blog"
+              :blog="item"
               v-model="html"
               aria-describedby="content-errors"
               @outOfFocus="handleOutOfFocus"
@@ -39,7 +39,13 @@
                 </b-alert>
               </div>
 
-              <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveBlog()">
+              <b-form-group v-if="isEditor" id="date-group" :label="$t('poll.forms.date-label')" label-for="date">
+                <b-form-datepicker v-model="date" locale="cs"
+                                   :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }">
+                </b-form-datepicker>
+              </b-form-group>
+
+              <b-button variant="post-btn" :disabled="invalid || isEmpty" @click="saveArticle()">
                 {{ $t("generic.save-button") }}
               </b-button>
             </div>
@@ -52,7 +58,7 @@
 
 <script>
 import { configure } from 'vee-validate';
-import { BButton, BFormInvalidFeedback, BAlert } from 'bootstrap-vue';
+import { BButton, BFormInvalidFeedback, BAlert, BFormGroup, BFormDatepicker } from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
@@ -69,14 +75,16 @@ configure({
 
 export default {
   components: {
-    SelectPicture,
-    TextInput,
-    Radio,
-    TagSelector,
-    BButton,
-    Editor,
-    BFormInvalidFeedback,
     BAlert,
+    BButton,
+    BFormDatepicker,
+    BFormGroup,
+    BFormInvalidFeedback,
+    Editor,
+    Radio,
+    SelectPicture,
+    TagSelector,
+    TextInput,
   },
   props: {
     slug: String,
@@ -85,6 +93,7 @@ export default {
     return {
       isCreate: true,
       title: '',
+      date: '',
       picture: '',
       tags: [],
       html: '',
@@ -94,19 +103,23 @@ export default {
     };
   },
   computed: {
-    blog() {
+    item() {
       return this.$store.getters.CONTENT;
     },
     isEmpty() {
       return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
+    isEditor() {
+      return this.$store.getters.USER_ROLES.includes('admin:editor');
+    },
   },
   watch: {
-    blog() {
-      if (this.blog) {
-        this.title = this.blog.info.caption;
-        this.picture = this.blog.info.picture;
-        this.tags = this.blog.info.tags;
+    item() {
+      if (this.item) {
+        this.title = this.item.info.caption;
+        this.picture = this.item.info.picture;
+        this.tags = this.item.info.tags;
+        this.date = this.item.info.date;
       }
     },
     html() {
@@ -117,8 +130,7 @@ export default {
     },
   },
   methods: {
-    async saveBlog() {
-      this.errors = [];
+    async saveArticle() {
       const body = {
         title: this.title,
         source: this.html,
@@ -126,27 +138,27 @@ export default {
         tags: this.tags,
         contentPictures: this.contentPictures,
       };
+
+      if (this.date) {
+        body.date = new Date(this.date);
+      }
+
+      this.errors = [];
       let result = '';
-
-      if (this.title !== '') {
-        if (this.isCreate) {
-          result = await this.$store.dispatch('CREATE_BLOG', body);
-        } else {
-          body.blogId = this.blog._id;
-          body.date = this.blog.date;
-          result = await this.$store.dispatch('UPDATE_BLOG', body);
-        }
-
-        if (result.success) {
-          await this.$router.push({
-            name: 'blog',
-            params: { slug: result.data.info.slug },
-          });
-        } else {
-          this.showError(result.errors);
-        }
+      if (this.isCreate) {
+        result = await this.$store.dispatch('CREATE_ARTICLE', body);
       } else {
-        this.$log.error('Empty title!');
+        body.itemId = this.item._id;
+        result = await this.$store.dispatch('UPDATE_ARTICLE', body);
+      }
+
+      if (result.success) {
+        await this.$router.push({
+          name: 'article',
+          params: { slug: result.data.info.slug },
+        });
+      } else {
+        this.showError(result.errors);
       }
     },
     tagSelect(tags) {
@@ -177,7 +189,7 @@ export default {
     },
   },
   created() {
-    if (this.$route.name === 'update-blog') {
+    if (this.$route.name === 'update-article') {
       this.isCreate = false;
       this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
     }
@@ -224,7 +236,7 @@ $color-grey: #dddddd;
 }
 
 @media (max-width: 1100px) {
-  .write-blog {
+  .write-article {
     width: 100% !important;
   }
 }

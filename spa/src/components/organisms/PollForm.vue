@@ -4,7 +4,6 @@
       <b-form @submit.stop.prevent="handleSubmit(onSubmit)">
         <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
           <b-form-group id="text-group" :label="$t('poll.forms.text-label')" label-for="text">
-
             <b-form-input
               id="text" name="text" aria-describedby="text-errors"
               v-model="form.text" :state="getValidationState(validationContext)">
@@ -14,8 +13,8 @@
 
           </b-form-group>
         </ValidationProvider>
-        <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
 
+        <ValidationProvider :rules="{ required: true, min: 10 }" v-slot="validationContext">
           <b-form-group id="date-group" :label="$t('poll.forms.date-label')" label-for="date">
             <b-form-datepicker v-model="form.date" @context="onContext"
                                :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }" locale="cs"
@@ -24,11 +23,9 @@
 
             <b-form-invalid-feedback id="date-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-form-group>
-
         </ValidationProvider>
 
         <ValidationProvider :rules="{ required: false }" v-slot="validationContext">
-
           <b-form-group id="author-id-group" :label="$t('poll.forms.author-id-label')" label-for="authorId">
             <b-form-input
               id="authorId" name="authorId" aria-describedby="authorId-errors"
@@ -36,7 +33,6 @@
             </b-form-input>
             <b-form-invalid-feedback id="authorId-errors">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
           </b-form-group>
-
         </ValidationProvider>
 
         <TagSelector @changeTags="tagSelect" :formTags="form.pollTagsList"/>

@@ -7,7 +7,7 @@ const { logger } = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/articles/:itemId', auth.cors);
 
-  app.patch('/v1/articles/:itemId', auth.required, auth.cors, async (req, res) => {
+  app.patch('/v1/articles/:itemId', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
     logger.debug('update article handler starts');
 
     try {
@@ -15,13 +15,17 @@ module.exports = (app) => {
       if (!itemId) {
         return api.sendMissingParam(res, 'itemId');
       }
-      const { source, title, picture, tags, contentPictures } = req.body;
+      const { title, source, picture, tags, contentPictures } = req.body;
+      let { date } = req.body;
 
       if (!source) {
         return api.sendMissingParam(res, 'source');
       }
       if (!picture) {
         return api.sendMissingParam(res, 'picture');
+      }
+      if (date) {
+        date = api.parseDate(date, 'YYYY-MM-DD HH:mm:ss');
       }
 
       const dbClient = await mongo.connectToDatabase();
@@ -35,7 +39,7 @@ module.exports = (app) => {
         return api.sendErrorForbidden(res, api.createError('You are not authorized'));
       }
 
-      const query = prepareUpdateQuery(source, title, picture, tags);
+      const query = prepareUpdateQuery(title, source, date, picture, tags);
       await dbClient.db().collection('items').updateOne({ _id: itemId }, query);
       logger.debug('Article updated');
 
@@ -85,13 +89,16 @@ module.exports = (app) => {
   });
 };
 
-function prepareUpdateQuery(source, title, picture, tags) {
+function prepareUpdateQuery(title, source, date, picture, tags) {
   const content = sanitizeHtml(source, api.sanitizeConfigure());
   const setters = {};
   setters['data.content'] = content;
   setters['info.caption'] = title;
   setters['info.picture'] = picture;
   setters['info.tags'] = tags;
+  if (date) {
+    setters['info.date'] = date;
+  }
 
   const query = {};
   query.$set = setters;

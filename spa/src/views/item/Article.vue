@@ -11,20 +11,27 @@
             <ProfileLink :profile="article.info.author"/>
           </div>
           <div class="post-time">
-            <BIconCalendarRange scale="1"></BIconCalendarRange>
-            <template v-if="article.info.state === 'draft'">
-              {{ $t('generic.content.state.draft') }}
-              (<Date :date="article.info.date" format="dynamicDate"/>)
-            </template>
-            <template v-else>
-              <Date :date="article.info.date" format="dynamicDate"/>
-            </template>
+            <BIconCalendarCheck v-if="isWaiting(article)" scale="1" />
+            <BIconClock v-else scale="1" />
+            <Date :date="article.info.date" format="dynamicDate"/>
+            <span v-if="article.info.state === 'draft'" style="margin-left: 5px">
+              {{ $t(`generic.content.state.draft`) }}
+            </span>
+            <span v-if="isWaiting(article)" style="margin-left: 5px">
+              {{ $t(`articles.scheduled-article`) }}
+            </span>
           </div>
           <div class="post-comments">
             <BIconChatTextFill scale="1"></BIconChatTextFill>
             <b-link v-on:click="toComments">
               {{ article.comments.count }}
             </b-link>
+          </div>
+          <div v-if="canEdit" class="post-edit">
+            <BIconPencilSquare scale="1"></BIconPencilSquare>
+            <router-link :to="{name: 'update-article', params: { id: article._id } }">
+              {{ $t('generic.edit-button') }}
+            </router-link>
           </div>
         </div>
         <div class="errors">
@@ -46,23 +53,28 @@
 
 <script>
 import {
-  BIconPersonCircle,
-  BIconCalendarRange,
+  BAlert,
+  BIconCalendarCheck,
   BIconChatTextFill,
+  BIconClock,
+  BIconPencilSquare,
+  BIconPersonCircle,
   BLink,
-  BAlert
 } from 'bootstrap-vue';
 import Comments from '@/components/organisms/Comments.vue';
 import ShareLink from '@/components/molecules/ShareLink.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
+import { isInFuture } from '@/utils/dateUtils';
 
 export default {
   name: 'Article',
   components: {
     BAlert,
-    BIconCalendarRange,
+    BIconCalendarCheck,
+    BIconClock,
     BIconChatTextFill,
+    BIconPencilSquare,
     BIconPersonCircle,
     BLink,
     Comments,
@@ -98,6 +110,15 @@ export default {
       }
       return txt;
     },
+    canEdit() {
+      if (!this.$store.getters.IS_AUTHORIZED) {
+        return false;
+      }
+      if (this.$store.getters.USER_ROLES && this.$store.getters.USER_ROLES.includes('admin:editor')) {
+        return true;
+      }
+      return this.article.info.author.id === this.$store.getters.USER_ID && this.article.info.state === 'draft';
+    },
   },
   created() {
     this.$store.commit('CLEAR_CONTENT');
@@ -112,6 +133,9 @@ export default {
     };
   },
   methods: {
+    isWaiting(item) {
+      return item.info.state === 'published' && isInFuture(item.info.date);
+    },
     // find snippet pattern [code="animated_chart"] and replace it with its content
     applySnippets() {
       const html = this.article.data.content;

@@ -36,8 +36,8 @@
       "article": "Article",
       "blog": "Blog",
       "state": {
-        "draft": "Draft",
-        "published": "Published"
+        "draft": "draft",
+        "published": "published"
       },
       "caption-label": "Caption",
       "slug-label": "Slug",
@@ -373,8 +373,9 @@
     "update-blog": "Update blog post",
     "article": "Article",
     "articles": "Articles",
-    "write-article": "Write article",
-    "enter-article": "Write article",
+    "create-article": "Write article",
+    "update-article": "Write article",
+    "code-article": "Write article",
     "blog": "Blog",
     "help": "Help",
     "mission": "Mission",

@@ -36,8 +36,8 @@
       "article": "Článek",
       "blog": "Blog",
       "state": {
-        "draft": "Koncept",
-        "published": "Zveřejněno"
+        "draft": "koncept",
+        "published": "zveřejněno"
       },
       "caption-label": "Titulek",
       "slug-label": "URL adresa",
@@ -381,8 +381,9 @@
     "update-blog": "Úprava příspěvku",
     "article": "Článek",
     "articles": "Články",
-    "write-article": "Úprava článku",
-    "enter-article": "Úprava článku",
+    "create-article": "Úprava článku",
+    "update-article": "Úprava článku",
+    "code-article": "Úprava článku",
     "blog": "Příspěvek",
     "mission": "Mise",
     "contact": "Kontakt",

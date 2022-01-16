@@ -15,7 +15,7 @@
 
       <div class="mb-2 d-flex flex-row-reverse action-btn">
         <b-button-group>
-          <b-button :to="{ name: 'write-article'}" variant="outline-primary">
+          <b-button :to="{ name: 'create-article'}" variant="outline-primary">
             <BIconFileEarmarkPlusFill scale="1" />
             {{ $t('articles.new-article-button') }}
           </b-button>
@@ -50,7 +50,7 @@
               </span>
             </div>
             <b-button-group>
-              <b-button v-if="canEdit(item)" :to="{ name: 'write-article', params: { slug: item.info.slug }}" variant="outline-primary">
+              <b-button v-if="canEdit(item)" :to="{ name: 'update-article', params: { slug: item.info.slug }}" variant="outline-primary">
                 <BIconPencilSquare scale="1"></BIconPencilSquare>
                 {{ $t('generic.edit-button') }}
               </b-button>
