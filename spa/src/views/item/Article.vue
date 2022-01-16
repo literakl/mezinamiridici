@@ -1,5 +1,5 @@
 <template>
-  <div v-if="article" class="blog-posts pt-3 m-auto">
+  <div v-if="article._id" class="blog-posts pt-3 m-auto">
     <div class="post-details-wrap">
       <div>
         <div class="hero-details">
@@ -100,6 +100,7 @@ export default {
     },
   },
   created() {
+    this.$store.commit('CLEAR_CONTENT');
     this.$store.dispatch('FETCH_CONTENT', { slug: this.slug, component: this });
   },
   mounted() {
@@ -109,12 +110,6 @@ export default {
     document.onmouseleave = () => {
       window.innerDocClick = false;
     };
-    // TODO back button causes empty data
-    // window.onpopstate = () => {
-    //   if (!window.innerDocClick) {
-    //     this.$store.commit('CLEAR_CONTENT');
-    //   }
-    // };
   },
   methods: {
     // find snippet pattern [code="animated_chart"] and replace it with its content
@@ -129,9 +124,6 @@ export default {
         return snippet.content;
       };
       return html.replace(regex, replacer);
-    },
-    async togglePublished() {
-      await this.$store.dispatch('TOGGLE_PUBLISHED');
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
