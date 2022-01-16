@@ -2,60 +2,87 @@
   <div>
     <header>
       <b-navbar toggleable="sm" type="dark" variant="dark">
-        <b-nav-item href="/" class="brand-pic">
-          <img src="/images/icons/logo.png" :alt="$t('app.logo-alt')"  class="d-inline-block align-top brand ">
+        <b-nav-item class="brand-pic" href="/">
+          <img :alt="$t('app.logo-alt')" class="d-inline-block align-top brand"
+               src="/images/icons/logo.png">
         </b-nav-item>
 
-          <b-navbar-nav class="d-none d-sm-block d-sm-dark">
-            <div class="d-inline-flex flex-column title-tag">
-              <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
-              <span class="text-white">{{ $t('app.slogan') }}</span>
-            </div>
-          </b-navbar-nav>
-          <b-navbar-nav class="ml-auto align-items-center rightmenu info">
+        <b-navbar-nav class="d-none d-sm-block d-sm-dark">
+          <div class="d-inline-flex flex-column title-tag">
+            <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
+            <span class="text-white">{{ $t('app.slogan') }}</span>
+          </div>
+        </b-navbar-nav>
 
-            <b-nav-item v-if="!authorized">
-              <router-link :to="{ name: 'sign-in'}">
-                {{ $t('app.sign-in-up') }}
+        <b-navbar-nav class="ml-auto align-items-center rightmenu info">
+          <b-nav-item v-if="!authorized">
+            <router-link :to="{ name: 'sign-in'}">
+              {{ $t('app.sign-in-up') }}
+            </router-link>
+          </b-nav-item>
+
+          <b-nav-item v-if="authorized" v-b-tooltip.hover :title="$t('app.new-post')" class="edit"
+                      right toggle-class="text-warning ">
+            <router-link :to="{ name: 'create-blog', params: { id: userId } }">
+              <BIconPencilSquare scale="2"></BIconPencilSquare>
+            </router-link>
+          </b-nav-item>
+
+          <b-nav-item-dropdown v-if="authorized" class="sign-out" right
+                               toggle-class="text-warning ">
+            <template v-slot:button-content>
+              <BIconPersonCircle scale="2"></BIconPersonCircle>
+            </template>
+
+            <b-dropdown-item>
+              <router-link :to="{ name: 'user-profile', params: { id: userId } }"
+                           class="dropdown-item p-0">
+                {{ $t('app.my-profile') }}
               </router-link>
-            </b-nav-item>
-            <b-nav-item class="edit" v-if="authorized" v-b-tooltip.hover :title="$t('app.new-post')" toggle-class="text-warning " right>
-              <router-link :to="{ name: 'create-blog', params: { id: userId } }">
-                <BIconPencilSquare scale="2"></BIconPencilSquare>
+            </b-dropdown-item>
+
+            <b-dropdown-item>
+              <router-link :to="{ name: 'update-profile', params: { id: userId }}"
+                           class="dropdown-item p-0">
+                {{ $t('app.update-profile') }}
               </router-link>
-            </b-nav-item>
-            <b-nav-item-dropdown class="sign-out" v-if="authorized" toggle-class="text-warning " right>
-              <template  v-slot:button-content>
-                <BIconPersonCircle scale="2"></BIconPersonCircle>
-              </template>
-              <b-dropdown-item>
-                <router-link :to="{ name: 'user-profile', params: { id: userId } }" class="dropdown-item p-0">
-                  {{ $t('app.my-profile') }}
-                </router-link>
-              </b-dropdown-item>
-              <b-dropdown-item>
-                <router-link :to="{ name: 'update-profile', params: { id: userId }}" class="dropdown-item p-0">
-                  {{ $t('app.update-profile') }}
-                </router-link>
-              </b-dropdown-item>
-              <b-dropdown-item  class="sign-out-account" href="#0" v-on:click="signMeOut()">{{ $t('app.sign-out') }}</b-dropdown-item>
-            </b-nav-item-dropdown>
-            <b-nav-item-dropdown toggle-class="text-warning" right>
-              <template v-slot:button-content>
-                <BIconInfoCircle scale="2"></BIconInfoCircle>
-              </template>
-              <b-dropdown-item href="/o/napoveda">{{ $t('app.help') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/podminky">{{ $t('app.terms') }}</b-dropdown-item>
-              <b-dropdown-item href="/o/soukromi">{{ $t('app.privacy') }}</b-dropdown-item>
-              <b-dropdown-item href="#0" v-on:click="manageCookies()">{{ $t('app.cookies') }}</b-dropdown-item>
-            </b-nav-item-dropdown>
-          </b-navbar-nav>
+            </b-dropdown-item>
+
+            <b-dropdown-item>
+              <router-link v-if="canWriteArticles" :to="{ name: 'articles'}" class="dropdown-item p-0">
+                {{ $t('page-title.articles') }}
+              </router-link>
+            </b-dropdown-item>
+
+            <b-dropdown-item class="sign-out-account" href="#0" v-on:click="signMeOut()">
+              {{ $t('app.sign-out') }}
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item-dropdown right toggle-class="text-warning">
+            <template v-slot:button-content>
+              <BIconInfoCircle scale="2"></BIconInfoCircle>
+            </template>
+
+            <b-dropdown-item href="/o/napoveda">{{ $t('app.help') }}</b-dropdown-item>
+            <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
+            <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
+            <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
+            <b-dropdown-item href="/o/podminky">{{ $t('app.terms') }}</b-dropdown-item>
+            <b-dropdown-item href="/o/soukromi">{{ $t('app.privacy') }}</b-dropdown-item>
+            <b-dropdown-item href="#0" v-on:click="manageCookies()">{{
+                $t('app.cookies')
+              }}
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
       </b-navbar>
+
       <info-box></info-box>
-      <b-button v-if="updateExists" @click="refreshApp" class="w-100 fixed-top bg-warning text-dark rounded-0 border-warning">
+
+      <b-button v-if="updateExists"
+                class="w-100 fixed-top bg-warning text-dark rounded-0 border-warning"
+                @click="refreshApp">
         {{ $t('app.update') }}
       </b-button>
     </header>
@@ -67,7 +94,17 @@
 </template>
 
 <script>
-import { BIconPersonCircle, BIconInfoCircle, BIconPencilSquare, BNavbar, BNavbarNav, BNavItemDropdown, BDropdownItem, BNavItem, BButton } from 'bootstrap-vue';
+import {
+  BIconPersonCircle,
+  BIconInfoCircle,
+  BIconPencilSquare,
+  BNavbar,
+  BNavbarNav,
+  BNavItemDropdown,
+  BDropdownItem,
+  BNavItem,
+  BButton
+} from 'bootstrap-vue';
 import InfoBox from '@/components/molecules/InfoBox.vue';
 import CookiesBox from '@/components/molecules/CookiesBox.vue';
 import update from './modules/mixins/update';
@@ -98,6 +135,13 @@ export default {
     nickname() {
       return this.$store.getters.USER_NICKNAME;
     },
+    canWriteArticles() {
+      const roles = this.$store.getters.USER_ROLES;
+      if (this.$store.getters.USER_ID === null || roles.length === 0) {
+        return false;
+      }
+      return roles.includes('admin:editor') || roles.includes('user:staffer');
+    },
   },
   created() {
     this.$store.dispatch('LOAD_USER');
@@ -108,7 +152,7 @@ export default {
         title: 'Update',
         variant: 'success',
         solid: true
-      })
+      });
     },
     signMeOut() {
       this.$store.dispatch('SIGN_USER_OUT');
@@ -132,7 +176,7 @@ export default {
 };
 </script>
 <style lang="scss">
-  @import "./assets/styles/custom.scss";
-  @import '~bootstrap/scss/bootstrap.scss';
-  @import '~bootstrap-vue/src/index.scss';
+@import "./assets/styles/custom.scss";
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';
 </style>
