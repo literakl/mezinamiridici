@@ -1,7 +1,7 @@
 <template>
   <div class="pt-3 centerbox m-auto">
     <div class="head-area">
-      <h2>{{ $t('articles.heading') }}</h2>
+      <h2>{{ $t('page-title.articles') }}</h2>
     </div>
 
     <div v-if="!isAuthorized">
@@ -15,9 +15,9 @@
 
       <div class="mb-2 d-flex flex-row-reverse action-btn">
         <b-button-group>
-          <b-button v-if="role" :to="{ name: 'create-content'}" variant="outline-primary">
+          <b-button :to="{ name: 'write-article'}" variant="outline-primary">
             <BIconFileEarmarkPlusFill scale="1" />
-            {{ $t('articles.edit.new-page-heading') }}
+            {{ $t('articles.new-article-button') }}
           </b-button>
         </b-button-group>
       </div>
@@ -34,10 +34,14 @@
           <b-card-footer>
             <div>
               <span>
-                <BIconClock scale="1"></BIconClock>
+                <BIconCalendarCheck v-if="isWaiting(item)" scale="1" />
+                <BIconClock v-else scale="1" />
                 <Date :date="item.info.date" format="dynamicDate"/>
-                <span>
-                  {{ $t(`generic.content.state.${item.info.state}`) }}
+                <span v-if="item.info.state === 'draft'">
+                  {{ $t(`generic.content.state.draft`) }}
+                </span>
+                <span v-if="isWaiting(item)">
+                  {{ $t(`articles.scheduled-article`) }}
                 </span>
               </span>
               <span>
@@ -50,11 +54,19 @@
                 <BIconPencilSquare scale="1"></BIconPencilSquare>
                 {{ $t('generic.edit-button') }}
               </b-button>
-              <b-button v-if="canEdit(item)" :to="{ name: 'code-article', params: { slug: item.info.slug }}" variant="outline-primary">
+              <b-button v-if="isEditor" :to="{ name: 'code-article', params: { slug: item.info.slug }}" variant="outline-primary">
                 <BIconCodeSlash scale="1"></BIconCodeSlash>
                 {{ $t('generic.edit-html-button') }}
               </b-button>
-              <b-button v-if="canDelete" @click="confirmDelete(item)" variant="outline-primary">
+              <b-button v-if="item.info.state === 'draft'" @click="togglePublished(item)" variant="outline-primary" style="margin-right: 10px">
+                <BIconToggle2Off scale="1"></BIconToggle2Off>
+                {{ $t('articles.publish.mark') }}
+              </b-button>
+              <b-button v-else @click="togglePublished(item)" variant="outline-primary" style="margin-right: 10px">
+                <BIconToggle2On scale="1"></BIconToggle2On>
+                {{ $t('articles.publish.unmark') }}
+              </b-button>
+              <b-button v-if="canDelete(item)" @click="confirmDelete(item)" variant="outline-primary">
                 <BIconTrash scale="1"></BIconTrash>
                 {{ $t('generic.delete-button') }}
               </b-button>
@@ -73,30 +85,37 @@ import {
   BCard,
   BCardBody,
   BCardFooter,
-  BIconPersonCircle,
+  BIconCalendarCheck,
   BIconClock,
-  BIconPencilSquare,
-  BIconTrash,
   BIconCodeSlash,
   BIconFileEarmarkPlusFill,
+  BIconPencilSquare,
+  BIconPersonCircle,
+  BIconToggle2On,
+  BIconToggle2Off,
+  BIconTrash,
 } from 'bootstrap-vue';
 import ContentLoading from '@/components/atoms/ContentLoading.vue';
 import Date from '@/components/atoms/Date.vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
+import { isInFuture } from '@/utils/dateUtils';
 
 export default {
-  name: 'Pages',
+  name: 'Articles',
   components: {
     BButtonGroup,
     BButton,
     BCard,
     BCardBody,
     BCardFooter,
-    BIconPersonCircle,
+    BIconCalendarCheck,
     BIconCodeSlash,
     BIconClock,
     BIconFileEarmarkPlusFill,
     BIconPencilSquare,
+    BIconPersonCircle,
+    BIconToggle2On,
+    BIconToggle2Off,
     BIconTrash,
     ContentLoading,
     Date,
@@ -120,7 +139,7 @@ export default {
       }
       return false;
     },
-    canDelete() {
+    isEditor() {
       return this.$store.getters.USER_ROLES.includes('admin:editor');
     },
   },
@@ -129,14 +148,23 @@ export default {
     this.noArticlesFound = this.articles.length === 0;
   },
   methods: {
+    isWaiting(item) {
+      return item.info.state === 'published' && isInFuture(item.info.date);
+    },
     canEdit(item) {
       if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
         return true;
       }
       return item.info.state === 'draft';
     },
-    async togglePublished() {
-      await this.$store.dispatch('TOGGLE_PUBLISHED');
+    canDelete(item) {
+      if (this.$store.getters.USER_ROLES.includes('admin:editor')) {
+        return true;
+      }
+      return item.info.state === 'draft';
+    },
+    async togglePublished(item) {
+      await this.$store.dispatch('TOGGLE_PUBLISHED', item);
     },
     confirmDelete(item) {
       this.$bvModal.msgBoxConfirm(this.$t('articles.delete-message'), {
@@ -162,7 +190,7 @@ export default {
 
     async deleteArticle(item) {
       await this.$store.dispatch('DELETE_ARTICLE', {
-        blogId: item._id,
+        itemId: item._id,
       });
       this.articles = await this.$store.dispatch('FETCH_ARTICLES', {});
     },
@@ -171,7 +199,6 @@ export default {
 </script>
 
 <style scoped>
-
 .centerbox {
   max-width: 1235px;
   margin: 0 auto;
@@ -181,19 +208,18 @@ export default {
   font-size: 14px;
 }
 
-.action-btn a svg {
-  color: #fff;
-}
-
 .pagelist-box {
   margin-bottom: 10px;
 }
-.pagelist-box .card{
+
+.pagelist-box .card {
   border-color: #ddd;
 }
+
 .pagelist-box .card-body {
   padding: 10px;
 }
+
 .pagelist-box .card-body .card-body {
   padding: 0;
 }

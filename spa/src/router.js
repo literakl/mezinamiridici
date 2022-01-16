@@ -109,6 +109,11 @@ export default new Router({
       props: true,
     },
     {
+      path: '/redakce/',
+      name: 'articles',
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles.vue'),
+    },
+    {
       path: '/clanky/:slug',
       name: 'article',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Article'),
@@ -190,11 +195,6 @@ export default new Router({
       name: 'tag',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Tag.vue'),
       props: true,
-    },
-    {
-      path: '/redakce/',
-      name: 'articles',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles.vue'),
     },
     {
       path: '/vrakoviste',

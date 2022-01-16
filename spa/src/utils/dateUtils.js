@@ -66,6 +66,11 @@ function getISO(epochMS) {
   return instant.format(ISO_DATE_FORMAT_FULL);
 }
 
+function isInFuture(epochMS) {
+  const instant = dayjs.utc(epochMS).local();
+  return dayjs().isBefore(instant);
+}
+
 export {
-  show, getISO,
+  show, getISO,isInFuture
 };

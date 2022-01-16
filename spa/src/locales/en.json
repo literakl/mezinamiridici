@@ -300,15 +300,11 @@
     "confirm-delete": "Do you really want to delete this blog?"
   },
   "articles": {
-    "heading": "Articles",
     "not-authorized": "We are sorry but you are not allowed to access this page.",
     "empty": "You have not written any article yet.",
-    "publish": {
-      "mark": "Publish",
-      "unmark": "Unpublish"
-    },
     "new-article-button": "New article",
-    "delete-message": "Do you really want to delete this article?"
+    "delete-message": "Do you really want to delete this article?",
+    "scheduled-article": "scheduled"
   },
   "pages": {
     "new-page-button": "New page",

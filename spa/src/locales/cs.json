@@ -300,19 +300,15 @@
     "confirm-delete": "Opravdu chcete smazat tento blog?"
   },
   "articles": {
-    "heading": "Články",
     "not-authorized": "Je nám líto, ale k této stránce nemáte přístup.",
     "empty": "Zatím jste nenapsal žádný článek.",
-    "state": {
-      "draft": "Koncept",
-      "published": "Zveřejněn"
-    },
     "publish": {
       "mark": "Zveřejni",
       "unmark": "Zruš zveřejnění"
     },
     "new-article-button": "Nový článek",
-    "delete-message": "Opravdu chcete smazat tento článek?"
+    "delete-message": "Opravdu chcete smazat tento článek?",
+    "scheduled-article": "naplánováno"
   },
   "pages": {
     "edit": {

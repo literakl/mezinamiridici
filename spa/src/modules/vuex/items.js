@@ -139,8 +139,8 @@ export default {
     },
     DELETE_ARTICLE: async (context, payload) => {
       Vue.$log.debug('DELETE_ARTICLE');
-      const { blogId } = payload;
-      return deleteApi('API', `/articles/${blogId}`, {}, context);
+      const { itemId } = payload;
+      return deleteApi('API', `/articles/${itemId}`, {}, context);
     },
     FETCH_ARTICLES: async (context) => {
       Vue.$log.debug('FETCH_ARTICLES');
@@ -166,17 +166,15 @@ export default {
       const response = await get('API', url, context);
       return response.data.data;
     },
-    TOGGLE_PUBLISHED: async (context) => {
+    TOGGLE_PUBLISHED: async (context, item) => {
       Vue.$log.debug('TOGGLE_PUBLISHED');
-      const { content } = context.state;
-      let published = content.info.state === 'published';
+      let published = item.info.state === 'published';
       published = !published;
-      const payload = {
+      const data = {
         flag: published,
       };
-      await patch('API', `/articles/${content._id}/published`, payload, context);
-      Vue.set(content.info, 'state', published ? 'published' : 'draft');
-      context.commit('SET_CONTENT', content);
+      await patch('API', `/articles/${item._id}/published`, data, context);
+      Vue.set(item.info, 'state', published ? 'published' : 'draft');
     },
     TOGGLE_HIDDEN: async (context) => {
       Vue.$log.debug('TOGGLE_HIDDEN');
