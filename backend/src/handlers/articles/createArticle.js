@@ -52,8 +52,8 @@ module.exports = (app) => {
 };
 
 // sync changes with parseAccidents.js
-async function insertItem(dbClient, title, source, author, publishDate, picture, tags, published = false) {
-  const content = sanitizeHtml(source, api.sanitizeConfigure());
+async function insertItem(dbClient, title, source, author, publishDate, picture, tags, sanitize = true, published = false) {
+  const content = sanitize ? sanitizeHtml(source, api.sanitizeConfigure()) : source;
   const slug = slugify(title, { lower: true, strict: true });
   const adjustedSlug = await api.getSlug(slug, dbClient);
 

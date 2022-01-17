@@ -332,7 +332,7 @@ async function saveArticle(dbClient, context, date) {
   const picture = config.pictures[date.dayOfYear() % config.pictures.length];
   const pictureWithPath = `${STREAM_PICTURES_PATH}/${picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
-  const article = await insertItem(dbClient, title, source, blogAuthor, date.add(1, 'day').toDate(), pictureWithPath, config.tags, true);
+  const article = await insertItem(dbClient, title, source, blogAuthor, date.add(1, 'day').toDate(), pictureWithPath, config.tags, false, true);
   console.log(`Article ${article.info.slug} saved`);
 }
 
