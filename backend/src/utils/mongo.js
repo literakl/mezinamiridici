@@ -2,7 +2,7 @@ const generate = require('nanoid/generate');
 const { MongoClient } = require('mongodb');
 const dayjs = require('dayjs');
 
-const { logger, mongoLogger } = require('./logging');
+const { logger } = require('./logging');
 require('./path_env');
 
 const { MONGODB_URI, TIME_ID_CHARS } = process.env;
@@ -19,12 +19,10 @@ function connectToDatabase() {
   }
 
   logger.debug('Get a new Mongo instance from database');
-  const start = dayjs();
   const client = new MongoClient(MONGODB_URI);
   return client.connect()
     .then((db) => {
       logger.debug('Successful connect');
-      mongoLogger.record({ time: spent(start), operation: 'connect', result: true, collection: undefined, level: 'info', message: null });
       cachedDb = db;
 
       if (MONGO_TRACE === 'true') {
@@ -41,70 +39,24 @@ function connectToDatabase() {
       return cachedDb;
     })
     .catch((err) => {
-      mongoLogger.record({ time: spent(start), operation: 'connect', result: false, collection: undefined, level: 'info', message: null });
       logger.error('Connection error occurred: ', err);
       throw err;
     });
 }
 
 async function findOne(dbClient, collection, query) {
-  const start = dayjs();
-  try {
-    const response = await dbClient.db().collection(collection).findOne(query);
-    mongoLogger.record({
-      time: spent(start),
-      operation: 'findOne',
-      result: true,
-      collection,
-      level: 'info',
-      message: query,
-    });
-
-    return response;
-  } catch (err) {
-    mongoLogger.record({ time: spent(start), operation: 'findOne', result: false, collection, level: 'info', message: query });
-    throw err;
-  }
+  const response = await dbClient.db().collection(collection).findOne(query);
+  return response;
 }
 
 async function insertOne(dbClient, collection, doc) {
-  const start = dayjs();
-  try {
-    const response = await dbClient.db().collection(collection).insertOne(doc);
-    mongoLogger.record({
-      time: spent(start),
-      operation: 'insertOne',
-      result: true,
-      collection,
-      level: 'info',
-      message: null,
-    });
-
-    return response;
-  } catch (err) {
-    mongoLogger.record({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: doc });
-    throw err;
-  }
+  const response = await dbClient.db().collection(collection).insertOne(doc);
+  return response;
 }
 
 async function updateOne(dbClient, collection, filter, update) {
-  const start = dayjs();
-  try {
-    const response = await dbClient.db().collection(collection).updateOne(update);
-    mongoLogger.record({
-      time: spent(start),
-      operation: 'updateOne',
-      result: true,
-      collection,
-      level: 'info',
-      message: null,
-    });
-
-    return response;
-  } catch (err) {
-    mongoLogger.record({ time: spent(start), operation: 'insertOne', result: false, collection, level: 'info', message: update });
-    throw err;
-  }
+  const response = await dbClient.db().collection(collection).updateOne(update);
+  return response;
 }
 
 function findUser(dbClient, params, projection) {

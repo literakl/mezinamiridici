@@ -26,7 +26,7 @@ fs.mkdir(LOG_DIRECTORY, (err) => {
   }
 });
 
-let appLogger, mongoLogger, jobLogger;
+let appLogger, jobLogger;
 
 function timestamp() {
   const currentDate = new Date();
@@ -75,55 +75,13 @@ function configureLoggers(fileName = 'logger.js', isJob = false, tag = 'job') {
   } else {
     appLogger = logger.getLogger('production');
   }
-  mongoLogger = logger.getLogger('mongo');
 
-  // interface for mongoLogger
-  // NOTE: overriding mongoLogger.log here causes call-stack overflow due to infinite recursion
-  mongoLogger.record = (payload) => {
-    let data = Object.assign({}, payload);
-    data = appendTimestamp(data);
-    const message = mongoCSVFormat(data);
-
-    switch (payload.level) {
-      case 'verbose':
-      case 5000:
-        mongoLogger.verbose(message);
-        break;
-      case 'debug':
-      case 10000:
-        mongoLogger.debug(message);
-        break;
-      case 'info':
-      case 20000:
-        mongoLogger.info(message);
-        break;
-      case 'warn':
-      case 'warning':
-      case 30000:
-        mongoLogger.warn(message);
-        break;
-      case 'error':
-      case 40000:
-        mongoLogger.error(message);
-        break;
-      case 'fatal':
-      case 50000:
-        mongoLogger.fatal(message);
-        break;
-      default:
-        mongoLogger.debug(message);
-        break;
-    }
-  };
   appLogger.end = () => logger.shutdown();
-  mongoLogger.end = () => logger.shutdown();
-
   return appLogger;
 }
 
 configureLoggers();
 
 exports.logger = appLogger;
-exports.mongoLogger = mongoLogger;
 exports.jobLogger = jobLogger;
 exports.configureLoggers = configureLoggers;

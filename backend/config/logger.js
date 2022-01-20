@@ -34,18 +34,6 @@ module.exports = {
         pattern: '%d{hh:mm:ss.SSS} [%p] [%c]: %m',
       },
     },
-    mongo: {
-      type: 'dateFile',
-      filename: `${LOG_DIRECTORY}/mongo.csv`,
-      keepFileExt: true,
-      pattern: 'yyyy-MM-dd',
-      compress: true,
-      backups: NUM_LOG_BACKUPS,
-      layout: {
-        type: 'pattern',
-        pattern: '%m',
-      },
-    },
     errorFile: {
       type: 'dateFile',
       filename: `${LOG_DIRECTORY}/error.log`,
@@ -67,7 +55,6 @@ module.exports = {
   categories: {
     default: { appenders: ['application', 'error'], level: 'DEBUG' },
     test: { appenders: ['test'], level: 'DEBUG' },
-    mongo: { appenders: ['mongo'], level: 'DEBUG' },
     production: { appenders: ['application', 'error'], level: 'INFO', enableCallStack: true },
     development: { appenders: ['application', 'error'], level: 'DEBUG', enableCallStack: true },
   },
