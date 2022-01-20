@@ -117,20 +117,17 @@ async function doJob() {
   if (!isParsed) {
     if (retried >= ACCIDENTS_STATS_RETRY_MAXIMUM) {
       // todo send email
-      jobLogger.info('Data is not available, maximum retries reached. Run this script from command line when data is ready.');
+      jobLogger.error('Data is not available, maximum retries reached. Run this script from command line when data is ready.');
       return;
     }
 
     retried += 1;
-    jobLogger.info(`Data is not available, scheduling the attempt ${retried}`);
+    jobLogger.warn(`Data is not available, scheduling the attempt ${retried}`);
     const nextTime = dayjs().add(ACCIDENTS_STATS_RETRY_MINUTES, 'minute').toDate();
     const job = new CronJob(nextTime, doJob);
     job.start();
   } else {
-    jobLogger.info('Data fetched, creating new article');
     retried = 0;
-    const data = await getArticleData(dbClient, date);
-    await saveArticle(dbClient, data, date);
   }
 }
 
@@ -244,6 +241,7 @@ async function saveData(dbClient, region, date, $) {
   return true;
 }
 
+// todo move to crash stats handler
 async function getArticleData(dbClient, date) {
   const thisYearStartDate = date.startOf('year');
   const yearAgoDate = date.subtract(1, 'year');
@@ -256,11 +254,13 @@ async function getArticleData(dbClient, date) {
   return data;
 }
 
+// todo move to crash stats handler
 async function fetchByDateRange(dbClient, start, end) {
   const query = { date: { $gte: start.toDate(), $lte: end.toDate() } };
   return dbClient.db().collection('accidents').find(query, { regions: 0 }).toArray();
 }
 
+// todo move to crash stats handler
 function compareData(thisYearDate, yearAgoDate, prevYearData, thisYearData) {
   const summary = {
     lastYear: {
@@ -275,6 +275,7 @@ function compareData(thisYearDate, yearAgoDate, prevYearData, thisYearData) {
   return summary;
 }
 
+// todo move to crash stats handler
 function emptyStats() {
   return {
     count: 0,
@@ -283,6 +284,7 @@ function emptyStats() {
   };
 }
 
+// todo move to crash stats handler
 function aggregateData(now, yearData, summary) {
   yearData.forEach((day) => {
     const date = dayjs(day.date);
@@ -299,6 +301,7 @@ function aggregateData(now, yearData, summary) {
   });
 }
 
+// todo move to crash stats handler
 function add(total, summary) {
   summary.count += total.count;
   summary.impact.deaths += total.impact.deaths;
@@ -313,6 +316,7 @@ function add(total, summary) {
   summary.reason.other += total.reason.other;
 }
 
+// todo move to crash stats handler or remove
 async function saveArticle(dbClient, context, date) {
   let filepath = path.resolve(PAGE_TEMPLATES_DIRECTORY, 'stats_article.json');
   const config = JSON.parse(fs.readFileSync(filepath, 'utf8'));
@@ -336,6 +340,7 @@ async function saveArticle(dbClient, context, date) {
   console.log(`Article ${article.info.slug} saved`);
 }
 
+// todo move to crash stats handler
 function lookupRegion(vusc) {
   if (vusc.indexOf(REGIONS.JC) >= 0) return 'JC';
   if (vusc.indexOf(REGIONS.JM) >= 0) return 'JM';
