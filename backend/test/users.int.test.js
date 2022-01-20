@@ -9,7 +9,7 @@ const mongo = require('../src/utils/mongo');
 const { logger } = require('../src/utils/logging');
 const auth = require('../src/utils/authenticate');
 const app = require('../src/server');
-const { handleSocialProviderResponse } = require('../src/handlers/users/socialLogin');
+const { handleSocialProviderResponse } = require('../src/handlers/users/handleSocialResponse');
 
 const {
   api, bff, getAuthHeader,
