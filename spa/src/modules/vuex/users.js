@@ -92,6 +92,7 @@ export default {
       context.commit('SET_USER_ID', jwtData.userId);
       context.commit('SET_USER_NICKNAME', jwtData.nickname);
       context.commit('SET_USER_EMAIL', payload.email);
+      context.commit('SET_USER_ROLES', jwtData.roles);
     },
     SIGN_USER_IN: async (context, payload) => {
       context.commit('SET_USER_TOKEN', null);
