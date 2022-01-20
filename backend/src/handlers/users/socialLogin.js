@@ -237,3 +237,5 @@ async function addProvider(dbClient, user, provider) {
   query.$set['auth.linked'] = user.auth.linked;
   await dbClient.db().collection('users').updateOne({ _id: user._id }, query);
 }
+
+exports.handleSocialProviderResponse = handleSocialProviderResponse;
