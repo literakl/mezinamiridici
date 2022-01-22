@@ -7,7 +7,7 @@ const { logger } = require('./logging');
 const { PATH_SEPARATOR } = require('./path_env');
 
 const COMPILED_TEMPLATES = {};
-const { MAILER, TEMPLATES_DIRECTORY, DEFAULT_SENDER, SENDER_NAME } = process.env;
+const { MAILER, TEMPLATES_DIRECTORY, DEFAULT_SENDER, SENDER_NAME, AWS_REGION } = process.env;
 const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD } = process.env;
 // eslint-disable-next-line prefer-template
 const EMAIL_TEMPLATES_DIRECTORY = TEMPLATES_DIRECTORY + PATH_SEPARATOR + 'emails';
@@ -16,6 +16,9 @@ let transporter;
 async function sendEmail(config, options, context) {
   if (transporter === undefined) {
     switch (MAILER) {
+      case 'SES':
+        transporter = await createAWSSESTransporter();
+        break;
       case 'SMTP':
         transporter = await createSMTPTransporter(false);
         break;
@@ -80,7 +83,6 @@ async function createSMTPTransporter(fake) {
   return nodemailer.createTransport({ host, port, secure, auth: { user, pass } }, { from: `${SENDER_NAME} <${DEFAULT_SENDER}>` });
 }
 
-/*
 async function createAWSSESTransporter() {
   // eslint-disable-next-line global-require
   const AWS = require('aws-sdk');
@@ -94,6 +96,5 @@ async function createAWSSESTransporter() {
    from: `${SENDER_NAME} <${DEFAULT_SENDER}>`,
   });
 }
-*/
 
 exports.sendEmail = sendEmail;

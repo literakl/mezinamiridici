@@ -12,6 +12,7 @@
     "testWithOpenHandles": "jest --config jest.config.js --runInBand --detectOpenHandles"
   },
   "dependencies": {
+    "aws-sdk": "^2.1062.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
