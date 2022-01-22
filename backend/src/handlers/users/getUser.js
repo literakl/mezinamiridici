@@ -7,6 +7,7 @@ module.exports = (app) => {
   app.options('/v1/users/:userId', auth.cors);
   app.options('/v1/check/email', auth.cors);
   app.options('/v1/check/nickname', auth.cors);
+  app.options('/bff/users', auth.cors);
   app.options('/bff/users/:userId/info', auth.cors);
 
   app.get('/v1/users/:userId', auth.optional, async (req, res) => {
@@ -101,6 +102,39 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('User not found', 'profile.user-not-found'));
       }
       return api.sendResponse(res, api.createResponse(user));
+    } catch (err) {
+      logger.error('Request failed', err);
+      return api.sendInternalError(res, api.createError('Failed to get the user', 'sign-in.something-went-wrong'));
+    }
+  });
+
+  app.get('/bff/users/', auth.optional, async (req, res) => {
+    logger.debug('Get users infos handler starts');
+    const listParams = api.parseListParams(req, 'registered', -1, 20, 50);
+    const query = { };
+    if (listParams.lastResult) {
+      query[listParams.lastResult.key] = listParams.lastResult.value;
+    }
+    const pipeline = [
+      { $match: query },
+      { $sort: listParams.order },
+      { $project: { 'bio.nickname': 1, 'bio.registered': 1, honors: 1 } },
+      { $limit: listParams.pageSize },
+    ];
+
+    if (auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF)) {
+      const { role } = req.query;
+      if (role) {
+        query['roles'] = mongo.sanitize(role);
+      }
+    }
+
+    try {
+      const dbClient = await mongo.connectToDatabase();
+      const users = await dbClient.db().collection('users').aggregate(pipeline, { allowDiskUse: true }).toArray();
+      logger.debug('Users fetched');
+
+      return api.sendResponse(res, api.createResponse(users));
     } catch (err) {
       logger.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get the user', 'sign-in.something-went-wrong'));

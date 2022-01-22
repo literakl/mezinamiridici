@@ -307,6 +307,7 @@
       "unmark": "Zruš zveřejnění"
     },
     "new-article-button": "Nový článek",
+    "author-label": "Autor",
     "delete-message": "Opravdu chcete smazat tento článek?",
     "scheduled-article": "naplánováno"
   },
@@ -380,7 +381,7 @@
     "create-blog": "Nový příspěvek",
     "update-blog": "Úprava příspěvku",
     "article": "Článek",
-    "articles": "Články",
+    "articles": "Redakce",
     "create-article": "Úprava článku",
     "update-article": "Úprava článku",
     "code-article": "Úprava článku",

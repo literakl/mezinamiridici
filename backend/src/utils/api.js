@@ -195,6 +195,8 @@ const fieldMapping = new Map([
   ['edu', 'edu'],
   ['driving', 'driving'],
   ['vehicles', 'vehicles'],
+  ['nickname', 'bio.nickname'],
+  ['registered', 'bio.registered'],
 ]);
 
 function convertField(key) {

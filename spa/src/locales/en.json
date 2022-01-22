@@ -302,7 +302,12 @@
   "articles": {
     "not-authorized": "We are sorry but you are not allowed to access this page.",
     "empty": "You have not written any article yet.",
+    "publish": {
+      "mark": "Publish",
+      "unmark": "Unpublish"
+    },
     "new-article-button": "New article",
+    "author-label": "Author",
     "delete-message": "Do you really want to delete this article?",
     "scheduled-article": "scheduled"
   },

@@ -13,6 +13,8 @@ export default {
   }),
   getters: {
     IS_AUTHORIZED: state => state.authorized,
+    IS_EDITOR_IN_CHIEF: state => state.userRoles && state.userRoles.includes('admin:editor'),
+    IS_STAFFER: state => state.userRoles && state.userRoles.includes('user:staffer'),
     USER_TOKEN: state => state.userToken,
     USER_ID: state => state.userId,
     USER_NICKNAME: state => state.userNickname,
@@ -198,6 +200,11 @@ export default {
     FETCH_USER_INFO: async (context, payload) => {
       Vue.$log.debug('FETCH_USER_INFO');
       const response = await get('BFF', `/users/${payload.userId}/info`, context);
+      return response.data.data;
+    },
+    GET_EDITORS: async (context) => {
+      Vue.$log.debug('GET_EDITORS');
+      const response = await get('BFF', `/users/?role=user:staffer`, context);
       return response.data.data;
     },
     LOAD_COOKIE_PREFERENCES: async () => {

@@ -20,7 +20,6 @@ module.exports = (app) => {
       const {
         title, source, date, picture, tags, contentPictures,
       } = req.body;
-      const user = auth.getIdentity(req.identity);
 
       if (!title) {
         return api.sendMissingParam(res, 'title');
@@ -37,7 +36,14 @@ module.exports = (app) => {
       }
 
       const dbClient = await mongo.connectToDatabase();
-      const item = await insertItem(dbClient, title, source, user, publishDate, picture, tags);
+      let { author } = req.body;
+      if (author && auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF)) {
+        author = await mongo.getIdentity(dbClient, author);
+      } else {
+        author = auth.getIdentity(req.identity);
+      }
+
+      const item = await insertItem(dbClient, title, source, author, publishDate, picture, tags);
       // we will consider articles as blogs from a user rank point of view
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
       mongo.storePictureId(dbClient, item._id, contentPictures);

@@ -48,8 +48,8 @@
               </router-link>
             </b-dropdown-item>
 
-            <b-dropdown-item>
-              <router-link v-if="canWriteArticles" :to="{ name: 'articles'}" class="dropdown-item p-0">
+            <b-dropdown-item v-if="canWriteArticles">
+              <router-link :to="{ name: 'articles'}" class="dropdown-item p-0">
                 {{ $t('page-title.articles') }}
               </router-link>
             </b-dropdown-item>
@@ -136,11 +136,7 @@ export default {
       return this.$store.getters.USER_NICKNAME;
     },
     canWriteArticles() {
-      const roles = this.$store.getters.USER_ROLES;
-      if (this.$store.getters.USER_ID === null || roles.length === 0) {
-        return false;
-      }
-      return roles.includes('admin:editor') || roles.includes('user:staffer');
+      return this.$store.getters.IS_STAFFER || this.$store.getters.IS_EDITOR_IN_CHIEF;
     },
   },
   created() {

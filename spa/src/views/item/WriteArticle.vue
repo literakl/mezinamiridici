@@ -24,6 +24,12 @@
           </div>
 
           <div class="col col-lg-2 sidebar">
+            <div v-if="isCreate && isEditor">
+              <b-form-group class="title" :label="$t('articles.author-label')">
+                <b-form-select v-model="author" :options="editors"></b-form-select>
+              </b-form-group>
+            </div>
+
             <div class="tags-area">
               <TagSelector @changeTags="tagSelect" :formTags="tags" />
             </div>
@@ -58,7 +64,14 @@
 
 <script>
 import { configure } from 'vee-validate';
-import { BButton, BFormInvalidFeedback, BAlert, BFormGroup, BFormDatepicker } from 'bootstrap-vue';
+import {
+  BButton,
+  BFormInvalidFeedback,
+  BAlert,
+  BFormGroup,
+  BFormDatepicker,
+  BFormSelect
+} from 'bootstrap-vue';
 import Editor from '@/components/molecules/Editor.vue';
 import Radio from '@/components/atoms/Radio.vue';
 import SelectPicture from '@/components/atoms/SelectPicture.vue';
@@ -80,6 +93,7 @@ export default {
     BFormDatepicker,
     BFormGroup,
     BFormInvalidFeedback,
+    BFormSelect,
     Editor,
     Radio,
     SelectPicture,
@@ -97,6 +111,8 @@ export default {
       picture: '',
       tags: [],
       html: '',
+      author: this.$store.getters.USER_ID,
+      editors: [],
       hideContentError: true,
       contentPictures: [],
       errors: [],
@@ -110,7 +126,7 @@ export default {
       return !(this.html && /<\w+>\S+.*<\/\w+>/gmi.test(this.html));
     },
     isEditor() {
-      return this.$store.getters.USER_ROLES.includes('admin:editor');
+      return this.$store.getters.IS_EDITOR_IN_CHIEF;
     },
   },
   watch: {
@@ -141,6 +157,10 @@ export default {
 
       if (this.date) {
         body.date = new Date(this.date);
+      }
+
+      if (this.author) {
+        body.author = this.author;
       }
 
       this.errors = [];
@@ -188,16 +208,26 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     if (this.$route.name === 'update-article') {
       this.isCreate = false;
-      this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
+      await this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
+    } else {
+      const response = await this.$store.dispatch('GET_EDITORS', { slug: this.slug });
+      this.editors = [];
+      for (const user of response) {
+        this.editors.push({ value: user._id, text: user.bio.nickname });
+      }
     }
   },
 };
 </script>
 
 <style>
+.title {
+  font-size: 14px;
+  font-weight: 300
+}
 .centerbox {
   max-width: 1235px;
   margin: 0 auto 20px;
