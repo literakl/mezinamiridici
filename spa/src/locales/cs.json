@@ -215,7 +215,8 @@
     },
     "filter": {
       "posts": "příspěvky",
-      "comments": "komentáře"
+      "comments": "komentáře",
+      "articles": "články"
     }
   },
   "poll": {

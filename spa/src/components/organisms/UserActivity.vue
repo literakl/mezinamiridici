@@ -2,21 +2,26 @@
   <div>
     <div class="selectors">
       <Radio
+        class="comment-box mr-3"
+        v-model="filter"
+        :label="$t('profile.filter.comments')"
+        name="filter"
+        identifier="comment"/>
+      <Radio
         class="post-box mr-3"
         v-model="filter"
         :label="$t('profile.filter.posts')"
         name="filter"
         identifier="blog"/>
       <Radio
-        class="comment-box"
+        class="post-box"
         v-model="filter"
-        :label="$t('profile.filter.comments')"
+        :label="$t('profile.filter.articles')"
         name="filter"
-        identifier="comment"/>
+        identifier="article"/>
     </div>
 
     <ul class="post-list">
-
       <li v-for="item in list" :key="item._id">
         <span>
           <BIconClock font-scale="1"></BIconClock>
@@ -54,7 +59,7 @@ export default {
   },
   data() {
     return {
-      filter: 'blog',
+      filter: 'comment',
       index: 0,
       pageSize: 10,
       hasEnded: false,
@@ -101,12 +106,20 @@ export default {
           },
           hash: `#${item._id}`,
         };
-      } else {
+      } else if (this.filter === 'blog') {
         return {
           name: 'blog',
           params: {
             slug: item.slug,
             id: item.userId,
+          },
+        };
+      }
+      else {
+        return {
+          name: 'article',
+          params: {
+            slug: item.slug,
           },
         };
       }

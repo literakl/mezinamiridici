@@ -11,7 +11,7 @@ const { TRUNCATE_COMMENTS } = process.env || 100;
 module.exports = (app) => {
   app.options('/v1/users/:userId/activity', auth.cors);
 
-  app.get('/v1/users/:userId/activity', async (req, res) => {
+  app.get('/v1/users/:userId/activity', auth.optional, async (req, res) => {
     logger.debug('get user activity handler starts');
     const { userId } = req.params;
     if (!userId) {
@@ -85,8 +85,12 @@ async function getActivity(dbClient, userId, type, req) {
     return result;
   } else {
     table = 'items';
+    const conditions = { 'info.author.id': userId, type };
+    if (!req.identity || req.identity.userId !== userId) {
+      conditions['info.state'] = { $ne: 'draft' };
+    }
     pipeline.push({
-      $match: { 'info.author.id': userId, 'info.state': { $ne: 'draft' }, type },
+      $match: conditions,
     });
     pipeline.push({
       $project: {
@@ -106,7 +110,7 @@ async function getActivity(dbClient, userId, type, req) {
 
     const result = [];
     list.forEach((x) => {
-      const item = { _id: x._id, date: x.info.date, type: 'blog', userId: x.info.author.id, slug: x.info.slug };
+      const item = { _id: x._id, date: x.info.date, type: x.type, userId: x.info.author.id, slug: x.info.slug };
       item.text = html2text(x.info.caption).substring(0, TRUNCATE_COMMENTS);
       result.push(item);
     });

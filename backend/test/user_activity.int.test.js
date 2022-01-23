@@ -83,7 +83,7 @@ test('User activity API', async () => {
   expect(response.success).toBeTruthy();
   const comment3 = response.data;
 
-  // todo write blog
+  // todo write blog & articles
 
   response = await api(`users/${Leos._id}/activity?type=poll`).json();
   expect(response.success).toBeTruthy();

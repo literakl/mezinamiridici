@@ -214,7 +214,8 @@
     },
     "filter": {
       "posts": "posts",
-      "comments": "comments"
+      "comments": "comments",
+      "articles": "articles"
     }
   },
   "poll": {
