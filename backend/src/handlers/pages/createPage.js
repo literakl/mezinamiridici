@@ -12,7 +12,7 @@ const { logger } = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/pages', auth.cors);
 
-  app.post('/v1/pages', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+  app.post('/v1/pages', auth.required, auth.page_admin, auth.cors, async (req, res) => {
     logger.debug('Create page handler starts');
     const {
       caption, slug, content, contentPictures,

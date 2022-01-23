@@ -12,7 +12,7 @@ const { logger } = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/pages/:pageId', auth.cors);
 
-  app.patch('/v1/pages/:pageId', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+  app.patch('/v1/pages/:pageId', auth.required, auth.page_admin, auth.cors, async (req, res) => {
     logger.debug('Update page handler starts');
     const { pageId } = req.params;
     if (!pageId) {

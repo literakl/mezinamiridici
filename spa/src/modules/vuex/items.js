@@ -114,6 +114,12 @@ export default {
       context.commit('SET_CONTENT', response.data.data);
       return response.data.data;
     },
+    UPDATE_CONTENT_HTML: async (context, payload) => {
+      Vue.$log.debug('UPDATE_CONTENT_HTML');
+      const { itemId } = payload;
+      const response = await patch('API', `/content/${itemId}/`, payload, context);
+      return response.data;
+    },
     FETCH_PAGES: async (context) => {
       Vue.$log.debug('FETCH_PAGES');
       const response = await get('API', '/pages', context);

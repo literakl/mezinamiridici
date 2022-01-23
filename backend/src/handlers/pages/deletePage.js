@@ -6,7 +6,7 @@ const { logger } = require('../../utils/logging');
 module.exports = (app) => {
   app.options('/v1/pages/:pageId', auth.cors);
 
-  app.delete('/v1/pages/:pageId', auth.required, auth.cms_admin, auth.cors, async (req, res) => {
+  app.delete('/v1/pages/:pageId', auth.required, auth.page_admin, auth.cors, async (req, res) => {
     logger.debug('Delete page handler starts');
     const { pageId } = req.params;
 

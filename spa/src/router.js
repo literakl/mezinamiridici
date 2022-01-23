@@ -136,7 +136,7 @@ export default new Router({
     {
       path: '/clanky/:slug/vlozeni-html',
       name: 'code-article',
-      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/WriteArticle.vue'),
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/EditHTML'),
       beforeEnter: requireAuth,
       props: true,
     },
