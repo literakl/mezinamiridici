@@ -13,6 +13,7 @@ import VueScrollTo from 'vue-scrollto';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueAuthenticate from 'vue-authenticate';
+import { VuePlausible } from 'vue-plausible';
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -39,6 +40,12 @@ Vue.config.productionTip = false;
 Vue.use(ModalPlugin);
 Vue.use(Chartkick.use(Chart));
 Vue.use(VueScrollTo);
+Vue.use(VuePlausible, {
+  domain: 'mezinamiridici.cz',
+  apiHost: 'https://www.mezinamiridici.cz',
+  enableAutoPageviews: true,
+  enableAutoOutboundTracking: true,
+});
 Vue.use(VueAxios, axios);
 Vue.use(VueAuthenticate, {
   tokenName: 'jwt',

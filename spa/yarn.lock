@@ -7990,6 +7990,11 @@
   dependencies:
     "find-up" "^2.1.0"
 
+"plausible-tracker@^0.3.4":
+  "integrity" "sha512-6c6VPdPtI9KmIsfr8zLBViIDMt369eeaNA1J8JrAmAtrpSkeJWvjwcJ+cLn7gVJn5AtQWC8NgSEee2d/5RNytA=="
+  "resolved" "https://registry.npmjs.org/plausible-tracker/-/plausible-tracker-0.3.5.tgz"
+  "version" "0.3.5"
+
 "plugin-error@^1.0.1":
   "integrity" "sha512-L1zP0dk7vGweZME2i+EeakvUNqSrdiI3F91TwEoYiGrAfUXmVv6fJIq4g82PAXxNsWOp0J7ZqQy/3Szz0ajTxA=="
   "resolved" "https://registry.npmjs.org/plugin-error/-/plugin-error-1.0.1.tgz"
@@ -10717,6 +10722,13 @@
     "loader-utils" "^1.1.0"
     "vue-hot-reload-api" "^2.3.0"
     "vue-style-loader" "^4.1.0"
+
+"vue-plausible@^1.3.1":
+  "integrity" "sha512-OqZiScz/7glitE4XSJTwGUHO31VEbba2efmLki0+rIGDx3NysSOBJMyFz6yBFPWKms4jb1lDmx1wCsbAl7mrtA=="
+  "resolved" "https://registry.npmjs.org/vue-plausible/-/vue-plausible-1.3.1.tgz"
+  "version" "1.3.1"
+  dependencies:
+    "plausible-tracker" "^0.3.4"
 
 "vue-property-decorator@^8.3.0":
   "integrity" "sha512-O6OUN2OMsYTGPvgFtXeBU3jPnX5ffQ9V4I1WfxFQ6dqz6cOUbR3Usou7kgFpfiXDvV7dJQSFcJ5yUPgOtPPm1Q=="

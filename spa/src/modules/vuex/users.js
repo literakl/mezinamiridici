@@ -207,22 +207,5 @@ export default {
       const response = await get('BFF', `/users/?role=user:staffer`, context);
       return response.data.data;
     },
-    LOAD_COOKIE_PREFERENCES: async () => {
-      try {
-        const options = JSON.parse(localStorage.getItem('cookieSettings'));
-        if (!options || !options.confirmed) {
-          localStorage.removeItem('cookieSettings');
-          return undefined;
-        }
-        return options;
-      } catch (err) {
-        this.$log.error('Failed to load cookies settings', err);
-        return undefined;
-      }
-    },
-    SAVE_COOKIE_PREFERENCES: (context, { options, component }) => {
-      localStorage.setItem('cookieSettings', JSON.stringify(options));
-      component.$emit('cookiePreferenceChange', options);
-    },
   },
 };
