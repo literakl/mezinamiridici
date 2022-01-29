@@ -236,10 +236,6 @@ function close() {
   }
 }
 
-function spent(start) {
-  return dayjs().diff(start);
-}
-
 function storePictureId(dbClient, itemId, pictureIds) {
   if (pictureIds) {
     const query = { $set: { item: itemId } };
