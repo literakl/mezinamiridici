@@ -1,27 +1,32 @@
 <template>
-  <GridLayout
-    class="home-posts"
-    ref="ig"
-    :options="options"
-    :layoutOptions="layoutOptions"
-    @append="onAppend"
-    @layout-complete="onLayoutComplete"
-    @image-error="onImageError"
-  >
-    <div class="item" v-for="item in list" :key="item._id" :groupKey="item.groupKey">
-      <ViewItem :item="item"/>
+  <div>
+    <ContentLoading v-if="loading && list.length === 0" type="items"/>
+
+    <div class="home-posts">
+      <div class="item" v-for="item in list" :key="item._id">
+        <ViewItem :item="item"/>
+      </div>
     </div>
-  </GridLayout>
+
+    <Button
+      class="w-100 green"
+      v-if="!endOfData && list.length > 0"
+      :waiting="loading"
+      :value="$t('generic.load-next-button')"
+      @clicked="loadNextPage()"/>
+  </div>
 </template>
 
 <script>
-import { GridLayout } from '@egjs/vue-infinitegrid';
+import Button from '@/components/atoms/Button.vue';
 import ViewItem from '@/components/molecules/ItemBox.vue';
+import ContentLoading from '@/components/atoms/ContentLoading';
 
 export default {
   name: 'ItemList',
   components: {
-    GridLayout,
+    Button,
+    ContentLoading,
     ViewItem,
   },
   props: {
@@ -32,80 +37,56 @@ export default {
     return {
       start: 0,
       pageSize: 10,
-      hasEnded: false,
+      loading: false,
+      endOfData: false,
       list: [],
-      options: {
-        // isOverflowScroll: false,
-        // useFit: true,
-        // useRecycle: true,
-        isConstantSize: true,
-        horizontal: false,
-        align: 'center',
-        transitionDuration: 0.2,
-      },
-      layoutOptions: {
-        margin: 15,
-        align: 'center',
-      },
     };
   },
   watch: {
     tag() {
       this.list = [];
-      this.hasEnded = false;
+      this.endOfData = false;
       this.start = 0;
     },
   },
+  async created() {
+    await this.loadNextPage();
+  },
   methods: {
-    async onAppend({
-      groupKey,
-      startLoading,
-    }) {
-      if (this.$refs.ig.isProcessing()) {
-        return;
-      }
-      if (this.hasEnded) {
-        return;
-      }
+    async loadNextPage() {
+      try {
+        this.loading = true;
 
-      startLoading();
-      let items = await this.$store.dispatch('GET_ITEM_STREAM', {
-        start: this.start,
-        size: this.pageSize,
-        tag: this.tag,
-      });
-      if (items.length === 0) {
-        this.hasEnded = true;
-        this.$refs.ig.endLoading();
-        return;
-      }
+        let items = await this.$store.dispatch('GET_ITEM_STREAM', {
+          start: this.start,
+          size: this.pageSize,
+          tag: this.tag,
+        });
 
-      this.start = this.start + this.pageSize;
-      if (this.exceptItem) {
-        items = items.filter(item => item._id !== this.exceptItem._id);
+        if (items.length === 0) {
+          this.endOfData = true;
+          return;
+        }
+
+        if (items.length < this.pageSize) { // todo test
+          this.endOfData = true;
+        }
+
+        if (this.exceptItem) {
+          items = items.filter(item => item._id !== this.exceptItem._id);
+        }
+        this.list = this.list.concat(items);
+
+        this.start = this.start + this.pageSize;
+      } finally {
+        this.loading = false;
       }
-      const newGroupKey = parseFloat(groupKey || 0) + 1;
-      items.forEach((item) => {
-        item.groupKey = newGroupKey;
-      });
-      this.list = this.list.concat(items);
-    },
-    onLayoutComplete({
-      isLayout,
-      endLoading,
-    }) {
-      if (!isLayout) {
-        endLoading();
-      }
-    },
-    onImageError({ totalIndex }) {
-      this.$log.warn(`Failed to load picture ${this.list[totalIndex].info.picture}`);
     },
   },
 };
 </script>
 <style scoped>
-
+/*TODO clean up styles*/
 .home-posts {
   display: flex;
   flex-wrap: wrap;

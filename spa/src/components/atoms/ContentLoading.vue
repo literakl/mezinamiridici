@@ -3,7 +3,7 @@
     <content-loader
       :height="160"
       :width="400"
-      v-if="type === 'poll' || type === 'generic' || type === 'items'"
+      v-if="type === 'poll' || type === 'generic'"
     >
       <rect x="0" y="0" width="400" height="40"/>
       <rect x="0" y="60" width="200" height="20"/>
@@ -11,6 +11,16 @@
       <rect x="80" y="100" width="50" height="40"/>
       <rect x="160" y="100" width="50" height="40"/>
       <rect x="240" y="100" width="50" height="40"/>
+    </content-loader>
+
+    <content-loader
+      :height="160"
+      :width="400"
+      v-if="type === 'items'"
+    >
+      <rect x="30" y="100" width="270" height="270"/>
+      <rect x="330" y="100" width="270" height="270"/>
+      <rect x="730" y="100" width="270" height="270"/>
     </content-loader>
 
     <content-loader

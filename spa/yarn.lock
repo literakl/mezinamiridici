@@ -694,46 +694,6 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     "to-fast-properties" "^2.0.0"
 
-"@egjs/component@^2.2.2":
-  "integrity" "sha512-2m6nu6/Mbs6VnoT4IHFGUBX6V82Zp01zDmlWpIJ3fMatHpe7BB1qUYFgMmSWGY0uOvOl4plvflwbCRUAGMfwWQ=="
-  "resolved" "https://registry.npmjs.org/@egjs/component/-/component-2.2.2.tgz"
-  "version" "2.2.2"
-
-"@egjs/component@^3.0.1":
-  "integrity" "sha512-Mze3mwEE19+dERrimg0JVLtpOHG4AC+LOuKqvF4qGZjn0k23ZbNI7b/gy1LFR63LigC2b8k70aDjy8xoT+WNPA=="
-  "resolved" "https://registry.npmjs.org/@egjs/component/-/component-3.0.2.tgz"
-  "version" "3.0.2"
-
-"@egjs/imready@^1.1.2":
-  "integrity" "sha512-pkJbae95mHKc1Go1OPY6hKDsMIcZt4yvFLI+Icqm0YXFTVhcbtnvtTmrSYDeB6v3C0trVj7Jf55S0mQYpGCCKw=="
-  "resolved" "https://registry.npmjs.org/@egjs/imready/-/imready-1.2.0.tgz"
-  "version" "1.2.0"
-  dependencies:
-    "@egjs/component" "^3.0.1"
-
-"@egjs/infinitegrid@~3.9.0":
-  "integrity" "sha512-t3B+zJUf6zOaIBv/q4repcvtODcsba3mI7YEi3vSILqU4dgvWbH5Ri3C3PFQhmavCnwWsHXfNlYHIsWCr5VyMQ=="
-  "resolved" "https://registry.npmjs.org/@egjs/infinitegrid/-/infinitegrid-3.9.0.tgz"
-  "version" "3.9.0"
-  dependencies:
-    "@egjs/component" "^2.2.2"
-    "@egjs/imready" "^1.1.2"
-    "@egjs/list-differ" "^1.0.0"
-
-"@egjs/list-differ@^1.0.0":
-  "integrity" "sha512-HsbMKc0ZAQH+EUeCmI/2PvTYSybmkaWwakU8QGDYYgMVIg9BQ5sM0A0Nnombjxo2+JzXHxmH+jw//yGX+y6GYw=="
-  "resolved" "https://registry.npmjs.org/@egjs/list-differ/-/list-differ-1.0.0.tgz"
-  "version" "1.0.0"
-
-"@egjs/vue-infinitegrid@^3.0.4-rc":
-  "integrity" "sha512-QHUWNv6dCpvBeB862Y/oXEdd4HPHhdI5MewYRKf+HSgGASYJ6JHqEGNXOh8Na1jySzRURFm5DV76lcWeQiNttQ=="
-  "resolved" "https://registry.npmjs.org/@egjs/vue-infinitegrid/-/vue-infinitegrid-3.3.0.tgz"
-  "version" "3.3.0"
-  dependencies:
-    "@egjs/infinitegrid" "~3.9.0"
-    "@egjs/list-differ" "^1.0.0"
-    "vue-property-decorator" "^8.3.0"
-
 "@eslint/eslintrc@^1.0.5":
   "integrity" "sha512-BLxsnmK3KyPunz5wmCCpqy0YelEoxxGmH73Is+Z74oOTMtExcjkr3dDR6quwrjh1YspA8DH9gnX1o069KiS9AQ=="
   "resolved" "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-1.0.5.tgz"
@@ -10663,11 +10623,6 @@
     "deep-equal" "^1.0.1"
     "deepmerge" "^4.2.0"
 
-"vue-class-component@^7.1.0":
-  "integrity" "sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w=="
-  "resolved" "https://registry.npmjs.org/vue-class-component/-/vue-class-component-7.2.6.tgz"
-  "version" "7.2.6"
-
 "vue-content-loader@^0.2.3":
   "integrity" "sha512-gJlNEdXkuHGvgnyY0lBMsrSsOMk+TTog5uNAil5MSLv08f/mE7Apag0VavpxJ6ieb4P5J1iVKEIhHI41HQNq9Q=="
   "resolved" "https://registry.npmjs.org/vue-content-loader/-/vue-content-loader-0.2.3.tgz"
@@ -10730,13 +10685,6 @@
   dependencies:
     "plausible-tracker" "^0.3.4"
 
-"vue-property-decorator@^8.3.0":
-  "integrity" "sha512-O6OUN2OMsYTGPvgFtXeBU3jPnX5ffQ9V4I1WfxFQ6dqz6cOUbR3Usou7kgFpfiXDvV7dJQSFcJ5yUPgOtPPm1Q=="
-  "resolved" "https://registry.npmjs.org/vue-property-decorator/-/vue-property-decorator-8.5.1.tgz"
-  "version" "8.5.1"
-  dependencies:
-    "vue-class-component" "^7.1.0"
-
 "vue-router@^3.5.3":
   "integrity" "sha512-FUlILrW3DGitS2h+Xaw8aRNvGTwtuaxrRkNSHWTizOfLUie7wuYwezeZ50iflRn8YPV5kxmU2LQuu3nM/b3Zsg=="
   "resolved" "https://registry.npmjs.org/vue-router/-/vue-router-3.5.3.tgz"
@@ -10770,7 +10718,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@*", "vue@^2.0.0", "vue@^2.5.17", "vue@^2.5.18", "vue@^2.6.0", "vue@^2.6.10", "vue@^2.6.11", "vue@^2.6.14", "vue@>= 1.0.0", "vue@>=2.0.0":
+"vue@^2.0.0", "vue@^2.5.17", "vue@^2.5.18", "vue@^2.6.0", "vue@^2.6.10", "vue@^2.6.11", "vue@^2.6.14", "vue@>= 1.0.0", "vue@>=2.0.0":
   "integrity" "sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.14.tgz"
   "version" "2.6.14"
