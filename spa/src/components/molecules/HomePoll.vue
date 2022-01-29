@@ -5,6 +5,19 @@
         {{ poll.info.caption }}
       </router-link>
     </h4>
+    <div class="poll-details">
+      <div class="poll-votes">
+        <img src="/images/icons/vote-icon.svg" alt="">
+        <span> {{ poll.votes.total }}</span>
+      </div>
+      <div class="poll-comments">
+        <BIconChatTextFill scale="1"></BIconChatTextFill>
+        <router-link to="#comments">
+          <span>{{ poll.comments.count }}</span>
+          <span v-if="poll.comments.count > 0">&nbsp; <Date :date="poll.comments.last" format="dynamicDateTime"/></span>
+        </router-link>
+      </div>
+    </div>
 
     <div v-if="voted" class="poll-success">
       <ul>
@@ -73,10 +86,14 @@
 
 import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
+import Date from '@/components/atoms/Date';
+import { BIconChatTextFill } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
   components: {
+    BIconChatTextFill,
+    Date,
     PollButtons,
   },
   props: {
@@ -130,6 +147,29 @@ export default {
 .title-status {
   max-width: 125px;
   width: 100%;
+}
+
+.poll-details {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  font-size: 13px;
+}
+
+.poll-votes img {
+  width: 16px;
+  height: 15px;
+  margin-right: 8px;
+}
+
+.poll-votes svg {
+  position: relative;
+}
+
+.poll-votes:before {
+  content: "";
+  position: absolute;
 }
 
 /* Voted Poll Success Progress Bars Css Start */
