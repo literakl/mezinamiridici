@@ -7,7 +7,7 @@
     </h4>
     <div class="poll-details">
       <div class="poll-votes">
-        <img src="/images/icons/vote-icon.svg" alt="">
+        <BIconCollection scale="1"></BIconCollection>
         <span> {{ poll.votes.total }}</span>
       </div>
       <div class="poll-comments">
@@ -87,12 +87,13 @@
 import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import Date from '@/components/atoms/Date';
-import { BIconChatTextFill } from 'bootstrap-vue';
+import { BIconChatTextFill, BIconCollection } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
   components: {
     BIconChatTextFill,
+    BIconCollection,
     Date,
     PollButtons,
   },
