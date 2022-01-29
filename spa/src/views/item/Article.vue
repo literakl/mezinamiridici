@@ -91,11 +91,18 @@ export default {
       error: undefined,
     };
   },
+  metaInfo () {
+    return {
+      title: this.article ? this.article.info.caption : '',
+      link: [],
+      meta: [],
+      script: [],
+    }
+  },
   watch: {
     article() {
       if (this.article) {
         this.generatedHtml = this.applySnippets();
-        document.title = this.article.info.caption;
       }
     },
   },
@@ -142,12 +149,17 @@ export default {
       if (!this.article.snippets || this.article.snippets.length === 0) {
         return html;
       }
-      const regex = /\[code="([\w]+)"\]/gm;
+      this.article.snippets = [];
+      this.article.snippets.forEach(snippet => {
+        if (snippet.type === 'javascript') {
+          this.metaInfo.
+        }
+      });
       const replacer = (match, foundCode) => {
         const snippet = this.article.snippets.find(({ code }) => code === foundCode);
         return snippet.content;
       };
-      return html.replace(regex, replacer);
+      return html.replace(/\[code="([\w]+)"\]/gm, replacer);
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });
