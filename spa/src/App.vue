@@ -10,7 +10,6 @@
         <b-navbar-nav class="d-none d-sm-block d-sm-dark">
           <div class="d-inline-flex flex-column title-tag">
             <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
-            <span class="text-white">{{ $t('app.slogan') }}</span>
           </div>
         </b-navbar-nav>
 
@@ -25,6 +24,7 @@
                       right toggle-class="text-warning ">
             <router-link :to="{ name: 'create-blog', params: { id: userId } }">
               <BIconPencilSquare scale="2"></BIconPencilSquare>
+              {{ $t('app.new-post') }}
             </router-link>
           </b-nav-item>
 
@@ -58,23 +58,6 @@
               {{ $t('app.sign-out') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
-
-          <b-nav-item-dropdown right toggle-class="text-warning">
-            <template v-slot:button-content>
-              <BIconInfoCircle scale="2"></BIconInfoCircle>
-            </template>
-
-            <b-dropdown-item href="/o/napoveda">{{ $t('app.help') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/podminky">{{ $t('app.terms') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/soukromi">{{ $t('app.privacy') }}</b-dropdown-item>
-            <b-dropdown-item href="#0" v-on:click="manageCookies()">{{
-                $t('app.cookies')
-              }}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-navbar>
 
@@ -89,6 +72,15 @@
     <main>
       <router-view/>
     </main>
+    <footer>
+      <router-link to="/o/mise">{{ $t('app.our-mission') }}</router-link>
+      <router-link to="/o/napoveda">{{ $t('app.help') }}</router-link>
+      <router-link to="/o/kontakt">{{ $t('app.contact') }}</router-link>
+      <router-link to="/o/reklama">{{ $t('app.advertisement') }}</router-link>
+      <router-link to="/o/podminky">{{ $t('app.terms') }}</router-link>
+      <router-link to="/o/soukromi">{{ $t('app.privacy') }}</router-link>
+      <b-button @click="manageCookies()" variant="link">{{$t('app.cookies')}}</b-button>
+    </footer>
     <CookiesBox @cookiePreferenceChange="handleCookies($event)"/>
   </div>
 </template>

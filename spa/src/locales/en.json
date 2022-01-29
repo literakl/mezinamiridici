@@ -2,7 +2,6 @@
   "app": {
     "name": "Between us Drivers",
     "logo-alt": "Man holding steering wheel",
-    "slogan": "The only way to discuss traffic problems",
     "sign-in-up": "Sign in / Sign up",
     "sign-out": "Sign out",
     "my-profile": "My profile",
@@ -35,6 +34,7 @@
     "content": {
       "article": "Article",
       "blog": "Blog",
+      "poll": "Poll",
       "state": {
         "draft": "draft",
         "published": "published"

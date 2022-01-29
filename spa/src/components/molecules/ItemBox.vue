@@ -4,16 +4,14 @@
       <b-img :src="item.info.picture" alt="" />
     </router-link>
     <div class="picture-actions">
-      <div v-if="item.type === 'poll'" class="poll-symbol">
-        <span class="poll-neutral"></span>
-        <span class="poll-trival"></span>
-        <span class="poll-dislike"></span>
-      </div>
+      <span v-if="item.type === 'article'" class="picture-overlay overlay-left">
+        {{ $t('generic.content.article') }}
+      </span>
       <span v-if="item.type === 'blog'" class="picture-overlay overlay-left">
         {{ $t('generic.content.blog') }}
       </span>
-      <span v-if="item.type === 'article'" class="picture-overlay overlay-left">
-        {{ $t('generic.content.article') }}
+      <span v-if="item.type === 'poll'" class="picture-overlay overlay-left">
+        {{ $t('generic.content.poll') }}
       </span>
       <span class="picture-overlay overlay-right"><Date :date="item.info.date" format="dynamicDate"/></span>
     </div>
@@ -171,37 +169,6 @@ export default {
   width: 100%;
   top: -35px;
   left: 5px;
-}
-
-.poll-symbol span {
-  margin-top: 1px;
-}
-
-.poll-neutral {
-  height: 9px;
-  background: rgb(191 229 200);
-  width: 7%;
-  left: 5px;
-  border-radius: 0 6px 6px 0;
-  display: block;
-}
-
-.poll-trival {
-  height: 9px;
-  background: rgb(179 216 255);
-  width: 4.5%;
-  left: 5px;
-  border-radius: 0 6px 6px 0;
-  display: block;
-}
-
-.poll-dislike {
-  height: 9px;
-  background: rgb(255 237 181);
-  width: 10.5%;
-  left: 5px;
-  border-radius: 0 6px 6px 0;
-  display: block;
 }
 
 span.picture-overlay {
