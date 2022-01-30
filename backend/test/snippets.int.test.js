@@ -45,8 +45,7 @@ test('Item snippets', async () => {
   const snippetABody = {
     code: 'set_a',
     type: 'html',
-    content: '<javascript>a=1</javascript>',
-    date: '2021-08-16T05:22:33.121Z',
+    object: { content: '<b>a=1</b>' },
   };
 
   // create snippet A as Jiri - forbidden (missing role editor in chief)
@@ -63,9 +62,8 @@ test('Item snippets', async () => {
 
   const snippetCBody = {
     code: 'set_c',
-    type: 'html',
-    content: '<javascript>c=1</javascript>',
-    date: '2021-08-16T05:22:33.121Z',
+    type: 'meta',
+    object: { name: 'theme-color', content: '#ffffff' },
   };
 
   // create snippet C as Leos
@@ -88,21 +86,20 @@ test('Item snippets', async () => {
   // rename snippet C to B as Leos
   const snippetBBody = {
     code: 'set_b',
-    type: 'HTML',
-    content: '<javascript>b=1</javascript>',
-    date: '2021-08-16T05:22:33.121Z',
+    type: 'link',
+    object: { rel: 'manifest', href: '/manifest.json' },
   };
   response = await api(`items/${blog.data._id}/snippets/${snippetCBody.code}`, { method: 'PATCH', json: snippetBBody, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBe(true);
   expect(response.data.code).toBe(snippetBBody.code);
   expect(response.data.type).toBe(snippetBBody.type);
-  expect(response.data.content).toBe(snippetBBody.content);
+  expect(response.data.meta).toBeUndefined();
+  expect(response.data.link).toStrictEqual(snippetBBody.object);
 
   const snippetDBody = {
     code: 'set_d',
-    type: 'html',
-    content: '<javascript>d=1</javascript>',
-    date: '2021-08-16T05:22:33.121Z',
+    type: 'style',
+    object: { type: 'text/css', cssText: 'pre { border-left-width: 2px }' },
   };
 
   // add snippet D as Leos

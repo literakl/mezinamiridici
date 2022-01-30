@@ -26,7 +26,7 @@ module.exports = (app) => {
   app.post('/v1/items/:itemId/snippets', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
     logger.trace('create snippet handler starts');
     const {
-      code, type, content, date,
+      code, type, object,
     } = req.body;
 
     const { itemId } = req.params;
@@ -36,12 +36,8 @@ module.exports = (app) => {
     if (!type) {
       return api.sendMissingParam(res, 'type');
     }
-    if (!content) {
-      return api.sendMissingParam(res, 'content');
-    }
-    const publishDate = new Date();
-    if (!publishDate) {
-      return api.sendInvalidParam(res, 'date', date);
+    if (!object) {
+      return api.sendMissingParam(res, 'object');
     }
 
     try {
@@ -54,7 +50,7 @@ module.exports = (app) => {
       }
 
       const user = auth.getIdentity(req.identity);
-      const snippet = await insertItem(dbClient, item._id, code.toLowerCase(), user, publishDate, type.toLowerCase(), content);
+      const snippet = await insertItem(dbClient, item._id, code.toLowerCase(), type.toLowerCase(), user, object);
       return api.sendCreated(res, api.createResponse(snippet));
     } catch (err) {
       logger.error('Request failed', err);
@@ -70,7 +66,7 @@ module.exports = (app) => {
       return api.sendMissingParam(res, 'code');
     }
     const {
-      code, type, content,
+      code, type, object,
     } = req.body;
     if (!code) {
       return api.sendMissingParam(res, 'code');
@@ -78,8 +74,8 @@ module.exports = (app) => {
     if (!type) {
       return api.sendMissingParam(res, 'type');
     }
-    if (!content) {
-      return api.sendMissingParam(res, 'content');
+    if (!object) {
+      return api.sendMissingParam(res, 'object');
     }
 
     try {
@@ -91,21 +87,17 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError(`No snippets in item ${itemId}`, 'sign-in.something-went-wrong'));
       }
 
-      let snippet = null;
-      item.snippets.forEach(x => {
-        if (x.code === currentCode) {
-          snippet = x;
-          snippet.code = code.toLowerCase();
-          snippet.type = type.toLowerCase();
-          snippet.content = content;
-        }
-      });
-
-      if (!snippet) {
+      let snippets = item.snippets.filter(x => x.code === currentCode);
+      if (snippets.length === item.snippets.length) {
         return api.sendInvalidParam(res, api.createError(`Snippet ${currentCode} not found in item ${itemId}`, 'sign-in.something-went-wrong'));
       }
 
-      const result = await dbClient.db().collection('items').updateOne({ _id: itemId }, { $set: { snippets: item.snippets } });
+      const user = auth.getIdentity(req.identity);
+      const snippet = { code: code.toLowerCase(), type: type.toLowerCase(), date: new Date(), user };
+      snippet[snippet.type] = object;
+      snippets.push(snippet);
+
+      const result = await dbClient.db().collection('items').updateOne({ _id: itemId }, { $set: { snippets } });
       // todo mongo log admin
 
       if (result.modifiedCount === 1) {
@@ -154,19 +146,19 @@ module.exports = (app) => {
   });
 };
 
-async function insertItem(dbClient, itemId, code, user, date, type, content) {
+async function insertItem(dbClient, itemId, code, type, user, object) {
   const snippet = {
     code,
     user: {
       nickname: user.nickname,
       id: user.userId,
     },
-    date,
     type,
-    content,
+    date: new Date(),
   };
+  snippet[type] = object;
 
-  const result = await dbClient.db().collection('items').update({ _id: itemId }, { $push: {snippets: snippet } });
+  const result = await dbClient.db().collection('items').updateOne({ _id: itemId }, { $push: {snippets: snippet } });
   if (result.modifiedCount === 1) {
     logger.debug('Snippet inserted');
     return snippet;
