@@ -126,21 +126,7 @@ async function getContent(dbClient, slug, itemId) {
     throw new Error('Both slug and id are empty');
   }
 
-  const db = dbClient.db();
-  const item = await db.collection('items').findOne(query);
-  if (item && item.type !== 'blog') { // fetch snippets
-    const projection = {
-      projection: {
-        code: 1,
-        type: 1,
-        content: 1,
-      },
-    };
-    item.snippets = await db.collection('snippets')
-      .find({ itemId: item._id }, projection)
-      .toArray();
-  }
-
+  const item = await dbClient.db().collection('items').findOne(query);
   return item;
 }
 

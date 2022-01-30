@@ -15,4 +15,3 @@ db.comment_votes.createIndex({ commentId: 1, 'user.id': 1 }, { unique: true });
 db.link_shares.createIndex({ user: 1 });
 db.link_shares.createIndex({ date: 1 });
 db.uploads.createIndex({ itemId: 1 });
-db.snippets.createIndex({ itemId: 1 });

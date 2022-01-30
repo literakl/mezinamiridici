@@ -23,3 +23,6 @@
 ## Comments section
 * count: count of all comments; required
 * last: timestamp of the last comment
+
+## Snippets section
+* array of objects; optional, for articles or pages only 

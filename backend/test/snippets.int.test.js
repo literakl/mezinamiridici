@@ -119,6 +119,12 @@ test('Item snippets', async () => {
   expect(response.data.length).toBe(2);
   expect(response.data[0].code).toBe(snippetBBody.code);
   expect(response.data[1].code).toBe(snippetDBody.code);
+
+  response = await api(`content/${blog.data.info.slug}`).json();
+  expect(response.success).toBe(true);
+  expect(response.data.snippets.length).toBe(2);
+  expect(response.data.snippets[0].code).toBe(snippetBBody.code);
+  expect(response.data.snippets[1].code).toBe(snippetDBody.code);
 });
 
 beforeEach(async () => {
