@@ -21,6 +21,24 @@ If you intend to develop the backend tasks:
 
 You might need to unblock the ports 8080 (web), 3000 (backend) and 27017 (mongo) in your firewall.
 
+## Vue frontend
+
+Create file [spa/.env.development.local](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)
+and update as needed. If you want to access the site from 
+other devices (e.g. mobile phone), you should point the endpoint 
+URL properties to your real IP address (not localhost or 127.0.0.1).
+
+Default values are pointing to a staging endpoint so you can just start
+your development out of box without installing and running local backend.
+
+```
+$ cd spa
+$ npm install
+$ npm run dev
+```
+
+Unless you plan to do backend implementation, congratulation, you are good to do the frontend development! Skip the rest of this file.
+
 ## Database
 
 Import the data:
@@ -41,22 +59,6 @@ mongo bud --eval db.dropDatabase()
 ```
 
 and repeat the import procedure. 
-
-## Vue frontend
-
-Create file [spa/.env.development.local](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)
-and update as needed. If you want to access the site from 
-other devices (e.g. mobile phone), you should point the endpoint 
-URL properties to your real IP address (not localhost or 127.0.0.1).
-
-Default values are pointing to a staging endpoint so you can just start
-your development out of box without installing and running local backend.
-
-```
-$ cd spa
-$ npm install
-$ npm run dev
-```
 
 ## NodeJS backend
 
