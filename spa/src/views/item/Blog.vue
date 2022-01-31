@@ -147,6 +147,7 @@ export default {
     this.$store.dispatch('FETCH_CONTENT', { slug: this.slug, component: this });
   },
   mounted() {
+    // hack for scrolling to comments
     document.onmouseover = () => {
       window.innerDocClick = true;
     };

@@ -67,6 +67,13 @@
                 <BIconCodeSlash scale="1"></BIconCodeSlash>
               </b-button>
 
+              <b-button v-if="isEditor"
+                        :to="{ name: 'snippets', params: { slug: item.info.slug }}"
+                        :title="$t('generic.edit-snippets-button')"
+                        variant="outline-primary">
+                <BIconCardText scale="1"></BIconCardText>
+              </b-button>
+
               <b-button v-if="item.info.state === 'draft'"
                         @click="togglePublished(item)"
                         :title="$t('articles.publish.mark')"
@@ -105,6 +112,7 @@ import {
   BCardBody,
   BCardFooter,
   BIconCalendarCheck,
+  BIconCardText,
   BIconClock,
   BIconCodeSlash,
   BIconFileEarmarkPlusFill,
@@ -128,6 +136,7 @@ export default {
     BCardBody,
     BCardFooter,
     BIconCalendarCheck,
+    BIconCardText,
     BIconCodeSlash,
     BIconClock,
     BIconFileEarmarkPlusFill,
