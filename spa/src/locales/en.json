@@ -317,6 +317,12 @@
     "new-page-button": "New page",
     "delete-message": "Do you really want to delete this page?"
   },
+  "cms": {
+    "snippets": {
+      "type": "Type",
+      "add-label": "Add new snippet"
+    }
+  },
   "editor": {
     "image-too-big": "This image is too big. Limit is 20 MB.",
     "image-unsupported-type": "Only JPG, WEBP, PNG, GIF and SVG are supported.",

@@ -18,6 +18,10 @@
       <b-button variant="post-btn" :disabled="invalid || isEmpty || !isEditor" @click="saveArticle()">
         {{ $t("generic.save-button") }}
       </b-button>
+
+      <div v-if="errors" class="text-danger">
+        {{ errors[0] }}
+      </div>
     </ValidationObserver>
   </div>
 </template>

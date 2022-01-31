@@ -2,32 +2,74 @@
   <div class="pt-3 centerbox m-auto" v-if="item">
     <h2>{{ $t('page-title.snippets') }}</h2>
 
-    <ValidationObserver ref="observer" v-slot="{ invalid }">
-      <b-form-textarea
-        id="textarea"
-        v-model="html"
-        rows="10"
-        min-rows="3"
-        aria-describedby="content-errors"
-        :rules="{ required: true }"
-        class="mb-3" />
+    <b-form-textarea
+      id="textarea"
+      v-model="snippets"
+      rows="10"
+      min-rows="3"
+      aria-describedby="content-errors"
+      class="mb-3" />
 
-      <b-button variant="post-btn" :disabled="invalid" @click="saveArticle()">
-        {{ $t("generic.save-button") }}
-      </b-button>
-    </ValidationObserver>
+    <b-button variant="post-btn" @click="save()">
+      {{ $t("generic.save-button") }}
+    </b-button>
+
+    <div v-if="errors" class="text-danger">
+      {{ errors[0] }}
+    </div>
+
+    <h3 class="mt-3">{{ $t('cms.snippets.add-label') }}</h3>
+
+    <div class="field-area">
+      <div>
+        <label class="d-label" for="type">{{ $t('cms.snippets.type') }}</label>
+      </div>
+
+      <div class="row">
+        <Radio
+          class="pl-3"
+          v-model="type"
+          name="type"
+          label="html"
+          identifier="html"/>
+        <Radio
+          class="pl-3"
+          v-model="type"
+          name="type"
+          label="meta"
+          identifier="meta"/>
+        <Radio
+          class="pl-3"
+          v-model="type"
+          name="type"
+          label="style"
+          identifier="style"/>
+        <Radio
+          class="pl-3"
+          v-model="type"
+          name="type"
+          label="script"
+          identifier="script"/>
+        <Radio
+          class="pl-3"
+          v-model="type"
+          name="type"
+          label="link"
+          identifier="link"/>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import { configure } from 'vee-validate';
 import {
   BButton,
   BFormInvalidFeedback,
   BFormGroup,
   BFormTextarea,
 } from 'bootstrap-vue';
-import i18n from '@/i18n';
+import Radio from '@/components/atoms/Radio';
 
 export default {
   name: 'Snippets',
@@ -36,13 +78,14 @@ export default {
     BFormGroup,
     BFormInvalidFeedback,
     BFormTextarea,
+    Radio,
   },
   props: {
     slug: String,
   },
   data() {
     return {
-      html: '',
+      type: '',
       errors: [],
     };
   },
@@ -50,9 +93,12 @@ export default {
     item() {
       return this.$store.getters.CONTENT;
     },
+    snippets() {
+      return this.item.snippets;
+    }
   },
   methods: {
-    async saveArticle() {
+    async save() {
       const body = {
         itemId: this.item._id,
         source: this.html,
@@ -61,10 +107,7 @@ export default {
       this.errors = [];
       let result = await this.$store.dispatch('UPDATE_CONTENT_HTML', body);
       if (result.success) {
-        await this.$router.push({
-          name: 'article',
-          params: { slug: this.item.info.slug },
-        });
+        await this.$router.go(-1);
       } else {
         this.showError(result.errors);
       }

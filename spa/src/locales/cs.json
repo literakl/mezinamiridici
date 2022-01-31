@@ -321,6 +321,12 @@
     "new-page-button": "Nová stránka",
     "delete-message": "Opravdu chcete smazat tuto stránku?"
   },
+  "cms": {
+    "snippets": {
+      "type": "Typ",
+      "add-label": "Vložit snippet"
+    }
+  },
   "editor": {
     "image-too-big": "Tento obrázek je obrovský. Limit je 20 MB.",
     "image-unsupported-type": "Podporujeme formáty JPG, WEBP, PNG, GIF a SVG.",
