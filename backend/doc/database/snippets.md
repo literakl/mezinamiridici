@@ -9,11 +9,11 @@
 * content: value of content attribute; optional
 
 ## Html optional section
-* content: content to be rendered; required
+* innerHTML: content to be rendered; required
 
 ## Link optional section
 * rel: value of rel attribute; optional
-* url: value of href attribute; optional
+* href: value of href attribute; optional
 
 ## Script optional section
 * url: value of src attribute; optional

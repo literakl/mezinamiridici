@@ -86,6 +86,17 @@ export default {
   data() {
     return {
       type: '',
+      name: '',
+      // meta property
+      property: '',
+      // html / script innerHTML, style cssText, meta content
+      content: '',
+      // link rel
+      rel: '',
+      // script url, link href
+      url: '',
+      // script / style type
+      typeValue: '',
       errors: [],
     };
   },
@@ -98,6 +109,29 @@ export default {
     }
   },
   methods: {
+    appendHTML() {
+      this.append();
+    },
+    appendLink() {
+      this.append();
+    },
+    appendMeta() {
+      this.append();
+    },
+    appendScript() {
+      this.append();
+    },
+    appendStyle() {
+      this.append();
+    },
+    append(snippet) {
+      if (!this.snippets || this.snippets.length === 0 || this.snippets[0] !== '[') {
+        this.snippets = `[\n${snippet}\n]`;
+      } else {
+        const position = this.snippets.lastIndexOf(']');
+        this.snippets = this.snippets.substring(0, position) + `\n${snippet}\n]`;
+      }
+    },
     async save() {
       const body = {
         itemId: this.item._id,

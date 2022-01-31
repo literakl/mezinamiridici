@@ -169,7 +169,7 @@ export default {
       if (htmlSnippets.length > 0) {
         const replacer = (match, foundCode) => {
           const snippet = htmlSnippets.find(({ code }) => code === foundCode);
-          return snippet.html.content;
+          return snippet.html.innerHTML;
         };
         const html = this.article.data.content;
         return html.replace(/\[code="([\w]+)"\]/gm, replacer);
