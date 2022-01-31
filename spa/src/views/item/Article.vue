@@ -97,6 +97,7 @@ export default {
       link: [],
       meta: [],
       script: [],
+      style: [],
     }
   },
   watch: {
@@ -132,6 +133,7 @@ export default {
     this.$store.dispatch('FETCH_CONTENT', { slug: this.slug, component: this });
   },
   mounted() {
+    // hack for scrolling to comments
     document.onmouseover = () => {
       window.innerDocClick = true;
     };
@@ -145,21 +147,35 @@ export default {
     },
     // find snippet pattern [code="animated_chart"] and replace it with its content
     applySnippets() {
-      const html = this.article.data.content;
       if (!this.article.snippets || this.article.snippets.length === 0) {
-        return html;
+        return this.article.data.content;
       }
-      this.article.snippets = [];
+
+      let htmlSnippets = [];
       this.article.snippets.forEach(snippet => {
-        if (snippet.type === 'javascript') {
-          this.metaInfo.
+        if (snippet.type === 'meta') {
+          this.metaInfo.meta.push(snippet.meta);
+        } else if (snippet.type === 'html') {
+          htmlSnippets.push(snippet);
+        } else if (snippet.type === 'style') {
+          this.metaInfo.style.push(snippet.style);
+        } else if (snippet.type === 'script') {
+          this.metaInfo.script.push(snippet.script);
+        } else if (snippet.type === 'link') {
+          this.metaInfo.link.push(snippet.link);
         }
       });
-      const replacer = (match, foundCode) => {
-        const snippet = this.article.snippets.find(({ code }) => code === foundCode);
-        return snippet.content;
-      };
-      return html.replace(/\[code="([\w]+)"\]/gm, replacer);
+
+      if (htmlSnippets.length > 0) {
+        const replacer = (match, foundCode) => {
+          const snippet = htmlSnippets.find(({ code }) => code === foundCode);
+          return snippet.html.content;
+        };
+        const html = this.article.data.content;
+        return html.replace(/\[code="([\w]+)"\]/gm, replacer);
+      } else {
+        return this.article.data.content;
+      }
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });

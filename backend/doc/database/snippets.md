@@ -1,6 +1,6 @@
 # Snippet object
 * code: unique identifier within the item; required
-* type: type of the object; values: html, link, meta, script; required
+* type: type of the object; values: html, link, meta, script, style; required
 * date: timestamp; required
 
 ## Meta optional section
