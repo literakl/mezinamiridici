@@ -87,7 +87,7 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError(`No snippets in item ${itemId}`, 'sign-in.something-went-wrong'));
       }
 
-      let snippets = item.snippets.filter(x => x.code === currentCode);
+      let snippets = item.snippets.filter(x => x.code !== currentCode);
       if (snippets.length === item.snippets.length) {
         return api.sendInvalidParam(res, api.createError(`Snippet ${currentCode} not found in item ${itemId}`, 'sign-in.something-went-wrong'));
       }
@@ -136,7 +136,7 @@ module.exports = (app) => {
         logger.debug('Snippet deleted');
         return api.sendResponse(res, api.createResponse());
       } else {
-        logger.error('Snippet not updated');
+        logger.error('Snippet not deleted');
         return api.sendInternalError(res, api.createError('Failed to update snippet', 'sign-in.something-went-wrong'));
       }
     } catch (err) {
