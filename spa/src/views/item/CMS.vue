@@ -36,6 +36,7 @@
               <span>
                 <BIconCalendarCheck v-if="isWaiting(item)" scale="1" />
                 <BIconClock v-else scale="1" />
+
                 <Date :date="item.info.date" format="dynamicDate"/>
                 <span v-if="item.info.state === 'draft'">
                   {{ $t(`generic.content.state.draft`) }}
@@ -44,31 +45,49 @@
                   {{ $t(`articles.scheduled-article`) }}
                 </span>
               </span>
+
               <span>
                 <BIconPersonCircle scale="1"></BIconPersonCircle>
                 <ProfileLink :profile="item.info.author"/>
               </span>
             </div>
+
             <b-button-group>
-              <b-button v-if="canEdit(item)" :to="{ name: 'update-article', params: { slug: item.info.slug }}" variant="outline-primary">
+              <b-button v-if="canEdit(item)"
+                        :to="{ name: 'update-article', params: { slug: item.info.slug }}"
+                        :title="$t('generic.edit-button')"
+                        variant="outline-primary">
                 <BIconPencilSquare scale="1"></BIconPencilSquare>
-                {{ $t('generic.edit-button') }}
               </b-button>
-              <b-button v-if="isEditor" :to="{ name: 'code-article', params: { slug: item.info.slug }}" variant="outline-primary">
+
+              <b-button v-if="isEditor"
+                        :to="{ name: 'code-article', params: { slug: item.info.slug }}"
+                        :title="$t('generic.edit-html-button')"
+                        variant="outline-primary">
                 <BIconCodeSlash scale="1"></BIconCodeSlash>
-                {{ $t('generic.edit-html-button') }}
               </b-button>
-              <b-button v-if="item.info.state === 'draft'" @click="togglePublished(item)" variant="outline-primary" style="margin-right: 10px">
+
+              <b-button v-if="item.info.state === 'draft'"
+                        @click="togglePublished(item)"
+                        :title="$t('articles.publish.mark')"
+                        variant="outline-primary"
+                        style="margin-right: 10px">
                 <BIconToggle2Off scale="1"></BIconToggle2Off>
-                {{ $t('articles.publish.mark') }}
               </b-button>
-              <b-button v-else @click="togglePublished(item)" variant="outline-primary" style="margin-right: 10px">
+
+              <b-button v-else
+                        @click="togglePublished(item)"
+                        :title="$t('articles.publish.unmark')"
+                        variant="outline-primary"
+                        style="margin-right: 10px">
                 <BIconToggle2On scale="1"></BIconToggle2On>
-                {{ $t('articles.publish.unmark') }}
               </b-button>
-              <b-button v-if="canDelete(item)" @click="confirmDelete(item)" variant="outline-primary">
+
+              <b-button v-if="canDelete(item)"
+                        @click="confirmDelete(item)"
+                        :title="$t('generic.delete-button')"
+                        variant="outline-primary">
                 <BIconTrash scale="1"></BIconTrash>
-                {{ $t('generic.delete-button') }}
               </b-button>
             </b-button-group>
           </b-card-footer>

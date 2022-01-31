@@ -111,7 +111,7 @@ export default new Router({
     {
       path: '/redakce/',
       name: 'articles',
-      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/Articles.vue'),
+      component: () => import(/* webpackChunkName: "admin-chunk" */ './views/item/CMS.vue'),
     },
     {
       path: '/clanky/:slug',
