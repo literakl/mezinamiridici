@@ -149,7 +149,7 @@ export default {
       if (!this.article.snippets || this.article.snippets.length === 0) {
         return this.article.data.content;
       }
-
+      console.log(this.metaInfo);
       let content = this.article.data.content;
       this.article.snippets.forEach(snippet => {
         if (snippet.type === 'meta') {

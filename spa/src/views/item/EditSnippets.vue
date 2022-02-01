@@ -51,7 +51,67 @@
       </div>
     </div>
 
-    <div class="field-area" v-if="type==='html'">
+    <div v-if="type === 'meta'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.name-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="name" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="type === 'meta'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.property-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="property" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="type === 'link'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.rel-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="rel" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="type === 'link'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.href-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="url" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="type === 'script'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.type-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="typeAttribute" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="type === 'script'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.url-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="url" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="['html','meta','script', 'style'].indexOf(type) !== -1" class="field-area">
       <div>
         <label class="d-label" for="content">{{ $t('cms.snippets.content') }}</label>
       </div>
@@ -66,8 +126,7 @@
       </div>
     </div>
 
-
-    <b-button variant="post-btn" @click="appendHTML()">
+    <b-button v-if="type" variant="post-btn" @click="appendHTML()">
       {{ $t("generic.insert-button") }}
     </b-button>
 
@@ -112,10 +171,10 @@ export default {
       content: '',
       // link rel
       rel: '',
-      // script url, link href
+      // script src, link href
       url: '',
-      // script / style type
-      typeValue: '',
+      // script type (should be ommited for javascript)
+      typeAttribute: '',
       errors: [],
     };
   },
@@ -125,21 +184,38 @@ export default {
     },
   },
   methods: {
-    async appendHTML() {
-      await this.append({ innerHTML: this.content });
-      this.code = this.innerHTML = null;
+    appendHTML() {
+      this.append({ innerHTML: this.content });
     },
     appendLink() {
-      this.append();
+      this.append({ rel: this.rel, href: this.url });
     },
     appendMeta() {
-      this.append();
+      const object = {};
+      if (this.name.trim().length > 0) {
+        object.name = this.name;
+      }
+      if (this.property.trim().length > 0) {
+        object.property = this.property;
+      }
+      object.content = this.content;
+      this.append(object);
     },
     appendScript() {
-      this.append();
+      const object = {};
+      if (this.url.trim().length > 0) {
+        object.src = this.url;
+      }
+      if (this.typeAttribute.trim().length > 0) {
+        object.type = this.typeAttribute;
+      }
+      if (this.content.trim().length > 0) {
+        object.innerHTML = this.content;
+      }
+      this.append(object);
     },
     appendStyle() {
-      this.append();
+      this.append({ cssText: this.content });
     },
     async append(snippet) {
       const body = {

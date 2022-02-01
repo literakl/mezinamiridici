@@ -327,6 +327,12 @@
       "type": "Typ",
       "code": "Kód",
       "content": "Obsah",
+      "name-attribute": "Atribut name",
+      "property-attribute": "Atribut property",
+      "rel-attribute": "Atribut rel",
+      "url-attribute": "Atribut url",
+      "href-attribute": "Atribut href",
+      "type-attribute": "Atribut type",
       "add-label": "Vložit snippet"
     }
   },

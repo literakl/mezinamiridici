@@ -323,6 +323,12 @@
       "type": "Type",
       "code": "Code",
       "content": "Content",
+      "name-attribute": "Attribute name",
+      "property-attribute": "Attribute property",
+      "rel-attribute": "Attribute rel",
+      "url-attribute": "Attribute url",
+      "href-attribute": "Attribute href",
+      "type-attribute": "Attribute type",
       "add-label": "Add new snippet"
     }
   },

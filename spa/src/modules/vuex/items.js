@@ -216,7 +216,7 @@ export default {
       const { itemId } = payload;
       const response = await post('API', `/items/${itemId}/snippets`, payload, context);
       context.commit('CLEAR_CONTENT');
-      return response;
+      return response.data;
     },
   },
 };

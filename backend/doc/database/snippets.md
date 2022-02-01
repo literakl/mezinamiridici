@@ -18,14 +18,13 @@
 * href: value of href attribute; optional
 
 ## Script object
-* url: value of src attribute; optional
+* src: value of src attribute; optional
 * type: value of type attribute; optional
 * innerHTML: content to be rendered inside script tag; optional
 * async: boolean value; optional
 * defer: boolean value; optional
 
 ## Style object
-* type: value of type attribute; optional
 * cssText: content to be rendered inside style tag; optional
 
 ### User section
