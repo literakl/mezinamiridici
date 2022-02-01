@@ -93,7 +93,7 @@ export default {
   },
   metaInfo () {
     return {
-      title: this.article ? this.article.info.caption : '',
+      title: this.title,
       link: [],
       meta: [],
       script: [],
@@ -112,11 +112,10 @@ export default {
       return this.$store.getters.CONTENT;
     },
     title() {
-      let txt = '';
       if (this.article !== null) {
-        txt = this.article.info.caption;
+        return this.article.info.caption;
       }
-      return txt;
+      return '';
     },
     canEdit() {
       if (!this.$store.getters.IS_AUTHORIZED) {
@@ -151,31 +150,23 @@ export default {
         return this.article.data.content;
       }
 
-      let htmlSnippets = [];
+      let content = this.article.data.content;
       this.article.snippets.forEach(snippet => {
         if (snippet.type === 'meta') {
-          this.metaInfo.meta.push(snippet.meta);
+          this.metaInfo.meta.push(snippet.object);
         } else if (snippet.type === 'html') {
-          htmlSnippets.push(snippet);
+          const replacer = `[code="${snippet.code}"]`;
+          const position = content.indexOf(replacer);
+          content = content.substring(0, position) + `\n${snippet.object.innerHTML}\n` + content.substring(position + replacer.length);
         } else if (snippet.type === 'style') {
-          this.metaInfo.style.push(snippet.style);
+          this.metaInfo.style.push(snippet.object);
         } else if (snippet.type === 'script') {
-          this.metaInfo.script.push(snippet.script);
+          this.metaInfo.script.push(snippet.object);
         } else if (snippet.type === 'link') {
-          this.metaInfo.link.push(snippet.link);
+          this.metaInfo.link.push(snippet.object);
         }
       });
-
-      if (htmlSnippets.length > 0) {
-        const replacer = (match, foundCode) => {
-          const snippet = htmlSnippets.find(({ code }) => code === foundCode);
-          return snippet.html.innerHTML;
-        };
-        const html = this.article.data.content;
-        return html.replace(/\[code="([\w]+)"\]/gm, replacer);
-      } else {
-        return this.article.data.content;
-      }
+      return content;
     },
     async toComments() {
       this.$scrollTo(document.getElementById('comments'), 500, { easing: 'ease' });

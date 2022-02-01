@@ -93,8 +93,7 @@ module.exports = (app) => {
       }
 
       const user = auth.getIdentity(req.identity);
-      const snippet = { code: code.toLowerCase(), type: type.toLowerCase(), date: new Date(), user };
-      snippet[snippet.type] = object;
+      const snippet = { code: code.toLowerCase(), type: type.toLowerCase(), date: new Date(), user, object };
       snippets.push(snippet);
 
       const result = await dbClient.db().collection('items').updateOne({ _id: itemId }, { $set: { snippets } });
@@ -149,14 +148,14 @@ module.exports = (app) => {
 async function insertItem(dbClient, itemId, code, type, user, object) {
   const snippet = {
     code,
+    type,
+    date: new Date(),
     user: {
       nickname: user.nickname,
       id: user.userId,
     },
-    type,
-    date: new Date(),
+    object,
   };
-  snippet[type] = object;
 
   const result = await dbClient.db().collection('items').updateOne({ _id: itemId }, { $push: {snippets: snippet } });
   if (result.modifiedCount === 1) {

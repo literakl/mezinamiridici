@@ -49,6 +49,7 @@
     "edit-html-button": "Edit HTML",
     "edit-snippets-button": "Edit snippets",
     "save-button": "Save",
+    "insert-button": "Insert",
     "delete-button": "Delete",
     "reset-button": "Reset",
     "reset-tooltip": "Reset",
@@ -320,6 +321,8 @@
   "cms": {
     "snippets": {
       "type": "Type",
+      "code": "Code",
+      "content": "Content",
       "add-label": "Add new snippet"
     }
   },

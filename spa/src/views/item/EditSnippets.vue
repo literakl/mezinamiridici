@@ -2,23 +2,15 @@
   <div class="pt-3 centerbox m-auto" v-if="item">
     <h2>{{ $t('page-title.snippets') }}</h2>
 
-    <b-form-textarea
-      id="textarea"
-      v-model="snippets"
-      rows="10"
-      min-rows="3"
-      aria-describedby="content-errors"
-      class="mb-3" />
+    <div class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.code') }}</label>
+      </div>
 
-    <b-button variant="post-btn" @click="save()">
-      {{ $t("generic.save-button") }}
-    </b-button>
-
-    <div v-if="errors" class="text-danger">
-      {{ errors[0] }}
+      <div class="pb-2">
+        <b-form-input v-model="code" class="w-25"></b-form-input>
+      </div>
     </div>
-
-    <h3 class="mt-3">{{ $t('cms.snippets.add-label') }}</h3>
 
     <div class="field-area">
       <div>
@@ -59,14 +51,38 @@
       </div>
     </div>
 
+    <div class="field-area" v-if="type==='html'">
+      <div>
+        <label class="d-label" for="content">{{ $t('cms.snippets.content') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-textarea
+          id="content"
+          v-model="content"
+          rows="10"
+          min-rows="3"
+          class="mb-3" />
+      </div>
+    </div>
+
+
+    <b-button variant="post-btn" @click="appendHTML()">
+      {{ $t("generic.insert-button") }}
+    </b-button>
+
+    <div v-if="errors" class="errors">
+      {{ errors[0] }}
+    </div>
+
   </div>
 </template>
 
 <script>
 import {
   BButton,
-  BFormInvalidFeedback,
   BFormGroup,
+  BFormInput,
   BFormTextarea,
 } from 'bootstrap-vue';
 import Radio from '@/components/atoms/Radio';
@@ -76,7 +92,7 @@ export default {
   components: {
     BButton,
     BFormGroup,
-    BFormInvalidFeedback,
+    BFormInput,
     BFormTextarea,
     Radio,
   },
@@ -85,7 +101,10 @@ export default {
   },
   data() {
     return {
+      snippets: [],
       type: '',
+      code: '',
+      // meta name
       name: '',
       // meta property
       property: '',
@@ -104,13 +123,11 @@ export default {
     item() {
       return this.$store.getters.CONTENT;
     },
-    snippets() {
-      return this.item.snippets;
-    }
   },
   methods: {
-    appendHTML() {
-      this.append();
+    async appendHTML() {
+      await this.append({ innerHTML: this.content });
+      this.code = this.innerHTML = null;
     },
     appendLink() {
       this.append();
@@ -124,22 +141,16 @@ export default {
     appendStyle() {
       this.append();
     },
-    append(snippet) {
-      if (!this.snippets || this.snippets.length === 0 || this.snippets[0] !== '[') {
-        this.snippets = `[\n${snippet}\n]`;
-      } else {
-        const position = this.snippets.lastIndexOf(']');
-        this.snippets = this.snippets.substring(0, position) + `\n${snippet}\n]`;
-      }
-    },
-    async save() {
+    async append(snippet) {
       const body = {
         itemId: this.item._id,
-        source: this.html,
+        code: this.code,
+        type: this.type,
+        object: snippet,
       };
 
       this.errors = [];
-      let result = await this.$store.dispatch('UPDATE_CONTENT_HTML', body);
+      let result = await this.$store.dispatch('ADD_SNIPPET', body);
       if (result.success) {
         await this.$router.go(-1);
       } else {
@@ -154,6 +165,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
+    this.snippets = this.item.snippets;
   },
 };
 </script>

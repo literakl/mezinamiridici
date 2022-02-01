@@ -45,7 +45,7 @@ test('Item snippets', async () => {
   const snippetABody = {
     code: 'set_a',
     type: 'html',
-    object: { content: '<b>a=1</b>' },
+    object: { innerHTML: '<b>a=1</b>' },
   };
 
   // create snippet A as Jiri - forbidden (missing role editor in chief)
@@ -76,6 +76,7 @@ test('Item snippets', async () => {
   expect(response.data.length).toBe(2);
   expect(response.data[0].code).toBe(snippetABody.code);
   expect(response.data[1].code).toBe(snippetCBody.code);
+  expect(response.data[1].object.content).toBe(snippetCBody.object.content);
 
   response = await api(`content/${blog.data.info.slug}`).json();
   expect(response.success).toBe(true);
@@ -93,8 +94,7 @@ test('Item snippets', async () => {
   expect(response.success).toBe(true);
   expect(response.data.code).toBe(snippetBBody.code);
   expect(response.data.type).toBe(snippetBBody.type);
-  expect(response.data.meta).toBeUndefined();
-  expect(response.data.link).toStrictEqual(snippetBBody.object);
+  expect(response.data.object).toStrictEqual(snippetBBody.object);
 
   const snippetDBody = {
     code: 'set_d',

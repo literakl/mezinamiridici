@@ -211,5 +211,12 @@ export default {
       await patch('API', `/posts/${content._id}/hidden`, payload, context);
       Vue.set(content.info, 'state', hidden ? 'hidden' : 'published');
     },
+    ADD_SNIPPET: async (context, payload) => {
+      Vue.$log.debug('ADD_SNIPPET');
+      const { itemId } = payload;
+      const response = await post('API', `/items/${itemId}/snippets`, payload, context);
+      context.commit('CLEAR_CONTENT');
+      return response;
+    },
   },
 };

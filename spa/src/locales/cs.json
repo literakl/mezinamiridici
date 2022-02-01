@@ -49,6 +49,7 @@
     "edit-html-button": "Upravit HTML",
     "edit-snippets-button": "Upravit úryvky",
     "save-button": "Uložit",
+    "insert-button": "Přidat",
     "delete-button": "Smazat",
     "reset-button": "Reset",
     "reset-tooltip": "Reset",
@@ -324,6 +325,8 @@
   "cms": {
     "snippets": {
       "type": "Typ",
+      "code": "Kód",
+      "content": "Obsah",
       "add-label": "Vložit snippet"
     }
   },
