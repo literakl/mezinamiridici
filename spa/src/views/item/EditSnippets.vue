@@ -93,21 +93,21 @@
 
     <div v-if="type === 'script'" class="field-area">
       <div>
-        <label class="d-label">{{ $t('cms.snippets.type-attribute') }}</label>
-      </div>
-
-      <div class="pb-2">
-        <b-form-input v-model="typeAttribute" class="w-50"></b-form-input>
-      </div>
-    </div>
-
-    <div v-if="type === 'script'" class="field-area">
-      <div>
         <label class="d-label">{{ $t('cms.snippets.url-attribute') }}</label>
       </div>
 
       <div class="pb-2">
         <b-form-input v-model="url" class="w-50"></b-form-input>
+      </div>
+    </div>
+
+    <div v-if="type === 'script'" class="field-area">
+      <div>
+        <label class="d-label">{{ $t('cms.snippets.type-attribute') }}</label>
+      </div>
+
+      <div class="pb-2">
+        <b-form-input v-model="typeAttribute" class="w-50"></b-form-input>
       </div>
     </div>
 
@@ -126,7 +126,7 @@
       </div>
     </div>
 
-    <b-button v-if="type" variant="post-btn" @click="appendHTML()">
+    <b-button v-if="type" variant="post-btn" @click="save()">
       {{ $t("generic.insert-button") }}
     </b-button>
 
@@ -184,13 +184,13 @@ export default {
     },
   },
   methods: {
-    appendHTML() {
-      this.append({ innerHTML: this.content });
+    getHTML() {
+      return { innerHTML: this.content };
     },
-    appendLink() {
-      this.append({ rel: this.rel, href: this.url });
+    getLink() {
+      return { rel: this.rel, href: this.url };
     },
-    appendMeta() {
+    getMeta() {
       const object = {};
       if (this.name.trim().length > 0) {
         object.name = this.name;
@@ -199,9 +199,9 @@ export default {
         object.property = this.property;
       }
       object.content = this.content;
-      this.append(object);
+      return object;
     },
-    appendScript() {
+    getScript() {
       const object = {};
       if (this.url.trim().length > 0) {
         object.src = this.url;
@@ -212,17 +212,27 @@ export default {
       if (this.content.trim().length > 0) {
         object.innerHTML = this.content;
       }
-      this.append(object);
+      return object;
     },
-    appendStyle() {
-      this.append({ cssText: this.content });
+    getStyle() {
+      return { cssText: this.content };
     },
-    async append(snippet) {
+    async save() {
+      let createSnippet = type => {
+        switch(type) {
+          case 'html': return this.getHTML();
+          case 'link': return this.getLink();
+          case 'meta': return this.getMeta();
+          case 'script': return this.getScript();
+          case 'style': return this.getStyle();
+          default: throw new Error(`What is ${type}?`);
+        }
+      }
       const body = {
         itemId: this.item._id,
         code: this.code,
         type: this.type,
-        object: snippet,
+        object: createSnippet(this.type),
       };
 
       this.errors = [];
