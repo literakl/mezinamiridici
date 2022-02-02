@@ -149,21 +149,20 @@ export default {
       if (!this.article.snippets || this.article.snippets.length === 0) {
         return this.article.data.content;
       }
-      console.log(this.metaInfo);
       let content = this.article.data.content;
       this.article.snippets.forEach(snippet => {
         if (snippet.type === 'meta') {
-          this.metaInfo.meta.push(snippet.object);
+          this.$metaInfo.meta.push(snippet.object);
         } else if (snippet.type === 'html') {
           const replacer = `[code="${snippet.code}"]`;
           const position = content.indexOf(replacer);
           content = content.substring(0, position) + `\n${snippet.object.innerHTML}\n` + content.substring(position + replacer.length);
         } else if (snippet.type === 'style') {
-          this.metaInfo.style.push(snippet.object);
+          this.$metaInfo.style.push(snippet.object);
         } else if (snippet.type === 'script') {
-          this.metaInfo.script.push(snippet.object);
+          this.$metaInfo.script.push(snippet.object);
         } else if (snippet.type === 'link') {
-          this.metaInfo.link.push(snippet.object);
+          this.$metaInfo.link.push(snippet.object);
         }
       });
       return content;
