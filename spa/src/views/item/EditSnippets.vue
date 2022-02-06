@@ -104,6 +104,14 @@
         <label class="d-label">{{ $t('cms.snippets.url-attribute') }}</label>
       </div>
 
+      <div class="field-area">
+        <Checkbox
+          v-model="defer"
+          label="Defer"
+          name="defer"
+          identifier="defer"/>
+      </div>
+
       <div class="pb-2">
         <b-form-input v-model="url" class="w-50"></b-form-input>
       </div>
@@ -153,6 +161,7 @@ import {
   BFormTextarea,
 } from 'bootstrap-vue';
 import Radio from '@/components/atoms/Radio';
+import Checkbox from '@/components/atoms/Checkbox';
 
 export default {
   name: 'Snippets',
@@ -161,6 +170,7 @@ export default {
     BFormGroup,
     BFormInput,
     BFormTextarea,
+    Checkbox,
     Radio,
   },
   props: {
@@ -171,6 +181,8 @@ export default {
       snippets: [],
       type: '',
       code: '',
+      // script attribute
+      defer: undefined,
       // meta name
       name: '',
       // meta property
@@ -219,6 +231,9 @@ export default {
       }
       if (this.content.trim().length > 0) {
         object.innerHTML = this.content;
+      }
+      if (this.defer) {
+        object.defer = this.defer;
       }
       return object;
     },
