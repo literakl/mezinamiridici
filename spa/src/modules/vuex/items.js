@@ -218,5 +218,12 @@ export default {
       context.commit('CLEAR_CONTENT');
       return response.data;
     },
+    DELETE_SNIPPET: async (context, payload) => {
+      Vue.$log.debug('DELETE_SNIPPET');
+      const { itemId, code } = payload;
+      const response = await deleteApi('API',`/items/${itemId}/snippets/${code}`, {}, context);
+      context.commit('CLEAR_CONTENT');
+      return response.data;
+    },
   },
 };

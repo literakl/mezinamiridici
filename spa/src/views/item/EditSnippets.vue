@@ -2,6 +2,14 @@
   <div class="pt-3 centerbox m-auto" v-if="item">
     <h2>{{ $t('page-title.snippets') }}</h2>
 
+    <div v-if="snippets" v-for="snippet in snippets" :key="snippet.code">
+      {{ snippet.code }}
+      {{ snippet.type }}
+      <b-button variant="post-btn" @click="deleteSnippet(snippet.code)">
+        {{ $t("generic.delete-button") }}
+      </b-button>
+    </div>
+
     <div class="field-area">
       <div>
         <label class="d-label">{{ $t('cms.snippets.code') }}</label>
@@ -239,6 +247,21 @@ export default {
       let result = await this.$store.dispatch('ADD_SNIPPET', body);
       if (result.success) {
         await this.$router.go(-1);
+      } else {
+        this.showError(result.errors);
+      }
+    },
+    async deleteSnippet(code) {
+      const body = {
+        itemId: this.item._id,
+        code,
+      };
+
+      this.errors = [];
+      let result = await this.$store.dispatch('DELETE_SNIPPET', body);
+      if (result.success) {
+        await this.$store.dispatch('FETCH_CONTENT', { slug: this.slug });
+        this.snippets = this.item.snippets;
       } else {
         this.showError(result.errors);
       }
