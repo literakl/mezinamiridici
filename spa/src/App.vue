@@ -109,7 +109,7 @@
           <hr class="footer-line">
 
           <div class="text-center text-white opacity-25">
-            copyright &#169; 2021 - {{ (new Date()).getFullYear()}} Lelisoft s.r.o
+            Copyright &#169; 2021 - {{ (new Date()).getFullYear()}} Lelisoft s.r.o
           </div>
 
         </div>
