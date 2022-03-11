@@ -72,14 +72,48 @@
     <main>
       <router-view/>
     </main>
-    <footer>
-      <router-link to="/o/mise">{{ $t('app.our-mission') }}</router-link>
-      <router-link to="/o/napoveda">{{ $t('app.help') }}</router-link>
-      <router-link to="/o/kontakt">{{ $t('app.contact') }}</router-link>
-      <router-link to="/o/reklama">{{ $t('app.advertisement') }}</router-link>
-      <router-link to="/o/podminky">{{ $t('app.terms') }}</router-link>
-      <router-link to="/o/soukromi">{{ $t('app.privacy') }}</router-link>
-      <b-button @click="manageCookies()" variant="link">{{$t('app.cookies')}}</b-button>
+    <footer class="py-3 bg-footer">
+      <b-container class="app-size">
+        <div>
+          <b-row>
+            <b-col>
+              <router-link to="/o/mise" active-class="active">{{ $t('app.our-mission') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/napoveda">{{ $t('app.help') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/kontakt">{{ $t('app.contact') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/reklama">{{ $t('app.advertisement') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/podminky">{{ $t('app.terms') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/soukromi">{{ $t('app.privacy') }}</router-link>
+            </b-col>
+            <b-col>
+              <a  @click="manageCookies()">{{$t('app.cookies')}}</a>
+            </b-col>
+            <b-col>
+              <a href="#">
+              <BIconFacebook  scale="1.3" variant="warning"/>
+              </a>
+              <a href="#" class="float-right">
+                <BIconTwitter  scale="1.3" variant="warning"/>
+              </a>
+            </b-col>
+          </b-row>
+          <hr class="footer-line">
+
+          <div class="text-center text-white opacity-25">
+            copyright &#169; 2021 - {{ (new Date()).getFullYear()}} Lelisoft s.r.o
+          </div>
+
+        </div>
+      </b-container>
     </footer>
     <CookiesBox @cookiePreferenceChange="handleCookies($event)"/>
   </div>
@@ -95,7 +129,12 @@ import {
   BNavItemDropdown,
   BDropdownItem,
   BNavItem,
-  BButton
+  BButton,
+  BRow,
+  BCol,
+  BContainer,
+  BIconFacebook,
+  BIconTwitter,
 } from 'bootstrap-vue';
 import InfoBox from '@/components/molecules/InfoBox.vue';
 import CookiesBox from '@/components/molecules/CookiesBox.vue';
@@ -114,6 +153,11 @@ export default {
     BNavItemDropdown,
     BDropdownItem,
     BNavItem,
+    BContainer,
+    BRow,
+    BCol,
+    BIconFacebook,
+    BIconTwitter,
     CookiesBox,
     InfoBox,
   },
@@ -167,4 +211,33 @@ export default {
 @import "./assets/styles/custom.scss";
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';
+</style>
+<style scoped>
+.app-size {
+  max-width:1280px;
+}
+.bg-footer {
+  background-color: #343A3F
+}
+.footer-line {
+  opacity: 0.25;
+  border:1px solid #fff;
+}
+.opacity-25 {
+  opacity: .25;
+}
+.footer-link {
+  color: #e0a800
+}
+.row .col > a  {
+  color: #e0a800 !important;
+
+}
+.row .col > a:hover  {
+  color: #fff !important;
+
+}
+.router-link-active {
+  color: #fff !important
+  }
 </style>

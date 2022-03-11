@@ -3,29 +3,31 @@
     <ContentLoading v-if="loading && list.length === 0" type="items"/>
 
     <div class="home-posts">
-      <div class="item" v-for="item in list" :key="item._id">
+      <div class="item m-2" v-for="item in list" :key="item._id">
         <ViewItem :item="item"/>
       </div>
     </div>
 
-    <Button
-      class="w-100 green"
+  <div class="text-center my-4">
+    <ButtonOutlined
       v-if="!endOfData && list.length > 0"
       :waiting="loading"
       :value="$t('generic.load-next-button')"
+      sm='sm'
       @clicked="loadNextPage()"/>
+  </div>
   </div>
 </template>
 
 <script>
-import Button from '@/components/atoms/Button.vue';
+import ButtonOutlined from '@/components/atoms/ButtonOutlined.vue';
 import ViewItem from '@/components/molecules/ItemBox.vue';
 import ContentLoading from '@/components/atoms/ContentLoading';
 
 export default {
   name: 'ItemList',
   components: {
-    Button,
+    ButtonOutlined,
     ContentLoading,
     ViewItem,
   },
@@ -90,18 +92,18 @@ export default {
 .home-posts {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   max-width: 1280px;
   margin: 0 auto;
 }
 
 .item {
-  width: 255px;
+  width: 300px;
   opacity: 1;
 }
 
 .item div {
-  height: 270px;
+  height: 300px;
 }
 
 .item .thumbnail {

@@ -7,13 +7,13 @@
     </h4>
     <div class="poll-details">
       <div class="poll-votes">
-        <BIconCollection scale="1"></BIconCollection>
-        <span> {{ poll.votes.total }}</span>
+        <BIconEnvelope scale="1"></BIconEnvelope>
+        <span class="ml-1 mr-2"> {{ poll.votes.total }}</span>
       </div>
       <div class="poll-comments">
         <BIconChatTextFill scale="1"></BIconChatTextFill>
         <router-link to="#comments">
-          <span>{{ poll.comments.count }}</span>
+          <span class="ml-1 mr-2">{{ poll.comments.count }}</span>
           <span v-if="poll.comments.count > 0">&nbsp; <Date :date="poll.comments.last" format="dynamicDateTime"/></span>
         </router-link>
       </div>
@@ -87,13 +87,13 @@
 import normalizeVotes from '@/utils/chartUtils';
 import PollButtons from '@/components/molecules/PollButtons.vue';
 import Date from '@/components/atoms/Date';
-import { BIconChatTextFill, BIconCollection } from 'bootstrap-vue';
+import { BIconChatTextFill, BIconEnvelope } from 'bootstrap-vue';
 
 export default {
   name: 'HomePoll',
   components: {
     BIconChatTextFill,
-    BIconCollection,
+    BIconEnvelope,
     Date,
     PollButtons,
   },
@@ -152,7 +152,7 @@ export default {
 
 .poll-details {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
   width: 100%;
   font-size: 13px;
