@@ -1,19 +1,22 @@
 <template>
   <div>
-    <div class="pt-3 m-auto pb-5">
+    <div class="pt-3 m-auto pb-3">
       <HomePoll v-if="poll" :poll="poll"/>
+      <AccidentsSummary />
       <ItemList :exceptItem="poll"/>
     </div>
   </div>
 </template>
 
 <script>
+import AccidentsSummary from '@/components/molecules/AccidentsSummary.vue';
 import HomePoll from '@/components/molecules/HomePoll.vue';
 import ItemList from '@/components/organisms/ItemList.vue';
 
 export default {
   name: 'home',
   components: {
+    AccidentsSummary,
     HomePoll,
     ItemList,
   },

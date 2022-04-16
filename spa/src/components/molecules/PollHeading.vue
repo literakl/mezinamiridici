@@ -24,12 +24,15 @@
                 <span><Date :date="this.item.info.date" format="dynamicDate"/></span>
               </div>
               <div class="post-rating">
-                <img src="/images/icons/vote-icon.svg" alt="">
+                <BIconCollection scale="1"></BIconCollection>
                 <span> {{ item.votes.total }}</span>
               </div>
               <div class="post-comments">
                 <BIconChatTextFill scale="1"></BIconChatTextFill>
-                <router-link to="#comments"><span>{{ item.comments.count }}</span></router-link>
+                <router-link to="#comments">
+                  <span>{{ item.comments.count }}</span>
+                  <span v-if="item.comments.count > 0">&nbsp; <Date :date="item.comments.last" format="dynamicDateTime"/></span>
+                </router-link>
               </div>
               <div class="post-tags" v-if="hasTags">
                 <BIconTags scale="1"></BIconTags>
@@ -60,7 +63,7 @@ import {
   BIconPersonCircle,
   BIconCalendarRange,
   BIconChatTextFill,
-  BIconTags,
+  BIconTags, BIconCollection,
 } from 'bootstrap-vue';
 import ProfileLink from '@/components/molecules/ProfileLink.vue';
 import Date from '@/components/atoms/Date.vue';
@@ -68,16 +71,17 @@ import Date from '@/components/atoms/Date.vue';
 export default {
   name: 'PollHeading',
   components: {
-    ProfileLink,
-    Date,
-    BIconChevronDoubleLeft,
-    BIconChevronDoubleRight,
-    BCol,
     BButton,
-    BIconPersonCircle,
+    BCol,
     BIconCalendarRange,
     BIconChatTextFill,
+    BIconChevronDoubleLeft,
+    BIconChevronDoubleRight,
+    BIconCollection,
+    BIconPersonCircle,
     BIconTags,
+    Date,
+    ProfileLink,
   },
   props: {
     item: Object,

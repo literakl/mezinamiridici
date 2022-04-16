@@ -5,6 +5,7 @@
 .env.local
 .env.*.local
 **/env.json
+**/env.*
 
 # Log files
 npm-debug.log*

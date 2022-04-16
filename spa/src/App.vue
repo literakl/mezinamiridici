@@ -10,7 +10,6 @@
         <b-navbar-nav class="d-none d-sm-block d-sm-dark">
           <div class="d-inline-flex flex-column title-tag">
             <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
-            <span class="text-white">{{ $t('app.slogan') }}</span>
           </div>
         </b-navbar-nav>
 
@@ -25,6 +24,7 @@
                       right toggle-class="text-warning ">
             <router-link :to="{ name: 'create-blog', params: { id: userId } }">
               <BIconPencilSquare scale="2"></BIconPencilSquare>
+              {{ $t('app.new-post') }}
             </router-link>
           </b-nav-item>
 
@@ -58,23 +58,6 @@
               {{ $t('app.sign-out') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
-
-          <b-nav-item-dropdown right toggle-class="text-warning">
-            <template v-slot:button-content>
-              <BIconInfoCircle scale="2"></BIconInfoCircle>
-            </template>
-
-            <b-dropdown-item href="/o/napoveda">{{ $t('app.help') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/mise">{{ $t('app.our-mission') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/kontakt">{{ $t('app.contact') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/reklama">{{ $t('app.advertisement') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/podminky">{{ $t('app.terms') }}</b-dropdown-item>
-            <b-dropdown-item href="/o/soukromi">{{ $t('app.privacy') }}</b-dropdown-item>
-            <b-dropdown-item href="#0" v-on:click="manageCookies()">{{
-                $t('app.cookies')
-              }}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-navbar>
 
@@ -89,6 +72,49 @@
     <main>
       <router-view/>
     </main>
+    <footer class="py-3 bg-footer">
+      <b-container class="app-size">
+        <div>
+          <b-row>
+            <b-col>
+              <router-link to="/o/mise" active-class="active">{{ $t('app.our-mission') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/napoveda">{{ $t('app.help') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/kontakt">{{ $t('app.contact') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/reklama">{{ $t('app.advertisement') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/podminky">{{ $t('app.terms') }}</router-link>
+            </b-col>
+            <b-col>
+              <router-link to="/o/soukromi">{{ $t('app.privacy') }}</router-link>
+            </b-col>
+            <b-col>
+              <a  @click="manageCookies()">{{$t('app.cookies')}}</a>
+            </b-col>
+            <b-col>
+              <a href="#">
+              <BIconFacebook  scale="1.3" variant="warning"/>
+              </a>
+              <a href="#" class="float-right">
+                <BIconTwitter  scale="1.3" variant="warning"/>
+              </a>
+            </b-col>
+          </b-row>
+          <hr class="footer-line">
+
+          <div class="text-center text-white opacity-25">
+            Copyright &#169; 2021 - {{ (new Date()).getFullYear()}} Lelisoft s.r.o
+          </div>
+
+        </div>
+      </b-container>
+    </footer>
     <CookiesBox @cookiePreferenceChange="handleCookies($event)"/>
   </div>
 </template>
@@ -103,7 +129,12 @@ import {
   BNavItemDropdown,
   BDropdownItem,
   BNavItem,
-  BButton
+  BButton,
+  BRow,
+  BCol,
+  BContainer,
+  BIconFacebook,
+  BIconTwitter,
 } from 'bootstrap-vue';
 import InfoBox from '@/components/molecules/InfoBox.vue';
 import CookiesBox from '@/components/molecules/CookiesBox.vue';
@@ -122,6 +153,11 @@ export default {
     BNavItemDropdown,
     BDropdownItem,
     BNavItem,
+    BContainer,
+    BRow,
+    BCol,
+    BIconFacebook,
+    BIconTwitter,
     CookiesBox,
     InfoBox,
   },
@@ -175,4 +211,33 @@ export default {
 @import "./assets/styles/custom.scss";
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';
+</style>
+<style scoped>
+.app-size {
+  max-width:1280px;
+}
+.bg-footer {
+  background-color: #343A3F
+}
+.footer-line {
+  opacity: 0.25;
+  border:1px solid #fff;
+}
+.opacity-25 {
+  opacity: .25;
+}
+.footer-link {
+  color: #e0a800
+}
+.row .col > a  {
+  color: #e0a800 !important;
+
+}
+.row .col > a:hover  {
+  color: #fff !important;
+
+}
+.router-link-active {
+  color: #fff !important
+  }
 </style>

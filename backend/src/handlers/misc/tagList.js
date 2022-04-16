@@ -6,7 +6,7 @@ const mongo = require('../../utils/mongo.js');
 require('../../utils/path_env');
 
 const { TAGS } = process.env;
-const TAGS_ARRAY = String(TAGS).split(',');
+const TAGS_ARRAY = String(TAGS).split(',').sort();
 
 module.exports = (app) => {
   app.options('/v1/misc/tags', auth.cors);

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import app from './modules/vuex/app';
+import accidents from './modules/vuex/accidents';
 import items from './modules/vuex/items';
 import users from './modules/vuex/users';
 import polls from './modules/vuex/polls';
@@ -16,5 +17,6 @@ export default new Vuex.Store({
     polls,
     items,
     app,
+    accidents,
   },
 });

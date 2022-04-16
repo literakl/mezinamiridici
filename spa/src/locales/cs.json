@@ -2,7 +2,6 @@
   "app": {
     "name": "Mezi námi řidiči",
     "logo-alt": "Muž za volantem",
-    "slogan": "Jediný web, kde si můžete vyříkat, co vás na silnicích štve",
     "sign-in-up": "Přihlášení / Registrace",
     "sign-out": "Odhlásit se",
     "my-profile": "Můj profil",
@@ -35,6 +34,7 @@
     "content": {
       "article": "Článek",
       "blog": "Blog",
+      "poll": "Anketa",
       "state": {
         "draft": "koncept",
         "published": "zveřejněno"
@@ -47,6 +47,7 @@
     "cancel-button": "Storno",
     "edit-button": "Upravit",
     "edit-html-button": "Upravit HTML",
+    "load-next-button": "Načíst další",
     "save-button": "Uložit",
     "delete-button": "Smazat",
     "reset-button": "Reset",
