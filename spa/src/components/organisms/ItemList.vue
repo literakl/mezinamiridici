@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       start: 0,
-      pageSize: 10,
+      pageSize: 12,
       loading: false,
       endOfData: false,
       list: [],
