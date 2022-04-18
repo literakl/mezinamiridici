@@ -36,7 +36,7 @@
           <p>
             nechceme potíže s úřady, takže pojďme na papírování. Technologie cookies slouží pro
             ukládání dat do prohlížeče. Zde si můžete vybrat, kterou kategorii cookies povolíte.
-            Nám pomůže, když to budou všechny.
+            Nám pomůže, když povolíte všechny.
           </p>
 
           <button class="green text-white mb-4 mt-2" @click="confirmAll()">Povolit vše</button>
