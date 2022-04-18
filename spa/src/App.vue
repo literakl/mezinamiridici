@@ -9,7 +9,7 @@
 
         <b-navbar-nav class="d-none d-sm-block d-sm-dark">
           <div class="d-inline-flex flex-column title-tag">
-            <h2><a class="text-white" href="/">{{ $t('app.name') }}</a></h2>
+            <h2 class="app-title"><a href="/">MEZI NÁMI <span>ŘIDIČI</span></a></h2>
           </div>
         </b-navbar-nav>
 
@@ -95,14 +95,14 @@
               <router-link to="/o/soukromi">{{ $t('app.privacy') }}</router-link>
             </b-col>
             <b-col>
-              <a  @click="manageCookies()">{{$t('app.cookies')}}</a>
+              <a href="#" @click="manageCookies()">{{$t('app.cookies')}}</a>
             </b-col>
             <b-col>
-              <a href="#">
-              <BIconFacebook  scale="1.3" variant="warning"/>
+              <a href="https://www.facebook.com/mezinamiridici">
+                <BIconFacebook scale="1.3" variant="warning"/>
               </a>
-              <a href="#" class="float-right">
-                <BIconTwitter  scale="1.3" variant="warning"/>
+              <a href="https://twitter.com/MeziNamiRidici" class="float-right">
+                <BIconTwitter scale="1.3" variant="warning"/>
               </a>
             </b-col>
           </b-row>
@@ -215,6 +215,18 @@ export default {
 <style scoped>
 .app-size {
   max-width:1280px;
+}
+.app-title {
+  font-family: 'Amatic SC', cursive !important;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0.1em;
+}
+.app-title span {
+  color: #e0a800 !important;
+  font-size: 32px;
 }
 .bg-footer {
   background-color: #343A3F
