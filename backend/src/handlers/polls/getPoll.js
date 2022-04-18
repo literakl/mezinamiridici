@@ -9,15 +9,16 @@ module.exports = (app) => {
   app.options('/bff/polls/id/:id', auth.cors);
 
   app.get('/bff/polls/last', auth.optional, async (req, res) => {
-    logger.debug('getLastPoll handler starts');
+    logger.info('getLastPoll handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
       const pipeline = [mongo.stagePublishedPoll, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
+      logger.info(pipeline);
       const item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Item fetched');
+      logger.info('Item fetched');
 
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
