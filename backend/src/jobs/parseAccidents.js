@@ -112,7 +112,7 @@ async function doJob() {
   jobLogger.info('Job is connecting to server');
   const formDataBody = await getInitialFormData();
   const dbClient = await mongo.connectToDatabase();
-  const date = dayjs().subtract(1, 'day');
+  const date = dayjs().startOf('day').subtract(1, 'day');
   const isParsed = await parseData(dbClient, formDataBody, date);
   if (!isParsed) {
     if (retried >= ACCIDENTS_STATS_RETRY_MAXIMUM) {
@@ -336,6 +336,7 @@ async function saveArticle(dbClient, context, date) {
   const picture = config.pictures[date.dayOfYear() % config.pictures.length];
   const pictureWithPath = `${STREAM_PICTURES_PATH}/${picture}`;
   const blogAuthor = await mongo.getIdentity(dbClient, config.author);
+  // #292 - not normalized to midnight
   const article = await insertItem(dbClient, title, source, blogAuthor, date.add(1, 'day').toDate(), pictureWithPath, config.tags, false, true);
   console.log(`Article ${article.info.slug} saved`);
 }
