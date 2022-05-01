@@ -1,6 +1,6 @@
 # Item object
 * _id: time based generated id 
-* type: type of the object; values: poll, blog, page; required
+* type: type of the object; values: article, blog, page, poll; required
 
 ## Info section
 * caption: object title, required

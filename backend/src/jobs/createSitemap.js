@@ -53,7 +53,9 @@ async function fetchURLs() {
 
   items.forEach((item) => {
     let slug;
-    if (item.type === 'blog') {
+    if (item.type === 'article') {
+      slug = `/clanky/`;
+    } else if (item.type === 'blog') {
       slug = `/p/${item.info.author.id}/b/`;
     } else if (item.type === 'poll') {
       slug = '/ankety/';
@@ -84,7 +86,7 @@ async function getItems() {
       .collection('items')
       .find(
         {
-          type: { $in: ['blog', 'page', 'poll'] },
+          type: { $in: ['article', 'blog', 'page', 'poll'] },
           'info.state': 'published',
         },
         {
