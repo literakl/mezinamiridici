@@ -14,5 +14,9 @@ export default {
       const response = await get('API', '/accidents/last');
       return response.data.data;
     },
+    GET_ACCIDENTS: async (context, payload) => {
+      Vue.$log.debug(`GET_ACCIDENTS ${payload.day}`);
+      return await get('API', `/accidents/${payload.day}`, context);
+    },
   }
 };

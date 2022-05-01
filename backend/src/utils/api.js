@@ -15,6 +15,10 @@ const diskAPILimits = rateLimit({
   windowMs: 5 * 60 * 1000,
   max: process.env.API_LIMIT_DISK || 10,
 });
+const statsAPILimits = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: process.env.API_LIMIT_STATS || 10,
+});
 
 function sendResponse(res, body, cacheControl = 'private') {
   return response(res, 200, body, cacheControl);
@@ -285,4 +289,5 @@ module.exports.sanitizeConfigure = sanitizeConfigure;
 module.exports.authAPILimits = authAPILimits;
 module.exports.diskAPILimits = diskAPILimits;
 module.exports.resendAPILimits = resendAPILimits;
+module.exports.statsAPILimits = statsAPILimits;
 module.exports.getSlug = getSlug;

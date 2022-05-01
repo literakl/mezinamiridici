@@ -21,7 +21,9 @@
       </div>
     </div>
     <div class="col col-md-3 m-auto">
-      <!--<div class="float-right">Vice statistik <BIconArrowRight scale="1" variant="dark"></BIconArrowRight></div>-->
+      <div class="float-right">
+        <router-link :to="{ name: 'accidents-details', params: { day: isoDate }}">Více statistik <BIconArrowRight scale="1" variant="dark"></BIconArrowRight></router-link>
+      </div>
     </div>
   </div>
 </div>
@@ -30,6 +32,7 @@
 <script>
 
 import Date from '@/components/atoms/Date';
+import { show } from '@/utils/dateUtils';
 import { BIconChatTextFill, BIconCollection, BIconArrowRight} from 'bootstrap-vue';
 
 export default {
@@ -44,6 +47,11 @@ export default {
     return {
       summary: null,
     };
+  },
+  computed: {
+    isoDate() {
+      return show(this.summary.date, 'ISO');
+    },
   },
   async created() {
     this.summary = await this.$store.dispatch('GET_ACCIDENTS_SUMMARY');

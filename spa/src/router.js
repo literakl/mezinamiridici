@@ -193,6 +193,12 @@ export default new Router({
       props: true,
     },
     {
+      path: '/nehody/:day',
+      name: 'accidents-details',
+      component: () => import(/* webpackChunkName: "content-chunk" */ './views/accidents/Details.vue'),
+      props: true,
+    },
+    {
       path: '/stitky',
       name: 'tags',
       component: () => import(/* webpackChunkName: "content-chunk" */ './views/item/Tag.vue'),

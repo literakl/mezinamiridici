@@ -71,6 +71,10 @@ function isInFuture(epochMS) {
   return dayjs().isBefore(instant);
 }
 
+function getDateWithOffset(offsetDays) {
+  return dayjs().add(offsetDays, 'day').toDate();
+}
+
 export {
-  show, getISO,isInFuture
+  show, getISO,isInFuture, getDateWithOffset,
 };

@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 import Vue from 'vue';
-import { deleteApi, get, patch, post, getSync } from '@/utils/api';
+import { deleteApi, get, patch, post } from '@/utils/api';
 
 export default {
   state: () => ({
