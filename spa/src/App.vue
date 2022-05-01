@@ -104,6 +104,9 @@
               <a href="https://twitter.com/MeziNamiRidici" class="float-right">
                 <BIconTwitter scale="1.3" variant="warning"/>
               </a>
+              <a href="/feed.rss" class="float-right">
+                <BIconRssFill scale="1.3" variant="warning"/>
+              </a>
             </b-col>
           </b-row>
           <hr class="footer-line">
@@ -124,6 +127,7 @@ import {
   BIconPersonCircle,
   BIconInfoCircle,
   BIconPencilSquare,
+  BIconRssFill,
   BNavbar,
   BNavbarNav,
   BNavItemDropdown,
@@ -148,6 +152,7 @@ export default {
     BIconPersonCircle,
     BIconInfoCircle,
     BIconPencilSquare,
+    BIconRssFill,
     BNavbar,
     BNavbarNav,
     BNavItemDropdown,

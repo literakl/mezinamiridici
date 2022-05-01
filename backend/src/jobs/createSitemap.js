@@ -29,7 +29,8 @@ async function createSitemap() {
   // TODO I would favour not to use external library and print each item as XML manually
   fs.writeFile(`${path.join(__dirname, SITEMAP_PATH)}/sitemap.xml`, sitemap, (err) => {
     if (err) {
-      console.log(err);
+      jobLogger.error('Sitemap error');
+      jobLogger.error(err);
     } else {
       jobLogger.info('Sitemap created.');
     }
