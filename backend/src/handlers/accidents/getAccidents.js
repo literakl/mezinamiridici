@@ -10,6 +10,7 @@ require('../../utils/path_env');
 
 module.exports = (app) => {
   app.options('/v1/accidents/last', auth.cors);
+  app.options('/v1/accidents/:day', auth.cors);
 
   app.get('/v1/accidents/last', auth.cors, async (req, res) => {
     logger.debug('Get last day accidents summary');
