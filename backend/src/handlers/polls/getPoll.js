@@ -16,7 +16,7 @@ module.exports = (app) => {
       if (req.identity) {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
-      logger.info(pipeline);
+      logger.info(JSON.stringify(pipeline));
       const item = await mongo.getPoll(dbClient, pipeline);
       logger.info('Item fetched');
 
