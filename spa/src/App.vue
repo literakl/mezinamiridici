@@ -101,7 +101,7 @@
               <a href="https://www.facebook.com/mezinamiridici">
                 <BIconFacebook scale="1.3" variant="warning"/>
               </a>
-              <a href="https://twitter.com/MeziNamiRidici" class="float-right">
+              <a href="https://twitter.com/MeziNamiRidici" class="ml-5">
                 <BIconTwitter scale="1.3" variant="warning"/>
               </a>
               <a href="/feed.rss" class="float-right">
