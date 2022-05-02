@@ -62,9 +62,9 @@ async function createFeed() {
     image: `${WEB_URL}/images/fav/512.png`,
     favicon: `${WEB_URL}/favicon.ico`,
     copyright: "All rights reserved 2022, Lelisoft s.r.o.",
-    feedLinks: {
-      atom: `${WEB_URL}/atom.xml`,
-    },
+    // feedLinks: {
+    //   atom: `${WEB_URL}/atom.xml`,
+    // },
     author: {
       name: "Leoš Literák",
       email: "leos@lelisoft.com",
@@ -77,10 +77,11 @@ async function createFeed() {
 
   const items = await getItems();
   items.forEach(item => {
+    const url = getURL(item);
     feed.addItem({
       title: item.info.caption,
-      id: item._id,
-      link: getURL(item),
+      id: url,
+      link: url,
       // description: item.description,
       author: [
         {

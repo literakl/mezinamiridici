@@ -8,6 +8,7 @@ const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
+const { createFeed } = require('../../jobs/createFeed');
 
 let { NODE_ENV } = process.env;
 if (!NODE_ENV) {
@@ -59,6 +60,10 @@ module.exports = (app) => {
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(req.identity.userId)];
       const item = await mongo.getPoll(dbClient, pipeline);
+      if (item.info.state === 'published') {
+        await createFeed();
+      }
+
       logger.debug('Updated item fetched');
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {

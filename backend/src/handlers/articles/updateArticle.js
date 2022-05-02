@@ -3,6 +3,7 @@ const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
 const { logger } = require('../../utils/logging');
+const { createFeed } = require('../../jobs/createFeed');
 
 module.exports = (app) => {
   app.options('/v1/articles/:itemId', auth.cors);
@@ -48,6 +49,10 @@ module.exports = (app) => {
 
       mongo.storePictureId(dbClient, itemId, contentPictures);
 
+      if (blog.info.state === 'published') {
+          await createFeed();
+      }
+
       return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
       logger.error('Request failed', err);
@@ -78,6 +83,9 @@ module.exports = (app) => {
       if (result.matchedCount === 1) {
         logger.debug(`Updated a published flag to ${flag} for article ${itemId}`);
         await mongo.logAdminActions(dbClient, req.identity.userId, 'toggle published', itemId, { flag });
+        if (flag) {
+          await createFeed();
+        }
         return api.sendResponse(res, api.createResponse());
       } else {
         return api.sendNotFound(res, api.createError('Not found'));

@@ -1,3 +1,3 @@
-const sitemap = require('./createFeed');
+const { createFeed } = require('./createFeed');
 
-sitemap.createFeed().then(() => console.log('Finished creating feed.'));
+createFeed().then(() => console.log('Finished creating feed.'));
