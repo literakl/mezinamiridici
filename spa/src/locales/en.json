@@ -269,6 +269,7 @@
     },
     "forms": {
       "new-poll-heading": "New poll",
+      "edit-poll-heading": "Edit poll",
       "text-label": "Text",
       "date-label": "Date",
       "author-id-label": "Author id",
@@ -359,7 +360,7 @@
       "para": "How to reduce accidents?"
     }
   },
-  "page-title":{
+  "page-title": {
     "home": "Home",
     "sign-up": "Sign up",
     "sign-in": "Sign in",

@@ -270,6 +270,7 @@
     },
     "forms": {
       "new-poll-heading": "Nová anketa",
+      "edit-poll-heading": "Úprava ankety",
       "text-label": "Otázka",
       "date-label": "Datum",
       "author-id-label": "ID autora",

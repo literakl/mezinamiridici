@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5 border centerbox">
     <div class="head-area">
-      <h2>{{ $t('poll.forms.edit-poll') }}</h2>
+      <h2>{{ $t('poll.forms.edit-poll-heading') }}</h2>
     </div>
     <PollForm v-if="poll" :poll="poll" :isCreate="false"/>
   </div>
