@@ -234,7 +234,8 @@ export default {
   font-size: 32px;
 }
 .bg-footer {
-  background-color: #343A3F
+  background-color: #343A3F;
+  box-shadow: 0 100vh 0 100vh #343A3F;
 }
 .footer-line {
   opacity: 0.25;
