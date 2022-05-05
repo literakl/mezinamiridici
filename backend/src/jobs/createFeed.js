@@ -90,7 +90,7 @@ async function createFeed() {
         },
       ],
       date: item.info.date,
-      image: `${WEB_URL}${item.info.picture}`,
+      image: `${WEB_URL}/${item.info.picture}`,
     });
   });
 
