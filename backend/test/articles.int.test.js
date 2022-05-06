@@ -93,11 +93,8 @@ test('Articles', async () => {
   // cannot delete deleted post
   response = await api(`articles/${firstArticle.data._id}`, { method: 'DELETE', headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeFalsy();
-});
 
-test('Publish articles', async () => {
-  await setup(dbClient, api);
-
+  // test published state
   const theBody = {
     title: 'First article',
     source: '<h1>Title</h1><p>Very smart topic</p>',
@@ -110,7 +107,7 @@ test('Publish articles', async () => {
     flag: true,
   };
 
-  let response = await api(`articles/${blog.data._id}/published`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
+  response = await api(`articles/${blog.data._id}/published`, { method: 'PATCH', json: body, headers: getAuthHeader(Leos.jwt) }).json();
   expect(response.success).toBeTruthy();
   response = await api(`content/${blog.data.info.slug}`).json();
   expect(response.data.info.state).toBe('published');
