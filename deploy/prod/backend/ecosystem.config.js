@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'PROD API',
       script: 'src/start.js',
-      instances: 2,
+      instances: 1,
       exec_mode: 'cluster',
       max_memory_restart: '600M',
       exp_backoff_restart_delay: 100,
