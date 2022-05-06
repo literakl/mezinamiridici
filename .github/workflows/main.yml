@@ -30,6 +30,7 @@ jobs:
       TEMPLATE_DIRECTORY: ../emails
       CONFIG_DIRECTORY: ./config
       LOG_DIRECTORY: ./logs
+      WEB_URL: http://localhost:8080
 
     defaults:
       run:
