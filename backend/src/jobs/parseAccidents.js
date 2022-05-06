@@ -39,7 +39,7 @@ let retried = 0;
 
 async function doRun() {
   const args = process.argv.slice(2);
-  if (args.length === 0 || args.length === 1 || args.length > 3) {
+  if (args.length === 0 || args.length > 2) {
     exitWithHelp();
   }
 
