@@ -36,5 +36,17 @@ module.exports = {
         LOG_PM2: true,
       },
     },
+    {
+      name: 'PROD Generate sitemap',
+      script: 'src/jobs/cli_CreateSitemap.js',
+      args: 'true',
+      instances: 1,
+      max_memory_restart: '200M',
+      exp_backoff_restart_delay: 100,
+      env: {
+        NODE_ENV: 'production',
+        LOG_PM2: true,
+      },
+    },
   ],
 };
