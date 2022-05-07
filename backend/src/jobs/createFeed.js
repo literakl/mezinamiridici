@@ -53,7 +53,7 @@ async function getItems() {
 }
 
 async function createFeed() {
-  const feed = new Feed({
+  const mainFeed = new Feed({
     title: "Mezi námi řidiči",
     description: "Prevence dopravních nehod skrze výměnu názorů a vzdělávání",
     id: WEB_URL,
@@ -62,27 +62,28 @@ async function createFeed() {
     image: `${WEB_URL}/images/fav/512.png`,
     favicon: `${WEB_URL}/favicon.ico`,
     copyright: "All rights reserved 2022, Lelisoft s.r.o.",
-    // feedLinks: {
-    //   atom: `${WEB_URL}/atom.xml`,
-    // },
     author: {
       name: "Leoš Literák",
       email: "leos@lelisoft.com",
       link: "https://twitter.com/literakl"
     }
   });
-  feed.addCategory("Automobily");
-  feed.addCategory("Řízení");
-  feed.addCategory("Vzdělávání");
+  mainFeed.addCategory("Automobily");
+  mainFeed.addCategory("Řízení");
+  mainFeed.addCategory("Vzdělávání");
+
+  const articlesFeed = new Feed(mainFeed.options);
+  articlesFeed.addCategory("Automobily");
+  articlesFeed.addCategory("Řízení");
+  articlesFeed.addCategory("Vzdělávání");
 
   const items = await getItems();
   items.forEach(item => {
     const url = getURL(item);
-    feed.addItem({
+    const object = {
       title: item.info.caption,
       id: url,
       link: url,
-      // description: item.description,
       author: [
         {
           name: item.info.author.nickname,
@@ -91,10 +92,23 @@ async function createFeed() {
       ],
       date: item.info.date,
       image: `${WEB_URL}/${item.info.picture}`,
-    });
+    };
+    mainFeed.addItem(object);
+    if (item.type === 'article') {
+      articlesFeed.addItem(object);
+    }
   });
 
-  fs.writeFile(`${path.join(__dirname, SITEMAP_PATH)}/feed.rss`, feed.rss2(), (err) => {
+  fs.writeFile(`${path.join(__dirname, SITEMAP_PATH)}/feed.rss`, mainFeed.rss2(), (err) => {
+    if (err) {
+      jobLogger.error('Feed error');
+      jobLogger.error(err);
+    } else {
+      jobLogger.info('Feed created.');
+    }
+  });
+
+  fs.writeFile(`${path.join(__dirname, SITEMAP_PATH)}/articles.rss`, mainFeed.rss2(), (err) => {
     if (err) {
       jobLogger.error('Feed error');
       jobLogger.error(err);
