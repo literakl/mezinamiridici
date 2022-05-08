@@ -8,7 +8,7 @@
     <div class="poll-details">
       <div class="poll-votes">
         <BIconEnvelope scale="1"></BIconEnvelope>
-        <span class="ml-1 mr-2"> {{ poll.votes.total }}</span>
+        <span class="ml-1 mr-2">{{ $t('poll.votes') }}: {{ poll.votes.total }}</span>
       </div>
       <div class="poll-comments">
         <BIconChatTextFill scale="1"></BIconChatTextFill>
