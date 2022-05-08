@@ -43,6 +43,14 @@
         <div class="post-content p3" v-html="generatedHtml"></div>
 
         <div class="content-wrap">
+          <b-alert show variant="primary">
+            Článek vás zřejmě zaujal, když jste jej dočetli až do konce. Pomůžete nám?
+            Potřebujeme další čtenáře. Doporučte server <a href="/">Mezi námi řidiči</a> kamarádům,
+            sdílejte <a href="">tento článek</a>,
+            přidejte si <a href="/feed.rss">naše RSS do čtečky</a>. Máte-li webové stránky,
+            vložte do nich odkaz na náš server <a href="/">Mezi námi řidiči</a>.
+            Předem děkujeme.
+          </b-alert>
           <ShareLink :item="article"/>
           <Comments :itemId="article._id"/>
         </div>
