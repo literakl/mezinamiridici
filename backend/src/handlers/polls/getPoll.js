@@ -12,7 +12,7 @@ module.exports = (app) => {
     logger.info('getLastPoll handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
-      const pipeline = [mongo.stagePublishedPoll, mongo.stageSortByDateDesc, mongo.stageLimit(1)];
+      const pipeline = [mongo.stagePublishedPoll(new Date()), mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
