@@ -1,6 +1,8 @@
 import i18n from '../i18n';
 
 const dayjs = require('dayjs');
+require('dayjs/locale/cs');
+dayjs.locale('cs');
 const utc = require('dayjs/plugin/utc');
 
 dayjs.extend(utc);
@@ -11,24 +13,29 @@ const TIME_FORMAT = 'HH:mm';
 const DATE_FORMAT_FULL = 'D.M.YYYY';
 const DATE_FORMAT_NO_YEAR = 'D.M.';
 const ISO_DATE_FORMAT_FULL = 'YYYY-MM-DD';
+const HUMAN_DATE_FORMAT_FULL = 'D. MMMM YYYY';
 
 // Mongo returns UTC time, this helper converts it to local time
 
 function show(timeUTC, format) {
+  const instant = dayjs.utc(timeUTC).local();
   switch (format) {
     case 'dynamicDate':
-      return showDate(timeUTC);
+      return showDate(instant);
     case 'dynamicDateTime':
-      return showDateTime(timeUTC);
+      return showDateTime(instant);
+    case 'humanDate':
+      return instant.format(HUMAN_DATE_FORMAT_FULL);
+    case 'fullDate':
+      return instant.format(DATE_FORMAT_FULL);
     case 'ISO':
-      return getISO(timeUTC);
+      return instant.format(ISO_DATE_FORMAT_FULL);
     default:
       return timeUTC;
   }
 }
 
-function showDate(epochMS) {
-  const instant = dayjs.utc(epochMS).local();
+function showDate(instant) {
   const today = dayjs();
   if (sameDay(today, instant)) {
     return i18n.t('generic.today');
@@ -42,8 +49,7 @@ function showDate(epochMS) {
   return instant.format((today.year() === instant.year()) ? DATE_FORMAT_NO_YEAR : DATE_FORMAT_FULL);
 }
 
-function showDateTime(epochMS) {
-  const instant = dayjs.utc(epochMS).local();
+function showDateTime(instant) {
   const today = dayjs();
   if (sameDay(today, instant)) {
     return `${i18n.t('generic.today')} ${instant.format(TIME_FORMAT)}`;

@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <h2>
+  <div class="pt-3 mx-3">
+    <h1>
       Statistiky nehod pro {{ formattedDate }}
       <b-button @click="openPicker" size="sm" variant="link">
         <BIconCalendarDate scale="1.3"/>
       </b-button>
-    </h2>
+    </h1>
     <datepicker
       ref="programaticOpen"
       v-model="selectedDay"
@@ -26,6 +26,25 @@
       <rect x="0" y="0" rx="3" ry="3" width="600" height="800"/>
     </content-loader>
     <div v-if="!inProgress && thisDay" class="blog-posts pt-3 m-auto">
+      <p>
+        Tento den se stalo na českých silnicích {{ thisDay.total.count }} dopravních nehod, při kterých
+        <span v-if="thisDay.total.impact.deaths === 0">naštěstí nikdo nezahynul.</span>
+        <span v-else-if="thisDay.total.impact.deaths === 1">bohužel zemřel jeden člověk.</span>
+        <span v-else-if="thisDay.total.impact.deaths < 5">bohužel zemřeli {{ thisDay.total.impact.deaths }} lidé.</span>
+        <span v-else>bohužel zemřelo {{ thisDay.total.impact.deaths }} lidí.</span>
+        Záchranáři ošetřili
+        <span v-if="thisDay.total.impact.severely === 1">jednoho těžce zraněného člověka a </span>
+        <span v-else-if="thisDay.total.impact.severely > 1 && thisDay.total.impact.severely < 5">{{ thisDay.total.impact.severely }} těžce zraněné a </span>
+        <span v-else-if="thisDay.total.impact.severely >= 5">{{ thisDay.total.impact.severely }} těžce zraněných a </span>
+        {{ thisDay.total.impact.slightly }} lehce zraněných lidí.
+        Dopravní policisté stanovili příčiny nehod takto:
+        <span v-if="thisDay.total.reason.speed > 0">{{ thisDay.total.reason.speed }}× nepřiměřená rychlost, </span>
+        <span v-if="thisDay.total.reason.giveway > 0">{{ thisDay.total.reason.giveway }}× nedání přednosti v jízdě, </span>
+        <span v-if="thisDay.total.reason.passing > 0">{{ thisDay.total.reason.passing }}× nesprávné předjíždění, </span>
+        <span v-if="thisDay.total.reason.drunk > 0">{{ thisDay.total.reason.drunk }}× řízení pod vlivem návykových látek, </span>
+        {{ thisDay.total.reason.mistake }}× nesprávný způsob jízdy a
+        {{ thisDay.total.reason.other }}× jiná příčina.
+      </p>
       <div class="stats-wrap">
         <div class="stats-result table-responsive">
           <table class="table table-hover table-sm table-bordered text-center">
@@ -70,8 +89,8 @@
               </th>
               <th scope="col">
             <span class="category-container" aria-haspopup="true" tabIndex="0">
-              <span class="tooltip-box"><span class="tiptext">Nesprávné předjížděn</span></span>
-              <img src="/images/icons/reason_passing.png" width="48" height="48" alt="Nesprávné předjížděn">
+              <span class="tooltip-box"><span class="tiptext">Nesprávné předjíždění</span></span>
+              <img src="/images/icons/reason_passing.png" width="48" height="48" alt="Nesprávné předjíždění">
             </span>
               </th>
               <th scope="col">
@@ -127,6 +146,19 @@
         </div>
 
         <h2 v-if="lastYear">Srovnání s předchozím rokem</h2>
+
+        <div class="my-2">
+          Počet úmrtí se do {{ numericDate }}
+          <span v-if="causaltiesDiff === 0">nezměnil</span>
+          <span v-else-if="causaltiesDiff === -1">snížil o jednu oběť</span>
+          <span v-else-if="causaltiesDiff === 1">zvýšil o jednu oběť</span>
+          <span v-else-if="causaltiesDiff <= -2 && causaltiesDiff >= -4">snížil o {{ causaltiesDiff }} oběti</span>
+          <span v-else-if="causaltiesDiff >= 2 && causaltiesDiff <= 4">zvýšil o {{ causaltiesDiff }} oběti</span>
+          <span v-else-if="causaltiesDiff <= -5">snížil o {{ causaltiesDiff }} obětí</span>
+          <span v-else>zvýšil o {{ causaltiesDiff }} obětí</span>
+          oproti předešlému roku.
+        </div>
+
         <div v-if="lastYear" style="overflow-x:auto;" class="stats-result table-responsive">
           <table class="table table-hover table-sm table-bordered text-center">
             <thead>
@@ -265,12 +297,14 @@ export default {
   },
   computed: {
     formattedDate() {
-      if (this.selectedDay) {
-        return show(this.selectedDay, 'dynamicDate');
-      } else {
-        return show(this.day, 'dynamicDate');
-      }
+      return show(this.selectedDay || this.day, 'humanDate');
     },
+    numericDate() {
+      return show(this.selectedDay || this.day, 'fullDate');
+    },
+    causaltiesDiff() {
+      return this.thisYear.year.impact.deaths - this.lastYear.year.impact.deaths;
+    }
   },
   methods: {
     async loadStats(date) {
