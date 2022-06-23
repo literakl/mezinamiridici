@@ -48,7 +48,7 @@
     "uuid": "^3.4.0"
   },
   "devDependencies": {
-    "got": "^10.7.0",
+    "got": "^11.8.5",
     "jest": "^27.x",
     "lorem-ipsum": "^2.0.3",
     "nodemon": "*",
