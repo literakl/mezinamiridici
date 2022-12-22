@@ -29,7 +29,7 @@
     "fs": "0.0.1-security",
     "handlebars": "^4.7.7",
     "html2plaintext": "^2.1.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jstoxml": "^2.0.3",
     "log4js": "^6.4.0",
     "mongodb": "^4.2",
