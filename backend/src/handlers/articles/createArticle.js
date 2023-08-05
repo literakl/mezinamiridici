@@ -8,13 +8,13 @@ dayjs.extend(customParseFormat);
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/articles', auth.cors);
 
   app.post('/v1/articles', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
-    logger.debug('create article handler starts');
+    log.debug('create article handler starts');
 
     try {
       const {
@@ -47,11 +47,11 @@ module.exports = (app) => {
       // we will consider articles as blogs from a user rank point of view
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'blog', 'create');
       mongo.storePictureId(dbClient, item._id, contentPictures);
-      logger.debug('Blog inserted');
+      log.debug('Blog inserted');
 
       return api.sendCreated(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create post', 'sign-in.something-went-wrong'));
     }
   });

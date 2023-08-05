@@ -2,16 +2,16 @@ const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/users/:userId/password', auth.cors);
 
   app.patch('/v1/users/:userId/password', api.authAPILimits, auth.required, auth.cors, async (req, res) => {
-    logger.verbose('changePassword handler starts');
+    log.verbose('changePassword handler starts');
     const { userId } = req.params;
     if (req.identity.userId !== userId) {
-      logger.debug(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
+      log.debug(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
       return api.sendErrorForbidden(res, api.createError('JWT mismatch', 'sign-in.auth-error'));
     }
 
@@ -28,24 +28,24 @@ module.exports = (app) => {
       if (!user) {
         return api.sendErrorForbidden(res, api.createError('User not found', 'sign-in.auth-error'));
       }
-      logger.debug('User fetched');
+      log.debug('User fetched');
 
       if (!bcrypt.compareSync(currentPassword, user.auth.pwdHash)) {
-        logger.debug(`Password mismatch for user ${user._id}`);
+        log.debug(`Password mismatch for user ${user._id}`);
         return api.sendErrorForbidden(res, api.createError('Bad credentials', 'sign-in.auth-error'));
       }
 
       const date = new Date();
       const query = prepareChangePasswordQuery(newPassword, date);
       await dbClient.db().collection('users').updateOne({ _id: userId }, query);
-      logger.debug('User updated');
+      log.debug('User updated');
 
       user.auth.pwdTimestamp = date;
       const token = auth.createTokenFromUser(user);
       return api.sendResponse(res, api.createResponse(token));
     } catch (err) {
       // eslint-disable-next-line no-console
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('failed to update the user', 'sign-up.something-went-wrong'));
     }
   });

@@ -5,7 +5,7 @@ const request = require('request-promise');
 
 const api = require('../../utils/api.js');
 const helpers = require('../../utils/helpers');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const CREDENTIAL = require('../../utils/social_provider_credential');
 const { handleSocialProviderResponse } = require('./handleSocialResponse');
 
@@ -13,15 +13,15 @@ module.exports = (app) => {
   app.options('/v1/auth/:provider');
 
   app.get('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
-    logger.debug('socialLink GET handler starts');
-    logger.info(helpers.toJSON(req.query));
+    log.debug('socialLink GET handler starts');
+    log.info(helpers.toJSON(req.query));
     api.sendResponse(res, {});
   });
 
   // eslint-disable-next-line consistent-return
   app.post('/v1/auth/:provider', api.authAPILimits, async (req, res) => {
-    logger.debug(`socialLink POST handler starts for ${req.params.provider}`);
-    logger.trace(helpers.toJSON(req.body));
+    log.debug(`socialLink POST handler starts for ${req.params.provider}`);
+    log.trace(helpers.toJSON(req.body));
     let socialProfile;
     try {
       if (req.params.provider === 'google') {
@@ -32,8 +32,8 @@ module.exports = (app) => {
         socialProfile = await twitterAuth(req, res);
       }
     } catch (error) {
-      logger.error('OAuth dance failed');
-      logger.error(error);
+      log.error('OAuth dance failed');
+      log.error(error);
       return api.sendInternalError(res, error);
     }
 
@@ -44,7 +44,7 @@ module.exports = (app) => {
 };
 
 async function googleAuth(req) {
-  logger.debug('Google authentication starts');
+  log.debug('Google authentication starts');
   const requestObject = {
     method: 'post',
     url: CREDENTIAL.GOOGLE.TOKEN_URL,
@@ -82,7 +82,7 @@ async function googleAuth(req) {
 }
 
 async function facebookAuth(req) {
-  logger.debug('Facebook authentication starts');
+  log.debug('Facebook authentication starts');
   const requestObject = {
     method: 'post',
     url: CREDENTIAL.FACEBOOK.TOKEN_URL,
@@ -107,7 +107,7 @@ async function facebookAuth(req) {
 
 // eslint-disable-next-line consistent-return
 async function twitterAuth(req, res) {
-  logger.debug('Twitter authentication starts');
+  log.debug('Twitter authentication starts');
   const oauthService = new OAuth.OAuth(
     CREDENTIAL.TWITTER.REQUEST_URL,
     CREDENTIAL.TWITTER.ACCESS_URL,
@@ -120,7 +120,7 @@ async function twitterAuth(req, res) {
   if (!req.body.oauth_token) {
     oauthService.getOAuthRequestToken({ oauth_callback: req.body.redirectUri }, (error, oauthToken, oauthTokenSecret) => {
       if (error) {
-        logger.warn(error);
+        log.warn(error);
         res.status(500).json(error);
       } else {
         res.json({

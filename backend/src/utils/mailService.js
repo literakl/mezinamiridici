@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const Handlebars = require('handlebars');
-const { logger } = require('./logging');
+const { log } = require('./logging');
 const { PATH_SEPARATOR } = require('./path_env');
 
 const COMPILED_TEMPLATES = {};
@@ -42,10 +42,10 @@ async function sendEmail(config, options, context) {
   }
 
   const info = await transporter.sendMail(data);
-  logger.debug(`Message sent: ${info.messageId}`);
+  log.debug(`Message sent: ${info.messageId}`);
   const testMessageUrl = nodemailer.getTestMessageUrl(info);
   if (testMessageUrl) {
-    logger.debug(`Preview URL: ${testMessageUrl}`);
+    log.debug(`Preview URL: ${testMessageUrl}`);
   }
   return info;
 }

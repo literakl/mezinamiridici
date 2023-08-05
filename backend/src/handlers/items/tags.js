@@ -1,7 +1,7 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 
@@ -9,11 +9,11 @@ module.exports = (app) => {
   app.options('/bff/items/:tag', auth.cors);
 
   app.get('/bff/items/:tag', async (req, res) => {
-    logger.debug('getItems by tag handler starts');
+    log.debug('getItems by tag handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
       const list = await getItems(dbClient, req);
-      logger.debug('Item fetched');
+      log.debug('Item fetched');
 
       if (!list.length) {
         return api.sendResponse(res, api.createResponse([]));
@@ -21,7 +21,7 @@ module.exports = (app) => {
         return api.sendResponse(res, api.createResponse(list));
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
     }
   });

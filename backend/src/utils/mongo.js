@@ -1,45 +1,31 @@
 const generate = require('nanoid/generate');
 const { MongoClient } = require('mongodb');
-const dayjs = require('dayjs');
 
-const { logger } = require('./logging');
+const { log } = require('./logging');
 require('./path_env');
 
 const { MONGODB_URI, TIME_ID_CHARS } = process.env;
-const { MONGO_TRACE = 'false' } = process.env;
 const TIME_ID_CHARS_INT = parseInt(TIME_ID_CHARS || '1', 10);
-logger.info(`Mongo is configured to connect ${MONGODB_URI}`); // TODO mask the password
+log.info(`Mongo is configured to connect ${MONGODB_URI}`); // TODO mask the password
 
 let cachedDb;
 
 function connectToDatabase() {
   if (!!cachedDb && !!cachedDb.topology && cachedDb.topology.isConnected()) {
-    logger.debug('Using the cached Mongo instance');
+    log.debug('Using the cached Mongo instance');
     return Promise.resolve(cachedDb);
   }
 
-  logger.debug('Get a new Mongo instance from database');
+  log.info('Get a new Mongo instance from database');
   const client = new MongoClient(MONGODB_URI);
   return client.connect()
     .then((db) => {
-      logger.debug('Successful connect');
+      log.info('Successful connect');
       cachedDb = db;
-
-      if (MONGO_TRACE === 'true') {
-        logger.info('mongo trace on');
-        const events = ['serverOpening', 'serverClosed', 'serverDescriptionChanged', 'topologyOpening', 'topologyClosed', 'topologyDescriptionChanged', 'serverHeartbeatStarted', 'serverHeartbeatSucceeded', 'serverHeartbeatFailed'];
-        for (let i = 0; i < events.length; i += 1) {
-          const eventName = events[i];
-          client.on(eventName, (event) => {
-            logger.info(`received ${eventName}:\n${JSON.stringify(event, null, 2)}`);
-          });
-        }
-      }
-
       return cachedDb;
     })
     .catch((err) => {
-      logger.error('Connection error occurred: ', err);
+      log.info('Connection error occurred: ', err);
       throw err;
     });
 }
@@ -231,7 +217,7 @@ function generateId(idLength = 10) {
 
 function close() {
   if (cachedDb) {
-    logger.info('Closing the cached mongo client');
+    log.info('Closing the cached mongo client');
     cachedDb.close();
   }
 }

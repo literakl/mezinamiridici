@@ -7,7 +7,7 @@ dayjs.extend(customParseFormat);
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const { createFeed } = require('../../jobs/createFeed');
 
 let { NODE_ENV } = process.env;
@@ -19,7 +19,7 @@ module.exports = (app) => {
   app.options('/v1/polls/:pollId', auth.cors);
 
   app.patch('/v1/polls/:pollId', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.debug('updatePoll handler starts');
+    log.debug('updatePoll handler starts');
     const { pollId } = req.params;
     if (!pollId) {
       return api.sendMissingParam(res, 'pollId');
@@ -56,7 +56,7 @@ module.exports = (app) => {
         dbClient.db().collection('items').updateOne({ _id: pollId }, query),
         mongo.logAdminActions(dbClient, req.identity.userId, 'update poll', pollId),
       ]);
-      logger.debug('Item updated');
+      log.debug('Item updated');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(req.identity.userId)];
       const item = await mongo.getPoll(dbClient, pipeline);
@@ -64,10 +64,10 @@ module.exports = (app) => {
         await createFeed();
       }
 
-      logger.debug('Updated item fetched');
+      log.debug('Updated item fetched');
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
     }
   });

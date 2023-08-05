@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const mailService = require('../../utils/mailService');
 
 const { WEB_URL } = process.env;
@@ -11,7 +11,7 @@ module.exports = (app) => {
   app.options('/v1/users', auth.cors);
 
   app.post('/v1/users', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.debug('createUser handler starts');
+    log.debug('createUser handler starts');
     const {
       email,
       password,
@@ -23,7 +23,7 @@ module.exports = (app) => {
     } = req.body;
     const result = validateParameters(socialId, email, password, nickname, termsAndConditions, dataProcessing);
     if (!result.success) {
-      logger.debug('validation failed', result);
+      log.debug('validation failed', result);
       return api.sendBadRequest(res, result);
     }
 
@@ -32,11 +32,11 @@ module.exports = (app) => {
     if (socialId) {
       socialRecord = await dbClient.db().collection('social_login').findOne({ _id: socialId });
       if (!socialRecord) {
-        logger.warn(`Registration with invalid socialId ${socialId} for ${email}`, result);
+        log.warn(`Registration with invalid socialId ${socialId} for ${email}`, result);
         return api.sendBadRequest(res, result);
       }
       if (socialRecord.email !== email) {
-        logger.warn(`Registration with different email than in socialId ${socialId} for ${email}`, result);
+        log.warn(`Registration with different email than in socialId ${socialId} for ${email}`, result);
         return api.sendBadRequest(res, result);
       }
     }
@@ -45,9 +45,9 @@ module.exports = (app) => {
     const userId = generateNicknameId(nickname);
     try {
       await insertUser(dbClient, socialRecord, userId, email, password, nickname, emails, verificationToken);
-      logger.debug('User created');
+      log.debug('User created');
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       if (err.code === 11000) {
         if (err.keyValue) {
           if (err.keyValue._id) {
@@ -76,10 +76,10 @@ module.exports = (app) => {
     try {
       if (!socialId) {
         await sendVerificationEmail(email, verificationToken);
-        logger.debug('Email sent');
+        log.debug('Email sent');
       }
     } catch (err) {
-      logger.error('Sending email failed', err);
+      log.error('Sending email failed', err);
       return api.sendInternalError(res, api.createError('Failed to send email', 'sign-up.something-went-wrong'));
     }
 
@@ -97,7 +97,7 @@ async function insertUser(dbClient, socialRecord, id, email, password, nickname,
   if (socialRecord) {
     const result = await dbClient.db().collection('social_login').deleteMany({ email });
     if (result.deletedCount !== 1) {
-      logger.error(`Social id ${socialRecord._id} not deleted`);
+      log.error(`Social id ${socialRecord._id} not deleted`);
     }
   }
 

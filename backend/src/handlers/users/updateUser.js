@@ -2,14 +2,14 @@ const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.patch('/v1/users/:userId', auth.required, auth.cors, async (req, res) => {
-    logger.debug('updateUser handler starts');
+    log.debug('updateUser handler starts');
     const { userId } = req.params;
     if (req.identity.userId !== userId) {
-      logger.error(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
+      log.error(`JWT token = ${req.identity.userId} but URL userId = ${userId}!`);
       return api.sendErrorForbidden(res, api.createError('JWT mismatch', 'sign-in.auth-error'));
     }
 
@@ -17,10 +17,10 @@ module.exports = (app) => {
       const dbClient = await mongo.connectToDatabase();
       const query = prepareUpdateProfileQuery(req);
       await dbClient.db().collection('users').updateOne({ _id: userId }, query);
-      logger.debug('User updated');
+      log.debug('User updated');
       return api.sendResponse(res, api.createResponse());
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('failed update the user', 'sign-up.something-went-wrong'));
     }
   });
@@ -82,7 +82,7 @@ function prepareUpdateProfileQuery(req) {
       const source = `<a href="${x}">XSS</a>`;
       const sanitized = sanitizeHtml(source, api.sanitizeConfigure());
       if (source !== sanitized) {
-        logger.error(`XSS detected ${x}`);
+        log.error(`XSS detected ${x}`);
         throw new Error('XSS detected');
       }
       return true;

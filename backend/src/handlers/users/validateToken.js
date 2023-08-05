@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 const { JWT_SECRET } = process.env;
 
@@ -10,14 +10,14 @@ module.exports = (app) => {
   app.options('/v1/users/:userId/validateToken', auth.cors);
 
   app.post('/v1/users/:userId/validateToken', api.authAPILimits, auth.required, auth.cors, async (req, res) => {
-    logger.debug('validateToken handler starts');
+    log.debug('validateToken handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
       const jwtData = req.identity;
       const user = await mongo.findUser(dbClient, { userId: jwtData.userId }, { projection: { auth: 1 } });
-      logger.debug('User fetched');
+      log.debug('User fetched');
       if (!user) {
-        logger.debug(`User not found ${jwtData.userId}`);
+        log.debug(`User not found ${jwtData.userId}`);
         return api.sendErrorForbidden(res, api.createError('User does not exist', 'sign-in.auth-error'));
       }
 
@@ -27,10 +27,10 @@ module.exports = (app) => {
 
       delete jwtData.exp;
       const token = jwt.sign(jwtData, JWT_SECRET, { expiresIn: '31d' });
-      logger.debug('Token validated');
+      log.debug('Token validated');
       return api.sendResponse(res, api.createResponse(token));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to verify token', 'generic.something-went-wrong'));
     }
   });

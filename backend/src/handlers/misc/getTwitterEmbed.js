@@ -1,13 +1,13 @@
 const { default: axios } = require('axios');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/twitter-html', auth.cors);
 
   app.get('/v1/twitter-html', auth.cors, async (req, res) => {
-    logger.debug('twitter-html handler starts');
+    log.debug('twitter-html handler starts');
     const { url } = req.query;
     if (!url) {
       return api.sendMissingParam(res, 'url');
@@ -22,7 +22,7 @@ module.exports = (app) => {
       const apiResponse = await axios.get(endpoint)
       return api.sendResponse(res, api.createResponse(apiResponse.data));
     } catch (err) {
-      logger.debug('Request failed', err);
+      log.debug('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to load tiwtter html', ''));
     }
   });

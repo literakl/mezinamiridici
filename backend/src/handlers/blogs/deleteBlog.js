@@ -1,13 +1,13 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/posts/:blogId', auth.cors);
 
   app.delete('/v1/posts/:blogId', auth.required, auth.cors, async (req, res) => {
-    logger.debug('Delete blog handler starts');
+    log.debug('Delete blog handler starts');
     const { blogId } = req.params;
 
     if (!blogId) {
@@ -38,14 +38,14 @@ module.exports = (app) => {
 
       const [result] = await Promise.all(promises);
       if (result.deletedCount !== 1) {
-        logger.error(`Failed to delete blog ${blogId}`);
+        log.error(`Failed to delete blog ${blogId}`);
         return api.sendInternalError(res, api.createError('Failed to delete blog', 'sign-in.something-went-wrong'));
       } else {
-        logger.info(`Blog deleted: ${blogId} by ${req.identity.userId}`);
+        log.info(`Blog deleted: ${blogId} by ${req.identity.userId}`);
         return api.sendResponse(res, api.createResponse());
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to delete blog', 'sign-in.something-went-wrong'));
     }
   });

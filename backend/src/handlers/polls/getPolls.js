@@ -2,7 +2,7 @@ require('../../utils/path_env');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 
@@ -10,15 +10,15 @@ module.exports = (app) => {
   app.options('/bff/polls/', auth.cors);
 
   app.get('/bff/polls/', auth.optional, async (req, res) => {
-    logger.debug('getPolls handler starts');
+    log.debug('getPolls handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
       const list = await getItems(dbClient, req);
-      logger.debug('Items fetched');
+      log.debug('Items fetched');
 
       return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get poll', 'generic.internal-error'));
     }
   });

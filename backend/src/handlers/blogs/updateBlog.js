@@ -2,13 +2,13 @@ const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/posts/:blogId', auth.cors);
 
   app.patch('/v1/posts/:blogId', auth.required, auth.cors, async (req, res) => {
-    logger.debug('update blog handler starts');
+    log.debug('update blog handler starts');
 
     try {
       const { blogId } = req.params;
@@ -37,16 +37,16 @@ module.exports = (app) => {
 
       const query = prepareUpdateQuery(source, title, picture, tags);
       await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
-      logger.debug('Blog updated');
+      log.debug('Blog updated');
 
       blog = await mongo.getContent(dbClient, undefined, blogId);
-      logger.debug('Updated blog fetched');
+      log.debug('Updated blog fetched');
 
       mongo.storePictureId(dbClient, blogId, contentPictures);
 
       return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(
         res,
         api.createError('Failed to update blog', 'sign-in.something-went-wrong'),
@@ -57,7 +57,7 @@ module.exports = (app) => {
   app.options('/v1/posts/:blogId/hidden', auth.cors);
 
   app.patch('/v1/posts/:blogId/hidden', auth.required, auth.blog_admin, auth.cors, async (req, res) => {
-    logger.debug('mark blog as hidden handler starts');
+    log.debug('mark blog as hidden handler starts');
     const { blogId } = req.params;
     if (!blogId) {
       return api.sendMissingParam(res, 'blogId');
@@ -72,14 +72,14 @@ module.exports = (app) => {
       const query = { $set: { 'info.state': flag ? 'hidden' : 'published' } };
       const result = await dbClient.db().collection('items').updateOne({ _id: blogId }, query);
       if (result.matchedCount === 1) {
-        logger.debug(`Updated a hidden flag to ${flag} for blog ${blogId}`);
+        log.debug(`Updated a hidden flag to ${flag} for blog ${blogId}`);
         await mongo.logAdminActions(dbClient, req.identity.userId, 'update hidden flag', blogId, { flag });
         return api.sendResponse(res, api.createResponse());
       } else {
         return api.sendNotFound(res, api.createError('Not found'));
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to set a hidden flag', 'sign-in.something-went-wrong'));
     }
   });

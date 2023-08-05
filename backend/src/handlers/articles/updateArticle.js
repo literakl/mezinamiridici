@@ -2,14 +2,14 @@ const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const { createFeed } = require('../../jobs/createFeed');
 
 module.exports = (app) => {
   app.options('/v1/articles/:itemId', auth.cors);
 
   app.patch('/v1/articles/:itemId', auth.required, auth.editorial_staff, auth.cors, async (req, res) => {
-    logger.debug('update article handler starts');
+    log.debug('update article handler starts');
 
     try {
       const { itemId } = req.params;
@@ -42,10 +42,10 @@ module.exports = (app) => {
 
       const query = prepareUpdateQuery(title, source, date, picture, tags);
       await dbClient.db().collection('items').updateOne({ _id: itemId }, query);
-      logger.debug('Article updated');
+      log.debug('Article updated');
 
       blog = await mongo.getContent(dbClient, undefined, itemId);
-      logger.debug('Updated article fetched');
+      log.debug('Updated article fetched');
 
       mongo.storePictureId(dbClient, itemId, contentPictures);
 
@@ -55,7 +55,7 @@ module.exports = (app) => {
 
       return api.sendResponse(res, api.createResponse(blog));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(
         res,
         api.createError('Failed to update article', 'sign-in.something-went-wrong'),
@@ -66,7 +66,7 @@ module.exports = (app) => {
   app.options('/v1/articles/:itemId/published', auth.cors);
 
   app.patch('/v1/articles/:itemId/published', auth.required, auth.editor_in_chief, auth.cors, async (req, res) => {
-    logger.debug('published handler starts');
+    log.debug('published handler starts');
     const { itemId } = req.params;
     if (!itemId) {
       return api.sendMissingParam(res, 'itemId');
@@ -81,7 +81,7 @@ module.exports = (app) => {
       const query = { $set: { 'info.state': flag ? 'published' : 'draft' } };
       const result = await dbClient.db().collection('items').updateOne({ _id: itemId }, query);
       if (result.matchedCount === 1) {
-        logger.debug(`Updated a published flag to ${flag} for article ${itemId}`);
+        log.debug(`Updated a published flag to ${flag} for article ${itemId}`);
         await mongo.logAdminActions(dbClient, req.identity.userId, 'toggle published', itemId, { flag });
         if (flag) {
           await createFeed();
@@ -91,7 +91,7 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createError('Not found'));
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to set a published flag', 'sign-in.something-went-wrong'));
     }
   });

@@ -1,7 +1,7 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 const { WEB_URL } = process.env;
 const codes = ['facebook', 'twitter', 'messenger', 'whatsapp', 'email'];
@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.options('/v1/items/:itemId/share', auth.cors);
 
   app.post('/v1/items/:itemId/share', auth.cors, async (req, res) => {
-    logger.debug('share link handler starts');
+    log.debug('share link handler starts');
     const { itemId } = req.params;
     const { path, service, userId, date } = req.body;
     if (!codes.includes(service)) {
@@ -32,11 +32,11 @@ module.exports = (app) => {
       const url = createURL(service, path);
       await insertShare(dbClient, itemId, userId, service, publishDate);
       await mongo.incrementUserActivityCounter(dbClient, userId, 'share', 'create');
-      logger.debug('Share recorded');
+      log.debug('Share recorded');
 
       return api.sendResponse(res, api.createResponse(url));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to record share', 'sign-in.something-went-wrong'));
     }
   });

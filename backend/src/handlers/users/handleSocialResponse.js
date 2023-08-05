@@ -1,13 +1,13 @@
 const mongo = require('../../utils/mongo.js');
 const auth = require('../../utils/authenticate');
 const api = require('../../utils/api.js');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 async function handleSocialProviderResponse(socialProfile, res) {
-  logger.debug('socialAction starts');
+  log.debug('socialAction starts');
   const { email, name } = socialProfile;
   const dbClient = await mongo.connectToDatabase();
-  logger.debug('Mongo connected');
+  log.debug('Mongo connected');
 
   const user = await mongo.findUser(dbClient, { email }, {
     projection: { auth: 1, 'bio.nickname': 1, roles: 1 },
@@ -15,14 +15,14 @@ async function handleSocialProviderResponse(socialProfile, res) {
 
   if (!user) {
     try {
-      logger.debug('User not found, store socialId');
+      log.debug('User not found, store socialId');
       const socialId = mongo.generateTimeId();
       await insertSocialLogin(dbClient, socialId, email, socialProfile.provider);
-      logger.debug('SocialId created');
+      log.debug('SocialId created');
       return api.sendCreated(res, { email, name, socialId, access_token: 'abcd' });
     } catch (error) {
-      logger.error('Failed to store socialId');
-      logger.error(error);
+      log.error('Failed to store socialId');
+      log.error(error);
       return api.sendInternalError(res, error);
     }
   }
@@ -30,16 +30,16 @@ async function handleSocialProviderResponse(socialProfile, res) {
   if (!user.auth.linked || !user.auth.linked.includes(socialProfile.provider)) {
     try {
       await addProvider(dbClient, user, socialProfile.provider);
-      logger.debug('User linked with new provider');
+      log.debug('User linked with new provider');
     } catch (error) {
-      logger.error('Failed to link new social network');
-      logger.error(error);
+      log.error('Failed to link new social network');
+      log.error(error);
       return api.sendInternalError(res, error);
     }
   }
 
   if (!user.auth.verified) {
-    logger.error(`User ${user._id} not verified! Potential case: registered but not activated account, then social login.`);
+    log.error(`User ${user._id} not verified! Potential case: registered but not activated account, then social login.`);
     return api.sendErrorForbidden(res, api.createError('User not verified', 'sign-in.auth-not-verified'));
   }
 

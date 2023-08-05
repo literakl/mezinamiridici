@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const dayjs = require('dayjs');
 
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const mongo = require('../../utils/mongo.js');
 const auth = require('../../utils/authenticate');
 const api = require('../../utils/api.js');
@@ -36,7 +36,7 @@ module.exports = (app) => {
 
   // there is a problem with local vue-cli, because it detects changes in its folder and automatically redeploys the app
   app.post('/v1/images', api.diskAPILimits, auth.required, auth.cors, uploader.single('image'), async (req, res) => {
-    logger.debug('image upload handler starts');
+    log.debug('image upload handler starts');
 
     try {
       const { file } = req; // TODO is it safe? What if user on slow network is sending large file and connection is interrupted?
@@ -66,7 +66,7 @@ module.exports = (app) => {
 
       setTimeout(() => api.sendCreated(res, api.createResponse(body)), UPLOAD_DELAY_MS);
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to upload image', 'sign-in.something-went-wrong'));
     }
   });
@@ -74,7 +74,7 @@ module.exports = (app) => {
   app.options('/v1/images/:pictureId', auth.cors);
 
   app.patch('/v1/images/:pictureId', auth.required, auth.cors, async (req, res) => {
-    logger.debug('patch image handler starts');
+    log.debug('patch image handler starts');
 
     try {
       const { pictureId } = req.params;
@@ -103,7 +103,7 @@ module.exports = (app) => {
         return api.sendNotFound(res, api.createResponse('Picture not found or user not authorized to modify'));
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to update image', 'sign-in.something-went-wrong'));
     }
   });

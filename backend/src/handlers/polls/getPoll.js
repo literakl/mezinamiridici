@@ -1,7 +1,7 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/bff/polls/last', auth.cors);
@@ -9,26 +9,26 @@ module.exports = (app) => {
   app.options('/bff/polls/id/:id', auth.cors);
 
   app.get('/bff/polls/last', auth.optional, async (req, res) => {
-    logger.info('getLastPoll handler starts');
+    log.info('getLastPoll handler starts');
     try {
       const dbClient = await mongo.connectToDatabase();
       const pipeline = [mongo.stagePublishedPoll(new Date()), mongo.stageSortByDateDesc, mongo.stageLimit(1)];
       if (req.identity) {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
-      logger.info(JSON.stringify(pipeline));
+      log.info(JSON.stringify(pipeline));
       const item = await mongo.getPoll(dbClient, pipeline);
-      logger.info('Item fetched');
+      log.info('Item fetched');
 
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get polls', 'sign-in.something-went-wrong'));
     }
   });
 
   app.get('/bff/polls/:slug', auth.optional, async (req, res) => {
-    logger.debug('getPoll by slug handler starts');
+    log.debug('getPoll by slug handler starts');
     const { slug } = req.params;
 
     try {
@@ -39,7 +39,7 @@ module.exports = (app) => {
         pipeline.push(mongo.stageMyPollVote(req.identity.userId));
       }
       const item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Item fetched');
+      log.debug('Item fetched');
 
       if (!item) {
         return api.sendNotFound(res, api.createError('Poll not found'));
@@ -48,12 +48,12 @@ module.exports = (app) => {
       const older = mongo.getNeighbourhItem(dbClient, 'poll', item.info.date, true).next();
       const newer = mongo.getNeighbourhItem(dbClient, 'poll', item.info.date, false).next();
       await Promise.all([newer, older]).then((values) => {
-        logger.debug('Neighbours fetched');
+        log.debug('Neighbours fetched');
         item.siblings = { newer: values[0], older: values[1] };
       });
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get polls', 'sign-in.something-went-wrong'));
     }
   });

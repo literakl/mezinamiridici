@@ -1,7 +1,7 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 require('../../utils/path_env');
 
@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.options('/v1/content/:slug', auth.cors);
 
   app.get('/v1/item-stream', auth.cors, async (req, res) => {
-    logger.debug('Get items'); // ${JSON.stringify(req.query)}
+    log.debug('Get items'); // ${JSON.stringify(req.query)}
 
     try {
       const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);
@@ -22,32 +22,32 @@ module.exports = (app) => {
       const result = await getItemsPage(dbClient, tag, listParams.start, listParams.pageSize);
       return api.sendResponse(res, api.createResponse(result));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get items', 'sign-in.something-went-wrong'));
     }
   });
 
   app.get('/v1/content/:slug', async (req, res) => {
-    logger.debug('Get content by slug handler starts');
+    log.debug('Get content by slug handler starts');
     const { slug } = req.params;
 
     try {
       const dbClient = await mongo.connectToDatabase();
       const item = await mongo.getContent(dbClient, slug);
-      logger.debug('Item fetched');
+      log.debug('Item fetched');
 
       if (!item) {
         return api.sendNotFound(res, api.createError('Page not found', 'generic.not-found-caption'));
       }
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get page', 'sign-in.something-went-wrong'));
     }
   });
 
   app.get('/bff/articles', auth.required, auth.cors, async (req, res) => {
-    logger.debug('get articles');
+    log.debug('get articles');
     try {
       const listParams = api.parseStreamParams(req, 20, MAXIMUM_PAGE_SIZE);
       const editor = auth.checkRole(req, auth.ROLE_EDITOR_IN_CHIEF);
@@ -60,7 +60,7 @@ module.exports = (app) => {
       const result = await getArticlesPage(dbClient, (!editor) ? req.identity : null, listParams.start, listParams.pageSize);
       return api.sendResponse(res, api.createResponse(result));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get articles', 'sign-in.something-went-wrong'));
     }
   });

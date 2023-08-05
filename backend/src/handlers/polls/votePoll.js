@@ -1,13 +1,13 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/bff/polls/:pollId/votes', auth.cors);
 
   app.post('/bff/polls/:pollId/votes', auth.required, auth.cors, async (req, res) => {
-    logger.debug('votePoll handler starts');
+    log.debug('votePoll handler starts');
     const { pollId } = req.params;
     const { vote } = req.body;
     if (!pollId) {
@@ -23,27 +23,27 @@ module.exports = (app) => {
       if (!item) {
         return api.sendNotFound(res, api.createError('Poll not found', 'generic.internal-error'));
       }
-      logger.debug('Item fetched');
+      log.debug('Item fetched');
 
       const user = await mongo.findUser(dbClient, { userId: req.identity.userId }, { projection: { bio: 1, driving: 1 } });
       if (!user) {
         return api.sendNotFound(res, api.createError('User not found', 'generic.internal-error'));
       }
-      logger.debug('User fetched');
+      log.debug('User fetched');
 
       // todo transaction, replicas required
       await insertPollVote(dbClient, pollId, vote, user);
       await incrementPoll(dbClient, pollId, vote);
       await mongo.incrementUserActivityCounter(dbClient, user._id, 'poll', 'vote');
-      logger.debug('Vote recorded');
+      log.debug('Vote recorded');
 
       const pipeline = [mongo.stageId(pollId), mongo.stageMyPollVote(user._id, pollId)];
       item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Updated poll fetched');
+      log.debug('Updated poll fetched');
 
       return api.sendCreated(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to vote in polls', 'sign-in.something-went-wrong'));
     }
   });

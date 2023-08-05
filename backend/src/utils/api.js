@@ -1,7 +1,7 @@
 require('../utils/path_env');
 const dayjs = require('dayjs');
 const rateLimit = require('express-rate-limit');
-const { logger } = require('../utils/logging');
+const { log } = require('../utils/logging');
 
 const authAPILimits = rateLimit({
   windowMs: 5 * 60 * 1000,
@@ -245,7 +245,7 @@ async function getSlug(slug, dbClient) {
   try {
     items = await dbClient.db().collection('items').find({ 'info.slug': { $regex: regexMatchSlug } }, { projection: { _id: 0, 'info.slug': 1 } }).toArray();
   } catch (err) {
-    logger.error(`Error getting items matching slug: ${slug}`, err);
+    log.error(`Error getting items matching slug: ${slug}`, err);
   }
 
   if (items.length > 0) {

@@ -2,7 +2,7 @@ require('../../utils/path_env');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 const PAGE_SIZE_COMMENTS = parseInt(process.env.PAGE_SIZE_COMMENTS || '10', 10);
 const MAXIMUM_PAGE_SIZE = parseInt(process.env.MAXIMUM_PAGE_SIZE || '50', 10);
@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.options('/bff/items/:itemId/comments/:commentId', auth.cors);
 
   app.get('/bff/items/:itemId/comments', auth.cors, auth.optional, async (req, res) => {
-    logger.debug('getComments handler starts');
+    log.debug('getComments handler starts');
     const { itemId } = req.params;
     if (!itemId) {
       return api.sendMissingParam(res, 'itemId');
@@ -34,7 +34,7 @@ module.exports = (app) => {
         mongo.stageReduceCommentData(),
       ];
       const comments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
-      logger.debug('Comments fetched');
+      log.debug('Comments fetched');
 
       const parentIdList = [];
       comments.forEach((comment) => {
@@ -64,7 +64,7 @@ module.exports = (app) => {
         },
       ];
       const childComments = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
-      logger.debug('Replies fetched');
+      log.debug('Replies fetched');
 
       comments.forEach((root) => {
         childComments.forEach((child) => {
@@ -76,14 +76,14 @@ module.exports = (app) => {
 
       return api.sendResponse(res, api.createResponse({ limit: listParams.pageSize, incomplete, comments }));
     } catch (err) {
-      logger.error('Request failed');
-      logger.error(err);
+      log.error('Request failed');
+      log.error(err);
       return api.sendInternalError(res, api.createError('Failed to get comments', 'sign-in.something-went-wrong'));
     }
   });
 
   app.get('/bff/items/:itemId/comments/:commentId', auth.cors, auth.optional, async (req, res) => {
-    logger.debug('getComment handler starts');
+    log.debug('getComment handler starts');
     const { commentId } = req.params;
     if (!commentId) {
       return api.sendBadRequest(res, api.createError('Missing parameter commentId', 'generic.internal-error'));
@@ -105,7 +105,7 @@ module.exports = (app) => {
         mongo.stageReduceCommentData(),
       ];
       const replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
-      logger.debug('Replies fetched');
+      log.debug('Replies fetched');
 
       const index = replies.findIndex(obj => obj._id === commentId);
       const comment = replies[index];
@@ -116,8 +116,8 @@ module.exports = (app) => {
       comment.replies = filteredReplies;
       return api.sendResponse(res, api.createResponse({ comment }));
     } catch (err) {
-      logger.error('Request failed');
-      logger.error(err);
+      log.error('Request failed');
+      log.error(err);
       return api.sendInternalError(res, api.createError('Failed to get comments', 'sign-in.something-went-wrong'));
     }
   });

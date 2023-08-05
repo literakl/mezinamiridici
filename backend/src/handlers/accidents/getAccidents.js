@@ -3,7 +3,7 @@ const dayjs = require('dayjs');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 require('../../utils/path_env');
@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.options('/v1/accidents/:day', auth.cors);
 
   app.get('/v1/accidents/last', auth.cors, async (req, res) => {
-    logger.debug('Get last day accidents summary');
+    log.debug('Get last day accidents summary');
 
     try {
       const dbClient = await mongo.connectToDatabase();
@@ -29,13 +29,13 @@ module.exports = (app) => {
         return api.sendResponse(res, api.createResponse({}));
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get last day accidents summary', 'sign-in.something-went-wrong'));
     }
   });
 
   app.get('/v1/accidents/:day', api.statsAPILimits, auth.cors, async (req, res) => {
-    logger.debug('Get selected day accidents summary');
+    log.debug('Get selected day accidents summary');
 
     try {
       const { day } = req.params;
@@ -63,7 +63,7 @@ module.exports = (app) => {
       data.thisYearValue = date.year();
       return api.sendResponse(res, api.createResponse(data));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to get selected day accidents summary', 'sign-in.something-went-wrong'));
     }
   });

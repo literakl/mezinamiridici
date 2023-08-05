@@ -7,13 +7,13 @@ dayjs.extend(customParseFormat);
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/pages', auth.cors);
 
   app.post('/v1/pages', auth.required, auth.page_admin, auth.cors, async (req, res) => {
-    logger.debug('Create page handler starts');
+    log.debug('Create page handler starts');
     const {
       caption, slug, content, contentPictures,
     } = req.body;
@@ -29,16 +29,16 @@ module.exports = (app) => {
         insertPage(dbClient, pageId, caption, slug, content, user),
         mongo.logAdminActions(dbClient, user.userId, 'create page', pageId),
       ]);
-      logger.debug('Page inserted');
+      log.debug('Page inserted');
 
       const page = await mongo.getContent(dbClient, null, pageId);
-      logger.debug('Page fetched');
+      log.debug('Page fetched');
 
       mongo.storePictureId(dbClient, pageId, contentPictures);
 
       return api.sendCreated(res, api.createResponse(page));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create page', 'sign-in.something-went-wrong'));
     }
   });

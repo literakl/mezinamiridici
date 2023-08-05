@@ -1,6 +1,6 @@
 const { api } = require('./testUtils');
 const app = require('../src/server');
-const { logger } = require('../src/utils/logging');
+const { log } = require('../src/utils/logging');
 
 let server;
 
@@ -11,10 +11,10 @@ test('Status API', () => api('status').json().then(
 ));
 
 beforeAll(async () => {
-  server = app.listen(3000, () => logger.info('Server started'));
+  server = app.listen(3000, () => log.info('Server started'));
 });
 
 afterAll(() => {
   server.close();
-  logger.info('Server stopped');
+  log.info('Server stopped');
 });

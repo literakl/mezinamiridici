@@ -3,7 +3,7 @@ const html2text = require('html2plaintext');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 const { MAXIMUM_PAGE_SIZE } = process.env || 50;
 const { TRUNCATE_COMMENTS } = process.env || 100;
@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.options('/v1/users/:userId/activity', auth.cors);
 
   app.get('/v1/users/:userId/activity', auth.optional, async (req, res) => {
-    logger.debug('get user activity handler starts');
+    log.debug('get user activity handler starts');
     const { userId } = req.params;
     if (!userId) {
       return api.sendBadRequest(res, api.createError('Missing user id', 'generic.internal-error'));
@@ -26,11 +26,11 @@ module.exports = (app) => {
     try {
       const dbClient = await mongo.connectToDatabase();
       const list = await getActivity(dbClient, userId, type, req);
-      logger.debug('Activity fetched');
+      log.debug('Activity fetched');
 
       return api.sendResponse(res, api.createResponse(list));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to load  the user activity', 'generic.something-went-wrong'));
     }
   });

@@ -1,13 +1,13 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/articles/:itemId', auth.cors);
 
   app.delete('/v1/articles/:itemId', auth.required, auth.cors, async (req, res) => {
-    logger.debug('Delete article handler starts');
+    log.debug('Delete article handler starts');
     const { itemId } = req.params;
     if (!itemId) {
       return api.sendMissingParam(res, 'itemId');
@@ -37,14 +37,14 @@ module.exports = (app) => {
 
       const [result] = await Promise.all(promises);
       if (result.deletedCount !== 1) {
-        logger.error(`Failed to delete article ${itemId}`);
+        log.error(`Failed to delete article ${itemId}`);
         return api.sendInternalError(res, api.createError('Failed to delete article', 'sign-in.something-went-wrong'));
       } else {
-        logger.info(`Article deleted: ${itemId} by ${req.identity.userId}`);
+        log.info(`Article deleted: ${itemId} by ${req.identity.userId}`);
         return api.sendResponse(res, api.createResponse());
       }
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to delete article', 'sign-in.something-went-wrong'));
     }
   });

@@ -7,7 +7,7 @@ dayjs.extend(customParseFormat);
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 let { NODE_ENV } = process.env;
 if (!NODE_ENV) {
@@ -18,7 +18,7 @@ module.exports = (app) => {
   app.options('/v1/polls', auth.cors);
 
   app.post('/v1/polls', auth.required, auth.poll_admin, auth.cors, async (req, res) => {
-    logger.debug('createPoll handler starts');
+    log.debug('createPoll handler starts');
     const {
       text, author, date, picture, tags,
     } = req.body;
@@ -52,15 +52,15 @@ module.exports = (app) => {
         insertItem(dbClient, pollId, text, user, picture, publishDate, tags),
         mongo.logAdminActions(dbClient, user.userId, 'create poll', pollId),
       ]);
-      logger.debug('Item inserted');
+      log.debug('Item inserted');
 
       const pipeline = [mongo.stageId(pollId)];
       const item = await mongo.getPoll(dbClient, pipeline);
-      logger.debug('Poll fetched');
+      log.debug('Poll fetched');
 
       return api.sendCreated(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
     }
   });

@@ -2,13 +2,13 @@ const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/items/:itemId/comments', auth.cors);
 
   app.post('/v1/items/:itemId/comments', auth.required, auth.cors, async (req, res) => {
-    logger.debug('createComment handler starts');
+    log.debug('createComment handler starts');
     const {
       source, parentId, date,
     } = req.body;
@@ -36,7 +36,7 @@ module.exports = (app) => {
       const comment = createComment(itemId, source, req.identity, parentId, publishDate);
       await dbClient.db().collection('comments').insertOne(comment);
       await mongo.incrementUserActivityCounter(dbClient, req.identity.userId, 'comment', 'create');
-      logger.debug('Comment inserted');
+      log.debug('Comment inserted');
 
       const update = { $set: { 'comments.last': publishDate }, $inc: { 'comments.count': 1 } };
       const response = await dbClient.db().collection('items').updateOne({ _id: itemId }, update);
@@ -53,14 +53,14 @@ module.exports = (app) => {
           mongo.stageReduceCommentData(),
         ];
         replies = await dbClient.db().collection('comments').aggregate(pipeline, { allowDiskUse: true }).toArray();
-        logger.debug('Replies fetched');
+        log.debug('Replies fetched');
       }
 
       comment.votes = [];
       const body = { comment, replies };
       return api.sendCreated(res, api.createResponse(body));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to create poll', 'sign-in.something-went-wrong'));
     }
   });

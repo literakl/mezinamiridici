@@ -1,7 +1,7 @@
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 const mailService = require('../../utils/mailService');
 require('../../utils/path_env');
 
@@ -9,14 +9,14 @@ module.exports = (app) => {
   app.options('/v1/forgotPassword', auth.cors);
 
   app.post('/v1/forgotPassword', api.authAPILimits, auth.cors, async (req, res) => {
-    logger.debug('forgotPassword handler starts');
+    log.debug('forgotPassword handler starts');
     const { email } = req.body;
 
     try {
       const dbClient = await mongo.connectToDatabase();
       const user = await mongo.findUser(dbClient, { email }, { projection: { auth: 1 } });
       if (!user) {
-        logger.error(`User not found ${email}`);
+        log.error(`User not found ${email}`);
         return api.sendErrorForbidden(res, api.createError('User not found', 'sign-in.auth-error'));
       }
 
@@ -24,18 +24,18 @@ module.exports = (app) => {
       const expiration = new Date(Date.now() + 6 * 60 * 60 * 1000); // six hours
       const query = prepareSetTokenQuery(resetToken, expiration);
       dbClient.db().collection('users').updateOne({ _id: user._id }, query);
-      logger.debug('Token updated in User');
+      log.debug('Token updated in User');
 
       try {
         await sendPasswordResetEmail(email, resetToken);
-        logger.debug('Email sent');
+        log.debug('Email sent');
       } catch (err) {
         console.error('Sending email failed', err);
         return api.sendInternalError(res, api.createError('Failed to send email', 'sign-in.something-went-wrong'));
       }
       return api.sendResponse(res, api.createResponse({}));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(res, api.createError('Failed to reset the password', 'sign-in.something-went-wrong'));
     }
   });

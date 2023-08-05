@@ -2,13 +2,13 @@ const sanitizeHtml = require('sanitize-html');
 const mongo = require('../../utils/mongo.js');
 const api = require('../../utils/api.js');
 const auth = require('../../utils/authenticate');
-const { logger } = require('../../utils/logging');
+const { log } = require('../../utils/logging');
 
 module.exports = (app) => {
   app.options('/v1/content/:itemId', auth.cors);
 
   app.patch('/v1/content/:itemId', auth.required, auth.cors, async (req, res) => {
-    logger.debug('update content handler starts');
+    log.debug('update content handler starts');
 
     try {
       const { itemId } = req.params;
@@ -38,14 +38,14 @@ module.exports = (app) => {
 
       const query = { $set: { 'data.content': source } };
       await dbClient.db().collection('items').updateOne({ _id: itemId }, query);
-      logger.debug('Item updated');
+      log.debug('Item updated');
 
       item = await mongo.getContent(dbClient, undefined, itemId);
-      logger.debug('Updated item fetched');
+      log.debug('Updated item fetched');
 
       return api.sendResponse(res, api.createResponse(item));
     } catch (err) {
-      logger.error('Request failed', err);
+      log.error('Request failed', err);
       return api.sendInternalError(
         res,
         api.createError('Failed to update item', 'sign-in.something-went-wrong'),

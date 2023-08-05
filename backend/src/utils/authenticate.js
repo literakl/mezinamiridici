@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const corsMiddleware = require('cors');
 
-const { logger } = require('../utils/logging');
+const { log } = require('../utils/logging');
 
 const api = require('./api');
 require('./path_env');
@@ -13,7 +13,7 @@ try {
     CORS_ORIGINS = JSON.parse(envOrigins);
   }
 } catch (e) {
-  logger.error(`Failed to parse CORS_ORIGINS ${e}`);
+  log.error(`Failed to parse CORS_ORIGINS ${e}`);
 }
 
 function authenticate(required) {

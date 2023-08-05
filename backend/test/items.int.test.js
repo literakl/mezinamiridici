@@ -6,7 +6,7 @@ const envPath = path.join(__dirname, '..', '.test.env');
 dotenv.config({ path: envPath });
 
 const mongo = require('../src/utils/mongo');
-const { logger } = require('../src/utils/logging');
+const { log } = require('../src/utils/logging');
 const app = require('../src/server');
 
 const {
@@ -154,11 +154,11 @@ beforeEach(async () => {
 
 beforeAll(async () => {
   dbClient = await mongo.connectToDatabase();
-  server = app.listen(3000, () => logger.info('Server started'));
+  server = app.listen(3000, () => log.info('Server started'));
 });
 
 afterAll(() => {
   mongo.close();
   server.close();
-  logger.info('Server stopped');
+  log.info('Server stopped');
 });

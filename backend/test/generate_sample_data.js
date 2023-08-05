@@ -18,7 +18,7 @@ const lorem = new LoremIpsum({
 });
 
 const mongo = require('../src/utils/mongo');
-const { logger } = require('../src/utils/logging');
+const { log } = require('../src/utils/logging');
 const app = require('..');
 const {
   api, bff, getAuthHeader, shuffle,
@@ -42,7 +42,7 @@ generateData()
   });
 
 async function generateData() {
-  server = app.listen(3000, () => logger.info('Server started'));
+  server = app.listen(3000, () => log.info('Server started'));
   dbClient = await mongo.connectToDatabase();
   const db = dbClient.db();
   try {
@@ -57,7 +57,7 @@ async function generateData() {
     await setup(dbClient, api);
     await mongo.setupIndexes(dbClient);
   } catch (e) {
-    logger.error(e);
+    log.error(e);
     process.exit(1);
   }
 
@@ -225,7 +225,7 @@ async function generateData() {
 
   mongo.close();
   server.close();
-  logger.info('Server stopped');
+  log.info('Server stopped');
 }
 
 async function generateComments(itemId, startDate) {
@@ -287,11 +287,11 @@ function randomUser() {
 function dropCollection(db, name) {
   db.collection(name)
     .dropIndexes()
-    .then(() => logger.info(`Indexes for ${name} were deleted`))
-    .catch(() => logger.info(`Indexes for ${name} were not deleted`));
+    .then(() => log.info(`Indexes for ${name} were deleted`))
+    .catch(() => log.info(`Indexes for ${name} were not deleted`));
 
   db.collection(name)
     .drop()
-    .then(() => logger.info(`Collection ${name} was deleted`))
-    .catch(() => logger.info(`Collection ${name} was not deleted`));
+    .then(() => log.info(`Collection ${name} was deleted`))
+    .catch(() => log.info(`Collection ${name} was not deleted`));
 }
