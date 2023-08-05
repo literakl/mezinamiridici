@@ -1,5 +1,5 @@
 const generate = require('nanoid/generate');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const { log } = require('./logging');
 require('./path_env');
@@ -17,7 +17,13 @@ function connectToDatabase() {
   }
 
   log.info('Get a new Mongo instance from database');
-  const client = new MongoClient(MONGODB_URI);
+  const client = new MongoClient(MONGODB_URI, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+  });
   return client.connect()
     .then((db) => {
       log.info('Successful connect');
