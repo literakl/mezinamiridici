@@ -1,0 +1,42 @@
+<div class="card h-100" style="border-radius: 8px; box-shadow: var(--box-shadow); border: none; overflow: hidden;">
+  {{#if item.info.picture}}
+    <a href="{{#if (eq item.type "article")}}/clanky/{{item.info.slug}}{{else if (eq item.type "blog")}}/blogy/{{item.info.slug}}{{else if (eq item.type "poll")}}/ankety/{{item.info.slug}}{{else if (eq item.type "page")}}/o/{{item.info.slug}}{{/if}}">
+      <img src="{{item.info.picture}}" class="card-img-top" alt="{{item.info.caption}}" style="height: 200px; object-fit: cover;">
+    </a>
+  {{/if}}
+
+  <div class="card-body d-flex flex-column">
+    {{#if (eq item.type "poll")}}
+      <span class="badge badge-primary mb-2 align-self-start">Anketa</span>
+    {{else if (eq item.type "blog")}}
+      <span class="badge badge-secondary mb-2 align-self-start">Blog</span>
+    {{else if (eq item.type "article")}}
+      <span class="badge badge-success mb-2 align-self-start">Článek</span>
+    {{/if}}
+
+    <h5 class="card-title mb-2" style="font-weight: 500; font-size: 18px; line-height: 1.4;">
+      <a href="{{#if (eq item.type "article")}}/clanky/{{item.info.slug}}{{else if (eq item.type "blog")}}/blogy/{{item.info.slug}}{{else if (eq item.type "poll")}}/ankety/{{item.info.slug}}{{else if (eq item.type "page")}}/o/{{item.info.slug}}{{/if}}" style="color: var(--text-color); text-decoration: none;">
+        {{item.info.caption}}
+      </a>
+    </h5>
+
+    {{#if item.info.summary}}
+      <p class="card-text text-muted mb-3" style="font-size: 14px; line-height: 1.5;">
+        {{item.info.summary}}
+      </p>
+    {{/if}}
+
+    <div class="mt-auto">
+      <div class="d-flex justify-content-between align-items-center text-muted" style="font-size: 13px;">
+        <span>{{#if item.info.author.nickname}}{{item.info.author.nickname}}{{else}}Anonym{{/if}}</span>
+        <span>{{formatDate item.info.date}}</span>
+      </div>
+
+      {{#if item.comments.count}}
+        <div class="mt-2 text-muted" style="font-size: 13px;">
+          💬 {{item.comments.count}} komentářů
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

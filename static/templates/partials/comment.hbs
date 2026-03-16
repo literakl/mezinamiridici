@@ -1,0 +1,22 @@
+<div class="comment mb-3 p-3" style="background-color: #f8f9fa; border-radius: 6px; border-left: 3px solid var(--theme-primary);">
+  <div class="d-flex justify-content-between align-items-start mb-2">
+    <div>
+      <strong style="color: var(--text-color);">{{#if this.author.nickname}}{{this.author.nickname}}{{else}}Anonym{{/if}}</strong>
+      <span class="text-muted ml-2" style="font-size: 13px;">{{formatDateTime this.date}}</span>
+    </div>
+    <div class="d-flex align-items-center" style="font-size: 14px;">
+      <span class="text-success mr-2" title="Souhlasím">👍 {{this.up}}</span>
+      <span class="text-danger" title="Nesouhlasím">👎 {{this.down}}</span>
+    </div>
+  </div>
+
+  <div class="comment-text" style="font-size: 15px; line-height: 1.6; color: var(--text-color);">{{{this.text}}}</div>
+
+  {{#if this.replies}}
+    <div class="comment-replies mt-3 ml-4" style="border-left: 2px solid #dee2e6; padding-left: 16px;">
+      {{#each this.replies}}
+        {{> comment}}
+      {{/each}}
+    </div>
+  {{/if}}
+</div>

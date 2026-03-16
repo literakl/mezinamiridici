@@ -1,0 +1,23 @@
+{
+  "name": "mezinamiridici-static-generator",
+  "version": "1.0.0",
+  "description": "Static HTML archive generator for Mezi námi řidiči",
+  "main": "generator.js",
+  "scripts": {
+    "generate": "node generator.js",
+    "serve": "cd ../output && python -m http.server 8000"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "dayjs": "^1.8.36",
+    "dotenv": "^17.3.1",
+    "handlebars": "^4.7.7"
+  },
+  "keywords": [
+    "static-site",
+    "archive",
+    "generator"
+  ],
+  "author": "Leos Literak",
+  "license": "MIT"
+}

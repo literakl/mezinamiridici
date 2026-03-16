@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{pageTitle}} - Mezi námi řidiči</title>
+  <meta name="description" content="{{pageDescription}}">
+  {{#if ogImage}}
+  <meta property="og:image" content="{{ogImage}}">
+  <meta property="og:title" content="{{pageTitle}}">
+  <meta property="og:description" content="{{pageDescription}}">
+  {{/if}}
+
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Amatic+SC:wght@700&display=swap">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://www.mezinamiridici.cz/js/script.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+</head>
+<body style="background-color: var(--body-color);">
+  {{> header}}
+
+  <main class="container" style="max-width: 1200px; margin-top: 20px;">
+    {{{content}}}
+  </main>
+
+  {{> footer}}
+</body>
+</html>

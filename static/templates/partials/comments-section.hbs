@@ -1,0 +1,17 @@
+{{#if (gt commentCount 0)}}
+<section class="bg-white p-4 mt-4" style="border-radius: 8px; box-shadow: var(--box-shadow);">
+  <h3 class="mb-4" style="font-size: 22px; font-weight: 600; color: var(--text-color);">
+    Diskuse ({{commentCount}})
+  </h3>
+
+  <div class="alert alert-light" role="alert" style="font-size: 14px; border-left: 4px solid var(--theme-primary);">
+    💡 Komentování je v archivní verzi deaktivováno.
+  </div>
+
+  <div class="comments-list mt-4">
+    {{#each comments}}
+      {{> comment}}
+    {{/each}}
+  </div>
+</section>
+{{/if}}

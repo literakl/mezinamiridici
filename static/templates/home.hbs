@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{pageTitle}}</title>
+  <meta name="description" content="{{pageDescription}}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Amatic+SC:wght@700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://www.mezinamiridici.cz/js/script.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+</head>
+<body style="background-color: var(--body-color);">
+  {{> header}}
+
+  <div class="container pt-3 m-auto pb-3" style="max-width: 1200px;">
+    <!-- Archive Notice -->
+    <div class="alert alert-info text-center mb-4" role="alert" style="border-radius: 8px;">
+      <strong>📚 Archivovaná verze</strong> - Tato stránka je statická archivní kopie z {{generationDate}}. Hlasování a komentování je deaktivováno.
+    </div>
+
+    <!-- Content Grid -->
+    <div class="row">
+      {{#each items}}
+        <div class="col-md-6 col-lg-4 mb-4">
+          {{> item-card item=this}}
+        </div>
+      {{/each}}
+    </div>
+
+    {{#unless items}}
+      <div class="alert alert-warning text-center">
+        Žádný obsah k zobrazení.
+      </div>
+    {{/unless}}
+  </div>
+
+  {{> footer}}
+</body>
+</html>

@@ -36,3 +36,7 @@ transfer
 /spa/public/images/uploads/
 /backend/.eslintrc.js
 sitemap.xml
+
+# Static site output
+/output/
+!/output/
