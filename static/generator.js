@@ -15,7 +15,9 @@ const SPA_ASSETS_DIR = path.join(PROJECT_ROOT, 'spa/src/assets');
 
 // API configuration
 const API_BASE_URL = process.env.API_BASE_URL || 'https://www.mezinamiridici.cz';
+const WEB_URL = process.env.WEB_URL || 'https://www.mezinamiridici.cz';
 const MAX_PAGE_SIZE = 50;
+const FEED_ITEM_LIMIT = 30;
 
 // Simple logger
 const jobLogger = {
@@ -105,6 +107,17 @@ function getUrlForItem(item) {
     return `/o/${item.info.slug}`;
   }
   return '/';
+}
+
+// Get absolute URL for an item
+function getAbsoluteUrlForItem(item) {
+  return `${WEB_URL}${getUrlForItem(item)}`;
+}
+
+// Resolve a possibly-relative image path to an absolute URL
+function getAbsoluteImageUrl(picture) {
+  if (!picture) return null;
+  return /^https?:\/\//i.test(picture) ? picture : `${WEB_URL}/${picture.replace(/^\//, '')}`;
 }
 
 // Fetch all published items from API
@@ -207,6 +220,7 @@ async function generateHomePage(items) {
   const html = template({
     pageTitle: 'Mezi námi řidiči',
     pageDescription: 'Archiv diskuzního fóra o dopravě a řízení v České republice',
+    canonicalUrl: WEB_URL,
     items,
     generationDate: dayjs().format('D.M.YYYY')
   });
@@ -241,10 +255,34 @@ async function generateItemPage(item) {
   // Load appropriate template
   const template = getTemplate(itemType);
 
+  const canonicalUrl = getAbsoluteUrlForItem(item);
+  const ogImage = getAbsoluteImageUrl(fullItem.info.picture);
+
+  let jsonLd = null;
+  if (itemType === 'article' || itemType === 'blog') {
+    jsonLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': itemType === 'article' ? 'NewsArticle' : 'BlogPosting',
+      headline: fullItem.info.caption,
+      description: fullItem.info.summary || fullItem.info.caption,
+      datePublished: fullItem.info.date ? new Date(fullItem.info.date).toISOString() : undefined,
+      author: fullItem.info.author?.nickname ? { '@type': 'Person', name: fullItem.info.author.nickname } : undefined,
+      image: ogImage ? [ogImage] : undefined,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Mezi námi řidiči',
+        logo: { '@type': 'ImageObject', url: `${WEB_URL}/images/logo.png` }
+      },
+      mainEntityOfPage: canonicalUrl
+    });
+  }
+
   const html = template({
     pageTitle: fullItem.info.caption,
     pageDescription: fullItem.info.summary || fullItem.info.caption,
-    ogImage: fullItem.info.picture || null,
+    ogImage,
+    canonicalUrl,
+    jsonLd,
     item: fullItem,
     comments,
     voteResults,
@@ -287,7 +325,7 @@ async function copyAssets() {
   }
 
   // Copy root files
-  const rootFiles = ['favicon.ico', 'robots.txt', 'manifest.json'];
+  const rootFiles = ['favicon.ico', 'manifest.json'];
   for (const file of rootFiles) {
     const srcPath = path.join(SPA_PUBLIC_DIR, file);
     const destPath = path.join(OUTPUT_DIR, file);
@@ -418,6 +456,71 @@ function generateNginxConfig(items) {
   return configPath;
 }
 
+// Generate sitemap.xml
+function generateSitemap(items) {
+  jobLogger.info('Generating sitemap.xml...');
+
+  const urls = [{ loc: WEB_URL, lastmod: dayjs().format('YYYY-MM-DD') }];
+  items.forEach((item) => {
+    urls.push({
+      loc: getAbsoluteUrlForItem(item),
+      lastmod: item.info?.date ? dayjs(item.info.date).format('YYYY-MM-DD') : dayjs().format('YYYY-MM-DD')
+    });
+  });
+
+  const body = urls.map((u) => (
+    `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n  </url>`
+  )).join('\n');
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+
+  const filePath = path.join(OUTPUT_DIR, 'sitemap.xml');
+  fsSync.writeFileSync(filePath, xml, 'utf8');
+  jobLogger.info(`Sitemap generated: ${filePath}`);
+}
+
+// Generate robots.txt
+function generateRobotsTxt() {
+  jobLogger.info('Generating robots.txt...');
+
+  const content = `User-agent: *\nAllow: /\n\nSitemap: ${WEB_URL}/sitemap.xml\n`;
+  const filePath = path.join(OUTPUT_DIR, 'robots.txt');
+  fsSync.writeFileSync(filePath, content, 'utf8');
+  jobLogger.info(`robots.txt generated: ${filePath}`);
+}
+
+// Escape text for inclusion in XML
+function escapeXml(text) {
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+// Generate RSS feed (articles and blogs, most recent first)
+function generateFeed(items) {
+  jobLogger.info('Generating feed.rss...');
+
+  const feedItems = items
+    .filter((item) => item.type === 'article' || item.type === 'blog')
+    .sort((a, b) => new Date(b.info?.date || 0) - new Date(a.info?.date || 0))
+    .slice(0, FEED_ITEM_LIMIT);
+
+  const rssItems = feedItems.map((item) => {
+    const url = getAbsoluteUrlForItem(item);
+    const pubDate = item.info?.date ? new Date(item.info.date).toUTCString() : new Date().toUTCString();
+    return `  <item>\n    <title>${escapeXml(item.info?.caption)}</title>\n    <link>${url}</link>\n    <guid>${url}</guid>\n    <pubDate>${pubDate}</pubDate>\n  </item>`;
+  }).join('\n');
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n  <title>Mezi námi řidiči</title>\n  <link>${WEB_URL}</link>\n  <description>Archiv diskuzního fóra o dopravě a řízení v České republice</description>\n  <language>cs</language>\n${rssItems}\n</channel>\n</rss>\n`;
+
+  const filePath = path.join(OUTPUT_DIR, 'feed.rss');
+  fsSync.writeFileSync(filePath, rss, 'utf8');
+  jobLogger.info(`Feed generated: ${filePath}`);
+}
+
 // Main generator function
 async function generateStaticSite() {
   jobLogger.info('Starting static site generation...');
@@ -470,6 +573,11 @@ async function generateStaticSite() {
 
     // Copy assets
     await copyAssets();
+
+    // Generate SEO files
+    generateSitemap(items);
+    generateRobotsTxt();
+    generateFeed(items);
 
     // Generate nginx redirect configuration
     const nginxConfigPath = generateNginxConfig(items);

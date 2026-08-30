@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{pageTitle}}</title>
   <meta name="description" content="{{pageDescription}}">
+  <link rel="canonical" href="{{canonicalUrl}}">
+  <link rel="alternate" type="application/rss+xml" title="Mezi námi řidiči" href="/feed.rss">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{canonicalUrl}}">
+  <meta property="og:site_name" content="Mezi námi řidiči">
+  <meta property="og:title" content="{{pageTitle}}">
+  <meta property="og:description" content="{{pageDescription}}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Amatic+SC:wght@700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/styles.css">
@@ -20,11 +27,6 @@
   {{> header}}
 
   <div class="container pt-3 m-auto pb-3" style="max-width: 1200px;">
-    <!-- Archive Notice -->
-    <div class="alert alert-info text-center mb-4" role="alert" style="border-radius: 8px;">
-      <strong>📚 Archivovaná verze</strong> - Tato stránka je statická archivní kopie z {{generationDate}}. Hlasování a komentování je deaktivováno.
-    </div>
-
     <!-- Content Grid -->
     <div class="row">
       {{#each items}}
