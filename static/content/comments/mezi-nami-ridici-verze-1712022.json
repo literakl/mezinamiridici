@@ -1,0 +1,25 @@
+[
+  {
+    "date": "2022-01-17T23:03:35.296Z",
+    "text": "<p>Skvělé. Díky moc za tvou práci a tvůj čas!</p>",
+    "up": 1,
+    "down": 0,
+    "author": {
+      "id": "Heron",
+      "nickname": "Heron"
+    },
+    "replies": [
+      {
+        "date": "2022-01-18T05:44:26.822Z",
+        "text": "<p>ten service worker je fakt neodbytný. Ráno zase servíruje starou verzi, což nechápu. Zároveň stará verze používá URL backendu, které bylo změněno, takže nedokáže nic načíst, ani tuto informaci. Takže jsem ráno dal nginx dočasný redirect pro starou adresu.</p>",
+        "up": 0,
+        "down": 0,
+        "author": {
+          "id": "leos",
+          "nickname": "Leoš Literák"
+        },
+        "replies": []
+      }
+    ]
+  }
+]

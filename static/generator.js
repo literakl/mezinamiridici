@@ -3,21 +3,31 @@ const fsSync = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
 const dayjs = require('dayjs');
-const axios = require('axios');
+const MarkdownIt = require('markdown-it');
 require('dotenv').config();
 
 // Paths
 const PROJECT_ROOT = path.join(__dirname, '..');
 const OUTPUT_DIR = path.join(PROJECT_ROOT, 'output');
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
+const CONTENT_DIR = path.join(__dirname, 'content');
 const SPA_PUBLIC_DIR = path.join(PROJECT_ROOT, 'spa/public');
 const SPA_ASSETS_DIR = path.join(PROJECT_ROOT, 'spa/src/assets');
 
-// API configuration
-const API_BASE_URL = process.env.API_BASE_URL || 'https://www.mezinamiridici.cz';
 const WEB_URL = process.env.WEB_URL || 'https://www.mezinamiridici.cz';
-const MAX_PAGE_SIZE = 50;
 const FEED_ITEM_LIMIT = 30;
+
+// Markdown -> HTML renderer for content bodies. html:true lets hand-authored
+// raw HTML (video iframes, future JS widgets) pass through untouched.
+const md = new MarkdownIt({ html: true, linkify: true });
+md.renderer.rules.table_open = () => '<table class="table table-bordered table-sm">';
+
+const TYPE_FOLDERS = {
+  article: 'clanky',
+  blog: 'blogy',
+  page: 'o',
+  poll: 'ankety',
+};
 
 // Simple logger
 const jobLogger = {
@@ -120,72 +130,100 @@ function getAbsoluteImageUrl(picture) {
   return /^https?:\/\//i.test(picture) ? picture : `${WEB_URL}/${picture.replace(/^\//, '')}`;
 }
 
-// Fetch all published items from API
-async function fetchAllItems() {
-  jobLogger.info('Fetching all published items from API...');
+// Parse a Markdown file's YAML-ish frontmatter (title/slug/author/date/image/tags/votes)
+function parseFrontmatter(raw) {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (!match) return { meta: {}, body: raw };
 
-  const allItems = [];
-  let start = 0;
-  let hasMore = true;
+  const meta = {};
+  const lines = match[1].split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const idx = line.indexOf(':');
+    if (idx === -1) continue;
+    const key = line.slice(0, idx).trim();
+    let rest = line.slice(idx + 1).trim();
 
-  while (hasMore) {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/v1/item-stream`, {
-        params: { start, ps: MAX_PAGE_SIZE }
-      });
-
-      const items = response.data.data || [];
-
-      // Filter out "Statistiky nehod" posts
-      const filteredItems = items.filter(item => {
-        const caption = item.info?.caption || '';
-        return !caption.toLowerCase().includes('statistiky nehod');
-      });
-
-      allItems.push(...filteredItems);
-
-      jobLogger.debug(`Fetched ${items.length} items (total: ${allItems.length})`);
-
-      // If we got less than the page size, we're done
-      if (items.length < MAX_PAGE_SIZE) {
-        hasMore = false;
-      } else {
-        start += MAX_PAGE_SIZE;
+    if (rest === '' && lines[i + 1] && /^\s+\w+:/.test(lines[i + 1])) {
+      // Nested block, e.g. poll votes
+      const nested = {};
+      while (lines[i + 1] && /^\s+\w+:/.test(lines[i + 1])) {
+        i++;
+        const [nk, nv] = lines[i].trim().split(':').map((s) => s.trim());
+        nested[nk] = Number(nv);
       }
-    } catch (error) {
-      jobLogger.error(`Failed to fetch items: ${error.message}`);
-      throw error;
+      meta[key] = nested;
+      continue;
+    }
+
+    if (rest.startsWith('[') && rest.endsWith(']')) {
+      meta[key] = rest === '[]' ? [] : rest.slice(1, -1).split(',').map((s) => s.trim().replace(/^"|"$/g, ''));
+    } else if (rest.startsWith('"') && rest.endsWith('"')) {
+      meta[key] = rest.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    } else {
+      meta[key] = rest;
     }
   }
 
-  jobLogger.info(`Found ${allItems.length} published items`);
-  return allItems;
+  return { meta, body: match[2] };
 }
 
-// Fetch full content for an item
-async function fetchItemContent(slug) {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/v1/content/${slug}`);
-    return response.data.data;
-  } catch (error) {
-    jobLogger.warn(`Failed to fetch content for ${slug}: ${error.message}`);
-    return null;
-  }
-}
+// Load all published items of a given type from content/<folder>/*.md
+function loadContentType(type) {
+  const dir = path.join(CONTENT_DIR, TYPE_FOLDERS[type]);
+  if (!fsSync.existsSync(dir)) return [];
 
-// Fetch comments for an item
-async function fetchCommentsForItem(itemId) {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/bff/items/${itemId}/comments`, {
-      params: { ps: 1000 } // Get all comments
+  return fsSync.readdirSync(dir)
+    .filter((f) => f.endsWith('.md'))
+    .map((file) => {
+      const raw = fsSync.readFileSync(path.join(dir, file), 'utf8');
+      const { meta, body } = parseFrontmatter(raw);
+      const comments = loadComments(meta.slug);
+
+      const info = {
+        author: { nickname: meta.author, id: meta.authorId },
+        slug: meta.slug,
+        date: meta.date,
+        picture: meta.image,
+        caption: meta.title,
+        tags: meta.tags || [],
+        state: 'published',
+      };
+
+      const data = type === 'poll'
+        ? { votes: meta.votes || { neutral: 0, trivial: 0, dislike: 0, hate: 0 } }
+        : { content: md.render(body || '') };
+
+      return {
+        _id: meta.slug,
+        type,
+        info,
+        data,
+        comments: { count: countComments(comments), last: null },
+      };
     });
+}
 
-    const data = response.data.data;
-    return data.comments || [];
-  } catch (error) {
-    jobLogger.warn(`Failed to fetch comments for ${itemId}: ${error.message}`);
-    return [];
-  }
+// Load all published items across all content types
+function loadAllItems() {
+  jobLogger.info('Loading published items from content/...');
+  const items = ['article', 'blog', 'page', 'poll'].flatMap(loadContentType);
+  // Filenames sort alphabetically by slug, not by date - restore the original
+  // newest-first ordering (matches the old Mongo `.sort({'info.date': -1})`).
+  items.sort((a, b) => new Date(b.info.date || 0) - new Date(a.info.date || 0));
+  jobLogger.info(`Found ${items.length} published items`);
+  return items;
+}
+
+// Load nested comments for an item from content/comments/<slug>.json
+function loadComments(slug) {
+  const filePath = path.join(CONTENT_DIR, 'comments', `${slug}.json`);
+  if (!fsSync.existsSync(filePath)) return [];
+  return JSON.parse(fsSync.readFileSync(filePath, 'utf8'));
+}
+
+function countComments(nested) {
+  return nested.reduce((sum, c) => sum + 1 + countComments(c.replies || []), 0);
 }
 
 // Calculate poll vote percentages
@@ -235,16 +273,8 @@ async function generateHomePage(items) {
 // Generate individual item page
 async function generateItemPage(item) {
   const itemType = item.type;
-
-  // Fetch full content
-  const fullItem = await fetchItemContent(item.info.slug);
-  if (!fullItem) {
-    jobLogger.warn(`Skipping ${item.info.slug} - content not found`);
-    return;
-  }
-
-  // Fetch comments
-  const comments = await fetchCommentsForItem(item._id);
+  const fullItem = item;
+  const comments = loadComments(item.info.slug);
 
   // For polls, calculate vote results
   let voteResults = null;
@@ -524,7 +554,7 @@ function generateFeed(items) {
 // Main generator function
 async function generateStaticSite() {
   jobLogger.info('Starting static site generation...');
-  jobLogger.info(`API URL: ${API_BASE_URL}`);
+  jobLogger.info(`Content directory: ${CONTENT_DIR}`);
   jobLogger.info(`Output directory: ${OUTPUT_DIR}`);
 
   const startTime = Date.now();
@@ -548,16 +578,19 @@ async function generateStaticSite() {
       }
     }
 
-    // Fetch all items from API
-    const items = await fetchAllItems();
+    // Load all items from content/
+    const items = loadAllItems();
 
     if (items.length === 0) {
       jobLogger.warn('No items found! Exiting.');
       return;
     }
 
-    // Generate home page (simple list, no featured poll or accidents)
-    await generateHomePage(items);
+    // Generate home page (simple list, no featured poll or accidents).
+    // Pages (privacy policy, terms, ...) are generated as standalone URLs
+    // but aren't content cards, so they're excluded from the grid.
+    const cardItems = items.filter((item) => item.type !== 'page');
+    await generateHomePage(cardItems);
 
     // Generate individual pages
     jobLogger.info('Generating individual pages...');

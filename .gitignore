@@ -39,4 +39,23 @@ sitemap.xml
 
 # Static site output
 /output/
-!/output/
+
+# IDE
+.idea/
+
+# Mongo dumps (local dev data, not source)
+/mongo/
+/spa/dump/
+
+# Uploaded user content
+/uploads/
+/spa/public/images/uploads/
+
+# Test / load-test reports
+/reports/
+/backend/test/artillery/*.json
+/backend/test/artillery/*.html
+/backend/test/artillery/index_report
+
+# Deploy diagnostics
+/deploy/mongo/

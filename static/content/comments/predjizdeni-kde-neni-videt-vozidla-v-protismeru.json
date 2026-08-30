@@ -1,0 +1,24 @@
+[
+  {
+    "date": "2022-01-18T18:21:30.623Z",
+    "text": "<p>Přečtěte si <a target=\"_blank\" href=\"https://www.mezinamiridici.cz/clanky/zradne-horizonty\">článek Zrádné horizonty</a> na toto téma.</p>",
+    "up": 0,
+    "down": 0,
+    "author": {
+      "id": "leos",
+      "nickname": "Leoš Literák"
+    },
+    "replies": []
+  },
+  {
+    "date": "2022-01-23T14:18:35.706Z",
+    "text": "<p>Předjíždění není nutnost. Nikdo nemusí předjíždět, klidně může jet 30km/h za traktorem. (Někdy to dělám, protože si chci poslechnout pořad v rádiu a nespěchám.) Doporučuji film 13 Minut (Vít Klusák). Tam jeden pán prohlásil, že jeho situace neměla řešení a že za cisternou opravdu 35km/h nepojede a raději zůstane doma. Zabil dva lidi.</p>",
+    "up": 2,
+    "down": 0,
+    "author": {
+      "id": "Heron",
+      "nickname": "Heron"
+    },
+    "replies": []
+  }
+]
