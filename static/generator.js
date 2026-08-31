@@ -271,7 +271,7 @@ async function generateHomePage(items) {
 }
 
 // Generate individual item page
-async function generateItemPage(item) {
+async function generateItemPage(item, allItems) {
   const itemType = item.type;
   const fullItem = item;
   const comments = loadComments(item.info.slug);
@@ -280,6 +280,13 @@ async function generateItemPage(item) {
   let voteResults = null;
   if (itemType === 'poll') {
     voteResults = calculatePollVotes(fullItem);
+  }
+
+  // For articles, surface other articles for cross-linking
+  let otherArticles = null;
+  if (itemType === 'article') {
+    otherArticles = allItems
+      .filter((i) => i.type === 'article' && i.info.slug !== item.info.slug);
   }
 
   // Load appropriate template
@@ -316,6 +323,7 @@ async function generateItemPage(item) {
     item: fullItem,
     comments,
     voteResults,
+    otherArticles,
     commentCount: comments.length,
     generationDate: dayjs().format('D.M.YYYY')
   });
@@ -574,7 +582,17 @@ async function generateStaticSite() {
           jobLogger.debug('Skipping images folder');
           continue;
         }
-        await fs.rm(path.join(OUTPUT_DIR, entry), { recursive: true, force: true });
+        try {
+          await fs.rm(path.join(OUTPUT_DIR, entry), { recursive: true, force: true });
+        } catch (error) {
+          // Windows Explorer, an antivirus scan, or a preview can briefly lock a
+          // directory. Continue: every current page is written again below.
+          if (error.code === 'EBUSY' || error.code === 'EPERM') {
+            jobLogger.warn(`Could not clean ${entry}; regenerating its current content in place`);
+            continue;
+          }
+          throw error;
+        }
       }
     }
 
@@ -596,7 +614,7 @@ async function generateStaticSite() {
     jobLogger.info('Generating individual pages...');
     let processed = 0;
     for (const item of items) {
-      await generateItemPage(item);
+      await generateItemPage(item, items);
       processed++;
       if (processed % 10 === 0) {
         jobLogger.info(`Processed ${processed}/${items.length} items...`);
