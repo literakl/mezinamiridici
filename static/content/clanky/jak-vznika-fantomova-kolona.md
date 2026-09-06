@@ -640,3 +640,5 @@ Všeho ale s mírou: držet si odstup v řádu stovek metrů bude zase frustrova
 brán jako pozvánka pro řidiče z vedlejších pruhů, což zase zpomalí váš pruh.
 
 Závěr je jednoduchý: nelepte se na auto před vámi, držte si rozumně velký odstup a v koloně usilujte o plynulou jízdu.
+
+P.S. Mimochodem, vedle této stránky stavím web [Poctivé slevy](https://www.poctiveslevy.cz/) — komunitou ověřované slevy a akce, kdyby se hodilo.
