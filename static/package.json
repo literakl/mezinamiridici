@@ -5,7 +5,8 @@
   "main": "generator.js",
   "scripts": {
     "generate": "node generator.js",
-    "serve": "cd ../output && python -m http.server 8000"
+    "serve": "npx --yes http-server ../output -p 8123 -c-1",
+    "preview": "npm run generate && npm run serve"
   },
   "dependencies": {
     "dayjs": "^1.8.36",

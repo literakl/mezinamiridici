@@ -70,11 +70,26 @@ první).
 
 ## Náhled výstupu lokálně
 
-Generátor nezávisí na Pythonu; stačí libovolný statický server, např.:
+Nejjednodušší je jeden příkaz, který web vygeneruje i spustí na
+`http://localhost:8123`:
 
 ```bash
-npx serve ../output
+cd static
+npm run preview
 ```
+
+Nebo obě kroky zvlášť:
+
+```bash
+cd static
+npm run generate   # vygeneruje ../output
+npm run serve       # spustí lokální server na http://localhost:8123
+```
+
+`serve` používá `http-server` přes `npx` (nic se nemusí instalovat natrvalo)
+s vypnutou cache (`-c-1`), takže po každém `generate` stačí stránku v
+prohlížeči obnovit — nikdy neuvidíte starý obsah. Generátor nezávisí na
+Pythonu; funguje i libovolný jiný statický server namířený na `../output`.
 
 ## Nasazení
 
